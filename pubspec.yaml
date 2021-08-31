@@ -74,3 +74,49 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  assets:
+        - assets/
+
+        
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto-BlackItalic.ttf
+        - asset: fonts/Roboto-Black.ttf
+        - asset: fonts/Roboto-BlackItalic.ttf
+        - asset: fonts/Roboto-BoldItalic.ttf
+        - asset: fonts/Roboto-Bold.ttf
+        - asset: fonts/Roboto-Italic.ttf
+        - asset: fonts/Roboto-Light.ttf
+        - asset: fonts/Roboto-LightItalic.ttf
+        - asset: fonts/Roboto-MediumItalic.ttf
+        - asset: fonts/Roboto-Regular.ttf
+        - asset: fonts/Roboto-ThinItalic.ttf
+        - asset: fonts/Roboto-Thin.ttf
+    - family: Roboto Italic
+      fonts:
+        - asset: fonts/Roboto-Italic.ttf
+    - family: Roboto Bold
+      fonts:
+        - asset: fonts/Roboto-Bold.ttf
+    - family: Roboto Thin
+      fonts:
+        - asset: fonts/Roboto-Thin.ttf
+    
+    
+    - family: Roboto Light
+      fonts:
+        - asset: fonts/Roboto-Light.ttf
+    - family: Roboto Medium
+      fonts:
+        - asset: fonts/Roboto-Medium.ttf
+    - family: Roboto LightItalic
+      fonts:
+        - asset: fonts/Roboto-LightItalic.ttf
+    - family: Roboto MediumItalic
+      fonts:
+        - asset: fonts/Roboto-MediumItalic.ttf
+    - family: Roboto Regular
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf
+    
