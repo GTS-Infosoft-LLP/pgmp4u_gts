@@ -96,7 +96,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => {},
+                        onTap: () => {
+                          Navigator.of(context)
+                              .pushNamed('/dashboard', arguments: {})
+                        },
                         child: Text(
                           "Sign in",
                           style: TextStyle(

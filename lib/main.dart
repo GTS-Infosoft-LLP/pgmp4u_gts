@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import './Screens/Dashboard/dashboard.dart';
 import './Screens/Auth/login.dart';
 
 void main() {
@@ -10,9 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-      home: LoginScreen(),
       routes: {
-        '/material': (ctx) => LoginScreen(),
+        '/': (ctx) => LoginScreen(),
+        '/dashboard': (ctx) => Dashboard(),
       },
     );
   }
