@@ -1,7 +1,8 @@
 import 'dart:io';
-
+import 'package:getwidget/getwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class PracticeTest extends StatefulWidget {
   const PracticeTest({Key key}) : super(key: key);
@@ -18,23 +19,32 @@ class _PracticeTestState extends State<PracticeTest> {
 
   bool _show = true;
   int _quetionNo = 0;
-
+  int selectedAnswer = null;
   String stringResponse;
-
+  List listResponse;
+  Map mapResponse;
   @override
   void initState() {
     super.initState();
-
     apiCall();
   }
 
   Future apiCall() async {
-        print("data");
     http.Response response;
-    response = await http.get(Uri.parse("http://3.144.99.71:1010/api/PracticeTestQuestions"),headers: {'Content-Type': 'application/json','Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo4NjgsIm5hbWUiOiJ2ZW5rYXQiLCJtb2JpbGUiOm51bGwsImVtYWlsIjoidmVua2F0MTExQGdtYWlsLmNvbSIsInBhc3N3b3JkIjpudWxsLCJjcmVhdGVkIjoiMjAyMS0wOC0zMCIsImV4YW1fZGF0ZSI6bnVsbCwicHJvZmlsZV9pbWFnZSI6bnVsbCwibGlua2VkaW4iOm51bGwsImdvb2dsZSI6IjIxMzQ4NDY0IiwicTEiOiIiLCJxMiI6IiIsInEzIjoiIiwicTQiOiIiLCJxNSI6IiIsInE2IjoiIiwiZW1haWxfc2VudCI6MCwic3RhdHVzIjoxLCJkZWxldGVTdGF0dXMiOjF9LCJpYXQiOjE2MzAzMjQ1MDYsImV4cCI6MTYzMTE4ODUwNn0.J3bPCa4Y2_1rqTGOL5DaPRmF32s3Ut5-OMY_R8LGbow'});
-              print(response);
+    response = await http.get(
+        Uri.parse("http://3.144.99.71:1010/api/PracticeTestQuestions"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo4NjgsIm5hbWUiOiJ2ZW5rYXQiLCJtb2JpbGUiOm51bGwsImVtYWlsIjoidmVua2F0MTExQGdtYWlsLmNvbSIsInBhc3N3b3JkIjpudWxsLCJjcmVhdGVkIjoiMjAyMS0wOC0zMCIsImV4YW1fZGF0ZSI6bnVsbCwicHJvZmlsZV9pbWFnZSI6bnVsbCwibGlua2VkaW4iOm51bGwsImdvb2dsZSI6IjIxMzQ4NDY0IiwicTEiOiIiLCJxMiI6IiIsInEzIjoiIiwicTQiOiIiLCJxNSI6IiIsInE2IjoiIiwiZW1haWxfc2VudCI6MCwic3RhdHVzIjoxLCJkZWxldGVTdGF0dXMiOjF9LCJpYXQiOjE2MzAzMjQ1MDYsImV4cCI6MTYzMTE4ODUwNn0.J3bPCa4Y2_1rqTGOL5DaPRmF32s3Ut5-OMY_R8LGbow'
+        });
+
     if (response.statusCode == 200) {
-      print(response);
+      setState(() {
+        mapResponse = convert.jsonDecode(response.body);
+        listResponse = mapResponse["data"];
+      });
+      // print(convert.jsonDecode(response.body));
     }
   }
 
@@ -73,7 +83,7 @@ class _PracticeTestState extends State<PracticeTest> {
                             Row(
                               children: [
                                 GestureDetector(
-                                  onTap: () => {apiCall()},
+                                  onTap: () => {Navigator.of(context).pop()},
                                   child: Icon(
                                     Icons.arrow_back_ios,
                                     size: width * (24 / 420),
@@ -94,157 +104,281 @@ class _PracticeTestState extends State<PracticeTest> {
                         ),
                       ),
                     ),
-                    Container(
-                      width: width,
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(
-                                left: width * (29 / 420),
-                                right: width * (29 / 420),
-                                top: height * (23 / 800),
-                                bottom: height * (23 / 800)),
-                            color: Colors.white,
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    _quetionNo != 0
-                                        ? GestureDetector(
-                                            onTap: () => {
-                                              setState(() {
-                                                _quetionNo--;
-                                              })
-                                            },
-                                            child: Icon(
-                                              Icons.arrow_back,
-                                              size: width * (24 / 420),
-                                              color: _colorfromhex("#ABAFD1"),
-                                            ),
-                                          )
-                                        : Container(),
-                                    Text(
-                                      'QUESTION $_quetionNo',
-                                      style: TextStyle(
-                                        fontFamily: 'Roboto Regular',
-                                        fontSize: width * (16 / 420),
-                                        color: _colorfromhex("#ABAFD1"),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () => {
-                                        setState(() {
-                                          _quetionNo = _quetionNo + 1;
-                                        })
-                                      },
-                                      child: Icon(
-                                        Icons.arrow_forward,
-                                        size: width * (24 / 420),
-                                        color: _colorfromhex("#ABAFD1"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  margin:
-                                      EdgeInsets.only(top: height * (15 / 800)),
-                                  child: Text(
-                                    'Most of the projects in your program have reached the closing stage. What is the order of process you will follow to close your Program & the projects within the Program?',
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto Regular',
-                                      fontSize: width * (15 / 420),
-                                      color: Colors.black,
-                                      height: 1.7,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: _colorfromhex("#FAFAFA"),
-                                      borderRadius: BorderRadius.circular(6)),
-                                  margin:
-                                      EdgeInsets.only(top: height * (38 / 800)),
-                                  padding: EdgeInsets.only(
-                                      top: height * (10 / 800),
-                                      bottom: _show
-                                          ? height * (23 / 800)
-                                          : height * (12 / 800),
-                                      left: width * (18 / 420),
-                                      right: width * (10 / 420)),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _show = !_show;
-                                          });
-                                        },
-                                        child: Row(
+                    listResponse != null
+                        ? Container(
+                            width: width,
+                            height: height - 235,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: width * (29 / 420),
+                                        right: width * (29 / 420),
+                                        top: height * (23 / 800),
+                                        bottom: height * (23 / 800)),
+                                    color: Colors.white,
+                                    child: Column(
+                                      children: [
+                                        Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
+                                            _quetionNo != 0
+                                                ? GestureDetector(
+                                                    onTap: () => {
+                                                      setState(() {
+                                                        _quetionNo--;
+
+                                                        selectedAnswer = null;
+                                                      })
+                                                    },
+                                                    child: Icon(
+                                                      Icons.arrow_back,
+                                                      size: width * (24 / 420),
+                                                      color: _colorfromhex(
+                                                          "#ABAFD1"),
+                                                    ),
+                                                  )
+                                                : Container(),
                                             Text(
-                                              'See Solution',
+                                              'QUESTION ${_quetionNo + 1}',
                                               style: TextStyle(
                                                 fontFamily: 'Roboto Regular',
-                                                fontSize: width * (15 / 420),
+                                                fontSize: width * (16 / 420),
                                                 color: _colorfromhex("#ABAFD1"),
-                                                height: 1.7,
                                               ),
                                             ),
-                                            Icon(
-                                              _show
-                                                  ? Icons.expand_less
-                                                  : Icons.expand_more,
-                                              size: width * (30 / 420),
-                                              color: _colorfromhex("#ABAFD1"),
-                                            ),
+                                            listResponse.length - 1 > _quetionNo
+                                                ? GestureDetector(
+                                                    onTap: () => {
+                                                      setState(() {
+                                                        if (_quetionNo <
+                                                            listResponse
+                                                                .length) {
+                                                          _quetionNo =
+                                                              _quetionNo + 1;
+                                                        }
+                                                        selectedAnswer = null;
+                                                      }),
+                                                      print(_quetionNo)
+                                                    },
+                                                    child: Icon(
+                                                      Icons.arrow_forward,
+                                                      size: width * (24 / 420),
+                                                      color: _colorfromhex(
+                                                          "#ABAFD1"),
+                                                    ),
+                                                  )
+                                                : Container(),
                                           ],
                                         ),
-                                      ),
-                                      _show
-                                          ? Container(
-                                              margin: EdgeInsets.only(
-                                                  top: height * (9 / 800)),
-                                              child: Text(
-                                                'Answer C is the correct one',
-                                                style: TextStyle(
-                                                  fontFamily: 'Roboto Regular',
-                                                  fontSize: width * (15 / 420),
-                                                  color: _colorfromhex("#04AE0B"),
-                                                  height: 1.7,
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              top: height * (15 / 800)),
+                                          child: Text(
+                                            listResponse != null
+                                                ? listResponse[_quetionNo]
+                                                    ["question"]
+                                                : '',
+                                            style: TextStyle(
+                                              fontFamily: 'Roboto Regular',
+                                              fontSize: width * (15 / 420),
+                                              color: Colors.black,
+                                              height: 1.7,
+                                            ),
+                                          ),
+                                        ),
+                                        Column(
+                                          children: listResponse[_quetionNo]
+                                                  ["Options"]
+                                              .map<Widget>((title) {
+                                            var index = listResponse[_quetionNo]
+                                                    ["Options"]
+                                                .indexOf(title);
+                                            return GestureDetector(
+                                              onTap: () => {
+                                                setState(() {
+                                                  selectedAnswer = index;
+                                                })
+                                              },
+                                              child: Container(
+                                                margin: EdgeInsets.only(
+                                                    top: height * (21 / 800)),
+                                                padding: EdgeInsets.only(
+                                                    top: 13,
+                                                    bottom: 13,
+                                                    left: width * (13 / 420),
+                                                    right: width * (11 / 420)),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      width: width * (25 / 420),
+                                                      height: width * 25 / 420,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            width * (25 / 420),
+                                                          ),
+                                                          color: _colorfromhex(
+                                                              "#FF0000")),
+                                                      child: Center(
+                                                        child: Text(
+                                                          index == 0
+                                                              ? 'A'
+                                                              : index == 1
+                                                                  ? 'B'
+                                                                  : index == 2
+                                                                      ? 'C'
+                                                                      : index ==
+                                                                              3
+                                                                          ? 'D'
+                                                                          : '',
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Roboto Regular',
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                        margin: EdgeInsets.only(
+                                                            left: 8),
+                                                        width: width -
+                                                            (width *
+                                                                (25 / 420) *
+                                                                5),
+                                                        child: Text(title[
+                                                            "question_option"]))
+                                                  ],
                                                 ),
                                               ),
-                                            )
-                                          : Container(),
-                                      _show
-                                          ? Container(
-                                              margin: EdgeInsets.only(
-                                                  top: height * (9 / 800)),
-                                              child: Text(
-                                                'To check whether we are developing the right product according to the customer requirements are not. It is a static process',
-                                                style: TextStyle(
-                                                  fontFamily: 'Roboto Regular',
-                                                  fontSize: width * (15 / 420),
-                                                  color: Colors.black,
-                                                  height: 1.6,
+                                            );
+                                          }).toList(),
+                                        ),
+                                        selectedAnswer != null
+                                            ? Container(
+                                                decoration: BoxDecoration(
+                                                    color: _colorfromhex(
+                                                        "#FAFAFA"),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6)),
+                                                margin: EdgeInsets.only(
+                                                    top: height * (38 / 800)),
+                                                padding: EdgeInsets.only(
+                                                    top: height * (10 / 800),
+                                                    bottom: _show
+                                                        ? height * (23 / 800)
+                                                        : height * (12 / 800),
+                                                    left: width * (18 / 420),
+                                                    right: width * (10 / 420)),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          _show = !_show;
+                                                        });
+                                                      },
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            'See Solution',
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'Roboto Regular',
+                                                              fontSize: width *
+                                                                  (15 / 420),
+                                                              color:
+                                                                  _colorfromhex(
+                                                                      "#ABAFD1"),
+                                                              height: 1.7,
+                                                            ),
+                                                          ),
+                                                          Icon(
+                                                            _show
+                                                                ? Icons
+                                                                    .expand_less
+                                                                : Icons
+                                                                    .expand_more,
+                                                            size: width *
+                                                                (30 / 420),
+                                                            color:
+                                                                _colorfromhex(
+                                                                    "#ABAFD1"),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    _show
+                                                        ? Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    top: height *
+                                                                        (9 /
+                                                                            800)),
+                                                            child: Text(
+                                                              'Answer C is the correct one',
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Roboto Regular',
+                                                                fontSize: width *
+                                                                    (15 / 420),
+                                                                color: _colorfromhex(
+                                                                    "#04AE0B"),
+                                                                height: 1.7,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Container(),
+                                                    _show
+                                                        ? Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    top: height *
+                                                                        (9 /
+                                                                            800)),
+                                                            child: Text(
+                                                              listResponse[
+                                                                      _quetionNo]
+                                                                  [
+                                                                  "explanation"],
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Roboto Regular',
+                                                                fontSize: width *
+                                                                    (15 / 420),
+                                                                color: Colors
+                                                                    .black,
+                                                                height: 1.6,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Container()
+                                                  ],
                                                 ),
-                                              ),
-                                            )
-                                          : Container()
-                                    ],
+                                              )
+                                            : Container()
+                                      ],
+                                    ),
                                   ),
-                                )
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
+                          )
+                        : Container(
+                            child: CircularProgressIndicator(
+                                backgroundColor: Colors.green))
                   ],
                 ),
               ),
