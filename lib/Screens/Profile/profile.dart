@@ -46,10 +46,23 @@ class _ProfileState extends State<Profile> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(
-                        Icons.menu,
-                        size: width * (24 / 420),
-                        color: Colors.white,
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.menu,
+                            size: width * (24 / 420),
+                            color: Colors.white,
+                          ),
+                          Text(
+                            '  Profile',
+                            style: TextStyle(
+                              fontFamily: 'Roboto Medium',
+                              fontSize: width * (16 / 420),
+                              color: Colors.white,
+                              letterSpacing: 0.3
+                            ),
+                          ),
+                        ],
                       ),
                       Row(
                         children: [
@@ -278,7 +291,7 @@ class _ProfileState extends State<Profile> {
                                 Row(
                                   children: [
                                     Icon(
-                                      Icons.home,
+                                      Icons.settings,
                                       size: width * (26 / 420),
                                       color: _colorfromhex("#ABAFD1"),
                                     ),
@@ -302,7 +315,9 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => {},
+                          onTap: () => {
+                            Navigator.of(context).pushNamed('/', arguments: {})
+                          },
                           child: Container(
                             margin: EdgeInsets.only(bottom: 6),
                             padding: EdgeInsets.only(
@@ -317,7 +332,7 @@ class _ProfileState extends State<Profile> {
                                 Row(
                                   children: [
                                     Icon(
-                                      Icons.home,
+                                      Icons.logout,
                                       size: width * (26 / 420),
                                       color: _colorfromhex("#ABAFD1"),
                                     ),

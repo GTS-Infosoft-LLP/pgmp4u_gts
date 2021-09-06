@@ -2,6 +2,7 @@
     package="com.codesigns.pgmp4u">
    <application
         android:label="pgmp4u"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
