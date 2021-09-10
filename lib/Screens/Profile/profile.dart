@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key key}) : super(key: key);
@@ -11,6 +15,44 @@ class _ProfileState extends State<Profile> {
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
+  }
+
+  Map mapResponse;
+  Map dataResponse;
+  String photoUrl;
+  getValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('photo');
+    print('stringValue');
+    setState(() {
+      photoUrl = stringValue;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    apiCall();
+    getValue();
+  }
+
+  Future apiCall() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    http.Response response;
+    response = await http
+        .get(Uri.parse("http://3.144.99.71:1010/api/UserDetails"), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': stringValue
+    });
+
+    if (response.statusCode == 200) {
+      setState(() {
+        mapResponse = convert.jsonDecode(response.body);
+        dataResponse = mapResponse["data"];
+      });
+      // print(convert.jsonDecode(response.body));
+    }
   }
 
   @override
@@ -103,7 +145,7 @@ class _ProfileState extends State<Profile> {
                             Container(
                               margin: EdgeInsets.only(bottom: 6),
                               child: Text(
-                                'RAVI',
+                                mapResponse != null ? dataResponse["name"] : '',
                                 style: TextStyle(
                                   fontFamily: 'Roboto Medium',
                                   fontSize: width * (18 / 420),
@@ -112,7 +154,7 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                             Text(
-                              'ravichandra@gmail.com',
+                              mapResponse != null ? dataResponse["email"] : '',
                               style: TextStyle(
                                 fontFamily: 'Roboto Medium',
                                 fontSize: width * (12 / 420),
@@ -121,14 +163,26 @@ class _ProfileState extends State<Profile> {
                             )
                           ],
                         ),
-                        Container(
-                          width: width * (80 / 420),
-                          height: width * (80 / 420),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(80),
-                          ),
-                        )
+                        photoUrl != null
+                            ? Container(
+                                width: width * (80 / 420),
+                                height: width * (80 / 420),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(photoUrl),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.circular(80),
+                                ),
+                              )
+                            : Container(
+                                width: width * (80 / 420),
+                                height: width * (80 / 420),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(80),
+                                ),
+                              )
                       ],
                     ),
                   )
@@ -321,9 +375,13 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () => {
-                              Navigator.of(context)
-                                  .pushNamed('/', arguments: {})
+                            onTap: () async {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.clear();
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/start-screen',
+                                  (Route<dynamic> route) => false);
                             },
                             child: Container(
                               margin: EdgeInsets.only(bottom: 6),

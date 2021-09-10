@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class PracticeTest extends StatefulWidget {
   const PracticeTest({Key key}) : super(key: key);
 
@@ -30,13 +32,14 @@ class _PracticeTestState extends State<PracticeTest> {
   }
 
   Future apiCall() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
     http.Response response;
     response = await http.get(
         Uri.parse("http://3.144.99.71:1010/api/PracticeTestQuestions"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo4NjgsIm5hbWUiOiJ2ZW5rYXQiLCJtb2JpbGUiOm51bGwsImVtYWlsIjoidmVua2F0MTExQGdtYWlsLmNvbSIsInBhc3N3b3JkIjpudWxsLCJjcmVhdGVkIjoiMjAyMS0wOC0zMCIsImV4YW1fZGF0ZSI6bnVsbCwicHJvZmlsZV9pbWFnZSI6bnVsbCwibGlua2VkaW4iOm51bGwsImdvb2dsZSI6IjIxMzQ4NDY0IiwicTEiOiIiLCJxMiI6IiIsInEzIjoiIiwicTQiOiIiLCJxNSI6IiIsInE2IjoiIiwiZW1haWxfc2VudCI6MCwic3RhdHVzIjoxLCJkZWxldGVTdGF0dXMiOjF9LCJpYXQiOjE2MzAzMjQ1MDYsImV4cCI6MTYzMTE4ODUwNn0.J3bPCa4Y2_1rqTGOL5DaPRmF32s3Ut5-OMY_R8LGbow'
+          'Authorization': stringValue
         });
 
     if (response.statusCode == 200) {
