@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "569295667578",
+    "project_id": "pgmp4u-android",
+    "storage_bucket": "pgmp4u-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569295667578:android:678c44697c5abfae6d96c3",
+        "android_client_info": {
+          "package_name": "com.codesigns.pgmp4u"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "569295667578-38abr9438olgi1galkk06cfm6ulvoo5h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5Jcs4qFC3o4y66yk7fqzlVv6HuWCFJkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "569295667578-38abr9438olgi1galkk06cfm6ulvoo5h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

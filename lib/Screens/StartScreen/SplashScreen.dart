@@ -51,13 +51,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: Colors.white,
+    return SafeArea(
       child: Container(
-        child: Image.asset(
-          'assets/pgmp4u.png',
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.white,
+        child: Container(
+          child: Image.asset(
+            'assets/pgmp4u.png',
+          ),
         ),
       ),
     );

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pgmp4u/Screens/Dashboard/dashboard.dart';
 import 'package:pgmp4u/api/google_signin_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,12 +22,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return Color(int.parse('FF$hexCode', radix: 16));
   }
 
+  bool loading = false;
   bool signInBool = false;
   Future loginHandler(user) async {
+    setState(() {
+      loading = true;
+    });
     http.Response response;
 
     response = await http.post(
-      Uri.parse('http://3.144.99.71:1010/api/GmailLogin'),
+      Uri.parse('http://18.119.55.81:1010/api/GmailLogin'),
       headers: {
         "Content-Type": "application/json",
       },
@@ -40,13 +46,16 @@ class _LoginScreenState extends State<LoginScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', responseData["token"]);
       prefs.setString('photo', user.photoUrl);
-
+      prefs.setString('name', user.displayName);
+      print(user.photoUrl);
       GFToast.showToast(
         'LoggedIn successfully',
         context,
         toastPosition: GFToastPosition.BOTTOM,
       );
-
+      setState(() {
+        loading = false;
+      });
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
     } else {
@@ -55,14 +64,19 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         toastPosition: GFToastPosition.BOTTOM,
       );
+      setState(() {
+        loading = false;
+      });
     }
   }
 
   Future registerHandler(user) async {
     http.Response response;
-
+    setState(() {
+      loading = true;
+    });
     response = await http.post(
-      Uri.parse('http://3.144.99.71:1010/api/GmailRegister'),
+      Uri.parse('http://18.119.55.81:1010/api/GmailRegister'),
       headers: {
         "Content-Type": "application/json",
       },
@@ -74,32 +88,52 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (response.statusCode == 200) {
-      // Map responseData = json.decode(response.body);
-      print(response.body);
-      GFToast.showToast(
-        'Registered successfully',
-        context,
-        toastPosition: GFToastPosition.BOTTOM,
-      );
-
-      print("success");
+      Map responseData = json.decode(response.body);
+      //loginHandler(user);
+      // Navigator.push(context,
+      //     MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
+      // GFToast.showToast(
+      //   'Registered successfully',
+      //   context,
+      //   toastPosition: GFToastPosition.BOTTOM,
+      // );
+      setState(() {
+        loading = false;
+      });
     } else {
-      print(response.body);
+      Map responseData = json.decode(response.body);
       GFToast.showToast(
-        "Something went wrong,please try again",
+       responseData["message"],
         context,
         toastPosition: GFToastPosition.BOTTOM,
       );
+      setState(() {
+        loading = false;
+      });
     }
   }
 
   Future signIn() async {
-    final user = await GoogleSignInApi.login();
-    if (user != null) {
+    final googleSignIn = GoogleSignIn();
+    GoogleSignInAccount user;
+    // final user = await GoogleSignInApi.login();
+    final googleUser = await googleSignIn.signIn();
+
+    final googleAuth = await googleUser.authentication;
+
+    final cred = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    await FirebaseAuth.instance.signInWithCredential(cred);
+
+    if (googleUser != null) {
+      print(googleUser);
       if (signInBool) {
-        loginHandler(user);
+        loginHandler(googleUser);
       } else {
-        registerHandler(user);
+        registerHandler(googleUser);
       }
 
       // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -170,33 +204,44 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(10),
                         color: _colorfromhex('#494AE2').withOpacity(0.12),
                       ),
-                      child: GestureDetector(
-                        onTap: signIn,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              !signInBool
-                                  ? "Sign up with Google   "
-                                  : "Sign in with Google",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: width * (20 / 420),
-                                fontFamily: 'Roboto Medium',
+                      child: loading
+                          ? Center(
+                              child: SizedBox(
+                                width: 33,
+                                height: 33,
+                                child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  _colorfromhex("#4849DF"),
+                                ),
+                            ),
+                              ))
+                          : GestureDetector(
+                              onTap: signIn,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    !signInBool
+                                        ? "Sign up with Google   "
+                                        : "Sign in with Google   ",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: width * (20 / 420),
+                                      fontFamily: 'Roboto Medium',
+                                    ),
+                                  ),
+                                  Image.asset('assets/google.png'),
+                                ],
                               ),
                             ),
-                            Image.asset('assets/google.png'),
-                          ],
-                        ),
-                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           signInBool
-                              ? "You dont have an account?"
+                              ? "You dont have an account? "
                               : "Already have an account? ",
                           style: TextStyle(
                             color: _colorfromhex("#76767E"),

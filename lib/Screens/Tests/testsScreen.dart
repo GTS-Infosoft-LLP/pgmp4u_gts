@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TestsScreen extends StatefulWidget {
   const TestsScreen({Key key}) : super(key: key);
@@ -8,6 +12,39 @@ class TestsScreen extends StatefulWidget {
 }
 
 class _TestsScreenState extends State<TestsScreen> {
+  Map mapResponse;
+  @override
+  void initState() {
+    super.initState();
+    apiCall();
+    // if (selectedIdNew == "result") {
+    //   apiCall2();
+    // } else {
+    //   apiCall();
+    // }
+  }
+
+  Future apiCall() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    print(stringValue);
+    http.Response response;
+    response = await http.get(
+        Uri.parse("http://18.119.55.81:1010/api/CheckUserPaymentStatus"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': stringValue
+        });
+
+    if (response.statusCode == 200) {
+      print(convert.jsonDecode(response.body));
+      setState(() {
+        mapResponse = convert.jsonDecode(response.body);
+      });
+      // print(convert.jsonDecode(response.body));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -46,7 +83,7 @@ class _TestsScreenState extends State<TestsScreen> {
                         color: Colors.white,
                       ),
                       Text(
-                        '  Test',
+                        '  Tests4U',
                         style: TextStyle(
                             fontFamily: 'Roboto Medium',
                             fontSize: width * (16 / 420),
@@ -76,7 +113,7 @@ class _TestsScreenState extends State<TestsScreen> {
               ),
             ),
           ),
-          Container(
+     mapResponse != null ?     Container(
               margin: EdgeInsets.only(
                   left: width * (18 / 420), right: width * (18 / 420)),
               child: SingleChildScrollView(
@@ -84,14 +121,14 @@ class _TestsScreenState extends State<TestsScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Tests4U',
-                      style: TextStyle(
-                          fontFamily: 'Roboto Bold',
-                          fontSize: width * (18 / 420),
-                          color: Colors.black,
-                          letterSpacing: 0.3),
-                    ),
+                    // Text(
+                    //   'Tests4U',
+                    //   style: TextStyle(
+                    //       fontFamily: 'Roboto Bold',
+                    //       fontSize: width * (18 / 420),
+                    //       color: Colors.black,
+                    //       letterSpacing: 0.3),
+                    // ),
                     GestureDetector(
                       onTap: () =>
                           Navigator.of(context).pushNamed('/practice-test'),
@@ -143,7 +180,7 @@ class _TestsScreenState extends State<TestsScreen> {
                         ),
                       ),
                     ),
-                    GestureDetector(
+                    mapResponse["data"]["paid_status"] == 1 ? GestureDetector(
                       onTap: () =>
                           {Navigator.of(context).pushNamed('/mock-test')},
                       child: Container(
@@ -193,10 +230,17 @@ class _TestsScreenState extends State<TestsScreen> {
                           ],
                         ),
                       ),
-                    ),
+                    ):Container(),
                   ],
                 ),
-              )),
+              )) :  Container(
+                      width: width,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              _colorfromhex("#4849DF")),
+                        ),
+                      )),
         ],
       ),
     );

@@ -6,23 +6,25 @@ import 'dart:convert' as convert;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PracticeTest extends StatefulWidget {
+class ReviewMockTest extends StatefulWidget {
   final selectedId;
-
-  PracticeTest({
+  final attemptData;
+  ReviewMockTest({
     this.selectedId,
+    this.attemptData,
   });
 
   @override
-  _PracticeTestState createState() =>
-      _PracticeTestState(selectedIdNew: this.selectedId);
+  _ReviewMockTestState createState() =>
+      _ReviewMockTestState(selectedIdNew: this.selectedId,attemptDataNew:this.attemptData);
 }
 
-class _PracticeTestState extends State<PracticeTest> {
+class _ReviewMockTestState extends State<ReviewMockTest> {
   final selectedIdNew;
-
-  _PracticeTestState({
+final attemptDataNew;
+  _ReviewMockTestState({
     this.selectedIdNew,
+    this.attemptDataNew
   });
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
@@ -39,12 +41,7 @@ class _PracticeTestState extends State<PracticeTest> {
   @override
   void initState() {
     super.initState();
-    apiCall();
-    // if (selectedIdNew == "result") {
-    //   apiCall2();
-    // } else {
-    //   apiCall();
-    // }
+    apiCall2();
   }
 
   Future apiCall2() async {
@@ -53,7 +50,7 @@ class _PracticeTestState extends State<PracticeTest> {
     print(stringValue);
     http.Response response;
     response = await http.get(
-        Uri.parse("http://18.119.55.81:1010/api/ReviewsMockTest/22/4"),
+        Uri.parse("http://18.119.55.81:1010/api/ReviewsMockTest/" + selectedIdNew.toString() + '/' + attemptDataNew.toString()),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue
@@ -64,28 +61,7 @@ class _PracticeTestState extends State<PracticeTest> {
       setState(() {
         mapResponse = convert.jsonDecode(response.body);
         listResponse = mapResponse["data"];
-      });
-      // print(convert.jsonDecode(response.body));
-    }
-  }
-
-  Future apiCall() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('token');
-    print(stringValue);
-    http.Response response;
-    response = await http.get(
-        Uri.parse("http://18.119.55.81:1010/api/PracticeTestQuestions"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': stringValue
-        });
-
-    if (response.statusCode == 200) {
-      print(convert.jsonDecode(response.body));
-      setState(() {
-        mapResponse = convert.jsonDecode(response.body);
-        listResponse = mapResponse["data"];
+        selectedAnswer = int.parse(mapResponse["data"][0]["youranswer"]) ;
       });
       // print(convert.jsonDecode(response.body));
     }
@@ -134,9 +110,7 @@ class _PracticeTestState extends State<PracticeTest> {
                                   ),
                                 ),
                                 Text(
-                                  arguments != null
-                                      ? '  Review'
-                                      : '  Practice Questions',
+                                  '  Review',
                                   style: TextStyle(
                                       fontFamily: 'Roboto Medium',
                                       fontSize: width * (18 / 420),
@@ -149,7 +123,7 @@ class _PracticeTestState extends State<PracticeTest> {
                         ),
                       ),
                     ),
-                    listResponse != null
+                    listResponse != null && listResponse.length > 0
                         ? Expanded(
                             // width: width,
                             // height: height - 235,
@@ -175,14 +149,15 @@ class _PracticeTestState extends State<PracticeTest> {
                                                       setState(() {
                                                         _quetionNo--;
 
-                                                        selectedAnswer = null;
-                                                        realAnswer = null;
+                                                        selectedAnswer = int.parse(listResponse[_quetionNo]["youranswer"]);
+                                                        realAnswer =  mapResponse["data"][_quetionNo]["Question"]["right_answer"];
                                                       })
                                                     },
                                                     child: Icon(
-                                                      Icons.west,
-                                                      size: width * (30 / 420),
-                                                       color: Colors.black,
+                                                      Icons.arrow_back,
+                                                      size: width * (24 / 420),
+                                                      color: _colorfromhex(
+                                                          "#ABAFD1"),
                                                     ),
                                                   )
                                                 : Container(),
@@ -191,7 +166,7 @@ class _PracticeTestState extends State<PracticeTest> {
                                               style: TextStyle(
                                                 fontFamily: 'Roboto Regular',
                                                 fontSize: width * (16 / 420),
-                                               color: Colors.black,
+                                                color: _colorfromhex("#ABAFD1"),
                                               ),
                                             ),
                                             listResponse.length - 1 > _quetionNo
@@ -204,15 +179,16 @@ class _PracticeTestState extends State<PracticeTest> {
                                                           _quetionNo =
                                                               _quetionNo + 1;
                                                         }
-                                                        selectedAnswer = null;
-                                                        realAnswer = null;
+                                                        selectedAnswer = int.parse(listResponse[_quetionNo]["youranswer"]);
+                                                        realAnswer =  mapResponse["data"][_quetionNo]["Question"]["right_answer"];
                                                       }),
                                                       print(_quetionNo)
                                                     },
                                                     child: Icon(
-                                                      Icons.east,
-                                                      size: width * (30 / 420),
-                                                      color: Colors.black,
+                                                      Icons.arrow_forward,
+                                                      size: width * (24 / 420),
+                                                      color: _colorfromhex(
+                                                          "#ABAFD1"),
                                                     ),
                                                   )
                                                 : Container(),
@@ -223,7 +199,7 @@ class _PracticeTestState extends State<PracticeTest> {
                                               top: height * (15 / 800)),
                                           child: Text(
                                             listResponse != null
-                                                ? listResponse[_quetionNo]
+                                                ? listResponse[_quetionNo]["Question"]
                                                     ["question"]
                                                 : '',
                                             style: TextStyle(
@@ -235,10 +211,10 @@ class _PracticeTestState extends State<PracticeTest> {
                                           ),
                                         ),
                                         Column(
-                                          children: listResponse[_quetionNo]
+                                          children: listResponse[_quetionNo]["Question"]
                                                   ["Options"]
                                               .map<Widget>((title) {
-                                            var index = listResponse[_quetionNo]
+                                            var index = listResponse[_quetionNo]["Question"]
                                                     ["Options"]
                                                 .indexOf(title);
                                             return GestureDetector(
@@ -246,21 +222,21 @@ class _PracticeTestState extends State<PracticeTest> {
                                                 setState(() {
                                                   selectedAnswer = title["id"];
                                                   realAnswer =
-                                                      listResponse[_quetionNo]
+                                                      listResponse[_quetionNo]["Question"]
                                                           ["right_answer"];
                                                 })
                                               },
                                               child: Container(
                                                 color: title["id"] ==
                                                             selectedAnswer &&
-                                                        listResponse[_quetionNo]
+                                                        listResponse[_quetionNo]["Question"]
                                                                 [
                                                                 "right_answer"] ==
                                                             selectedAnswer
                                                     ? _colorfromhex("#E6F7E7")
                                                     : title["id"] ==
                                                                 selectedAnswer &&
-                                                            listResponse[_quetionNo]
+                                                            listResponse[_quetionNo]["Question"]
                                                                     [
                                                                     "right_answer"] !=
                                                                 selectedAnswer
@@ -268,13 +244,13 @@ class _PracticeTestState extends State<PracticeTest> {
                                                             "#FFF6F6")
                                                         : selectedAnswer !=
                                                                     null &&
-                                                                listResponse[_quetionNo]
+                                                                listResponse[_quetionNo]["Question"]
                                                                         [
                                                                         "right_answer"] !=
                                                                     selectedAnswer &&
                                                                 title["id"] ==
                                                                     listResponse[
-                                                                            _quetionNo]
+                                                                            _quetionNo]["Question"]
                                                                         ["right_answer"]
                                                             ? _colorfromhex("#E6F7E7")
                                                             : Colors.white,
@@ -298,7 +274,7 @@ class _PracticeTestState extends State<PracticeTest> {
                                                           ),
                                                           color: title["id"] ==
                                                                       selectedAnswer &&
-                                                                  listResponse[_quetionNo]
+                                                                  listResponse[_quetionNo]["Question"]
                                                                           [
                                                                           "right_answer"] ==
                                                                       selectedAnswer
@@ -306,15 +282,15 @@ class _PracticeTestState extends State<PracticeTest> {
                                                                   "#04AE0B")
                                                               : title["id"] ==
                                                                           selectedAnswer &&
-                                                                      listResponse[_quetionNo]["right_answer"] !=
+                                                                      listResponse[_quetionNo]["Question"]["right_answer"] !=
                                                                           selectedAnswer
                                                                   ? _colorfromhex(
                                                                       "#FF0000")
                                                                   : selectedAnswer != null &&
-                                                                          listResponse[_quetionNo]["right_answer"] !=
+                                                                          listResponse[_quetionNo]["Question"]["right_answer"] !=
                                                                               selectedAnswer &&
                                                                           title["id"] ==
-                                                                              listResponse[_quetionNo][
+                                                                              listResponse[_quetionNo]["Question"][
                                                                                   "right_answer"]
                                                                       ? _colorfromhex(
                                                                           "#04AE0B")
@@ -337,66 +313,33 @@ class _PracticeTestState extends State<PracticeTest> {
                                                                   'Roboto Regular',
                                                               color: title["id"] ==
                                                                           selectedAnswer &&
-                                                                      listResponse[_quetionNo][
+                                                                      listResponse[_quetionNo]["Question"][
                                                                               "right_answer"] ==
                                                                           selectedAnswer
                                                                   ? Colors.white
                                                                   : title["id"] ==
                                                                               selectedAnswer &&
-                                                                          listResponse[_quetionNo]["right_answer"] !=
+                                                                          listResponse[_quetionNo]["Question"]["right_answer"] !=
                                                                               selectedAnswer
                                                                       ? Colors
                                                                           .white
                                                                       : selectedAnswer != null &&
-                                                                              listResponse[_quetionNo]["right_answer"] != selectedAnswer &&
-                                                                              title["id"] == listResponse[_quetionNo]["right_answer"]
+                                                                              listResponse[_quetionNo]["Question"]["right_answer"] != selectedAnswer &&
+                                                                              title["id"] == listResponse[_quetionNo]["Question"]["right_answer"]
                                                                           ? Colors.white
                                                                           : Colors.grey),
                                                         ),
                                                       ),
                                                     ),
-                                                    Column(
-                                                      mainAxisAlignment: MainAxisAlignment.end,
-                                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                                      children: [
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 8),
-                                                          width: width -
-                                                              (width *
-                                                                  (25 / 420) *
-                                                                  5),
-                                                          child: Text(
-                                                            title[
-                                                                "question_option"],
-                                                          ),
-                                                        ),
-                                                  selectedAnswer != null &&
-                                                                          listResponse[_quetionNo]["right_answer"] !=
-                                                                              selectedAnswer &&
-                                                                          title["id"] ==
-                                                                              listResponse[_quetionNo][
-                                                                                  "right_answer"] ?    Row(
-                                                          mainAxisAlignment: MainAxisAlignment.end,
-                                                          children: [
-                                                            Text(
-                                                                'Correct Answer',
-                                                              ),
-                                                          ],
-                                                        ) : title["id"] ==
-                                                                          selectedAnswer &&
-                                                                      listResponse[_quetionNo]["right_answer"] !=
-                                                                          selectedAnswer ?  Row(
-                                                          mainAxisAlignment: MainAxisAlignment.end,
-                                                          children: [
-                                                            Text(
-                                                                'Your selection',
-                                                              ),
-                                                          ],
-                                                        ) : Container(),
-                                                      ],
-                                                    )
+                                                    Container(
+                                                        margin: EdgeInsets.only(
+                                                            left: 8),
+                                                        width: width -
+                                                            (width *
+                                                                (25 / 420) *
+                                                                5),
+                                                        child: Text(title[
+                                                            "question_option"]))
                                                   ],
                                                 ),
                                               ),
@@ -473,24 +416,7 @@ class _PracticeTestState extends State<PracticeTest> {
                                                                         (9 /
                                                                             800)),
                                                             child: Text(
-                                                              listResponse[_quetionNo]
-                                                                          [
-                                                                          "right_answer"] ==
-                                                                      listResponse[_quetionNo]["Options"]
-                                                                              [0]
-                                                                          ["id"]
-                                                                  ? 'Answer A is the correct one'
-                                                                  : listResponse[_quetionNo]
-                                                                              [
-                                                                              "right_answer"] ==
-                                                                          listResponse[_quetionNo]["Options"][1]
-                                                                              [
-                                                                              "id"]
-                                                                      ? 'Answer B is the correct one'
-                                                                      : listResponse[_quetionNo]["right_answer"] ==
-                                                                              listResponse[_quetionNo]["Options"][2]["id"]
-                                                                          ? 'Answer C is the correct one'
-                                                                          : 'Answer D is the correct one',
+                                                              'Answer C is the correct one',
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Roboto Regular',
@@ -512,7 +438,7 @@ class _PracticeTestState extends State<PracticeTest> {
                                                                             800)),
                                                             child: Text(
                                                               listResponse[
-                                                                      _quetionNo]
+                                                                      _quetionNo]["Question"]
                                                                   [
                                                                   "explanation"],
                                                               style: TextStyle(
@@ -538,39 +464,23 @@ class _PracticeTestState extends State<PracticeTest> {
                               ),
                             ),
                           )
-                        : Container(
+                        :  Container(
                             child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
                                 _colorfromhex("#4849DF")),
-                          ))
+                          )) 
                   ],
                 ),
               ),
-              realAnswer == selectedAnswer && selectedAnswer != null
-                  ? Positioned(
-                      top: 80,
-                      left: width / 2.9,
-                      child: Container(
-                        width: 110,
-                        height: 110,
-                        child: Image.asset('assets/smile.png'),
-                      ))
-                  : Text(''),
-              realAnswer != selectedAnswer && selectedAnswer != null
-                  ? Positioned(
-                      top: 100,
-                      left: width / 2.5,
-                      child: selectedAnswer == null
-                          ? Text('')
-                          : realAnswer == selectedAnswer
-                              ? Container(
-                                  width: 100,
-                                  height: 100,
-                                  child: Image.asset('assets/smile.png'),
-                                )
-                              : Image.asset('assets/smiley-sad1.png'),
-                    )
-                  : Text(''),
+              Positioned(
+                top: 100,
+                left: width / 2.5,
+                child: selectedAnswer == null
+                    ? Text('')
+                    : realAnswer == selectedAnswer
+                        ? Text('data')
+                        : Image.asset('assets/smiley-sad1.png'),
+              )
             ],
           ),
         ),

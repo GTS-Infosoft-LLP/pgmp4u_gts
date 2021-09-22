@@ -3,6 +3,7 @@ import 'package:pgmp4u/Screens/Dashboard/DashboardScreen.dart';
 import 'package:pgmp4u/Screens/Profile/profile.dart';
 import 'package:pgmp4u/Screens/Tests/testsScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Dashboard extends StatefulWidget {
   final selectedId;
@@ -23,9 +24,27 @@ class _DashboardState extends State<Dashboard> {
     this.selectedIdNew,
   });
   int _currentIndex = 0;
-  final List<Widget> _children = [DashboardScreen(), TestsScreen(), Profile()];
+  void updateCurrentIndex() {}
+  void updateStatus() {
+    setState(() {
+      _currentIndex = 1;
+    });
+  }
+
+  final List<Widget> _children = [
+    DashboardScreen(selectedId: () => {print('object')}),
+    TestsScreen(),
+    Profile()
+  ];
 
   void onTabTapped(int index) async {
+    // users
+    //     .add({
+    //       'step1': 'fullName', // John Doe
+    //     })
+    //     .then((value) => print("User Added"))
+    //     .catchError((error) => print("Failed to add user: $error"));
+
     setState(() {
       _currentIndex = index;
     });
@@ -49,6 +68,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    print(MediaQuery.of(context).padding.top);
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
@@ -83,7 +103,7 @@ class _DashboardState extends State<Dashboard> {
                 size: width * (26 / 420),
               ),
               title: Text(
-                'Mock Test',
+                'Tests4U',
                 style: TextStyle(
                   color: _currentIndex == 1
                       ? _colorfromhex("#3846A9")

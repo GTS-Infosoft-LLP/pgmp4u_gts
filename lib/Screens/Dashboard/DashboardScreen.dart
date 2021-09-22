@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key key}) : super(key: key);
+  final Function selectedId;
+
+  DashboardScreen({
+    this.selectedId,
+  });
 
   @override
-  _DashboardScreenState createState() => _DashboardScreenState();
+  _DashboardScreenState createState() =>
+      _DashboardScreenState(selectedIdNew: this.selectedId);
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
@@ -15,48 +25,128 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Color(int.parse('FF$hexCode', radix: 16));
   }
 
+  static const platform = const MethodChannel("razorpay_flutter");
+
+  Razorpay _razorpay;
+  final Function selectedIdNew;
+
+  _DashboardScreenState({
+    this.selectedIdNew,
+  });
+  final databaseRef = FirebaseDatabase.instance.reference();
+
+  void addData() {
+    databaseRef.push().set({'name': 'data', 'comment': 'A good season'});
+  }
+
+  void printFirebase() {
+    print("object");
+    databaseRef.once().then((DataSnapshot snapshot) {
+      print('Data : ${snapshot.value}');
+    });
+  }
+
   String photoUrl;
+  String displayName;
   Future<bool> _onWillPop() async {
-    return (await showDialog(
-          context: context,
-          builder: (context) => new AlertDialog(
-            title: new Text('Are you sure?'),
-            content: new Text('Do you want to exit an App'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('No'),
-              ),
-              TextButton(
-                onPressed: () =>
-                    SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
-                child: new Text('Yes'),
-              ),
-            ],
-          ),
-        )) ??
-        false;
+    // return (await showDialog(
+    //       context: context,
+    //       builder: (context) => new AlertDialog(
+    //         title: new Text('Are you sure?'),
+    //         content: new Text('Do you want to exit an App'),
+    //         actions: <Widget>[
+    //           TextButton(
+    //             onPressed: () => Navigator.of(context).pop(false),
+    //             child: new Text('No'),
+    //           ),
+    //           TextButton(
+    //             onPressed: () =>
+    //                 SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
+    //             child: new Text('Yes'),
+    //           ),
+    //         ],
+    //       ),
+    //     )) ??
+    //     false;
   }
 
   getValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('photo');
-    print('stringValue');
+
+    print(stringValue);
     setState(() {
       photoUrl = stringValue;
+      displayName = prefs.getString('name');
     });
   }
 
   @override
   void initState() {
     super.initState();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     getValue();
+    addData();
+    apiCall();
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    print('data new come success');
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    print('data new come');
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {}
+  void openCheckout() async {
+    var options = {
+      'key': 'rzp_test_cjT5SUSriGCr6a',
+      'amount': 1 * 100,
+      'name': 'Acme Corp.',
+      'description': 'Fine T-Shirt',
+      'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      debugPrint('Error: e');
+    }
+  }
+
+  Map mapResponse;
+  Future apiCall() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    print(stringValue);
+    http.Response response;
+    response = await http.get(
+        Uri.parse("http://18.119.55.81:1010/api/CheckUserPaymentStatus"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': stringValue
+        });
+
+    if (response.statusCode == 200) {
+      setState(() {
+        mapResponse = convert.jsonDecode(response.body);
+      });
+      // print(convert.jsonDecode(response.body));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    print(MediaQuery.of(context).padding.top);
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Container(
@@ -107,10 +197,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 color: Colors.white,
                               ),
                             ),
-                            Icon(
-                              Icons.notifications,
-                              size: width * (24 / 420),
-                              color: Colors.white,
+                            GestureDetector(
+                              onTap: () => {},
+                              child: Icon(
+                                Icons.notifications,
+                                size: width * (24 / 420),
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),
@@ -142,7 +235,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     ),
                                   ),
                                   Text(
-                                    'Ravi',
+                                    displayName != null ? displayName : '',
                                     style: TextStyle(
                                       fontFamily: 'Roboto Bold',
                                       fontSize: width * (16 / 420),
@@ -182,8 +275,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 height: width * (80 / 420),
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: NetworkImage(
-                                        'https://lh3.googleusercontent.com/a-/AOh14GgQe2OLjeeulfhR5C2plfKAvYguBhIreVdlrWoOYA'),
+                                    image: NetworkImage(photoUrl),
                                     fit: BoxFit.cover,
                                   ),
                                   borderRadius: BorderRadius.circular(80),
@@ -203,37 +295,546 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
               ),
             ),
-            Container(
-              height: height - 285,
-              width: width,
-              margin: EdgeInsets.only(
-                  top: height * (24 / 800),
-                  bottom: height * (20 / 800),
-                  left: width * (21 / 420)),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: Text(
-                        'Dashboard',
-                        style: TextStyle(
-                          fontFamily: 'Roboto Bold',
-                          fontSize: width * (18 / 420),
-                          color: Colors.black,
+            mapResponse != null
+                ? Expanded(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        width: width,
+                        margin: EdgeInsets.only(
+                          top: height * (24 / 800),
+                          bottom: height * (20 / 800),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(left: width * (21 / 420)),
+                              child: Text(
+                                'Dashboard',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto Bold',
+                                  fontSize: width * (18 / 420),
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 25),
+                              color: Colors.white,
+                              padding:
+                                  EdgeInsets.only(left: width * (30 / 420)),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(top: 10, bottom: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 60,
+                                              height: 60,
+                                              margin:
+                                                  EdgeInsets.only(right: 15),
+                                              padding: EdgeInsets.all(17),
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      _colorfromhex("#72A258"),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: Center(
+                                                child: Image.asset(
+                                                    'assets/aapp.png'),
+                                              ),
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Get',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Roboto Medium',
+                                                    fontSize:
+                                                        width * (15 / 420),
+                                                    color: _colorfromhex(
+                                                        "#ABAFD1"),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Application Support',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Roboto Medium',
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize:
+                                                        width * (18 / 420),
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 35,
+                                          margin: EdgeInsets.only(right: 8),
+                                          // alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: _colorfromhex("#F0F0F0"),
+                                              borderRadius:
+                                                  BorderRadius.circular(30.0)),
+                                          child: OutlinedButton(
+                                            onPressed: () => {},
+                                            style: ButtonStyle(
+                                              shape: MaterialStateProperty.all(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30.0))),
+                                            ),
+                                            child: Text(
+                                              "Coming soon",
+                                              style: TextStyle(
+                                                  fontFamily: 'Roboto Medium',
+                                                  fontSize: 13,
+                                                  color:
+                                                      _colorfromhex("#3846A9"),
+                                                  letterSpacing: 0.3),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                                height: 1,
+                                width: width,
+                                color: _colorfromhex("#E9E9E9")),
+                            Container(
+                              color: Colors.white,
+                              padding:
+                                  EdgeInsets.only(left: width * (30 / 420)),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(top: 10, bottom: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 60,
+                                              height: 60,
+                                              margin:
+                                                  EdgeInsets.only(right: 15),
+                                              padding: EdgeInsets.all(17),
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      _colorfromhex("#463B97"),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: Center(
+                                                child: Image.asset(
+                                                    'assets/vedio.png'),
+                                              ),
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Watch',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Roboto Medium',
+                                                    fontSize:
+                                                        width * (15 / 420),
+                                                    color: _colorfromhex(
+                                                        "#ABAFD1"),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Video Library',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Roboto Medium',
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize:
+                                                        width * (18 / 420),
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 35,
+                                          margin: EdgeInsets.only(right: 8),
+                                          // alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: _colorfromhex("#F0F0F0"),
+                                              borderRadius:
+                                                  BorderRadius.circular(30.0)),
+                                          child: OutlinedButton(
+                                            onPressed: () => {},
+                                            style: ButtonStyle(
+                                              shape: MaterialStateProperty.all(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30.0))),
+                                            ),
+                                            child: Text(
+                                              "Coming soon",
+                                              style: TextStyle(
+                                                  fontFamily: 'Roboto Medium',
+                                                  fontSize: 13,
+                                                  color:
+                                                      _colorfromhex("#3846A9"),
+                                                  letterSpacing: 0.3),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                                height: 1,
+                                width: width,
+                                color: _colorfromhex("#E9E9E9")),
+                            Container(
+                              color: Colors.white,
+                              padding:
+                                  EdgeInsets.only(left: width * (30 / 420)),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(top: 10, bottom: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 60,
+                                              height: 60,
+                                              margin:
+                                                  EdgeInsets.only(right: 15),
+                                              padding: EdgeInsets.all(17),
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      _colorfromhex("#72A258"),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: Center(
+                                                child: Image.asset(
+                                                    'assets/per.png'),
+                                              ),
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Read',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Roboto Medium',
+                                                    fontSize:
+                                                        width * (15 / 420),
+                                                    color: _colorfromhex(
+                                                        "#ABAFD1"),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Flash cards',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Roboto Medium',
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize:
+                                                        width * (18 / 420),
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 35,
+                                          margin: EdgeInsets.only(right: 8),
+                                          // alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: _colorfromhex("#F0F0F0"),
+                                              borderRadius:
+                                                  BorderRadius.circular(30.0)),
+                                          child: OutlinedButton(
+                                            onPressed: () => {},
+                                            style: ButtonStyle(
+                                              shape: MaterialStateProperty.all(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30.0))),
+                                            ),
+                                            child: Text(
+                                              "Coming soon",
+                                              style: TextStyle(
+                                                  fontFamily: 'Roboto Medium',
+                                                  fontSize: 13,
+                                                  color:
+                                                      _colorfromhex("#3846A9"),
+                                                  letterSpacing: 0.3),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                                height: 1,
+                                width: width,
+                                color: _colorfromhex("#E9E9E9")),
+                            Container(
+                              color: Colors.white,
+                              padding:
+                                  EdgeInsets.only(left: width * (30 / 420)),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(top: 10, bottom: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 60,
+                                              height: 60,
+                                              padding: EdgeInsets.all(17),
+                                              margin:
+                                                  EdgeInsets.only(right: 15),
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      _colorfromhex("#463B97"),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: Center(
+                                                child: Image.asset(
+                                                    'assets/domain.png'),
+                                              ),
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Tips',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Roboto Medium',
+                                                    fontSize:
+                                                        width * (15 / 420),
+                                                    color: _colorfromhex(
+                                                        "#ABAFD1"),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Domain Wise',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Roboto Medium',
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize:
+                                                        width * (18 / 420),
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 35,
+                                          margin: EdgeInsets.only(right: 8),
+                                          // alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: _colorfromhex("#F0F0F0"),
+                                              borderRadius:
+                                                  BorderRadius.circular(30.0)),
+                                          child: OutlinedButton(
+                                            onPressed: () => {},
+                                            style: ButtonStyle(
+                                              shape: MaterialStateProperty.all(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30.0))),
+                                            ),
+                                            child: Text(
+                                              "Coming soon",
+                                              style: TextStyle(
+                                                  fontFamily: 'Roboto Medium',
+                                                  fontSize: 13,
+                                                  color:
+                                                      _colorfromhex("#3846A9"),
+                                                  letterSpacing: 0.3),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                                height: 1,
+                                width: width,
+                                color: _colorfromhex("#E9E9E9")),
+                            Container(
+                              color: Colors.white,
+                              padding:
+                                  EdgeInsets.only(left: width * (30 / 420)),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(top: 10, bottom: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 60,
+                                              height: 60,
+                                              margin:
+                                                  EdgeInsets.only(right: 15),
+                                              padding: EdgeInsets.all(17),
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      _colorfromhex("#72A258"),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: Center(
+                                                child: Image.asset(
+                                                    'assets/per.png'),
+                                              ),
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Tests4U',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Roboto Medium',
+                                                    fontSize:
+                                                        width * (15 / 420),
+                                                    color: _colorfromhex(
+                                                        "#ABAFD1"),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Challenger',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Roboto Medium',
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize:
+                                                        width * (18 / 420),
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 35,
+                                          margin: EdgeInsets.only(right: 8),
+                                          // alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: _colorfromhex("#F0F0F0"),
+                                              borderRadius:
+                                                  BorderRadius.circular(30.0)),
+                                          child: OutlinedButton(
+                                            onPressed: () => {
+                                              if (mapResponse["data"]
+                                                      ["paid_status"] !=
+                                                  1)
+                                                {
+                                                  Navigator.of(context)
+                                                      .pushNamed('/payment')
+                                                }
+                                              else
+                                                {
+                                                  Navigator.of(context)
+                                                      .pushNamed('/mock-test')
+                                                }
+                                            },
+                                            style: ButtonStyle(
+                                              shape: MaterialStateProperty.all(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30.0))),
+                                            ),
+                                            child: Text(
+                                              "Access",
+                                              style: TextStyle(
+                                                  fontFamily: 'Roboto Medium',
+                                                  fontSize: 13,
+                                                  color:
+                                                      _colorfromhex("#3846A9"),
+                                                  letterSpacing: 0.3),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    Container(
-                      child: Column(
-                        children: [],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
+                  )
+                : Container()
           ],
         ),
       ),
