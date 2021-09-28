@@ -138,106 +138,114 @@ class _PaymentScreenState extends State<PaymentScreen> {
             if (snapshot.connectionState == ConnectionState.done) {
               Map<String, dynamic> data =
                   snapshot.data.data() as Map<String, dynamic>;
-              return Container(
-                color: Colors.white,
-                width: width,
-                height: height,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 20, top: 15),
-                      child: GestureDetector(
-                        onTap: () => {Navigator.of(context).pop()},
-                        child: Icon(
-                          Icons.arrow_back_ios,
-                          size: 27,
-                          color: Colors.black,
+              return Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Container(
+                         color: Colors.white,
+              width: width,
+             // height: height,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(left: 20, top: 15),
+                              child: GestureDetector(
+                                onTap: () => {Navigator.of(context).pop()},
+                                child: Icon(
+                                  Icons.arrow_back_ios,
+                                  size: 27,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(top: 30, bottom: 25),
+                                  child: Image.asset('assets/premium.png'),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 20, right: 20),
+                              child: Center(
+                                child: Text(
+                                  'Get Unlimited Access to Mock Test',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto Bold',
+                                      fontSize: width * (30 / 420),
+                                      color: _colorfromhex("#3D4AB4"),
+                                      letterSpacing: 0.3),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: Center(
+                                child: Text(
+                                  '${data["mock_test_price"]} \$',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto Bold',
+                                      fontSize: width * (44 / 420),
+                                      color: _colorfromhex("#3D4AB4"),
+                                      letterSpacing: 0.3),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: Center(
+                                child: Text(
+                                  'Lifetime Access',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto Bold',
+                                     fontSize: 24,
+                                      color: _colorfromhex("#3D4AB4"),
+                                      letterSpacing: 0.3),
+                                ),
+                              ),
+                            ),
+                            Center(
+                              child: Container(  
+                                margin: EdgeInsets.only(top: 20),
+                                padding: EdgeInsets.only(left: 15, right: 15),
+                                height: 40,
+                                // alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: _colorfromhex("#3A47AD"),
+                                    borderRadius: BorderRadius.circular(30.0)),
+                                child: OutlinedButton(
+                                  onPressed: () => openCheckout(
+                                      data["razorpay_key"], data["mock_test_price"],data["Currency"]),
+                                  style: ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(30.0))),
+                                  ),
+                                  child: Text(
+                                    'Buy Now',
+                                    style: TextStyle(
+                                        fontFamily: 'Roboto Medium',
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        letterSpacing: 0.3),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 30, bottom: 25),
-                          child: Image.asset('assets/premium.png'),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      child: Center(
-                        child: Text(
-                          'Get Unlimited Access to Mock Test',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontFamily: 'Roboto Bold',
-                              fontSize: width * (30 / 420),
-                              color: _colorfromhex("#3D4AB4"),
-                              letterSpacing: 0.3),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20),
-                      child: Center(
-                        child: Text(
-                          '${data["mock_test_price"]} \$',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontFamily: 'Roboto Bold',
-                              fontSize: width * (44 / 420),
-                              color: _colorfromhex("#3D4AB4"),
-                              letterSpacing: 0.3),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20),
-                      child: Center(
-                        child: Text(
-                          'Lifetime Access',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontFamily: 'Roboto Bold',
-                             fontSize: 24,
-                              color: _colorfromhex("#3D4AB4"),
-                              letterSpacing: 0.3),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Container(  
-                        margin: EdgeInsets.only(top: 20),
-                        padding: EdgeInsets.only(left: 15, right: 15),
-                        height: 40,
-                        // alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: _colorfromhex("#3A47AD"),
-                            borderRadius: BorderRadius.circular(30.0)),
-                        child: OutlinedButton(
-                          onPressed: () => openCheckout(
-                              data["razorpay_key"], data["mock_test_price"],data["Currency"]),
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0))),
-                          ),
-                          child: Text(
-                            'Buy Now',
-                            style: TextStyle(
-                                fontFamily: 'Roboto Medium',
-                                fontSize: 20,
-                                color: Colors.white,
-                                letterSpacing: 0.3),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               );
             }
             return Container(

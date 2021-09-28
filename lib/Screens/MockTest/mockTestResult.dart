@@ -133,263 +133,266 @@ class _MockTestResultState extends State<MockTestResult> {
                     ),
                     Expanded(
                       child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              color: Colors.white,
-                              margin: EdgeInsets.only(bottom: 10, top: 10),
-                              padding: EdgeInsets.only(
-                                  top: height * (21 / 800),
-                                  bottom: height * (25 / 800)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    ((double.parse(results["percentage"]) * 100)
-                                                    .toInt() >=
-                                                0) &&
-                                            ((double.parse(results[
-                                                            "percentage"]) *
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 60),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                color: Colors.white,
+                                margin: EdgeInsets.only(bottom: 10, top: 10),
+                                padding: EdgeInsets.only(
+                                    top: height * (21 / 800),
+                                    bottom: height * (25 / 800)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      ((double.parse(results["percentage"]) * 100)
+                                                      .toInt() >=
+                                                  0) &&
+                                              ((double.parse(results[
+                                                              "percentage"]) *
+                                                          100)
+                                                      .toInt() <=
+                                                  25)
+                                          ? 'assets/cross.png'
+                                          : 'assets/right.png',
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 3),
+                                      child: Text(
+                                        ((double.parse(results["percentage"]) *
                                                         100)
                                                     .toInt() <=
-                                                25)
-                                        ? 'assets/cross.png'
-                                        : 'assets/right.png',
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 3),
-                                    child: Text(
-                                      ((double.parse(results["percentage"]) *
-                                                      100)
-                                                  .toInt() <=
-                                              70)
-                                          ? 'Better Luck Next Time'
-                                          :((double.parse(results["percentage"]) *
-                                                      100)
-                                                  .toInt() <=
-                                              70)
-                                              ? 'Needs Improvement'
-                                              : 'Your are Awesome!',
-                                      style: TextStyle(
-                                        fontFamily: 'Roboto Bold',
-                                        fontSize: width * (19 / 420),
-                                        color: ((double.parse(results[
-                                                                "percentage"]) *
-                                                            100)
-                                                        .toInt() >=
-                                                    0) &&
-                                                ((double.parse(results[
-                                                                "percentage"]) *
-                                                            100)
-                                                        .toInt() <=
-                                                    25)
-                                            ? Colors.red
-                                            : _colorfromhex("#04AE0B"),
-                                        letterSpacing: 0.3,
+                                                70)
+                                            ? 'Better Luck Next Time'
+                                            :((double.parse(results["percentage"]) *
+                                                        100)
+                                                    .toInt() <=
+                                                70)
+                                                ? 'Needs Improvement'
+                                                : 'Your are Awesome!',
+                                        style: TextStyle(
+                                          fontFamily: 'Roboto Bold',
+                                          fontSize: width * (19 / 420),
+                                          color: ((double.parse(results[
+                                                                  "percentage"]) *
+                                                              100)
+                                                          .toInt() >=
+                                                      0) &&
+                                                  ((double.parse(results[
+                                                                  "percentage"]) *
+                                                              100)
+                                                          .toInt() <=
+                                                      25)
+                                              ? Colors.red
+                                              : _colorfromhex("#04AE0B"),
+                                          letterSpacing: 0.3,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: width / 1.6,
-                                    margin: EdgeInsets.only(top: 3),
-                                    child: Text(
-                                      'Congratulations for getting ${results["correct"]} out of ${results["total"]} Answers Correctly',
-                                      style: TextStyle(
-                                        fontFamily: 'Roboto Medium',
-                                        fontSize: width * (16 / 420),
-                                        color: _colorfromhex("#ABAFD1"),
-                                        letterSpacing: 0.3,
+                                    Container(
+                                      width: width / 1.6,
+                                      margin: EdgeInsets.only(top: 3),
+                                      child: Text(
+                                        'Congratulations for getting ${results["correct"]} out of ${results["total"]} Answers Correctly',
+                                        style: TextStyle(
+                                          fontFamily: 'Roboto Medium',
+                                          fontSize: width * (16 / 420),
+                                          color: _colorfromhex("#ABAFD1"),
+                                          letterSpacing: 0.3,
+                                        ),
                                       ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                color: Colors.white,
+                                padding: EdgeInsets.only(
+                                  top: height * (21 / 800),
+                                  bottom: height * (25 / 800),
+                                ),
+                                child: Column(
+                                  children: [
+                                    // CircularPercentIndicator(
+                                    //   radius: 60.0,
+                                    //   lineWidth: 5.0,
+                                    //   percent:
+                                    //       (double.parse(results["percentage"])) /
+                                    //           100,
+                                    //   center: new Text(
+                                    //     '${results["percentage"]}%',
+                                    //   ),
+                                    //   progressColor: Colors.green,
+                                    // ),
+                                    new CircularPercentIndicator(
+                                      radius: 110.0,
+                                      lineWidth: 10.0,
+                                      percent:
+                                          (double.parse(results["percentage"])) /
+                                              100,
+                                      center: Text(
+                                        '${results["percentage"]}%',
+                                        style: TextStyle(
+                                          fontFamily: 'Roboto Bold',
+                                          fontSize: width * (20 / 420),
+                                          color: Colors.black,
+                                          letterSpacing: 0.3,
+                                        ),
+                                      ),
+                                      progressColor: _colorfromhex("#3846A9"),
                                     ),
-                                  )
-                                ],
+                                    Container(
+                                        margin: EdgeInsets.only(
+                                            top: height * (35 / 800)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  left: width * (34 / 420),
+                                                  right: width * (24 / 420)),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    '${results["correct"]}',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Roboto Bold',
+                                                      fontSize:
+                                                          width * (22 / 420),
+                                                      color: _colorfromhex(
+                                                          "#00C925"),
+                                                      letterSpacing: 0.3,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Correct',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Roboto Bold',
+                                                      fontSize:
+                                                          width * (17 / 420),
+                                                      color: _colorfromhex(
+                                                          "#ABAFD1"),
+                                                      letterSpacing: 0.3,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  left: width * (24 / 420),
+                                                  right: width * (24 / 420)),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    '${results["wrong"]}',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Roboto Bold',
+                                                      fontSize:
+                                                          width * (22 / 420),
+                                                      color: _colorfromhex(
+                                                          "#FF0000"),
+                                                      letterSpacing: 0.3,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Wrong',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Roboto Bold',
+                                                      fontSize:
+                                                          width * (17 / 420),
+                                                      color: _colorfromhex(
+                                                          "#ABAFD1"),
+                                                      letterSpacing: 0.3,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  left: width * (24 / 420),
+                                                  right: width * (34 / 420)),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    '${results["skip"]}',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Roboto Bold',
+                                                      fontSize:
+                                                          width * (20 / 420),
+                                                      color: _colorfromhex(
+                                                          "#FFC107"),
+                                                      letterSpacing: 0.3,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Skipped',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Roboto Bold',
+                                                      fontSize:
+                                                          width * (17 / 420),
+                                                      color: _colorfromhex(
+                                                          "#ABAFD1"),
+                                                      letterSpacing: 0.3,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ))
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              color: Colors.white,
-                              padding: EdgeInsets.only(
-                                top: height * (21 / 800),
-                                bottom: height * (25 / 800),
-                              ),
-                              child: Column(
-                                children: [
-                                  // CircularPercentIndicator(
-                                  //   radius: 60.0,
-                                  //   lineWidth: 5.0,
-                                  //   percent:
-                                  //       (double.parse(results["percentage"])) /
-                                  //           100,
-                                  //   center: new Text(
-                                  //     '${results["percentage"]}%',
-                                  //   ),
-                                  //   progressColor: Colors.green,
-                                  // ),
-                                  new CircularPercentIndicator(
-                                    radius: 110.0,
-                                    lineWidth: 10.0,
-                                    percent:
-                                        (double.parse(results["percentage"])) /
-                                            100,
-                                    center: Text(
-                                      '${results["percentage"]}%',
+                              Container(
+                                color: Colors.white,
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.only(
+                                    top: width * (25 / 420),
+                                    bottom: width * (25 / 420),
+                                    left: 10,
+                                    right: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Image.asset('assets/timer.png'),
+                                        Container(width: 2),
+                                        Text(
+                                          'Time Spent',
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto Medium',
+                                            fontSize: width * (20 / 420),
+                                            color: _colorfromhex("#171726"),
+                                            letterSpacing: 0.3,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Text(
+                                      activeTimeNew,
                                       style: TextStyle(
                                         fontFamily: 'Roboto Bold',
                                         fontSize: width * (20 / 420),
-                                        color: Colors.black,
+                                        color: _colorfromhex("#00C925"),
                                         letterSpacing: 0.3,
                                       ),
-                                    ),
-                                    progressColor: _colorfromhex("#3846A9"),
-                                  ),
-                                  Container(
-                                      margin: EdgeInsets.only(
-                                          top: height * (35 / 800)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                                left: width * (34 / 420),
-                                                right: width * (24 / 420)),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  '${results["correct"]}',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Roboto Bold',
-                                                    fontSize:
-                                                        width * (22 / 420),
-                                                    color: _colorfromhex(
-                                                        "#00C925"),
-                                                    letterSpacing: 0.3,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Correct',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Roboto Bold',
-                                                    fontSize:
-                                                        width * (17 / 420),
-                                                    color: _colorfromhex(
-                                                        "#ABAFD1"),
-                                                    letterSpacing: 0.3,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                                left: width * (24 / 420),
-                                                right: width * (24 / 420)),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  '${results["wrong"]}',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Roboto Bold',
-                                                    fontSize:
-                                                        width * (22 / 420),
-                                                    color: _colorfromhex(
-                                                        "#FF0000"),
-                                                    letterSpacing: 0.3,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Wrong',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Roboto Bold',
-                                                    fontSize:
-                                                        width * (17 / 420),
-                                                    color: _colorfromhex(
-                                                        "#ABAFD1"),
-                                                    letterSpacing: 0.3,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                                left: width * (24 / 420),
-                                                right: width * (34 / 420)),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  '${results["skip"]}',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Roboto Bold',
-                                                    fontSize:
-                                                        width * (20 / 420),
-                                                    color: _colorfromhex(
-                                                        "#FFC107"),
-                                                    letterSpacing: 0.3,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Skipped',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Roboto Bold',
-                                                    fontSize:
-                                                        width * (17 / 420),
-                                                    color: _colorfromhex(
-                                                        "#ABAFD1"),
-                                                    letterSpacing: 0.3,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ))
-                                ],
-                              ),
-                            ),
-                            Container(
-                              color: Colors.white,
-                              margin: EdgeInsets.only(top: 10),
-                              padding: EdgeInsets.only(
-                                  top: width * (25 / 420),
-                                  bottom: width * (25 / 420),
-                                  left: 10,
-                                  right: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset('assets/timer.png'),
-                                      Container(width: 2),
-                                      Text(
-                                        'Time Spent',
-                                        style: TextStyle(
-                                          fontFamily: 'Roboto Medium',
-                                          fontSize: width * (20 / 420),
-                                          color: _colorfromhex("#171726"),
-                                          letterSpacing: 0.3,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Text(
-                                    activeTimeNew,
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto Bold',
-                                      fontSize: width * (20 / 420),
-                                      color: _colorfromhex("#00C925"),
-                                      letterSpacing: 0.3,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     )

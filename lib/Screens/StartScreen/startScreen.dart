@@ -173,7 +173,7 @@ class _StartScreenState extends State<StartScreen> {
                                 top: 20.0,
                                 bottom: 70.0),
                             centerWidget: Container(
-                              margin: EdgeInsets.only(top: 80),
+                              margin: EdgeInsets.only(top: 0),
                               child: Image.asset('assets/reading1.png'),
                             ),
                             directionColorBegin: Alignment.topLeft,

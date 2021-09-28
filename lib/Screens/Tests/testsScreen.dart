@@ -113,125 +113,128 @@ class _TestsScreenState extends State<TestsScreen> {
               ),
             ),
           ),
-     mapResponse != null ?     Container(
-              margin: EdgeInsets.only(
-                  left: width * (18 / 420), right: width * (18 / 420)),
+     mapResponse != null ?     Expanded(
+             
               child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Text(
-                    //   'Tests4U',
-                    //   style: TextStyle(
-                    //       fontFamily: 'Roboto Bold',
-                    //       fontSize: width * (18 / 420),
-                    //       color: Colors.black,
-                    //       letterSpacing: 0.3),
-                    // ),
-                    GestureDetector(
-                      onTap: () =>
-                          Navigator.of(context).pushNamed('/practice-test'),
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            top: height * (22 / 800),
-                            bottom: height * (32 / 800)),
-                        width: width,
-                        padding: EdgeInsets.only(
-                            top: height * (25 / 800),
-                            bottom: height * (47 / 800)),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin:
-                                  EdgeInsets.only(bottom: height * (12 / 800)),
-                              padding: EdgeInsets.all(width * (14 / 420)),
-                              decoration: BoxDecoration(
-                                color: _colorfromhex("#72A258"),
-                                borderRadius: BorderRadius.circular(5),
+                child: Container(
+                   margin: EdgeInsets.only(
+                  left: width * (18 / 420), right: width * (18 / 420)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Text(
+                      //   'Tests4U',
+                      //   style: TextStyle(
+                      //       fontFamily: 'Roboto Bold',
+                      //       fontSize: width * (18 / 420),
+                      //       color: Colors.black,
+                      //       letterSpacing: 0.3),
+                      // ),
+                      GestureDetector(
+                        onTap: () =>
+                            Navigator.of(context).pushNamed('/practice-test'),
+                        child: Container(
+                          margin: EdgeInsets.only(
+                             // top: height * (22 / 800),
+                              bottom: height * (32 / 800)),
+                          width: width,
+                          padding: EdgeInsets.only(
+                              top: height * (25 / 800),
+                              bottom: height * (47 / 800)),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                margin:
+                                    EdgeInsets.only(bottom: height * (12 / 800)),
+                                padding: EdgeInsets.all(width * (14 / 420)),
+                                decoration: BoxDecoration(
+                                  color: _colorfromhex("#72A258"),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Image.asset('assets/Vector-2.png'),
                               ),
-                              child: Image.asset('assets/Vector-2.png'),
-                            ),
-                            Text(
-                              'Test your Knowledge',
-                              style: TextStyle(
-                                  fontFamily: 'Roboto Medium',
-                                  fontSize: width * (12 / 420),
-                                  color: _colorfromhex("#ABAFD1"),
-                                  letterSpacing: 0.3),
-                            ),
-                            Container(
-                              height: height * (2 / 800),
-                            ),
-                            Text(
-                              'Practice Test',
-                              style: TextStyle(
-                                  fontFamily: 'Roboto Medium',
-                                  fontSize: width * (22 / 420),
-                                  color: Colors.black,
-                                  letterSpacing: 0.3),
-                            ),
-                          ],
+                              Text(
+                                'Test your Knowledge',
+                                style: TextStyle(
+                                    fontFamily: 'Roboto Medium',
+                                    fontSize: width * (12 / 420),
+                                    color: _colorfromhex("#ABAFD1"),
+                                    letterSpacing: 0.3),
+                              ),
+                              Container(
+                                height: height * (2 / 800),
+                              ),
+                              Text(
+                                'Practice Test',
+                                style: TextStyle(
+                                    fontFamily: 'Roboto Medium',
+                                    fontSize: width * (22 / 420),
+                                    color: Colors.black,
+                                    letterSpacing: 0.3),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    mapResponse["data"]["paid_status"] == 1 ? GestureDetector(
-                      onTap: () =>
-                          {Navigator.of(context).pushNamed('/mock-test')},
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            top: height * (22 / 800),
-                            bottom: height * (32 / 800)),
-                        width: width,
-                        padding: EdgeInsets.only(
-                            top: height * (25 / 800),
-                            bottom: height * (47 / 800)),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin:
-                                  EdgeInsets.only(bottom: height * (12 / 800)),
-                              padding: EdgeInsets.all(width * (14 / 420)),
-                              decoration: BoxDecoration(
-                                color: _colorfromhex("#463B97"),
-                                borderRadius: BorderRadius.circular(5),
+                      mapResponse["data"]["paid_status"] == 1 ? GestureDetector(
+                        onTap: () =>
+                            {Navigator.of(context).pushNamed('/mock-test')},
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              top: height * (22 / 800),
+                              bottom: height * (32 / 800)),
+                          width: width,
+                          padding: EdgeInsets.only(
+                              top: height * (25 / 800),
+                              bottom: height * (47 / 800)),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                margin:
+                                    EdgeInsets.only(bottom: height * (12 / 800)),
+                                padding: EdgeInsets.all(width * (14 / 420)),
+                                decoration: BoxDecoration(
+                                  color: _colorfromhex("#463B97"),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Image.asset('assets/Vector-3.png'),
                               ),
-                              child: Image.asset('assets/Vector-3.png'),
-                            ),
-                            Text(
-                              'Test your Exam Readiness',
-                              style: TextStyle(
-                                  fontFamily: 'Roboto Medium',
-                                  fontSize: width * (12 / 420),
-                                  color: _colorfromhex("#ABAFD1"),
-                                  letterSpacing: 0.3),
-                            ),
-                            Container(
-                              height: height * (2 / 800),
-                            ),
-                            Text(
-                              'Mock Test',
-                              style: TextStyle(
-                                  fontFamily: 'Roboto Medium',
-                                  fontSize: width * (22 / 420),
-                                  color: Colors.black,
-                                  letterSpacing: 0.3),
-                            ),
-                          ],
+                              Text(
+                                'Test your Exam Readiness',
+                                style: TextStyle(
+                                    fontFamily: 'Roboto Medium',
+                                    fontSize: width * (12 / 420),
+                                    color: _colorfromhex("#ABAFD1"),
+                                    letterSpacing: 0.3),
+                              ),
+                              Container(
+                                height: height * (2 / 800),
+                              ),
+                              Text(
+                                'Mock Test',
+                                style: TextStyle(
+                                    fontFamily: 'Roboto Medium',
+                                    fontSize: width * (22 / 420),
+                                    color: Colors.black,
+                                    letterSpacing: 0.3),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ):Container(),
-                  ],
+                      ):Container(),
+                    ],
+                  ),
                 ),
               )) :  Container(
                       width: width,

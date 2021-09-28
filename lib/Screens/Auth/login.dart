@@ -1,13 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pgmp4u/Screens/Dashboard/dashboard.dart';
-import 'package:pgmp4u/api/google_signin_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:the_apple_sign_in/scope.dart';
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -114,6 +117,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future signIn() async {
+   
+    
     final googleSignIn = GoogleSignIn();
     GoogleSignInAccount user;
     // final user = await GoogleSignInApi.login();
@@ -129,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
     await FirebaseAuth.instance.signInWithCredential(cred);
 
     if (googleUser != null) {
-      print(googleUser);
+   
       if (signInBool) {
         loginHandler(googleUser);
       } else {
@@ -148,6 +153,59 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
+
+
+
+
+  Future signInWithApple() async {
+   
+    
+  final result = await TheAppleSignIn.performRequests(
+        [AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])]);
+    // 2. check the result
+    switch (result.status) {
+      case AuthorizationStatus.authorized:
+        final appleIdCredential = result.credential;
+        final oAuthProvider = OAuthProvider('apple.com');
+        final credential = oAuthProvider.credential(
+          idToken: String.fromCharCodes(appleIdCredential.identityToken),
+          accessToken:
+              String.fromCharCodes(appleIdCredential.authorizationCode),
+        );
+        final userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        final firebaseUser = userCredential.user;
+        if ([Scope.email, Scope.fullName].contains(Scope.fullName)) {
+          final fullName = appleIdCredential.fullName;
+          if (fullName != null &&
+              fullName.givenName != null &&
+              fullName.familyName != null) {
+            final displayName = '${fullName.givenName} ${fullName.familyName}';
+            await firebaseUser.updateDisplayName(displayName);
+          }
+        }
+        print(firebaseUser);
+        print('firebaseUser');
+        break;
+        // return firebaseUser;
+      case AuthorizationStatus.error:
+        throw PlatformException(
+          code: 'ERROR_AUTHORIZATION_DENIED',
+          message: result.error.toString(),
+        );
+
+      case AuthorizationStatus.cancelled:
+        throw PlatformException(
+          code: 'ERROR_ABORTED_BY_USER',
+          message: 'Sign in aborted by user',
+        );
+      default:
+        throw UnimplementedError();
+    }
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       margin: EdgeInsets.only(
                         left: width * (36 / 420),
                         right: width * (36 / 420),
-                        bottom: height * (24 / 800),
+                        bottom: height * (15 / 800),
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -236,6 +294,56 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                     ),
+
+
+
+
+
+                    Platform.isIOS ? Container(
+                      padding: EdgeInsets.only(
+                          top: height * (16 / 800),
+                          bottom: height * (16 / 800)),
+                      margin: EdgeInsets.only(
+                        left: width * (36 / 420),
+                        right: width * (36 / 420),
+                        bottom: height * (24 / 800),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.black,
+                      ),
+                      child: loading
+                          ? Center(
+                              child: SizedBox(
+                                width: 33,
+                                height: 33,
+                                child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  _colorfromhex("#4849DF"),
+                                ),
+                            ),
+                              ))
+                          : GestureDetector(
+                              onTap: signInWithApple,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    !signInBool
+                                        ? "Sign up with Google   "
+                                        : "Sign in with Google   ",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: width * (20 / 420),
+                                      fontFamily: 'Roboto Medium',
+                                    ),
+                                  ),
+                                  Image.asset('assets/applelogo.png'),
+                                ],
+                              ),
+                            ),
+                    ):Container(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -305,5 +413,13 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+}
+class AuthService {
+  final _firebaseAuth = FirebaseAuth.instance;
+
+  Future signInWithApple({List<Scope> scopes = const []}) async {
+    // 1. perform the sign-in request
+    
   }
 }

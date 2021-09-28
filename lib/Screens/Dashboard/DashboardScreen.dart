@@ -352,33 +352,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     'assets/aapp.png'),
                                               ),
                                             ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'Get',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Roboto Medium',
-                                                    fontSize:
-                                                        width * (15 / 420),
-                                                    color: _colorfromhex(
-                                                        "#ABAFD1"),
+                                            Container(
+                                              width: width / 4 ,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Get',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Roboto Medium',
+                                                      fontSize:
+                                                          width * (15 / 420),
+                                                      color: _colorfromhex(
+                                                          "#ABAFD1"),
+                                                    ),
                                                   ),
-                                                ),
-                                                Text(
-                                                  'Application Support',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Roboto Medium',
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize:
-                                                        width * (18 / 420),
-                                                    color: Colors.black,
+                                                  Text(
+                                                    'Application Support',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Roboto Medium',
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize:
+                                                          width * (18 / 420),
+                                                      color: Colors.black,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             )
                                           ],
                                         ),
