@@ -29,12 +29,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     super.initState();
+    apiCall();
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
+  Map mapResponse;
+  bool buttonPress = false;
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     paymentStatus("success");
     Navigator.push(
@@ -53,9 +56,29 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ));
   }
 
+  Future apiCall() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    print(stringValue);
+    http.Response response;
+    response = await http
+        .get(Uri.parse("http://18.119.55.81:1010/api/CheckCoupon"), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': stringValue
+    });
+
+    if (response.statusCode == 200) {
+      print(convert.jsonDecode(response.body));
+      var responseData = convert.jsonDecode(response.body);
+      setState(() {
+        mapResponse = responseData["data"];
+      });
+    }
+  }
+
   void _handleExternalWallet(ExternalWalletResponse response) {}
 
-  void openCheckout(key, value,currency) async {
+  void openCheckout(key, value, currency) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('email');
     var options = {
@@ -87,7 +110,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       },
       body: json.encode({
         "payment_status": status,
-        "price": 1,
+        "price": 99,
         "payment_repsonse": "sfadfeaf",
         "client_secret": "212421424",
         "access_type": "life_time"
@@ -95,11 +118,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
 
     if (response.statusCode == 200) {
-      GFToast.showToast(
-        'Payment status updated',
-        context,
-        toastPosition: GFToastPosition.BOTTOM,
-      );
+      print(json.decode(response.body));
+      if (mapResponse["discount"] == 100) {
+        Navigator.of(context).pushNamed('/mock-test');
+        GFToast.showToast(
+          'You became premium now,Now you can access mock test',
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+      } else {
+        GFToast.showToast(
+          'Payment status updated',
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+      }
     }
   }
 
@@ -119,8 +152,37 @@ class _PaymentScreenState extends State<PaymentScreen> {
     if (response.statusCode == 200) {
       Map mapResponce = json.decode(response.body);
 
-     // openCheckout(key, 100, mapResponce["data"]["id"]);
+      // openCheckout(key, 100, mapResponce["data"]["id"]);
       setState(() {});
+      // print(convert.jsonDecode(response.body));
+    }
+  }
+
+  Future takePayment(status, price) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    http.Response response;
+    response = await http.post(
+      Uri.parse("http://18.119.55.81:1010/api/TakePayment"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': stringValue
+      },
+      body: json.encode({
+        "payment_status": status,
+        "price": price,
+        "payment_repsonse": "sfadfeaf",
+        "client_secret": "212421424",
+        "access_type": "life_time",
+        "coupon_id": mapResponse["coupon_id"]
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        buttonPress = true;
+      });
+      print(json.decode(response.body));
       // print(convert.jsonDecode(response.body));
     }
   }
@@ -143,9 +205,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   Expanded(
                     child: SingleChildScrollView(
                       child: Container(
-                         color: Colors.white,
-              width: width,
-             // height: height,
+                        color: Colors.white,
+                        width: width,
+                        // height: height,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,7 +250,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               margin: EdgeInsets.only(top: 20),
                               child: Center(
                                 child: Text(
-                                  '${data["mock_test_price"]} \$',
+                                  buttonPress == true
+                                      ? '${(data["mock_test_price"] - ((mapResponse["discount"] / 100) * data["mock_test_price"])).toInt()} \$'
+                                      : '${data["mock_test_price"]} \$',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontFamily: 'Roboto Bold',
@@ -206,14 +270,57 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontFamily: 'Roboto Bold',
-                                     fontSize: 24,
+                                      fontSize: 24,
                                       color: _colorfromhex("#3D4AB4"),
                                       letterSpacing: 0.3),
                                 ),
                               ),
                             ),
+                            mapResponse != null && buttonPress == false
+                                ? Center(
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: 20),
+                                      padding:
+                                          EdgeInsets.only(left: 15, right: 15),
+                                      height: 40,
+                                      // alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: _colorfromhex("#3A47AD"),
+                                          borderRadius:
+                                              BorderRadius.circular(30.0)),
+                                      child: OutlinedButton(
+                                        onPressed: () => {
+                                          // setState(() => {buttonPress = true}),
+                                          print(mapResponse["discount"]),
+                                          if (mapResponse["discount"] == 100)
+                                            {paymentStatus("success")}
+                                          else
+                                            {
+                                              setState(
+                                                  () => {buttonPress = true})
+                                            }
+                                        },
+                                        style: ButtonStyle(
+                                          shape: MaterialStateProperty.all(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.0))),
+                                        ),
+                                        child: Text(
+                                          'Apply Coupon',
+                                          style: TextStyle(
+                                              fontFamily: 'Roboto Medium',
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              letterSpacing: 0.3),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
                             Center(
-                              child: Container(  
+                              child: Container(
                                 margin: EdgeInsets.only(top: 20),
                                 padding: EdgeInsets.only(left: 15, right: 15),
                                 height: 40,
@@ -223,11 +330,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     borderRadius: BorderRadius.circular(30.0)),
                                 child: OutlinedButton(
                                   onPressed: () => openCheckout(
-                                      data["razorpay_key"], data["mock_test_price"],data["Currency"]),
+                                      data["razorpay_key"],
+                                      (data["mock_test_price"] -
+                                              ((mapResponse["discount"] / 100) *
+                                                  data["mock_test_price"]))
+                                          .toInt(),
+                                      data["Currency"]),
                                   style: ButtonStyle(
                                     shape: MaterialStateProperty.all(
                                         RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(30.0))),
+                                            borderRadius:
+                                                BorderRadius.circular(30.0))),
                                   ),
                                   child: Text(
                                     'Buy Now',
