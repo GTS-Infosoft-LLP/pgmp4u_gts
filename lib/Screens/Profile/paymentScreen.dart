@@ -66,7 +66,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'Content-Type': 'application/json',
       'Authorization': stringValue
     });
-
+    print(convert.jsonDecode(response.body));
     if (response.statusCode == 200) {
       print(convert.jsonDecode(response.body));
       var responseData = convert.jsonDecode(response.body);
@@ -119,19 +119,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     if (response.statusCode == 200) {
       print(json.decode(response.body));
-      if (mapResponse["discount"] == 100) {
-        Navigator.of(context).pushNamed('/mock-test');
-        GFToast.showToast(
-          'You became premium now,Now you can access mock test',
-          context,
-          toastPosition: GFToastPosition.BOTTOM,
-        );
-      } else {
+      if (mapResponse == null) {
         GFToast.showToast(
           'Payment status updated',
           context,
           toastPosition: GFToastPosition.BOTTOM,
         );
+      } else {
+        if (mapResponse["discount"] == 100) {
+          Navigator.of(context).pushNamed('/mock-test');
+          GFToast.showToast(
+            'You became premium now,Now you can access mock test',
+            context,
+            toastPosition: GFToastPosition.BOTTOM,
+          );
+        } else {
+          GFToast.showToast(
+            'Payment status updated',
+            context,
+            toastPosition: GFToastPosition.BOTTOM,
+          );
+        }
       }
     }
   }
@@ -329,13 +337,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     color: _colorfromhex("#3A47AD"),
                                     borderRadius: BorderRadius.circular(30.0)),
                                 child: OutlinedButton(
-                                  onPressed: () => openCheckout(
-                                      data["razorpay_key"],
-                                      (data["mock_test_price"] -
-                                              ((mapResponse["discount"] / 100) *
-                                                  data["mock_test_price"]))
-                                          .toInt(),
-                                      data["Currency"]),
+                                  onPressed: () => {
+                                    if (mapResponse == null)
+                                      {
+                                        openCheckout(
+                                            data["razorpay_key"],
+                                            data["mock_test_price"],
+                                            data["Currency"])
+                                      }
+                                    else
+                                      {
+                                        openCheckout(
+                                            data["razorpay_key"],
+                                            (data["mock_test_price"] -
+                                                    ((mapResponse["discount"] /
+                                                            100) *
+                                                        data[
+                                                            "mock_test_price"]))
+                                                .toInt(),
+                                            data["Currency"])
+                                      }
+                                  },
                                   style: ButtonStyle(
                                     shape: MaterialStateProperty.all(
                                         RoundedRectangleBorder(
