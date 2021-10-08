@@ -27,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool loading = false;
   bool signInBool = false;
-  Future loginHandler(user) async {
+  Future loginHandler(user, fromProvider) async {
     setState(() {
       loading = true;
     });
@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
         "Content-Type": "application/json",
       },
       body: json.encode({
-        "google_id": user.id,
+        "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
         "email": user.email,
       }),
     );
@@ -48,9 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
       Map responseData = json.decode(response.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', responseData["token"]);
-      prefs.setString('photo', user.photoUrl);
+      prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
       prefs.setString('name', user.displayName);
-      print(user.photoUrl);
       GFToast.showToast(
         'LoggedIn successfully',
         context,
@@ -73,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future registerHandler(user) async {
+  Future registerHandler(user,fromProvider) async {
     http.Response response;
     setState(() {
       loading = true;
@@ -84,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
         "Content-Type": "application/json",
       },
       body: json.encode({
-        "google_id": user.id,
+        "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
         "email": user.email,
         "name": user.displayName
       }),
@@ -106,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       Map responseData = json.decode(response.body);
       GFToast.showToast(
-       responseData["message"],
+        responseData["message"],
         context,
         toastPosition: GFToastPosition.BOTTOM,
       );
@@ -117,8 +116,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future signIn() async {
-   
-    
     final googleSignIn = GoogleSignIn();
     GoogleSignInAccount user;
     // final user = await GoogleSignInApi.login();
@@ -134,11 +131,11 @@ class _LoginScreenState extends State<LoginScreen> {
     await FirebaseAuth.instance.signInWithCredential(cred);
 
     if (googleUser != null) {
-   
       if (signInBool) {
-        loginHandler(googleUser);
+        
+        loginHandler(googleUser, "google");
       } else {
-        registerHandler(googleUser);
+        registerHandler(googleUser,"google");
       }
 
       // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -154,15 +151,10 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-
-
-
   Future signInWithApple() async {
-   
-    
-  final result = await TheAppleSignIn.performRequests(
-        [AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])]);
-    // 2. check the result
+    final result = await TheAppleSignIn.performRequests([
+      AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+    ]);
     switch (result.status) {
       case AuthorizationStatus.authorized:
         final appleIdCredential = result.credential;
@@ -184,10 +176,15 @@ class _LoginScreenState extends State<LoginScreen> {
             await firebaseUser.updateDisplayName(displayName);
           }
         }
-        print(firebaseUser);
-        print('firebaseUser');
+
+        
+        if (signInBool) {
+          loginHandler(firebaseUser, "apple");
+        }else {
+        registerHandler(firebaseUser,"apple");
+      }
         break;
-        // return firebaseUser;
+      // return firebaseUser;
       case AuthorizationStatus.error:
         throw PlatformException(
           code: 'ERROR_AUTHORIZATION_DENIED',
@@ -203,9 +200,6 @@ class _LoginScreenState extends State<LoginScreen> {
         throw UnimplementedError();
     }
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -265,14 +259,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: loading
                           ? Center(
                               child: SizedBox(
-                                width: 33,
-                                height: 33,
-                                child: CircularProgressIndicator(
+                              width: 33,
+                              height: 33,
+                              child: CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                   _colorfromhex("#4849DF"),
                                 ),
-                            ),
-                              ))
+                              ),
+                            ))
                           : GestureDetector(
                               onTap: signIn,
                               child: Row(
@@ -294,56 +288,55 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                     ),
-
-
-
-
-
-                    Platform.isIOS ? Container(
-                      padding: EdgeInsets.only(
-                          top: height * (16 / 800),
-                          bottom: height * (16 / 800)),
-                      margin: EdgeInsets.only(
-                        left: width * (36 / 420),
-                        right: width * (36 / 420),
-                        bottom: height * (24 / 800),
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.black,
-                      ),
-                      child: loading
-                          ? Center(
-                              child: SizedBox(
-                                width: 33,
-                                height: 33,
-                                child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  _colorfromhex("#4849DF"),
-                                ),
+                    Platform.isIOS
+                        ? Container(
+                            padding: EdgeInsets.only(
+                                top: height * (16 / 800),
+                                bottom: height * (16 / 800)),
+                            margin: EdgeInsets.only(
+                              left: width * (36 / 420),
+                              right: width * (36 / 420),
+                              bottom: height * (24 / 800),
                             ),
-                              ))
-                          : GestureDetector(
-                              onTap: signInWithApple,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    !signInBool
-                                        ? "Sign up with Google   "
-                                        : "Sign in with Google   ",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: width * (20 / 420),
-                                      fontFamily: 'Roboto Medium',
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.black,
+                            ),
+                            child: loading
+                                ? Center(
+                                    child: SizedBox(
+                                    width: 33,
+                                    height: 33,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        _colorfromhex("#4849DF"),
+                                      ),
+                                    ),
+                                  ))
+                                : GestureDetector(
+                                    onTap: signInWithApple,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          !signInBool
+                                              ? "Sign up with Apple   "
+                                              : "Sign in with Apple   ",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: width * (20 / 420),
+                                            fontFamily: 'Roboto Medium',
+                                          ),
+                                        ),
+                                        Image.asset('assets/applelogo.png'),
+                                      ],
                                     ),
                                   ),
-                                  Image.asset('assets/applelogo.png'),
-                                ],
-                              ),
-                            ),
-                    ):Container(),
+                          )
+                        : Container(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -415,11 +408,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
 class AuthService {
   final _firebaseAuth = FirebaseAuth.instance;
 
   Future signInWithApple({List<Scope> scopes = const []}) async {
     // 1. perform the sign-in request
-    
   }
 }

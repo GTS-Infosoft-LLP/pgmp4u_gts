@@ -269,7 +269,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             )
                           ],
                         ),
-                        photoUrl != null
+                        photoUrl != null && photoUrl != ""
                             ? Container(
                                 width: width * (80 / 420),
                                 height: width * (80 / 420),
