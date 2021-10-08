@@ -262,7 +262,7 @@ class _ProfileState extends State<Profile> {
                                       )
                                     ],
                                   ),
-                                  photoUrl != null
+                                  photoUrl != null && photoUrl != ""
                                       ? Container(
                                           width: width * (80 / 420),
                                           height: width * (80 / 420),
