@@ -28,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool loading = false;
   bool signInBool = false;
   Future loginHandler(user, fromProvider) async {
+    print(user);
     setState(() {
       loading = true;
     });
@@ -41,6 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: json.encode({
         "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
         "email": user.email,
+        "access_type": fromProvider
       }),
     );
 
@@ -72,7 +74,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future registerHandler(user,fromProvider) async {
+  Future registerHandler(user, fromProvider) async {
+    print(user);
     http.Response response;
     setState(() {
       loading = true;
@@ -85,20 +88,28 @@ class _LoginScreenState extends State<LoginScreen> {
       body: json.encode({
         "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
         "email": user.email,
-        "name": user.displayName
+        "name": user.displayName,
+        "access_type": fromProvider
       }),
     );
 
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
+      print(json.decode(response.body));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', responseData["token"]);
+      prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
+      prefs.setString('name', user.displayName);
       //loginHandler(user);
       // Navigator.push(context,
       //     MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
-      // GFToast.showToast(
-      //   'Registered successfully',
-      //   context,
-      //   toastPosition: GFToastPosition.BOTTOM,
-      // );
+      GFToast.showToast(
+        'Registered successfully',
+        context,
+        toastPosition: GFToastPosition.BOTTOM,
+      );
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
       setState(() {
         loading = false;
       });
@@ -132,10 +143,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (googleUser != null) {
       if (signInBool) {
-        
         loginHandler(googleUser, "google");
       } else {
-        registerHandler(googleUser,"google");
+        registerHandler(googleUser, "google");
       }
 
       // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -153,10 +163,36 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future signInWithApple() async {
     final result = await TheAppleSignIn.performRequests([
-      AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+      AppleIdRequest(requestedScopes: [Scope.fullName])
     ]);
     switch (result.status) {
       case AuthorizationStatus.authorized:
+        //   final appleIdCredential = result.credential;
+        //   final oAuthProvider = OAuthProvider('apple.com');
+        //   final credential = oAuthProvider.credential(
+        //     idToken: String.fromCharCodes(appleIdCredential.identityToken),
+        //     accessToken:
+        //         String.fromCharCodes(appleIdCredential.authorizationCode),
+        //   );
+        //   final userCredential =
+        //       await FirebaseAuth.instance.signInWithCredential(credential);
+        //   final firebaseUser = userCredential.user;
+        //   if ([ Scope.fullName].contains(Scope.fullName) ) {
+        //     final fullName = appleIdCredential.fullName;
+        //     if (fullName != null &&
+        //         fullName.givenName != null &&
+        //         fullName.familyName != null) {
+        //       final displayName = '${fullName.givenName} ${fullName.familyName}';
+        //       await firebaseUser.updateDisplayName(displayName);
+        //     }
+        //   }
+
+        //   if (signInBool) {
+        //     loginHandler(firebaseUser, "apple");
+        //   }else {
+        //   registerHandler(firebaseUser,"apple");
+        // }
+
         final appleIdCredential = result.credential;
         final oAuthProvider = OAuthProvider('apple.com');
         final credential = oAuthProvider.credential(
@@ -167,22 +203,27 @@ class _LoginScreenState extends State<LoginScreen> {
         final userCredential =
             await FirebaseAuth.instance.signInWithCredential(credential);
         final firebaseUser = userCredential.user;
-        if ([Scope.email, Scope.fullName].contains(Scope.fullName)) {
+        if ([Scope.fullName].contains(Scope.fullName)) {
           final fullName = appleIdCredential.fullName;
           if (fullName != null &&
               fullName.givenName != null &&
               fullName.familyName != null) {
             final displayName = '${fullName.givenName} ${fullName.familyName}';
             await firebaseUser.updateDisplayName(displayName);
+           
+            print('firebaseUser new');
+         
           }
         }
 
-        
-        if (signInBool) {
-          loginHandler(firebaseUser, "apple");
-        }else {
-        registerHandler(firebaseUser,"apple");
-      }
+         print(firebaseUser);
+             
+              if (signInBool) {
+                loginHandler(firebaseUser, "apple");
+              } else {
+                registerHandler(firebaseUser, "apple");
+              }
+             
         break;
       // return firebaseUser;
       case AuthorizationStatus.error:
