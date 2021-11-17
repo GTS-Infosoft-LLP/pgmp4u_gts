@@ -283,7 +283,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                     ),
-                    Image.asset('assets/login_image1.png'),
+                    Center(child: Image.asset('assets/login_image1.png')),
                     Container(
                       padding: EdgeInsets.only(
                           top: height * (16 / 800),

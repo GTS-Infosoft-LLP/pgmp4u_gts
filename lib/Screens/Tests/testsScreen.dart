@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
 
 class TestsScreen extends StatefulWidget {
   const TestsScreen({Key key}) : super(key: key);
@@ -54,11 +55,13 @@ class _TestsScreenState extends State<TestsScreen> {
       return Color(int.parse('FF$hexCode', radix: 16));
     }
 
-    return Container(
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+         return Container(
       child: Column(
         children: [
           Container(
-            height: 149,
+            height:  SizerUtil.deviceType == DeviceType.mobile ?149:200,
             width: width,
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -246,6 +249,6 @@ class _TestsScreenState extends State<TestsScreen> {
                       )),
         ],
       ),
-    );
+    );});
   }
 }

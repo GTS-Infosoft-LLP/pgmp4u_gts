@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:sizer/sizer.dart';
 
 class DashboardScreen extends StatefulWidget {
   final Function selectedId;
@@ -149,14 +150,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     print(MediaQuery.of(context).padding.top);
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: Container(
+      child: Sizer(
+      builder: (context, orientation, deviceType) {
+         return Container(
         color: _colorfromhex("#FCFCFF"),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 180,
+              height: SizerUtil.deviceType == DeviceType.mobile ?180:330,
               width: width,
               decoration: BoxDecoration(
                 borderRadius:
@@ -314,7 +317,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 'Dashboard',
                                 style: TextStyle(
                                   fontFamily: 'Roboto Bold',
-                                  fontSize: width * (18 / 420),
+                                  fontSize: width * (15 / 420),
                                   color: Colors.black,
                                 ),
                               ),
@@ -352,8 +355,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     'assets/aapp.png'),
                                               ),
                                             ),
-                                            Container(
-                                              width: width / 4 ,
+                                         SizerUtil.deviceType == DeviceType.mobile?   Container(
+                                              width: width / 4,
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
@@ -377,6 +380,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                       fontWeight: FontWeight.w500,
                                                       fontSize:
                                                           width * (18 / 420),
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ):Container(
+                                             
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Get',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Roboto Medium',
+                                                      fontSize:
+                                                          width * (13 / 420),
+                                                      color: _colorfromhex(
+                                                          "#ABAFD1"),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Application Support',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Roboto Medium',
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize:
+                                                          width * (15 / 420),
                                                       color: Colors.black,
                                                     ),
                                                   ),
@@ -466,7 +499,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   style: TextStyle(
                                                     fontFamily: 'Roboto Medium',
                                                     fontSize:
-                                                        width * (15 / 420),
+                                                        width * (13 / 420),
                                                     color: _colorfromhex(
                                                         "#ABAFD1"),
                                                   ),
@@ -477,7 +510,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     fontFamily: 'Roboto Medium',
                                                     fontWeight: FontWeight.w500,
                                                     fontSize:
-                                                        width * (18 / 420),
+                                                        width * (15 / 420),
                                                     color: Colors.black,
                                                   ),
                                                 ),
@@ -566,7 +599,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   style: TextStyle(
                                                     fontFamily: 'Roboto Medium',
                                                     fontSize:
-                                                        width * (15 / 420),
+                                                        width * (13 / 420),
                                                     color: _colorfromhex(
                                                         "#ABAFD1"),
                                                   ),
@@ -577,7 +610,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     fontFamily: 'Roboto Medium',
                                                     fontWeight: FontWeight.w500,
                                                     fontSize:
-                                                        width * (18 / 420),
+                                                        width * (15 / 420),
                                                     color: Colors.black,
                                                   ),
                                                 ),
@@ -666,7 +699,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   style: TextStyle(
                                                     fontFamily: 'Roboto Medium',
                                                     fontSize:
-                                                        width * (15 / 420),
+                                                        width * (13 / 420),
                                                     color: _colorfromhex(
                                                         "#ABAFD1"),
                                                   ),
@@ -677,7 +710,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     fontFamily: 'Roboto Medium',
                                                     fontWeight: FontWeight.w500,
                                                     fontSize:
-                                                        width * (18 / 420),
+                                                        width * (15 / 420),
                                                     color: Colors.black,
                                                   ),
                                                 ),
@@ -766,7 +799,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   style: TextStyle(
                                                     fontFamily: 'Roboto Medium',
                                                     fontSize:
-                                                        width * (15 / 420),
+                                                        width * (13 / 420),
                                                     color: _colorfromhex(
                                                         "#ABAFD1"),
                                                   ),
@@ -777,7 +810,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     fontFamily: 'Roboto Medium',
                                                     fontWeight: FontWeight.w500,
                                                     fontSize:
-                                                        width * (18 / 420),
+                                                        width * (15 / 420),
                                                     color: Colors.black,
                                                   ),
                                                 ),
@@ -840,7 +873,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 : Container()
           ],
         ),
-      ),
+      );})
     );
   }
 }

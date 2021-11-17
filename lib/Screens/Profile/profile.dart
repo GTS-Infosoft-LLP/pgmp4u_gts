@@ -7,8 +7,11 @@ import 'package:pgmp4u/Screens/Dashboard/dashboard.dart';
 import 'package:pgmp4u/Screens/Profile/settingsScreen.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'dart:convert' as convert;
-
+import 'package:sizer/sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+
+
 
 class Profile extends StatefulWidget {
   const Profile({Key key}) : super(key: key);
@@ -47,7 +50,10 @@ class _ProfileState extends State<Profile> {
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     apiCall();
     getValue();
+
   }
+
+
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     paymentStatus("success");
@@ -142,9 +148,12 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    return SafeArea(
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+         return SafeArea(
         child: FutureBuilder<DocumentSnapshot>(
             future: users.doc('Zli1qoSMV4yLT0ZhdfsV').get(),
             builder: (BuildContext context,
@@ -159,7 +168,7 @@ class _ProfileState extends State<Profile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        height: 180,
+                        height: SizerUtil.deviceType == DeviceType.mobile ?180:330,
                         width: width,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -613,6 +622,6 @@ class _ProfileState extends State<Profile> {
                     valueColor:
                         AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF")),
                   )));
-            }));
+            }));});
   }
 }

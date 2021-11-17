@@ -3,7 +3,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
-
+import 'package:sizer/sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PracticeTest extends StatefulWidget {
@@ -96,7 +96,9 @@ class _PracticeTestState extends State<PracticeTest> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     final arguments = ModalRoute.of(context).settings.arguments as Map;
-    return SafeArea(
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+         return SafeArea(
       child: Scaffold(
         body: Container(
           color: _colorfromhex("#FCFCFF"),
@@ -106,7 +108,7 @@ class _PracticeTestState extends State<PracticeTest> {
                 child: Column(
                   children: [
                     Container(
-                      height: 195,
+                      height:SizerUtil.deviceType == DeviceType.mobile ?195: 250,
                       width: width,
                       decoration: BoxDecoration(
                         image: DecorationImage(
@@ -335,6 +337,7 @@ class _PracticeTestState extends State<PracticeTest> {
                                                           style: TextStyle(
                                                               fontFamily:
                                                                   'Roboto Regular',
+                                                                 fontSize: width * 14/420,
                                                               color: title["id"] ==
                                                                           selectedAnswer &&
                                                                       listResponse[_quetionNo][
@@ -370,6 +373,7 @@ class _PracticeTestState extends State<PracticeTest> {
                                                           child: Text(
                                                             title[
                                                                 "question_option"],
+                                                                style:TextStyle(fontSize: width * 14/420)
                                                           ),
                                                         ),
                                                   selectedAnswer != null &&
@@ -548,7 +552,7 @@ class _PracticeTestState extends State<PracticeTest> {
               ),
               realAnswer == selectedAnswer && selectedAnswer != null
                   ? Positioned(
-                      top: 80,
+                      top: SizerUtil.deviceType == DeviceType.mobile ?80 : 140,
                       left: width / 2.9,
                       child: Container(
                         width: 110,
@@ -558,7 +562,7 @@ class _PracticeTestState extends State<PracticeTest> {
                   : Text(''),
               realAnswer != selectedAnswer && selectedAnswer != null
                   ? Positioned(
-                      top: 100,
+                      top:SizerUtil.deviceType == DeviceType.mobile ?100 : 165,
                       left: width / 2.5,
                       child: selectedAnswer == null
                           ? Text('')
@@ -575,6 +579,6 @@ class _PracticeTestState extends State<PracticeTest> {
           ),
         ),
       ),
-    );
+    );});
   }
 }

@@ -18,8 +18,11 @@ import './Screens/Dashboard/dashboard.dart';
 import './Screens/Auth/login.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+        await Firebase.initializeApp();
+  
   runApp(MyApp());
 }
 
@@ -32,8 +35,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      routes: {
+ debugShowCheckedModeBanner: false,
+       routes: {
         '/': (ctx) => SplashScreen(),
         '/start-screen': (ctx) => StartScreen(),
         '/login': (ctx) => LoginScreen(),

@@ -230,7 +230,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               Container(
                                                 margin: EdgeInsets.only(top: 5),
                                                 child: Text(
-                                                  emailDataNew,
+                                                  emailDataNew == ""?"none":emailDataNew,
                                                   style: TextStyle(
                                                     fontFamily:
                                                         'Roboto Regular',
