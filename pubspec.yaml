@@ -49,6 +49,7 @@ dependencies:
   device_info: ^2.0.2
   sizer: ^2.0.15
   in_app_purchase: ^1.0.9
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:
