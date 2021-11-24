@@ -16,7 +16,7 @@ class PurchaseProvider extends ChangeNotifier {
   bool _beautifiedDashUpgrade = false;
   final iapConnection = InAppPurchase.instance;
 
-  DashPurchases() {
+  PurchaseProvider() {
     final purchaseUpdated = iapConnection.purchaseStream;
     _subscription = purchaseUpdated.listen(
       _onPurchaseUpdate,
@@ -27,6 +27,7 @@ class PurchaseProvider extends ChangeNotifier {
   }
 
   Future<void> loadPurchases() async {
+    print("loadPurchase");
     final available = await iapConnection.isAvailable();
     if (!available) {
       storeState = StoreState.notAvailable;

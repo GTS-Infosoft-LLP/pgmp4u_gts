@@ -1,2 +1,2 @@
 
-const storeKeyConsumable = 'mock_test';
+const storeKeyConsumable = 'com.codesigns.pgmp4u.mock_test';

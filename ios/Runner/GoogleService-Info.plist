@@ -3,12 +3,36 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>972497999333-6v4tplt3tucl5ol5bso4tl5kad1pd8sb.apps.googleusercontent.com</string>
+	<string>569295667578-dv4t8mggbviqaek7gjkr4i9bfgppfvfn.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.972497999333-6v4tplt3tucl5ol5bso4tl5kad1pd8sb</string>
+	<string>com.googleusercontent.apps.569295667578-dv4t8mggbviqaek7gjkr4i9bfgppfvfn</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>569295667578-0540gsk3bh0a2l52d0np4b4cv6t064vd.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDAiSTQvsRCOxyXVenf0K4j9NJ-jB8rseA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>569295667578</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.codesigns.pgmp4u</string>
+	<key>PROJECT_ID</key>
+	<string>pgmp4u-android</string>
+	<key>STORAGE_BUCKET</key>
+	<string>pgmp4u-android.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:569295667578:ios:78288781f7edb9e56d96c3</string>
+	<key>DATABASE_URL</key>
+	<string>https://pgmp4u-android-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>
