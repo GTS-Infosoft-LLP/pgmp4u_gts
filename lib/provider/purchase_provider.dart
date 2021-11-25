@@ -7,7 +7,6 @@ import 'package:pgmp4u/Models/purchaseable_product.dart';
 import 'package:pgmp4u/Models/store_state.dart';
 
 class PurchaseProvider extends ChangeNotifier {
-
   StoreState storeState = StoreState.loading;
   StreamSubscription<List<PurchaseDetails>> _subscription;
   List<PurchasableProduct> products = [];
@@ -62,16 +61,31 @@ class PurchaseProvider extends ChangeNotifier {
     }
   }
 
+  restore() async {
+    print("restore called");
+    var result = await iapConnection.restorePurchases(applicationUserName: "testin");
+    print("restore result");
+  }
+
   void _onPurchaseUpdate(List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach(_handlePurchase);
     notifyListeners();
   }
 
   void _handlePurchase(PurchaseDetails purchaseDetails) {
-    if (purchaseDetails.status == PurchaseStatus.purchased) {
+    if (purchaseDetails.status == PurchaseStatus.purchased || purchaseDetails.status == PurchaseStatus.restored) {
       switch (purchaseDetails.productID) {
         case storeKeyConsumable:
-          print("Purchased successfully");
+          print("Purchased successfully \n Status => ${purchaseDetails.status};"
+              "\n Error => ${purchaseDetails.error}"
+              "\n Purchase Id => ${purchaseDetails.purchaseID}"
+              "\n productID => ${purchaseDetails.productID}"
+              "\n verificationData, localVerificationData => ${purchaseDetails.verificationData.localVerificationData}"
+              "\n verificationData, serverVerificationData => ${purchaseDetails.verificationData.serverVerificationData}"
+              "\n verificationData, source => ${purchaseDetails.verificationData.source}"
+              "\n transactionDate => ${purchaseDetails.transactionDate}"
+              "\n status => ${purchaseDetails.status}"
+              "");
           break;
       }
     }

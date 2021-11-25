@@ -29,8 +29,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   CollectionReference users =
-  FirebaseFirestore.instance.collection('staticData');
-
+      FirebaseFirestore.instance.collection('staticData');
 
   PurchaseProvider provider;
 
@@ -207,14 +206,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    var height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder<DocumentSnapshot>(
@@ -223,7 +216,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               Map<String, dynamic> data =
-              snapshot.data.data() as Map<String, dynamic>;
+                  snapshot.data.data() as Map<String, dynamic>;
               return Container(
                 height: double.infinity,
                 width: double.infinity,
@@ -255,8 +248,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(
-                                        top: 30, bottom: 25),
+                                    margin:
+                                        EdgeInsets.only(top: 30, bottom: 25),
                                     child: Image.asset('assets/premium.png'),
                                   ),
                                 ],
@@ -280,10 +273,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 child: Center(
                                   child: Text(
                                     buttonPress == true
-                                        ? '${(data["mock_test_price"] -
-                                        ((mapResponse["discount"] / 100) *
-                                            data["mock_test_price"]))
-                                        .toInt()} \$'
+                                        ? '${(data["mock_test_price"] - ((mapResponse["discount"] / 100) * data["mock_test_price"])).toInt()} \$'
                                         : '${data["mock_test_price"]} \$',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -310,47 +300,46 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               ),
                               mapResponse != null && buttonPress == false
                                   ? Center(
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 20),
-                                  padding:
-                                  EdgeInsets.only(left: 15, right: 15),
-                                  height: 40,
-                                  // alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: _colorfromhex("#3A47AD"),
-                                      borderRadius:
-                                      BorderRadius.circular(30.0)),
-                                  child: OutlinedButton(
-                                    onPressed: () =>
-                                    {
-                                      // setState(() => {buttonPress = true}),
-                                      print(mapResponse["discount"]),
-                                      if (mapResponse["discount"] == 100)
-                                        {paymentStatus("success")}
-                                      else
-                                        {
-                                          setState(
-                                                  () => {buttonPress = true})
-                                        }
-                                    },
-                                    style: ButtonStyle(
-                                      shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                  30.0))),
-                                    ),
-                                    child: Text(
-                                      'Apply Coupon',
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto Medium',
-                                          fontSize: 20,
-                                          color: Colors.white,
-                                          letterSpacing: 0.3),
-                                    ),
-                                  ),
-                                ),
-                              )
+                                      child: Container(
+                                        margin: EdgeInsets.only(top: 20),
+                                        padding: EdgeInsets.only(
+                                            left: 15, right: 15),
+                                        height: 40,
+                                        // alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            color: _colorfromhex("#3A47AD"),
+                                            borderRadius:
+                                                BorderRadius.circular(30.0)),
+                                        child: OutlinedButton(
+                                          onPressed: () => {
+                                            // setState(() => {buttonPress = true}),
+                                            print(mapResponse["discount"]),
+                                            if (mapResponse["discount"] == 100)
+                                              {paymentStatus("success")}
+                                            else
+                                              {
+                                                setState(
+                                                    () => {buttonPress = true})
+                                              }
+                                          },
+                                          style: ButtonStyle(
+                                            shape: MaterialStateProperty.all(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30.0))),
+                                          ),
+                                          child: Text(
+                                            'Apply Coupon',
+                                            style: TextStyle(
+                                                fontFamily: 'Roboto Medium',
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                letterSpacing: 0.3),
+                                          ),
+                                        ),
+                                      ),
+                                    )
                                   : Container(),
                               Center(
                                 child: Container(
@@ -360,13 +349,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   // alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                       color: _colorfromhex("#3A47AD"),
-                                      borderRadius: BorderRadius.circular(
-                                          30.0)),
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)),
                                   child: OutlinedButton(
                                     onPressed: () {
                                       if (Platform.isIOS) {
-                                        print("buttonClicked ${provider
-                                            .products[0].id}");
+                                        print(
+                                            "buttonClicked ${provider.products[0].id}");
                                         provider.products.forEach((e) {
                                           print("Product id => ${e.id}");
                                           if (e.id == storeKeyConsumable) {
@@ -379,15 +368,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               data["razorpay_key"],
                                               data["mock_test_price"],
                                               data["Currency"]);
-                                        }
-                                        else {
+                                        } else {
                                           openCheckout(
                                               data["razorpay_key"],
                                               (data["mock_test_price"] -
-                                                  ((mapResponse["discount"] /
-                                                      100) *
-                                                      data[
-                                                      "mock_test_price"]))
+                                                      ((mapResponse[
+                                                                  "discount"] /
+                                                              100) *
+                                                          data[
+                                                              "mock_test_price"]))
                                                   .toInt(),
                                               data["Currency"]);
                                         }
@@ -397,7 +386,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       shape: MaterialStateProperty.all(
                                           RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius.circular(30.0))),
+                                                  BorderRadius.circular(30.0))),
                                     ),
                                     child: Text(
                                       'Buy Now',
@@ -410,6 +399,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 32,),
+                              Platform.isIOS ? Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("Purchased previously? "),
+                                    InkWell(
+                                      child: Text("Restore purchase", style: TextStyle(color: Colors.blue),),
+                                      onTap: () {
+                                        provider.restore();
+                                      },
+                                    )
+                                  ],
+                                ),
+                              ) : Text("")
                             ],
                           ),
                         ),
@@ -424,9 +428,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 height: height,
                 child: Center(
                     child: CircularProgressIndicator(
-                      valueColor:
+                  valueColor:
                       AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF")),
-                    )));
+                )));
           },
         ),
       ),
