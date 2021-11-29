@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59cefdbb-89db-4562-adea-4ff996be1877" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/api/apis.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/utils/event.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/Profile/paymentScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Profile/paymentScreen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/provider/purchase_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/provider/purchase_provider.dart" afterDir="false" />
     </list>

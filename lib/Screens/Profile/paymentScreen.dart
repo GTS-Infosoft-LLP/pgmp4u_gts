@@ -208,6 +208,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+
+    Consumer<PurchaseProvider>(builder: (context, value, child) {
+      if(value.navigateBack.getContent() == true) {
+        Navigator.of(context).pop();
+      }
+      return Text("");
+    },);
+
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder<DocumentSnapshot>(
