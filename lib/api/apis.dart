@@ -1,8 +1,8 @@
 
 
-const _BASE_URL = "http://18.119.55.81:1010/api/";
+const _BASE_URL = "http://18.119.55.81:1011/api/";
 
-const IN_APP_PURCHASE = _BASE_URL + "in-app-purchase";
+const IN_APP_PURCHASE = _BASE_URL + "InAppPurchasePayment";
 const GMAIL_REGISTER = _BASE_URL + "GmailRegister";
 const GMAIL_LOGIN = _BASE_URL + "GmailLogin";
 const TAKE_PAYMENT = _BASE_URL + "TakePayment";

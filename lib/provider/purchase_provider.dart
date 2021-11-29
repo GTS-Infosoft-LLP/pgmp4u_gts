@@ -86,7 +86,7 @@ class PurchaseProvider extends ChangeNotifier {
       switch (purchaseDetails.productID) {
         case storeKeyConsumable:
           paymentStatus(purchaseDetails.status.toString(), purchaseDetails.verificationData.serverVerificationData);
-
+/*
           print("Purchased successfully \n Status => ${purchaseDetails.status};"
               "\n Error => ${purchaseDetails.error}"
               "\n Purchase Id => ${purchaseDetails.purchaseID}"
@@ -95,7 +95,7 @@ class PurchaseProvider extends ChangeNotifier {
               "\n verificationData, serverVerificationData => ${purchaseDetails.verificationData.serverVerificationData}"
               "\n verificationData, source => ${purchaseDetails.verificationData.source}"
               "\n transactionDate => ${purchaseDetails.transactionDate}"
-              "\n status => ${purchaseDetails.status}");
+              "\n status => ${purchaseDetails.status}");*/
           break;
       }
     }
@@ -113,21 +113,25 @@ class PurchaseProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
+    var request = json.encode({
+      "payment_status": (status == PurchaseStatus.purchased)? 'success' : status,
+      "price": 1,
+      "payment_receipt": receiptData,
+      "payment_source": "app_store",
+      "access_type": "life_time"
+    });
+    print("paymentStatus called => $status, $receiptData; request => $request");
+
     response = await http.post(
       Uri.parse(IN_APP_PURCHASE),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': stringValue
       },
-      body: json.encode({
-        "payment_status": status,
-        "price": 1,
-        "payment_response": receiptData,
-        "client_secret": "212421424",
-        "access_type": "life_time"
-      }),
+      body: request,
     );
 
+    print(response.body);
     if (response.statusCode == 200) {
       navigateBack = Event(true);
       notifyListeners();
