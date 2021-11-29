@@ -211,7 +211,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
     var height = MediaQuery.of(context).size.height;
 
     Consumer<PurchaseProvider>(builder: (context, value, child) {
-      if(value.navigateBack.getContent() == true) {
+      bool navigateWait = value.navigateBack.getContent();
+      print("navigate => $navigateWait");
+      if(navigateWait == true) {
         Navigator.of(context).pop();
       }
       return Text("");

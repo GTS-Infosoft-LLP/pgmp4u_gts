@@ -113,6 +113,8 @@ class PurchaseProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
+    print("TOken => $stringValue");
+   // return;
     var request = json.encode({
       "payment_status": (status == PurchaseStatus.purchased)? 'success' : status,
       "price": 1,
@@ -133,6 +135,7 @@ class PurchaseProvider extends ChangeNotifier {
 
     print(response.body);
     if (response.statusCode == 200) {
+      print("Navigate back hit");
       navigateBack = Event(true);
       notifyListeners();
     }
