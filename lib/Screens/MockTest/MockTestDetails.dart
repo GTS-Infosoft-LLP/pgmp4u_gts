@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -39,9 +40,9 @@ class _MockTestDetailsState extends State<MockTestDetails> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
-    print('http://18.119.55.81:1010/api/MockTestDetails/' + selectedIdNew.toString() + '/' + attemptNew.toString());
+    print(MOCK_TEST_DETAILS + '/' + selectedIdNew.toString() + '/' + attemptNew.toString());
     response = await http.get(
-        Uri.parse('http://18.119.55.81:1010/api/MockTestDetails/' + selectedIdNew.toString() + '/' + attemptNew.toString()),
+        Uri.parse(MOCK_TEST_DETAILS + '/' + selectedIdNew.toString() + '/' + attemptNew.toString()),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue

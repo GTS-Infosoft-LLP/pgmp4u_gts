@@ -5,11 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59cefdbb-89db-4562-adea-4ff996be1877" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/api/apis.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/utils/event.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/Auth/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Auth/login.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/Dashboard/DashboardScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Dashboard/DashboardScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/MockTest/MockTestAttempts.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/MockTest/MockTestAttempts.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/MockTest/MockTestDetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/MockTest/MockTestDetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/MockTest/ReviewMockTest.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/MockTest/ReviewMockTest.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/MockTest/mockTest.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/MockTest/mockTest.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/MockTest/mockTestQuestions.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/MockTest/mockTestQuestions.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/PracticeTests/practiceTest.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/PracticeTests/practiceTest.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/Profile/paymentScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Profile/paymentScreen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/provider/purchase_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/provider/purchase_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/Profile/profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Profile/profile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/Profile/settingsScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Profile/settingsScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/Tests/testsScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Tests/testsScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/api/apis.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api/apis.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +98,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637761432921</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Impl. In App Purchase API">
+      <created>1638160648608</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1638160648608</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -113,6 +129,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add Dependencies for In-App Purchase&#10;Create Purchase Provider" />
     <MESSAGE value="Implement In app purchase for iOS" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implement In app purchase for iOS" />
+    <MESSAGE value="Impl. In App Purchase API" />
+    <MESSAGE value="API Endpoints centralized" />
+    <option name="LAST_COMMIT_MESSAGE" value="API Endpoints centralized" />
   </component>
 </project>

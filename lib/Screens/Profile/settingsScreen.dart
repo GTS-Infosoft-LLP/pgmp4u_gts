@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -38,7 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     print(stringValue);
     http.Response response;
     response = await http.get(
-        Uri.parse("http://18.119.55.81:1010/api/CheckUserPaymentStatus"),
+        Uri.parse(CHECK_USER_PAYMENT_STATUS),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue

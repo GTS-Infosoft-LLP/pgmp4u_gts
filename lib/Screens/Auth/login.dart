@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pgmp4u/Screens/Dashboard/dashboard.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:the_apple_sign_in/scope.dart';
@@ -35,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     http.Response response;
 
     response = await http.post(
-      Uri.parse('http://18.119.55.81:1010/api/GmailLogin'),
+      Uri.parse(GMAIL_LOGIN),
       headers: {
         "Content-Type": "application/json",
       },
@@ -81,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
       loading = true;
     });
     response = await http.post(
-      Uri.parse('http://18.119.55.81:1010/api/GmailRegister'),
+      Uri.parse(GMAIL_REGISTER),
       headers: {
         "Content-Type": "application/json",
       },

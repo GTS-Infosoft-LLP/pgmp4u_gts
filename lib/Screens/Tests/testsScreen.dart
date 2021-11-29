@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pgmp4u/api/apis.dart';
 import 'dart:convert' as convert;
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +32,7 @@ class _TestsScreenState extends State<TestsScreen> {
     print(stringValue);
     http.Response response;
     response = await http.get(
-        Uri.parse("http://18.119.55.81:1010/api/CheckUserPaymentStatus"),
+        Uri.parse(CHECK_USER_PAYMENT_STATUS),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue

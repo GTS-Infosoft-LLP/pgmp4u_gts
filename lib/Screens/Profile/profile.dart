@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/Dashboard/dashboard.dart';
 import 'package:pgmp4u/Screens/Profile/settingsScreen.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'dart:convert' as convert;
 import 'package:sizer/sizer.dart';
@@ -88,7 +89,7 @@ class _ProfileState extends State<Profile> {
     String stringValue = prefs.getString('token');
     http.Response response;
     response = await http.post(
-      Uri.parse("http://18.119.55.81:1010/api/TakePayment"),
+      Uri.parse(TAKE_PAYMENT),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': stringValue
@@ -113,7 +114,7 @@ class _ProfileState extends State<Profile> {
     String stringValue = prefs.getString('token');
     http.Response response;
     response = await http.post(
-      Uri.parse("http://18.119.55.81:1010/api/GetRazorPayOrderid"),
+      Uri.parse(GET_RAZOR_PAY_ORDER_ID),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': stringValue
@@ -132,7 +133,7 @@ class _ProfileState extends State<Profile> {
     String stringValue = prefs.getString('token');
     http.Response response;
     response = await http
-        .get(Uri.parse("http://18.119.55.81:1010/api/UserDetails"), headers: {
+        .get(Uri.parse(USER_DETAILS), headers: {
       'Content-Type': 'application/json',
       'Authorization': stringValue
     });

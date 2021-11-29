@@ -8,6 +8,7 @@ import 'package:pgmp4u/Models/mockTest.dart';
 
 import 'package:getwidget/getwidget.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTestResult.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
@@ -80,7 +81,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     String stringValue = prefs.getString('token');
     http.Response response;
     response = await http.post(
-      Uri.parse('http://18.119.55.81:1010/api/SubmitMockTest'),
+      Uri.parse(SUBMIT_MOCK_TEST),
       headers: {
         "Content-Type": "application/json",
         'Authorization': stringValue
@@ -165,7 +166,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     http.Response response;
     response = await http.get(
         Uri.parse(
-            'http://18.119.55.81:1010/api/MockTestQuestions/${selectedIdNew}'),
+            MOCK_TEST_QUESTIONS +'/${selectedIdNew}'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue

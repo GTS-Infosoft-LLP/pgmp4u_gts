@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/Screens/Profile/PaymentStatus.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -71,7 +72,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     print(stringValue);
     http.Response response;
     response = await http
-        .get(Uri.parse("http://18.119.55.81:1010/api/CheckCoupon"), headers: {
+        .get(Uri.parse(CHECK_COUPON), headers: {
       'Content-Type': 'application/json',
       'Authorization': stringValue
     });
@@ -112,7 +113,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     String stringValue = prefs.getString('token');
     http.Response response;
     response = await http.post(
-      Uri.parse("http://18.119.55.81:1010/api/TakePayment"),
+      Uri.parse(TAKE_PAYMENT),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': stringValue
@@ -158,7 +159,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     String stringValue = prefs.getString('token');
     http.Response response;
     response = await http.post(
-      Uri.parse("http://18.119.55.81:1010/api/GetRazorPayOrderid"),
+      Uri.parse(GET_RAZOR_PAY_ORDER_ID),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': stringValue
@@ -180,7 +181,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     String stringValue = prefs.getString('token');
     http.Response response;
     response = await http.post(
-      Uri.parse("http://18.119.55.81:1010/api/TakePayment"),
+      Uri.parse(TAKE_PAYMENT),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': stringValue

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:getwidget/getwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pgmp4u/api/apis.dart';
 import 'dart:convert' as convert;
 import 'package:sizer/sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,7 +54,7 @@ class _PracticeTestState extends State<PracticeTest> {
     print(stringValue);
     http.Response response;
     response = await http.get(
-        Uri.parse("http://18.119.55.81:1010/api/ReviewsMockTest/22/4"),
+        Uri.parse(REVIEWS_MOCK_TEST+"/22/4"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue
@@ -75,7 +76,7 @@ class _PracticeTestState extends State<PracticeTest> {
     print(stringValue);
     http.Response response;
     response = await http.get(
-        Uri.parse("http://18.119.55.81:1010/api/PracticeTestQuestions"),
+        Uri.parse(PRACTICE_TEST_QUESTIONS),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue

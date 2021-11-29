@@ -5,6 +5,7 @@ import 'package:pgmp4u/Screens/MockTest/MockTestAttempts.dart';
 import 'dart:convert' as convert;
 
 import 'package:pgmp4u/Screens/MockTest/mockTestQuestions.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MockTest extends StatefulWidget {
@@ -29,7 +30,7 @@ class _MockTestState extends State<MockTest> {
     print(stringValue);
     http.Response response;
     response = await http
-        .get(Uri.parse("http://18.119.55.81:1010/api/AllMockTests"), headers: {
+        .get(Uri.parse(ALL_MOCK_TESTS), headers: {
       'Content-Type': 'application/json',
       'Authorization': stringValue
     });

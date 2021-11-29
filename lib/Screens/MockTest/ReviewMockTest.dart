@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:getwidget/getwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pgmp4u/api/apis.dart';
 import 'dart:convert' as convert;
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,7 +51,7 @@ final attemptDataNew;
     print(stringValue);
     http.Response response;
     response = await http.get(
-        Uri.parse("http://18.119.55.81:1010/api/ReviewsMockTest/" + selectedIdNew.toString() + '/' + attemptDataNew.toString()),
+        Uri.parse(REVIEWS_MOCK_TEST + "/" + selectedIdNew.toString() + '/' + attemptDataNew.toString()),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue

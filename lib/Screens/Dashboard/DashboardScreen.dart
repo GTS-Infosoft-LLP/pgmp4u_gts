@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -129,7 +130,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     print(stringValue);
     http.Response response;
     response = await http.get(
-        Uri.parse("http://18.119.55.81:1010/api/CheckUserPaymentStatus"),
+        Uri.parse(CHECK_USER_PAYMENT_STATUS),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue
