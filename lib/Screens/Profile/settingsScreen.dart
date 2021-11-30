@@ -45,9 +45,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           'Authorization': stringValue
         });
 
+
     if (response.statusCode == 200) {
       setState(() {
         mapResponse = convert.jsonDecode(response.body);
+        print("Check Payment Status Res => ${mapResponse}");
       });
       // print(convert.jsonDecode(response.body));
     }
@@ -57,6 +59,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+
+
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -253,8 +257,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               mapResponse["data"]["paid_status"] != 1
                                   ? GestureDetector(
                                       onTap: () => {
-                                        Navigator.of(context)
-                                            .pushNamed('/payment')
+                                        _navigateAndRefresh(context)
                                       },
                                       child: Container(
                                         margin:
@@ -327,4 +330,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
+  void _navigateAndRefresh(context) async {
+    var result = await Navigator.of(context).pushNamed('/payment');
+    print("Result from payment => $result");
+    if(result == true){
+      apiCall();
+    }
+  }
+
 }

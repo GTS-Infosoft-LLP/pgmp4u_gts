@@ -8,6 +8,7 @@ import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/Screens/Profile/PaymentStatus.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
+import 'package:pgmp4u/utils/event.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,8 +72,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     String stringValue = prefs.getString('token');
     print(stringValue);
     http.Response response;
-    response = await http
-        .get(Uri.parse(CHECK_COUPON), headers: {
+    response = await http.get(Uri.parse(CHECK_COUPON), headers: {
       'Content-Type': 'application/json',
       'Authorization': stringValue
     });
@@ -210,14 +210,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 
-    Consumer<PurchaseProvider>(builder: (context, value, child) {
-      bool navigateWait = value.navigateBack.getContent();
-      print("navigate => $navigateWait");
-      if(navigateWait == true) {
-        Navigator.of(context).pop();
-      }
-      return Text("");
-    },);
+    var provider = Provider.of<PurchaseProvider>(context);
 
     return SafeArea(
       child: Scaffold(
@@ -352,79 +345,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ),
                                     )
                                   : Container(),
-                              Center(
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 20),
-                                  padding: EdgeInsets.only(left: 15, right: 15),
-                                  height: 40,
-                                  // alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: _colorfromhex("#3A47AD"),
-                                      borderRadius:
-                                          BorderRadius.circular(30.0)),
-                                  child: OutlinedButton(
-                                    onPressed: () {
-                                      if (Platform.isIOS) {
-                                        print(
-                                            "buttonClicked ${provider.products[0].id}");
-                                        provider.products.forEach((e) {
-                                          print("Product id => ${e.id}");
-                                          if (e.id == storeKeyConsumable) {
-                                            provider.buy(e);
-                                          }
-                                        });
-                                      } else {
-                                        if (mapResponse == null) {
-                                          openCheckout(
-                                              data["razorpay_key"],
-                                              data["mock_test_price"],
-                                              data["Currency"]);
-                                        } else {
-                                          openCheckout(
-                                              data["razorpay_key"],
-                                              (data["mock_test_price"] -
-                                                      ((mapResponse[
-                                                                  "discount"] /
-                                                              100) *
-                                                          data[
-                                                              "mock_test_price"]))
-                                                  .toInt(),
-                                              data["Currency"]);
-                                        }
-                                      }
-                                    },
-                                    style: ButtonStyle(
-                                      shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(30.0))),
-                                    ),
-                                    child: Text(
-                                      'Buy Now',
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto Medium',
-                                          fontSize: 20,
-                                          color: Colors.white,
-                                          letterSpacing: 0.3),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 32,),
-                              Platform.isIOS ? Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Purchased previously? "),
-                                    InkWell(
-                                      child: Text("Restore purchase", style: TextStyle(color: Colors.blue),),
-                                      onTap: () {
-                                        provider.restore();
-                                      },
-                                    )
-                                  ],
-                                ),
-                              ) : Text("")
+                              Consumer<PurchaseProvider>(
+                                builder: (context, value, child) {
+                                  var latestState = value.serverResponse.getContent();
+                                  if (latestState is Loading) {
+                                    return CircularProgressIndicator();
+                                  }
+
+                                  print("value.serverResponse = ${latestState is Success}");
+                                  if (latestState is Success) {
+                                    print("Pop called");
+                                    Future.delayed(Duration.zero, () async {
+                                      Navigator.pop(context, true);
+                                    });
+
+                                  }
+                                  return BuyButtons(data);
+                                },
+                              )
                             ],
                           ),
                         ),
@@ -445,6 +383,84 @@ class _PaymentScreenState extends State<PaymentScreen> {
           },
         ),
       ),
+    );
+  }
+
+  Widget BuyButtons(data) {
+    return Column(
+      children: [
+        Center(
+          child: Container(
+            margin: EdgeInsets.only(top: 20),
+            padding: EdgeInsets.only(left: 15, right: 15),
+            height: 40,
+            // alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: _colorfromhex("#3A47AD"),
+                borderRadius: BorderRadius.circular(30.0)),
+            child: OutlinedButton(
+              onPressed: () {
+                if (Platform.isIOS) {
+                  print("buttonClicked ${provider.products[0].id}");
+                  provider.products.forEach((e) {
+                    print("Product id => ${e.id}");
+                    if (e.id == storeKeyConsumable) {
+                      provider.buy(e);
+                    }
+                  });
+                } else {
+                  if (mapResponse == null) {
+                    openCheckout(data["razorpay_key"], data["mock_test_price"],
+                        data["Currency"]);
+                  } else {
+                    openCheckout(
+                        data["razorpay_key"],
+                        (data["mock_test_price"] -
+                                ((mapResponse["discount"] / 100) *
+                                    data["mock_test_price"]))
+                            .toInt(),
+                        data["Currency"]);
+                  }
+                }
+              },
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0))),
+              ),
+              child: Text(
+                'Buy Now',
+                style: TextStyle(
+                    fontFamily: 'Roboto Medium',
+                    fontSize: 20,
+                    color: Colors.white,
+                    letterSpacing: 0.3),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 32,
+        ),
+        Platform.isIOS
+            ? Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Purchased previously? "),
+                    InkWell(
+                      child: Text(
+                        "Restore purchase",
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                      onTap: () {
+                        provider.restore();
+                      },
+                    )
+                  ],
+                ),
+              )
+            : Text("")
+      ],
     );
   }
 }

@@ -11,6 +11,12 @@ import 'package:pgmp4u/utils/event.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+abstract class PurchaseState extends ChangeNotifier{}
+
+class Loading extends PurchaseState{}
+class Success extends PurchaseState{}
+class Default extends PurchaseState{}
+
 class PurchaseProvider extends ChangeNotifier {
   StoreState storeState = StoreState.loading;
   StreamSubscription<List<PurchaseDetails>> _subscription;
@@ -20,7 +26,7 @@ class PurchaseProvider extends ChangeNotifier {
   bool _beautifiedDashUpgrade = false;
   final iapConnection = InAppPurchase.instance;
 
-  Event<bool> navigateBack;
+  Event<PurchaseState> serverResponse = Event(Default());
 
   PurchaseProvider() {
     final purchaseUpdated = iapConnection.purchaseStream;
@@ -85,7 +91,7 @@ class PurchaseProvider extends ChangeNotifier {
         purchaseDetails.status == PurchaseStatus.restored) {
       switch (purchaseDetails.productID) {
         case storeKeyConsumable:
-          paymentStatus(purchaseDetails.status.toString(), purchaseDetails.verificationData.serverVerificationData);
+          paymentStatus(purchaseDetails.status, purchaseDetails.verificationData.serverVerificationData);
 /*
           print("Purchased successfully \n Status => ${purchaseDetails.status};"
               "\n Error => ${purchaseDetails.error}"
@@ -109,20 +115,23 @@ class PurchaseProvider extends ChangeNotifier {
     _subscription.cancel();
   }
 
-  Future paymentStatus(status, receiptData) async {
+  Future paymentStatus(PurchaseStatus status, receiptData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
-    print("TOken => $stringValue");
+    print("Token => $stringValue Purchase status ${status == PurchaseStatus.purchased}");
    // return;
     var request = json.encode({
-      "payment_status": (status == PurchaseStatus.purchased)? 'success' : status,
+      "payment_status": (status == PurchaseStatus.purchased) ? 'success' : status,
       "price": 1,
       "payment_receipt": receiptData,
       "payment_source": "app_store",
       "access_type": "life_time"
     });
     print("paymentStatus called => $status, $receiptData; request => $request");
+
+    serverResponse = Event(Default());
+    notifyListeners();
 
     response = await http.post(
       Uri.parse(IN_APP_PURCHASE),
@@ -136,9 +145,11 @@ class PurchaseProvider extends ChangeNotifier {
     print(response.body);
     if (response.statusCode == 200) {
       print("Navigate back hit");
-      navigateBack = Event(true);
-      notifyListeners();
+      serverResponse = Event(Success());
+    }else{
+      serverResponse = Event(Default());
     }
+      notifyListeners();
   }
 
   void _updateStreamOnError(dynamic error) {

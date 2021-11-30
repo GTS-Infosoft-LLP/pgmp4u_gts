@@ -7,7 +7,9 @@
     <list default="true" id="59cefdbb-89db-4562-adea-4ff996be1877" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/Profile/paymentScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Profile/paymentScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/Profile/settingsScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Profile/settingsScreen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/provider/purchase_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/provider/purchase_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/event.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +110,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638191679247</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="API Improvements">
+      <created>1638196589284</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1638196589284</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -135,6 +144,7 @@
     <MESSAGE value="Impl. In App Purchase API" />
     <MESSAGE value="API Endpoints centralized" />
     <MESSAGE value="Minor API Improvements" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor API Improvements" />
+    <MESSAGE value="API Improvements" />
+    <option name="LAST_COMMIT_MESSAGE" value="API Improvements" />
   </component>
 </project>

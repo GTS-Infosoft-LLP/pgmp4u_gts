@@ -1,4 +1,6 @@
-class Event<T> {
+import 'package:flutter/material.dart';
+
+class Event<T> extends ChangeNotifier{
   T _data;
 
   bool _isConsumed = false;
