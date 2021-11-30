@@ -5,10 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59cefdbb-89db-4562-adea-4ff996be1877" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/provider/purchase_interface.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Flutter/AppFrameworkInfo.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/AppFrameworkInfo.plist" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/Profile/paymentScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Profile/paymentScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/provider/purchase_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/provider/purchase_provider.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +126,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638249366962</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Configure ios build">
+      <created>1638257048591</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1638257048591</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -152,6 +162,7 @@
     <MESSAGE value="Minor API Improvements" />
     <MESSAGE value="API Improvements" />
     <MESSAGE value="Handle payment verify apis" />
-    <option name="LAST_COMMIT_MESSAGE" value="Handle payment verify apis" />
+    <MESSAGE value="Configure ios build" />
+    <option name="LAST_COMMIT_MESSAGE" value="Configure ios build" />
   </component>
 </project>

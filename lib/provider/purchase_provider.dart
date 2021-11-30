@@ -7,6 +7,7 @@ import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/Models/purchaseable_product.dart';
 import 'package:pgmp4u/Models/store_state.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/provider/purchase_interface.dart';
 import 'package:pgmp4u/utils/event.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -21,6 +22,7 @@ class PurchaseProvider extends ChangeNotifier {
   StoreState storeState = StoreState.loading;
   StreamSubscription<List<PurchaseDetails>> _subscription;
   List<PurchasableProduct> products = [];
+  PurchaseInterface purchaseInterface;
 
   bool get beautifiedDash => _beautifiedDashUpgrade;
   bool _beautifiedDashUpgrade = false;
@@ -50,6 +52,7 @@ class PurchaseProvider extends ChangeNotifier {
       storeKeyConsumable,
     };
     final response = await iapConnection.queryProductDetails(ids);
+    print("loadPurchases $storeKeyConsumable ${response.productDetails}");
     products =
         response.productDetails.map((e) => PurchasableProduct(e)).toList();
     storeState = StoreState.available;
@@ -62,13 +65,22 @@ class PurchaseProvider extends ChangeNotifier {
     super.dispose();
   }
 
+
+  void bottomSheet(message){
+    if(purchaseInterface != null){
+      purchaseInterface.showBottomSheetVar(message);
+    }
+  }
+
   Future<void> buy(PurchasableProduct product) async {
     final purchaseParam = PurchaseParam(productDetails: product.productDetails);
     switch (product.id) {
       case storeKeyConsumable:
+        bottomSheet("buy consumable");
         await iapConnection.buyConsumable(purchaseParam: purchaseParam);
         break;
       default:
+        bottomSheet("${product.id} is not a known product");
         throw ArgumentError.value(
             product.productDetails, '${product.id} is not a known product');
     }
@@ -77,7 +89,7 @@ class PurchaseProvider extends ChangeNotifier {
   restore() async {
     print("restore called");
     var result =
-        await iapConnection.restorePurchases(applicationUserName: "testin");
+        await iapConnection.restorePurchases();
     print("restore result");
   }
 
@@ -120,7 +132,6 @@ class PurchaseProvider extends ChangeNotifier {
     String stringValue = prefs.getString('token');
     http.Response response;
     print("Token => $stringValue Purchase status ${status == PurchaseStatus.purchased}");
-   // return;
     var request = json.encode({
       "payment_status": (status == PurchaseStatus.purchased) ? 'success' : status,
       "price": 1,
@@ -129,8 +140,9 @@ class PurchaseProvider extends ChangeNotifier {
       "access_type": "life_time"
     });
     print("paymentStatus called => $status, $receiptData; request => $request");
+    return;
 
-    serverResponse = Event(Default());
+    serverResponse = Event(Loading());
     notifyListeners();
 
     response = await http.post(
@@ -147,6 +159,7 @@ class PurchaseProvider extends ChangeNotifier {
       print("Navigate back hit");
       serverResponse = Event(Success());
     }else{
+      bottomSheet(response.body);
       serverResponse = Event(Default());
     }
       notifyListeners();
