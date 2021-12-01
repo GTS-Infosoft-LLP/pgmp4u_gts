@@ -35,17 +35,23 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     http.Response response;
 
+    var request = json.encode({
+      "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
+      "email": user.email,
+      "access_type": fromProvider
+    });
+
+    print("Request Data => $request");
+
     response = await http.post(
       Uri.parse(GMAIL_LOGIN),
       headers: {
         "Content-Type": "application/json",
       },
-      body: json.encode({
-        "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
-        "email": user.email,
-        "access_type": fromProvider
-      }),
+      body: request,
     );
+
+    print("Response => ${response.body}");
 
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
@@ -81,18 +87,25 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       loading = true;
     });
+    var request = json.encode({
+      "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
+      "email": user.email,
+      "name": user.displayName,
+      "access_type": fromProvider
+    });
+
+    print("Request => $request");
+
     response = await http.post(
       Uri.parse(GMAIL_REGISTER),
       headers: {
         "Content-Type": "application/json",
       },
-      body: json.encode({
-        "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
-        "email": user.email,
-        "name": user.displayName,
-        "access_type": fromProvider
-      }),
+      body: request,
     );
+
+    print("Response => ${response.body}");
+
 
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);

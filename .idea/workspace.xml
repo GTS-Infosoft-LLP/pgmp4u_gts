@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="59cefdbb-89db-4562-adea-4ff996be1877" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/Profile/profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Profile/profile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/Auth/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Auth/login.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/api/apis.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api/apis.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +144,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638334366616</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Fix Improper Data">
+      <created>1638334667225</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1638334667225</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -173,6 +182,7 @@
     <MESSAGE value="Handle payment verify apis" />
     <MESSAGE value="Configure ios build" />
     <MESSAGE value="Payment Screen improvements&#10;Change port to 1010" />
-    <option name="LAST_COMMIT_MESSAGE" value="Payment Screen improvements&#10;Change port to 1010" />
+    <MESSAGE value="Fix Improper Data" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix Improper Data" />
   </component>
 </project>
