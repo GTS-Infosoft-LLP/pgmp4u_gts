@@ -250,7 +250,7 @@ class _ProfileState extends State<Profile> {
                                       Container(
                                         margin: EdgeInsets.only(bottom: 6),
                                         child: Text(
-                                          mapResponse != null
+                                          dataResponse != null && dataResponse.containsKey("name")
                                               ? dataResponse["name"]
                                               : '',
                                           style: TextStyle(
@@ -261,7 +261,7 @@ class _ProfileState extends State<Profile> {
                                         ),
                                       ),
                                       Text(
-                                        mapResponse != null
+                                        dataResponse != null && dataResponse.containsKey("email")
                                             ? dataResponse["email"]
                                             : '',
                                         style: TextStyle(
@@ -504,7 +504,7 @@ class _ProfileState extends State<Profile> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          SettingsScreen(phoneNumber:dataResponse["name"],emailData:dataResponse["email"]),)
+                                                          SettingsScreen(phoneNumber:(dataResponse != null && dataResponse.containsKey("name")) ? dataResponse["name"] : "",emailData:(dataResponse != null && dataResponse.containsKey("email")) ? dataResponse["email"] : ""),)
                                                 ),
                                           // Navigator.of(context)
                                           //     .pushNamed('/settings')
