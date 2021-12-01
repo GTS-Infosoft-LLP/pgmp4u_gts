@@ -68,7 +68,7 @@ class PurchaseProvider extends ChangeNotifier {
 
   void bottomSheet(message){
     if(purchaseInterface != null){
-      purchaseInterface.showBottomSheetVar(message);
+      //purchaseInterface.showBottomSheetVar(message);
     }
   }
 
@@ -140,7 +140,7 @@ class PurchaseProvider extends ChangeNotifier {
       "access_type": "life_time"
     });
     print("paymentStatus called => $status, $receiptData; request => $request");
-    return;
+    //return;
 
     serverResponse = Event(Loading());
     notifyListeners();

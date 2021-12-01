@@ -364,7 +364,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   var latestState =
                                       value.serverResponse.getContent();
                                   if (latestState is Loading) {
-                                    return CircularProgressIndicator();
+                                    return Center(child: CircularProgressIndicator());
                                   }
 
                                   print(
