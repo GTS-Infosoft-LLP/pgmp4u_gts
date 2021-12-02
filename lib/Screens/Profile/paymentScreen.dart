@@ -121,7 +121,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       },
       body: json.encode({
         "payment_status": status,
-        "price": 99,
+        "price": 129,
         "payment_repsonse": "sfadfeaf",
         "client_secret": "212421424",
         "access_type": "life_time"
