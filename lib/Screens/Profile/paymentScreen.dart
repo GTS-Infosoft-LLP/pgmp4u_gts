@@ -211,20 +211,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 
-    var provider = Provider.of<PurchaseProvider>(context, listen: false);
-    provider.loadPurchases();
-    provider.purchaseInterface = new PurchaseInterface(navigateBackVar: (){
-      Navigator.pop(context, true);
-    },showBottomSheetVar: (message){
-      final snackBar = SnackBar(
-        content: Text(message),
-      );
-
-      ScaffoldMessenger.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(snackBar);
-    });
-
 
     return SafeArea(
       child: Scaffold(
@@ -365,6 +351,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       value.serverResponse.getContent();
                                   if (latestState is Loading) {
                                     return Center(child: CircularProgressIndicator());
+                                  }
+
+                                  if (latestState is Default) {
+                                    value.showToast(context, latestState.message);
                                   }
 
                                   print(

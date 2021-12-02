@@ -7,8 +7,8 @@
     <list default="true" id="59cefdbb-89db-4562-adea-4ff996be1877" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/Auth/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Auth/login.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/api/apis.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api/apis.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/Profile/paymentScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Profile/paymentScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/provider/purchase_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/provider/purchase_provider.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638334667225</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Log in Login/Register">
+      <created>1638336008860</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1638336008860</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -183,6 +190,7 @@
     <MESSAGE value="Configure ios build" />
     <MESSAGE value="Payment Screen improvements&#10;Change port to 1010" />
     <MESSAGE value="Fix Improper Data" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix Improper Data" />
+    <MESSAGE value="Log in Login/Register" />
+    <option name="LAST_COMMIT_MESSAGE" value="Log in Login/Register" />
   </component>
 </project>

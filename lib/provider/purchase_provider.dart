@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/toast/gf_toast.dart';
+import 'package:getwidget/position/gf_toast_position.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/Models/purchaseable_product.dart';
@@ -12,17 +14,22 @@ import 'package:pgmp4u/utils/event.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-abstract class PurchaseState extends ChangeNotifier{}
+abstract class PurchaseState extends ChangeNotifier {}
 
-class Loading extends PurchaseState{}
-class Success extends PurchaseState{}
-class Default extends PurchaseState{}
+class Loading extends PurchaseState {}
+
+class Success extends PurchaseState {}
+
+class Default extends PurchaseState {
+  String message;
+
+  Default({this.message});
+}
 
 class PurchaseProvider extends ChangeNotifier {
   StoreState storeState = StoreState.loading;
   StreamSubscription<List<PurchaseDetails>> _subscription;
   List<PurchasableProduct> products = [];
-  PurchaseInterface purchaseInterface;
 
   bool get beautifiedDash => _beautifiedDashUpgrade;
   bool _beautifiedDashUpgrade = false;
@@ -65,22 +72,28 @@ class PurchaseProvider extends ChangeNotifier {
     super.dispose();
   }
 
-
-  void bottomSheet(message){
-    if(purchaseInterface != null){
-      //purchaseInterface.showBottomSheetVar(message);
-    }
+  void showToast(context, message) {
+    print("showToast => $message");
+    if (message != null)
+      Future.delayed(Duration.zero).then((value) {
+        GFToast.showToast(
+          message,
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+      });
   }
 
   Future<void> buy(PurchasableProduct product) async {
     final purchaseParam = PurchaseParam(productDetails: product.productDetails);
     switch (product.id) {
       case storeKeyConsumable:
-        bottomSheet("buy consumable");
         await iapConnection.buyConsumable(purchaseParam: purchaseParam);
         break;
       default:
-        bottomSheet("${product.id} is not a known product");
+        serverResponse =
+            Event(Default(message: "${product.id} is not a known product"));
+
         throw ArgumentError.value(
             product.productDetails, '${product.id} is not a known product');
     }
@@ -88,8 +101,7 @@ class PurchaseProvider extends ChangeNotifier {
 
   restore() async {
     print("restore called");
-    var result =
-        await iapConnection.restorePurchases();
+    var result = await iapConnection.restorePurchases();
     print("restore result");
   }
 
@@ -103,7 +115,8 @@ class PurchaseProvider extends ChangeNotifier {
         purchaseDetails.status == PurchaseStatus.restored) {
       switch (purchaseDetails.productID) {
         case storeKeyConsumable:
-          paymentStatus(purchaseDetails.status, purchaseDetails.verificationData.serverVerificationData);
+          paymentStatus(purchaseDetails.status,
+              purchaseDetails.verificationData.serverVerificationData);
 /*
           print("Purchased successfully \n Status => ${purchaseDetails.status};"
               "\n Error => ${purchaseDetails.error}"
@@ -131,9 +144,11 @@ class PurchaseProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
-    print("Token => $stringValue Purchase status ${status == PurchaseStatus.purchased}");
+    print(
+        "Token => $stringValue Purchase status ${status == PurchaseStatus.purchased}");
     var request = json.encode({
-      "payment_status": (status == PurchaseStatus.purchased) ? 'success' : status,
+      "payment_status":
+          (status == PurchaseStatus.purchased) ? 'success' : status,
       "price": 1,
       "payment_receipt": receiptData,
       "payment_source": "app_store",
@@ -156,13 +171,17 @@ class PurchaseProvider extends ChangeNotifier {
 
     print(response.body);
     if (response.statusCode == 200) {
-      print("Navigate back hit");
-      serverResponse = Event(Success());
-    }else{
-      bottomSheet(response.body);
-      serverResponse = Event(Default());
+      Map<String,dynamic> data = json.decode(response.body);
+      if(data["status"] == true) {
+        serverResponse = Event(Success());
+      }else{
+        print("Navigate back hit");
+        serverResponse = Event(Default(message: data["message"]));
+      }
+    } else {
+      serverResponse = Event(Default(message: response.body));
     }
-      notifyListeners();
+    notifyListeners();
   }
 
   void _updateStreamOnError(dynamic error) {
