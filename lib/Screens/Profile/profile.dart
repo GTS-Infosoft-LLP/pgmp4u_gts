@@ -195,7 +195,7 @@ class _ProfileState extends State<Profile> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
+                                /*  Row(
                                     children: [
                                       Icon(
                                         Icons.menu,
@@ -229,7 +229,7 @@ class _ProfileState extends State<Profile> {
                                         color: Colors.white,
                                       ),
                                     ],
-                                  ),
+                                  ),*/
                                 ],
                               ),
                             ),

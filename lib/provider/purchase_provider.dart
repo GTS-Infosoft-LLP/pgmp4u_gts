@@ -172,7 +172,8 @@ class PurchaseProvider extends ChangeNotifier {
     print(response.body);
     if (response.statusCode == 200) {
       Map<String,dynamic> data = json.decode(response.body);
-      if(data["status"] == true) {
+      print("data => $data");
+      if(data["success"] == true) {
         serverResponse = Event(Success());
       }else{
         print("Navigate back hit");

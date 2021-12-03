@@ -33,7 +33,6 @@ class _DashboardState extends State<Dashboard> {
 
   final List<Widget> _children = [
     DashboardScreen(selectedId: () => {print('object')}),
-    TestsScreen(),
     Profile()
   ];
 
@@ -45,6 +44,7 @@ class _DashboardState extends State<Dashboard> {
     //     .then((value) => print("User Added"))
     //     .catchError((error) => print("Failed to add user: $error"));
 
+    print("Tap on Bottom Nav => $index");
     setState(() {
       _currentIndex = index;
     });
@@ -96,28 +96,9 @@ class _DashboardState extends State<Dashboard> {
             ),
             BottomNavigationBarItem(
               icon: new Icon(
-                Icons.assignment,
-                color: _currentIndex == 1
-                    ? _colorfromhex("#3846A9")
-                    : _colorfromhex("#ABAFD1"),
-                size: width * (26 / 420),
-              ),
-              title: Text(
-                'Tests4U',
-                style: TextStyle(
-                  color: _currentIndex == 1
-                      ? _colorfromhex("#3846A9")
-                      : _colorfromhex("#ABAFD1"),
-                  fontFamily: 'Roboto Medium',
-                  fontSize: width * (12 / 420),
-                ),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: new Icon(
                 Icons.person,
                 size: width * (26 / 420),
-                color: _currentIndex == 2
+                color: _currentIndex == 1
                     ? _colorfromhex("#3846A9")
                     : _colorfromhex("#ABAFD1"),
               ),
@@ -126,7 +107,7 @@ class _DashboardState extends State<Dashboard> {
                 style: TextStyle(
                   fontFamily: 'Roboto Medium',
                   fontSize: width * (12 / 420),
-                  color: _currentIndex == 2
+                  color: _currentIndex == 1
                       ? _colorfromhex("#3846A9")
                       : _colorfromhex("#ABAFD1"),
                 ),
