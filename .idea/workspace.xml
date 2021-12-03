@@ -6,13 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="59cefdbb-89db-4562-adea-4ff996be1877" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/Dashboard/DashboardScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Dashboard/DashboardScreen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/Dashboard/dashboard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Dashboard/dashboard.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/Profile/profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Profile/profile.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/Tests/testsScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Tests/testsScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/api/apis.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api/apis.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/provider/purchase_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/provider/purchase_provider.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +52,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JAVA&#10;kotlin" />
     <property name="dart.analysis.tool.window.force.activate" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
@@ -176,7 +172,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638450844122</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Update UI">
+      <created>1638525814316</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1638525814316</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -211,6 +214,7 @@
     <MESSAGE value="Log in Login/Register" />
     <MESSAGE value="Proper error handling in purchase" />
     <MESSAGE value="Price change to 129" />
-    <option name="LAST_COMMIT_MESSAGE" value="Price change to 129" />
+    <MESSAGE value="Update UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update UI" />
   </component>
 </project>
