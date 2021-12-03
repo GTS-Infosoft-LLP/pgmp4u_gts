@@ -145,10 +145,10 @@ class PurchaseProvider extends ChangeNotifier {
     String stringValue = prefs.getString('token');
     http.Response response;
     print(
-        "Token => $stringValue Purchase status ${status == PurchaseStatus.purchased}");
+        "Token => $stringValue Purchase status $status");
     var request = json.encode({
       "payment_status":
-          (status == PurchaseStatus.purchased) ? 'success' : status,
+          (status == PurchaseStatus.purchased) ? 'success' : status.toString(),
       "price": 1,
       "payment_receipt": receiptData,
       "payment_source": "app_store",
