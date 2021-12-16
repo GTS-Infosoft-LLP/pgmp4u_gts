@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
@@ -33,18 +34,21 @@ class PurchaseProvider extends ChangeNotifier {
 
   bool get beautifiedDash => _beautifiedDashUpgrade;
   bool _beautifiedDashUpgrade = false;
-  final iapConnection = InAppPurchase.instance;
+  InAppPurchase iapConnection;
 
   Event<PurchaseState> serverResponse = Event(Default());
 
   PurchaseProvider() {
-    final purchaseUpdated = iapConnection.purchaseStream;
-    _subscription = purchaseUpdated.listen(
-      _onPurchaseUpdate,
-      onDone: _updateStreamOnDone,
-      onError: _updateStreamOnError,
-    );
-    loadPurchases();
+    if(Platform.isIOS) {
+      iapConnection = InAppPurchase.instance;
+      final purchaseUpdated = iapConnection.purchaseStream;
+      _subscription = purchaseUpdated.listen(
+        _onPurchaseUpdate,
+        onDone: _updateStreamOnDone,
+        onError: _updateStreamOnError,
+      );
+      loadPurchases();
+    }
   }
 
   Future<void> loadPurchases() async {

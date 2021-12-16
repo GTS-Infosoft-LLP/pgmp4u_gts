@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:pgmp4u/Screens/MockTest/MockTestAttempts.dart';
 import 'package:pgmp4u/Screens/MockTest/ReviewMockTest.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTest.dart';
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
         statusBarColor: Colors.white, // Color for Android
         statusBarBrightness: Brightness.dark // Dark == white status bar -- for IOS.
     ));
+
+
+
 
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => PurchaseProvider())],
