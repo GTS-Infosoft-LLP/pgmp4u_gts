@@ -80,19 +80,24 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
+
+    var params = json.encode({
+      "mock_test_id": selectedIdNew,
+      "attempt_type": attemptNew,
+      "questons": submitData,
+      "start_date_time": stopTime
+    });
+
     response = await http.post(
       Uri.parse(SUBMIT_MOCK_TEST),
       headers: {
         "Content-Type": "application/json",
         'Authorization': stringValue
       },
-      body: json.encode({
-        "mock_test_id": selectedIdNew,
-        "attempt_type": attemptNew,
-        "questons": submitData,
-        "start_date_time": stopTime
-      }),
+      body: params,
     );
+
+    print("API Response => ${response.request.url}; $params; ${response.body}");
 
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);

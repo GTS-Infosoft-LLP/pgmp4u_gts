@@ -65,6 +65,7 @@ class _TestsScreenState extends State<TestsScreen> {
     var isPremium = mapResponse != null &&
             mapResponse.containsKey("data") ? mapResponse["data"]["paid_status"] == 1
         : false;
+    //var isPremium = true;
     //print("mapResponse => $mapResponse; Status => ${mapResponse["data"]["paid_status"] == 1}");
 
     return Expanded(

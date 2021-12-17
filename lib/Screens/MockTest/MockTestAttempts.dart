@@ -49,6 +49,9 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
           'Content-Type': 'application/json',
           'Authorization': stringValue
         });
+
+    print("API Response ; $stringValue => ${response.request.url}; ${response.body}");
+
     Map getit;
     if (response.statusCode == 200) {
       print(convert.jsonDecode(response.body));
