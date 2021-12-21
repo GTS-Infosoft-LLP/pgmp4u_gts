@@ -150,6 +150,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+
     print(MediaQuery.of(context).padding.top);
     return WillPopScope(
       onWillPop: _onWillPop,

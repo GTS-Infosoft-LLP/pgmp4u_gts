@@ -76,7 +76,7 @@ class _MockTestResultState extends State<MockTestResult> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 
-    var percentage = (double.parse(results["percentage"]) * 100).toInt();
+    var percentage = (double.parse(results["percentage"])).toInt();
 
     print("Percentage Before => ${results["percentage"]} After => $percentage");
 
@@ -164,31 +164,16 @@ class _MockTestResultState extends State<MockTestResult> {
                                     Container(
                                       margin: EdgeInsets.only(top: 3),
                                       child: Text(
-                                        ((double.parse(results["percentage"]) *
-                                                        100)
-                                                    .toInt() <=
-                                                70)
+                                        (percentage <= 25)
                                             ? 'Better Luck Next Time'
-                                            : ((double.parse(results[
-                                                                "percentage"]) *
-                                                            100)
-                                                        .toInt() <=
-                                                    70)
+                                            : (percentage <= 70)
                                                 ? 'Needs Improvement'
                                                 : 'Your are Awesome!',
                                         style: TextStyle(
                                           fontFamily: 'Roboto Bold',
                                           fontSize: width * (19 / 420),
-                                          color: ((double.parse(results[
-                                                                  "percentage"]) *
-                                                              100)
-                                                          .toInt() >=
-                                                      0) &&
-                                                  ((double.parse(results[
-                                                                  "percentage"]) *
-                                                              100)
-                                                          .toInt() <=
-                                                      25)
+                                          color: (percentage >= 0) &&
+                                                  (percentage <= 25)
                                               ? Colors.red
                                               : _colorfromhex("#04AE0B"),
                                           letterSpacing: 0.3,
@@ -234,9 +219,7 @@ class _MockTestResultState extends State<MockTestResult> {
                                     new CircularPercentIndicator(
                                       radius: 110.0,
                                       lineWidth: 10.0,
-                                      percent: (double.parse(
-                                              results["percentage"])) /
-                                          100,
+                                      percent: percentage/100.0,
                                       center: Text(
                                         '${results["percentage"]}%',
                                         style: TextStyle(
