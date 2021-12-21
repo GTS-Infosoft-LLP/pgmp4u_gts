@@ -575,7 +575,10 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                             }),
                                           }
                                         else
-                                          {submitMockTest('',displayTime)}
+                                          {
+                                            if(!loader)
+                                            submitMockTest('',displayTime)
+                                          }
                                       },
                                       child: Container(
                                         padding: EdgeInsets.only(
