@@ -1,17 +1,228 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/main.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="59cefdbb-89db-4562-adea-4ff996be1877" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="21Li4CINWkt1zcM0cfwAC2HZRUz" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" />
+    <panes>
+      <pane id="ProjectPane">
+        <option name="show-excluded-files" value="false" />
+      </pane>
+    </panes>
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="kotlin&#10;JAVA" />
+    <property name="dart.analysis.tool.window.force.activate" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="59cefdbb-89db-4562-adea-4ff996be1877" name="Default Changelist" comment="" />
+      <created>1637726575788</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1637726575788</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Add Dependencies for In-App Purchase&#10;Create Purchase Provider">
+      <created>1637752982030</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1637752982030</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Implement In app purchase for iOS">
+      <created>1637761432921</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1637761432921</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Impl. In App Purchase API">
+      <created>1638160648608</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1638160648608</updated>
+    </task>
+    <task id="LOCAL-00004" summary="API Endpoints centralized">
+      <created>1638189683061</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1638189683061</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Minor API Improvements">
+      <created>1638191679246</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1638191679247</updated>
+    </task>
+    <task id="LOCAL-00006" summary="API Improvements">
+      <created>1638196589284</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1638196589284</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Handle payment verify apis">
+      <created>1638249366962</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1638249366962</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Configure ios build">
+      <created>1638257048591</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1638257048591</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Configure ios build">
+      <created>1638273634717</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1638273634717</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Payment Screen improvements&#10;Change port to 1010">
+      <created>1638334366615</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1638334366616</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Fix Improper Data">
+      <created>1638334667225</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1638334667225</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Log in Login/Register">
+      <created>1638336008860</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1638336008860</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Proper error handling in purchase">
+      <created>1638439103926</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1638439103926</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Price change to 129">
+      <created>1638450844122</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1638450844122</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Update UI">
+      <created>1638525814316</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1638525814316</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Dashboard UI Updates">
+      <created>1638530608704</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1638530608704</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Restore purchase updated">
+      <created>1638536863788</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1638536863788</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Fix payment issue for android">
+      <created>1639658666722</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1639658666722</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Add Logs for api request and responses">
+      <created>1639719916502</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1639719916502</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Fix multiple clicks of submit mock test">
+      <created>1640070555894</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1640070555894</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Fix percent logic">
+      <created>1640081626326</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1640081626326</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
+    <servers />
   </component>
   <component name="ToolWindowManager">
     <editor active="true" />
@@ -19,18 +230,41 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
     </layout>
   </component>
-  <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <option name="show-excluded-files" value="false" />
-      </pane>
-    </panes>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="dart.analysis.tool.window.force.activate" value="true" />
-    <property name="show.migrate.to.gradle.popup" value="false" />
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add Dependencies for In-App Purchase&#10;Create Purchase Provider" />
+    <MESSAGE value="Implement In app purchase for iOS" />
+    <MESSAGE value="Impl. In App Purchase API" />
+    <MESSAGE value="API Endpoints centralized" />
+    <MESSAGE value="Minor API Improvements" />
+    <MESSAGE value="API Improvements" />
+    <MESSAGE value="Handle payment verify apis" />
+    <MESSAGE value="Configure ios build" />
+    <MESSAGE value="Payment Screen improvements&#10;Change port to 1010" />
+    <MESSAGE value="Fix Improper Data" />
+    <MESSAGE value="Log in Login/Register" />
+    <MESSAGE value="Proper error handling in purchase" />
+    <MESSAGE value="Price change to 129" />
+    <MESSAGE value="Update UI" />
+    <MESSAGE value="Dashboard UI Updates" />
+    <MESSAGE value="Restore purchase updated" />
+    <MESSAGE value="Fix payment issue for android" />
+    <MESSAGE value="Add Logs to approver api" />
+    <MESSAGE value="Add Logs for api request and responses" />
+    <MESSAGE value="Fix multiple clicks of submit mock test" />
+    <MESSAGE value="Fix percent logic" />
+    <MESSAGE value="Push build to play store" />
+    <option name="LAST_COMMIT_MESSAGE" value="Push build to play store" />
   </component>
 </project>

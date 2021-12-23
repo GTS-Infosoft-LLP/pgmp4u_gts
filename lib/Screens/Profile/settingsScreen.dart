@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -38,15 +39,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
     print(stringValue);
     http.Response response;
     response = await http.get(
-        Uri.parse("http://18.119.55.81:1010/api/CheckUserPaymentStatus"),
+        Uri.parse(CHECK_USER_PAYMENT_STATUS),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue
         });
 
+
     if (response.statusCode == 200) {
       setState(() {
         mapResponse = convert.jsonDecode(response.body);
+        print("Check Payment Status Res => ${mapResponse}");
       });
       // print(convert.jsonDecode(response.body));
     }
@@ -56,6 +59,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+
+
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -252,8 +257,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               mapResponse["data"]["paid_status"] != 1
                                   ? GestureDetector(
                                       onTap: () => {
-                                        Navigator.of(context)
-                                            .pushNamed('/payment')
+                                        _navigateAndRefresh(context)
                                       },
                                       child: Container(
                                         margin:
@@ -326,4 +330,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
+  void _navigateAndRefresh(context) async {
+    var result = await Navigator.of(context).pushNamed('/payment');
+    print("Result from payment => $result");
+    if(result == true){
+      apiCall();
+    }
+  }
+
 }

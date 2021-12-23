@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:pgmp4u/Screens/MockTest/MockTestAttempts.dart';
 import 'package:pgmp4u/Screens/MockTest/ReviewMockTest.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTest.dart';
@@ -13,44 +14,51 @@ import 'package:pgmp4u/Screens/StartScreen/SplashScreen.dart';
 import 'package:pgmp4u/Screens/StartScreen/startScreen.dart';
 import 'package:pgmp4u/Screens/test.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:pgmp4u/Screens/test.dart';
+import 'package:pgmp4u/provider/purchase_provider.dart';
 import './Screens/Dashboard/dashboard.dart';
 import './Screens/Auth/login.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
-WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-        await Firebase.initializeApp();
-  
+  await Firebase.initializeApp();
+
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
- debugShowCheckedModeBanner: false,
-       routes: {
-        '/': (ctx) => SplashScreen(),
-        '/start-screen': (ctx) => StartScreen(),
-        '/login': (ctx) => LoginScreen(),
-        '/test': (ctx) => Test(),
-        '/dashboard': (ctx) => Dashboard(),
-        '/practice-test': (ctx) => PracticeTest(),
-        '/mock-test': (ctx) => MockTest(),
-        '/mock-test-attempts': (ctx) => MockTestAttempts(),
-        '/mock-test-questions': (ctx) => MockTestQuestions(),
-        '/review-mock-test': (ctx) => ReviewMockTest(),
-        '/settings': (ctx) => SettingsScreen(),
-        '/payment': (ctx) => PaymentScreen(),
-        '/payment-status': (ctx) => PaymentStatus(),
-      },
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: Colors.white, // Color for Android
+        statusBarBrightness: Brightness.dark // Dark == white status bar -- for IOS.
+    ));
+
+
+
+
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => PurchaseProvider())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/': (ctx) => SplashScreen(),
+          '/start-screen': (ctx) => StartScreen(),
+          '/login': (ctx) => LoginScreen(),
+          '/test': (ctx) => Test(),
+          '/dashboard': (ctx) => Dashboard(),
+          '/practice-test': (ctx) => PracticeTest(),
+          '/mock-test': (ctx) => MockTest(),
+          '/mock-test-attempts': (ctx) => MockTestAttempts(),
+          '/mock-test-questions': (ctx) => MockTestQuestions(),
+          '/review-mock-test': (ctx) => ReviewMockTest(),
+          '/settings': (ctx) => SettingsScreen(),
+          '/payment': (ctx) => PaymentScreen(),
+          '/payment-status': (ctx) => PaymentStatus(),
+        },
+      ),
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pgmp4u/Screens/Dashboard/dashboard.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:the_apple_sign_in/scope.dart';
@@ -34,17 +35,23 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     http.Response response;
 
+    var request = json.encode({
+      "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
+      "email": user.email,
+      "access_type": fromProvider
+    });
+
+    print("Request Data => $request");
+
     response = await http.post(
-      Uri.parse('http://18.119.55.81:1010/api/GmailLogin'),
+      Uri.parse(GMAIL_LOGIN),
       headers: {
         "Content-Type": "application/json",
       },
-      body: json.encode({
-        "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
-        "email": user.email,
-        "access_type": fromProvider
-      }),
+      body: request,
     );
+
+    print("Response => ${response.body}");
 
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
@@ -80,18 +87,25 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       loading = true;
     });
+    var request = json.encode({
+      "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
+      "email": user.email,
+      "name": user.displayName,
+      "access_type": fromProvider
+    });
+
+    print("Request => $request");
+
     response = await http.post(
-      Uri.parse('http://18.119.55.81:1010/api/GmailRegister'),
+      Uri.parse(GMAIL_REGISTER),
       headers: {
         "Content-Type": "application/json",
       },
-      body: json.encode({
-        "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
-        "email": user.email,
-        "name": user.displayName,
-        "access_type": fromProvider
-      }),
+      body: request,
     );
+
+    print("Response => ${response.body}");
+
 
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
@@ -128,6 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future signIn() async {
     final googleSignIn = GoogleSignIn();
+    googleSignIn.signOut();
     GoogleSignInAccount user;
     // final user = await GoogleSignInApi.login();
     final googleUser = await googleSignIn.signIn();

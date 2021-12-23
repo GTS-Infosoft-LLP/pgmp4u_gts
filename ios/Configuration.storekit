@@ -1,0 +1,33 @@
+{
+  "identifier" : "BF0B32EF",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "129.99",
+      "familyShareable" : false,
+      "internalID" : "3CC49E94",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.codesigns.pgmp4u.mock_test",
+      "referenceName" : "Pgmp4U",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 1
+  }
+}

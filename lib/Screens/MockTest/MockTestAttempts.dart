@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pgmp4u/Screens/MockTest/MockTestDetails.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTestQuestions.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -43,11 +44,14 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
     String stringValue = prefs.getString('token');
     http.Response response;
     response = await http.get(
-        Uri.parse('http://18.119.55.81:1010/api/MockTest/$selectedIdNew'),
+        Uri.parse(MOCK_TEST +'/$selectedIdNew'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue
         });
+
+    print("API Response ; $stringValue => ${response.request.url}; ${response.body}");
+
     Map getit;
     if (response.statusCode == 200) {
       print(convert.jsonDecode(response.body));

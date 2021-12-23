@@ -8,6 +8,7 @@ import 'package:pgmp4u/Models/mockTest.dart';
 
 import 'package:getwidget/getwidget.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTestResult.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
@@ -79,19 +80,24 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
+
+    var params = json.encode({
+      "mock_test_id": selectedIdNew,
+      "attempt_type": attemptNew,
+      "questons": submitData,
+      "start_date_time": stopTime
+    });
+
     response = await http.post(
-      Uri.parse('http://18.119.55.81:1010/api/SubmitMockTest'),
+      Uri.parse(SUBMIT_MOCK_TEST),
       headers: {
         "Content-Type": "application/json",
         'Authorization': stringValue
       },
-      body: json.encode({
-        "mock_test_id": selectedIdNew,
-        "attempt_type": attemptNew,
-        "questons": submitData,
-        "start_date_time": stopTime
-      }),
+      body: params,
     );
+
+    print("API Response => ${response.request.url}; $params; ${response.body}");
 
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
@@ -165,7 +171,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     http.Response response;
     response = await http.get(
         Uri.parse(
-            'http://18.119.55.81:1010/api/MockTestQuestions/${selectedIdNew}'),
+            MOCK_TEST_QUESTIONS +'/${selectedIdNew}'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue
@@ -569,7 +575,10 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                             }),
                                           }
                                         else
-                                          {submitMockTest('',displayTime)}
+                                          {
+                                            if(!loader)
+                                            submitMockTest('',displayTime)
+                                          }
                                       },
                                       child: Container(
                                         padding: EdgeInsets.only(

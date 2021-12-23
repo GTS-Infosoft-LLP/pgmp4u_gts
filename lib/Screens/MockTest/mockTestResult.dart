@@ -15,6 +15,7 @@ class MockTestResult extends StatefulWidget {
   final mocktestId;
   final attemptData;
   final activeTime;
+
   MockTestResult(
       {this.resultsData, this.mocktestId, this.attemptData, this.activeTime});
 
@@ -36,6 +37,7 @@ class _MockTestResultState extends State<MockTestResult> {
   final mocktestIdNew;
   final attemptId;
   final activeTimeNew;
+
   _MockTestResultState(
       {this.results, this.mocktestIdNew, this.attemptId, this.activeTimeNew});
 
@@ -73,6 +75,11 @@ class _MockTestResultState extends State<MockTestResult> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+
+    var percentage = (double.parse(results["percentage"])).toInt();
+
+    print("Percentage Before => ${results["percentage"]} After => $percentage");
+
     return SafeArea(
       child: WillPopScope(
         onWillPop: _onWillPop,
@@ -150,44 +157,23 @@ class _MockTestResultState extends State<MockTestResult> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Image.asset(
-                                      ((double.parse(results["percentage"]) * 100)
-                                                      .toInt() >=
-                                                  0) &&
-                                              ((double.parse(results[
-                                                              "percentage"]) *
-                                                          100)
-                                                      .toInt() <=
-                                                  25)
+                                      (percentage >= 0) && (percentage <= 25)
                                           ? 'assets/cross.png'
                                           : 'assets/right.png',
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(top: 3),
                                       child: Text(
-                                        ((double.parse(results["percentage"]) *
-                                                        100)
-                                                    .toInt() <=
-                                                70)
+                                        (percentage <= 25)
                                             ? 'Better Luck Next Time'
-                                            :((double.parse(results["percentage"]) *
-                                                        100)
-                                                    .toInt() <=
-                                                70)
+                                            : (percentage <= 70)
                                                 ? 'Needs Improvement'
                                                 : 'Your are Awesome!',
                                         style: TextStyle(
                                           fontFamily: 'Roboto Bold',
                                           fontSize: width * (19 / 420),
-                                          color: ((double.parse(results[
-                                                                  "percentage"]) *
-                                                              100)
-                                                          .toInt() >=
-                                                      0) &&
-                                                  ((double.parse(results[
-                                                                  "percentage"]) *
-                                                              100)
-                                                          .toInt() <=
-                                                      25)
+                                          color: (percentage >= 0) &&
+                                                  (percentage <= 25)
                                               ? Colors.red
                                               : _colorfromhex("#04AE0B"),
                                           letterSpacing: 0.3,
@@ -233,9 +219,7 @@ class _MockTestResultState extends State<MockTestResult> {
                                     new CircularPercentIndicator(
                                       radius: 110.0,
                                       lineWidth: 10.0,
-                                      percent:
-                                          (double.parse(results["percentage"])) /
-                                              100,
+                                      percent: percentage/100.0,
                                       center: Text(
                                         '${results["percentage"]}%',
                                         style: TextStyle(
