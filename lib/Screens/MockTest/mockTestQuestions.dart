@@ -73,7 +73,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     await _stopWatchTimer.dispose();
   }
 
-  Future submitMockTest(data,stopTime) async {
+  Future submitMockTest(data, stopTime) async {
     setState(() {
       loader = true;
     });
@@ -97,6 +97,13 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       body: params,
     );
 
+    print("Url :=> ${SUBMIT_MOCK_TEST}");
+    print("request body  :=> ${params}");
+    print("header :=> ${{
+      'Content-Type': 'application/json',
+      'Authorization': stringValue
+    }}");
+
     print("API Response => ${response.request.url}; $params; ${response.body}");
 
     if (response.statusCode == 200) {
@@ -108,6 +115,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
         setState(() {
           loader = false;
         });
+
+        print(">>>>>>>>> review data ${responseData}");
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -115,7 +124,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                     resultsData: responseData["data"],
                     mocktestId: selectedIdNew,
                     attemptData: attemptNew,
-                    activeTime:stopTime,
+                    activeTime: stopTime,
                   )),
         );
       }
@@ -155,7 +164,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                 child: new Text('No'),
               ),
               TextButton(
-                onPressed: () => {submitMockTest("back","")},
+                onPressed: () => {submitMockTest("back", displayTime)},
                 child: new Text('Yes'),
               ),
             ],
@@ -169,15 +178,21 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     String stringValue = prefs.getString('token');
 
     http.Response response;
-    response = await http.get(
-        Uri.parse(
-            MOCK_TEST_QUESTIONS +'/${selectedIdNew}'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': stringValue
-        });
+    response = await http
+        .get(Uri.parse(MOCK_TEST_QUESTIONS + '/${selectedIdNew}'), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': stringValue
+    });
+
+    print("Url :=> ${Uri.parse(MOCK_TEST_QUESTIONS + '/${selectedIdNew}')}");
+
+    print("header :=> ${{
+      'Content-Type': 'application/json',
+      'Authorization': stringValue
+    }}");
 
     if (response.statusCode == 200) {
+      print(">>>>>> quiz data ${response.body}");
       setState(() {
         startTime = (new DateTime.now()).toString();
         mapResponse = convert.jsonDecode(response.body);
@@ -186,6 +201,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       });
     }
   }
+
+  var displayTime = '';
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +217,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
             initialData: _stopWatchTimer.rawTime.value,
             builder: (context, snap) {
               final value = snap.data;
-              final displayTime = StopWatchTimer.getDisplayTime(value,
+              displayTime = StopWatchTimer.getDisplayTime(value,
                   hours: true, milliSecond: false);
               return Scaffold(
                 body: Container(
@@ -235,7 +252,10 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                           if (loader)
                                             {}
                                           else
-                                            {submitMockTest("back",displayTime)}
+                                            {
+                                              submitMockTest(
+                                                  "back", displayTime)
+                                            }
                                         },
                                         child: Icon(
                                           Icons.arrow_back_ios,
@@ -276,7 +296,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               right: width * (29 / 420),
                                               top: height * (23 / 800),
                                               bottom: height * (23 / 800)),
-                                              margin: EdgeInsets.only(bottom: 40),
+                                          margin: EdgeInsets.only(bottom: 40),
                                           color: Colors.white,
                                           child: Column(
                                             children: [
@@ -412,7 +432,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                               : Colors.white),
                                                       child: Row(
                                                         children: [
-                                                          Container( 
+                                                          Container(
                                                             width: width *
                                                                 (25 / 420),
                                                             height: width *
@@ -475,8 +495,13 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                       (25 /
                                                                           420) *
                                                                       5),
-                                                              child: Text(title[
-                                                                  "question_option"]))
+                                                              child: Text(
+                                                                  title[
+                                                                      "question_option"],
+                                                                  style: TextStyle(
+                                                                      fontSize: width *
+                                                                          14 /
+                                                                          420)))
                                                         ],
                                                       ),
                                                     ),
@@ -576,8 +601,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                           }
                                         else
                                           {
-                                            if(!loader)
-                                            submitMockTest('',displayTime)
+                                            if (!loader)
+                                              submitMockTest('', displayTime)
                                           }
                                       },
                                       child: Container(

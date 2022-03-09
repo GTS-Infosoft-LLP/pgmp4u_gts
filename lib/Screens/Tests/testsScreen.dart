@@ -52,7 +52,7 @@ class _TestsScreenState extends State<TestsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("Build_TestScreen  ${mapResponse}");
+    print("Build_TestScreen render  ${mapResponse}");
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     Color _colorfromhex(String hexColor) {
@@ -62,8 +62,8 @@ class _TestsScreenState extends State<TestsScreen> {
 
     print("width => $width ; Height => $height");
 
-    var isPremium = mapResponse != null &&
-            mapResponse.containsKey("data") ? mapResponse["data"]["paid_status"] == 1
+    var isPremium = mapResponse != null && mapResponse.containsKey("data")
+        ? mapResponse["data"]["paid_status"] == 1
         : false;
     //var isPremium = true;
     //print("mapResponse => $mapResponse; Status => ${mapResponse["data"]["paid_status"] == 1}");
@@ -153,9 +153,7 @@ class _TestsScreenState extends State<TestsScreen> {
                               var result = await Navigator.of(context)
                                   .pushNamed('/payment');
                               print("Result from Payment => $result");
-                              if (result == true) {
-                                apiCall();
-                              }
+                              apiCall();
                             }
                           },
                           child: Container(
@@ -203,18 +201,26 @@ class _TestsScreenState extends State<TestsScreen> {
                                 SizedBox(height: 20),
                                 Row(
                                   children: [
-                                   isPremium ? SizedBox() : Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        "Premium",
-                                        style: TextStyle(decoration: TextDecoration.underline),
-                                        textAlign: TextAlign.end,
-                                      ),
-                                    ),
-                                    SizedBox(width: 18,)
+                                    isPremium
+                                        ? SizedBox()
+                                        : Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              "Premium",
+                                              style: TextStyle(
+                                                  decoration:
+                                                      TextDecoration.underline),
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ),
+                                    SizedBox(
+                                      width: 18,
+                                    )
                                   ],
                                 ),
-                                SizedBox(height: 18,)
+                                SizedBox(
+                                  height: 18,
+                                )
                               ],
                             ),
                           ),

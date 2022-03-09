@@ -131,13 +131,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     String stringValue = prefs.getString('token');
     print(stringValue);
     http.Response response;
-    response = await http.get(
-        Uri.parse(CHECK_USER_PAYMENT_STATUS),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': stringValue
-        });
+    response = await http.get(Uri.parse(CHECK_USER_PAYMENT_STATUS), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': stringValue
+    });
 
+    //response i.e {success: true, cnt: 0, data: {paid_status: 0}}
     if (response.statusCode == 200) {
       setState(() {
         mapResponse = convert.jsonDecode(response.body);
@@ -153,42 +152,41 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     print(MediaQuery.of(context).padding.top);
     return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Sizer(
-      builder: (context, orientation, deviceType) {
-         return Container(
-        color: _colorfromhex("#F7F7FA"),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: SizerUtil.deviceType == DeviceType.mobile ?180:330,
-              width: width,
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.only(bottomRight: Radius.circular(40.0)),
-                gradient: LinearGradient(
-                    colors: [
-                      _colorfromhex('#3846A9'),
-                      _colorfromhex('#5265F8')
-                    ],
-                    begin: const FractionalOffset(0.0, 0.0),
-                    end: const FractionalOffset(1.0, 0.0),
-                    stops: [0.0, 1.0],
-                    tileMode: TileMode.clamp),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: width * (20 / 420),
-                        right: width * (20 / 420),
-                        top: height * (16 / 800)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                       /* Icon(
+        onWillPop: _onWillPop,
+        child: Sizer(builder: (context, orientation, deviceType) {
+          return Container(
+            color: _colorfromhex("#F7F7FA"),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: SizerUtil.deviceType == DeviceType.mobile ? 180 : 330,
+                  width: width,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.only(bottomRight: Radius.circular(40.0)),
+                    gradient: LinearGradient(
+                        colors: [
+                          _colorfromhex('#3846A9'),
+                          _colorfromhex('#5265F8')
+                        ],
+                        begin: const FractionalOffset(0.0, 0.0),
+                        end: const FractionalOffset(1.0, 0.0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                            left: width * (20 / 420),
+                            right: width * (20 / 420),
+                            top: height * (16 / 800)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            /* Icon(
                           Icons.menu,
                           size: width * (24 / 420),
                           color: Colors.white,
@@ -214,100 +212,98 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                           ],
                         ),*/
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                        top: height * (30 / 800),
-                        left: width * (28 / 420),
-                        right: width * (34 / 420)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                            top: height * (30 / 800),
+                            left: width * (28 / 420),
+                            right: width * (34 / 420)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              margin: EdgeInsets.only(bottom: 7),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Hello, ',
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto Regular',
-                                      fontSize: width * (16 / 420),
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Text(
-                                    displayName != null ? displayName : '',
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto Bold',
-                                      fontSize: width * (16 / 420),
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Find a test you',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto Bold',
-                                    fontSize: width * (20 / 420),
-                                    color: Colors.white,
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 7),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Hello, ',
+                                        style: TextStyle(
+                                          fontFamily: 'Roboto Regular',
+                                          fontSize: width * (16 / 420),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        displayName != null ? displayName : '',
+                                        style: TextStyle(
+                                          fontFamily: 'Roboto Bold',
+                                          fontSize: width * (16 / 420),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Text(
-                                  'want to learn',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto Bold',
-                                    fontSize: width * (20 / 420),
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Find a test you',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto Bold',
+                                        fontSize: width * (20 / 420),
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      'want to learn',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto Bold',
+                                        fontSize: width * (20 / 420),
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                )
                               ],
-                            )
+                            ),
+                            photoUrl != null && photoUrl != ""
+                                ? Container(
+                                    width: width * (80 / 420),
+                                    height: width * (80 / 420),
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(photoUrl),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      borderRadius: BorderRadius.circular(80),
+                                    ),
+                                  )
+                                : Container(
+                                    width: width * (80 / 420),
+                                    height: width * (80 / 420),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(80),
+                                    ),
+                                  )
                           ],
                         ),
-                        photoUrl != null && photoUrl != ""
-                            ? Container(
-                                width: width * (80 / 420),
-                                height: width * (80 / 420),
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(photoUrl),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.circular(80),
-                                ),
-                              )
-                            : Container(
-                                width: width * (80 / 420),
-                                height: width * (80 / 420),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(80),
-                                ),
-                              )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      )
+                    ],
+                  ),
+                ),
+                mapResponse != null ? TestsScreen() : Container()
+              ],
             ),
-            mapResponse != null
-                ? TestsScreen()
-                : Container()
-          ],
-        ),
-      );})
-    );
+          );
+        }));
   }
 }

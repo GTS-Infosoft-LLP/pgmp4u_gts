@@ -43,14 +43,20 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
-    response = await http.get(
-        Uri.parse(MOCK_TEST +'/$selectedIdNew'),
+    response = await http.get(Uri.parse(MOCK_TEST + '/$selectedIdNew'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue
         });
-
-    print("API Response ; $stringValue => ${response.request.url}; ${response.body}");
+    print("Url :=> ${Uri.parse(MOCK_TEST + "/$selectedIdNew")}");
+    print("header :=> ${{
+      'Content-Type': 'application/json',
+      'Authorization': stringValue
+    }}");
+    print(
+        "API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
+    print(
+        "API Response ; $stringValue => ${response.request.url}; ${response.body}");
 
     Map getit;
     if (response.statusCode == 200) {
@@ -323,7 +329,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                               'assets/timer.png'),
                                                           Container(width: 2),
                                                           Text(
-                                                            title["attempted_date"]["start_date"],
+                                                            title["attempted_date"]
+                                                                ["start_date"],
                                                             style: TextStyle(
                                                                 fontFamily:
                                                                     'Roboto Regular',

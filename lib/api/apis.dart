@@ -1,7 +1,7 @@
-
-
 const _BASE_URL = "https://pgmp4uapiconnect.vcareprojectmanagement.com/api/";
-//const _BASE_URL = "http://192.168.2.6:1010/api/";
+// const _BASE_URL2 = "http://192.168.2.6:1011/api/";
+// const _BASE_URL2 = "http://18.119.55.81:1011/api/";
+const _BASE_URL2 = "https://tspgmp4uapiconnect.vcareprojectmanagement.com/api/";
 
 const IN_APP_PURCHASE = _BASE_URL + "InAppPurchasePayment";
 const GMAIL_REGISTER = _BASE_URL + "GmailRegister";
@@ -18,3 +18,4 @@ const SUBMIT_MOCK_TEST = _BASE_URL + "SubmitMockTest";
 const MOCK_TEST_QUESTIONS = _BASE_URL + "MockTestQuestions";
 const CHECK_COUPON = _BASE_URL + "CheckCoupon";
 const GET_RAZOR_PAY_ORDER_ID = _BASE_URL + "GetRazorPayOrderid";
+const CREATE_ORDER = _BASE_URL2 + "createOrder";

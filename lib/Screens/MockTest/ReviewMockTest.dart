@@ -16,17 +16,14 @@ class ReviewMockTest extends StatefulWidget {
   });
 
   @override
-  _ReviewMockTestState createState() =>
-      _ReviewMockTestState(selectedIdNew: this.selectedId,attemptDataNew:this.attemptData);
+  _ReviewMockTestState createState() => _ReviewMockTestState(
+      selectedIdNew: this.selectedId, attemptDataNew: this.attemptData);
 }
 
 class _ReviewMockTestState extends State<ReviewMockTest> {
   final selectedIdNew;
-final attemptDataNew;
-  _ReviewMockTestState({
-    this.selectedIdNew,
-    this.attemptDataNew
-  });
+  final attemptDataNew;
+  _ReviewMockTestState({this.selectedIdNew, this.attemptDataNew});
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
@@ -51,18 +48,29 @@ final attemptDataNew;
     print(stringValue);
     http.Response response;
     response = await http.get(
-        Uri.parse(REVIEWS_MOCK_TEST + "/" + selectedIdNew.toString() + '/' + attemptDataNew.toString()),
+        Uri.parse(REVIEWS_MOCK_TEST +
+            "/" +
+            selectedIdNew.toString() +
+            '/' +
+            attemptDataNew.toString()),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': stringValue
         });
 
+    print(
+        ">>>>>> url ${Uri.parse(REVIEWS_MOCK_TEST + "/" + selectedIdNew.toString() + '/' + attemptDataNew.toString())}");
+
+    print("header : ${{
+      'Content-Type': 'application/json',
+      'Authorization': stringValue
+    }}");
     if (response.statusCode == 200) {
       print(convert.jsonDecode(response.body));
       setState(() {
         mapResponse = convert.jsonDecode(response.body);
         listResponse = mapResponse["data"];
-        selectedAnswer = int.parse(mapResponse["data"][0]["youranswer"]) ;
+        selectedAnswer = int.parse(mapResponse["data"][0]["youranswer"]);
       });
       // print(convert.jsonDecode(response.body));
     }
@@ -72,6 +80,8 @@ final attemptDataNew;
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    int _currentAnserIndex = 0;
+    int _currentYourAnserIndex = 0;
     final arguments = ModalRoute.of(context).settings.arguments as Map;
     return SafeArea(
       child: Scaffold(
@@ -150,8 +160,15 @@ final attemptDataNew;
                                                       setState(() {
                                                         _quetionNo--;
 
-                                                        selectedAnswer = int.parse(listResponse[_quetionNo]["youranswer"]);
-                                                        realAnswer =  mapResponse["data"][_quetionNo]["Question"]["right_answer"];
+                                                        selectedAnswer = int
+                                                            .parse(listResponse[
+                                                                    _quetionNo]
+                                                                ["youranswer"]);
+                                                        realAnswer = mapResponse[
+                                                                        "data"]
+                                                                    [_quetionNo]
+                                                                ["Question"]
+                                                            ["right_answer"];
                                                       })
                                                     },
                                                     child: Icon(
@@ -180,8 +197,15 @@ final attemptDataNew;
                                                           _quetionNo =
                                                               _quetionNo + 1;
                                                         }
-                                                        selectedAnswer = int.parse(listResponse[_quetionNo]["youranswer"]);
-                                                        realAnswer =  mapResponse["data"][_quetionNo]["Question"]["right_answer"];
+                                                        selectedAnswer = int
+                                                            .parse(listResponse[
+                                                                    _quetionNo]
+                                                                ["youranswer"]);
+                                                        realAnswer = mapResponse[
+                                                                        "data"]
+                                                                    [_quetionNo]
+                                                                ["Question"]
+                                                            ["right_answer"];
                                                       }),
                                                       print(_quetionNo)
                                                     },
@@ -200,8 +224,8 @@ final attemptDataNew;
                                               top: height * (15 / 800)),
                                           child: Text(
                                             listResponse != null
-                                                ? listResponse[_quetionNo]["Question"]
-                                                    ["question"]
+                                                ? listResponse[_quetionNo]
+                                                    ["Question"]["question"]
                                                 : '',
                                             style: TextStyle(
                                               fontFamily: 'Roboto Regular',
@@ -212,46 +236,86 @@ final attemptDataNew;
                                           ),
                                         ),
                                         Column(
-                                          children: listResponse[_quetionNo]["Question"]
-                                                  ["Options"]
+                                          children: listResponse[_quetionNo]
+                                                  ["Question"]["Options"]
                                               .map<Widget>((title) {
-                                            var index = listResponse[_quetionNo]["Question"]
-                                                    ["Options"]
+                                            var index = listResponse[_quetionNo]
+                                                    ["Question"]["Options"]
                                                 .indexOf(title);
+                                            // print("index >>>>>> $index");
+
+                                            /// Right answer index find
+                                            var _rightAnwerId =
+                                                listResponse[_quetionNo]
+                                                        ['Question']
+                                                    ['right_answer'];
+
+                                            // print(
+                                            //     "_rightAnwerId ${_rightAnwerId}");
+                                            var _optionList =
+                                                listResponse[_quetionNo]
+                                                        ["Question"]["Options"]
+                                                    as List;
+
+                                            // print("_optionList ${_optionList}");
+                                            var getObject = _optionList
+                                                .firstWhere((element) =>
+                                                    element['id'] ==
+                                                    _rightAnwerId);
+                                            // print("getObject ${getObject}");
+                                            var _index =
+                                                _optionList.indexOf(getObject);
+                                            _currentAnserIndex = _index;
+                                            // print("get index ${_index}");
+
+                                            /// Your wrong answer index find
+                                            var _yourAnserId =
+                                                listResponse[_quetionNo]
+                                                    ["youranswer"];
+
+                                            // print("your id ${_yourAnserId}");
+                                            var _yourAnswerObject = _optionList
+                                                .firstWhere((element) =>
+                                                    element['id'].toString() ==
+                                                    _yourAnserId.toString());
+
+                                            var _currentYourAnserIndex =
+                                                _optionList
+                                                    .indexOf(_yourAnswerObject);
+
+                                            // print(
+                                            //     "your answer inde ${_currentYourAnserIndex}");
                                             return GestureDetector(
                                               onTap: () => {
                                                 setState(() {
                                                   selectedAnswer = title["id"];
                                                   realAnswer =
-                                                      listResponse[_quetionNo]["Question"]
+                                                      listResponse[_quetionNo]
+                                                              ["Question"]
                                                           ["right_answer"];
                                                 })
                                               },
                                               child: Container(
                                                 color: title["id"] ==
                                                             selectedAnswer &&
-                                                        listResponse[_quetionNo]["Question"]
-                                                                [
+                                                        listResponse[_quetionNo]
+                                                                    ["Question"][
                                                                 "right_answer"] ==
                                                             selectedAnswer
                                                     ? _colorfromhex("#E6F7E7")
-                                                    : title["id"] ==
-                                                                selectedAnswer &&
-                                                            listResponse[_quetionNo]["Question"]
-                                                                    [
+                                                    : title["id"] == selectedAnswer &&
+                                                            listResponse[_quetionNo]
+                                                                        ["Question"][
                                                                     "right_answer"] !=
                                                                 selectedAnswer
                                                         ? _colorfromhex(
                                                             "#FFF6F6")
-                                                        : selectedAnswer !=
-                                                                    null &&
-                                                                listResponse[_quetionNo]["Question"]
-                                                                        [
-                                                                        "right_answer"] !=
+                                                        : selectedAnswer != null &&
+                                                                listResponse[_quetionNo]["Question"]["right_answer"] !=
                                                                     selectedAnswer &&
                                                                 title["id"] ==
-                                                                    listResponse[
-                                                                            _quetionNo]["Question"]
+                                                                    listResponse[_quetionNo]
+                                                                            ["Question"]
                                                                         ["right_answer"]
                                                             ? _colorfromhex("#E6F7E7")
                                                             : Colors.white,
@@ -275,7 +339,8 @@ final attemptDataNew;
                                                           ),
                                                           color: title["id"] ==
                                                                       selectedAnswer &&
-                                                                  listResponse[_quetionNo]["Question"]
+                                                                  listResponse[_quetionNo]
+                                                                              ["Question"]
                                                                           [
                                                                           "right_answer"] ==
                                                                       selectedAnswer
@@ -287,16 +352,13 @@ final attemptDataNew;
                                                                           selectedAnswer
                                                                   ? _colorfromhex(
                                                                       "#FF0000")
-                                                                  : selectedAnswer != null &&
+                                                                  : selectedAnswer !=
+                                                                              null &&
                                                                           listResponse[_quetionNo]["Question"]["right_answer"] !=
                                                                               selectedAnswer &&
-                                                                          title["id"] ==
-                                                                              listResponse[_quetionNo]["Question"][
-                                                                                  "right_answer"]
-                                                                      ? _colorfromhex(
-                                                                          "#04AE0B")
-                                                                      : Colors
-                                                                          .white),
+                                                                          title["id"] == listResponse[_quetionNo]["Question"]["right_answer"]
+                                                                      ? _colorfromhex("#04AE0B")
+                                                                      : Colors.white),
                                                       child: Center(
                                                         child: Text(
                                                           index == 0
@@ -339,8 +401,39 @@ final attemptDataNew;
                                                             (width *
                                                                 (25 / 420) *
                                                                 5),
-                                                        child: Text(title[
-                                                            "question_option"]))
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                                title[
+                                                                    "question_option"],
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        width *
+                                                                            14 /
+                                                                            420)),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .bottomRight,
+                                                                  child: getTextSelecd(
+                                                                      _currentAnserIndex +
+                                                                          1,
+                                                                      _currentYourAnserIndex +
+                                                                          1,
+                                                                      index +
+                                                                          1)),
+                                                            )
+                                                          ],
+                                                        ))
                                                   ],
                                                 ),
                                               ),
@@ -417,7 +510,7 @@ final attemptDataNew;
                                                                         (9 /
                                                                             800)),
                                                             child: Text(
-                                                              'Answer C is the correct one',
+                                                              'Answer ${getRightAnser(_currentAnserIndex + 1)} is the correct one',
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Roboto Regular',
@@ -439,7 +532,9 @@ final attemptDataNew;
                                                                             800)),
                                                             child: Text(
                                                               listResponse[
-                                                                      _quetionNo]["Question"]
+                                                                          _quetionNo]
+                                                                      [
+                                                                      "Question"]
                                                                   [
                                                                   "explanation"],
                                                               style: TextStyle(
@@ -465,11 +560,11 @@ final attemptDataNew;
                               ),
                             ),
                           )
-                        :  Container(
+                        : Container(
                             child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
                                 _colorfromhex("#4849DF")),
-                          )) 
+                          ))
                   ],
                 ),
               ),
@@ -487,5 +582,36 @@ final attemptDataNew;
         ),
       ),
     );
+  }
+
+  bool isSelected(var title) {
+    return selectedAnswer != null &&
+        listResponse[_quetionNo]["Question"]["right_answer"] !=
+            selectedAnswer &&
+        title["id"] == listResponse[_quetionNo]["Question"]["right_answer"];
+  }
+
+  bool isCurrentOption(var title, _quetionNo) {
+    return title["id"] == selectedAnswer &&
+        listResponse[_quetionNo]["Question"]["right_answer"] == selectedAnswer;
+  }
+
+  String getRightAnser(value) {
+    switch (value) {
+      case 1:
+        return "A";
+      case 2:
+        return "B";
+      case 3:
+        return "C";
+      case 4:
+        return "D";
+    }
+  }
+
+  Widget getTextSelecd(rightIndex, wrongIndex, currentIndex) {
+    return [rightIndex, wrongIndex].contains(currentIndex)
+        ? Text(wrongIndex == currentIndex ? "Your Selection" : "Correct Answer")
+        : SizedBox();
   }
 }

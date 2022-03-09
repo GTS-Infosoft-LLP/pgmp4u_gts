@@ -50,6 +50,11 @@ dependencies:
   sizer: ^2.0.15
   in_app_purchase: ^1.0.9
   provider: ^5.0.0
+  platform: ^3.1.0
+  flutter_stripe: ^2.2.0
+  # webview_flutter: ^3.0.1
+  flutter_inappwebview: ^5.3.2
+  
 
 dev_dependencies:
   flutter_test:

@@ -29,20 +29,18 @@ class _MockTestState extends State<MockTest> {
     String stringValue = prefs.getString('token');
     print(stringValue);
     http.Response response;
-    response = await http
-        .get(Uri.parse(ALL_MOCK_TESTS), headers: {
+    response = await http.get(Uri.parse(ALL_MOCK_TESTS), headers: {
       'Content-Type': 'application/json',
       'Authorization': stringValue
     });
 
     if (response.statusCode == 200) {
-    
       setState(() {
         mapResponse = convert.jsonDecode(response.body);
         listResponse = mapResponse["data"];
       });
 
-      // print(convert.jsonDecode(response.body));
+      print("response body  ${convert.jsonDecode(response.body)} ");
     }
   }
 
@@ -108,18 +106,18 @@ class _MockTestState extends State<MockTest> {
               ),
               listResponse != null
                   ? Expanded(
-                     
                       child: SingleChildScrollView(
                         child: Container(
-                           margin: EdgeInsets.only(
-                          left: width * (18 / 420), right: width * (18 / 420)),
+                          margin: EdgeInsets.only(
+                              left: width * (18 / 420),
+                              right: width * (18 / 420)),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                margin:
-                                    EdgeInsets.only(bottom: height * (22 / 800)),
+                                margin: EdgeInsets.only(
+                                    bottom: height * (22 / 800)),
                                 child: Text(
                                   'Mock Tests 4U',
                                   style: TextStyle(
@@ -158,8 +156,8 @@ class _MockTestState extends State<MockTest> {
                                                 height: 60,
                                                 padding: EdgeInsets.all(17),
                                                 decoration: BoxDecoration(
-                                                    color:
-                                                        _colorfromhex("#72A258"),
+                                                    color: _colorfromhex(
+                                                        "#72A258"),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             10)),
@@ -215,44 +213,40 @@ class _MockTestState extends State<MockTest> {
                                                             return Container(
                                                               width: 25,
                                                               height: 25,
-                                                              margin:
-                                                                  EdgeInsets.only(
+                                                              margin: EdgeInsets
+                                                                  .only(
                                                                       right: 6),
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: attemptsData["perc"] ==
                                                                         ''
-                                                                    ? Colors.white
-                                                                    : (((double.parse(attemptsData["perc"]) ).toInt()) >=
+                                                                    ? Colors
+                                                                        .white
+                                                                    : (((double.parse(attemptsData["perc"])).toInt()) >=
                                                                                 0 &&
-                                                                            ((double.parse(attemptsData["perc"]) ).toInt()) <=
+                                                                            ((double.parse(attemptsData["perc"])).toInt()) <=
                                                                                 25)
                                                                         ? _colorfromhex(
                                                                             "#FFECEC")
-                                                                        : (((double.parse(attemptsData["perc"]) ).toInt()) >= 26 &&
-                                                                                ((double.parse(attemptsData["perc"]) ).toInt()) <=
-                                                                                    50)
-                                                                            ? _colorfromhex(
-                                                                                "#FFFAEB")
-                                                                            : (((double.parse(attemptsData["perc"]) ).toInt()) >= 51 && ((double.parse(attemptsData["perc"]) ).toInt()) <= 75)
+                                                                        : (((double.parse(attemptsData["perc"])).toInt()) >= 26 &&
+                                                                                ((double.parse(attemptsData["perc"])).toInt()) <= 50)
+                                                                            ? _colorfromhex("#FFFAEB")
+                                                                            : (((double.parse(attemptsData["perc"])).toInt()) >= 51 && ((double.parse(attemptsData["perc"])).toInt()) <= 75)
                                                                                 ? _colorfromhex("#FFEFDC")
                                                                                 : _colorfromhex("#E4FFE6"),
                                                                 border:
                                                                     Border.all(
-                                                                  color: attemptsData["perc"] ==
+                                                                  color: attemptsData[
+                                                                              "perc"] ==
                                                                           ''
                                                                       ? Colors
                                                                           .grey
-                                                                      : (((double.parse(attemptsData["perc"]) ).toInt()) >=
-                                                                                  0 &&
-                                                                              ((double.parse(attemptsData["perc"])).toInt()) <=
-                                                                                  25)
-                                                                          ? _colorfromhex(
-                                                                              "#FF0000")
-                                                                          : (((double.parse(attemptsData["perc"]) ).toInt()) >= 26 &&
-                                                                                  ((double.parse(attemptsData["perc"]) ).toInt()) <= 50)
+                                                                      : (((double.parse(attemptsData["perc"])).toInt()) >= 0 &&
+                                                                              ((double.parse(attemptsData["perc"])).toInt()) <= 25)
+                                                                          ? _colorfromhex("#FF0000")
+                                                                          : (((double.parse(attemptsData["perc"])).toInt()) >= 26 && ((double.parse(attemptsData["perc"])).toInt()) <= 50)
                                                                               ? _colorfromhex("#FFD236")
-                                                                              : (((double.parse(attemptsData["perc"]) ).toInt()) >= 51 && ((double.parse(attemptsData["perc"]) ).toInt()) <= 75)
+                                                                              : (((double.parse(attemptsData["perc"])).toInt()) >= 51 && ((double.parse(attemptsData["perc"])).toInt()) <= 75)
                                                                                   ? _colorfromhex("#FE9E45")
                                                                                   : _colorfromhex("#04AE0B"),
                                                                 ),
@@ -266,7 +260,7 @@ class _MockTestState extends State<MockTest> {
                                                                   attemptsData[
                                                                               "perc"] !=
                                                                           ''
-                                                                      ? ((double.parse(attemptsData["perc"]) ).toInt())
+                                                                      ? ((double.parse(attemptsData["perc"])).toInt())
                                                                               .toString() +
                                                                           '%'
                                                                       : '--',
@@ -278,17 +272,16 @@ class _MockTestState extends State<MockTest> {
                                                                         FontWeight
                                                                             .w600,
                                                                     fontSize: 8,
-                                                                    color: attemptsData[
-                                                                                "perc"] ==
+                                                                    color: attemptsData["perc"] ==
                                                                             ''
                                                                         ? Colors
                                                                             .grey
                                                                         : (((double.parse(attemptsData["perc"])).toInt()) >= 0 &&
-                                                                                ((double.parse(attemptsData["perc"]) ).toInt()) <= 25)
+                                                                                ((double.parse(attemptsData["perc"])).toInt()) <= 25)
                                                                             ? _colorfromhex("#FF0000")
-                                                                            : (((double.parse(attemptsData["perc"]) ).toInt()) >= 26 && ((double.parse(attemptsData["perc"])).toInt()) <= 50)
+                                                                            : (((double.parse(attemptsData["perc"])).toInt()) >= 26 && ((double.parse(attemptsData["perc"])).toInt()) <= 50)
                                                                                 ? _colorfromhex("#FFD236")
-                                                                                : (((double.parse(attemptsData["perc"]) ).toInt()) >= 51 && ((double.parse(attemptsData["perc"]) ).toInt()) <= 75)
+                                                                                : (((double.parse(attemptsData["perc"])).toInt()) >= 51 && ((double.parse(attemptsData["perc"])).toInt()) <= 75)
                                                                                     ? _colorfromhex("#FE9E45")
                                                                                     : _colorfromhex("#04AE0B"),
                                                                     letterSpacing:
@@ -308,14 +301,13 @@ class _MockTestState extends State<MockTest> {
                                         GestureDetector(
                                           onTap: () => {
                                             Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          MockTestAttempts(
-                                                              selectedId:
-                                                                  data["id"],
-                                                             ),)
-                                                ),
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MockTestAttempts(
+                                                    selectedId: data["id"],
+                                                  ),
+                                                )),
                                             // if (data["attempts"].length+1 < 5)
                                             //   {
                                             //     // Navigator.push(
@@ -370,13 +362,13 @@ class _MockTestState extends State<MockTest> {
                         ),
                       ),
                     )
-                  :  Container(
-                    width: width,
+                  : Container(
+                      width: width,
                       child: Center(
                         child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            _colorfromhex("#4849DF")),
-                    ),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              _colorfromhex("#4849DF")),
+                        ),
                       ))
             ],
           ),

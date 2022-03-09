@@ -219,7 +219,7 @@ class _MockTestResultState extends State<MockTestResult> {
                                     new CircularPercentIndicator(
                                       radius: 110.0,
                                       lineWidth: 10.0,
-                                      percent: percentage/100.0,
+                                      percent: percentage / 100.0,
                                       center: Text(
                                         '${results["percentage"]}%',
                                         style: TextStyle(

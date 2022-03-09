@@ -69,12 +69,9 @@ class _PaymentStatusState extends State<PaymentStatus> {
                 child: OutlinedButton(
                   onPressed: () => {
                     if (statusNew == "success")
-                      {Navigator.of(context).pushNamed('/mock-test')}
+                      {Navigator.of(context).popAndPushNamed('/mock-test')}
                     else
-                      {
-                        Navigator.of(context)
-                            .popUntil(ModalRoute.withName('/payment'))
-                      }
+                      {Navigator.pop(context)}
                   },
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(

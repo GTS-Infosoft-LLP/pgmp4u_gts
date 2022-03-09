@@ -25,7 +25,6 @@ class _SplashScreenState extends State<SplashScreen> {
       tokenData = value;
     });
     Timer timer = new Timer(new Duration(seconds: 2), () {
-    
       if (value != null) {
         Navigator.of(context).pushNamed('/dashboard');
       } else {

@@ -74,26 +74,39 @@ class _DashboardState extends State<Dashboard> {
         bottomNavigationBar: BottomNavigationBar(
           onTap: onTabTapped,
           currentIndex: _currentIndex,
+          selectedLabelStyle: TextStyle(
+            fontFamily: 'Roboto Medium',
+            fontSize: width * (12 / 420),
+            color: _colorfromhex("#ABAFD1"),
+          ),
+          selectedItemColor: _colorfromhex("#3846A9"),
+          unselectedLabelStyle: TextStyle(
+            fontFamily: 'Roboto Medium',
+            fontSize: width * (12 / 420),
+            color: _colorfromhex("#3846A9"),
+          ),
           items: [
             BottomNavigationBarItem(
-              icon: new Icon(
-                Icons.home,
-                size: width * (26 / 420),
-                color: _currentIndex == 0
-                    ? _colorfromhex("#3846A9")
-                    : _colorfromhex("#ABAFD1"),
-              ),
-              title: Text(
-                'Dashboard',
-                style: TextStyle(
-                  fontFamily: 'Roboto Medium',
-                  fontSize: width * (12 / 420),
+                icon: new Icon(
+                  Icons.home,
+                  size: width * (26 / 420),
                   color: _currentIndex == 0
                       ? _colorfromhex("#3846A9")
                       : _colorfromhex("#ABAFD1"),
                 ),
-              ),
-            ),
+                label: 'Dashboard'
+
+                // Text(
+                //   'Dashboard',
+                //   style: TextStyle(
+                //     fontFamily: 'Roboto Medium',
+                //     fontSize: width * (12 / 420),
+                //     color: _currentIndex == 0
+                //         ? _colorfromhex("#3846A9")
+                //         : _colorfromhex("#ABAFD1"),
+                //   ),
+                // ),
+                ),
             BottomNavigationBarItem(
               icon: new Icon(
                 Icons.person,
@@ -102,16 +115,17 @@ class _DashboardState extends State<Dashboard> {
                     ? _colorfromhex("#3846A9")
                     : _colorfromhex("#ABAFD1"),
               ),
-              title: Text(
-                'Profile',
-                style: TextStyle(
-                  fontFamily: 'Roboto Medium',
-                  fontSize: width * (12 / 420),
-                  color: _currentIndex == 1
-                      ? _colorfromhex("#3846A9")
-                      : _colorfromhex("#ABAFD1"),
-                ),
-              ),
+              label: 'Profile',
+              // Text(
+              //   'Profile',
+              //   style: TextStyle(
+              //     fontFamily: 'Roboto Medium',
+              //     fontSize: width * (12 / 420),
+              //     color: _currentIndex == 1
+              //         ? _colorfromhex("#3846A9")
+              //         : _colorfromhex("#ABAFD1"),
+              //   ),
+              // ),
             ),
           ],
         ),
