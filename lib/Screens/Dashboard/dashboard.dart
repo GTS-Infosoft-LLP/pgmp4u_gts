@@ -69,68 +69,66 @@ class _DashboardState extends State<Dashboard> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     print(MediaQuery.of(context).padding.top);
-    return SafeArea(
-      child: Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: onTabTapped,
-          currentIndex: _currentIndex,
-          selectedLabelStyle: TextStyle(
-            fontFamily: 'Roboto Medium',
-            fontSize: width * (12 / 420),
-            color: _colorfromhex("#ABAFD1"),
-          ),
-          selectedItemColor: _colorfromhex("#3846A9"),
-          unselectedLabelStyle: TextStyle(
-            fontFamily: 'Roboto Medium',
-            fontSize: width * (12 / 420),
-            color: _colorfromhex("#3846A9"),
-          ),
-          items: [
-            BottomNavigationBarItem(
-                icon: new Icon(
-                  Icons.home,
-                  size: width * (26 / 420),
-                  color: _currentIndex == 0
-                      ? _colorfromhex("#3846A9")
-                      : _colorfromhex("#ABAFD1"),
-                ),
-                label: 'Dashboard'
-
-                // Text(
-                //   'Dashboard',
-                //   style: TextStyle(
-                //     fontFamily: 'Roboto Medium',
-                //     fontSize: width * (12 / 420),
-                //     color: _currentIndex == 0
-                //         ? _colorfromhex("#3846A9")
-                //         : _colorfromhex("#ABAFD1"),
-                //   ),
-                // ),
-                ),
-            BottomNavigationBarItem(
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
+        selectedLabelStyle: TextStyle(
+          fontFamily: 'Roboto Medium',
+          fontSize: width * (12 / 420),
+          color: _colorfromhex("#ABAFD1"),
+        ),
+        selectedItemColor: _colorfromhex("#3846A9"),
+        unselectedLabelStyle: TextStyle(
+          fontFamily: 'Roboto Medium',
+          fontSize: width * (12 / 420),
+          color: _colorfromhex("#3846A9"),
+        ),
+        items: [
+          BottomNavigationBarItem(
               icon: new Icon(
-                Icons.person,
+                Icons.home,
                 size: width * (26 / 420),
-                color: _currentIndex == 1
+                color: _currentIndex == 0
                     ? _colorfromhex("#3846A9")
                     : _colorfromhex("#ABAFD1"),
               ),
-              label: 'Profile',
+              label: 'Dashboard'
+
               // Text(
-              //   'Profile',
+              //   'Dashboard',
               //   style: TextStyle(
               //     fontFamily: 'Roboto Medium',
               //     fontSize: width * (12 / 420),
-              //     color: _currentIndex == 1
+              //     color: _currentIndex == 0
               //         ? _colorfromhex("#3846A9")
               //         : _colorfromhex("#ABAFD1"),
               //   ),
               // ),
+              ),
+          BottomNavigationBarItem(
+            icon: new Icon(
+              Icons.person,
+              size: width * (26 / 420),
+              color: _currentIndex == 1
+                  ? _colorfromhex("#3846A9")
+                  : _colorfromhex("#ABAFD1"),
             ),
-          ],
-        ),
-        body: _children[_currentIndex],
+            label: 'Profile',
+            // Text(
+            //   'Profile',
+            //   style: TextStyle(
+            //     fontFamily: 'Roboto Medium',
+            //     fontSize: width * (12 / 420),
+            //     color: _currentIndex == 1
+            //         ? _colorfromhex("#3846A9")
+            //         : _colorfromhex("#ABAFD1"),
+            //   ),
+            // ),
+          ),
+        ],
       ),
+      body: _children[_currentIndex],
     );
   }
 }

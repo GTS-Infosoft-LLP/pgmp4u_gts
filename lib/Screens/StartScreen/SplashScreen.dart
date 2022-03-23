@@ -26,9 +26,11 @@ class _SplashScreenState extends State<SplashScreen> {
     });
     Timer timer = new Timer(new Duration(seconds: 2), () {
       if (value != null) {
-        Navigator.of(context).pushNamed('/dashboard');
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/dashboard', (r) => false);
       } else {
-        Navigator.of(context).pushNamed('/start-screen');
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/start-screen', (r) => false);
       }
     });
   }

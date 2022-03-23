@@ -106,7 +106,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     print("Response => ${response.body}");
 
-
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
       print(json.decode(response.body));
@@ -225,20 +224,19 @@ class _LoginScreenState extends State<LoginScreen> {
               fullName.familyName != null) {
             final displayName = '${fullName.givenName} ${fullName.familyName}';
             await firebaseUser.updateDisplayName(displayName);
-           
+
             print('firebaseUser new');
-         
           }
         }
 
-         print(firebaseUser);
-             
-              if (signInBool) {
-                loginHandler(firebaseUser, "apple");
-              } else {
-                registerHandler(firebaseUser, "apple");
-              }
-             
+        print(firebaseUser);
+
+        if (signInBool) {
+          loginHandler(firebaseUser, "apple");
+        } else {
+          registerHandler(firebaseUser, "apple");
+        }
+
         break;
       // return firebaseUser;
       case AuthorizationStatus.error:
@@ -298,7 +296,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                     ),
-                    Center(child: Image.asset('assets/login_image1.png')),
+                    Center(
+                        child: Image.asset(
+                      'assets/login_image1.png',
+                      height: height * .42,
+                    )),
                     Container(
                       padding: EdgeInsets.only(
                           top: height * (16 / 800),

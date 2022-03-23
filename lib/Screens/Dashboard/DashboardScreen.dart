@@ -31,7 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   static const platform = const MethodChannel("razorpay_flutter");
 
-  Razorpay _razorpay;
+  // Razorpay _razorpay;
   final Function selectedIdNew;
 
   _DashboardScreenState({
@@ -88,10 +88,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    _razorpay = Razorpay();
-    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+    // _razorpay = Razorpay();
+    // _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    // _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    // _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     getValue();
     addData();
     apiCall();
@@ -106,24 +106,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {}
-  void openCheckout() async {
-    var options = {
-      'key': 'rzp_test_cjT5SUSriGCr6a',
-      'amount': 1 * 100,
-      'name': 'Acme Corp.',
-      'description': 'Fine T-Shirt',
-      'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
-      'external': {
-        'wallets': ['paytm']
-      }
-    };
+  // void openCheckout() async {
+  //   var options = {
+  //     'key': 'rzp_test_cjT5SUSriGCr6a',
+  //     'amount': 1 * 100,
+  //     'name': 'Acme Corp.',
+  //     'description': 'Fine T-Shirt',
+  //     'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
+  //     'external': {
+  //       'wallets': ['paytm']
+  //     }
+  //   };
 
-    try {
-      _razorpay.open(options);
-    } catch (e) {
-      debugPrint('Error: e');
-    }
-  }
+  //   try {
+  //     _razorpay.open(options);
+  //   } catch (e) {
+  //     debugPrint('Error: e');
+  //   }
+  // }
 
   Map mapResponse;
   Future apiCall() async {

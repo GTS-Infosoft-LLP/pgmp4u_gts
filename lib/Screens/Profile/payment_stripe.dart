@@ -25,43 +25,55 @@ class _PaymentWithStripeState extends State<PaymentWithStripe> {
     print(">>>> token");
     print(">>>> token ${widget.token}");
     return WillPopScope(
-      onWillPop: () async {
-        Navigator.pop(context, false);
+        onWillPop: () async {
+          Navigator.pop(context, false);
 
-        return false;
-      },
-      child: InAppWebView(
-        initialUrlRequest: URLRequest(url: Uri.parse(CREATE_ORDER), headers: {
-          'Content-Type': 'application/json',
-          'Authorization': widget.token,
-        }),
-        onWebViewCreated: (InAppWebViewController controller) {
-          webView = controller;
+          return false;
         },
-        onLoadStart: (InAppWebViewController controller, Uri url) {
-          print("current url >>>>>>  ${url}");
-        },
-        onLoadStop: (InAppWebViewController controller, Uri url) {},
-        onConsoleMessage: (InAppWebViewController _controller,
-            ConsoleMessage consoleMessage) async {
-          print("console message: ${consoleMessage}");
-          _controller.addJavaScriptHandler(
-              handlerName: "pgmp4u",
-              callback: (args) {
-                // Here you receive all the arguments from the JavaScript side
-                // that is a List<dynamic>
-                print("From the JavaScript side:");
-                print(args);
-                var paymentStatus = args[0];
-                if ("success" == paymentStatus) {
-                  naviagteBack(context, true);
-                } else {
-                  naviagteBack(context, false);
-                }
-              });
-        },
-      ),
-    );
+        child: Scaffold(
+          appBar: AppBar(
+            leading: BackButton(
+              color: Colors.black,
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+            shadowColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+          ),
+          body: InAppWebView(
+            initialUrlRequest:
+                URLRequest(url: Uri.parse(CREATE_ORDER), headers: {
+              'Content-Type': 'application/json',
+              'Authorization': widget.token,
+            }),
+            onWebViewCreated: (InAppWebViewController controller) {
+              webView = controller;
+            },
+            onLoadStart: (InAppWebViewController controller, Uri url) {
+              print("current url >>>>>>  ${url}");
+            },
+            onLoadStop: (InAppWebViewController controller, Uri url) {},
+            onConsoleMessage: (InAppWebViewController _controller,
+                ConsoleMessage consoleMessage) async {
+              print("console message: ${consoleMessage}");
+              _controller.addJavaScriptHandler(
+                  handlerName: "pgmp4u",
+                  callback: (args) {
+                    // Here you receive all the arguments from the JavaScript side
+                    // that is a List<dynamic>
+                    print("From the JavaScript side:");
+                    print(args);
+                    var paymentStatus = args[0];
+                    if ("success" == paymentStatus) {
+                      naviagteBack(context, true);
+                    } else {
+                      naviagteBack(context, false);
+                    }
+                  });
+            },
+          ),
+        ));
   }
 
   naviagteBack(BuildContext context, bool stats) {

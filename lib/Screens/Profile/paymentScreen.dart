@@ -419,6 +419,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               onPressed: () async {
                 if (Platform.isIOS) {
                   print("buttonClicked ${provider.products[0].id}");
+                  print("price ${provider.products[0].price}");
                   provider.products.forEach((e) {
                     print("Product id => ${e.id}");
                     if (e.id == storeKeyConsumable) {

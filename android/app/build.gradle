@@ -44,7 +44,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
         applicationId "com.codesigns.pgmp4u"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode flutterVersionCode
+        versionCode 6
         versionName flutterVersionName
         multiDexEnabled true
     }
@@ -67,6 +67,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:multidex:1.0.3'
     compile "androidx.fragment:fragment:1.0.0"
+    implementation 'com.google.android.material:material:1.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

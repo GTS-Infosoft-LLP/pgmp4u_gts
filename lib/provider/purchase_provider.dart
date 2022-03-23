@@ -39,7 +39,7 @@ class PurchaseProvider extends ChangeNotifier {
   Event<PurchaseState> serverResponse = Event(Default());
 
   PurchaseProvider() {
-    if(Platform.isIOS) {
+    if (Platform.isIOS) {
       iapConnection = InAppPurchase.instance;
       final purchaseUpdated = iapConnection.purchaseStream;
       _subscription = purchaseUpdated.listen(
@@ -90,9 +90,14 @@ class PurchaseProvider extends ChangeNotifier {
 
   Future<void> buy(PurchasableProduct product) async {
     final purchaseParam = PurchaseParam(productDetails: product.productDetails);
+
+    print("start buy ");
     switch (product.id) {
       case storeKeyConsumable:
-        await iapConnection.buyConsumable(purchaseParam: purchaseParam);
+        var res =
+            await iapConnection.buyConsumable(purchaseParam: purchaseParam);
+
+        print("apple payment status $res");
         break;
       default:
         serverResponse =
@@ -148,8 +153,7 @@ class PurchaseProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
-    print(
-        "Token => $stringValue Purchase status $status");
+    print("Token => $stringValue Purchase status $status");
     var request = json.encode({
       "payment_status":
           (status == PurchaseStatus.purchased) ? 'success' : status.toString(),
@@ -175,11 +179,11 @@ class PurchaseProvider extends ChangeNotifier {
 
     print(response.body);
     if (response.statusCode == 200) {
-      Map<String,dynamic> data = json.decode(response.body);
+      Map<String, dynamic> data = json.decode(response.body);
       print("data => $data");
-      if(data["success"] == true) {
+      if (data["success"] == true) {
         serverResponse = Event(Success());
-      }else{
+      } else {
         print("Navigate back hit");
         serverResponse = Event(Default(message: data["message"]));
       }

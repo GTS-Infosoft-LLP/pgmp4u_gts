@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/Screens/Profile/PaymentStatus.dart';
@@ -90,100 +90,100 @@ class _PaymentScreenTestState extends State<PaymentScreenTest> {
 
   void _handleExternalWallet(ExternalWalletResponse response) {}
 
-  void openCheckout(key, value, currency) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('email');
-    // var options = {
-    //   'key': key,
-    //   'amount': value * 100,
-    //   //"order_id": orderId,
-    //   "currency": currency,
-    //   'name': 'PgMP4U',
-    //   'description': '',
-    //   'prefill': {'contact': '', 'email': stringValue},
-    // };
-    /// Todo : call payment geyway
-    // create payment method
+  // void openCheckout(key, value, currency) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String stringValue = prefs.getString('email');
+  //   // var options = {
+  //   //   'key': key,
+  //   //   'amount': value * 100,
+  //   //   //"order_id": orderId,
+  //   //   "currency": currency,
+  //   //   'name': 'PgMP4U',
+  //   //   'description': '',
+  //   //   'prefill': {'contact': '', 'email': stringValue},
+  //   // };
+  //   /// Todo : call payment geyway
+  //   // create payment method
 
-    try {
-      makePayment(value.toString(), currency, stringValue, context);
-      // _razorpay.open(options);
-    } catch (e) {
-      debugPrint('Error: e');
-    }
-  }
+  //   try {
+  //     makePayment(value.toString(), currency, stringValue, context);
+  //     // _razorpay.open(options);
+  //   } catch (e) {
+  //     debugPrint('Error: e');
+  //   }
+  // }
 
-  Future displayPaymentSheet(BuildContext context) async {
-    print(">>>>> 1234");
+  // Future displayPaymentSheet(BuildContext context) async {
+  //   print(">>>>> 1234");
 
-    try {
-      return await Stripe.instance
-          .presentPaymentSheet(
-              parameters: PresentPaymentSheetParameters(
-        clientSecret: paymentIntentData['client_secret'],
-        confirmPayment: true,
-      ))
-          .whenComplete(() {
-        print('payment intent' + paymentIntentData['id'].toString());
-        print('payment intent' + paymentIntentData['client_secret'].toString());
-        print('payment intent' + paymentIntentData['amount'].toString());
-        print('payment intent' + paymentIntentData.toString());
-        //orderPlaceApi(paymentIntentData!['id'].toString());
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PaymentStatus(status: "success"),
-            ));
+  //   try {
+  //     return await Stripe.instance
+  //         .presentPaymentSheet(
+  //             parameters: PresentPaymentSheetParameters(
+  //       clientSecret: paymentIntentData['client_secret'],
+  //       confirmPayment: true,
+  //     ))
+  //         .whenComplete(() {
+  //       print('payment intent' + paymentIntentData['id'].toString());
+  //       print('payment intent' + paymentIntentData['client_secret'].toString());
+  //       print('payment intent' + paymentIntentData['amount'].toString());
+  //       print('payment intent' + paymentIntentData.toString());
+  //       //orderPlaceApi(paymentIntentData!['id'].toString());
+  //       Navigator.push(
+  //           context,
+  //           MaterialPageRoute(
+  //             builder: (context) => PaymentStatus(status: "success"),
+  //           ));
 
-        paymentIntentData = null;
-      }).onError((error, stackTrace) {
-        print('Exception/DISPLAYPAYMENTSHEET==> $error $stackTrace');
-      });
-    } on StripeException catch (e) {
-      print('Exception/DISPLAYPAYMENTSHEET==> $e');
-      showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                content: Text("Cancelled "),
-              ));
-    } catch (e) {
-      print('$e');
-    }
-  }
+  //       paymentIntentData = null;
+  //     }).onError((error, stackTrace) {
+  //       print('Exception/DISPLAYPAYMENTSHEET==> $error $stackTrace');
+  //     });
+  //   } on StripeException catch (e) {
+  //     print('Exception/DISPLAYPAYMENTSHEET==> $e');
+  //     showDialog(
+  //         context: context,
+  //         builder: (_) => AlertDialog(
+  //               content: Text("Cancelled "),
+  //             ));
+  //   } catch (e) {
+  //     print('$e');
+  //   }
+  // }
 
-  Future<void> makePayment(String amount, String currency, String email,
-      BuildContext context) async {
-    print("start make payment");
-    try {
-      paymentIntentData = await createPaymentIntent(
-          amount, currency); //json.decode(response.body);
-      // print('Response body==>${response.body.toString()}');
-      print("payment intend $paymentIntentData");
-      if (paymentIntentData != null) {
-        await Stripe.instance
-            .initPaymentSheet(
-                paymentSheetParameters: SetupPaymentSheetParameters(
-                    paymentIntentClientSecret:
-                        paymentIntentData['client_secret'],
-                    applePay: true,
-                    googlePay: true,
-                    testEnv: false,
-                    // allowsDelayedPaymentMethods: true,
-                    billingDetails: BillingDetails(email: email),
-                    style: ThemeMode.dark,
-                    merchantCountryCode: 'US',
-                    merchantDisplayName: 'PGMP4U'))
-            .then((value) {});
+  // Future<void> makePayment(String amount, String currency, String email,
+  //     BuildContext context) async {
+  //   print("start make payment");
+  //   try {
+  //     paymentIntentData = await createPaymentIntent(
+  //         amount, currency); //json.decode(response.body);
+  //     // print('Response body==>${response.body.toString()}');
+  //     print("payment intend $paymentIntentData");
+  //     if (paymentIntentData != null) {
+  //       await Stripe.instance
+  //           .initPaymentSheet(
+  //               paymentSheetParameters: SetupPaymentSheetParameters(
+  //                   paymentIntentClientSecret:
+  //                       paymentIntentData['client_secret'],
+  //                   applePay: true,
+  //                   googlePay: true,
+  //                   testEnv: false,
+  //                   // allowsDelayedPaymentMethods: true,
+  //                   billingDetails: BillingDetails(email: email),
+  //                   style: ThemeMode.dark,
+  //                   merchantCountryCode: 'US',
+  //                   merchantDisplayName: 'PGMP4U'))
+  //           .then((value) {});
 
-        ///now finally display payment sheeet
-        var respose = await displayPaymentSheet(context);
+  //       ///now finally display payment sheeet
+  //       var respose = await displayPaymentSheet(context);
 
-        print(">>>>>>> res $respose");
-      }
-    } catch (e, s) {
-      print('exception >>> :$e$s');
-    }
-  }
+  //       print(">>>>>>> res $respose");
+  //     }
+  //   } catch (e, s) {
+  //     print('exception >>> :$e$s');
+  //   }
+  // }
 
   //  Future<Map<String, dynamic>>
   createPaymentIntent(String amount, String currency) async {
@@ -523,18 +523,18 @@ class _PaymentScreenTestState extends State<PaymentScreenTest> {
                     }
                   });
                 } else {
-                  if (mapResponse == null) {
-                    openCheckout(data["razorpay_key"], data["mock_test_price"],
-                        data["Currency"]);
-                  } else {
-                    openCheckout(
-                        data["razorpay_key"],
-                        (data["mock_test_price"] -
-                                ((mapResponse["discount"] / 100) *
-                                    data["mock_test_price"]))
-                            .toInt(),
-                        data["Currency"]);
-                  }
+                  // if (mapResponse == null) {
+                  //   openCheckout(data["razorpay_key"], data["mock_test_price"],
+                  //       data["Currency"]);
+                  // } else {
+                  //   openCheckout(
+                  //       data["razorpay_key"],
+                  //       (data["mock_test_price"] -
+                  //               ((mapResponse["discount"] / 100) *
+                  //                   data["mock_test_price"]))
+                  //           .toInt(),
+                  //       data["Currency"]);
+                  // }
                 }
               },
               style: ButtonStyle(
