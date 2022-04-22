@@ -8,6 +8,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pgmp4u/Screens/Dashboard/dashboard.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/utils/user_object.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:the_apple_sign_in/scope.dart';
@@ -55,10 +56,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
+
+      print("email >>>>> ${responseData['email']}");
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      var _user = UserModel(
+          image: fromProvider == "google" ? user.photoUrl : '',
+          name: user.displayName,
+          token: responseData["token"],
+          email: responseData['data'][0]['email']);
+      UserObject.setUser(_user);
+
+      var u = UserObject().getUser;
+
+      print("user name after login ${u.image}  name ${u.name}");
       prefs.setString('token', responseData["token"]);
       prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
       prefs.setString('name', user.displayName);
+      prefs.setString('email', responseData['data'][0]['email']);
       GFToast.showToast(
         'LoggedIn successfully',
         context,
@@ -110,6 +124,12 @@ class _LoginScreenState extends State<LoginScreen> {
       Map responseData = json.decode(response.body);
       print(json.decode(response.body));
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      var _user = UserModel(
+          image: fromProvider == "google" ? user.photoUrl : '',
+          name: user.displayName,
+          token: responseData["token"],
+          email: responseData['data'][0]['email']);
+      UserObject.setUser(_user);
       prefs.setString('token', responseData["token"]);
       prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
       prefs.setString('name', user.displayName);
@@ -259,6 +279,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Container(
         height: height,

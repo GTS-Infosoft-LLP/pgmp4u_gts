@@ -138,8 +138,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     //response i.e {success: true, cnt: 0, data: {paid_status: 0}}
     if (response.statusCode == 200) {
-      setState(() {
-        mapResponse = convert.jsonDecode(response.body);
+      Future.delayed(Duration(seconds: 1)).then((value) {
+        setState(() {
+          mapResponse = convert.jsonDecode(response.body);
+        });
       });
       // print(convert.jsonDecode(response.body));
     }

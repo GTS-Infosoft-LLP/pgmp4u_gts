@@ -28,6 +28,8 @@ void main() async {
   //     'pk_test_51KVy8SSF6JrV3GLoEosrxIXwRIwVvXRjiwyRzpSuI6ZubE5snkYl17SFsqRkDEHslXrJLWbrxhYWajzZzChqV1o400ubhdYoep';
 
   // Stripe.publishableKey = 'pk_live_kUCek2XygEa1X04d7xu5qTmh';
+  SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await Firebase.initializeApp();
@@ -38,11 +40,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-        statusBarColor: Colors.white, // Color for Android
-        statusBarBrightness:
-            Brightness.dark // Dark == white status bar -- for IOS.
-        ));
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+    //     statusBarColor: Colors.white, // Color for Android
+    //     statusBarBrightness:
+    //         Brightness.dark // Dark == white status bar -- for IOS.
+    //     ));
 
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => PurchaseProvider())],
