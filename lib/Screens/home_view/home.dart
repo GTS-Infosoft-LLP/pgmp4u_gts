@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pgmp4u/Screens/home_view/flash_card_item.dart';
 import 'package:pgmp4u/Screens/home_view/video_library.dart';
 import 'package:pgmp4u/utils/appimage.dart';
 
@@ -9,7 +10,6 @@ import '../../utils/app_color.dart';
 import '../../utils/app_textstyle.dart';
 import '../../utils/user_object.dart';
 import 'application_support.dart';
-import 'flash_card.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key key}) : super(key: key);
@@ -31,30 +31,31 @@ class _HomeViewState extends State<HomeView> {
 
     print(">>>>> name ${user.token}");
     final List<OptionsItem> options = [
-      OptionsItem(
-          iconImage: FontAwesomeIcons.graduationCap,
-          name: "Application Support",
-          screen: homeOption.application),
+      // OptionsItem(
+      //     iconImage: FontAwesomeIcons.graduationCap,
+      //     name: "Application Support",
+      //     screen: homeOption.application),
       OptionsItem(
           iconImage: FontAwesomeIcons.video,
           name: "Video Library",
           screen: homeOption.videoLab),
+
       OptionsItem(
           iconImage: FontAwesomeIcons.tableColumns,
           name: "Flash Cards",
           screen: homeOption.flashCard),
-      OptionsItem(
-          iconImage: FontAwesomeIcons.bookOpenReader,
-          name: "Domain Wise Exam Tips",
-          screen: homeOption.domainWise),
-      OptionsItem(
-          iconImage: FontAwesomeIcons.users,
-          name: "Lessons Learned - By PgMP Achievers!",
-          screen: homeOption.lissonsLearn),
-      OptionsItem(
-          iconImage: FontAwesomeIcons.circleInfo,
-          name: "About PgMP",
-          screen: homeOption.about),
+      // OptionsItem(
+      //     iconImage: FontAwesomeIcons.bookOpenReader,
+      //     name: "Domain Wise Exam Tips",
+      //     screen: homeOption.domainWise),
+      // OptionsItem(
+      //     iconImage: FontAwesomeIcons.users,
+      //     name: "Lessons Learned - By PgMP Achievers!",
+      //     screen: homeOption.lissonsLearn),
+      // OptionsItem(
+      //     iconImage: FontAwesomeIcons.circleInfo,
+      //     name: "About PgMP",
+      //     screen: homeOption.about),
     ];
     final double topHeight = 150;
 
@@ -131,7 +132,7 @@ class _HomeViewState extends State<HomeView> {
                                 case homeOption.videoLab:
                                   return VideoLibraryPage();
                                 case homeOption.flashCard:
-                                  return FlashCardsPage();
+                                  return FlashCardItem();
                                 case homeOption.domainWise:
                                   return ApplicationSupportPage();
                                 case homeOption.lissonsLearn:
