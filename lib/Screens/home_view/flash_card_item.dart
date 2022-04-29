@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/Models/category.dart';
+import 'package:pgmp4u/Screens/home_view/flash_card.dart';
 import 'package:pgmp4u/provider/response_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,17 +20,17 @@ class _FlashCardItemState extends State<FlashCardItem> {
   Color _lightText = Color(0xff989d9e);
   ResponseProvider responseProvider;
 
-  @override
-  void initState() {
-    print(" init ");
-    callCategoryApi();
-    super.initState();
-  }
-
   Future callCategoryApi() async {
     print(" api calling");
     responseProvider = Provider.of(context, listen: false);
+    // ignore: unnecessary_statements
     responseProvider.getcategoryList();
+  }
+
+  @override
+  void initState() {
+    callCategoryApi();
+    super.initState();
   }
 
   @override
@@ -99,45 +101,85 @@ class _FlashCardItemState extends State<FlashCardItem> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Container(
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              margin: EdgeInsets.symmetric(
-                                vertical: 0.5,
-                              ),
-                              child: Container(
-                                  decoration:
-                                      BoxDecoration(color: Colors.white),
-                                  child: ListTile(
-                                      leading: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            color: index % 2 == 0
-                                                ? AppColor.purpule
-                                                : AppColor.green,
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(12),
-                                            child: Image.network(
-                                                "http://18.119.55.81:3003/thumbnails/123456.png",
-                                                color: Colors.white),
-                                          )),
-                                      title: Text(
-                                        "Flash Card",
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                      subtitle: Text(
-                                        "Data",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: AppTextStyle.titleTile,
-                                      ))),
-                            );
-                          }),
+                    Consumer<ResponseProvider>(
+                      builder: ((context, responseProvider, child) {
+                        return Container(
+                            child: responseProvider.apiStatus
+                                ? Center(
+                                    child: CircularProgressIndicator.adaptive(),
+                                  )
+                                : responseProvider.categoryList != null
+                                    ? ListView.builder(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: responseProvider
+                                            .categoryList.categoryList.length,
+                                        itemBuilder: (context, index) {
+                                          var itemscategoryList =
+                                              responseProvider
+                                                  .categoryList.categoryList;
+
+                                          var item = itemscategoryList[index];
+                                          return InkWell(
+                                            onTap: () async {
+                                              print(" tap on card");
+                                              await responseProvider
+                                                  .setCategoryid(item.id);
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          FlashCardsPage()));
+                                            },
+                                            child: Card(
+                                              margin: EdgeInsets.symmetric(
+                                                vertical: 0.5,
+                                              ),
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white),
+                                                  child: ListTile(
+                                                      leading: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
+                                                            color:
+                                                                index % 2 == 0
+                                                                    ? AppColor
+                                                                        .purpule
+                                                                    : AppColor
+                                                                        .green,
+                                                          ),
+                                                          child: Image.network(
+                                                            "${item.thumbnail}",
+                                                            fit: BoxFit.fill,
+                                                          )),
+                                                      title: Text(
+                                                        "Flash Card",
+                                                        style: TextStyle(
+                                                            fontSize: 12),
+                                                      ),
+                                                      subtitle: Text(
+                                                        item.title,
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: AppTextStyle
+                                                            .titleTile,
+                                                      ))),
+                                            ),
+                                          );
+                                        })
+                                    : Center(
+                                        child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 100),
+                                        child: Text("No data found"),
+                                      )));
+                      }),
                     )
                   ])))),
     );

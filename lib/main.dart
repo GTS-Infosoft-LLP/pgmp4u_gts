@@ -15,7 +15,9 @@ import 'package:pgmp4u/Screens/StartScreen/SplashScreen.dart';
 import 'package:pgmp4u/Screens/StartScreen/startScreen.dart';
 import 'package:pgmp4u/Screens/test.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pgmp4u/provider/player_provider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
+import 'package:pgmp4u/provider/response_provider.dart';
 import './Screens/Dashboard/dashboard.dart';
 import './Screens/Auth/login.dart';
 import 'package:provider/provider.dart';
@@ -48,10 +50,13 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        
-        ChangeNotifierProvider(create: (_) => PurchaseProvider())
-        
-        ],
+        ChangeNotifierProvider<PurchaseProvider>(
+            create: (_) => PurchaseProvider()),
+        ChangeNotifierProvider<ResponseProvider>(
+          create: (_) => ResponseProvider(),
+        ),
+        ChangeNotifierProvider<PlayerProvider>(create: (_) => PlayerProvider())
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {

@@ -28,3 +28,7 @@ shared_preferences_macos=/Users/fuad/Documents/flutter/.pub-cache/hosted/pub.dar
 shared_preferences_web=/Users/fuad/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-2.0.2/
 shared_preferences_windows=/Users/fuad/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-2.0.2/
 the_apple_sign_in=/Users/fuad/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/the_apple_sign_in-1.1.1/
+video_player=/Users/fuad/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/video_player-2.4.0/
+video_player_android=/Users/fuad/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_android-2.3.2/
+video_player_avfoundation=/Users/fuad/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_avfoundation-2.3.2/
+video_player_web=/Users/fuad/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_web-2.0.8/

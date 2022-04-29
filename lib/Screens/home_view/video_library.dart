@@ -96,12 +96,11 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                       ),
                       text: "PgMP Prep",
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) => new PlaylistPage(
-                              url:
-                                  "https://thawing-plateau-67981.herokuapp.com/",
+                              videoType: 1,
                               title: "PgMP Prep",
                             ),
                           ),
@@ -117,15 +116,15 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                       ),
                       text: "Pgmp Success Stories",
                       onTap: () {
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (BuildContext context) => new PlaylistPage(
-                        //       url: "https://pgmp2.herokuapp.com/",
-                        //       title: "PgMP Success Stories",
-                        //     ),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => PlaylistPage(
+                              title: "PgMP Success Stories",
+                              videoType: 2,
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ],

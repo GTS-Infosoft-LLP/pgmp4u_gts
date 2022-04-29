@@ -1,19 +1,104 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/Models/card_category_response.dart';
 import 'package:pgmp4u/Models/category.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/utils/user_object.dart';
 
+import '../Models/get_video_by_type_response.dart';
+
 class ResponseProvider extends ChangeNotifier {
   CategoryList categoryList;
+  CardDetails cardDetails;
+  GetVideoByType getvideo;
+
   final user = UserObject().getUser;
+  bool apiStatus = false;
+  int categoryId;
+
+  Future<GetVideoByType> getCardVideoTypeApi(int videoTypeId) async {
+    // print(" call Get Video Type APi");
+    updatestatusLoader(true);
+    Map body = {"videoType": videoTypeId.toString()};
+    var getVideoByTypeUrl = Uri.parse(videoListByTypeUrl);
+    //print(" api url $getVideoByTypeUrl");
+
+    var response = await http.post(getVideoByTypeUrl,
+        headers: {"Authorization": user.token}, body: body);
+
+    //print("video body $body");
+    // print(" response of video api ${response.body}");
+    if (response.statusCode == 200) {
+      Resources getVideoResponse =
+          Resources.fromJson(jsonDecode(response.body));
+      if (getVideoResponse.status == 200) {
+        updatestatusLoader(false);
+        getvideo = GetVideoByType.fromJson(getVideoResponse.data);
+        return getvideo;
+      }
+    }
+    notifyListeners();
+    return getvideo;
+  }
 
   Future getcategoryList() async {
+    updatestatusLoader(true);
     var categoruUrl = Uri.parse(GetCategoryListUrl);
-    var response =
-        await http.get(categoruUrl, headers: {"Authorization": user.token});
-    print(" response of category APi $response");
+    var response = await http
+        .get(categoruUrl, headers: {"Authorization": user.token})
+        .timeout(Duration(seconds: 20))
+        .onError((error, stackTrace) {
+          updatestatusLoader(false);
+          notifyListeners();
+          return;
+        });
 
+    if (response.statusCode == 200) {
+      Resources categoryApiResponse =
+          Resources.fromJson(jsonDecode(response.body));
+      if (categoryApiResponse.status == 200) {
+        updatestatusLoader(false);
+        categoryList = CategoryList.fromJson(categoryApiResponse.data);
+      }
+    }
+    notifyListeners();
+  }
+
+  Future getCardDetails() async {
+    updatestatusLoader(true);
+    var cardApiUrl = Uri.parse(GetCardUrl);
+    Map body;
+    body = {"categoryId": "$categoryId"};
+    // print("body of card api ${body}");
+    var response = await http
+        .post(cardApiUrl, headers: {"Authorization": user.token}, body: body)
+        .timeout(Duration(seconds: 20))
+        .onError((error, stackTrace) {
+      notifyListeners();
+      updatestatusLoader(false);
+      return;
+    });
+
+    if (response.statusCode == 200) {
+      Resources resources = Resources.fromJson(jsonDecode(response.body));
+      if (resources.status == 200) {
+        updatestatusLoader(false);
+        cardDetails = CardDetails.fromJson(resources.data);
+        // print(
+        //     " card details item ${cardDetails.cardDetailsList[0].description}");
+      }
+    }
+    notifyListeners();
+  }
+
+  updatestatusLoader(bool value) {
+    apiStatus = value;
+  }
+
+  setCategoryid(int id) {
+    categoryId = id;
     notifyListeners();
   }
 }

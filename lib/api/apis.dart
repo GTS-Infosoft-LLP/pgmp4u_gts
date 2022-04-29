@@ -20,3 +20,5 @@ const CHECK_COUPON = _BASE_URL + "CheckCoupon";
 const GET_RAZOR_PAY_ORDER_ID = _BASE_URL + "GetRazorPayOrderid";
 const CREATE_ORDER = _BASE_URL2 + "createOrder";
 const GetCategoryListUrl = TEMP_URL + "getCategoryList";
+const GetCardUrl = TEMP_URL + "getCardDetailByCatId";
+const videoListByTypeUrl = TEMP_URL + "videoListByViType";

@@ -288,182 +288,186 @@ class _ProfileState extends State<Profile> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: width * (150 / 420),
-                            height: height * (112 / 800),
-                            margin: EdgeInsets.only(right: width * (23 / 420)),
-                            decoration: BoxDecoration(
-                              color: _colorfromhex("#72A258"),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Mock Test',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto Bold',
-                                    fontSize: width * (18 / 420),
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Container(
-                                  height: 5,
-                                ),
-                                Text(
-                                  '00.00',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto Bold',
-                                    fontSize: width * (20 / 420),
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Container(
-                                  height: 5,
-                                ),
-                                Text(
-                                  'Average Score',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto Medium',
-                                    fontSize: width * (14 / 420),
-                                    color: Colors.white,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            width: width * (150 / 420),
-                            height: height * (112 / 800),
-                            decoration: BoxDecoration(
-                              color: _colorfromhex("#463B97"),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Exam Date',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto Bold',
-                                    fontSize: width * (18 / 420),
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Container(
-                                  height: 5,
-                                ),
-                                Text(
-                                  '0',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto Bold',
-                                    fontSize: width * (20 / 420),
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Container(
-                                  height: 5,
-                                ),
-                                Text(
-                                  'Days Left',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto Medium',
-                                    fontSize: width * (14 / 420),
-                                    color: Colors.white,
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Container(
+                      //       width: width * (150 / 420),
+                      //       height: height * (112 / 800),
+                      //       margin: EdgeInsets.only(right: width * (23 / 420)),
+                      //       decoration: BoxDecoration(
+                      //         color: _colorfromhex("#72A258"),
+                      //         borderRadius: BorderRadius.circular(10),
+                      //       ),
+                      //       child: Column(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         children: [
+                      //           Text(
+                      //             'Mock Test',
+                      //             style: TextStyle(
+                      //               fontFamily: 'Roboto Bold',
+                      //               fontSize: width * (18 / 420),
+                      //               color: Colors.white,
+                      //             ),
+                      //           ),
+                      //           Container(
+                      //             height: 5,
+                      //           ),
+                      //           Text(
+                      //             '00.00',
+                      //             style: TextStyle(
+                      //               fontFamily: 'Roboto Bold',
+                      //               fontSize: width * (20 / 420),
+                      //               color: Colors.white,
+                      //             ),
+                      //           ),
+                      //           Container(
+                      //             height: 5,
+                      //           ),
+                      //           Text(
+                      //             'Average Score',
+                      //             style: TextStyle(
+                      //               fontFamily: 'Roboto Medium',
+                      //               fontSize: width * (14 / 420),
+                      //               color: Colors.white,
+                      //             ),
+                      //           )
+                      //         ],
+                      //       ),
+                      //     ),
+                      //     Container(
+                      //       width: width * (150 / 420),
+                      //       height: height * (112 / 800),
+                      //       decoration: BoxDecoration(
+                      //         color: _colorfromhex("#463B97"),
+                      //         borderRadius: BorderRadius.circular(10),
+                      //       ),
+                      //       child: Column(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         children: [
+                      //           Text(
+                      //             'Exam Date',
+                      //             style: TextStyle(
+                      //               fontFamily: 'Roboto Bold',
+                      //               fontSize: width * (18 / 420),
+                      //               color: Colors.white,
+                      //             ),
+                      //           ),
+                      //           Container(
+                      //             height: 5,
+                      //           ),
+                      //           Text(
+                      //             '0',
+                      //             style: TextStyle(
+                      //               fontFamily: 'Roboto Bold',
+                      //               fontSize: width * (20 / 420),
+                      //               color: Colors.white,
+                      //             ),
+                      //           ),
+                      //           Container(
+                      //             height: 5,
+                      //           ),
+                      //           Text(
+                      //             'Days Left',
+                      //             style: TextStyle(
+                      //               fontFamily: 'Roboto Medium',
+                      //               fontSize: width * (14 / 420),
+                      //               color: Colors.white,
+                      //             ),
+                      //           )
+                      //         ],
+                      //       ),
+                      //     )
+                      //   ],
+                      // ),
                       Container(
                         margin: EdgeInsets.only(top: width * (50 / 800)),
                         child: Column(
                           children: [
-                            GestureDetector(
-                              onTap: () => {},
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 6),
-                                padding: EdgeInsets.only(
-                                    top: 13,
-                                    bottom: 13,
-                                    left: width * (18 / 420),
-                                    right: width * (18 / 420)),
-                                color: Colors.white,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.home,
-                                          size: width * (26 / 420),
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                        Text(
-                                          '   Question of the day',
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto Medium',
-                                            fontSize: width * (18 / 420),
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                      color: _colorfromhex("#ABAFD1"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              // onTap: () => openCheckout(data["razorpay_key"]),
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 6),
-                                padding: EdgeInsets.only(
-                                    top: 13,
-                                    bottom: 13,
-                                    left: width * (18 / 420),
-                                    right: width * (18 / 420)),
-                                color: Colors.white,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.settings,
-                                          size: width * (26 / 420),
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                        Text(
-                                          '   Buy mock test',
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto Medium',
-                                            fontSize: width * (18 / 420),
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                      color: _colorfromhex("#ABAFD1"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            /// Question of the day
+                            // GestureDetector(
+                            //   onTap: () => {},
+                            //   child: Container(
+                            //     margin: EdgeInsets.only(bottom: 6),
+                            //     padding: EdgeInsets.only(
+                            //         top: 13,
+                            //         bottom: 13,
+                            //         left: width * (18 / 420),
+                            //         right: width * (18 / 420)),
+                            //     color: Colors.white,
+                            //     child: Row(
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment.spaceBetween,
+                            //       children: [
+                            //         Row(
+                            //           children: [
+                            //             Icon(
+                            //               Icons.home,
+                            //               size: width * (26 / 420),
+                            //               color: _colorfromhex("#ABAFD1"),
+                            //             ),
+                            //             Text(
+                            //               '   Question of the day',
+                            //               style: TextStyle(
+                            //                 fontFamily: 'Roboto Medium',
+                            //                 fontSize: width * (18 / 420),
+                            //                 color: Colors.black,
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //         Icon(
+                            //           Icons.arrow_forward_ios,
+                            //           size: 20,
+                            //           color: _colorfromhex("#ABAFD1"),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+
+                            /// Buy mock
+                            // GestureDetector(
+                            //   // onTap: () => openCheckout(data["razorpay_key"]),
+                            //   child: Container(
+                            //     margin: EdgeInsets.only(bottom: 6),
+                            //     padding: EdgeInsets.only(
+                            //         top: 13,
+                            //         bottom: 13,
+                            //         left: width * (18 / 420),
+                            //         right: width * (18 / 420)),
+                            //     color: Colors.white,
+                            //     child: Row(
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment.spaceBetween,
+                            //       children: [
+                            //         Row(
+                            //           children: [
+                            //             Icon(
+                            //               Icons.settings,
+                            //               size: width * (26 / 420),
+                            //               color: _colorfromhex("#ABAFD1"),
+                            //             ),
+                            //             Text(
+                            //               '   Buy mock test',
+                            //               style: TextStyle(
+                            //                 fontFamily: 'Roboto Medium',
+                            //                 fontSize: width * (18 / 420),
+                            //                 color: Colors.black,
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //         Icon(
+                            //           Icons.arrow_forward_ios,
+                            //           size: 20,
+                            //           color: _colorfromhex("#ABAFD1"),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+
                             GestureDetector(
                               onTap: () => {
                                 Navigator.push(
