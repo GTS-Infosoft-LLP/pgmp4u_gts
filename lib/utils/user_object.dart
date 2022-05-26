@@ -6,7 +6,6 @@ class UserObject {
   static setUser(UserModel user) {
     print("set user ${user.name}");
     userData = user;
-
     print(">>>>>>>>> test ${userData.name}");
   }
 

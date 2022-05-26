@@ -146,7 +146,9 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    final user = UserObject().getUser;
+    final _user = UserObject().getUser;
+
+    print("user name is : ${_user.name}");
     return Sizer(builder: (context, orientation, deviceType) {
       return Container(
         color: _colorfromhex("#FCFCFF"),
@@ -233,7 +235,7 @@ class _ProfileState extends State<Profile> {
                             Container(
                               margin: EdgeInsets.only(bottom: 6),
                               child: Text(
-                                user.name,
+                                "${_user.name}",
                                 style: TextStyle(
                                   fontFamily: 'Roboto Medium',
                                   fontSize: width * (18 / 420),
@@ -242,7 +244,7 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                             Text(
-                              user.email,
+                              "${_user.email ?? ""}",
                               style: TextStyle(
                                 fontFamily: 'Roboto Medium',
                                 fontSize: width * (12 / 420),
@@ -470,14 +472,6 @@ class _ProfileState extends State<Profile> {
 
                             GestureDetector(
                               onTap: () => {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SettingsScreen(
-                                            phoneNumber: user.name,
-                                            emailData: user.email,
-                                          )),
-                                )
                                 // Navigator.of(context)
                                 //     .pushNamed('/settings')
                               },

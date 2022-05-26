@@ -123,12 +123,15 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
       print(json.decode(response.body));
+
+      print("user email ${responseData['data'][0]['email']}");
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var _user = UserModel(
           image: fromProvider == "google" ? user.photoUrl : '',
           name: user.displayName,
           token: responseData["token"],
           email: responseData['data'][0]['email']);
+
       UserObject.setUser(_user);
       prefs.setString('token', responseData["token"]);
       prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');

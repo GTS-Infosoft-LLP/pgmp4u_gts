@@ -8,6 +8,7 @@ import 'package:pgmp4u/Screens/MockTest/ReviewMockTest.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTest.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTestQuestions.dart';
 import 'package:pgmp4u/Screens/PracticeTests/practiceTest.dart';
+import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
 import 'package:pgmp4u/Screens/Profile/PaymentStatus.dart';
 import 'package:pgmp4u/Screens/Profile/paymentScreen.dart';
 import 'package:pgmp4u/Screens/Profile/settingsScreen.dart';
@@ -21,6 +22,8 @@ import 'package:pgmp4u/provider/response_provider.dart';
 import './Screens/Dashboard/dashboard.dart';
 import './Screens/Auth/login.dart';
 import 'package:provider/provider.dart';
+
+import 'Screens/PracticeTests/practiceTest copy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,7 +58,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ResponseProvider>(
           create: (_) => ResponseProvider(),
         ),
-        ChangeNotifierProvider<PlayerProvider>(create: (_) => PlayerProvider())
+        ChangeNotifierProvider<PlayerProvider>(create: (_) => PlayerProvider()),
+        ChangeNotifierProvider<PracticeTextProvider>(
+            create: (_) => PracticeTextProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -65,7 +70,8 @@ class MyApp extends StatelessWidget {
           '/login': (ctx) => LoginScreen(),
           '/test': (ctx) => Test(),
           '/dashboard': (ctx) => Dashboard(),
-          '/practice-test': (ctx) => PracticeTest(),
+          '/practice-test': (ctx) => PracticeTestCopy(),
+          // '/practice-test': (ctx) => PracticeTest(),
           '/mock-test': (ctx) => MockTest(),
           '/mock-test-attempts': (ctx) => MockTestAttempts(),
           '/mock-test-questions': (ctx) => MockTestQuestions(),

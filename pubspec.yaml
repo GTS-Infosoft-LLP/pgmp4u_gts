@@ -36,10 +36,10 @@ dependencies:
   intl: ^0.17.0
   flutter_automation: ^2.0.0
   firebase_core: ^1.6.0
-  firebase_storage: ^8.0.3
+  firebase_storage: ^10.2.16
   firebase_database: ^7.2.2
   # Online Database For Data
-  cloud_firestore: ^2.5.3
+  cloud_firestore: ^3.1.16
   video_player: ^2.4.0
   # Add Authentication such as Google SignIn, Facebook SignIn, Apple SignIn, Phone Auth etc.
   firebase_auth: ^1.1.0

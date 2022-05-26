@@ -37,6 +37,7 @@ class _MockTestState extends State<MockTest> {
     if (response.statusCode == 200) {
       setState(() {
         mapResponse = convert.jsonDecode(response.body);
+        print(" mock test response ${mapResponse["data"]}");
         listResponse = mapResponse["data"];
       });
 
