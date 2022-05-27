@@ -147,7 +147,7 @@ class _TestsScreenState extends State<TestsScreen> {
                         GestureDetector(
                           onTap: () async {
                             print("IsPremium => $isPremium");
-                            if (!isPremium) {
+                            if (isPremium) {
                               Navigator.of(context).pushNamed('/mock-test');
                             } else {
                               var result = await Navigator.of(context)

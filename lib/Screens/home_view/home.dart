@@ -38,12 +38,16 @@ class _HomeViewState extends State<HomeView> {
       OptionsItem(
           iconImage: FontAwesomeIcons.video,
           name: "Video Library",
-          screen: homeOption.videoLab),
+          screen: homeOption.videoLab,
+          btntxt: "Free",
+          ),
 
       OptionsItem(
           iconImage: FontAwesomeIcons.tableColumns,
           name: "Flash Cards",
-          screen: homeOption.flashCard),
+          screen: homeOption.flashCard,
+          btntxt:"US19"
+          ),
       // OptionsItem(
       //     iconImage: FontAwesomeIcons.bookOpenReader,
       //     name: "Domain Wise Exam Tips",
@@ -162,6 +166,25 @@ class _HomeViewState extends State<HomeView> {
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyle.titleTile,
                         ),
+                        trailing: SizedBox(
+                          width: 90,
+                            child: ElevatedButton(
+                            onPressed: (){},
+                            child: Text(item.btntxt),
+                            style: ElevatedButton.styleFrom(
+                            primary: Colors.grey,
+                            ),    
+                          ),
+                        ),
+                        
+                        // subtitle: Row(
+                        //   children:<Widget> [
+                        //     ElevatedButton(
+                        //       onPressed: (){},
+                        //       child: Text("US19",style: TextStyle(color: Colors.amberAccent),),
+                        //     )
+                        //   ]
+                        //   ),
                       ),
                     ),
                   );

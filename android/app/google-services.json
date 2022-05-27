@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "569295667578",
+    "firebase_url": "https://pgmp4u-android-default-rtdb.firebaseio.com",
     "project_id": "pgmp4u-android",
     "storage_bucket": "pgmp4u-android.appspot.com"
   },
@@ -13,6 +14,70 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "569295667578-0540gsk3bh0a2l52d0np4b4cv6t064vd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codesigns.pgmp4u",
+            "certificate_hash": "98817af88eabeeb0cfd5ec6b2c95fc1b5b0a1cfc"
+          }
+        },
+        {
+          "client_id": "569295667578-15bdv2quhh97m91okii8oul1q3hm2qqv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codesigns.pgmp4u",
+            "certificate_hash": "9288e314015d72a5dc1587f6ed04415af7262763"
+          }
+        },
+        {
+          "client_id": "569295667578-1d6lq2vj45oak2dradhrhqmfejequqca.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codesigns.pgmp4u",
+            "certificate_hash": "f0f13b3776227b94e52999cc954aa36073f671ed"
+          }
+        },
+        {
+          "client_id": "569295667578-2eas4kuovct6dkril8tagufdt7vnk5e9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codesigns.pgmp4u",
+            "certificate_hash": "6e1b560713d99f61cae821d872da4b9fab44ffdd"
+          }
+        },
+        {
+          "client_id": "569295667578-5r3f0087mh4a6kvhq4hjid9rnnaifpbf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codesigns.pgmp4u",
+            "certificate_hash": "0dbd312c207b3e34de678bb940c14e0d68049bc9"
+          }
+        },
+        {
+          "client_id": "569295667578-8qh2nlqihf2aoett6s3r7s901qa0d4da.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codesigns.pgmp4u",
+            "certificate_hash": "2fe3e1fbdc7f96b4a62cebceb5b32bca09cbbd1a"
+          }
+        },
+        {
+          "client_id": "569295667578-b4a6rltbn83594p9g643iat42uf3fpmb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codesigns.pgmp4u",
+            "certificate_hash": "2e49eb438693e1aa8bea451685ccdda4f7a01ba6"
+          }
+        },
+        {
+          "client_id": "569295667578-p6rebji43pv2b9fp0asmmn10051rtgmg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codesigns.pgmp4u",
+            "certificate_hash": "d4640dd9d5c75b2843016551220d2c89822cbeeb"
+          }
+        },
         {
           "client_id": "569295667578-38abr9438olgi1galkk06cfm6ulvoo5h.apps.googleusercontent.com",
           "client_type": 3
@@ -29,6 +94,13 @@
             {
               "client_id": "569295667578-38abr9438olgi1galkk06cfm6ulvoo5h.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "569295667578-dv4t8mggbviqaek7gjkr4i9bfgppfvfn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.codesigns.pgmp4u"
+              }
             }
           ]
         }

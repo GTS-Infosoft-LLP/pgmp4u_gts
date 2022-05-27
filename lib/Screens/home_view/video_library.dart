@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../tool/ShapeClipper.dart';
 import 'VideoLibrary/Playlist.dart';
+import 'VideoLibrary/RandomPage.dart';
 
 class VideoLibraryPage extends StatefulWidget {
   @override
@@ -88,6 +89,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                 child: Column(
                   children: <Widget>[
                     Options(
+                      isShowPremium: false,
                       iconBackground: Color(0xff72a258),
                       icon: Icon(
                         FontAwesomeIcons.edit,
@@ -115,6 +117,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                         color: Colors.white,
                       ),
                       text: "Pgmp Success Stories",
+                      isShowPremium: true,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -125,6 +128,13 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                             ),
                           ),
                         );
+                      },
+                      onPremiumTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => RandomPage(),
+                            ));
                       },
                     ),
                   ],
@@ -143,12 +153,15 @@ class Options extends StatelessWidget {
       {@required this.iconBackground,
       @required this.icon,
       @required this.text,
-      this.onTap});
+      @required this.isShowPremium,
+      @required this.onPremiumTap,
+      @required this.onTap});
   final Color iconBackground;
   final Icon icon;
   final String text;
+  final bool isShowPremium;
   Function onTap;
-
+  Function onPremiumTap;
   final Color _darkText = Color(0xff424b53);
   final Color _lightText = Color(0xff989d9e);
 
@@ -195,6 +208,24 @@ class Options extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Lato-Regular',
                               color: _darkText)),
+                      SizedBox(
+                        height: 2,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          isShowPremium
+                              ? GestureDetector(
+                                onTap: onPremiumTap,
+                                  child: Text(
+                                  "Premium",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                      decoration: TextDecoration.underline),
+                                ))
+                              : SizedBox(),
+                        ],
+                      ),
                     ],
                   )
                 ]),
