@@ -63,7 +63,7 @@ class _RandomPageState extends State<RandomPage> {
                                 margin: EdgeInsets.only(left: 20, right: 20),
                                 child: Center(
                                   child: Text(
-                                    'Get Unlimited Access to Mock Test',
+                                    'Get Unlimited Access to Pgmp Success Stories',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontFamily: 'Roboto Bold',

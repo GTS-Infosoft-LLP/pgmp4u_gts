@@ -3,14 +3,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pgmp4u/Screens/home_view/flash_card_item.dart';
 import 'package:pgmp4u/Screens/home_view/video_library.dart';
 import 'package:pgmp4u/utils/appimage.dart';
-
+import 'package:pgmp4u/Screens/home_view/flashcarddbuttn.dart';
 import '../../Models/options_model.dart';
 import '../../tool/ShapeClipper2.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_textstyle.dart';
 import '../../utils/user_object.dart';
 import 'application_support.dart';
-
+//import 'home_view/flashcardbuttn.dart';
 class HomeView extends StatefulWidget {
   const HomeView({Key key}) : super(key: key);
 
@@ -167,13 +167,31 @@ class _HomeViewState extends State<HomeView> {
                           style: AppTextStyle.titleTile,
                         ),
                         trailing: SizedBox(
-                          width: 90,
-                            child: ElevatedButton(
-                            onPressed: (){},
-                            child: Text(item.btntxt),
-                            style: ElevatedButton.styleFrom(
-                            primary: Colors.grey,
-                            ),    
+                          width: 100,
+                            child: OutlinedButton(
+                            onPressed: (){
+                           Navigator.push(context, MaterialPageRoute(
+                           builder: (BuildContext context) => FlashCardBtn(),
+                           ));
+                            },
+                            child: Text(
+                              item.btntxt,
+                              style: TextStyle(
+                                color: Color(0xff484C71),
+                                fontWeight: FontWeight.bold
+                                ),
+                                ),
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Color(0xffF1EFF0)), 
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(color: Color(0xffDDDDDD),
+                                    
+                                    ),
+                                  ),
+                                ),
+                              ), 
                           ),
                         ),
                         
