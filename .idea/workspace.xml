@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59cefdbb-89db-4562-adea-4ff996be1877" name="Default Changelist" comment="Push build to play store" />
+    <list default="true" id="59cefdbb-89db-4562-adea-4ff996be1877" name="Default Changelist" comment="UI changes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -220,7 +222,14 @@
       <option name="project" value="LOCAL" />
       <updated>1640081626326</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="UI changes">
+      <created>1653642755459</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1653642755459</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -276,7 +285,8 @@
     <MESSAGE value="Fix multiple clicks of submit mock test" />
     <MESSAGE value="Fix percent logic" />
     <MESSAGE value="Push build to play store" />
-    <option name="LAST_COMMIT_MESSAGE" value="Push build to play store" />
+    <MESSAGE value="UI changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="UI changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
