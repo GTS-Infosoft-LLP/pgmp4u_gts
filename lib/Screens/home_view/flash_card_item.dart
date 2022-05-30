@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pgmp4u/Models/category.dart';
 import 'package:pgmp4u/Screens/home_view/flash_card.dart';
 import 'package:pgmp4u/provider/response_provider.dart';
+import 'package:pgmp4u/utils/appimage.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool/ShapeClipper.dart';
@@ -154,7 +155,9 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                                         .green,
                                                           ),
                                                           child: Image.network(
-                                                            "${item.thumbnail}",
+                                                            "${item.thumbnail}",errorBuilder: (context, error, stackTrace) {
+                                                              return Image.asset(AppImage.picture_placeholder);
+                                                            },
                                                             fit: BoxFit.fill,
                                                           )),
                                                       title: Text(

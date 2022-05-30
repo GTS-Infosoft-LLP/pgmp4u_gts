@@ -8,6 +8,8 @@ import 'package:pgmp4u/Screens/MockTest/mockTestQuestions.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Models/mocktestmodel.dart';
+
 class MockTest extends StatefulWidget {
   const MockTest({Key key}) : super(key: key);
 
@@ -16,6 +18,7 @@ class MockTest extends StatefulWidget {
 }
 
 class _MockTestState extends State<MockTest> {
+   MockTestModel mockTextList;
   List listResponse;
   Map mapResponse;
   @override
@@ -38,7 +41,10 @@ class _MockTestState extends State<MockTest> {
       setState(() {
         mapResponse = convert.jsonDecode(response.body);
         print(" mock test response ${mapResponse["data"]}");
-        listResponse = mapResponse["data"];
+       listResponse = mapResponse["data"];
+            mockTextList =   MockTestModel.fromjson(listResponse);
+           print("successss");
+
       });
 
       print("response body  ${convert.jsonDecode(response.body)} ");
@@ -184,7 +190,7 @@ class _MockTestState extends State<MockTest> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      data["test_name"],
+                                                      mockTextList.mockList[index].test_name??"",
                                                       style: TextStyle(
                                                         fontFamily:
                                                             'Roboto Medium',

@@ -6,4 +6,6 @@ class AppImage {
   static const String pauseIcon = baseImage + "video-pause-button.png";
   static const String profile_placeholder =
       baseImage + "profile_image_placeholder.png";
+  static const String picture_placeholder =
+      baseImage + "pictureplaceholder.png";
 }

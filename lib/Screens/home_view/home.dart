@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/Screens/home_view/flash_card_item.dart';
 import 'package:pgmp4u/Screens/home_view/video_library.dart';
 import 'package:pgmp4u/utils/appimage.dart';
@@ -170,9 +171,13 @@ class _HomeViewState extends State<HomeView> {
                           width: 100,
                             child: OutlinedButton(
                             onPressed: (){
-                           Navigator.push(context, MaterialPageRoute(
-                           builder: (BuildContext context) => FlashCardBtn(),
+                              if(item.name== "Flash Cards"){
+                             Navigator.push(context, MaterialPageRoute(
+                           builder: (BuildContext context) => RandomPage(
+                             index: 1),
                            ));
+                              }
+                          
                             },
                             child: Text(
                               item.btntxt,

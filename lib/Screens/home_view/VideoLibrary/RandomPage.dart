@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:pgmp4u/Screens/Profile/PaymentStatus.dart';
+import 'package:provider/provider.dart';
 
 class RandomPage extends StatefulWidget {
+  int index;
+  RandomPage({this.index =0});
   @override
   _RandomPageState createState() => _RandomPageState();
 }
@@ -62,7 +68,28 @@ class _RandomPageState extends State<RandomPage> {
                               Container(
                                 margin: EdgeInsets.only(left: 20, right: 20),
                                 child: Center(
-                                  child: Text(
+                                  child:widget.index==1 ?
+                                      Text(
+                                    'Get Unlimited Access to Flash Card',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontFamily: 'Roboto Bold',
+                                        fontSize: width * (30 / 420),
+                                        color: _colorfromhex("#3D4AB4"),
+                                        letterSpacing: 0.3),
+                                  ) 
+                                  :
+                                  widget.index==2 ?
+                                  Text(
+                                    'Get Unlimited Access to Video Library',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontFamily: 'Roboto Bold',
+                                        fontSize: width * (30 / 420),
+                                        color: _colorfromhex("#3D4AB4"),
+                                        letterSpacing: 0.3),
+                                  )
+                                  :Text(
                                     'Get Unlimited Access to Pgmp Success Stories',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -70,7 +97,8 @@ class _RandomPageState extends State<RandomPage> {
                                         fontSize: width * (30 / 420),
                                         color: _colorfromhex("#3D4AB4"),
                                         letterSpacing: 0.3),
-                                  ),
+                                  )
+                               
                                 ),
                               ),
                               // Container(
@@ -92,8 +120,18 @@ class _RandomPageState extends State<RandomPage> {
                               Container(
                                 margin: EdgeInsets.only(top: 20),
                                 child: Center(
-                                  child: Text(
-                                    'Lifetime Access',
+                                  child: widget.index==1?
+                                  Text(
+                                    'Lifetime Access On \n \$19',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontFamily: 'Roboto Bold',
+                                        fontSize: 24,
+                                        color: _colorfromhex("#3D4AB4"),
+                                        letterSpacing: 0.3),
+                                  ):
+                                  Text(
+                                    'Lifetime Access On \n \$499',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontFamily: 'Roboto Bold',
@@ -146,31 +184,31 @@ class _RandomPageState extends State<RandomPage> {
                               //         ),
                               //       )
                               //     : Container(),
-                              // Consumer<PurchaseProvider>(
-                              //   builder: (context, value, child) {
-                              //     var latestState =
-                              //         value.serverResponse.getContent();
-                              //     if (latestState is Loading) {
-                              //       return Center(
-                              //           child: CircularProgressIndicator());
-                              //     }
+                              Consumer<PurchaseProvider>(
+                                builder: (context, value, child) {
+                                  var latestState =
+                                      value.serverResponse.getContent();
+                                  if (latestState is Loading) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  }
 
-                              //     if (latestState is Default) {
-                              //       value.showToast(
-                              //           context, latestState.message);
-                              //     }
+                                  if (latestState is Default) {
+                                    value.showToast(
+                                        context, latestState.message);
+                                  }
 
-                              //     print(
-                              //         "value.serverResponse = ${latestState is Success}");
-                              //     if (latestState is Success) {
-                              //       print("Pop called");
-                              //       Future.delayed(Duration.zero, () async {
-                              //         Navigator.pop(context, true);
-                              //       });
-                              //     }
-                              //     return BuyButtons(data);
-                              //   },
-                              // )
+                                  print(
+                                      "value.serverResponse = ${latestState is Success}");
+                                  if (latestState is Success) {
+                                    print("Pop called");
+                                    Future.delayed(Duration.zero, () async {
+                                      Navigator.pop(context, true);
+                                    });
+                                  }
+                                  return BuyButton2(context,value,widget.index);
+                                },
+                              )
                             ],
                           ),
                         ),
@@ -184,3 +222,95 @@ class _RandomPageState extends State<RandomPage> {
  
   }
 }
+Widget BuyButton2(BuildContext context,PurchaseProvider purchaseProvider,int index1forFlash2forvideoLib) {
+  //index1forFlash2forvideoLib   1  for flash card and  2 for video Library
+    return Column(
+      children: [
+        Center(
+          child: Container(
+            margin: EdgeInsets.only(top: 20),
+            padding: EdgeInsets.only(left: 15, right: 15),
+            height: 40,
+            // alignment: Alignment.center,
+            decoration: BoxDecoration(
+              //color: Colors.blue,
+                color: Colors.indigo.shade600,
+                borderRadius: BorderRadius.circular(30.0)),
+            child: OutlinedButton(
+              onPressed: () async {
+                if (Platform.isIOS) {
+                  print("buttonClicked ${purchaseProvider.products[0].id}");
+                  print("price ${purchaseProvider.products[0].price}");
+                  purchaseProvider.products.forEach((e) {
+                    print("Product id => ${e.id}");
+                    if (e.id == videoLibraryLearningPrograms && index1forFlash2forvideoLib ==2) {
+                      purchaseProvider.buy(e);
+                    }else if(e.id== flashCards && index1forFlash2forvideoLib==1){
+                      purchaseProvider.buy(e);
+                    }
+                  });
+                }
+                 else {
+               //   var token = await getToken();
+
+                  // bool status = await Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => PaymentWithStripe(token: token),
+                  //     ));
+
+                
+                }
+              },
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0))),
+              ),
+              
+              child: Text(
+                'Buy Now',
+                style: TextStyle(
+                    fontFamily: 'Roboto Medium',
+                    fontSize: 20,
+                    color: Colors.white,
+                    letterSpacing: 0.3),
+              ),
+            ),
+          ),
+        ),
+
+  //  Text(
+  //                                           'Apply Coupon',
+  //                                           style: TextStyle(
+  //                                               fontFamily: 'Roboto Medium',
+  //                                               fontSize: 20,
+  //                                               color: Colors.indigo.shade600,
+  //                                               letterSpacing: 0.3),
+  //                                         ),
+        
+        SizedBox(
+          height: 32,
+        ),
+     
+        Platform.isIOS
+            ? Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Purchased previously? "),
+                    InkWell(
+                      child: Text(
+                        "Restore purchase",
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                      onTap: () {
+                        // provider.restore();
+                      },
+                    )
+                  ],
+                ),
+              )
+            : Text("")
+      ],
+    );
+  }

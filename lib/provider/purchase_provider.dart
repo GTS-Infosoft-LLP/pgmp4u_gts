@@ -28,6 +28,8 @@ class Default extends PurchaseState {
 }
 
 class PurchaseProvider extends ChangeNotifier {
+  bool flashCardStatus=false;
+bool videoLibraryStatus=false;
   StoreState storeState = StoreState.loading;
   StreamSubscription<List<PurchaseDetails>> _subscription;
   List<PurchasableProduct> products = [];
@@ -61,6 +63,7 @@ class PurchaseProvider extends ChangeNotifier {
     }
     const ids = <String>{
       storeKeyConsumable,
+      flashCards,videoLibraryLearningPrograms,
     };
     final response = await iapConnection.queryProductDetails(ids);
     print("loadPurchases $storeKeyConsumable ${response.productDetails}");
@@ -96,6 +99,18 @@ class PurchaseProvider extends ChangeNotifier {
       case storeKeyConsumable:
         var res =
             await iapConnection.buyConsumable(purchaseParam: purchaseParam);
+
+        print("apple payment status $res");
+        break;
+      case flashCards:
+        var res =
+            await iapConnection.buyNonConsumable(purchaseParam: purchaseParam);
+
+        print("apple payment status $res");
+        break;
+      case videoLibraryLearningPrograms:
+        var res =
+            await iapConnection.buyNonConsumable(purchaseParam: purchaseParam);
 
         print("apple payment status $res");
         break;
@@ -136,6 +151,18 @@ class PurchaseProvider extends ChangeNotifier {
               "\n verificationData, source => ${purchaseDetails.verificationData.source}"
               "\n transactionDate => ${purchaseDetails.transactionDate}"
               "\n status => ${purchaseDetails.status}");*/
+          break;
+        case flashCards:
+        flashCardStatus=true;
+        notifyListeners();
+          // paymentStatus(purchaseDetails.status,
+          //     purchaseDetails.verificationData.serverVerificationData);
+          break;
+        case videoLibraryLearningPrograms:
+        videoLibraryStatus=true;
+         notifyListeners();
+        //  paymentStatus(purchaseDetails.status,
+          //    purchaseDetails.verificationData.serverVerificationData);
           break;
       }
     }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pgmp4u/Models/constants.dart';
+import 'package:pgmp4u/provider/purchase_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../tool/ShapeClipper.dart';
 import 'VideoLibrary/Playlist.dart';
@@ -17,7 +20,8 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: Consumer<PurchaseProvider>(builder: (context, purchaseProvider, child) {
+        return Container(
         color: Color(0xfff7f7f7),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +102,9 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                       ),
                       text: "PgMP Prep",
                       onTap: () {
-                        Navigator.push(
+                        if(purchaseProvider.videoLibraryStatus)
+                        {
+                          Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) => new PlaylistPage(
@@ -107,6 +113,16 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                             ),
                           ),
                         );
+                        }
+                        else{
+                  //         purchaseProvider.products.forEach((e) {
+                  //   print("Product id => ${e.id}");
+                  //   if (e.id == videoLibraryLearningPrograms) {
+                  //     purchaseProvider.buy(e);
+                  //   }
+                  // });
+                        }
+                       
                       },
                     ),
                     Options(
@@ -119,7 +135,9 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                       text: "Pgmp Success Stories",
                       isShowPremium: true,
                       onTap: () {
-                        Navigator.push(
+                        if(purchaseProvider.videoLibraryStatus)
+                        {
+                          Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) => PlaylistPage(
@@ -128,12 +146,21 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                             ),
                           ),
                         );
+                        }else{
+                  //         purchaseProvider.products.forEach((e) {
+                  //   print("Product id => ${e.id}");
+                  //   if (e.id == videoLibraryLearningPrograms) {
+                  //     purchaseProvider.buy(e);
+                  //   }
+                  // });
+                        }
+                     
                       },
                       onPremiumTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (BuildContext context) => RandomPage(),
+                              builder: (BuildContext context) => RandomPage(index: 2,),
                             ));
                       },
                     ),
@@ -143,7 +170,8 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
             ),
           ],
         ),
-      ),
+      );
+      },)
     );
   }
 }
@@ -175,7 +203,7 @@ class Options extends StatelessWidget {
         color: Colors.white,
         child: Container(
           margin: EdgeInsets.all(12),
-          height: 200,
+          height: 210,
           width: double.infinity,
           child: Padding(
             padding: EdgeInsets.all(10),
@@ -193,40 +221,42 @@ class Options extends StatelessWidget {
                       //child: Container(child: Image.asset(icon),width: 60,height: 60,),
                     ),
                   ),
-                  SizedBox(height: 15),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Video Library",
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              fontFamily: 'Lato-Regular',
-                              color: _lightText)),
-                      Text(text,
-                          style: TextStyle(
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Lato-Regular',
-                              color: _darkText)),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          isShowPremium
-                              ? GestureDetector(
-                                onTap: onPremiumTap,
-                                  child: Text(
-                                  "Premium",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                      decoration: TextDecoration.underline),
-                                ))
-                              : SizedBox(),
-                        ],
-                      ),
-                    ],
+                  SizedBox(height: 13),
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Video Library",
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                fontFamily: 'Lato-Regular',
+                                color: _lightText)),
+                        Text(text,
+                            style: TextStyle(
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Lato-Regular',
+                                color: _darkText)),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            isShowPremium
+                                ? GestureDetector(
+                                  onTap: onPremiumTap,
+                                    child: Text(
+                                    "Premium",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                        decoration: TextDecoration.underline),
+                                  ))
+                                : SizedBox(),
+                          ],
+                        ),
+                      ],
+                    ),
                   )
                 ]),
           ),
