@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
+import '../../Models/mockListmodel.dart';
+
 class MockTestAttempts extends StatefulWidget {
   final int selectedId;
 
@@ -21,7 +23,7 @@ class MockTestAttempts extends StatefulWidget {
 
 class _MockTestAttemptsState extends State<MockTestAttempts> {
   final selectedIdNew;
-
+MockData mockData;
   _MockTestAttemptsState({
     this.selectedIdNew,
   });
@@ -36,9 +38,9 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
     apiCall();
   }
 
-  Map responseData;
+ //Map responseData;
   Map mocktestDetails;
-  List listResponse;
+  //List listResponse;
   Future apiCall() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -63,8 +65,9 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
       print(convert.jsonDecode(response.body));
       getit = convert.jsonDecode(response.body);
       setState(() {
-        responseData = getit["data"]["mocktest"];
-        listResponse = getit["data"]["attempts"];
+        // responseData = getit["data"]["mocktest"];
+        //listResponse = getit["data"]["attempts"];
+         mockData = MockData.fromjd(getit["data"]);
       });
     }
   }
@@ -120,7 +123,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                   ),
                 ),
               ),
-              responseData != null
+             // responseData != null
+              mockData != null
                   ? Expanded(
                       // height: height - 150 - 65,
                       child: SingleChildScrollView(
@@ -134,7 +138,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                responseData["test_name"],
+                                mockData.detailsofMock.test_name??"",
+                                //responseData["test_name"],
                                 style: TextStyle(
                                     fontFamily: 'Roboto Bold',
                                     fontSize: width * (20 / 420),
@@ -145,8 +150,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: listResponse.map<Widget>((title) {
-                                    var index = listResponse.indexOf(title);
+                                  children: mockData.attemptList.map<Widget>((title) {
+                                    var index = mockData.attemptList.indexOf(title);
                                     return Container(
                                         margin: EdgeInsets.only(top: 20),
                                         color: Colors.white,
@@ -212,10 +217,10 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                   0.3),
                                                         ),
                                                         Text(
-                                                          title["attempted_date"] ==
+                                                          title.attempted_date ==
                                                                   null
                                                               ? '--/--'
-                                                              : 'Result ${((double.parse(title["percentage"])).toInt())}%',
+                                                              : 'Result ${((double.parse(title.percentage.toString())).toInt())}%',
                                                           style: TextStyle(
                                                               fontFamily:
                                                                   'Roboto Regular',
@@ -252,8 +257,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                   ),
                                                   child: GestureDetector(
                                                     onTap: () => {
-                                                      if (title[
-                                                              "attempted_date"] ==
+                                                      if (title.attempted_date ==
                                                           null)
                                                         {
                                                           Navigator.push(
@@ -263,8 +267,9 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                     selectedId:
                                                                         selectedIdNew,
                                                                     mockName:
-                                                                        responseData[
-                                                                            "test_name"],
+                                                                    mockData.detailsofMock.test_name,
+                                                                        // responseData[
+                                                                        //     "test_name"],
                                                                     attempt:
                                                                         index +
                                                                             1),
@@ -287,7 +292,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                         }
                                                     },
                                                     child: Text(
-                                                      title["attempted_date"] ==
+                                                      title.attempted_date  
+                                                      ==
                                                               null
                                                           ? '     Start     '
                                                           : "More Details",
@@ -303,7 +309,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                               )
                                             ],
                                           ),
-                                          title["attempted_date"] == null
+                                          title.attempted_date == null
                                               ? Container()
                                               : Container(
                                                   margin:
@@ -314,7 +320,10 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                             .spaceBetween,
                                                     children: [
                                                       Text(
-                                                        'Date of Attempt: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(listResponse[index]["attempted_date"]["date"]))}',
+                                                        'Date of Attempt: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                                                          mockData.attemptList[index].attempted_date
+                                                          //listResponse[index]["attempted_date"]["date"]
+                                                          ))}',
                                                         style: TextStyle(
                                                             fontFamily:
                                                                 'Roboto Regular',
@@ -329,8 +338,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                               'assets/timer.png'),
                                                           Container(width: 2),
                                                           Text(
-                                                            title["attempted_date"]
-                                                                ["start_date"],
+                                                            title.start_date,
                                                             style: TextStyle(
                                                                 fontFamily:
                                                                     'Roboto Regular',
@@ -346,7 +354,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                     ],
                                                   ),
                                                 ),
-                                          title["attempted_date"] == null
+                                          title.attempted_date== null
                                               ? Container()
                                               : Container(
                                                   margin:
@@ -368,7 +376,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                         child: Column(
                                                           children: [
                                                             Text(
-                                                              title["total_qns"]
+                                                              title.total_qns
                                                                   .toString(),
                                                               style: TextStyle(
                                                                   fontFamily:
@@ -405,7 +413,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                         child: Column(
                                                           children: [
                                                             Text(
-                                                              title["correct"]
+                                                              title.correct
                                                                   .toString(),
                                                               style: TextStyle(
                                                                   fontFamily:
@@ -442,7 +450,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                         child: Column(
                                                           children: [
                                                             Text(
-                                                              title["wrong"]
+                                                              title.wrong
                                                                   .toString(),
                                                               style: TextStyle(
                                                                   fontFamily:
@@ -475,7 +483,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                         child: Column(
                                                           children: [
                                                             Text(
-                                                              title["notanswered"]
+                                                              title.notanswered
                                                                   .toString(),
                                                               style: TextStyle(
                                                                   fontFamily:

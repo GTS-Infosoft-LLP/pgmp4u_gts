@@ -29,6 +29,10 @@ num_attemptes=json["num_attemptes"];
 generated=json["generated"];
 deleteStatus=json["deleteStatus"];
 status=json["status"];
+print("in model");
+List temp=json["attempts"];
+ print("kdsfhsdkjfhdkfjhadj{$temp}");
+attempts = temp.map((e) => Attempt.fromJs(e)).toList();
 //attempts=json["attempts"].map((e)=>Attempt.fromJs(e)).toList();
   }
 }
@@ -37,7 +41,8 @@ class Attempt{
   String perc;
   Attempt();
   Attempt.fromJs(Map<String,dynamic> json){
-    attempt=json["attempt"];
-      perc=json["perc"];
+   print("inside  here");
+    attempt=json["attempt"]??0;
+      perc=json["perc"]??"";
   }
 }

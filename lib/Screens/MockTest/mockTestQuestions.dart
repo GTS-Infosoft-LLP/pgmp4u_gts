@@ -12,6 +12,8 @@ import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
+import '../../Models/mockquestionanswermodel.dart';
+
 class MockTestQuestions extends StatefulWidget {
   final int selectedId;
   final String mockName;
@@ -26,6 +28,7 @@ class MockTestQuestions extends StatefulWidget {
 }
 
 class _MockTestQuestionsState extends State<MockTestQuestions> {
+  QuestionAnswerModel questionAnswersList;
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
@@ -193,21 +196,26 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
     if (response.statusCode == 200) {
       print(">>>>>> quiz data ${response.body}");
+       
       setState(() {
         startTime = (new DateTime.now()).toString();
         mapResponse = convert.jsonDecode(response.body);
         listResponse = mapResponse["data"];
+         questionAnswersList = QuestionAnswerModel.fromjson(mapResponse["data"]);
         _stopWatchTimer.onExecute.add(StopWatchExecute.start);
       });
     }
   }
-
   var displayTime = '';
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+List<Queans> _quizList = [];
+if(questionAnswersList != null){
+ _quizList = questionAnswersList?.list ?? [];
+}
 
     return SafeArea(
       child: WillPopScope(
@@ -216,7 +224,9 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
             stream: _stopWatchTimer.rawTime,
             initialData: _stopWatchTimer.rawTime.value,
             builder: (context, snap) {
-              final value = snap.data;
+
+              if(snap.hasData){
+   final value = snap.data;
               displayTime = StopWatchTimer.getDisplayTime(value,
                   hours: true, milliSecond: false);
               return Scaffold(
@@ -285,7 +295,9 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                               ),
                             ),
                           ),
-                          listResponse != null
+                          
+                          _quizList.isNotEmpty
+                          //questionAnswersList != null
                               ? Expanded(
                                   child: SingleChildScrollView(
                                     child: Column(
@@ -361,10 +373,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                 margin: EdgeInsets.only(
                                                     top: height * (15 / 800)),
                                                 child: Text(
-                                                  listResponse != null
-                                                      ? listResponse[_quetionNo]
-                                                              ["Question"]
-                                                          ["question"]
+                                                  _quizList.isNotEmpty
+                                                  //questionAnswersList != null
+                                                      ? _quizList[_quetionNo].questionDetail.questiondata
+                                                      //listResponse[_quetionNo]
+                                                        //      ["Question"]
+                                                          //["question"]
                                                       : '',
                                                   style: TextStyle(
                                                     fontFamily:
@@ -378,34 +392,37 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               ),
                                               Column(
                                                 children:
-                                                    listResponse[_quetionNo]
-                                                                ["Question"]
-                                                            ["Options"]
+                                                    _quizList[_quetionNo].questionDetail.Options
                                                         .map<Widget>((title) {
                                                   var index =
-                                                      listResponse[_quetionNo]
-                                                                  ["Question"]
-                                                              ["Options"]
+                                                      _quizList[_quetionNo]
+                                                                  .questionDetail
+                                                             .Options
                                                           .indexOf(title);
                                                   return GestureDetector(
                                                     onTap: () => {
                                                       setState(() {
                                                         selectedAnswer = index;
                                                         currentData = {
-                                                          "question": listResponse[
-                                                                  _quetionNo][
-                                                              "Question"]["id"],
-                                                          "answer": listResponse[
-                                                                          _quetionNo]
-                                                                      [
-                                                                      "Question"]
-                                                                  ["Options"]
-                                                              [index]["id"],
+                                                          "question": _quizList[_quetionNo].questionDetail.queID,
+                                                          // listResponse[
+                                                          //         _quetionNo][
+                                                          //     "Question"]["id"],
+
+                                                          "answer": 
+                                                          _quizList[_quetionNo].questionDetail.Options[index].id,
+                                                          // listResponse[
+                                                          //                 _quetionNo]
+                                                          //             [
+                                                          //             "Question"]
+                                                          //         ["Options"]
+                                                          //     [index]["id"],
                                                           "correct": 1,
-                                                          "category": listResponse[
-                                                                      _quetionNo]
-                                                                  ["Question"]
-                                                              ["category"]
+                                                          "category":_quizList[_quetionNo].questionDetail.category
+                                                          //  listResponse[
+                                                          //             _quetionNo]
+                                                          //         ["Question"]
+                                                          //     ["category"]
                                                         };
                                                       })
                                                     },
@@ -496,8 +513,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                           420) *
                                                                       5),
                                                               child: Text(
-                                                                  title[
-                                                                      "question_option"],
+                                                                  title.question_option,
                                                                   style: TextStyle(
                                                                       fontSize: width *
                                                                           14 /
@@ -522,7 +538,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                 ))
                         ],
                       ),
-                      listResponse != null
+                      _quizList.isNotEmpty
+                      //questionAnswersList != null
                           ? Positioned(
                               bottom: 0,
                               child: Container(
@@ -679,6 +696,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                   ),
                 ),
               );
+           
+              }else {
+                return Center(child: CircularProgressIndicator(),);
+              }
+           
+           
             }),
       ),
     );
