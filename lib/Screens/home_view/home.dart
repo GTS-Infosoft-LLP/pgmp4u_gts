@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
-import 'package:pgmp4u/Screens/home_view/flash_card_item.dart';
-import 'package:pgmp4u/Screens/home_view/video_library.dart';
+ import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
+ import 'package:pgmp4u/Screens/home_view/flash_card_item.dart';
+ import 'package:pgmp4u/Screens/home_view/video_library.dart';
+import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:pgmp4u/utils/appimage.dart';
 import 'package:pgmp4u/Screens/home_view/flashcarddbuttn.dart';
+import 'package:provider/provider.dart';
+import '../../Models/apppurchasestatusmodel.dart';
 import '../../Models/options_model.dart';
 import '../../tool/ShapeClipper2.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_textstyle.dart';
 import '../../utils/user_object.dart';
 import 'application_support.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart';
+import 'dart:convert' as convert;
 //import 'home_view/flashcardbuttn.dart';
 class HomeView extends StatefulWidget {
   const HomeView({Key key}) : super(key: key);
@@ -20,14 +27,63 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+     Map mapResponse;
+    
+//ModelStatus maintainStatus;
   @override
-  void initState() {
-    // TODO: implement initState
+  initState()  {
+     //PurchaseProvider purchaseProvider= Provider.of(context,listen: false);
+     //   maintainStatus=purchaseProvider.latestStatus;
+    print("initcalling");
+
+   print("object");
     super.initState();
   }
 
+    Future apiCall() async {
+
+      print("apiCALL");
+      ModelStatus maintainStatus;
+  //  print("Get Status of FlashCard  ${mapResponse}");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+  print("apiCALL1");
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+   String stringValue = prefs.getString('token');
+   print(stringValue);
+  print("apiCALL2");
+   try {
+
+
+  var  response = await get(Uri.parse("http://18.119.55.81:3003/api/checkStatus"), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer "+stringValue
+    }).catchError((error){
+       print("apiCALL5");
+    });
+ print("apiCALL3 ${response.body}");
+    if (response.statusCode == 200) {
+      print("Calling successfull");
+      print(convert.jsonDecode(response.body));
+      setState(() {
+        mapResponse = convert.jsonDecode(response.body);
+        PurchaseProvider purchaseProvider = Provider.of(context,listen: false);
+        print("datadatdtdatdatdasdtasdasdt>>>>>>>>>>$mapResponse");
+        purchaseProvider.setStatus(ModelStatus.fromjson(mapResponse["data"]));
+        maintainStatus = purchaseProvider.getLatestStatus();
+        print("real valuee of flash card status  ${maintainStatus.flashCardStatus}");
+        print("real valuee of video library status  ${maintainStatus.videoLibStatus}");
+      });
+      // print(convert.jsonDecode(response.body));
+    }
+   }catch(e){
+     print("apiCALL4");
+print(">>>> api error $e");
+   }
+    
+  }
   @override
   Widget build(BuildContext context) {
+      apiCall();
     final user = UserObject().getUser;
 
     print(">>>>> name ${user.token}");
@@ -39,6 +95,7 @@ class _HomeViewState extends State<HomeView> {
       OptionsItem(
           iconImage: FontAwesomeIcons.video,
           name: "Video Library",
+          title: "Watch",
           screen: homeOption.videoLab,
           btntxt: "Free",
           ),
@@ -46,6 +103,7 @@ class _HomeViewState extends State<HomeView> {
       OptionsItem(
           iconImage: FontAwesomeIcons.tableColumns,
           name: "Flash Cards",
+          title: "Read",
           screen: homeOption.flashCard,
           btntxt:"US19"
           ),
@@ -127,28 +185,49 @@ class _HomeViewState extends State<HomeView> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
+                      child: Consumer<PurchaseProvider>(builder: (context, purchaseProvider, child) {
+                  var    maintainStatus=  purchaseProvider.latestStatus;
+                        return ListTile(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              switch (item.screen) {
+                            var _screen;
+                           switch (item.screen) {
                                 case homeOption.application:
-                                  return ApplicationSupportPage();
+                                  _screen = ApplicationSupportPage();
+                                  break;
                                 case homeOption.videoLab:
-                                  return VideoLibraryPage();
+                                  _screen = VideoLibraryPage();
+                                  break;
                                 case homeOption.flashCard:
-                                  return FlashCardItem();
+                                if(maintainStatus.flashCardStatus==0){
+                                  _screen=RandomPage(index: 1,);
+                                  // 1 for flash card plan only enum  for index
+                                  break;
+                                }
+                                  _screen =  FlashCardItem();
+                                  break;
+                                  
                                 case homeOption.domainWise:
-                                  return ApplicationSupportPage();
+                                  _screen = ApplicationSupportPage();
+                                  break;
                                 case homeOption.lissonsLearn:
-                                  return ApplicationSupportPage();
+                                  _screen = ApplicationSupportPage();
+                                  break;
                                 case homeOption.about:
-                                  return ApplicationSupportPage();
+                                  _screen = ApplicationSupportPage();
+                                  break;
                                 default:
-                                  return ApplicationSupportPage();
+                                  _screen = ApplicationSupportPage();
+                                  break;
                               }
+                            if(_screen!=null){
+  Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return _screen;
+                             
                             },
                           ));
+                            }
+                        
                         },
                         leading: Container(
                             decoration: BoxDecoration(
@@ -161,24 +240,40 @@ class _HomeViewState extends State<HomeView> {
                               padding: const EdgeInsets.all(12),
                               child: Icon(item.iconImage, color: Colors.white),
                             )),
-                        title: Text(
-                          item.name,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppTextStyle.titleTile,
-                        ),
+                        title:Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                              Text(
+                           item.title,
+                           maxLines: 1,
+                           overflow: TextOverflow.ellipsis,
+                           style:TextStyle(fontSize: 14,color: Colors.grey,fontWeight: FontWeight.bold),
+                         ),
+                              Text(
+                           item.name,
+                           maxLines: 2,
+                           overflow: TextOverflow.ellipsis,
+                           style: AppTextStyle.titleTile,
+                         ),
+                        ],),
+                        //  Text(
+                        //   item.name,
+                        //   maxLines: 2,
+                        //   overflow: TextOverflow.ellipsis,
+                        //   style: AppTextStyle.titleTile,
+                        // ),
                         trailing: SizedBox(
                           width: 100,
                             child: OutlinedButton(
-                            onPressed: (){
-                              if(item.name== "Flash Cards"){
-                             Navigator.push(context, MaterialPageRoute(
-                           builder: (BuildContext context) => RandomPage(
-                             index: 1),
-                           ));
-                              }
+                          //   onPressed: (){
+                          //     if(item.name== "Flash Cards"){
+                          //    Navigator.push(context, MaterialPageRoute(
+                          //  builder: (BuildContext context) => RandomPage(
+                          //    index: 1),
+                          //  ));
+                          //     }
                           
-                            },
+                          //   },
                             child: Text(
                               item.btntxt,
                               style: TextStyle(
@@ -208,7 +303,8 @@ class _HomeViewState extends State<HomeView> {
                         //     )
                         //   ]
                         //   ),
-                      ),
+                      );
+                      },)
                     ),
                   );
                 },
@@ -221,4 +317,4 @@ class _HomeViewState extends State<HomeView> {
   }
 }
 
-class SharedPreferences {}
+//class SharedPreferences {}

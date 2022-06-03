@@ -24,6 +24,7 @@ import './Screens/Auth/login.dart';
 import 'package:provider/provider.dart';
 
 import 'Screens/PracticeTests/practiceTest copy.dart';
+import 'Services/globalcontext.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
             create: (_) => PracticeTextProvider())
       ],
       child: MaterialApp(
+         navigatorKey: GlobalVariable.navState,
         debugShowCheckedModeBanner: false,
         routes: {
           '/': (ctx) => SplashScreen(),

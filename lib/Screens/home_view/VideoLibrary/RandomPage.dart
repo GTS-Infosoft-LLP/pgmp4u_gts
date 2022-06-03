@@ -1,11 +1,12 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pgmp4u/Models/constants.dart';
+import 'package:pgmp4u/Screens/Profile/paymentstripe2.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:pgmp4u/Screens/Profile/PaymentStatus.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RandomPage extends StatefulWidget {
   int index;
@@ -222,6 +223,28 @@ class _RandomPageState extends State<RandomPage> {
  
   }
 }
+  Future<String> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+   Future<void> _handlePaymentSuccess2(BuildContext context) async {
+    /// success payment handle from backend side, after amount deduct from card
+    // await paymentStatus("success");
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PaymentStatus(status: "success"),
+        ));
+  }
+
+  Future<void> _handlePaymentError2(BuildContext context) async {
+    //await paymentStatus("failed");
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PaymentStatus(status: "failure"),
+        ));
+  }
 Widget BuyButton2(BuildContext context,PurchaseProvider purchaseProvider,int index1forFlash2forvideoLib) {
   //index1forFlash2forvideoLib   1  for flash card and  2 for video Library
     return Column(
@@ -237,7 +260,7 @@ Widget BuyButton2(BuildContext context,PurchaseProvider purchaseProvider,int ind
                 color: Colors.indigo.shade600,
                 borderRadius: BorderRadius.circular(30.0)),
             child: OutlinedButton(
-              onPressed: () async {
+              onPressed: () async {         //  IOS payment By Inn App Purchase
                 if (Platform.isIOS) {
                   print("buttonClicked ${purchaseProvider.products[0].id}");
                   print("price ${purchaseProvider.products[0].price}");
@@ -250,16 +273,36 @@ Widget BuyButton2(BuildContext context,PurchaseProvider purchaseProvider,int ind
                     }
                   });
                 }
-                 else {
-               //   var token = await getToken();
+                 else {  ////////android payment with stripe
+                  var token = await getToken();
 
-                  // bool status = await Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => PaymentWithStripe(token: token),
-                  //     ));
+                  /// Payment implement with stripe
+                  bool status = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PaymentAndroid(token: token,statusFlash1videoLibrary2: index1forFlash2forvideoLib),
+                      ));
 
-                
+                  if (status) {
+                    Navigator.pop(context);
+                    _handlePaymentSuccess2(context);
+                  } else {
+                    _handlePaymentError2(context);
+                  }
+
+                  /// Old implement for razorpay
+                  // if (mapResponse == null) {
+                  //   openCheckout(data["razorpay_key"], data["mock_test_price"],
+                  //       data["Currency"]);
+                  // } else {
+                  //   openCheckout(
+                  //       data["razorpay_key"],
+                  //       (data["mock_test_price"] -
+                  //               ((mapResponse["discount"] / 100) *
+                  //                   data["mock_test_price"]))
+                  //           .toInt(),
+                  //       data["Currency"]);
+                  // }
                 }
               },
               style: ButtonStyle(
@@ -291,7 +334,8 @@ Widget BuyButton2(BuildContext context,PurchaseProvider purchaseProvider,int ind
         SizedBox(
           height: 32,
         ),
-     
+        context.watch<PurchaseProvider>().loaderStatus?
+ CircularProgressIndicator():SizedBox(),
         Platform.isIOS
             ? Center(
                 child: Row(

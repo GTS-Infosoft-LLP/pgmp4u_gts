@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pgmp4u/Models/constants.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:provider/provider.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import '../../Models/apppurchasestatusmodel.dart';
 import '../../tool/ShapeClipper.dart';
 import 'VideoLibrary/Playlist.dart';
 import 'VideoLibrary/RandomPage.dart';
-
+import 'dart:convert' as convert;
 class VideoLibraryPage extends StatefulWidget {
   @override
   _VideoLibraryPageState createState() => _VideoLibraryPageState();
@@ -16,11 +19,50 @@ class VideoLibraryPage extends StatefulWidget {
 class _VideoLibraryPageState extends State<VideoLibraryPage> {
   Color _darkText = Color(0xff424b53);
   Color _lightText = Color(0xff989d9e);
+   Map mapResponse;
+   bool isShowPremiumOrNot;
+//ModelStatus maintainStatus;
+ @override
+  void initState() {
+    super.initState();
+    //apiCall();
+    // if (selectedIdNew == "result") {
+    //   apiCall2();
+    // } else {
+    //   apiCall();
+    // }
+  }
 
+  // Future apiCall() async {
+  //   print("Get Status of FlashCard  ${mapResponse}");
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String stringValue = prefs.getString('token');
+  //   print(stringValue);
+  //   http.Response response;
+  //   response = await http.get(Uri.parse(""), headers: {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': stringValue
+  //   });
+
+  //   if (response.statusCode == 200) {
+  //     print(convert.jsonDecode(response.body));
+  //     setState(() {
+  //       mapResponse = convert.jsonDecode(response.body);
+  //       maintainStatus=ModelStatus.fromjson(mapResponse);
+  //     });
+  //     // print(convert.jsonDecode(response.body));
+  //   }
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<PurchaseProvider>(builder: (context, purchaseProvider, child) {
+       if(purchaseProvider.latestStatus?.videoLibStatus==0){
+          isShowPremiumOrNot=true;
+       }else{
+         isShowPremiumOrNot=false;
+       }
+        // bool isShowPremiumOrNot = purchaseProvider.latestStatus?.videoLibStatus??0==0;
         return Container(
         color: Color(0xfff7f7f7),
         child: Column(
@@ -102,8 +144,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                       ),
                       text: "PgMP Prep",
                       onTap: () {
-                        if(purchaseProvider.videoLibraryStatus)
-                        {
+                      
                           Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -113,15 +154,15 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                             ),
                           ),
                         );
-                        }
-                        else{
+                        
+                       
                   //         purchaseProvider.products.forEach((e) {
                   //   print("Product id => ${e.id}");
                   //   if (e.id == videoLibraryLearningPrograms) {
                   //     purchaseProvider.buy(e);
                   //   }
                   // });
-                        }
+                      
                        
                       },
                     ),
@@ -133,9 +174,13 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                         color: Colors.white,
                       ),
                       text: "Pgmp Success Stories",
-                      isShowPremium: true,
+                      isShowPremium:isShowPremiumOrNot,
+                    
                       onTap: () {
-                        if(purchaseProvider.videoLibraryStatus)
+                        
+                        //PurchaseProvider purchaseProvider = Provider.of(context,listen: false);
+                        
+                        if(purchaseProvider.latestStatus.videoLibStatus==1)
                         {
                           Navigator.push(
                           context,
@@ -147,6 +192,11 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                           ),
                         );
                         }else{
+                             Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => RandomPage(index: 2,),
+                            ));
                   //         purchaseProvider.products.forEach((e) {
                   //   print("Product id => ${e.id}");
                   //   if (e.id == videoLibraryLearningPrograms) {
@@ -203,7 +253,7 @@ class Options extends StatelessWidget {
         color: Colors.white,
         child: Container(
           margin: EdgeInsets.all(12),
-          height: 210,
+          height: 213,
           width: double.infinity,
           child: Padding(
             padding: EdgeInsets.all(10),
@@ -249,7 +299,7 @@ class Options extends StatelessWidget {
                                     child: Text(
                                     "Premium",
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 20,
                                         decoration: TextDecoration.underline),
                                   ))
                                 : SizedBox(),

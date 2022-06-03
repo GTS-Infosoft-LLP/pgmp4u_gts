@@ -16,5 +16,6 @@ class OptionsItem {
   final IconData iconImage;
   final homeOption screen;
   final String btntxt;
-  OptionsItem({this.iconImage, this.name, this.screen,this.btntxt});
+  final String title;
+  OptionsItem({this.iconImage, this.name, this.screen,this.btntxt,this.title});
 }

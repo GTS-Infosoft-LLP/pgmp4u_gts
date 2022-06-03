@@ -161,10 +161,23 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
+// Future<String> refreshToken() async {
+//     final GoogleSignInAccount googleSignInAccount =
+//         await googleSignIn.signInSilently();
+//     final GoogleSignInAuthentication googleSignInAuthentication =
+//         await googleSignInAccount.authentication;
 
+//     final AuthCredential credential = GoogleAuthProvider.getCredential(
+//       accessToken: googleSignInAuthentication.accessToken,
+//       idToken: googleSignInAuthentication.idToken,
+//     );
+//     await auth.signInWithCredential(credential);
+
+//     return googleSignInAuthentication.accessToken; //new token
+//   }
   Future signIn() async {
     final googleSignIn = GoogleSignIn();
-    googleSignIn.signOut();
+   await googleSignIn.signOut();
     GoogleSignInAccount user;
     // final user = await GoogleSignInApi.login();
     final googleUser = await googleSignIn.signIn();

@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
@@ -9,11 +10,16 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/Models/purchaseable_product.dart';
 import 'package:pgmp4u/Models/store_state.dart';
+import 'package:pgmp4u/Screens/home_view/home.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/purchase_interface.dart';
 import 'package:pgmp4u/utils/event.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../Models/apppurchasestatusmodel.dart';
+import '../Services/globalcontext.dart';
 
 abstract class PurchaseState extends ChangeNotifier {}
 
@@ -22,14 +28,27 @@ class Loading extends PurchaseState {}
 class Success extends PurchaseState {}
 
 class Default extends PurchaseState {
-  String message;
+  String message; 
 
   Default({this.message});
 }
 
 class PurchaseProvider extends ChangeNotifier {
-  bool flashCardStatus=false;
-bool videoLibraryStatus=false;
+  ModelStatus latestStatus;
+  
+  bool loaderStatus=false;
+  updatehere(bool val){
+loaderStatus=val;
+notifyListeners();
+  }
+ setStatus(ModelStatus val){
+    latestStatus=val;
+    notifyListeners();
+ }
+ ModelStatus getLatestStatus(){
+    return latestStatus;
+ }
+//bool videoLibraryStatus=false;
   StoreState storeState = StoreState.loading;
   StreamSubscription<List<PurchaseDetails>> _subscription;
   List<PurchasableProduct> products = [];
@@ -54,7 +73,7 @@ bool videoLibraryStatus=false;
   }
 
   Future<void> loadPurchases() async {
-    print("loadPurchase");
+    print("loadPurchase1");
     final available = await iapConnection.isAvailable();
     if (!available) {
       storeState = StoreState.notAvailable;
@@ -99,7 +118,7 @@ bool videoLibraryStatus=false;
       case storeKeyConsumable:
         var res =
             await iapConnection.buyConsumable(purchaseParam: purchaseParam);
-
+           
         print("apple payment status $res");
         break;
       case flashCards:
@@ -135,8 +154,17 @@ bool videoLibraryStatus=false;
   }
 
   void _handlePurchase(PurchaseDetails purchaseDetails) {
+
+    print("status of Listenersss>>>>>> ${purchaseDetails.status}");
+    if(purchaseDetails.status == PurchaseStatus.pending){
+     updatehere(true);
+    }
+    else{
+      updatehere(false);
+    }
     if (purchaseDetails.status == PurchaseStatus.purchased ||
         purchaseDetails.status == PurchaseStatus.restored) {
+           print("receiptttt dataa ${purchaseDetails.verificationData.serverVerificationData}");
       switch (purchaseDetails.productID) {
         case storeKeyConsumable:
           paymentStatus(purchaseDetails.status,
@@ -153,13 +181,17 @@ bool videoLibraryStatus=false;
               "\n status => ${purchaseDetails.status}");*/
           break;
         case flashCards:
-        flashCardStatus=true;
+        handlestatusFlashCardAndVideoLib(purchaseDetails.status,
+              purchaseDetails.verificationData.serverVerificationData,2);  // 2 for FLASH CARD
+        //flashCardStatus=true;
         notifyListeners();
           // paymentStatus(purchaseDetails.status,
           //     purchaseDetails.verificationData.serverVerificationData);
           break;
         case videoLibraryLearningPrograms:
-        videoLibraryStatus=true;
+         handlestatusFlashCardAndVideoLib(purchaseDetails.status,
+              purchaseDetails.verificationData.serverVerificationData,3);   // 3 FOR  VIDEO LIBRARY
+        //videoLibraryStatus=true;
          notifyListeners();
         //  paymentStatus(purchaseDetails.status,
           //    purchaseDetails.verificationData.serverVerificationData);
@@ -220,7 +252,74 @@ bool videoLibraryStatus=false;
     notifyListeners();
   }
 
+Future handlestatusFlashCardAndVideoLib(PurchaseStatus status, receiptData,int planTyp)async{
+SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    http.Response response;
+    print("Token => $stringValue Purchase status $status");
+      var request ={
+      //= json.encode({
+
+      "deviceType":"I",
+      "planType":planTyp,
+      "productId":planTyp==2 ?"flash_cards" : "video_recorded_learning_program",
+      "payment_receipt":receiptData
+    };
+    //);
+    //print("paymentStatus called => $status, $receiptData request => $request");
+    print("request of    purchaseeee => $request");
+    print("request of    purchaseeee => http://18.119.55.81:3003/api/InAppPurchasePaymentNew");
+
+     response = await http.post(
+      Uri.parse("http://18.119.55.81:3003/api/InAppPurchasePaymentNew"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': stringValue
+      },
+      body: json.encode(request),
+    );
+     print(response.body);
+     if(response.statusCode==200){
+     updateStatusofPurchaseFLASHANDVIDEO();
+       
+     }
+}
+
+
   void _updateStreamOnError(dynamic error) {
     //Handle error here
   }
 }
+
+
+Future updateStatusofPurchaseFLASHANDVIDEO() async {
+  ModelStatus maintainStatus;
+  Map mapResponse;
+    print("Get Status of FlashCard  ${mapResponse}");
+SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+   String stringValue = prefs.getString('token');
+   print(stringValue);
+    http.Response response;
+    response = await http.get(Uri.parse(checkStatusFlashAndVideo), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer "+stringValue
+    });
+
+    if (response.statusCode == 200) {
+      print("Calling successfull");
+      print(convert.jsonDecode(response.body));
+     // setState(() {
+        mapResponse = convert.jsonDecode(response.body);
+        PurchaseProvider purchaseProvider = Provider.of(GlobalVariable.navState.currentContext,listen: false);
+        print("datadatdtdatdatdasdtasdasdt>>>>>>>>>>$mapResponse");
+        purchaseProvider.setStatus(ModelStatus.fromjson(mapResponse["data"]));
+        maintainStatus = purchaseProvider.getLatestStatus();
+        print("real valuee of flash card status  ${maintainStatus.flashCardStatus}");
+        print("real valuee of video library status  ${maintainStatus.videoLibStatus}");
+        Navigator.pop(GlobalVariable.navState.currentContext);
+     // });
+      // print(convert.jsonDecode(response.body));
+    }
+  }
