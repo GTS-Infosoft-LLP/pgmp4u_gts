@@ -175,34 +175,38 @@ class VideoList extends StatelessWidget {
             child: Card(
               margin: EdgeInsets.only(bottom: 1),
               elevation: 2,
-              color: Colors.white,
+              //color: Colors.grey,
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Stack(children: [
-                      Container(
-                        height: 210,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(list.thunnailUrl),
-                            fit: BoxFit.cover,
+                    Container(
+                      height: 210,
+                      child: Stack(children: [
+                        Container(
+                       
+                          
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(13),
+                            child: Image.network(list.thunnailUrl,fit: BoxFit.cover,errorBuilder: (context,a,err){
+                              return Image.asset(AppImage.picture_placeholder2,fit: BoxFit.cover,width: MediaQuery.of(context).size.width, );
+                            },),
                           ),
                         ),
-                      ),
-                      Positioned(
-                        top: 50,
-                        bottom: 50,
-                        left: MediaQuery.of(context).size.width * 0.4,
-                        child: Image.asset(
-                          AppImage.playIcon,
-                          height: 55,
-                          width: 55,
-                        ),
-                      )
-                    ]),
+                        Positioned(
+                          top: 50,
+                          bottom: 50,
+                          left: MediaQuery.of(context).size.width * 0.4,
+                          child: Image.asset(
+                            AppImage.playIcon,
+                            height: 55,
+                            width: 55,
+                          ),
+                        )
+                      ]),
+                    ),
                     SizedBox(height: 10),
                     Text(
                       list.title,

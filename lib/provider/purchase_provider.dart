@@ -6,6 +6,7 @@ import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
+import 'package:http/http.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/Models/purchaseable_product.dart';
@@ -280,8 +281,7 @@ SharedPreferences prefs = await SharedPreferences.getInstance();
     );
      print(response.body);
      if(response.statusCode==200){
-     updateStatusofPurchaseFLASHANDVIDEO();
-       
+     updateStatusNew(isnav: true);
      }
 }
 
@@ -289,11 +289,15 @@ SharedPreferences prefs = await SharedPreferences.getInstance();
   void _updateStreamOnError(dynamic error) {
     //Handle error here
   }
+
+  
+
+updateStatusNew({bool isnav=false})async{
+  await updateStatusofPurchaseFLASHANDVIDEO(noNavigate: isnav);
 }
 
-
-Future updateStatusofPurchaseFLASHANDVIDEO() async {
-  ModelStatus maintainStatus;
+Future updateStatusofPurchaseFLASHANDVIDEO({bool noNavigate=false}) async {
+ 
   Map mapResponse;
     print("Get Status of FlashCard  ${mapResponse}");
 SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -315,11 +319,19 @@ SharedPreferences prefs = await SharedPreferences.getInstance();
         PurchaseProvider purchaseProvider = Provider.of(GlobalVariable.navState.currentContext,listen: false);
         print("datadatdtdatdatdasdtasdasdt>>>>>>>>>>$mapResponse");
         purchaseProvider.setStatus(ModelStatus.fromjson(mapResponse["data"]));
-        maintainStatus = purchaseProvider.getLatestStatus();
-        print("real valuee of flash card status  ${maintainStatus.flashCardStatus}");
-        print("real valuee of video library status  ${maintainStatus.videoLibStatus}");
-        Navigator.pop(GlobalVariable.navState.currentContext);
+        latestStatus = purchaseProvider.getLatestStatus();
+        print("real valuee of flash card status  ${latestStatus.flashCardStatus}");
+        print("real valuee of video library status  ${latestStatus.videoLibStatus}");
+        notifyListeners();
+        if(Platform.isIOS&& noNavigate){
+          Navigator.pop(GlobalVariable.navState.currentContext);
+        }
+    
      // });
       // print(convert.jsonDecode(response.body));
     }
+
+}
+
+
   }

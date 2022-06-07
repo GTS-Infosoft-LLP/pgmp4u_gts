@@ -155,7 +155,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                                         .green,
                                                           ),
                                                           child: Image.network(
-                                                            "${item.thumbnail}",errorBuilder: (context, error, stackTrace) {
+                                                            "${item.thumbnail}",width: 80,errorBuilder: (context, error, stackTrace) {
                                                               return Image.asset(AppImage.picture_placeholder);
                                                             },
                                                             fit: BoxFit.fill,

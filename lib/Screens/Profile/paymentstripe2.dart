@@ -5,8 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PaymentAndroid extends StatefulWidget {
   final String token;
- int statusFlash1videoLibrary2;
-   PaymentAndroid({Key key, this.token,this.statusFlash1videoLibrary2}) : super(key: key);
+  int statusFlash1videoLibrary2;
+  PaymentAndroid({Key key, this.token, this.statusFlash1videoLibrary2})
+      : super(key: key);
 
   @override
   State<PaymentAndroid> createState() => _PaymentWithStripeState();
@@ -19,9 +20,22 @@ class _PaymentWithStripeState extends State<PaymentAndroid> {
   }
 
   InAppWebViewController webView;
-
+  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
+      crossPlatform: InAppWebViewOptions(
+        useShouldOverrideUrlLoading: true,
+        mediaPlaybackRequiresUserGesture: false,
+      ),
+      android: AndroidInAppWebViewOptions(
+        useHybridComposition: true,
+      ),
+      ios: IOSInAppWebViewOptions(
+        allowsInlineMediaPlayback: true,
+      ));
+  var userAgent =
+      "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36";
   @override
   Widget build(BuildContext context) {
+    // print("");
     print("open url ${widget.token}");
     print(">>>> token");
     print(">>>> token ${widget.token}");
@@ -31,6 +45,7 @@ class _PaymentWithStripeState extends State<PaymentAndroid> {
           return false;
         },
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             leading: BackButton(
               color: Colors.black,
@@ -41,22 +56,21 @@ class _PaymentWithStripeState extends State<PaymentAndroid> {
             shadowColor: Colors.transparent,
             backgroundColor: Colors.transparent,
           ),
-          body: InAppWebView( 
-            initialUrlRequest:
-                URLRequest(url:
-                 Uri.parse(
-                   widget.statusFlash1videoLibrary2==1? "http://18.119.55.81:3003/api/createOrderNew?planType=2&deviceType=A"
-                   : "http://18.119.55.81:3003/api/createOrderNew?planType=3&deviceType=A"
-                   ), 
-                    headers: {
-              'Content-Type': 'application/json',
-              'Authorization': widget.token,
-            },
-            
+          body: InAppWebView(
+            initialUrlRequest: URLRequest(
+              url: Uri.parse(widget.statusFlash1videoLibrary2 == 1
+                  ? "http://18.119.55.81:3003/api/createOrderNew?planType=2&deviceType=A"
+                  : "http://18.119.55.81:3003/api/createOrderNew?planType=3&deviceType=A"),
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': widget.token,
+              },
             ),
+            // initialUrlRequest : URLRequest(url: Uri.parse("https://google.com")),
             onWebViewCreated: (InAppWebViewController controller) {
               webView = controller;
             },
+
             onLoadStart: (InAppWebViewController controller, Uri url) {
               print("current url >>>>>>  ${url}");
             },
@@ -79,6 +93,7 @@ class _PaymentWithStripeState extends State<PaymentAndroid> {
                     }
                   });
             },
+            initialOptions: options,
           ),
         ));
   }

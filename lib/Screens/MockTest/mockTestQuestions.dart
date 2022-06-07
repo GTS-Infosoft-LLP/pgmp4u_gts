@@ -557,7 +557,8 @@ if(questionAnswersList != null){
                                                 _quetionNo--;
                                                 selectedAnswer = null;
                                                 currentData = null;
-                                              })
+                                              }
+                                              )
                                             },
                                             child: Container(
                                               width: width / 2,

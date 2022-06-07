@@ -8,4 +8,6 @@ class AppImage {
       baseImage + "profile_image_placeholder.png";
   static const String picture_placeholder =
       baseImage + "pictureplaceholder.png";
+  static const String picture_placeholder2 =
+      baseImage + "videoplaceholder.png";
 }

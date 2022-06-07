@@ -228,12 +228,14 @@ class _RandomPageState extends State<RandomPage> {
     return prefs.getString('token');
   }
    Future<void> _handlePaymentSuccess2(BuildContext context) async {
+     PurchaseProvider provider = Provider.of(context,listen: false);
+     provider.updateStatusNew(isnav: true);
     /// success payment handle from backend side, after amount deduct from card
     // await paymentStatus("success");
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => PaymentStatus(status: "success"),
+          builder: (context) => PaymentStatus2(status: "success"),
         ));
   }
 

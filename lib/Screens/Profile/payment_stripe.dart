@@ -18,6 +18,17 @@ class _PaymentWithStripeState extends State<PaymentWithStripe> {
   }
 
   InAppWebViewController webView;
+  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
+      crossPlatform: InAppWebViewOptions(
+        useShouldOverrideUrlLoading: true,
+        mediaPlaybackRequiresUserGesture: false,
+      ),
+      android: AndroidInAppWebViewOptions(
+        useHybridComposition: true,
+      ),
+      ios: IOSInAppWebViewOptions(
+        allowsInlineMediaPlayback: true,
+      ));
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +82,7 @@ class _PaymentWithStripeState extends State<PaymentWithStripe> {
                       naviagteBack(context, false);
                     }
                   });
-            },
+            },initialOptions: options,
           ),
         ));
   }

@@ -68,11 +68,12 @@ class ResponseProvider extends ChangeNotifier {
   }
 
   Future getCardDetails() async {
+    cardDetails=null;
     updatestatusLoader(true);
     var cardApiUrl = Uri.parse(GetCardUrl);
     Map body;
     body = {"categoryId": "$categoryId"};
-    // print("body of card api ${body}");
+     print("body of card api ${body}");
     var response = await http
         .post(cardApiUrl, headers: {"Authorization": user.token}, body: body)
         .timeout(Duration(seconds: 20))
@@ -83,6 +84,7 @@ class ResponseProvider extends ChangeNotifier {
     });
 
     if (response.statusCode == 200) {
+      updatestatusLoader(false);
       Resources resources = Resources.fromJson(jsonDecode(response.body));
       if (resources.status == 200) {
         updatestatusLoader(false);
@@ -91,6 +93,10 @@ class ResponseProvider extends ChangeNotifier {
         //     " card details item ${cardDetails.cardDetailsList[0].description}");
       }
     }
+    else
+    { 
+      updatestatusLoader(false);
+      }
     notifyListeners();
   }
 

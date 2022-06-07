@@ -62,7 +62,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
        }else{
          isShowPremiumOrNot=false;
        }
-        // bool isShowPremiumOrNot = purchaseProvider.latestStatus?.videoLibStatus??0==0;
+        
         return Container(
         color: Color(0xfff7f7f7),
         child: Column(
