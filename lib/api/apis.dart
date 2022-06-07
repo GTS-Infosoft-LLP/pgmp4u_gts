@@ -26,9 +26,7 @@ const MOCK_TEST_QUESTIONS = _BASE_URL + "MockTestQuestions";
 const CHECK_COUPON = _BASE_URL + "CheckCoupon";
 const GET_RAZOR_PAY_ORDER_ID = _BASE_URL + "GetRazorPayOrderid";
 const CREATE_ORDER = _BASE_URL2 + "createOrder";
-
 const checkStatusFlashAndVideo = _BASE_URL2 + "checkStatus";  //new
-
 const GetCategoryListUrl = TEMP_URL + "getCategoryList";
 const GetCardUrl = TEMP_URL + "getCardDetailByCatId";
 const videoListByTypeUrl = TEMP_URL + "videoListByViType";

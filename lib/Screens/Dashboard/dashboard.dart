@@ -36,7 +36,7 @@ class _DashboardState extends State<Dashboard> {
 
   final List<Widget> _children = [
     HomeView(),
-    DashboardScreen(selectedId: () => {print('object')}),
+    // DashboardScreen(selectedId: () => {print('object')}),
     Profile()
   ];
 
@@ -101,27 +101,27 @@ class _DashboardState extends State<Dashboard> {
               //   ),
               // ),
               ),
-          BottomNavigationBarItem(
-              icon: new Icon(
-                Icons.home,
-                size: width * (26 / 420),
-                color: _currentIndex == 1
-                    ? _colorfromhex("#3846A9")
-                    : _colorfromhex("#ABAFD1"),
-              ),
-              label: 'Dashboard'
+          // BottomNavigationBarItem(
+          //     icon: new Icon(
+          //       Icons.home,
+          //       size: width * (26 / 420),
+          //       color: _currentIndex == 1
+          //           ? _colorfromhex("#3846A9")
+          //           : _colorfromhex("#ABAFD1"),
+          //     ),
+          //     label: 'Dashboard'
 
-              // Text(
-              //   'Dashboard',
-              //   style: TextStyle(
-              //     fontFamily: 'Roboto Medium',
-              //     fontSize: width * (12 / 420),
-              //     color: _currentIndex == 0
-              //         ? _colorfromhex("#3846A9")
-              //         : _colorfromhex("#ABAFD1"),
-              //   ),
-              // ),
-              ),
+          //     // Text(
+          //     //   'Dashboard',
+          //     //   style: TextStyle(
+          //     //     fontFamily: 'Roboto Medium',
+          //     //     fontSize: width * (12 / 420),
+          //     //     color: _currentIndex == 0
+          //     //         ? _colorfromhex("#3846A9")
+          //     //         : _colorfromhex("#ABAFD1"),
+          //     //   ),
+          //     // ),
+          //     ),
           BottomNavigationBarItem(
             icon: new Icon(
               Icons.person,

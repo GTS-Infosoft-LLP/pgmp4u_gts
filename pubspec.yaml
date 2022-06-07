@@ -59,6 +59,7 @@ dependencies:
   flutter_swiper_null_safety: ^1.0.2
   font_awesome_flutter: ^10.1.0
   webview_flutter: ^3.0.4
+  flutter_email_sender: ^5.1.0
 
   
 

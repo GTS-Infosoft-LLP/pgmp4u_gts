@@ -14,6 +14,7 @@ import '../../tool/ShapeClipper2.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_textstyle.dart';
 import '../../utils/user_object.dart';
+import '../Dashboard/DashboardScreen.dart';
 import 'application_support.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
@@ -92,6 +93,12 @@ class _HomeViewState extends State<HomeView> {
       //     iconImage: FontAwesomeIcons.graduationCap,
       //     name: "Application Support",
       //     screen: homeOption.application),
+       OptionsItem(
+          iconImage: FontAwesomeIcons.userGraduate,
+          name: "Application Support",
+          title: "Get",
+          screen: homeOption.application,
+          btntxt: ""),
       OptionsItem(
         iconImage: FontAwesomeIcons.video,
         name: "Video Library",
@@ -106,6 +113,13 @@ class _HomeViewState extends State<HomeView> {
           title: "Read",
           screen: homeOption.flashCard,
           btntxt: "US19"),
+     
+      OptionsItem(
+          iconImage: FontAwesomeIcons.book,
+          name: "Challenger",
+          title: "Test4U",
+          screen: homeOption.challengers,
+          btntxt: ""),
       // OptionsItem(
       //     iconImage: FontAwesomeIcons.bookOpenReader,
       //     name: "Domain Wise Exam Tips",
@@ -211,6 +225,9 @@ class _HomeViewState extends State<HomeView> {
                                   case homeOption.domainWise:
                                     _screen = ApplicationSupportPage();
                                     break;
+                                  case homeOption.challengers:
+                                    _screen =  DashboardScreen(selectedId: () => {print('object')});
+                                    break;
                                   case homeOption.lissonsLearn:
                                     _screen = ApplicationSupportPage();
                                     break;
@@ -267,7 +284,7 @@ class _HomeViewState extends State<HomeView> {
                               //   overflow: TextOverflow.ellipsis,
                               //   style: AppTextStyle.titleTile,
                               // ),
-                              trailing: item.name == "Flash Cards" &&
+                              trailing:item.btntxt.isEmpty? SizedBox()  : item.name == "Flash Cards" &&
                                       maintainStatus?.flashCardStatus == 1
                                   ? SizedBox()
                                   : item.name == "Video Library" &&

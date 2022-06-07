@@ -8,7 +8,8 @@ enum homeOption {
   flashCard,
   domainWise,
   lissonsLearn,
-  about
+  about,
+  challengers
 }
 
 class OptionsItem {

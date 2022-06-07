@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:pgmp4u/Screens/Profile/paymentScreen.dart';
 import 'package:pgmp4u/Screens/Tests/testsScreen.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/utils/appimage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -153,159 +154,165 @@ class _DashboardScreenState extends State<DashboardScreen> {
     var height = MediaQuery.of(context).size.height;
 
     print(MediaQuery.of(context).padding.top);
-    return WillPopScope(
-        onWillPop: _onWillPop,
-        child: Sizer(builder: (context, orientation, deviceType) {
-          return Container(
-            color: _colorfromhex("#F7F7FA"),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: SizerUtil.deviceType == DeviceType.mobile ? 180 : 330,
-                  width: width,
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.only(bottomRight: Radius.circular(40.0)),
-                    gradient: LinearGradient(
-                        colors: [
-                          _colorfromhex('#3846A9'),
-                          _colorfromhex('#5265F8')
-                        ],
-                        begin: const FractionalOffset(0.0, 0.0),
-                        end: const FractionalOffset(1.0, 0.0),
-                        stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                            left: width * (20 / 420),
-                            right: width * (20 / 420),
-                            top: height * (16 / 800)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            /* Icon(
-                          Icons.menu,
-                          size: width * (24 / 420),
-                          color: Colors.white,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              margin:
-                                  EdgeInsets.only(right: width * (16 / 420)),
-                              child: Icon(
-                                Icons.search,
-                                size: width * (24 / 420),
-                                color: Colors.white,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () => {},
-                              child: Icon(
-                                Icons.notifications,
-                                size: width * (24 / 420),
-                                color: Colors.white,
-                              ),
-                            ),
+    return Scaffold(
+      
+      body: WillPopScope(
+          onWillPop: _onWillPop,
+          child: Sizer(builder: (context, orientation, deviceType) {
+            return Container(
+              color: _colorfromhex("#F7F7FA"),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: SizerUtil.deviceType == DeviceType.mobile ? 180 : 330,
+                    width: width,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.only(bottomRight: Radius.circular(40.0)),
+                      gradient: LinearGradient(
+                          colors: [
+                            _colorfromhex('#3846A9'),
+                            _colorfromhex('#5265F8')
                           ],
-                        ),*/
-                          ],
+                          begin: const FractionalOffset(0.0, 0.0),
+                          end: const FractionalOffset(1.0, 0.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                              left: width * (20 / 420),
+                              right: width * (20 / 420),
+                              top: height * (16 / 800)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              /* Icon(
+                            Icons.menu,
+                            size: width * (24 / 420),
+                            color: Colors.white,
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                margin:
+                                    EdgeInsets.only(right: width * (16 / 420)),
+                                child: Icon(
+                                  Icons.search,
+                                  size: width * (24 / 420),
+                                  color: Colors.white,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () => {},
+                                child: Icon(
+                                  Icons.notifications,
+                                  size: width * (24 / 420),
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),*/
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: height * (30 / 800),
-                            left: width * (28 / 420),
-                            right: width * (34 / 420)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(bottom: 7),
-                                  child: Row(
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: height * (30 / 800),
+                              left: width * (28 / 420),
+                              right: width * (34 / 420)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 7),
+                                    child: Row(
+                                      children: [
+                                       InkWell(
+                                         onTap: (){Navigator.pop(context);},
+                                       child: Icon(Icons.arrow_back_ios,color: Colors.white,)),
+                                        Text(
+                                          'Hello, ',
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto Regular',
+                                            fontSize: width * (16 / 420),
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(
+                                          displayName != null ? displayName : '',
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto Bold',
+                                            fontSize: width * (16 / 420),
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Hello, ',
+                                        'Find a test you',
                                         style: TextStyle(
-                                          fontFamily: 'Roboto Regular',
-                                          fontSize: width * (16 / 420),
+                                          fontFamily: 'Roboto Bold',
+                                          fontSize: width * (20 / 420),
                                           color: Colors.white,
                                         ),
                                       ),
                                       Text(
-                                        displayName != null ? displayName : '',
+                                        'want to learn',
                                         style: TextStyle(
                                           fontFamily: 'Roboto Bold',
-                                          fontSize: width * (16 / 420),
+                                          fontSize: width * (20 / 420),
                                           color: Colors.white,
                                         ),
                                       ),
                                     ],
-                                  ),
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Find a test you',
-                                      style: TextStyle(
-                                        fontFamily: 'Roboto Bold',
-                                        fontSize: width * (20 / 420),
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Text(
-                                      'want to learn',
-                                      style: TextStyle(
-                                        fontFamily: 'Roboto Bold',
-                                        fontSize: width * (20 / 420),
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            photoUrl != null && photoUrl != ""
-                                ? Container(
-                                    width: width * (80 / 420),
-                                    height: width * (80 / 420),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(photoUrl),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      borderRadius: BorderRadius.circular(80),
-                                    ),
                                   )
-                                : Container(
-                                    width: width * (80 / 420),
-                                    height: width * (80 / 420),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(80),
-                                    ),
-                                  )
-                          ],
-                        ),
-                      )
-                    ],
+                                ],
+                              ),
+                              photoUrl != null && photoUrl != ""
+                                  ? Container(
+                                      width: width * (80 / 420),
+                                      height: width * (80 / 420),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(photoUrl),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        borderRadius: BorderRadius.circular(80),
+                                      ),
+                                    )
+                                  : Container(
+                                      width: width * (80 / 420),
+                                      height: width * (80 / 420),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(80),
+                                      ),
+                                    )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                mapResponse != null ? TestsScreen() : Container()
-              ],
-            ),
-          );
-        }));
+                  mapResponse != null ? TestsScreen() : Container()
+                ],
+              ),
+            );
+          })),
+    );
   }
 }
