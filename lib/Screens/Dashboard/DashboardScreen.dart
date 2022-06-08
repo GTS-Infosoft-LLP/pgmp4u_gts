@@ -156,9 +156,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     print(MediaQuery.of(context).padding.top);
     return Scaffold(
       
-      body: WillPopScope(
-          onWillPop: _onWillPop,
-          child: Sizer(builder: (context, orientation, deviceType) {
+      body:
+      // WillPopScope(
+        //  onWillPop: _onWillPop,
+          //child:
+           Sizer(builder: (context, orientation, deviceType) {
             return Container(
               color: _colorfromhex("#F7F7FA"),
               child: Column(
@@ -312,7 +314,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
               ),
             );
-          })),
+          }
+          //)
+          ),
     );
   }
 }
