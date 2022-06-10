@@ -409,8 +409,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
         Center(
           child: Container(
             margin: EdgeInsets.only(top: 20),
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: EdgeInsets.only(left: 0, right: 0),
             height: 40,
+            
             // alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: _colorfromhex("#3A47AD"),

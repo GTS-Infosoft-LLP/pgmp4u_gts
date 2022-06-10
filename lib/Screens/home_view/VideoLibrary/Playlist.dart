@@ -121,15 +121,39 @@ class _PlaylistPageState extends State<PlaylistPage> {
                   future:
                       responseProvider.getCardVideoTypeApi(widget.videoType),
                   builder: (ctx, snapshot) {
-                    // print(" error ${snapshot.error}");
-                    if (snapshot.hasData) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return Text("kamal none");
+                      case ConnectionState.waiting:
+                        return Container(
+                            height: MediaQuery.of(context).size.height * .5,
+                            child:
+                                Center(child: new CircularProgressIndicator()));
+
+                      case ConnectionState.active:
+                        return Text("data");
+                      case ConnectionState.done:
+                     if (snapshot.hasData) {
                       return VideoList(snapshot.data.videoListing);
                     } else {
                       return Container(
                           height: MediaQuery.of(context).size.height * .5,
                           child:
-                              Center(child: new CircularProgressIndicator()));
+                              Center(child: Text("No Data Found",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)));
                     }
+                        // return snapshot.data.videoListing.isNotEmpty
+                        //     ? VideoList(snapshot.data?.videoListing)
+                        //     : Text("No data found");
+                    }
+                    // print(" error ${snapshot.error}");
+                    // if (snapshot.hasData) {
+                    //   return VideoList(snapshot.data.videoListing);
+                    // } else {
+                    //   return Container(
+                    //       height: MediaQuery.of(context).size.height * .5,
+                    //       child:
+                    //           Center(child: new CircularProgressIndicator()));
+                    // }
                     // if (snapshot.hasError) print(snapshot.error);
                   },
                 ))
@@ -186,13 +210,19 @@ class VideoList extends StatelessWidget {
                       height: 210,
                       child: Stack(children: [
                         Container(
-                       
-                          
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(13),
-                            child: Image.network(list.thunnailUrl,fit: BoxFit.cover,errorBuilder: (context,a,err){
-                              return Image.asset(AppImage.picture_placeholder2,fit: BoxFit.cover,width: MediaQuery.of(context).size.width, );
-                            },),
+                            child: Image.network(
+                              list.thunnailUrl,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, a, err) {
+                                return Image.asset(
+                                  AppImage.picture_placeholder2,
+                                  fit: BoxFit.cover,
+                                  width: MediaQuery.of(context).size.width,
+                                );
+                              },
+                            ),
                           ),
                         ),
                         Positioned(

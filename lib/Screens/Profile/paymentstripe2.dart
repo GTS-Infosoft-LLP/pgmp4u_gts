@@ -59,8 +59,9 @@ class _PaymentWithStripeState extends State<PaymentAndroid> {
           body: InAppWebView(
             initialUrlRequest: URLRequest(
               url: Uri.parse(widget.statusFlash1videoLibrary2 == 1
-                  ? "http://18.119.55.81:3003/api/createOrderNew?planType=2&deviceType=A"
-                  : "http://18.119.55.81:3003/api/createOrderNew?planType=3&deviceType=A"),
+                  ? 
+                  stripeFlashCard
+                  : stripeVideoLib),
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': widget.token,

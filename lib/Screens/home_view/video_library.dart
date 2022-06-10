@@ -144,7 +144,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                       ),
                       text: "PgMP Prep",
                       onTap: () {
-                      
+                      print("on tabbbb");
                           Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -180,7 +180,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                         
                         //PurchaseProvider purchaseProvider = Provider.of(context,listen: false);
                         
-                        if(purchaseProvider.latestStatus.videoLibStatus==1)
+                        if(purchaseProvider.latestStatus?.videoLibStatus==1)
                         {
                           Navigator.push(
                           context,

@@ -471,9 +471,10 @@ class _ProfileState extends State<Profile> {
                             // ),
 
                             GestureDetector(
-                              onTap: () => {
-                                // Navigator.of(context)
-                                //     .pushNamed('/settings')
+                              onTap: ()  {
+                                //Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsScreen("","")));
+                                 //Navigator.of(context)
+                                  //   .pushNamed('/settings');
                               },
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),

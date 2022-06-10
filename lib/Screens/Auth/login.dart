@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
           MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
     } else {
       GFToast.showToast(
-        "Something went wrong,please try again",
+        "user is not registered",
         context,
         toastPosition: GFToastPosition.BOTTOM,
       );

@@ -104,7 +104,7 @@ class _HomeViewState extends State<HomeView> {
         name: "Video Library",
         title: "Watch",
         screen: homeOption.videoLab,
-        btntxt: "Free",
+        btntxt: "",
       ),
 
       OptionsItem(

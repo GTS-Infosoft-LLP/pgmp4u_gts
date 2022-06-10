@@ -268,11 +268,9 @@ SharedPreferences prefs = await SharedPreferences.getInstance();
     };
     //);
     //print("paymentStatus called => $status, $receiptData request => $request");
-    print("request of    purchaseeee => $request");
-    print("request of    purchaseeee => http://18.119.55.81:3003/api/InAppPurchasePaymentNew");
 
      response = await http.post(
-      Uri.parse("http://18.119.55.81:3003/api/InAppPurchasePaymentNew"),
+      Uri.parse(InAppPurchasePaymentNew),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': stringValue

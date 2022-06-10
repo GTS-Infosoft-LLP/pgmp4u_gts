@@ -44,6 +44,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
 
     if (response.statusCode == 200) {
+      print("responseseses ${response.body}");
       setState(() {
         mapResponse = convert.jsonDecode(response.body);
         print("Check Payment Status Res => ${mapResponse}");
@@ -60,6 +61,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
         body: Stack(
       children: [
+        
         Container(
           height: 149,
           width: width,
@@ -108,6 +110,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ],
                     ),
+                  
                   ],
                 ),
               ),
@@ -122,19 +125,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: width * (18 / 420),
-                                    right: width * (18 / 420)),
-                                child: Text(
-                                  'Settings',
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto Bold',
-                                      fontSize: width * (18 / 420),
-                                      color: Colors.black,
-                                      letterSpacing: 0.3),
-                                ),
-                              ),
+                              
+                              // Container(
+                              //   margin: EdgeInsets.only(
+                              //       left: width * (18 / 420),
+                              //       right: width * (18 / 420)),
+                              //   child: Text(
+                              //     'Settings',
+                              //     style: TextStyle(
+                              //         fontFamily: 'Roboto Bold',
+                              //         fontSize: width * (18 / 420),
+                              //         color: Colors.black,
+                              //         letterSpacing: 0.3),
+                              //   ),
+                              // ),
+                             
                               Container(
                                 margin: EdgeInsets.only(bottom: 6, top: 20),
                                 padding: EdgeInsets.only(
@@ -177,7 +182,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               Container(
                                                 margin: EdgeInsets.only(top: 5),
                                                 child: Text(
-                                                  phoneNumberNew,
+                                                  phoneNumberNew??"",
                                                   style: TextStyle(
                                                     fontFamily:
                                                         'Roboto Regular',
@@ -191,74 +196,77 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                             ],
                                           ),
                                         ),
+                                     
                                       ],
                                     ),
                                   ],
                                 ),
                               ),
-                              Container(
-                                margin: EdgeInsets.only(bottom: 6, top: 5),
-                                padding: EdgeInsets.only(
-                                    top: 18,
-                                    bottom: 15,
-                                    left: width * (18 / 420),
-                                    right: width * (18 / 420)),
-                                color: Colors.white,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.home,
-                                          size: width * (30 / 420),
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              left: width * (20 / 420)),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                child: Text(
-                                                  'Email',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Roboto Medium',
-                                                    fontSize:
-                                                        width * (18 / 420),
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(top: 5),
-                                                child: Text(
-                                                  emailDataNew == ""
-                                                      ? "none"
-                                                      : emailDataNew,
-                                                  style: TextStyle(
-                                                    fontFamily:
-                                                        'Roboto Regular',
-                                                    fontSize:
-                                                        width * (18 / 420),
-                                                    color: _colorfromhex(
-                                                        "#ABAFD1"),
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
+                             
+                              // Container(
+                              //   margin: EdgeInsets.only(bottom: 6, top: 5),
+                              //   padding: EdgeInsets.only(
+                              //       top: 18,
+                              //       bottom: 15,
+                              //       left: width * (18 / 420),
+                              //       right: width * (18 / 420)),
+                              //   color: Colors.white,
+                              //   child: Row(
+                              //     mainAxisAlignment:
+                              //         MainAxisAlignment.spaceBetween,
+                              //     children: [
+                              //       Row(
+                              //         children: [
+                              //           Icon(
+                              //             Icons.home,
+                              //             size: width * (30 / 420),
+                              //             color: _colorfromhex("#ABAFD1"),
+                              //           ),
+                              //           Container(
+                              //             margin: EdgeInsets.only(
+                              //                 left: width * (20 / 420)),
+                              //             child: Column(
+                              //               mainAxisAlignment:
+                              //                   MainAxisAlignment.start,
+                              //               crossAxisAlignment:
+                              //                   CrossAxisAlignment.start,
+                              //               children: [
+                              //                 Container(
+                              //                   child: Text(
+                              //                     'Email',
+                              //                     style: TextStyle(
+                              //                       fontFamily: 'Roboto Medium',
+                              //                       fontSize:
+                              //                           width * (18 / 420),
+                              //                       color: Colors.black,
+                              //                     ),
+                              //                   ),
+                              //                 ),
+                              //                 Container(
+                              //                   margin: EdgeInsets.only(top: 5),
+                              //                   child: Text(
+                              //                     emailDataNew == ""
+                              //                         ? "none"
+                              //                         : emailDataNew,
+                              //                     style: TextStyle(
+                              //                       fontFamily:
+                              //                           'Roboto Regular',
+                              //                       fontSize:
+                              //                           width * (18 / 420),
+                              //                       color: _colorfromhex(
+                              //                           "#ABAFD1"),
+                              //                     ),
+                              //                   ),
+                              //                 )
+                              //               ],
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                             
                               mapResponse["data"]["paid_status"] != 1
                                   ? GestureDetector(
                                       onTap: () =>
@@ -320,6 +328,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   showSwitch: true),
                               optionList(width, "Support"),
                               optionList(width, "Rate Us"),
+                            
                             ],
                           ),
                         ),
@@ -333,11 +342,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               _colorfromhex("#4849DF")),
                         ),
                       )),
+            
+          
             ],
           ),
         ),
+      
       ],
     ));
+  
   }
 
   Widget optionList(double width, String text, {bool showSwitch = false}) {

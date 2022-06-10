@@ -127,7 +127,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                           margin: EdgeInsets.only(
                               left: width * (20 / 420),
                               right: width * (20 / 420),
-                              top: height * (16 / 800)),
+                              top: height * (50 / 800)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -579,6 +579,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                     ],
                   ),
                 ),
+              Text("data"),
                 realAnswer == selectedAnswer && selectedAnswer != null
                     ? Positioned(
                         top: SizerUtil.deviceType == DeviceType.mobile

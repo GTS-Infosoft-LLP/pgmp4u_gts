@@ -31,6 +31,7 @@ class ResponseProvider extends ChangeNotifier {
     //print("video body $body");
     // print(" response of video api ${response.body}");
     if (response.statusCode == 200) {
+      
       Resources getVideoResponse =
           Resources.fromJson(jsonDecode(response.body));
       if (getVideoResponse.status == 200) {
