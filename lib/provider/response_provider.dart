@@ -57,6 +57,7 @@ class ResponseProvider extends ChangeNotifier {
         });
 
     if (response.statusCode == 200) {
+       updatestatusLoader(false);
       Resources categoryApiResponse =
           Resources.fromJson(jsonDecode(response.body));
       if (categoryApiResponse.status == 200) {

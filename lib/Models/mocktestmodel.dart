@@ -4,7 +4,7 @@ class MockTestModel{
 List<MockText> mockList=[];
 MockTestModel.fromjson(List json){
 
-  print("json MockTestModel ${jsonEncode(json)}");
+  //print("json MockTestModel ${jsonEncode(json)}");
   List temp=json??[] as List;
   mockList=temp.map((e) =>  MockText.fromjs(e)).toList();
 }
@@ -31,7 +31,7 @@ deleteStatus=json["deleteStatus"];
 status=json["status"];
 print("in model");
 List temp=json["attempts"];
- print("kdsfhsdkjfhdkfjhadj{$temp}");
+ //print("kdsfhsdkjfhdkfjhadj{$temp}");
 attempts = temp.map((e) => Attempt.fromJs(e)).toList();
 //attempts=json["attempts"].map((e)=>Attempt.fromJs(e)).toList();
   }

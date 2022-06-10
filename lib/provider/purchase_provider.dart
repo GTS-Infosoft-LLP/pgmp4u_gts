@@ -86,7 +86,7 @@ notifyListeners();
       flashCards,videoLibraryLearningPrograms,
     };
     final response = await iapConnection.queryProductDetails(ids);
-    print("loadPurchases $storeKeyConsumable ${response.productDetails}");
+    //print("loadPurchases $storeKeyConsumable ${response.productDetails}");
     products =
         response.productDetails.map((e) => PurchasableProduct(e)).toList();
     storeState = StoreState.available;
@@ -120,19 +120,19 @@ notifyListeners();
         var res =
             await iapConnection.buyConsumable(purchaseParam: purchaseParam);
            
-        print("apple payment status $res");
+        //print("apple payment status $res");
         break;
       case flashCards:
         var res =
             await iapConnection.buyNonConsumable(purchaseParam: purchaseParam);
 
-        print("apple payment status $res");
+        //print("apple payment status $res");
         break;
       case videoLibraryLearningPrograms:
         var res =
             await iapConnection.buyNonConsumable(purchaseParam: purchaseParam);
 
-        print("apple payment status $res");
+        //print("apple payment status $res");
         break;
       default:
         serverResponse =
@@ -165,7 +165,7 @@ notifyListeners();
     }
     if (purchaseDetails.status == PurchaseStatus.purchased ||
         purchaseDetails.status == PurchaseStatus.restored) {
-           print("receiptttt dataa ${purchaseDetails.verificationData.serverVerificationData}");
+          // print("receiptttt dataa ${purchaseDetails.verificationData.serverVerificationData}");
       switch (purchaseDetails.productID) {
         case storeKeyConsumable:
           paymentStatus(purchaseDetails.status,

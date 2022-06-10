@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
       "access_type": fromProvider
     });
 
-    print("Request Data => $request");
+    //print("Request Data => $request");
 
     response = await http.post(
       Uri.parse(GMAIL_LOGIN),
@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: request,
     );
 
-    print("Response => ${response.body}");
+   // print("Response => ${response.body}");
 
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       var u = UserObject().getUser;
 
-      print("user name after login ${u.image}  name ${u.name}");
+      //print("user name after login ${u.image}  name ${u.name}");
       prefs.setString('token', responseData["token"]);
       prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
       prefs.setString('name', user.displayName);
