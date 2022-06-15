@@ -118,7 +118,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text(
@@ -129,7 +129,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 15),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -261,8 +261,8 @@ class Options extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    height: 100.0,
-                    width: 100.0,
+                    height: 90.0,
+                    width: 90.0,
                     decoration: BoxDecoration(
                         color: iconBackground,
                         borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -271,7 +271,7 @@ class Options extends StatelessWidget {
                       //child: Container(child: Image.asset(icon),width: 60,height: 60,),
                     ),
                   ),
-                  SizedBox(height: 13),
+                  SizedBox(height: 10),
                   SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -283,7 +283,7 @@ class Options extends StatelessWidget {
                                 color: _lightText)),
                         Text(text,
                             style: TextStyle(
-                                fontSize: 24.0,
+                                fontSize: 22.0,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Lato-Regular',
                                 color: _darkText)),
@@ -299,7 +299,7 @@ class Options extends StatelessWidget {
                                     child: Text(
                                     "Premium",
                                     style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 18,
                                         decoration: TextDecoration.underline),
                                   ))
                                 : SizedBox(),
