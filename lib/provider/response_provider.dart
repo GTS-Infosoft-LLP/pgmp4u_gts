@@ -12,7 +12,7 @@ import '../Models/get_video_by_type_response.dart';
 class ResponseProvider extends ChangeNotifier {
   CategoryList categoryList;
   CardDetails cardDetails;
-  GetVideoByType getvideo;
+  // GetVideoByType getvideo;
 
   final user = UserObject().getUser;
   bool apiStatus = false;
@@ -20,9 +20,11 @@ class ResponseProvider extends ChangeNotifier {
 
   Future<GetVideoByType> getCardVideoTypeApi(int videoTypeId) async {
     // print(" call Get Video Type APi");
-    updatestatusLoader(true);
+    // updatestatusLoader(true);
     Map body = {"videoType": videoTypeId.toString()};
     var getVideoByTypeUrl = Uri.parse(videoListByTypeUrl);
+    print("URL OF GET VIDEO ${videoListByTypeUrl}");
+    print("video get body ${body}");
     //print(" api url $getVideoByTypeUrl");
 
     var response = await http.post(getVideoByTypeUrl,
@@ -35,13 +37,15 @@ class ResponseProvider extends ChangeNotifier {
       Resources getVideoResponse =
           Resources.fromJson(jsonDecode(response.body));
       if (getVideoResponse.status == 200) {
-        updatestatusLoader(false);
-        getvideo = GetVideoByType.fromJson(getVideoResponse.data);
+        // updatestatusLoader(false);
+       var getvideo = GetVideoByType.fromJson(getVideoResponse.data);
         return getvideo;
       }
+    }else {
+      return null;
     }
-    notifyListeners();
-    return getvideo;
+    // notifyListeners();
+    // return getvideo;
   }
 
   Future getcategoryList() async {

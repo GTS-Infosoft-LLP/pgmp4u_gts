@@ -142,7 +142,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                         size: 50,
                         color: Colors.white,
                       ),
-                      text: "PgMP Prep",
+                      text: "PgMP Prep Free",
                       onTap: () {
                       print("on tabbbb");
                           Navigator.push(
@@ -150,7 +150,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                           MaterialPageRoute(
                             builder: (BuildContext context) => new PlaylistPage(
                               videoType: 1,
-                              title: "PgMP Prep",
+                              title: "PgMP Prep Free",
                             ),
                           ),
                         );
@@ -173,7 +173,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                         size: 50,
                         color: Colors.white,
                       ),
-                      text: "Pgmp Success Stories",
+                      text: "PgMP Recorded Program Premium",
                       isShowPremium:isShowPremiumOrNot,
                     
                       onTap: () {
@@ -186,7 +186,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) => PlaylistPage(
-                              title: "PgMP Success Stories",
+                              title: "PgMP Recorded Program Premium",
                               videoType: 2,
                             ),
                           ),
@@ -253,7 +253,7 @@ class Options extends StatelessWidget {
         color: Colors.white,
         child: Container(
           margin: EdgeInsets.all(12),
-          height: 213,
+          height: 225,
           width: double.infinity,
           child: Padding(
             padding: EdgeInsets.all(10),

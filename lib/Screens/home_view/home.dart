@@ -172,7 +172,7 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ),
                       SizedBox(
-                        height: 8,
+                        height: 5,
                       ),
                       Text(
                         "${user.name}",
@@ -181,7 +181,14 @@ class _HomeViewState extends State<HomeView> {
                             color: Colors.black,
                             fontWeight: FontWeight.bold),
                       ),
+                       SizedBox(
+                        height: 8,
+                      ),
                       Text("Course Name"),
+                      Text("PgMp",style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),),
                     ]),
                   ),
                 ),

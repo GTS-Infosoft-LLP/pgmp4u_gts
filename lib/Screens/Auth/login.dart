@@ -81,8 +81,10 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         loading = false;
       });
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(
+            
+            builder: (context) => Dashboard(selectedId: user)), (r)=>false);
     } else {
       GFToast.showToast(
         "user is not registered",

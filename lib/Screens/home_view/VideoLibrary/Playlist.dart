@@ -69,15 +69,20 @@ class _PlaylistPageState extends State<PlaylistPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          Text(
-                            widget.title,
-                            style: TextStyle(
-                                fontSize: 22,
-                                color: Colors.white,
-                                fontFamily: "Raleway",
-                                fontWeight: FontWeight.bold),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                          SizedBox(width: 15,),
+                          Flexible(
+                            child: Center(
+                              child: Text(
+                                widget.title,
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    color: Colors.white,
+                                    fontFamily: "Raleway",
+                                    fontWeight: FontWeight.bold),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
                           ),
                           SizedBox(width: 10),
                           Container(
@@ -318,110 +323,173 @@ class _VideoPlayState extends State<VideoPlay> {
       }
     });
   }
-
+   Future<bool> onwill() async {
+    await SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+         await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    return true;
+  }
+bool isLandScape = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.black,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-        ),
-        // floatingActionButton: playVideo(_controller),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    return WillPopScope(
+      onWillPop: onwill,
+      child: Scaffold(
+          backgroundColor: Colors.black,
+          // appBar: AppBar(leading: 
+          //BackButton(onPressed: () async {
+          //   await SystemChrome.setPreferredOrientations(
+          // [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+          //   Navigator.pop(context);
+          // },),
+          //   backgroundColor: Colors.transparent,
+          // ),
+          // floatingActionButton: playVideo(_controller),
+          // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-        body: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Container(
-                    child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      isIconVisible = true;
-                      setState(() {});
-                      count();
-                    },
-                    child: Stack(
-                      children: [
-                        _controller.value.isInitialized
-                            ? Center(
-                                child: AspectRatio(
-                                  child: VideoPlayer(_controller),
-                                  aspectRatio:
-                                      _controller.value.aspectRatio + 0.1,
+          body: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Container(
+                      child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        isIconVisible = true;
+                        setState(() {});
+                        count();
+                      },
+                      child: 
+                      Stack(
+                        children: [
+                          _controller.value.isInitialized
+                              ? Center(
+                                  child: AspectRatio(
+                                    child: VideoPlayer(_controller),
+                                    aspectRatio: _controller.value.aspectRatio + 0.5,
+                                  ),
+                                )
+                              : Positioned(
+                                  top: 50,
+                                  bottom: 50,
+                                  left: 50,
+                                  right: 50,
+                                  child: Center(
+                                      child:
+                                          CircularProgressIndicator.adaptive()),
                                 ),
-                              )
-                            : Positioned(
-                                top: 50,
-                                bottom: 50,
-                                left: 50,
-                                right: 50,
-                                child: Center(
-                                    child:
-                                        CircularProgressIndicator.adaptive()),
+                          Positioned(
+                            top: 50,
+                            bottom: 50,
+                            left: 50,
+                            right: 50,
+                            child: Center(
+                              child: InkWell(
+                                onTap: () {
+                                  if (_controller.value.isPlaying) {
+                                    isPauseVisible = false;
+                                  } else {
+                                    isPauseVisible = true;
+                                  }
+                                  playVideo();
+                                  count();
+                                  // setState(() {});
+                                },
+                                child: isIconVisible
+                                    ? isPauseVisible
+                                        ? Image.asset(
+                                            AppImage.pauseIcon,
+                                            height: 45,
+                                            width: 45,
+                                            color: Colors.white,
+                                          )
+                                        : Image.asset(AppImage.playIcon,
+                                            height: 45,
+                                            width: 45,
+                                            color: Colors.white)
+                                    : SizedBox(),
                               ),
-                        Positioned(
-                          top: 50,
-                          bottom: 50,
-                          left: 50,
-                          right: 50,
-                          child: Center(
-                            child: InkWell(
-                              onTap: () {
-                                if (_controller.value.isPlaying) {
-                                  isPauseVisible = false;
-                                } else {
-                                  isPauseVisible = true;
-                                }
-                                playVideo();
-                                count();
-                                // setState(() {});
-                              },
-                              child: isIconVisible
-                                  ? isPauseVisible
-                                      ? Image.asset(
-                                          AppImage.pauseIcon,
-                                          height: 45,
-                                          width: 45,
-                                          color: Colors.white,
-                                        )
-                                      : Image.asset(AppImage.playIcon,
-                                          height: 45,
-                                          width: 45,
-                                          color: Colors.white)
-                                  : SizedBox(),
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )),
-              ),
-              _controller.value.isInitialized
-                  ? VideoProgressIndicator(_controller, allowScrubbing: true)
-                  : SizedBox(),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextWidget(controller: _controller),
-                      Text("${widget.videoDuration}",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ))
-                    ]),
-              )
-            ],
-          ),
-        )
+                            
+                          ) ,  Positioned(
+                              top: 40,
+                              right: 15,
+                              child: 
+                              IconButton(onPressed: () async {
+                                 isLandScape = await setOrientation(context);
+                                    print("issssssLandScapesssssss$isLandScape");
+                                    setState(() {});
 
-        // child: WebviewScaffold(
-        //   url: url,
-        // ),
-        );
+                              }, icon : Image.asset("assets/rotate_icon.png",height: 22,)),
+                             ),
+                           Positioned(
+                              top: 40,
+                              left: 15,
+                              child: InkWell(
+                                  onTap: () async {
+                                    isLandScape = await setOrientation(context);
+                                    print("issssssLandScapesssssss$isLandScape");
+                                    setState(() {});
+
+                                    // if(AutoOrientation.landscapeLeftMode()){
+                                    //    AutoOrientation.portraitUpMode();
+                                    //}
+                                  },
+                                  child: BackButton(onPressed: ()async{
+                                     await SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+           await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+             Navigator.pop(context);
+                                  },color: Colors.white,))),
+                        
+                        Positioned(bottom: 10,child:
+                           Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextWidget(controller: _controller),
+                       
+                      ]),
+                )
+                         ),
+                         Positioned(bottom: 10,right: 3,child: 
+                         Text("${widget.videoDuration}",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ))
+                         )
+                        ],
+                      ),
+                    ),
+                  )),
+                ),
+                _controller.value.isInitialized
+                    ? VideoProgressIndicator(_controller, allowScrubbing: true)
+                    : SizedBox(),
+                // Padding(
+                //   padding: const EdgeInsets.all(12),
+                //   child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         TextWidget(controller: _controller),
+                //         Text("${widget.videoDuration}",
+                //             style: TextStyle(
+                //               color: Colors.white,
+                //             ))
+                //       ]),
+                // )
+              ],
+            ),
+          )
+
+          // child: WebviewScaffold(
+          //   url: url,
+          // ),
+          ),
+    );
   }
 
   @override
@@ -460,6 +528,24 @@ class _VideoPlayState extends State<VideoPlay> {
   // }
 }
 
+Future<bool> setOrientation(BuildContext context) async {
+  bool isLandScape =
+      MediaQuery.of(context).orientation == Orientation.landscape;
+  print("isLandScapeeeeeeee//////// ${isLandScape}");
+  if (isLandScape) {
+    
+    await SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+       await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+
+    return false;
+  } else {
+    await SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+      await SystemChrome.setEnabledSystemUIOverlays([]);
+    return true;
+  }
+}
 class TextWidget extends StatefulWidget {
   final VideoPlayerController controller;
   TextWidget({Key key, this.controller}) : super(key: key);
