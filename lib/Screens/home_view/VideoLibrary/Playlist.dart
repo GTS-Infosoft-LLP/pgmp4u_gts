@@ -457,9 +457,12 @@ bool isLandScape = false;
                          ),
                          Positioned(bottom: 10,right: 3,child: 
                          Text("${widget.videoDuration}",
-                            style: TextStyle(
+                            style: TextStyle
+                            (
                               color: Colors.white,
-                            ))
+                            )
+
+                            )
                          )
                         ],
                       ),

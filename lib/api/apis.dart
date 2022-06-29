@@ -34,6 +34,7 @@ const SUBMIT_MOCK_TEST = _BASE_URL + "SubmitMockTest";
 const MOCK_TEST_QUESTIONS = _BASE_URL + "MockTestQuestions";
 const CHECK_COUPON = _BASE_URL + "CheckCoupon";
 const GET_RAZOR_PAY_ORDER_ID = _BASE_URL + "GetRazorPayOrderid";
+const getHideShowStatus = _BASE_URL + "getMasterList";
 
 const checkStatusFlashAndVideo = _BASE_URL + "checkStatus";  //new
 const GetCategoryListUrl = _BASE_URL + "getCategoryList";

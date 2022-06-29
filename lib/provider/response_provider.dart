@@ -8,12 +8,19 @@ import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/utils/user_object.dart';
 
 import '../Models/get_video_by_type_response.dart';
+import '../Models/hideshowmodal.dart';
 
 class ResponseProvider extends ChangeNotifier {
   CategoryList categoryList;
   CardDetails cardDetails;
   // GetVideoByType getvideo;
-
+//  HideShowResponse hideShowRes;
+//  setHideShowData(HideShowResponse data){
+//   hideShowRes=data;
+//   print("idddddd${hideShowRes.id}   statusssessssssssssss${hideShowRes.is_applicationsupport}${hideShowRes.is_flashcard} " );
+//   notifyListeners();
+//  }
+ 
   final user = UserObject().getUser;
   bool apiStatus = false;
   int categoryId;
@@ -109,7 +116,11 @@ class ResponseProvider extends ChangeNotifier {
   updatestatusLoader(bool value) {
     apiStatus = value;
   }
-
+  bool newLoader=false;
+updateLoad(bool newload){
+newLoader=newload;
+notifyListeners();
+}
   setCategoryid(int id) {
     categoryId = id;
     notifyListeners();

@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
       "access_type": fromProvider
     });
 
-    //print("Request Data => $request");
+    print("Request Data => $request");
 
     response = await http.post(
       Uri.parse(GMAIL_LOGIN),

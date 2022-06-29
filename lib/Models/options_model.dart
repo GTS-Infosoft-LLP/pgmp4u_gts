@@ -18,5 +18,6 @@ class OptionsItem {
   final homeOption screen;
   final String btntxt;
   final String title;
-  OptionsItem({this.iconImage, this.name, this.screen,this.btntxt,this.title});
+  bool isShow;
+  OptionsItem({this.iconImage, this.name, this.screen,this.btntxt,this.title,this.isShow=false});
 }
