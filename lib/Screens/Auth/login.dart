@@ -178,6 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
 //     return googleSignInAuthentication.accessToken; //new token
 //   }
   Future signIn() async {
+    try {
     final googleSignIn = GoogleSignIn();
    await googleSignIn.signOut();
     GoogleSignInAccount user;
@@ -193,7 +194,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     await FirebaseAuth.instance.signInWithCredential(cred);
 
-    if (googleUser != null) {
+
+
+if (googleUser != null) {
       if (signInBool) {
         loginHandler(googleUser, "google");
       } else {
@@ -211,6 +214,18 @@ class _LoginScreenState extends State<LoginScreen> {
         toastPosition: GFToastPosition.BOTTOM,
       );
     }
+}catch (e){
+
+ if(e.toString().toLowerCase().contains("issued at time")){
+GFToast.showToast(
+        "Check your device date time",
+        context,
+        toastPosition: GFToastPosition.BOTTOM,
+      );
+ }
+
+}
+    
   }
 
   Future signInWithApple() async {

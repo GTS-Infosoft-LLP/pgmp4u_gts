@@ -43,6 +43,7 @@ class _HomeViewState extends State<HomeView> {
     purchaseProvider.updateStatusNew();
     //   maintainStatus=purchaseProvider.latestStatus;
     print("initcalling");
+    _getData();
     callFlashCardHideShowApi();
     print("object");
     super.initState();
@@ -63,15 +64,15 @@ class _HomeViewState extends State<HomeView> {
           //'Authorization': "Bearer "+stringValue
           );
       print("testt333333333");
-    
+
       if (response.statusCode == 200) {
         print(convert.jsonDecode(response.body));
 
         await prefs.setString('useStatus', response.body);
-        _getData(prefs);
+        _getData();
       }
     } catch (e) {
-      _getData(prefs);
+      _getData();
     }
   }
 //     Future apiCall() async {
@@ -232,193 +233,182 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
               ListView.builder(
-                      itemCount: options.length,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        var item = options[index];
-                        return options[index].isShow == true
-                            ? Card(
-                                margin: EdgeInsets.symmetric(
-                                  vertical: 0.5,
-                                ),
-                                child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Consumer<PurchaseProvider>(
-                                      builder:
-                                          (context, purchaseProvider, child) {
-                                        var maintainStatus =
-                                            purchaseProvider.latestStatus;
-                                        return ListTile(
-                                          onTap: () {
-                                            var _screen;
-                                            switch (item.screen) {
-                                              case homeOption.application:
-                                                _screen =
-                                                    ApplicationSupportPage();
-                                                break;
-                                              case homeOption.videoLab:
-                                                _screen = VideoLibraryPage();
-                                                break;
-                                              case homeOption.flashCard:
-                                                if (maintainStatus
-                                                        ?.flashCardStatus ==
-                                                    0) {
-                                                  _screen = RandomPage(
-                                                    index: 1,
-                                                  );
-                                                  // 1 for flash card plan only enum  for index
-                                                  break;
-                                                }
-                                                _screen = FlashCardItem();
-                                                break;
+                itemCount: options.length,
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  var item = options[index];
+                  return options[index].isShow == true
+                      ? Card(
+                          margin: EdgeInsets.symmetric(
+                            vertical: 0.5,
+                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Consumer<PurchaseProvider>(
+                                builder: (context, purchaseProvider, child) {
+                                  var maintainStatus =
+                                      purchaseProvider.latestStatus;
+                                  return ListTile(
+                                    onTap: () {
+                                      var _screen;
+                                      switch (item.screen) {
+                                        case homeOption.application:
+                                          _screen = ApplicationSupportPage();
+                                          break;
+                                        case homeOption.videoLab:
+                                          _screen = VideoLibraryPage();
+                                          break;
+                                        case homeOption.flashCard:
+                                          if (maintainStatus?.flashCardStatus ==
+                                              0) {
+                                            _screen = RandomPage(
+                                              index: 1,
+                                            );
+                                            // 1 for flash card plan only enum  for index
+                                            break;
+                                          }
+                                          _screen = FlashCardItem();
+                                          break;
 
-                                              case homeOption.domainWise:
-                                                _screen =
-                                                    ApplicationSupportPage();
-                                                break;
-                                              case homeOption.challengers:
-                                                _screen = DashboardScreen(
-                                                    selectedId: () =>
-                                                        {print('object')});
-                                                break;
-                                              case homeOption.lissonsLearn:
-                                                _screen =
-                                                    ApplicationSupportPage();
-                                                break;
-                                              case homeOption.about:
-                                                _screen =
-                                                    ApplicationSupportPage();
-                                                break;
-                                              default:
-                                                _screen =
-                                                    ApplicationSupportPage();
-                                                break;
-                                            }
-                                            if (_screen != null) {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(
-                                                builder: (context) {
-                                                  return _screen;
-                                                },
-                                              ));
-                                            }
+                                        case homeOption.domainWise:
+                                          _screen = ApplicationSupportPage();
+                                          break;
+                                        case homeOption.challengers:
+                                          _screen = DashboardScreen(
+                                              selectedId: () =>
+                                                  {print('object')});
+                                          break;
+                                        case homeOption.lissonsLearn:
+                                          _screen = ApplicationSupportPage();
+                                          break;
+                                        case homeOption.about:
+                                          _screen = ApplicationSupportPage();
+                                          break;
+                                        default:
+                                          _screen = ApplicationSupportPage();
+                                          break;
+                                      }
+                                      if (_screen != null) {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                          builder: (context) {
+                                            return _screen;
                                           },
-                                          leading: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                color: index % 2 == 0
-                                                    ? AppColor.purpule
-                                                    : AppColor.green,
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(12),
-                                                child: Icon(item.iconImage,
-                                                    color: Colors.white),
-                                              )),
-                                          title: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                item.title,
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.grey,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                item.name,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: AppTextStyle.titleTile,
-                                              ),
-                                            ],
-                                          ),
-                                          //  Text(
-                                          //   item.name,
-                                          //   maxLines: 2,
-                                          //   overflow: TextOverflow.ellipsis,
-                                          //   style: AppTextStyle.titleTile,
-                                          // ),
-                                          trailing: item.btntxt.isEmpty
-                                              ? SizedBox()
-                                              : item.name == "Flash Cards" &&
-                                                      maintainStatus
-                                                              ?.flashCardStatus ==
-                                                          1
-                                                  ? SizedBox()
-                                                  : item.name ==
-                                                              "Video Library" &&
-                                                          maintainStatus
-                                                                  ?.videoLibStatus ==
-                                                              1
-                                                      ? SizedBox()
-                                                      : SizedBox(
-                                                          width: 100,
-                                                          child: OutlinedButton(
-                                                            //   onPressed: (){
-                                                            //     if(item.name== "Flash Cards"){
-                                                            //    Navigator.push(context, MaterialPageRoute(
-                                                            //  builder: (BuildContext context) => RandomPage(
-                                                            //    index: 1),
-                                                            //  ));
-                                                            //     }
+                                        ));
+                                      }
+                                    },
+                                    leading: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: index % 2 == 0
+                                              ? AppColor.purpule
+                                              : AppColor.green,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12),
+                                          child: Icon(item.iconImage,
+                                              color: Colors.white),
+                                        )),
+                                    title: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          item.title,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          item.name,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: AppTextStyle.titleTile,
+                                        ),
+                                      ],
+                                    ),
+                                    //  Text(
+                                    //   item.name,
+                                    //   maxLines: 2,
+                                    //   overflow: TextOverflow.ellipsis,
+                                    //   style: AppTextStyle.titleTile,
+                                    // ),
+                                    trailing: item.btntxt.isEmpty
+                                        ? SizedBox()
+                                        : item.name == "Flash Cards" &&
+                                                maintainStatus
+                                                        ?.flashCardStatus ==
+                                                    1
+                                            ? SizedBox()
+                                            : item.name == "Video Library" &&
+                                                    maintainStatus
+                                                            ?.videoLibStatus ==
+                                                        1
+                                                ? SizedBox()
+                                                : SizedBox(
+                                                    width: 100,
+                                                    child: OutlinedButton(
+                                                      //   onPressed: (){
+                                                      //     if(item.name== "Flash Cards"){
+                                                      //    Navigator.push(context, MaterialPageRoute(
+                                                      //  builder: (BuildContext context) => RandomPage(
+                                                      //    index: 1),
+                                                      //  ));
+                                                      //     }
 
-                                                            //   },
-                                                            child: Text(
-                                                              item.btntxt,
-                                                              style: TextStyle(
-                                                                  color: Color(
-                                                                      0xff484C71),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                            style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  MaterialStateProperty
-                                                                      .all(Color(
-                                                                          0xffF1EFF0)),
-                                                              shape: MaterialStateProperty
-                                                                  .all<
-                                                                      RoundedRectangleBorder>(
-                                                                RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              18.0),
-                                                                  side:
-                                                                      BorderSide(
-                                                                    color: Color(
-                                                                        0xffDDDDDD),
-                                                                  ),
-                                                                ),
-                                                              ),
+                                                      //   },
+                                                      child: Text(
+                                                        item.btntxt,
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xff484C71),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(Color(
+                                                                    0xffF1EFF0)),
+                                                        shape: MaterialStateProperty
+                                                            .all<
+                                                                RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        18.0),
+                                                            side: BorderSide(
+                                                              color: Color(
+                                                                  0xffDDDDDD),
                                                             ),
                                                           ),
                                                         ),
+                                                      ),
+                                                    ),
+                                                  ),
 
-                                          // subtitle: Row(
-                                          //   children:<Widget> [
-                                          //     ElevatedButton(
-                                          //       onPressed: (){},
-                                          //       child: Text("US19",style: TextStyle(color: Colors.amberAccent),),
-                                          //     )
-                                          //   ]
-                                          //   ),
-                                        );
-                                      },
-                                    )),
-                              )
-                            : SizedBox();
-                      },
-                    )
+                                    // subtitle: Row(
+                                    //   children:<Widget> [
+                                    //     ElevatedButton(
+                                    //       onPressed: (){},
+                                    //       child: Text("US19",style: TextStyle(color: Colors.amberAccent),),
+                                    //     )
+                                    //   ]
+                                    //   ),
+                                  );
+                                },
+                              )),
+                        )
+                      : SizedBox();
+                },
+              )
             ],
           ),
         )
@@ -426,15 +416,16 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Future<void> _getData(SharedPreferences prefs) async {
-    String action = await prefs.getString('useStatus');
-    print("SharedPreffffff   check   ${action}");
+  Future<void> _getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      String action = await prefs.getString('useStatus');
+      print("SharedPreffffff   check   ${action}");
 
-    hideShowRes = HideShowResponse.fromjson(convert.jsonDecode(action));
+      hideShowRes = HideShowResponse.fromjson(convert.jsonDecode(action));
 
-    setState(() {
-      
-    });
+      setState(() {});
+    } catch (e) {}
   }
 }
 

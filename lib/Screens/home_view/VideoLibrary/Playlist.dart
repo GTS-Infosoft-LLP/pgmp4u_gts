@@ -178,6 +178,7 @@ class VideoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("playing videoo link ${getVideoListing[0].videoURl}");
     return ListView.builder(
       shrinkWrap: true,
       itemCount: getVideoListing == null ? 0 : getVideoListing.length,
@@ -285,9 +286,10 @@ class _VideoPlayState extends State<VideoPlay> {
   @override
   void initState() {
     // setLandScape();
-
+    var _url = Uri.parse(widget.url).toString();
+      print("url ${_url}");
     _controller = VideoPlayerController.network(
-      widget.url,
+      _url,
     )..initialize().then((_) {
         // setState(() {});
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
