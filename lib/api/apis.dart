@@ -47,4 +47,14 @@ const videoListByTypeUrl = _BASE_URL + "videoListByViType";
 
 const InAppPurchasePaymentNew = _BASE_URL + "InAppPurchasePaymentNew";  //new
 const stripeFlashCard = _BASE_URL + "createOrderNew?planType=2&deviceType=A";  //new
-const stripeVideoLib = _BASE_URL + "createOrderNew?planType=3&deviceType=A";  //new
+const stripeVideoLib = _BASE_URL + "createOrderNew?planType=3&deviceType=A"; 
+
+const getCourseCategory="http://3.227.35.115:1011/api/getCourseCategory";
+const getCourseSubCategory="http://3.227.35.115:1011/api/getCourseSubCategory";
+const getSubCategoryDetails="http://3.227.35.115:1011/api/getSubCategoryDetails";
+
+
+
+ //new
+
+

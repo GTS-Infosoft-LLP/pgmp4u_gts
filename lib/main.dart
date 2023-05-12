@@ -14,6 +14,7 @@ import 'package:pgmp4u/Screens/Profile/paymentScreen.dart';
 import 'package:pgmp4u/Screens/Profile/settingsScreen.dart';
 import 'package:pgmp4u/Screens/StartScreen/SplashScreen.dart';
 import 'package:pgmp4u/Screens/StartScreen/startScreen.dart';
+import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
 import 'package:pgmp4u/Screens/test.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pgmp4u/provider/player_provider.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
+
         ChangeNotifierProvider<PurchaseProvider>(
             create: (_) => PurchaseProvider()),
         ChangeNotifierProvider<ResponseProvider>(
@@ -63,7 +65,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<PlayerProvider>(create: (_) => PlayerProvider()),
         ChangeNotifierProvider<PracticeTextProvider>(
-            create: (_) => PracticeTextProvider())
+            create: (_) => PracticeTextProvider()),
+
+        ChangeNotifierProvider<CategoryProvider>(
+            create: (_) => CategoryProvider()),
+
+
       ],
       child: MaterialApp(
          navigatorKey: GlobalVariable.navState,

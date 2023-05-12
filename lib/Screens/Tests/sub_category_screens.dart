@@ -1,4 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
+import 'package:pgmp4u/api/apis.dart';
+import 'package:provider/provider.dart';
+import 'dart:convert' as convert;
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
+
+import 'model/category_model.dart';
+import 'model/sub_category_model.dart';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pgmp4u/Screens/Profile/paymentScreen.dart';
 import 'package:pgmp4u/Screens/Tests/testsScreen.dart';
@@ -12,68 +25,30 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:sizer/sizer.dart';
 
-class DashboardScreen extends StatefulWidget {
-  final Function selectedId;
+class SubCategoryScreen extends StatefulWidget {
+  int id;
+  String type;
 
-  DashboardScreen({
-    this.selectedId,
+  SubCategoryScreen({
+    this.id,
+    this.type
   });
 
   @override
-  _DashboardScreenState createState() =>
-      _DashboardScreenState(selectedIdNew: this.selectedId);
+  _SubCategoryScreenState createState() =>
+      _SubCategoryScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _SubCategoryScreenState extends State<SubCategoryScreen> {
+   CategoryProvider provider;
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
   }
 
-  static const platform = const MethodChannel("razorpay_flutter");
-
-  // Razorpay _razorpay;
-  final Function selectedIdNew;
-
-  _DashboardScreenState({
-    this.selectedIdNew,
-  });
-  final databaseRef = FirebaseDatabase.instance.reference();
-
-  void addData() {
-    databaseRef.push().set({'name': 'data', 'comment': 'A good season'});
-  }
-
-  void printFirebase() {
-    print("object");
-    databaseRef.once().then((DataSnapshot snapshot) {
-      print('Data : ${snapshot.value}');
-    });
-  }
-
-  String photoUrl;
+String photoUrl;
   String displayName;
-  Future<bool> _onWillPop() async {
-    // return (await showDialog(
-    //       context: context,
-    //       builder: (context) => new AlertDialog(
-    //         title: new Text('Are you sure?'),
-    //         content: new Text('Do you want to exit an App'),
-    //         actions: <Widget>[
-    //           TextButton(
-    //             onPressed: () => Navigator.of(context).pop(false),
-    //             child: new Text('No'),
-    //           ),
-    //           TextButton(
-    //             onPressed: () =>
-    //                 SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
-    //             child: new Text('Yes'),
-    //           ),
-    //         ],
-    //       ),
-    //     )) ??
-    //     false;
-  }
+ 
 
   getValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -89,64 +64,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    // _razorpay = Razorpay();
-    // _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-    // _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    // _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+    provider = Provider.of(context, listen: false);
+    getCategory();
     getValue();
-    addData();
-    apiCall();
+
+
   }
 
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    print('data new come success');
+   Future getCategory() async {
+    await provider.callGetSubCateogory(id: widget.id, type: widget.type);
   }
-
-  void _handlePaymentError(PaymentFailureResponse response) {
-    print('data new come');
-  }
-
-  void _handleExternalWallet(ExternalWalletResponse response) {}
-  // void openCheckout() async {
-  //   var options = {
-  //     'key': 'rzp_test_cjT5SUSriGCr6a',
-  //     'amount': 1 * 100,
-  //     'name': 'Acme Corp.',
-  //     'description': 'Fine T-Shirt',
-  //     'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
-  //     'external': {
-  //       'wallets': ['paytm']
-  //     }
-  //   };
-
-  //   try {
-  //     _razorpay.open(options);
-  //   } catch (e) {
-  //     debugPrint('Error: e');
-  //   }
-  // }
-
-  Map mapResponse;
-  Future apiCall() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('token');
-    print(stringValue);
-    http.Response response;
-    response = await http.get(Uri.parse(CHECK_USER_PAYMENT_STATUS), headers: {
-      'Content-Type': 'application/json',
-      'Authorization': stringValue
-    });
-
-    //response i.e {success: true, cnt: 0, data: {paid_status: 0}}
-    if (response.statusCode == 200) {
-      Future.delayed(Duration(seconds: 1)).then((value) {
-        setState(() {
-          mapResponse = convert.jsonDecode(response.body);
-        });
-      });
-      // print(convert.jsonDecode(response.body));
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -156,12 +84,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     print(MediaQuery.of(context).padding.top);
     return Scaffold(
       
-      body:
-      // WillPopScope(
-        //  onWillPop: _onWillPop,
-          //child:
-           Sizer(builder: (context, orientation, deviceType) {
-            return Container(
+      body:Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               color: _colorfromhex("#F7F7FA"),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -310,16 +235,146 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ],
                     ),
                   ),
-                  mapResponse != null ? TestsScreen() : Container()
+                  
+                   Expanded(
+                     child: Consumer<CategoryProvider>(
+                        builder: (context, value, child) {
+                          print("list length  is ${value.subCategoryList}");
+                          return value.subCategoryLoader
+                              ? Container(
+                                
+                                margin: EdgeInsets.only(top: 50)
+                                ,child: Center(child: CircularProgressIndicator()))
+                              : Container(
+                                  height: MediaQuery.of(context).size.height,
+                                  child: value.subCategoryList.isNotEmpty ? ListView.builder(
+                                    itemCount: value.subCategoryList.length,
+                                    itemBuilder: (context, index) {
+                                      return categoryWidget(
+                                          value.subCategoryList[index],
+                                          isPremium: true);
+                                    },
+                                  ):Center(
+                                    child: Text("No Data Found"),
+                                  ),
+                                );
+                     
+                        },
+                      ),
+                   )
+                  
+                
+              
+                  
+              
+                  
                 ],
               ),
-            );
-            
+            )
           
-          }
+          
+      // WillPopScope(
+        //  onWillPop: _onWillPop,
+          //child:
+           
           //)
-          ),
+          );
+          
+    
+  }
 
+
+  Widget categoryWidget(SubCategoryListModel data, {isPremium = false}) {
+    Color _colorfromhex(String hexColor) {
+      final hexCode = hexColor.replaceAll('#', '');
+      return Color(int.parse('FF$hexCode', radix: 16));
+    }
+
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+      
+    String img = "assets/Vector-3.png";
+   
+
+    return GestureDetector(
+      onTap: () async {
+        switch(widget.type){
+          case 'Practice Test':
+          Navigator.of(context).pushNamed('/practice-test');
+          break;
+          case 'Mock Test':
+          Navigator.of(context).pushNamed('/mock-test');
+          break;
+        }
+       
+      },
+      child: Container(
+        margin: EdgeInsets.only(
+            top: height * (22 / 800), bottom: height * (32 / 800)),
+        width: width,
+        padding: EdgeInsets.only(top: height * (25 / 800)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.only(bottom: height * (12 / 800)),
+              padding: EdgeInsets.all(width * (14 / 420)),
+              decoration: BoxDecoration(
+                color: _colorfromhex("#463B97"),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Image.asset('$img'),
+            ),
+            Text(
+              '',
+              style: TextStyle(
+                  fontFamily: 'Roboto Medium',
+                  fontSize: width * (12 / 420),
+                  color: _colorfromhex("#ABAFD1"),
+                  letterSpacing: 0.3),
+            ),
+            Container(
+              height: height * (2 / 800),
+            ),
+            Text(
+              '${data.testName}',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontFamily: 'Roboto Medium',
+                  fontSize: width * (22 / 420),
+                  color: Colors.black,
+                  letterSpacing: 0.3),
+            ),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                isPremium
+                    ? SizedBox()
+                    : Expanded(
+                        flex: 1,
+                        child: Text(
+                          "Premium",
+                          style:
+                              TextStyle(decoration: TextDecoration.underline),
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                SizedBox(
+                  width: 18,
+                )
+              ],
+            ),
+            SizedBox(
+              height: 18,
+            )
+          ],
+        ),
+      ),
     );
   }
 }
+

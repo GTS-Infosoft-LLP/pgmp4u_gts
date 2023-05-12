@@ -9,7 +9,7 @@ class PracticeTextProvider extends ChangeNotifier {
   bool practiceApiLoader = false;
   PracitceTextResponseModelList pracitceTextResponseModel;
   List<PracitceTextResponseModel> questionsList = [];
-
+  
   updateLoader(bool val) {
     practiceApiLoader = val;
   }
