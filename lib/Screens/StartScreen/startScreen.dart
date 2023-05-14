@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/dot_animation_enum.dart';
-import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
-import 'package:intro_slider/scrollbar_behavior_enum.dart';
+// import 'package:intro_slider/dot_animation_enum.dart';
+// import 'package:intro_slider/intro_slider.dart';
+// import 'package:intro_slider/slide_object.dart';
+// import 'package:intro_slider/scrollbar_behavior_enum.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({Key key}) : super(key: key);
@@ -233,7 +233,7 @@ class _StartScreenState extends State<StartScreen> {
                       hideStatusBar: false,
 
                       // Scrollbar
-                      verticalScrollbarBehavior: scrollbarBehavior.SHOW_ALWAYS,
+                      verticalScrollbarBehavior: ScrollbarBehavior.SHOW_ALWAYS,
                     ),
                   ),
 

@@ -1,9 +1,17 @@
 class PracitceTextResponseModelList {
+  int statusCode;
+  
   List<PracitceTextResponseModel> list;
 
   PracitceTextResponseModelList.fromJson(Map<String, dynamic> json) {
-    list = List<PracitceTextResponseModel>.from(
-        json['data'].map((x) => PracitceTextResponseModel.fromJson(x)));
+
+    
+
+    if (json['status']==200) {
+     
+      list = List<PracitceTextResponseModel>.from(json['data']['list']
+          .map((x) => PracitceTextResponseModel.fromJson(x)));
+    }
   }
 }
 

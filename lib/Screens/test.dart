@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:intro_slider/dot_animation_enum.dart';
-import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
-import 'package:intro_slider/scrollbar_behavior_enum.dart';
+// import 'package:intro_slider/dot_animation_enum.dart';
+// import 'package:intro_slider/intro_slider.dart';
+// import 'package:intro_slider/slide_object.dart';
+// import 'package:intro_slider/scrollbar_behavior_enum.dart';
 
 class Test extends StatefulWidget {
   const Test({Key key}) : super(key: key);
@@ -136,7 +136,7 @@ class _TestState extends State<Test> {
       backgroundColorAllSlides: Colors.grey,
 
       // Scrollbar
-      verticalScrollbarBehavior: scrollbarBehavior.SHOW_ALWAYS,
+      verticalScrollbarBehavior: ScrollbarBehavior.SHOW_ALWAYS,
     );
   }
 }

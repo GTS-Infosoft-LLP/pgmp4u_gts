@@ -1,3 +1,7 @@
+import 'package:hive/hive.dart';
+part 'categorymodel.g.dart';
+
+
 class CategoryApiModel {
   List<CategoryListModel> categoryList=[];
 
@@ -6,17 +10,28 @@ class CategoryApiModel {
   }
 }
 
+@HiveType(typeId: 1)
 class CategoryListModel {
+  @HiveField(0)
   int id;
+  @HiveField(1)
   int course;
+  @HiveField(2)
   String mainCategory;
+  @HiveField(3)
   String type;
+  @HiveField(4)
   String webType;
+  @HiveField(5)
   int paymentStatus;
+  @HiveField(6)
   String price;
+  @HiveField(7)
   int status;
+  @HiveField(8)
   String icon;
 
+ CategoryListModel();
  
 
   CategoryListModel.fromJson(Map<String, dynamic> json) {

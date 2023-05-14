@@ -5,7 +5,9 @@ import 'package:pgmp4u/Screens/MockTest/MockTestAttempts.dart';
 import 'dart:convert' as convert;
 
 import 'package:pgmp4u/Screens/MockTest/mockTestQuestions.dart';
+import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Models/mocktestmodel.dart';
@@ -18,33 +20,43 @@ class MockTest extends StatefulWidget {
 }
 
 class _MockTestState extends State<MockTest> {
-   MockTestModel mockTextList;
+  MockTestModel mockTextList;
   List listResponse;
   Map mapResponse;
+  CategoryProvider categoryProvider;
   @override
   void initState() {
+    categoryProvider=Provider.of(context,listen: false);
     super.initState();
     apiCall();
   }
 
   Future apiCall() async {
+    Map body = {
+      "id":categoryProvider.subCategoryId,
+      "type":categoryProvider.type
+    };
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     print(stringValue);
     http.Response response;
-    response = await http.get(Uri.parse(ALL_MOCK_TESTS), headers: {
+    response = await http.post(Uri.parse(getSubCategoryDetails), headers: {
       'Content-Type': 'application/json',
       'Authorization': stringValue
-    });
+    },
+    body: convert.jsonEncode(body));
+
+    print("value is ");
 
     if (response.statusCode == 200) {
       setState(() {
         mapResponse = convert.jsonDecode(response.body);
-        print(" mock test response ${mapResponse["data"]}");
-       listResponse = mapResponse["data"];
-            mockTextList =   MockTestModel.fromjson(mapResponse["data"]);
-           print("successss");
-
+        if(mapResponse['status']==200){
+        listResponse = mapResponse["data"]['list'];
+        mockTextList = MockTestModel.fromjson(mapResponse["data"]['list']);
+     
+       }
+      
       });
 
       print("response body  ${convert.jsonDecode(response.body)} ");
@@ -137,9 +149,11 @@ class _MockTestState extends State<MockTest> {
                                 ),
                               ),
                               Column(
-                                children: mockTextList.mockList.map<Widget>((data) {
+                                children:
+                                    mockTextList.mockList.map<Widget>((data) {
                                   print("kamal  soni ${data.attempts.length}");
-                                  var index = mockTextList.mockList.indexOf(data);
+                                  var index =
+                                      mockTextList.mockList.indexOf(data);
                                   return Container(
                                     padding: EdgeInsets.only(
                                       top: 12,
@@ -191,7 +205,10 @@ class _MockTestState extends State<MockTest> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      mockTextList.mockList[index].test_name??"",
+                                                      mockTextList
+                                                              .mockList[index]
+                                                              .test_name ??
+                                                          "",
                                                       style: TextStyle(
                                                         fontFamily:
                                                             'Roboto Medium',
@@ -214,10 +231,12 @@ class _MockTestState extends State<MockTest> {
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
-                                                          children: data.attempts
+                                                          children: data
+                                                              .attempts
                                                               .map<Widget>(
                                                                   (attemptsData) {
-                                                                     print("attemptsData.perc ${attemptsData.perc}");
+                                                            print(
+                                                                "attemptsData.perc ${attemptsData.perc}");
                                                             return Container(
                                                               width: 25,
                                                               height: 25,
@@ -226,7 +245,8 @@ class _MockTestState extends State<MockTest> {
                                                                       right: 6),
                                                               decoration:
                                                                   BoxDecoration(
-                                                                color: attemptsData.perc ==
+                                                                color: attemptsData
+                                                                            .perc ==
                                                                         ''
                                                                     ? Colors
                                                                         .white
@@ -244,13 +264,16 @@ class _MockTestState extends State<MockTest> {
                                                                                 : _colorfromhex("#E4FFE6"),
                                                                 border:
                                                                     Border.all(
-                                                                  color: attemptsData.perc ==
+                                                                  color: attemptsData
+                                                                              .perc ==
                                                                           ''
                                                                       ? Colors
                                                                           .grey
                                                                       : (((double.parse(attemptsData.perc)).toInt()) >= 0 &&
-                                                                              ((double.parse(attemptsData.perc)).toInt()) <= 25)
-                                                                          ? _colorfromhex("#FF0000")
+                                                                              ((double.parse(attemptsData.perc)).toInt()) <=
+                                                                                  25)
+                                                                          ? _colorfromhex(
+                                                                              "#FF0000")
                                                                           : (((double.parse(attemptsData.perc)).toInt()) >= 26 && ((double.parse(attemptsData.perc)).toInt()) <= 50)
                                                                               ? _colorfromhex("#FFD236")
                                                                               : (((double.parse(attemptsData.perc)).toInt()) >= 51 && ((double.parse(attemptsData.perc)).toInt()) <= 75)
@@ -264,7 +287,7 @@ class _MockTestState extends State<MockTest> {
                                                               ),
                                                               child: Center(
                                                                 child: Text(
-                                                                  attemptsData.perc!=
+                                                                  attemptsData.perc !=
                                                                           ''
                                                                       ? ((double.parse(attemptsData.perc)).toInt())
                                                                               .toString() +
@@ -278,7 +301,7 @@ class _MockTestState extends State<MockTest> {
                                                                         FontWeight
                                                                             .w600,
                                                                     fontSize: 8,
-                                                                    color: attemptsData.perc==
+                                                                    color: attemptsData.perc ==
                                                                             ''
                                                                         ? Colors
                                                                             .grey

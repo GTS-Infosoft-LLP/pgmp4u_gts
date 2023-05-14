@@ -3,7 +3,7 @@ class VideoApiModel {
 
   VideoApiModel.fromJson(Map<String, dynamic> json) {
     videolist = List<VideosListApiModel>.from(
-        json['list'].map((x) => VideoApiModel.fromJson(x)));
+        json['list'].map((x) => VideosListApiModel.fromJson(x)));
   }
 }
 

@@ -33,10 +33,17 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
   android {
               
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+    }
+    lintOptions {
+        checkReleaseBuilds false
+         disable 'InvalidPackage'
+         disable "Instantiatable"
+      
+         abortOnError false
     }
 
     defaultConfig {
@@ -62,6 +69,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 flutter {
     source '../..'
 }
+
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

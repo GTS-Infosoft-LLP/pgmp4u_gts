@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: request,
     );
 
-   // print("Response => ${response.body}");
+    // print("Response => ${response.body}");
 
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
@@ -81,10 +81,10 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         loading = false;
       });
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(
-            
-            builder: (context) => Dashboard(selectedId: user)), (r)=>false);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)),
+          (r) => false);
     } else {
       GFToast.showToast(
         "user is not registered",
@@ -179,53 +179,51 @@ class _LoginScreenState extends State<LoginScreen> {
 //   }
   Future signIn() async {
     try {
-    final googleSignIn = GoogleSignIn();
-   await googleSignIn.signOut();
-    GoogleSignInAccount user;
-    // final user = await GoogleSignInApi.login();
-    final googleUser = await googleSignIn.signIn();
+      final googleSignIn = GoogleSignIn();
+      await googleSignIn.signOut();
+      GoogleSignInAccount user;
+      // final user = await GoogleSignInApi.login();
+      final googleUser =
+          await googleSignIn.signIn().catchError((error, stackTrace) {
+        print("error is ${error.toString()}");
+      });
 
-    final googleAuth = await googleUser.authentication;
+      final googleAuth = await googleUser.authentication;
 
-    final cred = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+      final cred = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    await FirebaseAuth.instance.signInWithCredential(cred);
+      await FirebaseAuth.instance.signInWithCredential(cred);
 
+      if (googleUser != null) {
+        if (signInBool) {
+          loginHandler(googleUser, "google");
+        } else {
+          registerHandler(googleUser, "google");
+        }
 
-
-if (googleUser != null) {
-      if (signInBool) {
-        loginHandler(googleUser, "google");
+        // SharedPreferences prefs = await SharedPreferences.getInstance();
+        // prefs.setString('token', "value");
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
       } else {
-        registerHandler(googleUser, "google");
+        GFToast.showToast(
+          "Something went wrong,please try again",
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
       }
-
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // prefs.setString('token', "value");
-      // Navigator.push(context,
-      //     MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
-    } else {
-      GFToast.showToast(
-        "Something went wrong,please try again",
-        context,
-        toastPosition: GFToastPosition.BOTTOM,
-      );
+    } catch (e) {
+      if (e.toString().toLowerCase().contains("issued at time")) {
+        GFToast.showToast(
+          "Check your device date time",
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+      }
     }
-}catch (e){
-
- if(e.toString().toLowerCase().contains("issued at time")){
-GFToast.showToast(
-        "Check your device date time",
-        context,
-        toastPosition: GFToastPosition.BOTTOM,
-      );
- }
-
-}
-    
   }
 
   Future signInWithApple() async {

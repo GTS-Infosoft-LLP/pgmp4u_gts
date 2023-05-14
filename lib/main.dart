@@ -25,10 +25,14 @@ import './Screens/Auth/login.dart';
 import 'package:provider/provider.dart';
 
 import 'Screens/PracticeTests/practiceTest copy.dart';
+import 'Screens/Tests/local_handler/hive_handler.dart';
 import 'Services/globalcontext.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await HiveHandler.hiveRegisterAdapter().then((value) {
+      print("**************** hive register initialization *************");
+    });
   // set the publishable key for Stripe - this is mandatory
   /// For test mode
   // Stripe.publishableKey =
@@ -38,9 +42,7 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
-      
-      );
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown], );
   await Firebase.initializeApp();
 
   runApp(MyApp());

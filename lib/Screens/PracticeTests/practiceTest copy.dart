@@ -3,6 +3,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
+import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert' as convert;
@@ -24,9 +25,11 @@ class PracticeTestCopy extends StatefulWidget {
 class _PracticeTestCopyState extends State<PracticeTestCopy> {
   final selectedIdNew;
   PracticeTextProvider practiceProvider;
+  CategoryProvider categoryProvider;
   _PracticeTestCopyState({
     this.selectedIdNew,
   });
+
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
@@ -43,6 +46,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
   void initState() {
     super.initState();
     practiceProvider = Provider.of(context, listen: false);
+    categoryProvider = Provider.of(context, listen: false);
 
     callApi();
     // if (selectedIdNew == "result") {
@@ -53,7 +57,10 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
   }
 
   Future callApi() async {
-    await practiceProvider.apiCall();
+    await practiceProvider.apiCall(
+      categoryProvider.subCategoryId,
+      categoryProvider.type
+    );
   }
 
   Future apiCall2() async {
@@ -163,7 +170,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                               child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                       _colorfromhex("#4849DF"))))
-                          : data.questionsList.isNotEmpty
+                          :  data.questionsList!=null 
                               ? Expanded(
                                   // width: width,
                                   // height: height - 235,
@@ -574,12 +581,12 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                                       ],
                                     ),
                                   ),
-                                )
-                              : Container(child: Text("No Data Found"))
+                                ):Text("No Data Found")
+                              
                     ],
                   ),
                 ),
-              Text("data"),
+                Text("data"),
                 realAnswer == selectedAnswer && selectedAnswer != null
                     ? Positioned(
                         top: SizerUtil.deviceType == DeviceType.mobile

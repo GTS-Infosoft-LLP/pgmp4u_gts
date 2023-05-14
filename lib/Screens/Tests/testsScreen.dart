@@ -9,7 +9,7 @@ import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
-import 'model/category_model.dart';
+import 'model/categorymodel.dart';
 
 class TestsScreen extends StatefulWidget {
   const TestsScreen({Key key}) : super(key: key);
@@ -29,6 +29,7 @@ class _TestsScreenState extends State<TestsScreen> {
   void initState() {
     provider = Provider.of(context, listen: false);
     getCategory();
+    //provider.checkLocalDataAvaialble();
     super.initState();
     apiCall();
     // if (selectedIdNew == "result") {
@@ -51,12 +52,12 @@ class _TestsScreenState extends State<TestsScreen> {
 
     if (response.statusCode == 200) {
       print(convert.jsonDecode(response.body));
-     Future.delayed(Duration(seconds: 0),(){
-       setState(() {
-        print("response of payymmeenntt   stattusss ${response}");
-        mapResponse = convert.jsonDecode(response.body);
+      Future.delayed(Duration(seconds: 1), () {
+        setState(() {
+          print("response of payymmeenntt   stattusss ${response}");
+          mapResponse = convert.jsonDecode(response.body);
+        });
       });
-     });
       // print(convert.jsonDecode(response.body));
     }
   }
@@ -86,50 +87,22 @@ class _TestsScreenState extends State<TestsScreen> {
     return Expanded(
       flex: 1,
       child: mapResponse != null
-          ? Column(
-              children: [
-                Expanded(
-                    child: SingleChildScrollView(
-                  child: Container(
-                    margin: EdgeInsets.only(
-                        left: width * (18 / 420), right: width * (18 / 420)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 50,
-                        ),
-                        // Text(
-                        //   'Tests4U',
-                        //   style: TextStyle(
-                        //       fontFamily: 'Roboto Bold',
-                        //       fontSize: width * (18 / 420),
-                        //       color: Colors.black,
-                        //       letterSpacing: 0.3),
-                        // ),
-                        Consumer<CategoryProvider>(
-                          builder: (context, value, child) {
-                            print("list length ${value.CategoryList.length}");
-                            return value.loader ? 
-                            
-                              Center(child: 
-                                    CircularProgressIndicator()):
-                             Container(
-                              height: MediaQuery.of(context).size.height,
-                              child: ListView.builder(
-                                itemCount: value.CategoryList.length,
-                                itemBuilder: (context, index) {
-                                  return categoryWidget(value.CategoryList[index],isPremium: isPremium);
-                              },),
-                            );
+          ? Consumer<CategoryProvider>(
+              builder: (context, value, child) {
+                print("list length ${value.categoryList.length}");
+                return value.loader
+                    ? Center(child: CircularProgressIndicator())
+                    : Container(
+                        height: MediaQuery.of(context).size.height,
+                        child: ListView.builder(
+                          itemCount: value.categoryList.length,
+                          itemBuilder: (context, index) {
+                            return categoryWidget(value.categoryList[index],
+                                isPremium: isPremium);
                           },
-                        )
-                      ],
-                    ),
-                  ),
-                ))
-              ],
+                        ),
+                      );
+              },
             )
           : Container(
               width: width,
@@ -152,18 +125,17 @@ class _TestsScreenState extends State<TestsScreen> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     bool isPremiumCategory = data.paymentStatus == 1;
-    String img="assets/Vector-3.png";
+    print("isPremiumCategory   $isPremiumCategory and ${isPremium}");
+    String img = "assets/Vector-3.png";
     print("data is >> ${data.mainCategory}");
-    switch(data.type){
-        case "Practice Test":
-        img="assets/Vector-2.png";
+    switch (data.type) {
+      case "Practice Test":
+        img = "assets/Vector-2.png";
         break;
 
-        case "Mock Test":
-        img="assets/Vector-3.png";
+      case "Mock Test":
+        img = "assets/Vector-3.png";
         break;
-
-
     }
 
     return GestureDetector(
@@ -172,23 +144,24 @@ class _TestsScreenState extends State<TestsScreen> {
           var result = await Navigator.of(context).pushNamed('/payment');
           print("Result from Payment => $result");
           apiCall();
-        }else{
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SubCategoryScreen(
-            id: data.id,
-            type: data.type,
-          )));
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SubCategoryScreen(
+                        id: data.id,
+                        type: data.type,
+                      )));
           // if (isPremium && isPremiumCategory) {
           //     Navigator.of(context).pushNamed('/mock-test');
           // }
-        // } else {
-        //   var result = await Navigator.of(context)
-        //       .pushNamed('/payment');
-        //   print("Result from Payment => $result");
-        //   apiCall();
-        // }
+          // } else {
+          //   var result = await Navigator.of(context)
+          //       .pushNamed('/payment');
+          //   print("Result from Payment => $result");
+          //   apiCall();
+          // }
         }
-
-        
       },
       child: Container(
         margin: EdgeInsets.only(
@@ -235,15 +208,17 @@ class _TestsScreenState extends State<TestsScreen> {
               children: [
                 isPremium
                     ? SizedBox()
-                    : Expanded(
-                        flex: 1,
-                        child: Text(
-                          "Premium",
-                          style:
-                              TextStyle(decoration: TextDecoration.underline),
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
+                    : isPremiumCategory
+                        ? Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Premium",
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline),
+                              textAlign: TextAlign.end,
+                            ),
+                          )
+                        : SizedBox(),
                 SizedBox(
                   width: 18,
                 )

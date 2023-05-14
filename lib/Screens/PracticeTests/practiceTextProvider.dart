@@ -9,21 +9,26 @@ class PracticeTextProvider extends ChangeNotifier {
   bool practiceApiLoader = false;
   PracitceTextResponseModelList pracitceTextResponseModel;
   List<PracitceTextResponseModel> questionsList = [];
-  
+
   updateLoader(bool val) {
     practiceApiLoader = val;
   }
 
-  Future apiCall() async {
+  Future apiCall(int id, String type) async {
     updateLoader(true);
+    Map body = {"id": id, "type": type};
+    print("body of pratice $body");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     print("stringValue  $stringValue");
     http.Response response;
-    response = await http.get(Uri.parse(PRACTICE_TEST_QUESTIONS), headers: {
-      'Content-Type': 'application/json',
-      'Authorization': stringValue
-    });
+    response = await http.post(Uri.parse(getSubCategoryDetails),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': stringValue
+        },
+        body: convert.jsonEncode(body));
+
     if (response.statusCode == 200) {
       print(convert.jsonDecode(response.body));
       var _mapResponse = convert.jsonDecode(response.body);
@@ -32,6 +37,7 @@ class PracticeTextProvider extends ChangeNotifier {
 
       updateLoader(false);
       questionsList = pracitceTextResponseModel.list;
+      
       notifyListeners();
       // print(convert.jsonDecode(response.body));
     }

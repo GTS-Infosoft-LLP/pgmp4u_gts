@@ -4,7 +4,7 @@ class MockTestModel{
 List<MockText> mockList=[];
 MockTestModel.fromjson(List json){
 
-  //print("json MockTestModel ${jsonEncode(json)}");
+  
   List temp=json??[] as List;
   mockList=temp.map((e) =>  MockText.fromjs(e)).toList();
 }

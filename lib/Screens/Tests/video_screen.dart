@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
-import 'package:pgmp4u/Screens/Tests/video_screen.dart';
+import 'package:pgmp4u/Screens/Tests/video_player.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert' as convert;
@@ -9,6 +9,8 @@ import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../utils/app_color.dart';
+import '../../utils/sizes.dart';
 
 import 'model/sub_category_model.dart';
 
@@ -26,17 +28,19 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:sizer/sizer.dart';
 
-class SubCategoryScreen extends StatefulWidget {
+import 'model/videos_model.dart';
+
+class VideosScreen extends StatefulWidget {
   int id;
   String type;
 
-  SubCategoryScreen({this.id, this.type});
+  VideosScreen({this.id, this.type});
 
   @override
-  _SubCategoryScreenState createState() => _SubCategoryScreenState();
+  _VideosScreenState createState() => _VideosScreenState();
 }
 
-class _SubCategoryScreenState extends State<SubCategoryScreen> {
+class _VideosScreenState extends State<VideosScreen> {
   CategoryProvider provider;
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
@@ -61,12 +65,12 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
   void initState() {
     super.initState();
     provider = Provider.of(context, listen: false);
-    getCategory();
+    getVideos();
     getValue();
   }
 
-  Future getCategory() async {
-    await provider.callGetSubCateogory(id: widget.id, type: widget.type);
+  Future getVideos() async {
+    await provider.getSubCategoryDetials(widget.id, widget.type);
   }
 
   @override
@@ -104,37 +108,6 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                       left: width * (20 / 420),
                       right: width * (20 / 420),
                       top: height * (16 / 800)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      /* Icon(
-                            Icons.menu,
-                            size: width * (24 / 420),
-                            color: Colors.white,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                margin:
-                                    EdgeInsets.only(right: width * (16 / 420)),
-                                child: Icon(
-                                  Icons.search,
-                                  size: width * (24 / 420),
-                                  color: Colors.white,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () => {},
-                                child: Icon(
-                                  Icons.notifications,
-                                  size: width * (24 / 420),
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),*/
-                    ],
-                  ),
                 ),
                 Container(
                   margin: EdgeInsets.only(
@@ -232,24 +205,22 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
           Expanded(
             child: Consumer<CategoryProvider>(
               builder: (context, value, child) {
-                print("list length  is ${value.subCategoryList}");
-                return value.subCategoryLoader
+                return value.detailsLoader
                     ? Container(
                         margin: EdgeInsets.only(top: 50),
                         child: Center(child: CircularProgressIndicator()))
                     : Container(
                         height: MediaQuery.of(context).size.height,
-                        child: value.subCategoryList.isNotEmpty
+                        child: value.videosList.isNotEmpty
                             ? ListView.builder(
-                                itemCount: value.subCategoryList.length,
+                                itemCount: value.videosList.length,
                                 itemBuilder: (context, index) {
                                   return categoryWidget(
-                                      value.subCategoryList[index],
-                                      isPremium: true);
+                                      value.videosList[index]);
                                 },
                               )
                             : Center(
-                                child: Text("No Data Found"),
+                                child: Text("No Videos Found"),
                               ),
                       );
               },
@@ -267,7 +238,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
         );
   }
 
-  Widget categoryWidget(SubCategoryListModel data, {isPremium = false}) {
+  Widget categoryWidget(VideosListApiModel data) {
     Color _colorfromhex(String hexColor) {
       final hexCode = hexColor.replaceAll('#', '');
       return Color(int.parse('FF$hexCode', radix: 16));
@@ -280,76 +251,68 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
     return GestureDetector(
       onTap: () async {
-        switch (widget.type) {
-          case 'Practice Test':
-          provider.updateIds(
-          data.id,
-          widget.type
+        showDialog(
+          barrierColor: Colors.transparent,
+          context: context,
+          builder: (context) => Center(
+            child: YoutubePlayerDemo(videoid: data.description),
+          ),
         );
-            Navigator.of(context).pushNamed('/practice-test');
-            break;
-          case 'Mock Test':
-            provider.updateIds(
-            data.id,
-            widget.type);
-            Navigator.of(context).pushNamed('/mock-test');
-            break;
-
-            case 'Videos':
-            Navigator.push(context, MaterialPageRoute(builder:(context) => VideosScreen(
-              id: data.id,
-              type: widget.type,
-            ), ));
-            
-        }
       },
-      child: Container(
-        margin: EdgeInsets.only(
-            top: height * (22 / 800), bottom: height * (32 / 800)),
-        width: width,
-        padding: EdgeInsets.only(top: height * (25 / 800)),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.only(bottom: height * (12 / 800)),
-              padding: EdgeInsets.all(width * (14 / 420)),
-              decoration: BoxDecoration(
-                color: _colorfromhex("#463B97"),
-                borderRadius: BorderRadius.circular(5),
+      child: Card(
+        margin: EdgeInsets.only(bottom: 5).copyWith(left: 10, right: 10),
+        elevation: 2,
+        //color: Colors.grey,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                height: 210,
+                child: Stack(children: [
+                  // Container(
+                  //   child: ClipRRect(
+                  //     borderRadius: BorderRadius.circular(13),
+                  //     child: Image.network(
+                  //       data.thunnailUrl,
+                  //       fit: BoxFit.cover,
+                  //       errorBuilder: (context, a, err) {
+                  //         return Image.asset(
+                  //           AppImage.picture_placeholder2,
+                  //           fit: BoxFit.cover,
+                  //           width: MediaQuery.of(context).size.width,
+                  //         );
+                  //       },
+                  //     ),
+                  //   ),
+                  // ),
+                  Positioned(
+                    top: 50,
+                    bottom: 50,
+                    left: MediaQuery.of(context).size.width * 0.4,
+                    child: Image.asset(
+                      AppImage.playIcon,
+                      height: 55,
+                      width: 55,
+                    ),
+                  )
+                ]),
               ),
-              child: Image.asset('$img'),
-            ),
-            Text(
-              '',
-              style: TextStyle(
-                  fontFamily: 'Roboto Medium',
-                  fontSize: width * (12 / 420),
-                  color: _colorfromhex("#ABAFD1"),
-                  letterSpacing: 0.3),
-            ),
-            Container(
-              height: height * (2 / 800),
-            ),
-            Text(
-              '${data.testName}',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontFamily: 'Roboto Medium',
-                  fontSize: width * (22 / 420),
-                  color: Colors.black,
-                  letterSpacing: 0.3),
-            ),
-            SizedBox(height: 20),
-           
-            SizedBox(
-              height: 18,
-            )
-          ],
+              SizedBox(height: 10),
+              Text(
+                data.heading,
+                maxLines: 5,
+                style: TextStyle(
+                    fontSize: Sizes.titleSize,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Lato-Regular',
+                    color: AppColor.darkText),
+              ),
+              SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );

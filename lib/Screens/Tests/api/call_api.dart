@@ -6,7 +6,7 @@ import 'package:pgmp4u/Models/category.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../api/apis.dart';
-import '../model/category_model.dart';
+
 
 class ApiController {
   Future<String> getToken() async {
@@ -68,7 +68,7 @@ class ApiController {
     Resources categoryResponse;
     Map<String, dynamic> body = {"id": id, "type": type};
 
-    print("body ${body}");
+    print("body value ${body}");
 
     var response = await http
         .post(Uri.parse(getSubCategoryDetails),
