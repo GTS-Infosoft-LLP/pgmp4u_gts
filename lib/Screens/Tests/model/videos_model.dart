@@ -27,6 +27,7 @@ class VideosListApiModel {
   int deleteStatus;
   int position;
   String createdAt;
+  bool isShowPlay;
 
   VideosListApiModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -38,7 +39,7 @@ class VideosListApiModel {
     heading = json['heading'];
     subheading = json['subheading'];
     shortDescription = json['shortDescription'];
-    description = json['description'];
+    description = json['description'].toString();
     webDescription = json['web_description'];
     image = json['image'];
     inputs = json['inputs'];
@@ -48,5 +49,6 @@ class VideosListApiModel {
     deleteStatus = json['deleteStatus'];
     position = json['position'];
     createdAt = json['created_at'];
+    isShowPlay=true;
   }
 }

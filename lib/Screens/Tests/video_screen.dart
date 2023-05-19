@@ -216,7 +216,7 @@ class _VideosScreenState extends State<VideosScreen> {
                                 itemCount: value.videosList.length,
                                 itemBuilder: (context, index) {
                                   return categoryWidget(
-                                      value.videosList[index]);
+                                      value.videosList[index],index);
                                 },
                               )
                             : Center(
@@ -238,7 +238,8 @@ class _VideosScreenState extends State<VideosScreen> {
         );
   }
 
-  Widget categoryWidget(VideosListApiModel data) {
+  Widget categoryWidget(VideosListApiModel data,int index) {
+  print("is show play icon ${data.isShowPlay}");
     Color _colorfromhex(String hexColor) {
       final hexCode = hexColor.replaceAll('#', '');
       return Color(int.parse('FF$hexCode', radix: 16));
@@ -249,70 +250,65 @@ class _VideosScreenState extends State<VideosScreen> {
 
     String img = "assets/Vector-3.png";
 
-    return GestureDetector(
-      onTap: () async {
-        showDialog(
-          barrierColor: Colors.transparent,
-          context: context,
-          builder: (context) => Center(
-            child: YoutubePlayerDemo(videoid: data.description),
-          ),
-        );
-      },
-      child: Card(
-        margin: EdgeInsets.only(bottom: 5).copyWith(left: 10, right: 10),
-        elevation: 2,
-        //color: Colors.grey,
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                height: 210,
-                child: Stack(children: [
-                  // Container(
-                  //   child: ClipRRect(
-                  //     borderRadius: BorderRadius.circular(13),
-                  //     child: Image.network(
-                  //       data.thunnailUrl,
-                  //       fit: BoxFit.cover,
-                  //       errorBuilder: (context, a, err) {
-                  //         return Image.asset(
-                  //           AppImage.picture_placeholder2,
-                  //           fit: BoxFit.cover,
-                  //           width: MediaQuery.of(context).size.width,
-                  //         );
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
-                  Positioned(
-                    top: 50,
-                    bottom: 50,
-                    left: MediaQuery.of(context).size.width * 0.4,
+    return Card(
+      margin: EdgeInsets.only(bottom: 5).copyWith(left: 10, right: 10),
+      elevation: 2,
+      //color: Colors.grey,
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: 210,
+              child: Stack(children: [
+                Container(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(13),
+                    child: Image.network(
+                      "https://img.youtube.com/vi/${data.description}/maxresdefault.jpg",
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, a, err) {
+                        return Image.asset(
+                          AppImage.picture_placeholder2,
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 50,
+                  bottom: 50,
+                  left: MediaQuery.of(context).size.width * 0.4,
+                  child: InkWell(
+                    onTap: ()  {
+                    // context.read<CategoryProvider>().updatePlayValue(index);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  YoutubePlayerDemo(videoid: data.description),));
+                    },
                     child: Image.asset(
                       AppImage.playIcon,
                       height: 55,
                       width: 55,
                     ),
-                  )
-                ]),
-              ),
-              SizedBox(height: 10),
-              Text(
-                data.heading,
-                maxLines: 5,
-                style: TextStyle(
-                    fontSize: Sizes.titleSize,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Lato-Regular',
-                    color: AppColor.darkText),
-              ),
-              SizedBox(height: 10),
-            ],
-          ),
+                  ),
+                )
+              ]),
+            ),
+            SizedBox(height: 10),
+            Text(
+              data.heading,
+              maxLines: 5,
+              style: TextStyle(
+                  fontSize: Sizes.titleSize,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Lato-Regular',
+                  color: AppColor.darkText),
+            ),
+            SizedBox(height: 10),
+          ],
         ),
       ),
     );

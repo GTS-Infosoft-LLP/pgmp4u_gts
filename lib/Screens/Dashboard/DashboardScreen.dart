@@ -152,7 +152,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-
+      var isPremium = mapResponse != null && mapResponse.containsKey("data")
+        ? mapResponse["data"]["paid_status"] == 1
+        : false;
     print(MediaQuery.of(context).padding.top);
     return Scaffold(
       
@@ -310,7 +312,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ],
                     ),
                   ),
-                  mapResponse != null ? TestsScreen() : Container()
+                  mapResponse != null ? TestsScreen(
+                    isPremium: isPremium,
+                  ) : Container(
+                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.35)
+                    ,child: Center(child: CircularProgressIndicator.adaptive()))
                 ],
               ),
             );

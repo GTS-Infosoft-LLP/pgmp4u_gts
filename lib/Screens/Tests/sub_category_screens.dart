@@ -302,6 +302,8 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
             ), ));
             
         }
+        provider.getSubCategoryDetials(data.id, widget.type);
+        
       },
       child: Container(
         margin: EdgeInsets.only(

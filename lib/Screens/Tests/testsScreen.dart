@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
 import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
 import 'package:pgmp4u/Screens/Tests/sub_category_screens.dart';
 import 'package:pgmp4u/api/apis.dart';
@@ -12,7 +13,8 @@ import 'package:sizer/sizer.dart';
 import 'model/categorymodel.dart';
 
 class TestsScreen extends StatefulWidget {
-  const TestsScreen({Key key}) : super(key: key);
+  final bool isPremium;
+  const TestsScreen({Key key, this.isPremium}) : super(key: key);
 
   @override
   _TestsScreenState createState() {
@@ -24,19 +26,30 @@ class TestsScreen extends StatefulWidget {
 class _TestsScreenState extends State<TestsScreen> {
   Map mapResponse;
   CategoryProvider provider;
+  bool sastaLoader=true;
 
   @override
   void initState() {
     provider = Provider.of(context, listen: false);
     getCategory();
-    //provider.checkLocalDataAvaialble();
+   
+    // provider.checkLocalDataAvaialble();
     super.initState();
     apiCall();
+    updateSastaLoader();
     // if (selectedIdNew == "result") {
     //   apiCall2();
     // } else {
     //   apiCall();
     // }
+  }
+  
+  updateSastaLoader(){
+    Future.delayed(Duration(seconds: 2),(){
+      setState(() {
+        sastaLoader=false;
+      });
+    });
   }
 
   Future apiCall() async {
@@ -78,41 +91,40 @@ class _TestsScreenState extends State<TestsScreen> {
 
     print("width => $width ; Height => $height");
 
-    var isPremium = mapResponse != null && mapResponse.containsKey("data")
-        ? mapResponse["data"]["paid_status"] == 1
-        : false;
     //var isPremium = true;
     //print("mapResponse => $mapResponse; Status => ${mapResponse["data"]["paid_status"] == 1}");
 
     return Expanded(
-      flex: 1,
-      child: mapResponse != null
-          ? Consumer<CategoryProvider>(
-              builder: (context, value, child) {
-                print("list length ${value.categoryList.length}");
-                return value.loader
-                    ? Center(child: CircularProgressIndicator())
-                    : Container(
-                        height: MediaQuery.of(context).size.height,
-                        child: ListView.builder(
-                          itemCount: value.categoryList.length,
-                          itemBuilder: (context, index) {
-                            return categoryWidget(value.categoryList[index],
-                                isPremium: isPremium);
-                          },
-                        ),
-                      );
-              },
-            )
-          : Container(
-              width: width,
-              child: Center(
-                child: CircularProgressIndicator(
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF")),
-                ),
-              )),
-    );
+        flex: 1,
+        child: sastaLoader ?
+          Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  ):
+        
+         ValueListenableBuilder(
+          valueListenable: HiveHandler.getCategoryListener(),
+          builder: (context, value, child) {
+            final List<CategoryListModel> storedCategories =
+                value.get("categoryKey");
+           
+            return storedCategories != null
+                ? Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: ListView.builder(
+                      itemCount: storedCategories.length,
+                      itemBuilder: (context, index) {
+                        return categoryWidget(storedCategories[index],
+                            isPremium: widget.isPremium);
+                      },
+                    ),
+                  )
+                : Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+          },
+        ));
+ 
+ 
   }
 
   Widget categoryWidget(CategoryListModel data, {isPremium = false}) {
@@ -230,6 +242,36 @@ class _TestsScreenState extends State<TestsScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget showReturnWidget({bool isPremium = false, bool isLocal}) {
+    return Consumer<CategoryProvider>(
+      builder: (context, value, child) {
+        return isLocal && value.categoryList.isNotEmpty
+            ? Container(
+                height: MediaQuery.of(context).size.height,
+                child: ListView.builder(
+                  itemCount: value.categoryList.length,
+                  itemBuilder: (context, index) {
+                    return categoryWidget(value.categoryList[index],
+                        isPremium: isPremium);
+                  },
+                ),
+              )
+            : value.loader
+                ? Center(child: CircularProgressIndicator())
+                : Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: ListView.builder(
+                      itemCount: value.categoryList.length,
+                      itemBuilder: (context, index) {
+                        return categoryWidget(value.categoryList[index],
+                            isPremium: isPremium);
+                      },
+                    ),
+                  );
+      },
     );
   }
 }

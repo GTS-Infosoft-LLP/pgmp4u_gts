@@ -29,26 +29,29 @@ class Loading extends PurchaseState {}
 class Success extends PurchaseState {}
 
 class Default extends PurchaseState {
-  String message; 
+  String message;
 
   Default({this.message});
 }
 
 class PurchaseProvider extends ChangeNotifier {
   ModelStatus latestStatus;
-  
-  bool loaderStatus=false;
-  updatehere(bool val){
-loaderStatus=val;
-notifyListeners();
-  }
- setStatus(ModelStatus val){
-    latestStatus=val;
+
+  bool loaderStatus = false;
+  updatehere(bool val) {
+    loaderStatus = val;
     notifyListeners();
- }
- ModelStatus getLatestStatus(){
+  }
+
+  setStatus(ModelStatus val) {
+    latestStatus = val;
+    notifyListeners();
+  }
+
+  ModelStatus getLatestStatus() {
     return latestStatus;
- }
+  }
+
 //bool videoLibraryStatus=false;
   StoreState storeState = StoreState.loading;
   StreamSubscription<List<PurchaseDetails>> _subscription;
@@ -83,7 +86,8 @@ notifyListeners();
     }
     const ids = <String>{
       storeKeyConsumable,
-      flashCards,videoLibraryLearningPrograms,
+      flashCards,
+      videoLibraryLearningPrograms,
     };
     final response = await iapConnection.queryProductDetails(ids);
     //print("loadPurchases $storeKeyConsumable ${response.productDetails}");
@@ -119,7 +123,7 @@ notifyListeners();
       case storeKeyConsumable:
         var res =
             await iapConnection.buyConsumable(purchaseParam: purchaseParam);
-           
+
         //print("apple payment status $res");
         break;
       case flashCards:
@@ -155,17 +159,15 @@ notifyListeners();
   }
 
   void _handlePurchase(PurchaseDetails purchaseDetails) {
-
     print("status of Listenersss>>>>>> ${purchaseDetails.status}");
-    if(purchaseDetails.status == PurchaseStatus.pending){
-     updatehere(true);
-    }
-    else{
+    if (purchaseDetails.status == PurchaseStatus.pending) {
+      updatehere(true);
+    } else {
       updatehere(false);
     }
     if (purchaseDetails.status == PurchaseStatus.purchased ||
         purchaseDetails.status == PurchaseStatus.restored) {
-          // print("receiptttt dataa ${purchaseDetails.verificationData.serverVerificationData}");
+      // print("receiptttt dataa ${purchaseDetails.verificationData.serverVerificationData}");
       switch (purchaseDetails.productID) {
         case storeKeyConsumable:
           paymentStatus(purchaseDetails.status,
@@ -182,19 +184,23 @@ notifyListeners();
               "\n status => ${purchaseDetails.status}");*/
           break;
         case flashCards:
-        handlestatusFlashCardAndVideoLib(purchaseDetails.status,
-              purchaseDetails.verificationData.serverVerificationData,2);  // 2 for FLASH CARD
-        //flashCardStatus=true;
-        notifyListeners();
+          handlestatusFlashCardAndVideoLib(
+              purchaseDetails.status,
+              purchaseDetails.verificationData.serverVerificationData,
+              2); // 2 for FLASH CARD
+          //flashCardStatus=true;
+          notifyListeners();
           // paymentStatus(purchaseDetails.status,
           //     purchaseDetails.verificationData.serverVerificationData);
           break;
         case videoLibraryLearningPrograms:
-         handlestatusFlashCardAndVideoLib(purchaseDetails.status,
-              purchaseDetails.verificationData.serverVerificationData,3);   // 3 FOR  VIDEO LIBRARY
-        //videoLibraryStatus=true;
-         notifyListeners();
-        //  paymentStatus(purchaseDetails.status,
+          handlestatusFlashCardAndVideoLib(
+              purchaseDetails.status,
+              purchaseDetails.verificationData.serverVerificationData,
+              3); // 3 FOR  VIDEO LIBRARY
+          //videoLibraryStatus=true;
+          notifyListeners();
+          //  paymentStatus(purchaseDetails.status,
           //    purchaseDetails.verificationData.serverVerificationData);
           break;
       }
@@ -253,23 +259,25 @@ notifyListeners();
     notifyListeners();
   }
 
-Future handlestatusFlashCardAndVideoLib(PurchaseStatus status, receiptData,int planTyp)async{
-SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future handlestatusFlashCardAndVideoLib(
+      PurchaseStatus status, receiptData, int planTyp) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
     print("Token => $stringValue Purchase status $status");
-      var request ={
+    var request = {
       //= json.encode({
 
-      "deviceType":"I",
-      "planType":planTyp,
-      "productId":planTyp==2 ?"flash_cards" : "video_recorded_learning_program",
-      "payment_receipt":receiptData
+      "deviceType": "I",
+      "planType": planTyp,
+      "productId":
+          planTyp == 2 ? "flash_cards" : "video_recorded_learning_program",
+      "payment_receipt": receiptData
     };
     //);
     //print("paymentStatus called => $status, $receiptData request => $request");
 
-     response = await http.post(
+    response = await http.post(
       Uri.parse(InAppPurchasePaymentNew),
       headers: {
         'Content-Type': 'application/json',
@@ -277,59 +285,55 @@ SharedPreferences prefs = await SharedPreferences.getInstance();
       },
       body: json.encode(request),
     );
-     print(response.body);
-     if(response.statusCode==200){
-     updateStatusNew(isnav: true);
-     }
-}
-
+    print(response.body);
+    if (response.statusCode == 200) {
+      updateStatusNew(isnav: true);
+    }
+  }
 
   void _updateStreamOnError(dynamic error) {
     //Handle error here
   }
 
-  
+  updateStatusNew({bool isnav = false}) async {
+    await updateStatusofPurchaseFLASHANDVIDEO(noNavigate: isnav);
+  }
 
-updateStatusNew({bool isnav=false})async{
-  await updateStatusofPurchaseFLASHANDVIDEO(noNavigate: isnav);
-}
-
-Future updateStatusofPurchaseFLASHANDVIDEO({bool noNavigate=false}) async {
- 
-  Map mapResponse;
+  Future updateStatusofPurchaseFLASHANDVIDEO({bool noNavigate = false}) async {
+    Map mapResponse;
     print("Get Status of FlashCard  ${mapResponse}");
-SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // SharedPreferences prefs = await SharedPreferences.getInstance();
-   String stringValue = prefs.getString('token');
-   print(stringValue);
+    String stringValue = prefs.getString('token');
+    print(stringValue);
     http.Response response;
     response = await http.get(Uri.parse(checkStatusFlashAndVideo), headers: {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer "+stringValue
+      'Authorization': "Bearer " + stringValue
     });
 
     if (response.statusCode == 200) {
       print("Calling successfull");
       print(convert.jsonDecode(response.body));
-     // setState(() {
-        mapResponse = convert.jsonDecode(response.body);
-        PurchaseProvider purchaseProvider = Provider.of(GlobalVariable.navState.currentContext,listen: false);
-        print("datadatdtdatdatdasdtasdasdt>>>>>>>>>>$mapResponse");
-        purchaseProvider.setStatus(ModelStatus.fromjson(mapResponse["data"]));
-        latestStatus = purchaseProvider.getLatestStatus();
-        print("real valuee of flash card status  ${latestStatus.flashCardStatus}");
-        print("real valuee of video library status  ${latestStatus.videoLibStatus}");
-        notifyListeners();
-        if(Platform.isIOS&& noNavigate){
-          Navigator.pop(GlobalVariable.navState.currentContext);
-        }
-    
-     // });
+      // setState(() {
+      mapResponse = convert.jsonDecode(response.body);
+      PurchaseProvider purchaseProvider =
+          Provider.of(GlobalVariable.navState.currentContext, listen: false);
+      print("datadatdtdatdatdasdtasdasdt>>>>>>>>>>$mapResponse");
+      purchaseProvider.setStatus(ModelStatus.fromjson(mapResponse["data"]));
+      latestStatus = purchaseProvider.getLatestStatus();
+      print(
+          "real valuee of flash card status  ${latestStatus.flashCardStatus}");
+      print(
+          "real valuee of video library status  ${latestStatus.videoLibStatus}");
+      notifyListeners();
+      if (Platform.isIOS && noNavigate) {
+        Navigator.pop(GlobalVariable.navState.currentContext);
+      }
+
+      // });
       // print(convert.jsonDecode(response.body));
     }
-
-}
-
-
   }
+}

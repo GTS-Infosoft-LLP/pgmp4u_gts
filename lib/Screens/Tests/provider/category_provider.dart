@@ -57,23 +57,35 @@ class CategoryProvider extends ChangeNotifier {
 
    checkLocalDataAvaialble()async {
     updateLoader(true);
-    if ( HiveHandler.getCategoryList().isNotEmpty) {
-      categoryList = HiveHandler.getCategoryList() as List<CategoryListModel>;
-      notifyListeners();
+    List<CategoryListModel> tempList=HiveHandler.getCategoryList() ?? [];
+    if ( tempList.isNotEmpty) {
+      categoryList = tempList;
+      Future.delayed(Duration(seconds: 1),(){
+          notifyListeners();
+      });
+    
       updateLoader(false);
     }
   }
 
+
+  updatePlayValue(int index){
+    videosList[index].isShowPlay=!videosList[index].isShowPlay;
+    Future.delayed(Duration(seconds: 0),(){
+          notifyListeners();
+    });
+  
+  }
+
   Future callGetCategory() async {
-    updateLoader(true);
+    // updateLoader(true);
     await controller.callGetCategoryApi().then((value) {
       if (value != null) {
-        CategoryApiModel categoryApiModel =
-            CategoryApiModel.fromJson(value.data);
+        CategoryApiModel categoryApiModel = CategoryApiModel.fromJson(value.data);
         categoryList = categoryApiModel.categoryList;
-        // HiveHandler.addCategory(categoryList);
-        // print("local list is   ${HiveHandler.getCategoryList().length}");
-        // print("CategoryList ${categoryList.length}");
+        HiveHandler.addCategory(categoryList);
+       
+        print("CategoryList ${categoryList.length}");
         notifyListeners();
       }
     }).whenComplete(() {
@@ -107,42 +119,40 @@ class CategoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getSubCategoryDetials(int id, String type) async {
-    mockList = [];
-    videosList = [];
-    practiceQuestion = [];
 
-    updatedetailsLoader(true);
-    print("call data ");
-    await controller.getSubCategoryDetail(id: id, type: type).then((value) {
-      print("value is of  getSubCategoryDetail ${value.data}");
-      if (value != null) {
-        print("type is $type");
-        switch (type) {
-          case "Practice Test":
-            PracticeApiModel practiceApiModel =
-                PracticeApiModel.fromJson(value.data);
-            practiceQuestion = practiceApiModel.list;
-            print("practiceQuestion list length ${practiceQuestion.length}");
-            break;
+    Future getSubCategoryDetials(int id,String type) async {
+      mockList=[];
+      videosList=[];
+      practiceQuestion=[];
+      
+      updatedetailsLoader(true);
+      print("call data ");
+       await controller.getSubCategoryDetail(
+        id: id,
+        type: type
+       ).then((value) {
+         if(value!=null){
+            switch(type){
+              case "Practice Test":
+              PracticeApiModel practiceApiModel=PracticeApiModel.fromJson(value.data);
+              practiceQuestion=practiceApiModel.list;
+              break;
+              case "Videos":
+              VideoApiModel practiceApiModel=VideoApiModel.fromJson(value.data);
+              videosList=practiceApiModel.videolist;
+              break;
+              
+              case "Mock Test":
+              MocktestApiModelList practiceApiModel=MocktestApiModelList.fromJson(value.data);
+              mockList=practiceApiModel.mockList;
+              break;
 
-          case "Videos":
-            VideoApiModel practiceApiModel = VideoApiModel.fromJson(value.data);
-            videosList = practiceApiModel.videolist;
-            print("videosList ${videosList.length}");
-            break;
+            }
 
-          case "Mock Test":
-            MocktestApiModelList practiceApiModel =
-                MocktestApiModelList.fromJson(value.data);
-            mockList = practiceApiModel.mockList;
-            print("mockList list length ${mockList.length}");
-            break;
-        }
-        updatedetailsLoader(false);
-      }
+            notifyListeners();
+          }
 
-      updateSubLoader(false);
+      updatedetailsLoader(false);
     }).whenComplete(() {
       updatedetailsLoader(false);
     }).onError((error, stackTrace) {

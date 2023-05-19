@@ -34,9 +34,10 @@ class ResponseProvider extends ChangeNotifier {
     print("video get body ${body}");
     //print(" api url $getVideoByTypeUrl");
 
-    var response = await http.post(getVideoByTypeUrl,
+    print("user.token ${user.token}");
+    var response = await http.post(Uri.parse("http://3.227.35.115:1011/api/videoListByViType"),
         headers: {"Authorization": user.token}, body: body);
-
+    print("response is >> ${response.body}");
     //print("video body $body");
     // print(" response of video api ${response.body}");
     if (response.statusCode == 200) {

@@ -178,6 +178,7 @@ class VideoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("length of list ${getVideoListing.length}");
     print("playing videoo link ${getVideoListing[0].videoURl}");
     return ListView.builder(
       shrinkWrap: true,

@@ -24,7 +24,9 @@ class _YoutubePlayerDemoState extends State<YoutubePlayerDemo> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         _ytbPlayerController = YoutubePlayerController(
+          
           initialVideoId: widget.videoid,
+
           params: const YoutubePlayerParams(
             showFullscreenButton: true,
           ),

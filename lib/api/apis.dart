@@ -8,7 +8,8 @@
 
 
 //PRODUCTION BASE URL  
-  const _BASE_URL ="https://pgmp4uapiconnect.vcareprojectmanagement.com/api/";
+  // const _BASE_URL ="https://pgmp4uapiconnect.vcareprojectmanagement.com/api/";
+  const _BASE_URL ="http://3.227.35.115:1011/api/";
 
 //const _BASE_URL2 = "https://tspgmp4uapiconnect.vcareprojectmanagement.com/api/";
 
@@ -17,7 +18,8 @@
 // const _BASE_URL2 = "http://18.119.55.81:1011/api/";
 //const TEMP_URL = "http://18.119.55.81:3003/api/";
 
-const TEMP_URL = _BASE_URL;
+// const TEMP_URL = _BASE_URL;
+// const TEMP_URL = "http://3.227.35.115:1011/api/";
 
 const IN_APP_PURCHASE = _BASE_URL + "InAppPurchasePayment";
 const GMAIL_REGISTER = _BASE_URL + "GmailRegister";
