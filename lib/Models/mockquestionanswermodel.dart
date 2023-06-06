@@ -37,6 +37,7 @@ class QuestionDetail {
   String image;
   int questatus;
   int quedeleteStatus;
+  List<String> rightAnswer;
   List<Optionss> Options;
   QuestionDetail.fromjsons(Map<String, dynamic> questionMap) {
     queID = questionMap["id"];
@@ -49,6 +50,10 @@ class QuestionDetail {
     image = questionMap["image"];
     questatus = questionMap["status"];
     quedeleteStatus = questionMap["deleteStatus"];
+    if(questionMap['right_answer']!=null){
+    rightAnswer=questionMap['right_answer'].toString().split(",");
+    }
+    
 
     List temp = questionMap["Options"];
 

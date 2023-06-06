@@ -99,6 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future registerHandler(user, fromProvider) async {
     print(user);
+    print("call function");
     http.Response response;
     setState(() {
       loading = true;
@@ -111,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     print("Request => $request");
-
+  print("GMAIL_REGISTER $GMAIL_REGISTER");
     response = await http.post(
       Uri.parse(GMAIL_REGISTER),
       headers: {
@@ -119,6 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       body: request,
     );
+    print("response is >> $response");
 
     print("Response => ${response.body}");
 

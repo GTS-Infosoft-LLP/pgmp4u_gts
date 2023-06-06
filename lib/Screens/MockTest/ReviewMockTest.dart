@@ -1,11 +1,11 @@
-import 'dart:io';
-import 'package:getwidget/getwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/api/apis.dart';
 import 'dart:convert' as convert;
 
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'model/review_moke_test.dart';
 
 class ReviewMockTest extends StatefulWidget {
   final selectedId;
@@ -31,11 +31,11 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
 
   bool _show = true;
   int _quetionNo = 0;
-  int selectedAnswer;
-  int realAnswer;
+  List<int> selectedAnswer;
+  List realAnswer;
   String stringResponse;
-  List listResponse;
-  Map mapResponse;
+  List<Data> listResponse;
+  ReviewMokeText mapResponse;
   @override
   void initState() {
     super.initState();
@@ -55,7 +55,8 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
             attemptDataNew.toString()),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': stringValue
+          'Authorization':
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMjI0LCJuYW1lIjoic2hlcnUga2FiamEiLCJtb2JpbGUiOm51bGwsImVtYWlsIjoic2hlcnVrYWJqYTEyMzRAZ21haWwuY29tIiwicGFzc3dvcmQiOm51bGwsImNyZWF0ZWQiOiIyMDIzLTA2LTA2IiwiZXhhbV9kYXRlIjpudWxsLCJwcm9maWxlX2ltYWdlIjpudWxsLCJsaW5rZWRpbiI6bnVsbCwiZ29vZ2xlIjoiMTA5NjI4MDgxOTg2OTk2NzU5NDQ0IiwicTEiOiIiLCJxMiI6IiIsInEzIjoiIiwicTQiOiIiLCJxNSI6IiIsInE2IjoiIiwiZW1haWxfc2VudCI6MCwic3RhdHVzIjoxLCJkZWxldGVTdGF0dXMiOjF9LCJpYXQiOjE2ODYwMzA4NDAsImV4cCI6MTY4Njg5NDg0MH0.OXQMII0HGdne95qA2nEUfTPXRHaykJhcozcOzmrhcwY"
         });
 
     print(
@@ -68,9 +69,10 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
     if (response.statusCode == 200) {
       print(convert.jsonDecode(response.body));
       setState(() {
-        mapResponse = convert.jsonDecode(response.body);
-        listResponse = mapResponse["data"];
-        selectedAnswer = int.parse(mapResponse["data"][0]["youranswer"]);
+        mapResponse =
+            ReviewMokeText.fromJson(convert.jsonDecode(response.body));
+        listResponse = mapResponse.data;
+        selectedAnswer = listResponse[0].youranswer;
       });
       // print(convert.jsonDecode(response.body));
     }
@@ -80,7 +82,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    int _currentAnserIndex = 0;
+    List<int> _currentAnserIndex = [];
     int _currentYourAnserIndex = 0;
     final arguments = ModalRoute.of(context).settings.arguments as Map;
     return SafeArea(
@@ -160,15 +162,21 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                       setState(() {
                                                         _quetionNo--;
 
-                                                        selectedAnswer = int
-                                                            .parse(listResponse[
+                                                        selectedAnswer =
+                                                            listResponse[
                                                                     _quetionNo]
-                                                                ["youranswer"]);
-                                                        realAnswer = mapResponse[
-                                                                        "data"]
-                                                                    [_quetionNo]
-                                                                ["Question"]
-                                                            ["right_answer"];
+                                                                .youranswer;
+
+                                                        realAnswer = mapResponse
+                                                            .data[_quetionNo]
+                                                            .question
+                                                            .rightAnswer;
+
+                                                        //  mapResponse[
+                                                        //                 "data"]
+                                                        //             [_quetionNo]
+                                                        //         ["Question"]
+                                                        //     ["right_answer"];
                                                       })
                                                     },
                                                     child: Icon(
@@ -197,15 +205,15 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                           _quetionNo =
                                                               _quetionNo + 1;
                                                         }
-                                                        selectedAnswer = int
-                                                            .parse(listResponse[
+                                                        selectedAnswer =
+                                                            listResponse[
                                                                     _quetionNo]
-                                                                ["youranswer"]);
-                                                        realAnswer = mapResponse[
-                                                                        "data"]
-                                                                    [_quetionNo]
-                                                                ["Question"]
-                                                            ["right_answer"];
+                                                                .youranswer;
+
+                                                        realAnswer = mapResponse
+                                                            .data[_quetionNo]
+                                                            .question
+                                                            .rightAnswer;
                                                       }),
                                                       print(_quetionNo)
                                                     },
@@ -225,7 +233,8 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                           child: Text(
                                             listResponse != null
                                                 ? listResponse[_quetionNo]
-                                                    ["Question"]["question"]
+                                                    .question
+                                                    .question
                                                 : '',
                                             style: TextStyle(
                                               fontFamily: 'Roboto Regular',
@@ -237,86 +246,139 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                         ),
                                         Column(
                                           children: listResponse[_quetionNo]
-                                                  ["Question"]["Options"]
+                                              .question
+                                              .options
                                               .map<Widget>((title) {
+                                                  print("question option ${title}");
                                             var index = listResponse[_quetionNo]
-                                                    ["Question"]["Options"]
+                                                .question
+                                                .options
                                                 .indexOf(title);
                                             // print("index >>>>>> $index");
 
-                                            /// Right answer index find
-                                            var _rightAnwerId =
-                                                listResponse[_quetionNo]
-                                                        ['Question']
-                                                    ['right_answer'];
+                                            print(
+                                                "is right answer ${listResponse[_quetionNo].question.options[index].customRight}");
 
-                                            // print(
-                                            //     "_rightAnwerId ${_rightAnwerId}");
+                                            /// Right answer index find
+                                            List<int> _rightAnwerId =
+                                                listResponse[_quetionNo]
+                                                    .question
+                                                    .rightAnswer;
+                                            //     ['Question']
+                                            // ['right_answer'];
+
                                             var _optionList =
                                                 listResponse[_quetionNo]
-                                                        ["Question"]["Options"]
-                                                    as List;
+                                                    .question
+                                                    .options;
 
-                                            // print("_optionList ${_optionList}");
-                                            var getObject = _optionList
-                                                .firstWhere((element) =>
-                                                    element['id'] ==
-                                                    _rightAnwerId);
-                                            // print("getObject ${getObject}");
-                                            var _index =
-                                                _optionList.indexOf(getObject);
+                                            var getObject = [];
+
+                                            for (var item in _optionList) {
+                                              if (_rightAnwerId
+                                                  .contains(item.id)) {
+                                                getObject.add(item);
+                                              }
+                                            }
+
+                                            List<int> _index = [];
+                                            for (int i = 0;
+                                                i < getObject.length;
+                                                i++) {
+                                              _index.add(_optionList
+                                                  .indexOf(getObject[i]));
+                                            }
+
                                             _currentAnserIndex = _index;
                                             // print("get index ${_index}");
 
                                             /// Your wrong answer index find
-                                            var _yourAnserId =
+                                            List _yourAnserId =
                                                 listResponse[_quetionNo]
-                                                    ["youranswer"];
+                                                    .youranswer;
 
                                             // print("your id ${_yourAnserId}");
-                                            var _yourAnswerObject = _optionList
-                                                .firstWhere((element) =>
-                                                    element['id'].toString() ==
-                                                    _yourAnserId.toString());
+                                            List _yourAnswerObject = [];
+                                            for (var item in _optionList) {
+                                              if (_yourAnserId
+                                                  .contains(item.id)) {
+                                                _yourAnswerObject.add(item);
+                                              }
+                                            }
+                                            //  _optionList
+                                            //     .firstWhere((element) =>
+                                            //         element['id'].toString() ==
+                                            //         _yourAnserId.toString());
 
-                                            var _currentYourAnserIndex =
-                                                _optionList
-                                                    .indexOf(_yourAnswerObject);
+                                            List<int> _currentYourAnserIndex =
+                                                [];
+
+                                            for (int i = 0;
+                                                i < _yourAnswerObject.length;
+                                                i++) {
+                                              _currentYourAnserIndex.add(
+                                                  _optionList.indexOf(
+                                                      _yourAnswerObject[i]));
+                                            }
+                                            // _optionList
+                                            //     .indexOf(_yourAnswerObject);
 
                                             // print(
                                             //     "your answer inde ${_currentYourAnserIndex}");
+                                            print(
+                                                "selectedAnswer answer $selectedAnswer");
+                                            print(
+                                                "selectedAnswer title.id is >>> ${title.question}");
+                                            print(
+                                                "selectedAnswer answer right ${listResponse[_quetionNo].question.rightAnswer}");
+
                                             return GestureDetector(
                                               onTap: () => {
                                                 setState(() {
-                                                  selectedAnswer = title["id"];
+                                                  selectedAnswer.add(title.id);
                                                   realAnswer =
                                                       listResponse[_quetionNo]
-                                                              ["Question"]
-                                                          ["right_answer"];
+                                                          .question
+                                                          .rightAnswer;
+                                                  //     ["Question"]
+                                                  // ["right_answer"];
                                                 })
                                               },
                                               child: Container(
-                                                color: title["id"] ==
-                                                            selectedAnswer &&
+                                                color: selectedAnswer.contains(
+                                                            title.id) &&
                                                         listResponse[_quetionNo]
-                                                                    ["Question"][
-                                                                "right_answer"] ==
-                                                            selectedAnswer
-                                                    ? _colorfromhex("#E6F7E7")
-                                                    : title["id"] == selectedAnswer &&
-                                                            listResponse[_quetionNo]
-                                                                        ["Question"][
-                                                                    "right_answer"] !=
-                                                                selectedAnswer
+                                                            .question
+                                                            .rightAnswer
+                                                            .contains(
+                                                                selectedAnswer)
+                                                    ? _colorfromhex("#E6F7E8")
+                                                    : selectedAnswer.contains(
+                                                                title.id) &&
+                                                            !listResponse[_quetionNo]
+                                                                .question
+                                                                .rightAnswer
+                                                                .contains(
+                                                                    selectedAnswer)
+                                                        //     ["Question"][
+                                                        // "right_answer"] !=
+
                                                         ? _colorfromhex(
                                                             "#FFF6F6")
                                                         : selectedAnswer != null &&
-                                                                listResponse[_quetionNo]["Question"]["right_answer"] !=
-                                                                    selectedAnswer &&
-                                                                title["id"] ==
-                                                                    listResponse[_quetionNo]
-                                                                            ["Question"]
-                                                                        ["right_answer"]
+                                                                !listResponse[
+                                                                        _quetionNo]
+                                                                    .question
+                                                                    .rightAnswer
+                                                                    .contains(
+                                                                        selectedAnswer) &&
+                                                                listResponse[_quetionNo]
+                                                                    .question
+                                                                    .rightAnswer
+                                                                    .contains(
+                                                                        title.id)
+                                                            //     ["Question"]
+                                                            // ["right_answer"]
                                                             ? _colorfromhex("#E6F7E7")
                                                             : Colors.white,
                                                 margin: EdgeInsets.only(
@@ -337,26 +399,34 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                                   .circular(
                                                             width * (25 / 420),
                                                           ),
-                                                          color: title["id"] ==
-                                                                      selectedAnswer &&
+                                                          color: selectedAnswer
+                                                                      .contains(title
+                                                                          .id) &&
                                                                   listResponse[_quetionNo]
-                                                                              ["Question"]
-                                                                          [
-                                                                          "right_answer"] ==
-                                                                      selectedAnswer
+                                                                      .question
+                                                                      .rightAnswer
+                                                                      .contains(
+                                                                          selectedAnswer)
                                                               ? _colorfromhex(
                                                                   "#04AE0B")
-                                                              : title["id"] ==
-                                                                          selectedAnswer &&
-                                                                      listResponse[_quetionNo]["Question"]["right_answer"] !=
-                                                                          selectedAnswer
+                                                              : selectedAnswer.contains(title
+                                                                          .id) &&
+                                                                      !listResponse[_quetionNo]
+                                                                          .question
+                                                                          .rightAnswer
+                                                                          .contains(
+                                                                              selectedAnswer)
+                                                                  // ["Question"]["right_answer"] !=
+
                                                                   ? _colorfromhex(
                                                                       "#FF0000")
                                                                   : selectedAnswer !=
                                                                               null &&
-                                                                          listResponse[_quetionNo]["Question"]["right_answer"] !=
-                                                                              selectedAnswer &&
-                                                                          title["id"] == listResponse[_quetionNo]["Question"]["right_answer"]
+                                                                          !listResponse[_quetionNo]
+                                                                              .question
+                                                                              .rightAnswer
+                                                                              .contains(selectedAnswer) &&
+                                                                          listResponse[_quetionNo].question.rightAnswer.contains(title.id)
                                                                       ? _colorfromhex("#04AE0B")
                                                                       : Colors.white),
                                                       child: Center(
@@ -374,21 +444,25 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                           style: TextStyle(
                                                               fontFamily:
                                                                   'Roboto Regular',
-                                                              color: title["id"] ==
-                                                                          selectedAnswer &&
-                                                                      listResponse[_quetionNo]["Question"][
-                                                                              "right_answer"] ==
-                                                                          selectedAnswer
+                                                              color: selectedAnswer
+                                                                          .contains(title
+                                                                              .id) &&
+                                                                      listResponse[
+                                                                              _quetionNo]
+                                                                          .question
+                                                                          .rightAnswer
+                                                                          .contains(
+                                                                              selectedAnswer)
                                                                   ? Colors.white
-                                                                  : title["id"] ==
-                                                                              selectedAnswer &&
-                                                                          listResponse[_quetionNo]["Question"]["right_answer"] !=
-                                                                              selectedAnswer
+                                                                  : selectedAnswer.contains(title
+                                                                              .id) &&
+                                                                          !listResponse[_quetionNo].question.rightAnswer.contains(
+                                                                              selectedAnswer)
                                                                       ? Colors
                                                                           .white
                                                                       : selectedAnswer != null &&
-                                                                              listResponse[_quetionNo]["Question"]["right_answer"] != selectedAnswer &&
-                                                                              title["id"] == listResponse[_quetionNo]["Question"]["right_answer"]
+                                                                              !listResponse[_quetionNo].question.rightAnswer.contains(selectedAnswer) &&
+                                                                              listResponse[_quetionNo].question.rightAnswer.contains(title.id)
                                                                           ? Colors.white
                                                                           : Colors.grey),
                                                         ),
@@ -409,8 +483,8 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                                title[
-                                                                    "question_option"],
+                                                                title
+                                                                    .questionOption,
                                                                 style: TextStyle(
                                                                     fontSize:
                                                                         width *
@@ -425,12 +499,9 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                                       Alignment
                                                                           .bottomRight,
                                                                   child: getTextSelecd(
-                                                                      _currentAnserIndex +
-                                                                          1,
-                                                                      _currentYourAnserIndex +
-                                                                          1,
-                                                                      index +
-                                                                          1)),
+                                                                      _currentAnserIndex,
+                                                                      _currentYourAnserIndex,
+                                                                      index)),
                                                             )
                                                           ],
                                                         ))
@@ -510,7 +581,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                                         (9 /
                                                                             800)),
                                                             child: Text(
-                                                              'Answer ${getRightAnser(_currentAnserIndex + 1)} is the correct one',
+                                                              'Answer ${getRightAnser(_currentAnserIndex)} is the correct one',
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Roboto Regular',
@@ -532,11 +603,9 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                                             800)),
                                                             child: Text(
                                                               listResponse[
-                                                                          _quetionNo]
-                                                                      [
-                                                                      "Question"]
-                                                                  [
-                                                                  "explanation"],
+                                                                      _quetionNo]
+                                                                  .question
+                                                                  .explanation,
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Roboto Regular',
@@ -584,34 +653,52 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
     );
   }
 
-  bool isSelected(var title) {
-    return selectedAnswer != null &&
-        listResponse[_quetionNo]["Question"]["right_answer"] !=
-            selectedAnswer &&
-        title["id"] == listResponse[_quetionNo]["Question"]["right_answer"];
-  }
+  // bool isSelected(var title) {
+  //   return selectedAnswer != null &&
+  //       listResponse[_quetionNo]["Question"]["right_answer"] !=
+  //           selectedAnswer &&
+  //       title["id"] == listResponse[_quetionNo]["Question"]["right_answer"];
+  // }
 
-  bool isCurrentOption(var title, _quetionNo) {
-    return title["id"] == selectedAnswer &&
-        listResponse[_quetionNo]["Question"]["right_answer"] == selectedAnswer;
-  }
+  // bool isCurrentOption(var title, _quetionNo) {
+  //   return title["id"] == selectedAnswer &&
+  //       listResponse[_quetionNo]["Question"]["right_answer"] == selectedAnswer;
+  // }
 
-  String getRightAnser(value) {
-    switch (value) {
-      case 1:
-        return "A";
-      case 2:
-        return "B";
-      case 3:
-        return "C";
-      case 4:
-        return "D";
+  String getRightAnser(List value) {
+    String correct = "";
+    int customIndex;
+    for (int i = 0; i < value.length; i++) {
+      customIndex;
+      switch (value[i]) {
+        case 1:
+          correct = "A";
+          break;
+        case 2:
+          correct = "B";
+          break;
+        case 3:
+          correct = "C";
+          break;
+        case 4:
+          correct = "D";
+          break;
+      }
     }
+    return correct;
   }
 
-  Widget getTextSelecd(rightIndex, wrongIndex, currentIndex) {
-    return [rightIndex, wrongIndex].contains(currentIndex)
-        ? Text(wrongIndex == currentIndex ? "Your Selection" : "Correct Answer")
-        : SizedBox();
+  Widget getTextSelecd(List rightIndex, List wrongIndex, currentIndex) {
+    print("rightIndex is >>> $rightIndex");
+    print("current index >> $wrongIndex");
+    Widget returnWidget = SizedBox();
+    if (rightIndex.contains(currentIndex)) {
+      returnWidget = Text("Right Answer");
+    } else if (wrongIndex.contains(currentIndex)) {
+      returnWidget = Text("Your selection");
+    } else {
+      returnWidget = SizedBox();
+    }
+    return returnWidget;
   }
 }

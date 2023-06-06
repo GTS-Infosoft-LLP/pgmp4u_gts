@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-import 'package:pgmp4u/Models/mockTest.dart';
-
 import 'package:getwidget/getwidget.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTestResult.dart';
 import 'package:pgmp4u/api/apis.dart';
@@ -37,6 +35,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   final selectedIdNew;
   final mockNameNew;
   final attemptNew;
+  List ids = [];
   _MockTestQuestionsState({
     this.selectedIdNew,
     this.mockNameNew,
@@ -45,7 +44,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   List submitData = [];
   bool _show = true;
   int _quetionNo = 0;
-  int selectedAnswer = null;
+  List<int> selectedAnswer = [];
   String stringResponse;
   List listResponse;
   Map mapResponse;
@@ -196,26 +195,27 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
     if (response.statusCode == 200) {
       print(">>>>>> quiz data ${response.body}");
-       
+
       setState(() {
         startTime = (new DateTime.now()).toString();
         mapResponse = convert.jsonDecode(response.body);
         listResponse = mapResponse["data"];
-         questionAnswersList = QuestionAnswerModel.fromjson(mapResponse["data"]);
+        questionAnswersList = QuestionAnswerModel.fromjson(mapResponse["data"]);
         _stopWatchTimer.onExecute.add(StopWatchExecute.start);
       });
     }
   }
+
   var displayTime = '';
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-List<Queans> _quizList = [];
-if(questionAnswersList != null){
- _quizList = questionAnswersList?.list ?? [];
-}
+    List<Queans> _quizList = [];
+    if (questionAnswersList != null) {
+      _quizList = questionAnswersList?.list ?? [];
+    }
 
     return SafeArea(
       child: WillPopScope(
@@ -224,485 +224,560 @@ if(questionAnswersList != null){
             stream: _stopWatchTimer.rawTime,
             initialData: _stopWatchTimer.rawTime.value,
             builder: (context, snap) {
-
-              if(snap.hasData){
-   final value = snap.data;
-              displayTime = StopWatchTimer.getDisplayTime(value,
-                  hours: true, milliSecond: false);
-              return Scaffold(
-                body: Container(
-                  color: _colorfromhex("#FCFCFF"),
-                  child: Stack(
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            height: 149,
-                            width: width,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage("assets/vector1d.png"),
-                                fit: BoxFit.cover,
+              if (snap.hasData) {
+                final value = snap.data;
+                displayTime = StopWatchTimer.getDisplayTime(value,
+                    hours: true, milliSecond: false);
+                return Scaffold(
+                  body: Container(
+                    color: _colorfromhex("#FCFCFF"),
+                    child: Stack(
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              height: 149,
+                              width: width,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage("assets/vector1d.png"),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                  left: width * (20 / 420),
-                                  right: width * (20 / 420),
-                                  top: height * (16 / 800)),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () => {
-                                          if (loader)
-                                            {}
-                                          else
-                                            {
-                                              submitMockTest(
-                                                  "back", displayTime)
-                                            }
-                                        },
-                                        child: Icon(
-                                          Icons.arrow_back_ios,
-                                          size: width * (24 / 420),
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        mockNameNew,
-                                        style: TextStyle(
-                                            fontFamily: 'Roboto Medium',
-                                            fontSize: width * (16 / 420),
-                                            color: Colors.white,
-                                            letterSpacing: 0.3),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    displayTime,
-                                    style: TextStyle(
-                                        fontFamily: 'Roboto Medium',
-                                        fontSize: width * (16 / 420),
-                                        color: Colors.white,
-                                        letterSpacing: 0.3),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          
-                          _quizList.isNotEmpty
-                          //questionAnswersList != null
-                              ? Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Column(
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    left: width * (20 / 420),
+                                    right: width * (20 / 420),
+                                    top: height * (16 / 800)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
                                       children: [
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                              left: width * (29 / 420),
-                                              right: width * (29 / 420),
-                                              top: height * (23 / 800),
-                                              bottom: height * (23 / 800)),
-                                          margin: EdgeInsets.only(bottom: 40),
+                                        GestureDetector(
+                                          onTap: () => {
+                                            if (loader)
+                                              {}
+                                            else
+                                              {
+                                                submitMockTest(
+                                                    "back", displayTime)
+                                              }
+                                          },
+                                          child: Icon(
+                                            Icons.arrow_back_ios,
+                                            size: width * (24 / 420),
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(
+                                          mockNameNew,
+                                          style: TextStyle(
+                                              fontFamily: 'Roboto Medium',
+                                              fontSize: width * (16 / 420),
+                                              color: Colors.white,
+                                              letterSpacing: 0.3),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      displayTime,
+                                      style: TextStyle(
+                                          fontFamily: 'Roboto Medium',
+                                          fontSize: width * (16 / 420),
                                           color: Colors.white,
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  // _quetionNo != 0
-                                                  //     ? GestureDetector(
-                                                  //         onTap: () => {
-                                                  //           setState(() {
-                                                  //             _quetionNo--;
+                                          letterSpacing: 0.3),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            _quizList.isNotEmpty
+                                //questionAnswersList != null
+                                ? Expanded(
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                                left: width * (29 / 420),
+                                                right: width * (29 / 420),
+                                                top: height * (23 / 800),
+                                                bottom: height * (23 / 800)),
+                                            margin: EdgeInsets.only(bottom: 40),
+                                            color: Colors.white,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    // _quetionNo != 0
+                                                    //     ? GestureDetector(
+                                                    //         onTap: () => {
+                                                    //           setState(() {
+                                                    //             _quetionNo--;
 
-                                                  //             selectedAnswer = null;
-                                                  //           })
-                                                  //         },
-                                                  //         child: Icon(
-                                                  //           Icons.arrow_back,
-                                                  //           size: width * (24 / 420),
-                                                  //           color: _colorfromhex(
-                                                  //               "#ABAFD1"),
-                                                  //         ),
-                                                  //       )
-                                                  //     : Container(),
-                                                  Text(
-                                                    'QUESTION ${_quetionNo + 1}',
+                                                    //             selectedAnswer = null;
+                                                    //           })
+                                                    //         },
+                                                    //         child: Icon(
+                                                    //           Icons.arrow_back,
+                                                    //           size: width * (24 / 420),
+                                                    //           color: _colorfromhex(
+                                                    //               "#ABAFD1"),
+                                                    //         ),
+                                                    //       )
+                                                    //     : Container(),
+                                                    Text(
+                                                      'QUESTION ${_quetionNo + 1}',
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Roboto Regular',
+                                                        fontSize:
+                                                            width * (16 / 420),
+                                                        color: _colorfromhex(
+                                                            "#ABAFD1"),
+                                                      ),
+                                                    ),
+                                                    // listResponse.length - 1 > _quetionNo
+                                                    //     ? GestureDetector(
+                                                    //         onTap: () => {
+                                                    //           setState(() {
+                                                    //             if (_quetionNo <
+                                                    //                 listResponse
+                                                    //                     .length) {
+                                                    //               _quetionNo =
+                                                    //                   _quetionNo + 1;
+                                                    //             }
+                                                    //             selectedAnswer = null;
+                                                    //           }),
+                                                    //           print(_quetionNo)
+                                                    //         },
+                                                    //         child: Icon(
+                                                    //           Icons.arrow_forward,
+                                                    //           size: width * (24 / 420),
+                                                    //           color: _colorfromhex(
+                                                    //               "#ABAFD1"),
+                                                    //         ),
+                                                    //       )
+                                                    //     : Container(),
+                                                  ],
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: height * (15 / 800)),
+                                                  child: Text(
+                                                    _quizList.isNotEmpty
+                                                        //questionAnswersList != null
+                                                        ? _quizList[_quetionNo]
+                                                            .questionDetail
+                                                            .questiondata
+                                                        //listResponse[_quetionNo]
+                                                        //      ["Question"]
+                                                        //["question"]
+                                                        : '',
                                                     style: TextStyle(
                                                       fontFamily:
                                                           'Roboto Regular',
                                                       fontSize:
-                                                          width * (16 / 420),
-                                                      color: _colorfromhex(
-                                                          "#ABAFD1"),
+                                                          width * (15 / 420),
+                                                      color: Colors.black,
+                                                      height: 1.7,
                                                     ),
                                                   ),
-                                                  // listResponse.length - 1 > _quetionNo
-                                                  //     ? GestureDetector(
-                                                  //         onTap: () => {
-                                                  //           setState(() {
-                                                  //             if (_quetionNo <
-                                                  //                 listResponse
-                                                  //                     .length) {
-                                                  //               _quetionNo =
-                                                  //                   _quetionNo + 1;
-                                                  //             }
-                                                  //             selectedAnswer = null;
-                                                  //           }),
-                                                  //           print(_quetionNo)
-                                                  //         },
-                                                  //         child: Icon(
-                                                  //           Icons.arrow_forward,
-                                                  //           size: width * (24 / 420),
-                                                  //           color: _colorfromhex(
-                                                  //               "#ABAFD1"),
-                                                  //         ),
-                                                  //       )
-                                                  //     : Container(),
-                                                ],
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    top: height * (15 / 800)),
-                                                child: Text(
-                                                  _quizList.isNotEmpty
-                                                  //questionAnswersList != null
-                                                      ? _quizList[_quetionNo].questionDetail.questiondata
-                                                      //listResponse[_quetionNo]
-                                                        //      ["Question"]
-                                                          //["question"]
-                                                      : '',
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  "Max Selectable Option : ${_quizList[_quetionNo].questionDetail.rightAnswer.length}",
                                                   style: TextStyle(
                                                     fontFamily:
                                                         'Roboto Regular',
                                                     fontSize:
                                                         width * (15 / 420),
+                                                    fontWeight: FontWeight.bold,
                                                     color: Colors.black,
                                                     height: 1.7,
                                                   ),
                                                 ),
-                                              ),
-                                              Column(
-                                                children:
-                                                    _quizList[_quetionNo].questionDetail.Options
-                                                        .map<Widget>((title) {
-                                                  var index =
+                                                Column(
+                                                  children:
                                                       _quizList[_quetionNo]
-                                                                  .questionDetail
-                                                             .Options
-                                                          .indexOf(title);
-                                                  return GestureDetector(
-                                                    onTap: () => {
-                                                      setState(() {
-                                                        selectedAnswer = index;
-                                                        currentData = {
-                                                          "question": _quizList[_quetionNo].questionDetail.queID,
-                                                          // listResponse[
-                                                          //         _quetionNo][
-                                                          //     "Question"]["id"],
+                                                          .questionDetail
+                                                          .Options
+                                                          .map<Widget>((title) {
+                                                            print("title is >>> ${title.question_option}");
+                                                    var index =
+                                                        _quizList[_quetionNo]
+                                                            .questionDetail
+                                                            .Options
+                                                            .indexOf(title);
 
-                                                          "answer": 
-                                                          _quizList[_quetionNo].questionDetail.Options[index].id,
-                                                          // listResponse[
-                                                          //                 _quetionNo]
-                                                          //             [
-                                                          //             "Question"]
-                                                          //         ["Options"]
-                                                          //     [index]["id"],
-                                                          "correct": 1,
-                                                          "category":_quizList[_quetionNo].questionDetail.category
-                                                          //  listResponse[
-                                                          //             _quetionNo]
-                                                          //         ["Question"]
-                                                          //     ["category"]
-                                                        };
-                                                      })
-                                                    },
-                                                    child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          top: height *
-                                                              (21 / 800)),
-                                                      padding: EdgeInsets.only(
-                                                        top: 13,
-                                                        bottom: 13,
-                                                        left:
-                                                            width * (13 / 420),
-                                                        right:
-                                                            width * (11 / 420),
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          color: selectedAnswer ==
-                                                                  index
-                                                              ? _colorfromhex(
-                                                                  "#F2F2FF")
-                                                              : Colors.white),
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            width: width *
-                                                                (25 / 420),
-                                                            height: width *
-                                                                25 /
-                                                                420,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              border: Border.all(
-                                                                  color: selectedAnswer ==
-                                                                          index
-                                                                      ? _colorfromhex(
-                                                                          "#3846A9")
-                                                                      : _colorfromhex(
-                                                                          "#F1F1FF")),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                width *
-                                                                    (25 / 420),
+                                                    int rightAnswerLength =
+                                                        _quizList[_quetionNo]
+                                                            .questionDetail
+                                                            .rightAnswer
+                                                            .length;
+                                                    return title
+                                                                        .question_option.isNotEmpty ? GestureDetector(
+                                                      onTap: () => {
+                                                        if (selectedAnswer
+                                                                .length !=
+                                                            rightAnswerLength)
+                                                          {
+
+                                                            setState(() {
+                                                              selectedAnswer
+                                                                  .add(index);
+
+                                                              ids.add(_quizList[
+                                                                      _quetionNo]
+                                                                  .questionDetail
+                                                                  .Options[
+                                                                      index]
+                                                                  .id);
+                                                              String
+                                                                  finalString =
+                                                                  ids.join(
+                                                                      ', ');
+
+                                                              currentData = {
+                                                                "question": _quizList[
+                                                                        _quetionNo]
+                                                                    .questionDetail
+                                                                    .queID,
+                                                                // listResponse[
+                                                                //         _quetionNo][
+                                                                //     "Question"]["id"],
+
+                                                                "answer":
+                                                                    finalString,
+                                                                // listResponse[
+                                                                //                 _quetionNo]
+                                                                //             [
+                                                                //             "Question"]
+                                                                //         ["Options"]
+                                                                //     [index]["id"],
+                                                                "correct": 1,
+                                                                "category": _quizList[
+                                                                        _quetionNo]
+                                                                    .questionDetail
+                                                                    .category,
+                                                                "type":
+                                                                    selectedAnswer.length >
+                                                                            2
+                                                                        ? 2
+                                                                        : 1
+                                                                //  listResponse[
+                                                                //             _quetionNo]
+                                                                //         ["Question"]
+                                                                //     ["category"]
+                                                              };
+                                                              print(
+                                                                  "currentData  $currentData");
+                                                            })
+                                                          }
+                                                      },
+                                                      child: Container(
+                                                        margin: EdgeInsets.only(
+                                                            top: height *
+                                                                (21 / 800)),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                          top: 13,
+                                                          bottom: 13,
+                                                          left: width *
+                                                              (13 / 420),
+                                                          right: width *
+                                                              (11 / 420),
+                                                        ),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
+                                                            color: selectedAnswer
+                                                                    .contains(
+                                                                        index)
+                                                                ? _colorfromhex(
+                                                                    "#F2F2FF")
+                                                                : Colors.white),
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              width: width *
+                                                                  (25 / 420),
+                                                              height: width *
+                                                                  25 /
+                                                                  420,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: selectedAnswer.contains(
+                                                                            index)
+                                                                        ? _colorfromhex(
+                                                                            "#3846A9")
+                                                                        : _colorfromhex(
+                                                                            "#F1F1FF")),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  width *
+                                                                      (25 /
+                                                                          420),
+                                                                ),
+                                                                color: selectedAnswer
+                                                                        .contains(
+                                                                            index)
+                                                                    ? _colorfromhex(
+                                                                        "#3846A9")
+                                                                    : Colors
+                                                                        .white,
                                                               ),
-                                                              color: selectedAnswer ==
-                                                                      index
-                                                                  ? _colorfromhex(
-                                                                      "#3846A9")
-                                                                  : Colors
-                                                                      .white,
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                index == 0
-                                                                    ? 'A'
-                                                                    : index == 1
-                                                                        ? 'B'
-                                                                        : index ==
-                                                                                2
-                                                                            ? 'C'
-                                                                            : index == 3
-                                                                                ? 'D'
-                                                                                : '',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      'Roboto Regular',
-                                                                  color: selectedAnswer ==
-                                                                          index
-                                                                      ? Colors
-                                                                          .white
-                                                                      : _colorfromhex(
-                                                                          "#ABAFD1"),
+                                                              child: Center(
+                                                                child: Text(
+                                                                  index == 0
+                                                                      ? 'A'
+                                                                      : index ==
+                                                                              1
+                                                                          ? 'B'
+                                                                          : index == 2
+                                                                              ? 'C'
+                                                                              : index == 3
+                                                                                  ? 'D'
+                                                                                  : 'E' ,
+                                                                                  
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        'Roboto Regular',
+                                                                    color: selectedAnswer.contains(
+                                                                            index)
+                                                                        ? Colors
+                                                                            .white
+                                                                        : _colorfromhex(
+                                                                            "#ABAFD1"),
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
-                                                          ),
-                                                          Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      left: 8),
-                                                              width: width -
-                                                                  (width *
-                                                                      (25 /
-                                                                          420) *
-                                                                      5),
-                                                              child: Text(
-                                                                  title.question_option,
-                                                                  style: TextStyle(
-                                                                      fontSize: width *
-                                                                          14 /
-                                                                          420)))
-                                                        ],
+                                                            Container(
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            8),
+                                                                width: width -
+                                                                    (width *
+                                                                        (25 /
+                                                                            420) *
+                                                                        5),
+                                                                child: Text(
+                                                                    title
+                                                                        .question_option,
+                                                                    style: TextStyle(
+                                                                        fontSize: width *
+                                                                            14 /
+                                                                            420)))
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              : Container(
-                                  child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      _colorfromhex("#4849DF")),
-                                ))
-                        ],
-                      ),
-                      _quizList.isNotEmpty
-                      //questionAnswersList != null
-                          ? Positioned(
-                              bottom: 0,
-                              child: Container(
-                                width: width,
-                                color: Colors.white,
-                                child: Row(
-                                  mainAxisAlignment: _quetionNo == 0
-                                      ? MainAxisAlignment.end
-                                      : MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    _quetionNo != 0
-                                        ? GestureDetector(
-                                            onTap: () => {
-                                              setState(() {
-                                                _quetionNo--;
-                                                selectedAnswer = null;
-                                                currentData = null;
-                                              }
-                                              )
-                                            },
-                                            child: Container(
-                                              width: width / 2,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        right: 2),
-                                                    child: Icon(
-                                                      Icons.arrow_back_ios,
-                                                      size: width * (20 / 420),
-                                                      color: _colorfromhex(
-                                                          "#3A47AD"),
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "Previous",
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          width * (18 / 420),
-                                                      fontFamily:
-                                                          'Roboto Medium',
-                                                      color: _colorfromhex(
-                                                          "#3A47AD"),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        : Container(),
-                                    GestureDetector(
-                                      onTap: () => {
-                                        if (listResponse.length - 1 >
-                                            _quetionNo)
-                                          {
-                                            setState(() {
-                                              if (_quetionNo <
-                                                  listResponse.length) {
-                                                _quetionNo = _quetionNo + 1;
-                                              }
-                                              selectedAnswer = null;
-                                              if (currentData != null) {
-                                                submitData.add({
-                                                  "question":
-                                                      currentData["question"],
-                                                  "answer":
-                                                      currentData["answer"],
-                                                  "correct": 0,
-                                                  "category":
-                                                      currentData["category"]
-                                                });
-                                                currentData = null;
-                                              }
-                                            }),
-                                          }
-                                        else
-                                          {
-                                            if (!loader)
-                                              submitMockTest('', displayTime)
-                                          }
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                            top: height * (20 / 800),
-                                            bottom: height * (16 / 800)),
-                                        width: width / 2,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(20),
-                                          ),
-                                          gradient: LinearGradient(
-                                              colors: [
-                                                _colorfromhex("#3A47AD"),
-                                                _colorfromhex("#5163F3"),
-                                              ],
-                                              begin: const FractionalOffset(
-                                                  0.0, 0.0),
-                                              end: const FractionalOffset(
-                                                  1.0, 0.0),
-                                              stops: [0.0, 1.0],
-                                              tileMode: TileMode.clamp),
-                                        ),
-                                        child: loader
-                                            ? Container(
-                                                child: Center(
-                                                child: Container(
-                                                  width: 30,
-                                                  height: 30,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                                Color>(
-                                                            Colors.white),
-                                                  ),
+                                                    ):SizedBox();
+                                                  }).toList(),
                                                 ),
-                                              ))
-                                            : Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    listResponse.length - 1 >
-                                                            _quetionNo
-                                                        ? "Next"
-                                                        : "Finish",
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          width * (18 / 420),
-                                                      fontFamily:
-                                                          'Roboto Medium',
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 2),
-                                                    child: Icon(
-                                                      Icons.arrow_forward_ios,
-                                                      size: width * (20 / 420),
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ))
-                          : Container()
-                    ],
+                                  )
+                                : Container(
+                                    child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        _colorfromhex("#4849DF")),
+                                  ))
+                          ],
+                        ),
+                        _quizList.isNotEmpty
+                            //questionAnswersList != null
+                            ? Positioned(
+                                bottom: 0,
+                                child: Container(
+                                  width: width,
+                                  color: Colors.white,
+                                  child: Row(
+                                    mainAxisAlignment: _quetionNo == 0
+                                        ? MainAxisAlignment.end
+                                        : MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      _quetionNo != 0
+                                          ? GestureDetector(
+                                              onTap: () => {
+                                                setState(() {
+                                                  _quetionNo--;
+                                                  selectedAnswer = [];
+                                                  ids = [];
+                                                  currentData = null;
+                                                })
+                                              },
+                                              child: Container(
+                                                width: width / 2,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          right: 2),
+                                                      child: Icon(
+                                                        Icons.arrow_back_ios,
+                                                        size:
+                                                            width * (20 / 420),
+                                                        color: _colorfromhex(
+                                                            "#3A47AD"),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "Previous",
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            width * (18 / 420),
+                                                        fontFamily:
+                                                            'Roboto Medium',
+                                                        color: _colorfromhex(
+                                                            "#3A47AD"),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          : Container(),
+                                      GestureDetector(
+                                        onTap: () => {
+                                          if (listResponse.length - 1 >
+                                              _quetionNo)
+                                            {
+                                              setState(() {
+                                                if (_quetionNo <
+                                                    listResponse.length) {
+                                                  _quetionNo = _quetionNo + 1;
+                                                }
+
+                                                if (currentData != null) {
+                                                  submitData.add({
+                                                    "question":
+                                                        currentData["question"],
+                                                    "answer":
+                                                        currentData["answer"],
+                                                    "correct": 0,
+                                                    "category":
+                                                        currentData["category"],
+                                                    "type":
+                                                        selectedAnswer.length >
+                                                                2
+                                                            ? 2
+                                                            : 1
+                                                  });
+                                                  currentData = null;
+                                                }
+                                                selectedAnswer = [];
+                                                ids = [];
+                                              }),
+                                            }
+                                          else
+                                            {
+                                              if (!loader)
+                                                submitMockTest('', displayTime)
+                                            }
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                              top: height * (20 / 800),
+                                              bottom: height * (16 / 800)),
+                                          width: width / 2,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(20),
+                                            ),
+                                            gradient: LinearGradient(
+                                                colors: [
+                                                  _colorfromhex("#3A47AD"),
+                                                  _colorfromhex("#5163F3"),
+                                                ],
+                                                begin: const FractionalOffset(
+                                                    0.0, 0.0),
+                                                end: const FractionalOffset(
+                                                    1.0, 0.0),
+                                                stops: [0.0, 1.0],
+                                                tileMode: TileMode.clamp),
+                                          ),
+                                          child: loader
+                                              ? Container(
+                                                  child: Center(
+                                                  child: Container(
+                                                    width: 30,
+                                                    height: 30,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                                  Color>(
+                                                              Colors.white),
+                                                    ),
+                                                  ),
+                                                ))
+                                              : Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      listResponse.length - 1 >
+                                                              _quetionNo
+                                                          ? "Next"
+                                                          : "Finish",
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            width * (18 / 420),
+                                                        fontFamily:
+                                                            'Roboto Medium',
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 2),
+                                                      child: Icon(
+                                                        Icons.arrow_forward_ios,
+                                                        size:
+                                                            width * (20 / 420),
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ))
+                            : Container()
+                      ],
+                    ),
                   ),
-                ),
-              );
-           
-              }else {
-                return Center(child: CircularProgressIndicator(),);
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
               }
-           
-           
             }),
       ),
     );
