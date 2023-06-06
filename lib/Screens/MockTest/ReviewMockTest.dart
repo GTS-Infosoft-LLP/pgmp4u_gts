@@ -55,8 +55,8 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
             attemptDataNew.toString()),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization':
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMjI0LCJuYW1lIjoic2hlcnUga2FiamEiLCJtb2JpbGUiOm51bGwsImVtYWlsIjoic2hlcnVrYWJqYTEyMzRAZ21haWwuY29tIiwicGFzc3dvcmQiOm51bGwsImNyZWF0ZWQiOiIyMDIzLTA2LTA2IiwiZXhhbV9kYXRlIjpudWxsLCJwcm9maWxlX2ltYWdlIjpudWxsLCJsaW5rZWRpbiI6bnVsbCwiZ29vZ2xlIjoiMTA5NjI4MDgxOTg2OTk2NzU5NDQ0IiwicTEiOiIiLCJxMiI6IiIsInEzIjoiIiwicTQiOiIiLCJxNSI6IiIsInE2IjoiIiwiZW1haWxfc2VudCI6MCwic3RhdHVzIjoxLCJkZWxldGVTdGF0dXMiOjF9LCJpYXQiOjE2ODYwMzA4NDAsImV4cCI6MTY4Njg5NDg0MH0.OXQMII0HGdne95qA2nEUfTPXRHaykJhcozcOzmrhcwY"
+          'Authorization':stringValue
+              
         });
 
     print(
