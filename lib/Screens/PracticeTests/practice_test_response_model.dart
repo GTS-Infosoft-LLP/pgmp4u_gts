@@ -36,7 +36,7 @@ class PracitceTextResponseModel {
     category = json['category'] ?? 0;
     questions = json['question'] ?? "";
     questionType = json['question_type'] ?? "";
-    rightAnswer = json['right_answer'] ?? 0;
+    rightAnswer = int.parse(json['right_answer'] ?? 0);
     explantions = json['explanation'] ?? "";
     image = json['image'] ?? "";
     //status = int.parse(json['status'] ?? 0).toInt();

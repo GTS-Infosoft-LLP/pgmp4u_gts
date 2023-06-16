@@ -426,6 +426,9 @@ class _MockTestResultState extends State<MockTestResult> {
                                       selectedId: mocktestIdNew,
                                       attemptData: attemptId)),
                             ),
+
+                                print("mocktestIdNew===${mocktestIdNew}")
+
                             //  Navigator.of(context).pushNamed('/review-mock-test'),
                             // Navigator.of(context).pushNamed('/review-mock-test',
                             //     arguments: {"screen": "result"})
