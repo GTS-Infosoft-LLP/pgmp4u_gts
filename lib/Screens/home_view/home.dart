@@ -1,3 +1,4 @@
+import 'dart:convert' as convert;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -14,12 +15,16 @@ import 'package:provider/provider.dart';
 import '../../Models/apppurchasestatusmodel.dart';
 import '../../Models/hideshowmodal.dart';
 import '../../Models/options_model.dart';
+import '../../provider/courseProvider.dart';
 import '../../tool/ShapeClipper2.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_textstyle.dart';
 import '../../utils/user_object.dart';
 import '../Dashboard/DashboardScreen.dart';
 import 'package:http/http.dart' as http;
+import '../MockTest/model/courseModel.dart';
+import '../MockTest/model/masterdataModel.dart';
+import '../masterPage.dart';
 import 'application_support.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
@@ -36,16 +41,23 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   Map mapResponse;
 
+
+
 //ModelStatus maintainStatus;
   @override
   initState() {
     PurchaseProvider purchaseProvider = Provider.of(context, listen: false);
+    CourseProvider courseProvider = Provider.of(context, listen: false);
     purchaseProvider.updateStatusNew();
     //   maintainStatus=purchaseProvider.latestStatus;
     print("initcalling");
     _getData();
     callFlashCardHideShowApi();
     print("object");
+
+courseProvider.getCourse();
+// getMasterData();
+
     super.initState();
   }
 
@@ -126,7 +138,8 @@ class _HomeViewState extends State<HomeView> {
       //     name: "Application Support",
       //     screen: homeOption.application),
       OptionsItem(
-          isShow: hideShowRes?.is_applicationsupport == 1 ? true : false,
+          isShow:true, 
+          // hideShowRes?.is_applicationsupport == 1 ? true : false,
           iconImage: FontAwesomeIcons.userGraduate,
           name: "Application Support",
           title: "Get",
@@ -222,7 +235,7 @@ class _HomeViewState extends State<HomeView> {
                       ),
                       //Text("Course Name"),
                       Text(
-                        "PgMp",
+                        "",
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.black,
@@ -232,183 +245,323 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
               ),
-              ListView.builder(
-                itemCount: options.length,
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  var item = options[index];
-                  return options[index].isShow == true
-                      ? Card(
-                          margin: EdgeInsets.symmetric(
-                            vertical: 0.5,
-                          ),
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Consumer<PurchaseProvider>(
-                                builder: (context, purchaseProvider, child) {
-                                  var maintainStatus =
-                                      purchaseProvider.latestStatus;
-                                  return ListTile(
-                                    onTap: () {
-                                      var _screen;
-                                      switch (item.screen) {
-                                        case homeOption.application:
-                                          _screen = ApplicationSupportPage();
-                                          break;
-                                        case homeOption.videoLab:
-                                          _screen = VideoLibraryPage();
-                                          break;
-                                        case homeOption.flashCard:
-                                          if (maintainStatus?.flashCardStatus ==
-                                              0) {
-                                            _screen = RandomPage(
-                                              index: 1,
-                                            );
-                                            // 1 for flash card plan only enum  for index
-                                            break;
-                                          }
-                                          _screen = FlashCardItem();
-                                          break;
 
-                                        case homeOption.domainWise:
-                                          _screen = ApplicationSupportPage();
-                                          break;
-                                        case homeOption.challengers:
-                                          _screen = DashboardScreen(
-                                              selectedId: () =>
-                                                  {print('object')});
-                                          break;
-                                        case homeOption.lissonsLearn:
-                                          _screen = ApplicationSupportPage();
-                                          break;
-                                        case homeOption.about:
-                                          _screen = ApplicationSupportPage();
-                                          break;
-                                        default:
-                                          _screen = ApplicationSupportPage();
-                                          break;
-                                      }
-                                      if (_screen != null) {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                          builder: (context) {
-                                            return _screen;
-                                          },
-                                        ));
-                                      }
-                                    },
-                                    leading: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: index % 2 == 0
+
+Consumer<CourseProvider>(
+  builder: (context,courseProvider,child) {
+    return     Container(
+      height: 300,  
+      child: ListView.builder(
+        itemCount: courseProvider.course.length,
+            shrinkWrap: true,
+           physics: ClampingScrollPhysics(),
+        itemBuilder: (context, index){
+    
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: (){
+    
+    print("id Is======>>>${courseProvider.course[index].id}");
+ 
+    courseProvider.getMasterData(courseProvider.course[index].id);
+     Future.delayed(const Duration(milliseconds: 400), ()  {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>MasterListPage  ()));
+
+        });
+    
+    // Navigator.push(context, MaterialPageRoute(builder: (context)=>MasterListPage  ()));
+    //MasterListPage    VideoLibraryPage
+              },
+              child: Container(
+                height: 80,
+                
+                // color: Colors.amber,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top:15.0,left: 12),
+                          child: Container(
+                           height: 50,
+                           width: 50,
+                           decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                            color: index % 2 == 0
                                               ? AppColor.purpule
                                               : AppColor.green,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12),
-                                          child: Icon(item.iconImage,
-                                              color: Colors.white),
-                                        )),
-                                    title: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          item.title,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          item.name,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: AppTextStyle.titleTile,
-                                        ),
-                                      ],
-                                    ),
-                                    //  Text(
-                                    //   item.name,
-                                    //   maxLines: 2,
-                                    //   overflow: TextOverflow.ellipsis,
-                                    //   style: AppTextStyle.titleTile,
-                                    // ),
-                                    trailing: item.btntxt.isEmpty
-                                        ? SizedBox()
-                                        : item.name == "Flash Cards" &&
-                                                maintainStatus
-                                                        ?.flashCardStatus ==
-                                                    1
-                                            ? SizedBox()
-                                            : item.name == "Video Library" &&
-                                                    maintainStatus
-                                                            ?.videoLibStatus ==
-                                                        1
-                                                ? SizedBox()
-                                                : SizedBox(
-                                                    width: 100,
-                                                    child: OutlinedButton(
-                                                      //   onPressed: (){
-                                                      //     if(item.name== "Flash Cards"){
-                                                      //    Navigator.push(context, MaterialPageRoute(
-                                                      //  builder: (BuildContext context) => RandomPage(
-                                                      //    index: 1),
-                                                      //  ));
-                                                      //     }
-
-                                                      //   },
-                                                      child: Text(
-                                                        item.btntxt,
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xff484C71),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all(Color(
-                                                                    0xffF1EFF0)),
-                                                        shape: MaterialStateProperty
-                                                            .all<
-                                                                RoundedRectangleBorder>(
-                                                          RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        18.0),
-                                                            side: BorderSide(
-                                                              color: Color(
-                                                                  0xffDDDDDD),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-
-                                    // subtitle: Row(
-                                    //   children:<Widget> [
-                                    //     ElevatedButton(
-                                    //       onPressed: (){},
-                                    //       child: Text("US19",style: TextStyle(color: Colors.amberAccent),),
-                                    //     )
-                                    //   ]
-                                    //   ),
-                                  );
-                                },
-                              )),
+                        ),
+                           child: Icon(FontAwesomeIcons.graduationCap,  
+                                 color: Colors.white),
+                          ),
+                        ),
+    
+    
+                        SizedBox(
+                          width: 15,
+                        ),
+    
+                        Column(
+                          children: [
+                            Text(courseProvider.course[index].course,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                           ),
+    
+                          ],
                         )
-                      : SizedBox();
-                },
-              )
+    
+                      ],
+                    )
+                  ],
+                ),
+                  
+              ),
+            ),
+          );
+          // Text(
+          //   course[index].course
+          // );
+      
+      //     return Card(
+      
+      //              margin: EdgeInsets.symmetric(
+      //                             vertical: 0.5,
+      //                           ),
+      
+      //                       child: ListTile(
+                                              
+      //                                   leading: Container(
+      //                                         decoration: BoxDecoration(
+      //                                           borderRadius:
+      //                                               BorderRadius.circular(8),
+      //                                           color: index % 2 == 0
+      //                                               ? AppColor.purpule
+      //                                               : AppColor.green,
+      //                                         ),
+      //                                         child: Padding(
+      //                                           padding: const EdgeInsets.all(12),
+      //                                           child: Icon(FontAwesomeIcons.graduationCap,
+      //                                               color: Colors.white),
+      //                                         )),
+      
+      //                 title: Column(
+      
+      //                              crossAxisAlignment:
+      //                                           CrossAxisAlignment.start,
+      //                                       children: [
+      //                                         Text(
+      //                                           course[index].course,
+      //                                           maxLines: 1,
+      //                                           overflow: TextOverflow.ellipsis,
+      //                                           style: TextStyle(
+      //                                               fontSize: 14,
+      //                                               color: Colors.grey,
+      //                                               fontWeight: FontWeight.bold),
+      //                                         ),
+      //                                         Text(
+      //                                          course[index].description,
+      //                                           maxLines: 2,
+      //                                           overflow: TextOverflow.ellipsis,
+      //                                           style: AppTextStyle.titleTile,
+      //                                         ),
+      //                                       ],
+      
+      // ),
+      
+      
+      // ),
+      
+      
+      //     );
+      
+        }),
+    );
+  }
+)
+
+              // ListView.builder(
+              //   // itemCount: options.length,
+              //   itemCount: options.length,
+
+              //   shrinkWrap: true,
+              //   physics: ClampingScrollPhysics(),
+              //   itemBuilder: (context, index) {
+              //     var item = options[index];
+              //     return options[index].isShow == true
+              //         ? Card(
+              //             margin: EdgeInsets.symmetric(
+              //               vertical: 0.5,
+              //             ),
+              //             child: Padding(
+              //                 padding: const EdgeInsets.all(8.0),
+              //                 child: Consumer<PurchaseProvider>(
+              //                   builder: (context, purchaseProvider, child) {
+              //                     var maintainStatus =
+              //                         purchaseProvider.latestStatus;
+              //                     return ListTile(
+              //                       onTap: () {
+              //                         var _screen;
+              //                         switch (item.screen) {
+              //                           case homeOption.application:
+              //                             _screen = ApplicationSupportPage();
+              //                             break;
+              //                           case homeOption.videoLab:
+              //                             _screen = VideoLibraryPage();
+              //                             break;
+              //                           case homeOption.flashCard:
+              //                             if (maintainStatus?.flashCardStatus ==
+              //                                 0) {
+              //                               _screen = RandomPage(
+              //                                 index: 1,
+              //                               );
+              //                               // 1 for flash card plan only enum  for index
+              //                               break;
+              //                             }
+              //                             _screen = FlashCardItem();
+              //                             break;
+
+              //                           case homeOption.domainWise:
+              //                             _screen = ApplicationSupportPage();
+              //                             break;
+              //                           case homeOption.challengers:
+              //                             _screen = DashboardScreen(
+              //                                 selectedId: () =>
+              //                                     {print('object')});
+              //                             break;
+              //                           case homeOption.lissonsLearn:
+              //                             _screen = ApplicationSupportPage();
+              //                             break;
+              //                           case homeOption.about:
+              //                             _screen = ApplicationSupportPage();
+              //                             break;
+              //                           default:
+              //                             _screen = ApplicationSupportPage();
+              //                             break;
+              //                         }
+              //                         if (_screen != null) {
+              //                           Navigator.push(context,
+              //                               MaterialPageRoute(
+              //                             builder: (context) {
+              //                               return _screen;
+              //                             },
+              //                           ));
+              //                         }
+              //                       },
+              //                       leading: Container(
+              //                           decoration: BoxDecoration(
+              //                             borderRadius:
+              //                                 BorderRadius.circular(8),
+              //                             color: index % 2 == 0
+              //                                 ? AppColor.purpule
+              //                                 : AppColor.green,
+              //                           ),
+              //                           child: Padding(
+              //                             padding: const EdgeInsets.all(12),
+              //                             child: Icon(item.iconImage,
+              //                                 color: Colors.white),
+              //                           )),
+              //                       title: Column(
+              //                         crossAxisAlignment:
+              //                             CrossAxisAlignment.start,
+              //                         children: [
+              //                           Text(
+              //                             item.title,
+              //                             maxLines: 1,
+              //                             overflow: TextOverflow.ellipsis,
+              //                             style: TextStyle(
+              //                                 fontSize: 14,
+              //                                 color: Colors.grey,
+              //                                 fontWeight: FontWeight.bold),
+              //                           ),
+              //                           Text(
+              //                             item.name,
+              //                             maxLines: 2,
+              //                             overflow: TextOverflow.ellipsis,
+              //                             style: AppTextStyle.titleTile,
+              //                           ),
+              //                         ],
+              //                       ),
+              //                       //  Text(
+              //                       //   item.name,
+              //                       //   maxLines: 2,
+              //                       //   overflow: TextOverflow.ellipsis,
+              //                       //   style: AppTextStyle.titleTile,
+              //                       // ),
+              //                       trailing: item.btntxt.isEmpty
+              //                           ? SizedBox()
+              //                           : item.name == "Flash Cards" &&
+              //                                   maintainStatus
+              //                                           ?.flashCardStatus ==
+              //                                       1
+              //                               ? SizedBox()
+              //                               : item.name == "Video Library" &&
+              //                                       maintainStatus
+              //                                               ?.videoLibStatus ==
+              //                                           1
+              //                                   ? SizedBox()
+              //                                   : SizedBox(
+              //                                       width: 100,
+              //                                       child: OutlinedButton(
+              //                                         //   onPressed: (){
+              //                                         //     if(item.name== "Flash Cards"){
+              //                                         //    Navigator.push(context, MaterialPageRoute(
+              //                                         //  builder: (BuildContext context) => RandomPage(
+              //                                         //    index: 1),
+              //                                         //  ));
+              //                                         //     }
+
+              //                                         //   },
+              //                                         child: Text(
+              //                                           item.btntxt,
+              //                                           style: TextStyle(
+              //                                               color: Color(
+              //                                                   0xff484C71),
+              //                                               fontWeight:
+              //                                                   FontWeight
+              //                                                       .bold),
+              //                                         ),
+              //                                         style: ButtonStyle(
+              //                                           backgroundColor:
+              //                                               MaterialStateProperty
+              //                                                   .all(Color(
+              //                                                       0xffF1EFF0)),
+              //                                           shape: MaterialStateProperty
+              //                                               .all<
+              //                                                   RoundedRectangleBorder>(
+              //                                             RoundedRectangleBorder(
+              //                                               borderRadius:
+              //                                                   BorderRadius
+              //                                                       .circular(
+              //                                                           18.0),
+              //                                               side: BorderSide(
+              //                                                 color: Color(
+              //                                                     0xffDDDDDD),
+              //                                               ),
+              //                                             ),
+              //                                           ),
+              //                                         ),
+              //                                       ),
+              //                                     ),
+
+              //                       // subtitle: Row(
+              //                       //   children:<Widget> [
+              //                       //     ElevatedButton(
+              //                       //       onPressed: (){},
+              //                       //       child: Text("US19",style: TextStyle(color: Colors.amberAccent),),
+              //                       //     )
+              //                       //   ]
+              //                       //   ),
+              //                     );
+              //                   },
+              //                 )),
+              //           )
+              //         : SizedBox();
+              //   },
+              // )
             ],
           ),
         )
@@ -423,10 +576,59 @@ class _HomeViewState extends State<HomeView> {
       print("SharedPreffffff   check   ${action}");
 
       hideShowRes = HideShowResponse.fromjson(convert.jsonDecode(action));
+      print("hideShowRes====${hideShowRes}");
 
       setState(() {});
     } catch (e) {}
   }
+
+  
+  
+//   Future<void> getCourse() async {
+
+//  SharedPreferences prefs = await SharedPreferences.getInstance();
+//     String stringValue = prefs.getString('token');
+
+
+//     print("token valued===${stringValue}");
+
+//   var response = await http.get(
+//       Uri.parse("http://3.227.35.115:1011/api/getCourse"),
+//       headers: {
+//         "Content-Type": "application/json",
+//         'Authorization': stringValue
+//       },
+   
+//     );
+
+// print("response.statusCode===${response.statusCode}");
+//     if(response.statusCode==200){
+//       course.clear();
+//       Map<String, dynamic> mapResponse=convert.jsonDecode(response.body);
+//     List temp1=mapResponse["data"];
+//       print("temp list===${temp1}");
+//       course=temp1.map((e)=>CourseDetails.fromjson(e)).toList();
+
+// if(course.isNotEmpty){
+//   print("course 0=== ${course[0].description}");
+// }
+//     }
+//     print("respponse=== ${response.body}");
+
+//   }
+
+ 
+
+
+
+
+
+
+
+
+
+
+
 }
 
 //class SharedPreferences {}

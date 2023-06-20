@@ -11,8 +11,10 @@ import 'package:pgmp4u/utils/appimage.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../provider/courseProvider.dart';
 import '../../../tool/ShapeClipper2.dart';
 import '../../../utils/sizes.dart';
+import '../../Tests/video_player.dart';
 
 class PlaylistPage extends StatefulWidget {
   PlaylistPage({Key key, this.title, this.videoType}) : super(key: key);
@@ -33,6 +35,12 @@ class _PlaylistPageState extends State<PlaylistPage> {
   void initState() {
     print(" call playlist screen");
     print(" video type ${widget.videoType}");
+
+
+
+      CourseProvider cp=Provider.of(context,listen: false);
+      print("videos===${cp.Videos}");
+
     super.initState();
   }
 
@@ -114,7 +122,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    "Videos 4 U",
+                    "Videos 4 U",  
                     style: TextStyle(
                         fontSize: 24,
                         color: AppColor.darkText,
@@ -180,92 +188,210 @@ class VideoList extends StatelessWidget {
   Widget build(BuildContext context) {
     print("length of list ${getVideoListing.length}");
     print("playing videoo link ${getVideoListing[0].videoURl}");
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: getVideoListing == null ? 0 : getVideoListing.length,
-      physics: NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        GetVideoByTypeListing list = getVideoListing[index];
-        return new Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                new MaterialPageRoute(
+    return Consumer<CourseProvider>(
+      builder: (context,courseProvider,child) {
+        List videoList=courseProvider.Videos;
+        return 
+        // courseProvider.Videos.isNotEmpty?
+        ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: videoList.length,
+          itemBuilder: (context,index){
+
+            return Padding(
+              padding: const EdgeInsets.only(left: 15,right: 15,bottom: 10),
+              child: Card(
+                
+               margin: EdgeInsets.only(bottom: 1),
+                elevation: 2,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+
+                      height: 210,
+                      child: Stack(
+                        children: [
+            
+                        Container(
+                            child: ClipRRect(
+                              
+                              borderRadius: BorderRadius.circular(13),
+                              child:
+                               Image.network(
+                                
+                                courseProvider.Videos[index].thumbnailUrl,
+                                // https://img.youtube.com/vi/%3Cinsert-youtube-video-id-here%3E/hqdefault.jpg
+                              //  "https://pgmp4ubucket.s3.amazonaws.com/uploads/document/thumb/",
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, a, err) {
+                                  return Image.asset(
+                                    AppImage.picture_placeholder2,
+                                    fit: BoxFit.cover,
+                                    width: MediaQuery.of(context).size.width,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+            
+            
+            
+                           Positioned(
+                            top: 50,
+                            bottom: 50,
+                            left: MediaQuery.of(context).size.width * 0.4,
+                            child: InkWell(
+                              onTap: (){
+                                print("Videos[index].videoUrl===${courseProvider.Videos[index].videoType}");
+
+                 print("Videos[index].videoUrl===${courseProvider.Videos[index].videoUrl}");
+                    var length=courseProvider.Videos[index].videoUrl.split('/');
+                    print("length====${length}");
+                    print(length[length.length-1]);
+                    // var thumbnail=
+
+
+                    var vId=length[length.length-1];
+if(courseProvider.Videos[index].videoType==2){
+    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>YoutubePlayerDemo(videoid:vId,)));
+
+}else{
+
+
+                    Navigator.of(context).push(
+                 MaterialPageRoute(
                   builder: (context) => new VideoPlay(
-                    url: "${list.videoURl}",
-                    videoDuration: "${list.videoDuration}",
+                    url: courseProvider.Videos[index].videoUrl,
+                    videoDuration: "",
                   ),
                 ),
               );
-              // SystemChrome.setPreferredOrientations([
-              //   // DeviceOrientation.portraitUp,
-              //   DeviceOrientation.portraitDown
-              // ]);
-            },
-            child: Card(
-              margin: EdgeInsets.only(bottom: 1),
-              elevation: 2,
-              //color: Colors.grey,
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      height: 210,
-                      child: Stack(children: [
-                        Container(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(13),
-                            child: Image.network(
-                              list.thunnailUrl,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, a, err) {
-                                return Image.asset(
-                                  AppImage.picture_placeholder2,
-                                  fit: BoxFit.cover,
-                                  width: MediaQuery.of(context).size.width,
-                                );
+             
+}
                               },
+                              child: Image.asset(
+                                AppImage.playIcon,
+                                height: 55,
+                                width: 55,
+                              ),
                             ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 50,
-                          bottom: 50,
-                          left: MediaQuery.of(context).size.width * 0.4,
-                          child: Image.asset(
-                            AppImage.playIcon,
-                            height: 55,
-                            width: 55,
-                          ),
-                        )
-                      ]),
+                          )
+
+            
+                        ],
+                      ),
+            
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      list.title,
-                      maxLines: 5,
-                      style: TextStyle(
+
+SizedBox(height: 10,),
+Text(courseProvider.Videos[index].title,
+                     style: TextStyle(
                           fontSize: Sizes.titleSize,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Lato-Regular',
                           color: AppColor.darkText),
                     ),
-                    SizedBox(height: 10),
+
                   ],
                 ),
+            
+            
               ),
-            ),
-          
-          
-          
-          ),
-        );
-      },
+            );
+                
+
+        });
+      }
     );
+    // ListView.builder(
+    //   shrinkWrap: true,
+    //   itemCount: getVideoListing == null ? 0 : getVideoListing.length,
+    //   physics: NeverScrollableScrollPhysics(),
+    //   itemBuilder: (context, index) {
+    //     GetVideoByTypeListing list = getVideoListing[index];
+    //     return new Padding(
+    //       padding: const EdgeInsets.all(8.0),
+    //       child: InkWell(
+    //         onTap: () {
+    //           Navigator.of(context).push(
+    //             new MaterialPageRoute(
+    //               builder: (context) => new VideoPlay(
+    //                 url: "${list.videoURl}",
+    //                 videoDuration: "${list.videoDuration}",
+    //               ),
+    //             ),
+    //           );
+    //           // SystemChrome.setPreferredOrientations([
+    //           //   // DeviceOrientation.portraitUp,
+    //           //   DeviceOrientation.portraitDown
+    //           // ]);
+    //         },
+    //         child: Card(
+    //           margin: EdgeInsets.only(bottom: 1),
+    //           elevation: 2,
+    //           //color: Colors.grey,
+    //           child: Padding(
+    //             padding: EdgeInsets.all(10),
+    //             child: Column(
+    //               crossAxisAlignment: CrossAxisAlignment.center,
+    //               mainAxisAlignment: MainAxisAlignment.center,
+    //               children: <Widget>[
+    //                 Container(
+    //                   height: 210,
+    //                   child: Stack(children: [
+    //                     Container(
+    //                       child: ClipRRect(
+    //                         borderRadius: BorderRadius.circular(13),
+    //                         child: Image.network(
+    //                           list.thunnailUrl,
+    //                           fit: BoxFit.cover,
+    //                           errorBuilder: (context, a, err) {
+    //                             return Image.asset(
+    //                               AppImage.picture_placeholder2,
+    //                               fit: BoxFit.cover,
+    //                               width: MediaQuery.of(context).size.width,
+    //                             );
+    //                           },
+    //                         ),
+    //                       ),
+    //                     ),
+    //                     Positioned(
+    //                       top: 50,
+    //                       bottom: 50,
+    //                       left: MediaQuery.of(context).size.width * 0.4,
+    //                       child: Image.asset(
+    //                         AppImage.playIcon,
+    //                         height: 55,
+    //                         width: 55,
+    //                       ),
+    //                     )
+    //                   ]),
+    //                 ),
+    //                 SizedBox(height: 10),
+    //                 Text(
+    //                   list.title,
+    //                   maxLines: 5,
+    //                   style: TextStyle(
+    //                       fontSize: Sizes.titleSize,
+    //                       fontWeight: FontWeight.bold,
+    //                       fontFamily: 'Lato-Regular',
+    //                       color: AppColor.darkText),
+    //                 ),
+    //                 SizedBox(height: 10),
+    //               ],
+    //             ),
+    //           ),
+    //         ),
+          
+          
+          
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/provider/response_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool/CardPageClipper.dart';
+import '../../tool/ShapeClipper.dart';
 
 class FlashCardsPage extends StatefulWidget {
   @override
@@ -21,7 +23,14 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
   @override
   void initState() {
     print(" call init");
+
+
+
     responseProvider = Provider.of(context, listen: false);
+     CourseProvider courseProvider= Provider.of(context, listen: false);
+
+print("length of flash list ==>> ${courseProvider.FlashCards.length}");
+
     callCardDetailsApi();
     super.initState();
   }
@@ -52,119 +61,244 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
     //           '''Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.''')
     // ];
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(0),
-        child: Container(
-          color: Colors.grey[200],
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  ClipPath(
-                    clipper: CardPageClipper(),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height*.95,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(0),
+          child: Container(
+            color: Colors.grey[200],
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    ClipPath(
+                      clipper: ShapeClipper(),
+                      // CardPageClipper(),
+                      child: Container(
+                        // height: MediaQuery.of(context).size.height*.25,
+                          height:150,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.transparent,
-                                border: Border.all(
-                                    color: Colors.white, width: 1)),
-                            child: Center(
-                                child: IconButton(
-                                    icon: Icon(Icons.arrow_back,
-                                        color: Colors.white),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    }))),
-                        SizedBox(width: 20),
-                        Center(
-                            child: Text(
-                          "Program Life Cycle",
-                          style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.bold),
-                        )),
-                      ],
+                    Container(
+                      padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.transparent,
+                                  border: Border.all(
+                                      color: Colors.white, width: 1)),
+                              child: Center(
+                                  child: IconButton(
+                                      icon: Icon(Icons.arrow_back,
+                                          color: Colors.white),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      }))),
+                          SizedBox(width: 20),
+                          Center(
+                              child: Text(
+                            "Program Life Cycle",
+                            style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.white,
+                                fontFamily: "Roboto",
+                                fontWeight: FontWeight.bold),
+                          )),
+                        ],
+                      ),
                     ),
-                  ),
-                  Consumer<ResponseProvider>(
-                    builder: (context, resoponseProvider, child) {
-                      return Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 100),
-                            child: responseProvider.apiStatus
-                                ? Container(
-                                    margin: EdgeInsets.only(
-                                        top: MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.2),
-                                    child: Center(
-                                      child: CircularProgressIndicator
-                                          .adaptive(),
-                                    ),
-                                  )
-                                : responseProvider.cardDetails != null
-                                    ? Swiper(
-                                        layout: SwiperLayout.TINDER,
-                                        itemWidth:
-                                            MediaQuery.of(context).size.width,
-                                        itemHeight: 600,
-                                        viewportFraction: 0.9,
-                                        itemBuilder: (BuildContext context,
-                                            int index) {
-                                          return FlashCard(
-                                              title: responseProvider
-                                                  .cardDetails
-                                                  .cardDetailsList[index]
-                                                  .title,
-                                              desc: responseProvider
-                                                  .cardDetails
-                                                  .cardDetailsList[index]
-                                                  .description);
-                                        },
-                                        itemCount: responseProvider
-                                            .cardDetails
-                                            .cardDetailsList
-                                            .length,
-                                        pagination: new SwiperPagination(
-                                            margin:
-                                                EdgeInsets.only(top: 600)),
-                                      )
-                                    : Center(
-                                        child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 250),
-                                        child: Text("No Data Found",
-                                            style: TextStyle(fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                                fontSize: 18)),
-                                      ))),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ],
+
+
+                    
+      
+      
+      
+      
+      
+                    // Center(
+                    //   child: Container(
+                    //     height: 350,
+                    //     child: Swiper(
+                    
+                    //                         layout: SwiperLayout.TINDER,
+                    
+                    //                         itemWidth:
+                    //                             MediaQuery.of(context).size.width,
+                    //                         itemHeight: 600,
+                    //                         viewportFraction: 0.9,
+                    //                         itemCount: 3,
+                    //                         itemBuilder: (context, index) {
+                    //                           return Center(
+                    //                             child: FlashCard(
+                    //                                 title: "Hello",
+                    //                                 desc: "Flutter"),
+                    //                           );
+                    //                         },
+                    
+                    
+                    //     ),
+                    
+                    //   ),
+                    // )
+      
+      
+      
+      
+                    // Consumer<ResponseProvider>(
+                    //   builder: (context, resoponseProvider, child) {
+                    //     return Container(
+                    //       child: Padding(
+                    //           padding: EdgeInsets.only(top: 100),
+                    //           child: responseProvider.apiStatus
+                    //               ? Container(
+                    //                   margin: EdgeInsets.only(
+                    //                       top: MediaQuery.of(context)
+                    //                               .size
+                    //                               .height *
+                    //                           0.2),
+                    //                   child: Center(
+                    //                     child: CircularProgressIndicator
+                    //                         .adaptive(),
+                    //                   ),
+                    //                 )
+                    //               : responseProvider.cardDetails != null
+                    //                   ? Swiper(
+                    //                       layout: SwiperLayout.TINDER,
+                    //                       itemWidth:
+                    //                           MediaQuery.of(context).size.width,
+                    //                       itemHeight: 600,
+                    //                       viewportFraction: 0.9,
+                    //                       itemBuilder: (BuildContext context,
+                    //                           int index) {
+                    //                         return FlashCard(
+                    //                             title: responseProvider
+                    //                                 .cardDetails
+                    //                                 .cardDetailsList[index]
+                    //                                 .title,
+                    //                             desc: responseProvider
+                    //                                 .cardDetails
+                    //                                 .cardDetailsList[index]
+                    //                                 .description);
+                    //                       },
+                    //                       itemCount: responseProvider
+                    //                           .cardDetails
+                    //                           .cardDetailsList
+                    //                           .length,
+                    //                       pagination: new SwiperPagination(
+                    //                           margin:
+                    //                               EdgeInsets.only(top: 600)),
+                    //                     )
+                    //                   : Center(
+                    //                       child: Padding(
+                    //                       padding:
+                    //                           const EdgeInsets.only(top: 250),
+                    //                       child: Text("No Data Found",
+                    //                           style: TextStyle(fontWeight: FontWeight.bold,
+                    //                               color: Colors.black,
+                    //                               fontSize: 18)),
+                    //                     ))),
+                    //     );
+                    //   },
+                    // ),
+      
+      
+      
+                  ],
+                ),
+
+
+
+ Consumer<CourseProvider>(
+   builder: (context,CourseProvider,child) {
+     return 
+     CourseProvider.FlashCards.isNotEmpty?
+     
+     Center(
+                        child: Container(
+                          height: 250,
+                          child: Swiper(
+                      
+                                              layout: SwiperLayout.TINDER,
+                      
+                                              itemWidth:
+                                                  MediaQuery.of(context).size.width,
+                                              itemHeight: 600,
+                                              viewportFraction: 0.9,
+                                              itemCount: CourseProvider.FlashCards.length,
+                                              itemBuilder: (context, index) {
+                                                return Center(
+                                                  child: FlashCard(
+                                                      title: CourseProvider.FlashCards[index].title,
+                                                      desc: CourseProvider.FlashCards[index].description),
+                                                );
+                                              },
+                      
+                      
+                          ),
+                      
+                        ),
+                      ):Container(
+                        height: 200,
+                        child: Center(child: Text("No Data Found", style: TextStyle(
+                          color: _darkText,
+                          fontFamily: "NunitoSans",
+                          fontSize: 18))));
+   }
+ )
+
+
+
+
+      
+      
+      
+                // Container(
+                //   // height: 350,
+                //   child: Swiper(
+                    
+                //                       layout: SwiperLayout.TINDER,
+                    
+                //                       itemWidth:
+                //                           MediaQuery.of(context).size.width,
+                //                       itemHeight: 600,
+                //                       viewportFraction: 0.9,
+                //                       itemCount: 3,
+                //                       itemBuilder: (context, index) {
+                //                         return Center(
+                //                           child: FlashCard(
+                //                               title: "Hello",
+                //                               desc: "Flutter"),
+                //                         );
+                //                       },
+                    
+                    
+                //   ),
+                    
+                // )
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+              ],
+            ),
           ),
         ),
       ),

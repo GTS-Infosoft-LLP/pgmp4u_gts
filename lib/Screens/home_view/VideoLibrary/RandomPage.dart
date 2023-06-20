@@ -10,7 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class RandomPage extends StatefulWidget {
   int index;
-  RandomPage({this.index =0});
+  String price;
+
+  RandomPage({this.index =0,this.price="\$199"});
   @override
   _RandomPageState createState() => _RandomPageState();
 }
@@ -19,6 +21,15 @@ class _RandomPageState extends State<RandomPage> {
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
+  }
+
+
+  @override
+  void initState() {
+    
+    print("perice value is===>> ${widget.price}");
+    // TODO: implement initState
+    super.initState();
   }
   
   @override
@@ -123,7 +134,7 @@ class _RandomPageState extends State<RandomPage> {
                                 child: Center(
                                   child: widget.index==1?
                                   Text(
-                                    'Lifetime Access On \n \$19',
+                                    'Lifetime Access On \n ${widget.price}',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontFamily: 'Roboto Bold',
@@ -132,7 +143,7 @@ class _RandomPageState extends State<RandomPage> {
                                         letterSpacing: 0.3),
                                   ):
                                   Text(
-                                    'Lifetime Access On \n \$499',
+                                    'Lifetime Access On \n ${widget.price}',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontFamily: 'Roboto Bold',

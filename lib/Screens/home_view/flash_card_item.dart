@@ -5,9 +5,11 @@ import 'package:pgmp4u/provider/response_provider.dart';
 import 'package:pgmp4u/utils/appimage.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/courseProvider.dart';
 import '../../tool/ShapeClipper.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_textstyle.dart';
+import 'VideoLibrary/RandomPage.dart';
 
 class FlashCardItem extends StatefulWidget {
   const FlashCardItem({Key key}) : super(key: key);
@@ -102,88 +104,197 @@ class _FlashCardItemState extends State<FlashCardItem> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Consumer<ResponseProvider>(
-                      builder: ((context, responseProvider, child) {
-                        return Container(
-                            child: responseProvider.apiStatus
-                                ? Center(
-                                    child: CircularProgressIndicator.adaptive(),
-                                  )
-                                : responseProvider.categoryList != null
-                                    ? ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: responseProvider
-                                            .categoryList.categoryList.length,
-                                        itemBuilder: (context, index) {
-                                          var itemscategoryList =
-                                              responseProvider
-                                                  .categoryList.categoryList;
 
-                                          var item = itemscategoryList[index];
-                                          return InkWell(
-                                            onTap: () async {
-                                              print(" tap on card");
-                                              await responseProvider
-                                                  .setCategoryid(item.id);
-                                              Navigator.push(
+                    Consumer<CourseProvider>(
+                      builder: (context,courseProvider,child) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: courseProvider.flashCate.length,
+                          itemBuilder: (context,index){
+                           return 
+                           InkWell(
+                            onTap: (){
+
+                              print("flash card category id===>>${courseProvider.flashCate[index].id}");
+                     
+
+                     if(courseProvider.flashCate[index].payment_status==0){}
+
+
+                    courseProvider.getFlashCards(courseProvider.flashCate[index].id);
+
+
+Future.delayed(const Duration(milliseconds: 100), () {
+      Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           FlashCardsPage()));
-                                            },
-                                            child: Card(
-                                              margin: EdgeInsets.symmetric(
-                                                vertical: 0.5,
+    });
+
+
+
+                                
+                            },
+                             child: Card(
+                                                margin: EdgeInsets.symmetric(
+                                                  vertical: 0.5,
+                                                ),
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white),
+                                                    child: ListTile(
+                                                        leading: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                              color:
+                                                                  index % 2 == 0
+                                                                      ? AppColor
+                                                                          .purpule
+                                                                      : AppColor
+                                                                          .green,
+                                                            ),
+                                                            child: Image.asset(AppImage.picture_placeholder),
+                                                            // Image.network(
+                                                            //   "",width: 80,errorBuilder: (context, error, stackTrace) {
+                                                            //     return Image.asset(AppImage.picture_placeholder);
+                                                            //   },
+                                                            //   fit: BoxFit.fill,
+                                                            // )
+                                                            ),
+                                                        title: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              "Flash Card",
+                                                              style: TextStyle(
+                                                                  fontSize: 12),
+                                                            ),
+
+                                                            courseProvider.flashCate[index].payment_status==1?
+                                                              InkWell(
+                                                                onTap: (){
+                                                              Navigator.push(context,MaterialPageRoute(builder: (context)=>RandomPage(index: 1)));                
+                                                                },
+                                                                child: Text(
+                                                                "Premium",
+                                                                style: TextStyle(
+                                                                    fontSize: 12),
+                                                                             ),
+                                                              ):SizedBox(),
+
+                                                          ],
+                                                        ),
+                                                        subtitle: Text(
+                                                          courseProvider.flashCate[index].name,
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: AppTextStyle
+                                                              .titleTile,
+                                                        ))),
                                               ),
-                                              child: Container(
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white),
-                                                  child: ListTile(
-                                                      leading: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8),
-                                                            color:
-                                                                index % 2 == 0
-                                                                    ? AppColor
-                                                                        .purpule
-                                                                    : AppColor
-                                                                        .green,
-                                                          ),
-                                                          child: Image.network(
-                                                            "${item.thumbnail}",width: 80,errorBuilder: (context, error, stackTrace) {
-                                                              return Image.asset(AppImage.picture_placeholder);
-                                                            },
-                                                            fit: BoxFit.fill,
-                                                          )),
-                                                      title: Text(
-                                                        "Flash Card",
-                                                        style: TextStyle(
-                                                            fontSize: 12),
-                                                      ),
-                                                      subtitle: Text(
-                                                        item.title,
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: AppTextStyle
-                                                            .titleTile,
-                                                      ))),
-                                            ),
-                                          );
-                                        })
-                                    : Center(
-                                        child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 100),
-                                        child: Text("No data found"),
-                                      )));
-                      }),
+                           );
+                                          // );
+                        });
+                      }
                     )
+
+                     
+
+
+
+                   
+
+                    // Consumer<ResponseProvider>(
+                    //   builder: ((context, responseProvider, child) {
+                    //     return Container(
+                    //         child: responseProvider.apiStatus
+                    //             ? Center(
+                    //                 child: CircularProgressIndicator.adaptive(),
+                    //               )
+                    //             : responseProvider.categoryList != null
+                    //                 ? ListView.builder(
+                    //                     physics: NeverScrollableScrollPhysics(),
+                    //                     shrinkWrap: true,
+                    //                     itemCount: responseProvider
+                    //                         .categoryList.categoryList.length,
+                    //                     itemBuilder: (context, index) {
+                    //                       var itemscategoryList =
+                    //                           responseProvider
+                    //                               .categoryList.categoryList;
+
+                    //                       var item = itemscategoryList[index];
+                    //                       return InkWell(
+                    //                         onTap: () async {
+                    //                           print(" tap on card");
+                    //                           await responseProvider
+                    //                               .setCategoryid(item.id);
+                    //                           Navigator.push(
+                    //                               context,
+                    //                               MaterialPageRoute(
+                    //                                   builder: (context) =>
+                    //                                       FlashCardsPage()));
+                    //                         },
+                    //                         child: Card(
+                    //                           margin: EdgeInsets.symmetric(
+                    //                             vertical: 0.5,
+                    //                           ),
+                    //                           child: Container(
+                    //                               decoration: BoxDecoration(
+                    //                                   color: Colors.white),
+                    //                               child: ListTile(
+                    //                                   leading: Container(
+                    //                                       decoration:
+                    //                                           BoxDecoration(
+                    //                                         borderRadius:
+                    //                                             BorderRadius
+                    //                                                 .circular(
+                    //                                                     8),
+                    //                                         color:
+                    //                                             index % 2 == 0
+                    //                                                 ? AppColor
+                    //                                                     .purpule
+                    //                                                 : AppColor
+                    //                                                     .green,
+                    //                                       ),
+                    //                                       child: Image.network(
+                    //                                         "${item.thumbnail}",width: 80,errorBuilder: (context, error, stackTrace) {
+                    //                                           return Image.asset(AppImage.picture_placeholder);
+                    //                                         },
+                    //                                         fit: BoxFit.fill,
+                    //                                       )),
+                    //                                   title: Text(
+                    //                                     "Flash Card",
+                    //                                     style: TextStyle(
+                    //                                         fontSize: 12),
+                    //                                   ),
+                    //                                   subtitle: Text(
+                    //                                     item.title,
+                    //                                     maxLines: 2,
+                    //                                     overflow: TextOverflow
+                    //                                         .ellipsis,
+                    //                                     style: AppTextStyle
+                    //                                         .titleTile,
+                    //                                   ))),
+                    //                         ),
+                    //                       );
+                    //                     })
+                    //                 : Center(
+                    //                     child: Padding(
+                    //                     padding:
+                    //                         const EdgeInsets.only(top: 100),
+                    //                     child: Text("No data found"),
+                    //                   )));
+                    //   }),
+                    // )
+
+
+
                   ])))),
     );
   }

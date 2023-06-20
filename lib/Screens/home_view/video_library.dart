@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,7 +56,8 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
   // }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return 
+    Scaffold(
       body: Consumer<PurchaseProvider>(builder: (context, purchaseProvider, child) {
        if(purchaseProvider.latestStatus?.videoLibStatus==0){
           isShowPremiumOrNot=true;
@@ -105,6 +107,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                       Center(
                           child: Text(
                         "Video Library",
+                        // "Master Data",
                         style: TextStyle(
                             fontSize: 28,
                             color: Colors.white,
@@ -134,86 +137,137 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    Options(
-                      isShowPremium: false,
-                      iconBackground: Color(0xff72a258),
-                      icon: Icon(
-                        FontAwesomeIcons.edit,
+
+                    Consumer<CourseProvider>(
+                      builder: (context,courseProvider,child) {
+                        return 
+                        courseProvider.videoPresent==1?
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: courseProvider.videoCate.length,
+                          itemBuilder: (context,index){
+                          return Options(iconBackground: Color(0xff72a258), icon:  Icon(
+                        FontAwesomeIcons.video,
                         size: 50,
                         color: Colors.white,
-                      ),
-                      text: "PgMP Prep Free",
-                      onTap: () {
-                      print("on tabbbb");
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => new PlaylistPage(
-                              videoType: 1,
-                              title: "PgMP Prep Free",
-                            ),
-                          ),
-                        );
-                        
-                       
-                  //         purchaseProvider.products.forEach((e) {
-                  //   print("Product id => ${e.id}");
-                  //   if (e.id == videoLibraryLearningPrograms) {
-                  //     purchaseProvider.buy(e);
-                  //   }
-                  // });
-                      
-                       
-                      },
-                    ),
-                    Options(
-                      iconBackground: Color(0xff463b97),
-                      icon: Icon(
-                        FontAwesomeIcons.splotch,
-                        size: 50,
-                        color: Colors.white,
-                      ),
-                      text: "PgMP Recorded Program Premium",
-                      isShowPremium:isShowPremiumOrNot,
-                    
-                      onTap: () {
-                        
-                        //PurchaseProvider purchaseProvider = Provider.of(context,listen: false);
-                        
-                        if(purchaseProvider.latestStatus?.videoLibStatus==1)
-                        {
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => PlaylistPage(
+                      ), text: courseProvider.videoCate[index].name, isShowPremium:courseProvider.videoCate[index].payment_status==1?true:false, onPremiumTap: (){
+                         Navigator.push(context,MaterialPageRoute(builder: (context)=>RandomPage(index: 2,price:courseProvider.videoCate[index].price ,)));
+                      }, onTap: (){
+
+                   if(courseProvider.videoCate[index].payment_status==0){
+
+                        courseProvider.getVideos(courseProvider.videoCate[index].id);
+
+ Future.delayed(const Duration(milliseconds: 400), () {
+        Navigator.push(context,MaterialPageRoute(builder: (context)=>PlaylistPage(
                               title: "PgMP Recorded Program Premium",
                               videoType: 2,
-                            ),
-                          ),
+                            ),));
+    });
+
+                   }  
+
+                      });
+                        }):Column(
+                          children: [
+SizedBox(height: 150,),
+
+                            Center(child: Text("No Data Found", style: TextStyle(
+                    fontSize: 18,
+                    color: _darkText,
+                    fontWeight: FontWeight.normal))),
+                          ],
                         );
-                        }else{
-                             Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => RandomPage(index: 2,),
-                            ));
-                  //         purchaseProvider.products.forEach((e) {
-                  //   print("Product id => ${e.id}");
-                  //   if (e.id == videoLibraryLearningPrograms) {
-                  //     purchaseProvider.buy(e);
-                  //   }
-                  // });
-                        }
+                      }
+                    )
+
+
+
+            //         Options(
+            //           isShowPremium: false,
+            //           iconBackground: Color(0xff72a258),
+            //           icon: Icon(
+            //             FontAwesomeIcons.edit,
+            //             size: 50,
+            //             color: Colors.white,
+            //           ),
+            //           text: "PgMP Prep Free",
+            //           onTap: () {
+
+
+            //       CourseProvider courseProvider=Provider.of(context,listen: false);
+            // courseProvider.getVideos(4);
+            //           print("on tabbbb");
+            //               Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                 builder: (BuildContext context) => new PlaylistPage(
+            //                   videoType: 1,  
+            //                   title: "PgMP Prep Free",
+                              
+            //                 ),
+            //               ),
+            //             );
+                        
+                       
+                  // //         purchaseProvider.products.forEach((e) {
+                  // //   print("Product id => ${e.id}");
+                  // //   if (e.id == videoLibraryLearningPrograms) {
+                  // //     purchaseProvider.buy(e);
+                  // //   }
+                  // // });
+                      
+                       
+                    //   },
+                    // ),
+                  //   Options(
+                  //     iconBackground: Color(0xff463b97),
+                  //     icon: Icon(
+                  //       FontAwesomeIcons.splotch,
+                  //       size: 50,
+                  //       color: Colors.white,
+                  //     ),
+                  //     text: "PgMP Recorded Program Premium",
+                  //     isShowPremium:isShowPremiumOrNot,
+                    
+                  //     onTap: () {
+                        
+                  //       //PurchaseProvider purchaseProvider = Provider.of(context,listen: false);
+                        
+                  //       if(purchaseProvider.latestStatus?.videoLibStatus==1)
+                  //       {
+                  //         Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (BuildContext context) => PlaylistPage(
+                  //             title: "PgMP Recorded Program Premium",
+                  //             videoType: 2,
+                  //           ),
+                  //         ),
+                  //       );
+                  //       }else{
+                  //            Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //             builder: (BuildContext context) => RandomPage(index: 2,),
+                  //           ));
+                  // //         purchaseProvider.products.forEach((e) {
+                  // //   print("Product id => ${e.id}");
+                  // //   if (e.id == videoLibraryLearningPrograms) {
+                  // //     purchaseProvider.buy(e);
+                  // //   }
+                  // // });
+                  //       }
                      
-                      },
-                      onPremiumTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => RandomPage(index: 2,),
-                            ));
-                      },
-                    ),
+                  //     },
+                  //     onPremiumTap: () {
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //             builder: (BuildContext context) => RandomPage(index: 2,),
+                  //           ));
+                  //     },
+                  //   ),
                   ],
                 ),
               ),

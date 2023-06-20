@@ -312,12 +312,22 @@ class PurchaseProvider extends ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': "Bearer " + stringValue
     });
+    print("Authorization");
+    print("Bearer " + stringValue);
+                      
+    print("api url===>${checkStatusFlashAndVideo}");
+    print("status code===${response.statusCode}");
 
     if (response.statusCode == 200) {
       print("Calling successfull");
+      print("response===${response}");
+      Map<String, dynamic> mapResponse=convert.jsonDecode(response.body);
+
+      print("map resposense====${mapResponse}");
       print(convert.jsonDecode(response.body));
       // setState(() {
-      mapResponse = convert.jsonDecode(response.body);
+      
+     
       PurchaseProvider purchaseProvider =
           Provider.of(GlobalVariable.navState.currentContext, listen: false);
       print("datadatdtdatdatdasdtasdasdt>>>>>>>>>>$mapResponse");

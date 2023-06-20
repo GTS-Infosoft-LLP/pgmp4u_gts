@@ -14,6 +14,7 @@ import 'package:pgmp4u/Screens/StartScreen/startScreen.dart';
 import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
 import 'package:pgmp4u/Screens/test.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/provider/player_provider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:pgmp4u/provider/response_provider.dart';
@@ -59,6 +60,8 @@ class MyApp extends StatelessWidget {
 
         ChangeNotifierProvider<PurchaseProvider>(
             create: (_) => PurchaseProvider()),
+
+        ChangeNotifierProvider<CourseProvider>(create: (_)=>CourseProvider()),
         ChangeNotifierProvider<ResponseProvider>(
           create: (_) => ResponseProvider(),
         ),
