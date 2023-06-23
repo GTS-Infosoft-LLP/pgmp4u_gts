@@ -4,6 +4,7 @@ import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 class AuthService {
   final _firebaseAuth = FirebaseAuth.instance;
+  
 
   Future<User> signInWithApple({List<Scope> scopes = const []}) async {
     // 1. perform the sign-in request

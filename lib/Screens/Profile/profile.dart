@@ -3,15 +3,17 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:pgmp4u/Screens/Dashboard/dashboard.dart';
-import 'package:pgmp4u/Screens/Profile/settingsScreen.dart';
+import 'package:pgmp4u/Screens/QuesOfDay.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/provider/profileProvider.dart';
+import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'dart:convert' as convert;
 import 'package:sizer/sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/user_object.dart';
+import 'notifications.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key key}) : super(key: key);
@@ -471,10 +473,10 @@ class _ProfileState extends State<Profile> {
                             // ),
 
                             GestureDetector(
-                              onTap: ()  {
+                              onTap: () {
                                 //Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsScreen("","")));
-                                 //Navigator.of(context)
-                                  //   .pushNamed('/settings');
+                                //Navigator.of(context)
+                                //   .pushNamed('/settings');
                               },
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),
@@ -562,11 +564,8 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
 
-
-       GestureDetector(
-                              onTap: ()  {
-                             
-                              },
+                            GestureDetector(
+                              onTap: () {},
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),
                                 padding: EdgeInsets.only(
@@ -606,9 +605,16 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
 
-                              GestureDetector(
-                              onTap: ()  {
-                               
+                            GestureDetector(
+                              onTap: () {
+                                ProfileProvider profileProvider =
+                                    Provider.of(context, listen: false);
+                                profileProvider.getQuesDay(1);
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => QuesOfDay()));
                               },
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),
@@ -648,7 +654,52 @@ class _ProfileState extends State<Profile> {
                                 ),
                               ),
                             ),
-                            
+
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Notifications()));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 6),
+                                padding: EdgeInsets.only(
+                                    top: 13,
+                                    bottom: 13,
+                                    left: width * (18 / 420),
+                                    right: width * (18 / 420)),
+                                color: Colors.white,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.notifications,
+                                          size: width * (26 / 420),
+                                          color: _colorfromhex("#ABAFD1"),
+                                        ),
+                                        Text(
+                                          '   Notifications',
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto Medium',
+                                            fontSize: width * (18 / 420),
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 20,
+                                      color: _colorfromhex("#ABAFD1"),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       )

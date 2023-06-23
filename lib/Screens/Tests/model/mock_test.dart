@@ -1,3 +1,6 @@
+import 'package:hive/hive.dart';
+part 'mock_test.g.dart';
+
 class MocktestApiModelList {
   List<MockTestListApiModel> mockList = [];
   MocktestApiModelList.fromJson(Map<String, dynamic> json) {
@@ -8,16 +11,30 @@ class MocktestApiModelList {
   }
 }
 
+@HiveType(typeId: 3)
 class MockTestListApiModel {
+  @HiveField(0)
   int id;
+  @HiveField(1)
   String testName;
+  @HiveField(2)
   int premium;
+  @HiveField(3)
   int questionCount;
+  @HiveField(4)
   int numAttemptes;
+  @HiveField(5)
   int generated;
+  @HiveField(6)
   int deleteStatus;
+  @HiveField(7)
   int status;
+  @HiveField(8)
+  String AttemptList;
+
   List<Attempts> attempts;
+
+  MockTestListApiModel();
 
   MockTestListApiModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -34,6 +51,9 @@ class MockTestListApiModel {
         attempts.add(Attempts.fromJson(v));
       });
     }
+
+    AttemptList = json['attempts'].toString();
+    print("attempt list====>>>>$AttemptList");
   }
 }
 

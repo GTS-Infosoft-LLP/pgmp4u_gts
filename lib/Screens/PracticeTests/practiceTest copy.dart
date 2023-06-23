@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'package:getwidget/getwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
@@ -43,11 +41,9 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
   List listResponse;
   // Map mapResponse;
   @override
-
-    var currentIndex;
+  var currentIndex;
   void initState() {
-  currentIndex=0;
-
+    currentIndex = 0;
 
     super.initState();
     practiceProvider = Provider.of(context, listen: false);
@@ -63,16 +59,14 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
 
   Future callApi() async {
     await practiceProvider.apiCall(
-      categoryProvider.subCategoryId,
-      categoryProvider.type
-    );
+        categoryProvider.subCategoryId, categoryProvider.type);
   }
 
   Future apiCall2() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     print(stringValue);
-    http.Response response;
+    http.Response response; //api/MockTestQuestions/124
     response = await http.get(Uri.parse(REVIEWS_MOCK_TEST + "/22/4"), headers: {
       'Content-Type': 'application/json',
       'Authorization': stringValue
@@ -111,7 +105,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
 
   @override
   Widget build(BuildContext context) {
-      PageController pageController = PageController();
+    PageController pageController = PageController();
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     final arguments = ModalRoute.of(context).settings.arguments as Map;
@@ -176,464 +170,448 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                               child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                       _colorfromhex("#4849DF"))))
-                          :  data.questionsList!=null 
+                          : data.questionsList != null
                               ? Expanded(
                                   // width: width,
                                   // height: height - 235,
                                   child: PageView.builder(
-                                    controller: pageController,
-                                    itemCount: data.questionsList.length,
-                                    onPageChanged:(index){
-                                       print("index====>>${index}");  
-                                        print("currentIndex ====>>${currentIndex}"); 
-if(currentIndex<index){
-  if( data.questionsList.length -1 >_quetionNo){
-         setState(() {
-                                                                  if (_quetionNo <
-                                                                      data.questionsList
-                                                                          .length) {
-                                                                    _quetionNo =
-                                                                        _quetionNo +
-                                                                            1;
-                                                                  }
-                                                                  selectedAnswer =
-                                                                      null;
-                                                                  realAnswer = null;
-                                                                });
-                                                                print(_quetionNo);
-  }
-}else{
-  if(  _quetionNo != 0){
-       setState(() {
-                                                                  _quetionNo--;
+                                      controller: pageController,
+                                      itemCount: data.questionsList.length,
+                                      onPageChanged: (index) {
+                                        print("index====>>$index");
+                                        print(
+                                            "currentIndex ====>>$currentIndex");
+                                        if (currentIndex < index) {
+                                          if (data.questionsList.length - 1 >
+                                              _quetionNo) {
+                                            setState(() {
+                                              if (_quetionNo <
+                                                  data.questionsList.length) {
+                                                _quetionNo = _quetionNo + 1;
+                                              }
+                                              selectedAnswer = null;
+                                              realAnswer = null;
+                                            });
+                                            print(_quetionNo);
+                                          }
+                                        } else {
+                                          if (_quetionNo != 0) {
+                                            setState(() {
+                                              _quetionNo--;
 
-                                                                  selectedAnswer =
-                                                                      null;
-                                                                  realAnswer = null;
-                                                                });
-  }
-}
+                                              selectedAnswer = null;
+                                              realAnswer = null;
+                                            });
+                                          }
+                                        }
 
-
-
-                                          setState(() {
-                                          currentIndex=index;
-                                          print("final index===${currentIndex}");
+                                        setState(() {
+                                          currentIndex = index;
+                                          print("final index===$currentIndex");
                                         });
+                                      },
+                                      itemBuilder: (context, index) {
+                                        return SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.only(
+                                                    left: width * (29 / 420),
+                                                    right: width * (29 / 420),
+                                                    top: height * (23 / 800),
+                                                    bottom:
+                                                        height * (23 / 800)),
+                                                color: Colors.white,
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        _quetionNo != 0
+                                                            ? GestureDetector(
+                                                                onTap: () => {
+                                                                  setState(() {
+                                                                    _quetionNo--;
 
-                                    } ,
-                                        itemBuilder: (context,index) {
-                                      return SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: width * (29 / 420),
-                                                  right: width * (29 / 420),
-                                                  top: height * (23 / 800),
-                                                  bottom: height * (23 / 800)),
-                                              color: Colors.white,
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      _quetionNo != 0
-                                                          ? GestureDetector(
-                                                              onTap: () => {
-                                                                setState(() {
-                                                                  _quetionNo--;
-
-                                                                  selectedAnswer =
-                                                                      null;
-                                                                  realAnswer = null;
-                                                                })
-                                                              },
-                                                              child: Icon(
-                                                                Icons.west,
-                                                                size: width *
-                                                                    (30 / 420),
-                                                                color: Colors.black,
-                                                              ),
-                                                            )
-                                                          : Container(),
-                                                      Text(
-                                                        'QUESTION ${_quetionNo + 1}',
+                                                                    selectedAnswer =
+                                                                        null;
+                                                                    realAnswer =
+                                                                        null;
+                                                                  })
+                                                                },
+                                                                child: Icon(
+                                                                  Icons.west,
+                                                                  size: width *
+                                                                      (30 /
+                                                                          420),
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                              )
+                                                            : Container(),
+                                                        Text(
+                                                          'QUESTION ${_quetionNo + 1}',
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                'Roboto Regular',
+                                                            fontSize: width *
+                                                                (16 / 420),
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                        data.questionsList
+                                                                        .length -
+                                                                    1 >
+                                                                _quetionNo
+                                                            ? GestureDetector(
+                                                                onTap: () => {
+                                                                  setState(() {
+                                                                    if (_quetionNo <
+                                                                        data.questionsList
+                                                                            .length) {
+                                                                      _quetionNo =
+                                                                          _quetionNo +
+                                                                              1;
+                                                                    }
+                                                                    selectedAnswer =
+                                                                        null;
+                                                                    realAnswer =
+                                                                        null;
+                                                                  }),
+                                                                  print(
+                                                                      _quetionNo)
+                                                                },
+                                                                child: Icon(
+                                                                  Icons.east,
+                                                                  size: width *
+                                                                      (30 /
+                                                                          420),
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                              )
+                                                            : Container(),
+                                                      ],
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: height *
+                                                              (15 / 800)),
+                                                      child: Text(
+                                                        data.questionsList !=
+                                                                null
+                                                            ? data
+                                                                .questionsList[
+                                                                    _quetionNo]
+                                                                .questions
+                                                            : '',
                                                         style: TextStyle(
                                                           fontFamily:
                                                               'Roboto Regular',
-                                                          fontSize:
-                                                              width * (16 / 420),
+                                                          fontSize: width *
+                                                              (15 / 420),
                                                           color: Colors.black,
+                                                          height: 1.7,
                                                         ),
-                                                      ),
-                                                      data.questionsList.length -
-                                                                  1 >
-                                                              _quetionNo
-                                                          ? GestureDetector(
-                                                              onTap: () => {
-                                                                setState(() {
-                                                                  if (_quetionNo <
-                                                                      data.questionsList
-                                                                          .length) {
-                                                                    _quetionNo =
-                                                                        _quetionNo +
-                                                                            1;
-                                                                  }
-                                                                  selectedAnswer =
-                                                                      null;
-                                                                  realAnswer = null;
-                                                                }),
-                                                                print(_quetionNo)
-                                                              },
-                                                              child: Icon(
-                                                                Icons.east,
-                                                                size: width *
-                                                                    (30 / 420),
-                                                                color: Colors.black,
-                                                              ),
-                                                            )
-                                                          : Container(),
-                                                    ],
-                                                  ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        top: height * (15 / 800)),
-                                                    child: Text(
-                                                      data.questionsList != null
-                                                          ? data
-                                                              .questionsList[
-                                                                  _quetionNo]
-                                                              .questions
-                                                          : '',
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            'Roboto Regular',
-                                                        fontSize:
-                                                            width * (15 / 420),
-                                                        color: Colors.black,
-                                                        height: 1.7,
                                                       ),
                                                     ),
-                                                  ),
-                                                  Column(
-                                                    children: data
-                                                        .questionsList[_quetionNo]
-                                                        .optionsList
-                                                        .map<Widget>((title) {
-                                                      var index = data
-                                                          .questionsList[_quetionNo]
+                                                    Column(
+                                                      children: data
+                                                          .questionsList[
+                                                              _quetionNo]
                                                           .optionsList
-                                                          .indexOf(title);
-                                                      return GestureDetector(
-                                                        onTap: () => {
-                                                          setState(() {
-                                                            selectedAnswer =
-                                                                title.id;
-                                                            realAnswer = data
-                                                                .questionsList[
-                                                                    _quetionNo]
-                                                                .rightAnswer;
-                                                          })
-                                                        },
-                                                        child: Container(
-                                                          color: title.id ==
-                                                                      selectedAnswer &&
-                                                                  data
-                                                                          .questionsList[
-                                                                              _quetionNo]
-                                                                          .rightAnswer ==
-                                                                      selectedAnswer
-                                                              ? _colorfromhex(
-                                                                  "#E6F7E7")
-                                                              : title.id ==
-                                                                          selectedAnswer &&
-                                                                      data
-                                                                              .questionsList[
-                                                                                  _quetionNo]
-                                                                              .rightAnswer !=
-                                                                          selectedAnswer
-                                                                  ? _colorfromhex(
-                                                                      "#FFF6F6")
-                                                                  : selectedAnswer !=
-                                                                              null &&
-                                                                          data.questionsList[_quetionNo].rightAnswer !=
-                                                                              selectedAnswer &&
-                                                                          title.id ==
-                                                                              data
-                                                                                  .questionsList[
-                                                                                      _quetionNo]
-                                                                                  .rightAnswer
-                                                                      ? _colorfromhex(
-                                                                          "#E6F7E7")
-                                                                      : Colors
-                                                                          .white,
-                                                          margin: EdgeInsets.only(
-                                                              top: height *
-                                                                  (21 / 800)),
-                                                          padding: EdgeInsets.only(
-                                                              top: 13,
-                                                              bottom: 13,
-                                                              left: width *
-                                                                  (13 / 420),
-                                                              right: width *
-                                                                  (11 / 420)),
-                                                          child: Row(
-                                                            children: [
-                                                              Container(
-                                                                width: width *
-                                                                    (25 / 420),
-                                                                height: width *
-                                                                    25 /
-                                                                    420,
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius: BorderRadius.circular(
+                                                          .map<Widget>((title) {
+                                                        var index = data
+                                                            .questionsList[
+                                                                _quetionNo]
+                                                            .optionsList
+                                                            .indexOf(title);
+                                                        return GestureDetector(
+                                                          onTap: () => {
+                                                            setState(() {
+                                                              selectedAnswer =
+                                                                  title.id;
+                                                              realAnswer = data
+                                                                  .questionsList[
+                                                                      _quetionNo]
+                                                                  .rightAnswer;
+                                                            })
+                                                          },
+                                                          child: Container(
+                                                            color: title.id ==
+                                                                        selectedAnswer &&
+                                                                    data.questionsList[_quetionNo].rightAnswer ==
+                                                                        selectedAnswer
+                                                                ? _colorfromhex(
+                                                                    "#E6F7E7")
+                                                                : title.id ==
+                                                                            selectedAnswer &&
+                                                                        data.questionsList[_quetionNo].rightAnswer !=
+                                                                            selectedAnswer
+                                                                    ? _colorfromhex(
+                                                                        "#FFF6F6")
+                                                                    : selectedAnswer != null &&
+                                                                            data.questionsList[_quetionNo].rightAnswer !=
+                                                                                selectedAnswer &&
+                                                                            title.id ==
+                                                                                data.questionsList[_quetionNo].rightAnswer
+                                                                        ? _colorfromhex("#E6F7E7")
+                                                                        : Colors.white,
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    top: height *
+                                                                        (21 /
+                                                                            800)),
+                                                            padding: EdgeInsets.only(
+                                                                top: 13,
+                                                                bottom: 13,
+                                                                left: width *
+                                                                    (13 / 420),
+                                                                right: width *
+                                                                    (11 / 420)),
+                                                            child: Row(
+                                                              children: [
+                                                                Container(
+                                                                  width: width *
+                                                                      (25 /
+                                                                          420),
+                                                                  height:
                                                                       width *
-                                                                          (25 /
-                                                                              420),
+                                                                          25 /
+                                                                          420,
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(
+                                                                        width *
+                                                                            (25 /
+                                                                                420),
+                                                                      ),
+                                                                      color: title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer == selectedAnswer
+                                                                          ? _colorfromhex("#04AE0B")
+                                                                          : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
+                                                                              ? _colorfromhex("#FF0000")
+                                                                              : selectedAnswer != null && data.questionsList[_quetionNo].rightAnswer != selectedAnswer && title.id == data.questionsList[_quetionNo].rightAnswer
+                                                                                  ? _colorfromhex("#04AE0B")
+                                                                                  : Colors.white),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      index == 0
+                                                                          ? 'A'
+                                                                          : index == 1
+                                                                              ? 'B'
+                                                                              : index == 2
+                                                                                  ? 'C'
+                                                                                  : index == 3
+                                                                                      ? 'D'
+                                                                                      : '',
+                                                                      style: TextStyle(
+                                                                          fontFamily: 'Roboto Regular',
+                                                                          fontSize: width * 14 / 420,
+                                                                          color: title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer == selectedAnswer
+                                                                              ? Colors.white
+                                                                              : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
+                                                                                  ? Colors.white
+                                                                                  : selectedAnswer != null && data.questionsList[_quetionNo].rightAnswer != selectedAnswer && title.id == data.questionsList[_quetionNo].rightAnswer
+                                                                                      ? Colors.white
+                                                                                      : Colors.grey),
                                                                     ),
-                                                                    color: title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer == selectedAnswer
-                                                                        ? _colorfromhex("#04AE0B")
-                                                                        : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
-                                                                            ? _colorfromhex("#FF0000")
-                                                                            : selectedAnswer != null && data.questionsList[_quetionNo].rightAnswer != selectedAnswer && title.id == data.questionsList[_quetionNo].rightAnswer
-                                                                                ? _colorfromhex("#04AE0B")
-                                                                                : Colors.white),
-                                                                child: Center(
-                                                                  child: Text(
-                                                                    index == 0
-                                                                        ? 'A'
-                                                                        : index == 1
-                                                                            ? 'B'
-                                                                            : index ==
-                                                                                    2
-                                                                                ? 'C'
-                                                                                : index == 3
-                                                                                    ? 'D'
-                                                                                    : '',
-                                                                    style: TextStyle(
-                                                                        fontFamily: 'Roboto Regular',
-                                                                        fontSize: width * 14 / 420,
-                                                                        color: title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer == selectedAnswer
-                                                                            ? Colors.white
-                                                                            : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
-                                                                                ? Colors.white
-                                                                                : selectedAnswer != null && data.questionsList[_quetionNo].rightAnswer != selectedAnswer && title.id == data.questionsList[_quetionNo].rightAnswer
-                                                                                    ? Colors.white
-                                                                                    : Colors.grey),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .end,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  Container(
-                                                                    margin: EdgeInsets
-                                                                        .only(
-                                                                            left:
-                                                                                8),
-                                                                    width: width -
-                                                                        (width *
-                                                                            (25 /
-                                                                                420) *
-                                                                            5),
-                                                                    child: Text(
-                                                                        title
-                                                                            .questionsOptions,
-                                                                        style: TextStyle(
-                                                                            fontSize: width *
-                                                                                14 /
-                                                                                420)),
-                                                                  ),
-                                                                  selectedAnswer !=
-                                                                              null &&
-                                                                          data.questionsList[_quetionNo].rightAnswer !=
-                                                                              selectedAnswer &&
-                                                                          title.id ==
-                                                                              data
-                                                                                  .questionsList[
-                                                                                      _quetionNo]
-                                                                                  .rightAnswer
-                                                                      ? Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment
-                                                                                  .end,
-                                                                          children: [
-                                                                            Text(
-                                                                              'Correct Answer',
-                                                                            ),
-                                                                          ],
-                                                                        )
-                                                                      : title.id ==
-                                                                                  selectedAnswer &&
-                                                                              data.questionsList[_quetionNo].rightAnswer !=
-                                                                                  selectedAnswer
-                                                                          ? Row(
-                                                                              mainAxisAlignment:
-                                                                                  MainAxisAlignment.end,
-                                                                              children: [
-                                                                                Text(
-                                                                                  'Your selection',
-                                                                                ),
-                                                                              ],
-                                                                            )
-                                                                          : Container(),
-                                                                ],
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                  ),
-                                                  selectedAnswer != null
-                                                      ? Container(
-                                                          decoration: BoxDecoration(
-                                                              color: _colorfromhex(
-                                                                  "#FAFAFA"),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(6)),
-                                                          margin: EdgeInsets.only(
-                                                              top: height *
-                                                                  (38 / 800)),
-                                                          padding: EdgeInsets.only(
-                                                              top: height *
-                                                                  (10 / 800),
-                                                              bottom: _show
-                                                                  ? height *
-                                                                      (23 / 800)
-                                                                  : height *
-                                                                      (12 / 800),
-                                                              left: width *
-                                                                  (18 / 420),
-                                                              right: width *
-                                                                  (10 / 420)),
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              GestureDetector(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    _show = !_show;
-                                                                  });
-                                                                },
-                                                                child: Row(
+                                                                Column(
                                                                   mainAxisAlignment:
                                                                       MainAxisAlignment
-                                                                          .spaceBetween,
+                                                                          .end,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .end,
                                                                   children: [
-                                                                    Text(
-                                                                      'See Solution',
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontFamily:
-                                                                            'Roboto Regular',
-                                                                        fontSize: width *
-                                                                            (15 /
-                                                                                420),
-                                                                        color: _colorfromhex(
-                                                                            "#ABAFD1"),
-                                                                        height: 1.7,
-                                                                      ),
-                                                                    ),
-                                                                    Icon(
-                                                                      _show
-                                                                          ? Icons
-                                                                              .expand_less
-                                                                          : Icons
-                                                                              .expand_more,
-                                                                      size: width *
-                                                                          (30 /
-                                                                              420),
-                                                                      color: _colorfromhex(
-                                                                          "#ABAFD1"),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              _show
-                                                                  ? Container(
+                                                                    Container(
                                                                       margin: EdgeInsets.only(
-                                                                          top: height *
-                                                                              (9 /
-                                                                                  800)),
+                                                                          left:
+                                                                              8),
+                                                                      width: width -
+                                                                          (width *
+                                                                              (25 / 420) *
+                                                                              5),
                                                                       child: Text(
-                                                                        data.questionsList[_quetionNo] ==
-                                                                                data.questionsList[_quetionNo].optionsList[0].id
-                                                                            ? 'Answer A is the correct one'
-                                                                            : data.questionsList[_quetionNo].rightAnswer == data.questionsList[_quetionNo].optionsList[1].id
-                                                                                ? 'Answer B is the correct one'
-                                                                                : data.questionsList[_quetionNo].rightAnswer == data.questionsList[_quetionNo].optionsList[2].id
-                                                                                    ? 'Answer C is the correct one'
-                                                                                    : 'Answer D is the correct one',
+                                                                          title
+                                                                              .questionsOptions,
+                                                                          style:
+                                                                              TextStyle(fontSize: width * 14 / 420)),
+                                                                    ),
+                                                                    selectedAnswer != null &&
+                                                                            data.questionsList[_quetionNo].rightAnswer !=
+                                                                                selectedAnswer &&
+                                                                            title.id ==
+                                                                                data.questionsList[_quetionNo].rightAnswer
+                                                                        ? Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.end,
+                                                                            children: [
+                                                                              Text(
+                                                                                'Correct Answer',
+                                                                              ),
+                                                                            ],
+                                                                          )
+                                                                        : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
+                                                                            ? Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                                                children: [
+                                                                                  Text(
+                                                                                    'Your selection',
+                                                                                  ),
+                                                                                ],
+                                                                              )
+                                                                            : Container(),
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }).toList(),
+                                                    ),
+                                                    selectedAnswer != null
+                                                        ? Container(
+                                                            decoration: BoxDecoration(
+                                                                color: _colorfromhex(
+                                                                    "#FAFAFA"),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            6)),
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    top: height *
+                                                                        (38 /
+                                                                            800)),
+                                                            padding: EdgeInsets.only(
+                                                                top: height *
+                                                                    (10 / 800),
+                                                                bottom: _show
+                                                                    ? height *
+                                                                        (23 /
+                                                                            800)
+                                                                    : height *
+                                                                        (12 /
+                                                                            800),
+                                                                left: width *
+                                                                    (18 / 420),
+                                                                right: width *
+                                                                    (10 / 420)),
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                GestureDetector(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      _show =
+                                                                          !_show;
+                                                                    });
+                                                                  },
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        'See Solution',
                                                                         style:
                                                                             TextStyle(
                                                                           fontFamily:
                                                                               'Roboto Regular',
                                                                           fontSize:
-                                                                              width *
-                                                                                  (15 / 420),
-                                                                          color: _colorfromhex(
-                                                                              "#04AE0B"),
+                                                                              width * (15 / 420),
+                                                                          color:
+                                                                              _colorfromhex("#ABAFD1"),
                                                                           height:
                                                                               1.7,
                                                                         ),
                                                                       ),
-                                                                    )
-                                                                  : Container(),
-                                                              _show
-                                                                  ? Container(
-                                                                      margin: EdgeInsets.only(
-                                                                          top: height *
-                                                                              (9 /
-                                                                                  800)),
-                                                                      child: Text(
-                                                                        data
-                                                                            .questionsList[
-                                                                                _quetionNo]
-                                                                            .explantions,
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontFamily:
-                                                                              'Roboto Regular',
-                                                                          fontSize:
-                                                                              width *
-                                                                                  (15 / 420),
-                                                                          color: Colors
-                                                                              .black,
-                                                                          height:
-                                                                              1.6,
-                                                                        ),
+                                                                      Icon(
+                                                                        _show
+                                                                            ? Icons.expand_less
+                                                                            : Icons.expand_more,
+                                                                        size: width *
+                                                                            (30 /
+                                                                                420),
+                                                                        color: _colorfromhex(
+                                                                            "#ABAFD1"),
                                                                       ),
-                                                                    )
-                                                                  : Container()
-                                                            ],
-                                                          ),
-                                                        )
-                                                      : Container()
-                                                ],
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                _show
+                                                                    ? Container(
+                                                                        margin: EdgeInsets.only(
+                                                                            top:
+                                                                                height * (9 / 800)),
+                                                                        child:
+                                                                            Text(
+                                                                          data.questionsList[_quetionNo] == data.questionsList[_quetionNo].optionsList[0].id
+                                                                              ? 'Answer A is the correct one'
+                                                                              : data.questionsList[_quetionNo].rightAnswer == data.questionsList[_quetionNo].optionsList[1].id
+                                                                                  ? 'Answer B is the correct one'
+                                                                                  : data.questionsList[_quetionNo].rightAnswer == data.questionsList[_quetionNo].optionsList[2].id
+                                                                                      ? 'Answer C is the correct one'
+                                                                                      : 'Answer D is the correct one',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontFamily:
+                                                                                'Roboto Regular',
+                                                                            fontSize:
+                                                                                width * (15 / 420),
+                                                                            color:
+                                                                                _colorfromhex("#04AE0B"),
+                                                                            height:
+                                                                                1.7,
+                                                                          ),
+                                                                        ),
+                                                                      )
+                                                                    : Container(),
+                                                                _show
+                                                                    ? Container(
+                                                                        margin: EdgeInsets.only(
+                                                                            top:
+                                                                                height * (9 / 800)),
+                                                                        child:
+                                                                            Text(
+                                                                          data.questionsList[_quetionNo]
+                                                                              .explantions,
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontFamily:
+                                                                                'Roboto Regular',
+                                                                            fontSize:
+                                                                                width * (15 / 420),
+                                                                            color:
+                                                                                Colors.black,
+                                                                            height:
+                                                                                1.6,
+                                                                          ),
+                                                                        ),
+                                                                      )
+                                                                    : Container()
+                                                              ],
+                                                            ),
+                                                          )
+                                                        : Container()
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }
-                                  ),
-                                ):Text("No Data Found")
-                              
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                )
+                              : Text("No Data Found.....")
                     ],
                   ),
                 ),

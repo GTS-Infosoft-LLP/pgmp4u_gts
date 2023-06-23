@@ -184,7 +184,10 @@ class _MockTestResultState extends State<MockTestResult> {
                                       width: width / 1.6,
                                       margin: EdgeInsets.only(top: 3),
                                       child: Text(
-                                        'Congratulations for getting ${results["correct"]} out of ${results["total"]} Answers Correctly',
+                                         (percentage <= 25)? "Practice more! You got ${results["correct"]} out of ${results["total"]} Answers Correctly":
+                                        'Congratulations for getting ${results["correct"]} out of ${results["total"]} Answers Correctly'
+                                        
+                                        ,
                                         style: TextStyle(
                                           fontFamily: 'Roboto Medium',
                                           fontSize: width * (16 / 420),

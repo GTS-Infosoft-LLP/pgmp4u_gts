@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pgmp4u/Models/constants.dart';
-import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import '../../Models/apppurchasestatusmodel.dart';
 import '../../tool/ShapeClipper.dart';
+import '../../utils/app_color.dart';
 import 'VideoLibrary/Playlist.dart';
-import 'VideoLibrary/RandomPage.dart';
-import 'dart:convert' as convert;
+
 class VideoLibraryPage extends StatefulWidget {
   @override
   _VideoLibraryPageState createState() => _VideoLibraryPageState();
@@ -20,10 +15,10 @@ class VideoLibraryPage extends StatefulWidget {
 class _VideoLibraryPageState extends State<VideoLibraryPage> {
   Color _darkText = Color(0xff424b53);
   Color _lightText = Color(0xff989d9e);
-   Map mapResponse;
-   bool isShowPremiumOrNot;
+  Map mapResponse;
+  bool isShowPremiumOrNot;
 //ModelStatus maintainStatus;
- @override
+  @override
   void initState() {
     super.initState();
     //apiCall();
@@ -56,227 +51,315 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
   // }
   @override
   Widget build(BuildContext context) {
-    return 
-    Scaffold(
-      body: Consumer<PurchaseProvider>(builder: (context, purchaseProvider, child) {
-       if(purchaseProvider.latestStatus?.videoLibStatus==0){
-          isShowPremiumOrNot=true;
-       }else{
-         isShowPremiumOrNot=false;
-       }
-        
+    return Scaffold(body: Consumer<PurchaseProvider>(
+      builder: (context, purchaseProvider, child) {
+        if (purchaseProvider.latestStatus?.videoLibStatus == 0) {
+          isShowPremiumOrNot = true;
+        } else {
+          isShowPremiumOrNot = false;
+        }
+
         return Container(
-        color: Color(0xfff7f7f7),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Stack(
-              children: <Widget>[
-                ClipPath(
-                  clipper: ShapeClipper(),
-                  child: Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+          color: Color(0xfff7f7f7),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Stack(
+                children: <Widget>[
+                  ClipPath(
+                    clipper: ShapeClipper(),
+                    child: Container(
+                      height: 150,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(20, 50, 0, 0),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 50, 0, 0),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.transparent,
+                                border:
+                                    Border.all(color: Colors.white, width: 1)),
+                            child: Center(
+                                child: IconButton(
+                                    icon: Icon(Icons.arrow_back,
+                                        color: Colors.white),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    }))),
+                        SizedBox(width: 20),
+                        Center(
+                            child: Text(
+                          "Video Library",
+                          // "Master Data",
+                          style: TextStyle(
+                              fontSize: 28,
                               color: Colors.transparent,
-                              border:
-                                  Border.all(color: Colors.white, width: 1)),
-                          child: Center(
-                              child: IconButton(
-                                  icon: Icon(Icons.arrow_back,
-                                      color: Colors.white),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  }))),
-                      SizedBox(width: 20),
-                      Center(
-                          child: Text(
-                        "Video Library",
-                        // "Master Data",
-                        style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.white,
-                            fontFamily: "Raleway",
-                            fontWeight: FontWeight.bold),
-                      )),
+                              fontFamily: "Raleway",
+                              fontWeight: FontWeight.bold),
+                        )),
+                      ],
+                    ),
+
+                    //Text("Flash Cards", style: TextStyle(fontSize: 28,color: Colors.white,fontFamily: "Raleway", fontWeight: FontWeight.bold),)
+                  ),
+                ],
+              ),
+              SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  "VideoLibrary4U",
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: _darkText,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(height: 15),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Consumer<CourseProvider>(
+                          builder: (context, courseProvider, child) {
+                        return courseProvider.videoPresent == 1
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: courseProvider.videoCate.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      if (courseProvider.videoCate[index]
+                                              .payment_status ==
+                                          0) {
+                                        print(
+                                            "id:::: ${courseProvider.videoCate[index].id}");
+                                        courseProvider.getVideos(
+                                            courseProvider.videoCate[index].id);
+
+                                        Future.delayed(
+                                            const Duration(milliseconds: 400),
+                                            () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PlaylistPage(
+                                                  title:
+                                                      "PgMP Recorded Program Premium",
+                                                  videoType: 2,
+                                                ),
+                                              ));
+                                        });
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 18.0),
+                                      child: Container(
+                                        height: 65,
+                                        decoration: BoxDecoration(
+                                            // shape: BoxShape.circle,
+                                            color: Colors.transparent,
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                  width: 1.5,
+                                                  color: Colors.grey[300]),
+                                            )),
+                                        child: Row(children: [
+                                          SizedBox(
+                                            width: 15,
+                                          ),
+                                          Container(
+                                              height: 60,
+                                              width: 60,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                color: index % 2 == 0
+                                                    ? AppColor.purpule
+                                                    : AppColor.green,
+                                              ),
+                                              child: Icon(
+                                                FontAwesomeIcons.video,
+                                                color: Colors.white,
+                                              )),
+                                          SizedBox(
+                                            width: 15,
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Video Library",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                courseProvider
+                                                    .videoCate[index].name,
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ]),
+                                      ),
+                                    ),
+                                  );
+
+//                           Options(iconBackground: Color(0xff72a258), icon:  Icon(
+//                         FontAwesomeIcons.video,
+//                         size: 50,
+//                         color: Colors.white,
+//                       ), text: courseProvider.videoCate[index].name, isShowPremium:courseProvider.videoCate[index].payment_status==1?true:false, onPremiumTap: (){
+//                          Navigator.push(context,MaterialPageRoute(builder: (context)=>RandomPage(index: 2,price:courseProvider.videoCate[index].price ,)));
+//                       }, onTap: (){
+
+//                    if(courseProvider.videoCate[index].payment_status==0){
+
+//             print("id:::: ${courseProvider.videoCate[index].id}");
+//                         courseProvider.getVideos(courseProvider.videoCate[index].id);
+
+//  Future.delayed(const Duration(milliseconds: 400), () {
+
+//         Navigator.push(context,MaterialPageRoute(builder: (context)=>PlaylistPage(
+//                               title: "PgMP Recorded Program Premium",
+//                               videoType: 2,
+//                             ),));
+//     });
+
+//                    }
+
+//                       });
+                                })
+                            : Column(
+                                children: [
+                                  SizedBox(
+                                    height: 150,
+                                  ),
+                                  Center(
+                                      child: Text("No Data Found",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: _darkText,
+                                              fontWeight: FontWeight.normal))),
+                                ],
+                              );
+                      })
+
+                      //         Options(
+                      //           isShowPremium: false,
+                      //           iconBackground: Color(0xff72a258),
+                      //           icon: Icon(
+                      //             FontAwesomeIcons.edit,
+                      //             size: 50,
+                      //             color: Colors.white,
+                      //           ),
+                      //           text: "PgMP Prep Free",
+                      //           onTap: () {
+
+                      //       CourseProvider courseProvider=Provider.of(context,listen: false);
+                      // courseProvider.getVideos(4);
+                      //           print("on tabbbb");
+                      //               Navigator.push(
+                      //               context,
+                      //               MaterialPageRoute(
+                      //                 builder: (BuildContext context) => new PlaylistPage(
+                      //                   videoType: 1,
+                      //                   title: "PgMP Prep Free",
+
+                      //                 ),
+                      //               ),
+                      //             );
+
+                      // //         purchaseProvider.products.forEach((e) {
+                      // //   print("Product id => ${e.id}");
+                      // //   if (e.id == videoLibraryLearningPrograms) {
+                      // //     purchaseProvider.buy(e);
+                      // //   }
+                      // // });
+
+                      //   },
+                      // ),
+                      //   Options(
+                      //     iconBackground: Color(0xff463b97),
+                      //     icon: Icon(
+                      //       FontAwesomeIcons.splotch,
+                      //       size: 50,
+                      //       color: Colors.white,
+                      //     ),
+                      //     text: "PgMP Recorded Program Premium",
+                      //     isShowPremium:isShowPremiumOrNot,
+
+                      //     onTap: () {
+
+                      //       //PurchaseProvider purchaseProvider = Provider.of(context,listen: false);
+
+                      //       if(purchaseProvider.latestStatus?.videoLibStatus==1)
+                      //       {
+                      //         Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //           builder: (BuildContext context) => PlaylistPage(
+                      //             title: "PgMP Recorded Program Premium",
+                      //             videoType: 2,
+                      //           ),
+                      //         ),
+                      //       );
+                      //       }else{
+                      //            Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //             builder: (BuildContext context) => RandomPage(index: 2,),
+                      //           ));
+                      // //         purchaseProvider.products.forEach((e) {
+                      // //   print("Product id => ${e.id}");
+                      // //   if (e.id == videoLibraryLearningPrograms) {
+                      // //     purchaseProvider.buy(e);
+                      // //   }
+                      // // });
+                      //       }
+
+                      //     },
+                      //     onPremiumTap: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //             builder: (BuildContext context) => RandomPage(index: 2,),
+                      //           ));
+                      //     },
+                      //   ),
                     ],
                   ),
-
-                  //Text("Flash Cards", style: TextStyle(fontSize: 28,color: Colors.white,fontFamily: "Raleway", fontWeight: FontWeight.bold),)
-                ),
-              ],
-            ),
-            SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                "VideoLibrary4U",
-                style: TextStyle(
-                    fontSize: 24,
-                    color: _darkText,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(height: 15),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-
-                    Consumer<CourseProvider>(
-                      builder: (context,courseProvider,child) {
-                        return 
-                        courseProvider.videoPresent==1?
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: courseProvider.videoCate.length,
-                          itemBuilder: (context,index){
-                          return Options(iconBackground: Color(0xff72a258), icon:  Icon(
-                        FontAwesomeIcons.video,
-                        size: 50,
-                        color: Colors.white,
-                      ), text: courseProvider.videoCate[index].name, isShowPremium:courseProvider.videoCate[index].payment_status==1?true:false, onPremiumTap: (){
-                         Navigator.push(context,MaterialPageRoute(builder: (context)=>RandomPage(index: 2,price:courseProvider.videoCate[index].price ,)));
-                      }, onTap: (){
-
-                   if(courseProvider.videoCate[index].payment_status==0){
-
-                        courseProvider.getVideos(courseProvider.videoCate[index].id);
-
- Future.delayed(const Duration(milliseconds: 400), () {
-        Navigator.push(context,MaterialPageRoute(builder: (context)=>PlaylistPage(
-                              title: "PgMP Recorded Program Premium",
-                              videoType: 2,
-                            ),));
-    });
-
-                   }  
-
-                      });
-                        }):Column(
-                          children: [
-SizedBox(height: 150,),
-
-                            Center(child: Text("No Data Found", style: TextStyle(
-                    fontSize: 18,
-                    color: _darkText,
-                    fontWeight: FontWeight.normal))),
-                          ],
-                        );
-                      }
-                    )
-
-
-
-            //         Options(
-            //           isShowPremium: false,
-            //           iconBackground: Color(0xff72a258),
-            //           icon: Icon(
-            //             FontAwesomeIcons.edit,
-            //             size: 50,
-            //             color: Colors.white,
-            //           ),
-            //           text: "PgMP Prep Free",
-            //           onTap: () {
-
-
-            //       CourseProvider courseProvider=Provider.of(context,listen: false);
-            // courseProvider.getVideos(4);
-            //           print("on tabbbb");
-            //               Navigator.push(
-            //               context,
-            //               MaterialPageRoute(
-            //                 builder: (BuildContext context) => new PlaylistPage(
-            //                   videoType: 1,  
-            //                   title: "PgMP Prep Free",
-                              
-            //                 ),
-            //               ),
-            //             );
-                        
-                       
-                  // //         purchaseProvider.products.forEach((e) {
-                  // //   print("Product id => ${e.id}");
-                  // //   if (e.id == videoLibraryLearningPrograms) {
-                  // //     purchaseProvider.buy(e);
-                  // //   }
-                  // // });
-                      
-                       
-                    //   },
-                    // ),
-                  //   Options(
-                  //     iconBackground: Color(0xff463b97),
-                  //     icon: Icon(
-                  //       FontAwesomeIcons.splotch,
-                  //       size: 50,
-                  //       color: Colors.white,
-                  //     ),
-                  //     text: "PgMP Recorded Program Premium",
-                  //     isShowPremium:isShowPremiumOrNot,
-                    
-                  //     onTap: () {
-                        
-                  //       //PurchaseProvider purchaseProvider = Provider.of(context,listen: false);
-                        
-                  //       if(purchaseProvider.latestStatus?.videoLibStatus==1)
-                  //       {
-                  //         Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (BuildContext context) => PlaylistPage(
-                  //             title: "PgMP Recorded Program Premium",
-                  //             videoType: 2,
-                  //           ),
-                  //         ),
-                  //       );
-                  //       }else{
-                  //            Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //             builder: (BuildContext context) => RandomPage(index: 2,),
-                  //           ));
-                  // //         purchaseProvider.products.forEach((e) {
-                  // //   print("Product id => ${e.id}");
-                  // //   if (e.id == videoLibraryLearningPrograms) {
-                  // //     purchaseProvider.buy(e);
-                  // //   }
-                  // // });
-                  //       }
-                     
-                  //     },
-                  //     onPremiumTap: () {
-                  //       Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //             builder: (BuildContext context) => RandomPage(index: 2,),
-                  //           ));
-                  //     },
-                  //   ),
-                  ],
                 ),
               ),
-            ),
-          ],
-        ),
-      );
-      },)
-    );
+            ],
+          ),
+        );
+      },
+    ));
   }
 }
 
@@ -349,13 +432,13 @@ class Options extends StatelessWidget {
                           children: [
                             isShowPremium
                                 ? GestureDetector(
-                                  onTap: onPremiumTap,
+                                    onTap: onPremiumTap,
                                     child: Text(
-                                    "Premium",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                        decoration: TextDecoration.underline),
-                                  ))
+                                      "Premium",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          decoration: TextDecoration.underline),
+                                    ))
                                 : SizedBox(),
                           ],
                         ),

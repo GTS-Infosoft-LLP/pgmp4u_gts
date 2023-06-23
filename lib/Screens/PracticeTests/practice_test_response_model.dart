@@ -1,16 +1,24 @@
+import 'dart:convert';
+
+import 'package:hive/hive.dart';
+
+@HiveType(typeId: 5)
 class PracitceTextResponseModelList {
   int statusCode;
-  
+
   List<PracitceTextResponseModel> list;
+  @HiveField(0)
+  String pracList = "";
+  PracitceTextResponseModelList();
 
   PracitceTextResponseModelList.fromJson(Map<String, dynamic> json) {
-
-    
-
-    if (json['status']==200) {
-     
+    if (json['status'] == 200) {
       list = List<PracitceTextResponseModel>.from(json['data']['list']
           .map((x) => PracitceTextResponseModel.fromJson(x)));
+
+      pracList = jsonEncode(json['data']['list']);
+      print("**************************************************");
+      print("pracList=====$pracList");
     }
   }
 }

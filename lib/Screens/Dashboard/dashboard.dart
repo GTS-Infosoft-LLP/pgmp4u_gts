@@ -3,9 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:pgmp4u/Screens/Dashboard/DashboardScreen.dart';
 import 'package:pgmp4u/Screens/Profile/profile.dart';
 import 'package:pgmp4u/Screens/Tests/testsScreen.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../Tests/local_handler/hive_handler.dart';
 import '../home_view/home.dart';
 
 class Dashboard extends StatefulWidget {
@@ -21,6 +24,15 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+
+
+
+@override
+  void initState() {
+    updateDeviceToken();
+    super.initState();
+  }
+
   final selectedIdNew;
   String photoUrl;
   _DashboardState({
@@ -146,5 +158,19 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: _children[_currentIndex],
     );
+  }
+  
+  Future<void> updateDeviceToken() async {
+
+    CourseProvider courseProvider=Provider.of(context,listen: false);
+      String token=await HiveHandler.getDeviceToken();
+      print("get device token after set ${token}");
+    courseProvider.updateDeviceToken(token);
+
+    //  deviceToken
+
+
+
+
   }
 }

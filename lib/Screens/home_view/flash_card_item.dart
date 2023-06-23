@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pgmp4u/Models/category.dart';
-import 'package:pgmp4u/Screens/home_view/flash_card.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pgmp4u/provider/response_provider.dart';
-import 'package:pgmp4u/utils/appimage.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/courseProvider.dart';
@@ -10,6 +8,7 @@ import '../../tool/ShapeClipper.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_textstyle.dart';
 import 'VideoLibrary/RandomPage.dart';
+import 'flash_card.dart';
 
 class FlashCardItem extends StatefulWidget {
   const FlashCardItem({Key key}) : super(key: key);
@@ -85,7 +84,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
                               "Flash Card",
                               style: TextStyle(
                                   fontSize: 22,
-                                  color: Colors.white,
+                                  color: Colors.transparent,
                                   fontFamily: "Roboto",
                                   fontWeight: FontWeight.bold),
                             )),
@@ -106,109 +105,108 @@ class _FlashCardItemState extends State<FlashCardItem> {
                     ),
 
                     Consumer<CourseProvider>(
-                      builder: (context,courseProvider,child) {
-                        return ListView.builder(
+                        builder: (context, courseProvider, child) {
+                      return ListView.builder(
                           shrinkWrap: true,
                           itemCount: courseProvider.flashCate.length,
-                          itemBuilder: (context,index){
-                           return 
-                           InkWell(
-                            onTap: (){
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                print(
+                                    "flash card category id===>>${courseProvider.flashCate[index].id}");
 
-                              print("flash card category id===>>${courseProvider.flashCate[index].id}");
-                     
+                                if (courseProvider
+                                        .flashCate[index].payment_status ==
+                                    0) {}
 
-                     if(courseProvider.flashCate[index].payment_status==0){}
+                                courseProvider.getFlashCards(
+                                    courseProvider.flashCate[index].id);
 
-
-                    courseProvider.getFlashCards(courseProvider.flashCate[index].id);
-
-
-Future.delayed(const Duration(milliseconds: 100), () {
-      Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          FlashCardsPage()));
-    });
-
-
-
-                                
-                            },
-                             child: Card(
-                                                margin: EdgeInsets.symmetric(
-                                                  vertical: 0.5,
-                                                ),
-                                                child: Container(
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.white),
-                                                    child: ListTile(
-                                                        leading: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8),
-                                                              color:
-                                                                  index % 2 == 0
-                                                                      ? AppColor
-                                                                          .purpule
-                                                                      : AppColor
-                                                                          .green,
-                                                            ),
-                                                            child: Image.asset(AppImage.picture_placeholder),
-                                                            // Image.network(
-                                                            //   "",width: 80,errorBuilder: (context, error, stackTrace) {
-                                                            //     return Image.asset(AppImage.picture_placeholder);
-                                                            //   },
-                                                            //   fit: BoxFit.fill,
-                                                            // )
-                                                            ),
-                                                        title: Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                              "Flash Card",
-                                                              style: TextStyle(
-                                                                  fontSize: 12),
-                                                            ),
-
-                                                            courseProvider.flashCate[index].payment_status==1?
-                                                              InkWell(
-                                                                onTap: (){
-                                                              Navigator.push(context,MaterialPageRoute(builder: (context)=>RandomPage(index: 1)));                
-                                                                },
-                                                                child: Text(
-                                                                "Premium",
-                                                                style: TextStyle(
-                                                                    fontSize: 12),
-                                                                             ),
-                                                              ):SizedBox(),
-
-                                                          ],
-                                                        ),
-                                                        subtitle: Text(
-                                                          courseProvider.flashCate[index].name,
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: AppTextStyle
-                                                              .titleTile,
-                                                        ))),
-                                              ),
-                           );
-                                          // );
-                        });
-                      }
-                    )
-
-                     
-
-
-
-                   
+                                Future.delayed(
+                                    const Duration(milliseconds: 400), () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => FlashCardsPage(
+                                                heding: courseProvider
+                                                    .flashCate[index].name,
+                                              )));
+                                });
+                              },
+                              child: Card(
+                                margin: EdgeInsets.symmetric(
+                                  vertical: 0.5,
+                                ),
+                                child: Container(
+                                    decoration:
+                                        BoxDecoration(color: Colors.white),
+                                    child: ListTile(
+                                        leading: Container(
+                                            height: 60,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              color: index % 2 == 0
+                                                  ? AppColor.purpule
+                                                  : AppColor.green,
+                                            ),
+                                            child: Icon(
+                                              index % 2 == 0
+                                                  ? FontAwesomeIcons.book
+                                                  : FontAwesomeIcons.airbnb,
+                                              color: Colors.white,
+                                            )
+                                            // Icon
+                                            // Image.asset(AppImage.picture_placeholder),
+                                            // Image.network(
+                                            //   "",width: 80,errorBuilder: (context, error, stackTrace) {
+                                            //     return Image.asset(AppImage.picture_placeholder);
+                                            //   },
+                                            //   fit: BoxFit.fill,
+                                            // )
+                                            ),
+                                        title: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Read",
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                            courseProvider.flashCate[index]
+                                                        .payment_status ==
+                                                    1
+                                                ? InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  RandomPage(
+                                                                      index:
+                                                                          1)));
+                                                    },
+                                                    child: Text(
+                                                      "Premium",
+                                                      style: TextStyle(
+                                                          fontSize: 12),
+                                                    ),
+                                                  )
+                                                : SizedBox(),
+                                          ],
+                                        ),
+                                        subtitle: Text(
+                                          courseProvider.flashCate[index].name,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: AppTextStyle.titleTile,
+                                        ))),
+                              ),
+                            );
+                            // );
+                          });
+                    })
 
                     // Consumer<ResponseProvider>(
                     //   builder: ((context, responseProvider, child) {
@@ -292,9 +290,6 @@ Future.delayed(const Duration(milliseconds: 100), () {
                     //                   )));
                     //   }),
                     // )
-
-
-
                   ])))),
     );
   }

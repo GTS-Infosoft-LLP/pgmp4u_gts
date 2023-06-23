@@ -1,13 +1,28 @@
 
+
+import 'package:hive/hive.dart';
+part 'flashCardModel.g.dart';
+
+@HiveType(typeId: 2)
 class FlashCardDetails {
+   @HiveField(0)
   int id;
+  @HiveField(1)
   int position;
-  int categoryId; 
+  @HiveField(2)
+  int categoryId;
+  @HiveField(3) 
   String description;
+  @HiveField(4)
   String title;
+  @HiveField(5)
   String thumbnail;
+  @HiveField(6)
   int status;
+  @HiveField(7)
   int deleteStatus;
+
+FlashCardDetails();
  
 
   FlashCardDetails.fromjson(Map<String, dynamic> json) {

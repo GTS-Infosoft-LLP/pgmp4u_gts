@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Models/get_video_by_type_response.dart';
 import 'package:pgmp4u/provider/player_provider.dart';
 import 'package:pgmp4u/provider/response_provider.dart';
@@ -36,10 +35,13 @@ class _PlaylistPageState extends State<PlaylistPage> {
     print(" call playlist screen");
     print(" video type ${widget.videoType}");
 
+    CourseProvider cp = Provider.of(context, listen: false);
+    print("videos===${cp.Videos}");
+    // print("video url===${cp.Videos[0].videoUrl}");
 
-
-      CourseProvider cp=Provider.of(context,listen: false);
-      print("videos===${cp.Videos}");
+    // print(
+    //   "https://img.youtube.com/vi/${cp.Videos[0].videoUrl}/hqdefault.jpg",
+    // );
 
     super.initState();
   }
@@ -77,7 +79,9 @@ class _PlaylistPageState extends State<PlaylistPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          SizedBox(width: 15,),
+                          SizedBox(
+                            width: 15,
+                          ),
                           Flexible(
                             child: Center(
                               child: Text(
@@ -122,7 +126,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    "Videos 4 U",  
+                    "Videos 4 U",
                     style: TextStyle(
                         fontSize: 24,
                         color: AppColor.darkText,
@@ -146,17 +150,21 @@ class _PlaylistPageState extends State<PlaylistPage> {
                       case ConnectionState.active:
                         return Text("data");
                       case ConnectionState.done:
-                     if (snapshot.hasData) {
-                      return VideoList(snapshot.data.videoListing);
-                    } else {
-                      return Container(
-                          height: MediaQuery.of(context).size.height * .5,
-                          child:
-                              Center(child: Text("No Data Found",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)));
-                    }
-                        // return snapshot.data.videoListing.isNotEmpty
-                        //     ? VideoList(snapshot.data?.videoListing)
-                        //     : Text("No data found");
+                        if (snapshot.hasData) {
+                          return VideoList(snapshot.data.videoListing);
+                        } else {
+                          return Container(
+                              height: MediaQuery.of(context).size.height * .5,
+                              child: Center(
+                                  child: Text(
+                                "No Data Found",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              )));
+                        }
+                      // return snapshot.data.videoListing.isNotEmpty
+                      //     ? VideoList(snapshot.data?.videoListing)
+                      //     : Text("No data found");
                     }
                     // print(" error ${snapshot.error}");
                     // if (snapshot.hasData) {
@@ -188,124 +196,118 @@ class VideoList extends StatelessWidget {
   Widget build(BuildContext context) {
     print("length of list ${getVideoListing.length}");
     print("playing videoo link ${getVideoListing[0].videoURl}");
-    return Consumer<CourseProvider>(
-      builder: (context,courseProvider,child) {
-        List videoList=courseProvider.Videos;
-        return 
-        // courseProvider.Videos.isNotEmpty?
-        ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: videoList.length,
-          itemBuilder: (context,index){
-
-            return Padding(
-              padding: const EdgeInsets.only(left: 15,right: 15,bottom: 10),
-              child: Card(
-                
-               margin: EdgeInsets.only(bottom: 1),
-                elevation: 2,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-
-                      height: 210,
-                      child: Stack(
-                        children: [
-            
+    return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
+      List videoList = courseProvider.Videos;
+      return courseProvider.Videos.isNotEmpty
+          ? ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: videoList.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding:
+                      const EdgeInsets.only(left: 15, right: 15, bottom: 10),
+                  child: Card(
+                    margin: EdgeInsets.only(bottom: 1),
+                    elevation: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         Container(
-                            child: ClipRRect(
-                              
-                              borderRadius: BorderRadius.circular(13),
-                              child:
-                               Image.network(
-                                
-                                courseProvider.Videos[index].thumbnailUrl,
-                                // https://img.youtube.com/vi/%3Cinsert-youtube-video-id-here%3E/hqdefault.jpg
-                              //  "https://pgmp4ubucket.s3.amazonaws.com/uploads/document/thumb/",
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, a, err) {
-                                  return Image.asset(
-                                    AppImage.picture_placeholder2,
+                          height: 210,
+                          child: Stack(
+                            children: [
+                              Container(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(13),
+                                  child: Image.network(
+                                    courseProvider.Videos[index].videoType == 1
+                                        ? courseProvider
+                                            .Videos[index].thumbnailUrl
+                                        : "https://img.youtube.com/vi/${courseProvider.Videos[index].videoUrl}/hqdefault.jpg",
+                                    //  "https://pgmp4ubucket.s3.amazonaws.com/uploads/document/thumb/",
                                     fit: BoxFit.cover,
-                                    width: MediaQuery.of(context).size.width,
-                                  );
-                                },
+                                    errorBuilder: (context, a, err) {
+                                      return Image.asset(
+                                        AppImage.picture_placeholder2,
+                                        fit: BoxFit.cover,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
-                            ),
+                              Positioned(
+                                top: 50,
+                                bottom: 50,
+                                left: MediaQuery.of(context).size.width * 0.4,
+                                child: InkWell(
+                                  onTap: () {
+                                    print(
+                                        "Videos[index].videoUrl===${courseProvider.Videos[index].videoUrl}");
+                                    print("");
+                                    print(
+                                        "Videos[index].videoUrl===${courseProvider.Videos[index].videoUrl}");
+
+                                    if (courseProvider
+                                            .Videos[index].videoType ==
+                                        2) {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  YoutubePlayerDemo(
+                                                    videoid: courseProvider
+                                                        .Videos[index].videoUrl,
+                                                  )));
+                                    } else {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => new VideoPlay(
+                                            url: courseProvider
+                                                .Videos[index].videoUrl,
+                                            videoDuration: "",
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: Image.asset(
+                                    AppImage.playIcon,
+                                    height: 55,
+                                    width: 55,
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-            
-            
-            
-                           Positioned(
-                            top: 50,
-                            bottom: 50,
-                            left: MediaQuery.of(context).size.width * 0.4,
-                            child: InkWell(
-                              onTap: (){
-                                print("Videos[index].videoUrl===${courseProvider.Videos[index].videoType}");
-
-                 print("Videos[index].videoUrl===${courseProvider.Videos[index].videoUrl}");
-                    var length=courseProvider.Videos[index].videoUrl.split('/');
-                    print("length====${length}");
-                    print(length[length.length-1]);
-                    // var thumbnail=
-
-
-                    var vId=length[length.length-1];
-if(courseProvider.Videos[index].videoType==2){
-    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>YoutubePlayerDemo(videoid:vId,)));
-
-}else{
-
-
-                    Navigator.of(context).push(
-                 MaterialPageRoute(
-                  builder: (context) => new VideoPlay(
-                    url: courseProvider.Videos[index].videoUrl,
-                    videoDuration: "",
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          courseProvider.Videos[index].title,
+                          style: TextStyle(
+                              fontSize: Sizes.titleSize,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Lato-Regular',
+                              color: AppColor.darkText),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-             
-}
-                              },
-                              child: Image.asset(
-                                AppImage.playIcon,
-                                height: 55,
-                                width: 55,
-                              ),
-                            ),
-                          )
-
-            
-                        ],
-                      ),
-            
-                    ),
-
-SizedBox(height: 10,),
-Text(courseProvider.Videos[index].title,
-                     style: TextStyle(
-                          fontSize: Sizes.titleSize,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Lato-Regular',
-                          color: AppColor.darkText),
-                    ),
-
-                  ],
-                ),
-            
-            
-              ),
+                );
+              })
+          : Container(
+              height: 150,
+              child: Center(
+                  child: Text(
+                "No Data Found",
+                style: TextStyle(fontSize: 18),
+              )),
             );
-                
-
-        });
-      }
-    );
+    });
     // ListView.builder(
     //   shrinkWrap: true,
     //   itemCount: getVideoListing == null ? 0 : getVideoListing.length,
@@ -385,9 +387,7 @@ Text(courseProvider.Videos[index].title,
     //             ),
     //           ),
     //         ),
-          
-          
-          
+
     //       ),
     //     );
     //   },
@@ -417,7 +417,7 @@ class _VideoPlayState extends State<VideoPlay> {
   void initState() {
     // setLandScape();
     var _url = Uri.parse(widget.url).toString();
-      print("url ${_url}");
+    print("url $_url");
     _controller = VideoPlayerController.network(
       _url,
     )..initialize().then((_) {
@@ -455,20 +455,23 @@ class _VideoPlayState extends State<VideoPlay> {
       }
     });
   }
-   Future<bool> onwill() async {
+
+  Future<bool> onwill() async {
     await SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-         await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
     return true;
   }
-bool isLandScape = false;
+
+  bool isLandScape = false;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: onwill,
       child: Scaffold(
           backgroundColor: Colors.black,
-          // appBar: AppBar(leading: 
+          // appBar: AppBar(leading:
           //BackButton(onPressed: () async {
           //   await SystemChrome.setPreferredOrientations(
           // [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -492,14 +495,14 @@ bool isLandScape = false;
                         setState(() {});
                         count();
                       },
-                      child: 
-                      Stack(
+                      child: Stack(
                         children: [
                           _controller.value.isInitialized
                               ? Center(
                                   child: AspectRatio(
                                     child: VideoPlayer(_controller),
-                                    aspectRatio: _controller.value.aspectRatio + 0.5,
+                                    aspectRatio:
+                                        _controller.value.aspectRatio + 0.5,
                                   ),
                                 )
                               : Positioned(
@@ -543,59 +546,68 @@ bool isLandScape = false;
                                     : SizedBox(),
                               ),
                             ),
-                            
-                          ) ,  Positioned(
-                              top: 40,
-                              right: 15,
-                              child: 
-                              IconButton(onPressed: () async {
-                                 isLandScape = await setOrientation(context);
-                                    print("issssssLandScapesssssss$isLandScape");
-                                    setState(() {});
-
-                              }, icon : Image.asset("assets/rotate_icon.png",height: 22,)),
-                             ),
-                           Positioned(
+                          ),
+                          Positioned(
+                            top: 40,
+                            right: 15,
+                            child: IconButton(
+                                onPressed: () async {
+                                  isLandScape = await setOrientation(context);
+                                  print("issssssLandScapesssssss$isLandScape");
+                                  setState(() {});
+                                },
+                                icon: Image.asset(
+                                  "assets/rotate_icon.png",
+                                  height: 22,
+                                )),
+                          ),
+                          Positioned(
                               top: 40,
                               left: 15,
                               child: InkWell(
                                   onTap: () async {
                                     isLandScape = await setOrientation(context);
-                                    print("issssssLandScapesssssss$isLandScape");
+                                    print(
+                                        "issssssLandScapesssssss$isLandScape");
                                     setState(() {});
 
                                     // if(AutoOrientation.landscapeLeftMode()){
                                     //    AutoOrientation.portraitUpMode();
                                     //}
                                   },
-                                  child: BackButton(onPressed: ()async{
-                                     await SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-           await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-             Navigator.pop(context);
-                                  },color: Colors.white,))),
-                        
-                        Positioned(bottom: 10,child:
-                           Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextWidget(controller: _controller),
-                       
-                      ]),
-                )
-                         ),
-                         Positioned(bottom: 10,right: 3,child: 
-                         Text("${widget.videoDuration}",
-                            style: TextStyle
-                            (
-                              color: Colors.white,
-                            )
-
-                            )
-                         )
+                                  child: BackButton(
+                                    onPressed: () async {
+                                      await SystemChrome
+                                          .setPreferredOrientations([
+                                        DeviceOrientation.portraitUp,
+                                        DeviceOrientation.portraitDown
+                                      ]);
+                                      await SystemChrome.setEnabledSystemUIMode(
+                                          SystemUiMode.manual,
+                                          overlays: SystemUiOverlay.values);
+                                      Navigator.pop(context);
+                                    },
+                                    color: Colors.white,
+                                  ))),
+                          Positioned(
+                              bottom: 10,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      TextWidget(controller: _controller),
+                                    ]),
+                              )),
+                          Positioned(
+                              bottom: 10,
+                              right: 3,
+                              child: Text("${widget.videoDuration}",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  )))
                         ],
                       ),
                     ),
@@ -666,21 +678,23 @@ bool isLandScape = false;
 Future<bool> setOrientation(BuildContext context) async {
   bool isLandScape =
       MediaQuery.of(context).orientation == Orientation.landscape;
-  print("isLandScapeeeeeeee//////// ${isLandScape}");
+  print("isLandScapeeeeeeee//////// $isLandScape");
   if (isLandScape) {
-    
     await SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-       await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
 
     return false;
   } else {
     await SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-      await SystemChrome.setEnabledSystemUIOverlays([]);
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: []);
     return true;
   }
 }
+
 class TextWidget extends StatefulWidget {
   final VideoPlayerController controller;
   TextWidget({Key key, this.controller}) : super(key: key);

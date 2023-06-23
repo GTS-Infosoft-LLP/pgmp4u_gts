@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/user_object.dart';
+import '../Tests/local_handler/hive_handler.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key key}) : super(key: key);
@@ -87,8 +88,12 @@ class _SplashScreenState extends State<SplashScreen> {
   localDataUpdate() async {
     print("---------------: GETTING FIREBASE TOKEN :----------------");
     var messaging = FirebaseMessaging.instance;
-    messaging.getToken(vapidKey: "").then((value) {
+    messaging.getToken(vapidKey: "").then((value) async {
       print("fcm token $value");
+      HiveHandler.setDeviceToken(value);
+      String token = await HiveHandler.getDeviceToken();
+      print("get device token after set $token");
+
       // api.updateDeviceIdUser({"deviceId": value});
     });
   }
@@ -98,6 +103,11 @@ class _SplashScreenState extends State<SplashScreen> {
     print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase Notification");
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage");
+      print("notification====${event.data}");
+      // print("event notification sss====${event.notification}");
+      print("noti body ====${event.notification.body}");
+      print("noti body ====${event.notification.title}");
+
       if (event.notification != null) {
         print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage 1");
         LocalNotifications().showNotification(
@@ -109,6 +119,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print("Listen onMessageOpenedApp   ${message.data}");
       // if (message.data["notificationType"] == "1") {
       //   Navigator.of(GlobalVariable.navState.currentContext!).push(
       //       MaterialPageRoute(builder: (context) => const Notifications()));
@@ -156,7 +167,7 @@ class LocalNotifications {
   }
 
   void selectNotification(String pay) {
-    // print("notification type${pay}");
+    print("selectNotification type$pay");
     // if (pay == "one") {
     //   Navigator.of(GlobalVariable.navState.currentContext!)
     //       .push(MaterialPageRoute(builder: (context) => const Notifications()));

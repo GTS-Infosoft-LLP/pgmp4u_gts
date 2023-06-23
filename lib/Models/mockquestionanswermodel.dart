@@ -1,8 +1,20 @@
+import 'dart:convert';
+
+import 'package:hive/hive.dart';
+part 'mockquestionanswermodel.g.dart';
+
+@HiveType(typeId: 5)
 class QuestionAnswerModel {
   List<Queans> list = [];
-
+  @HiveField(0)
+  String myList = "";
+  QuestionAnswerModel();
   QuestionAnswerModel.fromjson(List data) {
     list = data.map((e) => Queans.fromjss(e)).toList();
+    myList = jsonEncode(data);
+    print("************************************************************");
+    print("list is $myList");
+    //  quesAns
   }
 }
 
@@ -50,10 +62,9 @@ class QuestionDetail {
     image = questionMap["image"];
     questatus = questionMap["status"];
     quedeleteStatus = questionMap["deleteStatus"];
-    if(questionMap['right_answer']!=null){
-    rightAnswer=questionMap['right_answer'].toString().split(",");
+    if (questionMap['right_answer'] != null) {
+      rightAnswer = questionMap['right_answer'].toString().split(",");
     }
-    
 
     List temp = questionMap["Options"];
 

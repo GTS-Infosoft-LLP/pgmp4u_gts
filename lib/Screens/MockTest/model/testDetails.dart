@@ -1,5 +1,5 @@
 class TestDetails {
-   int id;
+  int id;
   String testName;
   int premium;
   Null questionCount;
@@ -7,11 +7,11 @@ class TestDetails {
   int generated;
   int deleteStatus;
   int status;
-  List<Attempts> attempts=[];
- 
+  int noOfattempts;
+  List<Attempts> attempts = [];
 
   TestDetails.fromjson(Map<String, dynamic> json) {
-     id = json['id'];
+    id = json['id'];
     testName = json['test_name'];
     premium = json['premium'];
     questionCount = json['question_count'];
@@ -19,22 +19,18 @@ class TestDetails {
     generated = json['generated'];
     deleteStatus = json['deleteStatus'];
     status = json['status'];
-    List _attemptListTemp=json["attempts"] ??[];
-    attempts=_attemptListTemp.map((e) => Attempts.fromJson(e)).toList();
-
-
+    noOfattempts = json['noOfattempts'];
+    List _attemptListTemp = json["attempts"] ?? [];
+    attempts = _attemptListTemp.map((e) => Attempts.fromJson(e)).toList();
   }
 }
 
-
-class Attempts{
-   int attempt;
+class Attempts {
+  int attempt;
   String perc;
 
   Attempts.fromJson(Map<String, dynamic> json) {
     attempt = json['attempt'];
     perc = json['perc'];
   }
-
-
 }

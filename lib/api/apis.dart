@@ -10,6 +10,7 @@
 //PRODUCTION BASE URL  
   // const _BASE_URL ="https://pgmp4uapiconnect.vcareprojectmanagement.com/api/";
 const _BASE_URL ="http://3.227.35.115:1011/api/";
+// const _BASE_URL ="https://apivcarestage.vcareprojectmanagement.com/api/";
 
 //const _BASE_URL2 = "https://tspgmp4uapiconnect.vcareprojectmanagement.com/api/";
 
@@ -54,6 +55,9 @@ const stripeVideoLib = _BASE_URL + "createOrderNew?planType=3&deviceType=A";
 const getCourseCategory="http://3.227.35.115:1011/api/getCourseCategory";
 const getCourseSubCategory="http://3.227.35.115:1011/api/getCourseSubCategory";
 const getSubCategoryDetails="http://3.227.35.115:1011/api/getSubCategoryDetails";
+
+
+const deviceToken="https://apivcarestage.vcareprojectmanagement.com/api/updateDeviceToken";
 
 
 

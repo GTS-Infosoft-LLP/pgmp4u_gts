@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/provider/response_provider.dart';
 import 'package:provider/provider.dart';
-
-import '../../tool/CardPageClipper.dart';
 import '../../tool/ShapeClipper.dart';
 
 class FlashCardsPage extends StatefulWidget {
+  String heding;
+  FlashCardsPage({Key key, this.heding}) : super(key: key);
   @override
   _FlashCardsPageState createState() => _FlashCardsPageState();
 }
@@ -23,13 +22,12 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
   @override
   void initState() {
     print(" call init");
-
-
+    print("this is the heading=====${widget.heding}");
 
     responseProvider = Provider.of(context, listen: false);
-     CourseProvider courseProvider= Provider.of(context, listen: false);
+    CourseProvider courseProvider = Provider.of(context, listen: false);
 
-print("length of flash list ==>> ${courseProvider.FlashCards.length}");
+    print("length of flash list ==>> ${courseProvider.FlashCards.length}");
 
     callCardDetailsApi();
     super.initState();
@@ -77,7 +75,7 @@ print("length of flash list ==>> ${courseProvider.FlashCards.length}");
                       // CardPageClipper(),
                       child: Container(
                         // height: MediaQuery.of(context).size.height*.25,
-                          height:150,
+                        height: 150,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                               begin: Alignment.topLeft,
@@ -109,7 +107,7 @@ print("length of flash list ==>> ${courseProvider.FlashCards.length}");
                           SizedBox(width: 20),
                           Center(
                               child: Text(
-                            "Program Life Cycle",
+                            widget.heding,
                             style: TextStyle(
                                 fontSize: 22,
                                 color: Colors.white,
@@ -120,20 +118,13 @@ print("length of flash list ==>> ${courseProvider.FlashCards.length}");
                       ),
                     ),
 
-
-                    
-      
-      
-      
-      
-      
                     // Center(
                     //   child: Container(
                     //     height: 350,
                     //     child: Swiper(
-                    
+
                     //                         layout: SwiperLayout.TINDER,
-                    
+
                     //                         itemWidth:
                     //                             MediaQuery.of(context).size.width,
                     //                         itemHeight: 600,
@@ -146,16 +137,12 @@ print("length of flash list ==>> ${courseProvider.FlashCards.length}");
                     //                                 desc: "Flutter"),
                     //                           );
                     //                         },
-                    
-                    
+
                     //     ),
-                    
+
                     //   ),
                     // )
-      
-      
-      
-      
+
                     // Consumer<ResponseProvider>(
                     //   builder: (context, resoponseProvider, child) {
                     //     return Container(
@@ -212,64 +199,123 @@ print("length of flash list ==>> ${courseProvider.FlashCards.length}");
                     //     );
                     //   },
                     // ),
-      
-      
-      
                   ],
                 ),
 
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Consumer<CourseProvider>(
+                        builder: (context, CourseProvider, child) {
+                      return CourseProvider.FlashCards.isNotEmpty
+                          ? Center(
+                              child: Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * .75,
+                                child: PageView.builder(
+                                    itemCount: CourseProvider.FlashCards.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 18.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            gradient: index % 2 == 0
+                                                ? LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                    colors: [
+                                                        Color(0xff8E8BE6),
+                                                        Color(0xffA8B1FC)
+                                                      ])
+                                                : LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                    colors: [
+                                                        Color(0xff4195B7),
+                                                        Color(0xff76ACC2)
+                                                      ]),
 
+                                            boxShadow: [
+                                              BoxShadow(
+                                                blurRadius: 5.0,
+                                              ),
+                                            ],
 
- Consumer<CourseProvider>(
-   builder: (context,CourseProvider,child) {
-     return 
-     CourseProvider.FlashCards.isNotEmpty?
-     
-     Center(
-                        child: Container(
-                          height: 250,
-                          child: Swiper(
-                      
-                                              layout: SwiperLayout.TINDER,
-                      
-                                              itemWidth:
-                                                  MediaQuery.of(context).size.width,
-                                              itemHeight: 600,
-                                              viewportFraction: 0.9,
-                                              itemCount: CourseProvider.FlashCards.length,
-                                              itemBuilder: (context, index) {
-                                                return Center(
-                                                  child: FlashCard(
-                                                      title: CourseProvider.FlashCards[index].title,
-                                                      desc: CourseProvider.FlashCards[index].description),
-                                                );
-                                              },
-                      
-                      
-                          ),
-                      
-                        ),
-                      ):Container(
-                        height: 200,
-                        child: Center(child: Text("No Data Found", style: TextStyle(
-                          color: _darkText,
-                          fontFamily: "NunitoSans",
-                          fontSize: 18))));
-   }
- )
+                                            // ,color: index % 2 == 0
+                                            //     ? Color(0xff76ACC2)
+                                            //     : Color(0xffA8B1FC),
+                                            borderRadius:
+                                                BorderRadius.circular(40),
+                                          ),
+                                          height: 100,
 
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 30,
+                                              ),
+                                              Text(
+                                                CourseProvider
+                                                    .FlashCards[index].title,
+                                                textAlign: TextAlign.center,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    fontSize: 30,
+                                                    fontFamily: "Roboto",
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white),
+                                              ),
+                                              SizedBox(
+                                                height: 30,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12.0),
+                                                child: Text(
+                                                  CourseProvider
+                                                      .FlashCards[index]
+                                                      .description,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 24,
+                                                      fontFamily: "NunitoSans",
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          // color: Colors.cyan,
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            ))
+                          : Container(
+                              height: MediaQuery.of(context).size.height * .85,
+                              // color: Colors.grey[300],
+                              child: Center(
+                                  child: Text("No Data Found",
+                                      style: TextStyle(
+                                          color: _darkText,
+                                          fontFamily: "NunitoSans",
+                                          fontSize: 18))));
+                    }),
+                  ],
+                )
 
-
-
-      
-      
-      
                 // Container(
                 //   // height: 350,
                 //   child: Swiper(
-                    
+
                 //                       layout: SwiperLayout.TINDER,
-                    
+
                 //                       itemWidth:
                 //                           MediaQuery.of(context).size.width,
                 //                       itemHeight: 600,
@@ -282,21 +328,10 @@ print("length of flash list ==>> ${courseProvider.FlashCards.length}");
                 //                               desc: "Flutter"),
                 //                         );
                 //                       },
-                    
-                    
+
                 //   ),
-                    
+
                 // )
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
               ],
             ),
           ),
@@ -344,6 +379,7 @@ class FlashCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(desc,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           color: _darkText,
                           fontFamily: "NunitoSans",
