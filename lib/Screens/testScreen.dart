@@ -13,17 +13,13 @@ class TextPreDetail extends StatefulWidget {
 
 class _TextPreDetailState extends State<TextPreDetail> {
   @override
-
   var attemptNum;
   void initState() {
-
-
-    CourseProvider cp=Provider.of(context,listen: false);
+    CourseProvider cp = Provider.of(context, listen: false);
 
     // noOfattempts
     // print("noOfattempts========>${cp.testDetails[0].noOfattempts}");
 
-      
     super.initState();
   }
 
@@ -116,28 +112,37 @@ class _TextPreDetailState extends State<TextPreDetail> {
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
-
                                 var startval;
 
+                                if (courseprovider
+                                        .testDetails[index].numAttemptes ==
+                                    courseprovider
+                                        .testDetails[index].attempts.length) {
+                                  startval = 0;
+                                } else {
+                                  startval = 1;
+                                }
 
-                           if(courseprovider.testDetails[index].numAttemptes==courseprovider.testDetails[index].attempts.length){
-                                startval=0;
-                           }else{
-                            startval=1;
+                                CourseProvider courseProvider =
+                                    Provider.of(context, listen: false);
+                                // print("selectedIdNew======>> $selectedIdNew");
+                                courseProvider.apiCall(
+                                    courseprovider.testDetails[index].id);
 
-                           }
-
-
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MockTestAttempts(
-                                              selectedId: courseprovider
-                                                  .testDetails[index].id,
+                                Future.delayed(
+                                    const Duration(milliseconds: 400), () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              MockTestAttempts(
+                                                  selectedId: courseprovider
+                                                      .testDetails[index].id,
                                                   startAgn: startval,
                                                   attemptCnt: courseprovider
-                                                  .testDetails[index].noOfattempts
-                                            )));
+                                                      .testDetails[index]
+                                                      .noOfattempts)));
+                                });
                               },
                               child: Container(
                                 padding: EdgeInsets.only(

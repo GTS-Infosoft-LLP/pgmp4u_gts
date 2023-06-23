@@ -129,7 +129,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                         "Practice Test") {
                                       icon1 = FontAwesomeIcons.book;
                                     } else {
-                                      icon1 = (Icons.edit);
+                                      icon1 = (Icons.add_chart_rounded);
                                     }
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(

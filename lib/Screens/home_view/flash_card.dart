@@ -19,6 +19,8 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
   Color _darkText = Color(0xff424b53);
   Color _lightText = Color(0xff989d9e);
 
+  LinearGradient liGrdint;
+
   @override
   void initState() {
     print(" call init");
@@ -59,6 +61,7 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
     //           '''Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.''')
     // ];
     return Scaffold(
+      // backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(0),
@@ -212,33 +215,54 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                       return CourseProvider.FlashCards.isNotEmpty
                           ? Center(
                               child: Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
+                              padding:
+                                  const EdgeInsets.only(bottom: 8.0, top: 10),
                               child: Container(
                                 height:
                                     MediaQuery.of(context).size.height * .75,
                                 child: PageView.builder(
                                     itemCount: CourseProvider.FlashCards.length,
                                     itemBuilder: (context, index) {
+                                      if (index % 4 == 0) {
+                                        liGrdint = LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Color(0xffF3924D),
+                                              Color(0xffECAB8E)
+                                            ]);
+                                      } else if (index % 3 == 0) {
+                                        liGrdint = LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Color(0xff5082BC),
+                                              Color(0xff8AA1C9)
+                                            ]);
+                                      } else if (index % 2 == 0) {
+                                        liGrdint = LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Color(0xff8E8BE6),
+                                              Color(0xffA8B1FC)
+                                            ]);
+                                      } else {
+                                        liGrdint = LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Color(0xff4195B7),
+                                              Color(0xff76ACC2)
+                                            ]);
+                                      }
+
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 18.0),
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            gradient: index % 2 == 0
-                                                ? LinearGradient(
-                                                    begin: Alignment.topLeft,
-                                                    end: Alignment.bottomRight,
-                                                    colors: [
-                                                        Color(0xff8E8BE6),
-                                                        Color(0xffA8B1FC)
-                                                      ])
-                                                : LinearGradient(
-                                                    begin: Alignment.topLeft,
-                                                    end: Alignment.bottomRight,
-                                                    colors: [
-                                                        Color(0xff4195B7),
-                                                        Color(0xff76ACC2)
-                                                      ]),
+                                            gradient: liGrdint,
 
                                             boxShadow: [
                                               BoxShadow(
@@ -252,7 +276,7 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                                             borderRadius:
                                                 BorderRadius.circular(40),
                                           ),
-                                          height: 100,
+                                          height: 50,
 
                                           child: Column(
                                             children: [
@@ -379,7 +403,7 @@ class FlashCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(desc,
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.left,
                       style: TextStyle(
                           color: _darkText,
                           fontFamily: "NunitoSans",

@@ -117,7 +117,7 @@ class _MockTestState extends State<MockTest> {
                             style: TextStyle(
                                 fontFamily: 'Roboto Medium',
                                 fontSize: width * (20 / 420),
-                                color: Colors.white,
+                                color: Colors.transparent,
                                 letterSpacing: 0.3),
                           ),
                         ],

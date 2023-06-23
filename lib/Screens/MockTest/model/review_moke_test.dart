@@ -41,7 +41,7 @@ class Data {
       try {
         print(json['youranswer']);
         List<String> temp = json['youranswer'].toString().split(",");
-        print("json['youranswer'] ${temp}");
+        print("json['youranswer'] $temp");
         for (var element in temp) {
           print(element);
           youranswer.add(int.parse(element.trim()));
@@ -69,26 +69,32 @@ class Question {
   List<Options> options;
 
   Question.fromJson(Map<String, dynamic> json) {
-    rightAnswer=[];
+    rightAnswer = [];
     id = json['id'];
     questionNo = json['question_no'];
     course = json['course'];
     category = json['category'];
     question = json['question'];
     questionType = json['question_type'];
-    
+
     if (json['right_answer'] != null) {
       try {
         print(json['right_answer']);
         List<String> temp = json['right_answer'].toString().split(",");
-        temp.removeWhere((element) => element==",");
+        temp.removeWhere((element) => element == ",");
         for (var element in temp) {
-          print(element);
-          rightAnswer.add(int.parse(element.trim()));
+          print("element value==========$element");
+          if (element.isNotEmpty) {
+            print("element value==========$element");
+            rightAnswer.add(int.parse(element.trim()));
+          }
+          // rightAnswer.add(int.parse(element.trim()));
         }
       } on Exception catch (e) {
-        String value=json['right_answer'].toString().replaceAll(",", "");
+        String value = json['right_answer'].toString().replaceAll(",", "");
+        print("value===============>$value");
         print(e);
+        // rightAnswer.add(0);
         rightAnswer.add(int.parse(value.trim()));
       }
     }
@@ -118,7 +124,7 @@ class Question {
     if (json['Options'] != null) {
       options = <Options>[];
       json['Options'].forEach((v) {
-        options.add(new Options.fromJson(v,rightAnswer));
+        options.add(new Options.fromJson(v, rightAnswer));
       });
     }
   }
@@ -133,19 +139,18 @@ class Options {
   int deleteStatus;
   bool customRight;
 
-  Options.fromJson(Map<String, dynamic> json,List customList) {
+  Options.fromJson(Map<String, dynamic> json, List customList) {
     id = json['id'];
     question = json['question'];
     questionOption = json['question_option'];
     rightAnswer = json['right_answer'];
     status = json['status'];
     deleteStatus = json['deleteStatus'];
-    if(customList.contains(json['id'])){
-      customRight=true;
-    }else{
-       customRight=false;
+    if (customList.contains(json['id'])) {
+      customRight = true;
+    } else {
+      customRight = false;
     }
-    
   }
 
   Map<String, dynamic> toJson() {
@@ -167,7 +172,7 @@ class Timings {
   Timings({this.startDate, this.date});
 
   Timings.fromJson(Map<String, dynamic> json) {
-    startDate = json['start_date'];
+    startDate = json['start_date'] ?? "";
     date = json['date'];
   }
 }

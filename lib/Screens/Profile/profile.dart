@@ -614,9 +614,11 @@ class _ProfileState extends State<Profile> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => QuesOfDay()));
+                                        builder: (context) =>
+                                         QuesOfDay
+                                        ()));
                               },
-                              child: Container(
+                              child: Container(   
                                 margin: EdgeInsets.only(bottom: 6),
                                 padding: EdgeInsets.only(
                                     top: 13,
