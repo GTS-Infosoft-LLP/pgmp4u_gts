@@ -20,8 +20,7 @@ class _StartScreenState extends State<StartScreen> {
     return Color(int.parse('FF$hexCode', radix: 16));
   }
 
-  CollectionReference users =
-      FirebaseFirestore.instance.collection('staticData');
+  CollectionReference users = FirebaseFirestore.instance.collection('staticData');
   int _currentIndex = 1;
   List<Slide> slides = [];
   @override
@@ -32,16 +31,11 @@ class _StartScreenState extends State<StartScreen> {
       new Slide(
         title: "Learn Anytime",
         maxLineTitle: 2,
-        styleTitle: TextStyle(
-            color: Colors.black, fontSize: 30.0, fontFamily: 'Roboto Bold'),
+        styleTitle: TextStyle(color: Colors.black, fontSize: 30.0, fontFamily: 'Roboto Bold'),
         description:
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-        styleDescription: TextStyle(
-            color: _colorfromhex("#76767E"),
-            fontSize: 14.0,
-            fontFamily: 'Roboto Regular'),
-        marginDescription:
-            EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 70.0),
+        styleDescription: TextStyle(color: _colorfromhex("#76767E"), fontSize: 14.0, fontFamily: 'Roboto Regular'),
+        marginDescription: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 70.0),
         centerWidget: Container(
           margin: EdgeInsets.only(top: 80),
           child: Image.asset('assets/reading1.png'),
@@ -55,14 +49,10 @@ class _StartScreenState extends State<StartScreen> {
     slides.add(
       new Slide(
         title: "Test Yourself",
-        styleTitle: TextStyle(
-            color: Colors.black, fontSize: 30.0, fontFamily: 'Roboto Bold'),
+        styleTitle: TextStyle(color: Colors.black, fontSize: 30.0, fontFamily: 'Roboto Bold'),
         description:
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-        styleDescription: TextStyle(
-            color: _colorfromhex("#76767E"),
-            fontSize: 14.0,
-            fontFamily: 'Roboto Regular'),
+        styleDescription: TextStyle(color: _colorfromhex("#76767E"), fontSize: 14.0, fontFamily: 'Roboto Regular'),
         directionColorBegin: Alignment.topRight,
         backgroundColor: Colors.white,
         centerWidget: Image.asset('assets/exam1.png'),
@@ -72,14 +62,10 @@ class _StartScreenState extends State<StartScreen> {
     slides.add(
       new Slide(
         title: "Huge Resources",
-        styleTitle: TextStyle(
-            color: Colors.black, fontSize: 30.0, fontFamily: 'Roboto Bold'),
+        styleTitle: TextStyle(color: Colors.black, fontSize: 30.0, fontFamily: 'Roboto Bold'),
         description:
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-        styleDescription: TextStyle(
-            color: _colorfromhex("#76767E"),
-            fontSize: 14.0,
-            fontFamily: 'Roboto Regular'),
+        styleDescription: TextStyle(color: _colorfromhex("#76767E"), fontSize: 14.0, fontFamily: 'Roboto Regular'),
         directionColorBegin: Alignment.topCenter,
         backgroundColor: Colors.white,
         centerWidget: Image.asset('assets/library1.png'),
@@ -141,13 +127,11 @@ class _StartScreenState extends State<StartScreen> {
     return SizedBox(
       child: FutureBuilder<DocumentSnapshot>(
           future: users.doc('Zli1qoSMV4yLT0ZhdfsV').get(),
-          builder:
-              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              Map<String, dynamic> data =
-                  snapshot.data.data() as Map<String, dynamic>;
+              Map<String, dynamic> data = snapshot.data.data() as Map<String, dynamic>;
 
-              print(">>>>>> data ${data}");
+              print(">>>>>> data $data");
               return Stack(
                 children: [
                   SizedBox(
@@ -157,17 +141,11 @@ class _StartScreenState extends State<StartScreen> {
                         Slide(
                           title: "Learn Anytime",
                           maxLineTitle: 2,
-                          styleTitle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30.0,
-                              fontFamily: 'Roboto Bold'),
+                          styleTitle: TextStyle(color: Colors.black, fontSize: 30.0, fontFamily: 'Roboto Bold'),
                           description: data['step1'],
-                          styleDescription: TextStyle(
-                              color: _colorfromhex("#76767E"),
-                              fontSize: 14.0,
-                              fontFamily: 'Roboto Regular'),
-                          marginDescription: EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 20.0, bottom: 70.0),
+                          styleDescription:
+                              TextStyle(color: _colorfromhex("#76767E"), fontSize: 14.0, fontFamily: 'Roboto Regular'),
+                          marginDescription: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 70.0),
                           centerWidget: Container(
                             margin: EdgeInsets.only(top: 0),
                             child: Image.asset('assets/reading1.png'),
@@ -179,15 +157,10 @@ class _StartScreenState extends State<StartScreen> {
                         ),
                         Slide(
                           title: "Test Yourself",
-                          styleTitle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30.0,
-                              fontFamily: 'Roboto Bold'),
+                          styleTitle: TextStyle(color: Colors.black, fontSize: 30.0, fontFamily: 'Roboto Bold'),
                           description: data['step2'],
-                          styleDescription: TextStyle(
-                              color: _colorfromhex("#76767E"),
-                              fontSize: 14.0,
-                              fontFamily: 'Roboto Regular'),
+                          styleDescription:
+                              TextStyle(color: _colorfromhex("#76767E"), fontSize: 14.0, fontFamily: 'Roboto Regular'),
                           directionColorBegin: Alignment.topRight,
                           backgroundColor: Colors.white,
                           centerWidget: Image.asset('assets/exam1.png'),
@@ -195,15 +168,10 @@ class _StartScreenState extends State<StartScreen> {
                         ),
                         Slide(
                           title: "Huge Resources",
-                          styleTitle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30.0,
-                              fontFamily: 'Roboto Bold'),
+                          styleTitle: TextStyle(color: Colors.black, fontSize: 30.0, fontFamily: 'Roboto Bold'),
                           description: data['step3'],
-                          styleDescription: TextStyle(
-                              color: _colorfromhex("#76767E"),
-                              fontSize: 14.0,
-                              fontFamily: 'Roboto Regular'),
+                          styleDescription:
+                              TextStyle(color: _colorfromhex("#76767E"), fontSize: 14.0, fontFamily: 'Roboto Regular'),
                           directionColorBegin: Alignment.topCenter,
                           backgroundColor: Colors.white,
                           centerWidget: Image.asset('assets/library1.png'),
@@ -220,10 +188,8 @@ class _StartScreenState extends State<StartScreen> {
 
                       // Done button
                       renderDoneBtn: this.renderDoneBtn(width),
-                      onDonePress: () =>
-                          {Navigator.of(context).pushNamed('/login')},
-                      onSkipPress: () =>
-                          {Navigator.of(context).pushNamed('/login')},
+                      onDonePress: () => {Navigator.of(context).pushNamed('/login')},
+                      onSkipPress: () => {Navigator.of(context).pushNamed('/login')},
                       // Dot indicator
                       colorDot: _colorfromhex("#F1F1FE"),
                       colorActiveDot: _colorfromhex("#4849DF"),
@@ -311,8 +277,7 @@ class _StartScreenState extends State<StartScreen> {
             }
             return Center(
                 child: CircularProgressIndicator(
-              valueColor:
-                  AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF")),
+              valueColor: AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF")),
             ));
           }),
     );

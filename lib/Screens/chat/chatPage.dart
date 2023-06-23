@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/Screens/chat/chatHandler.dart';
+import 'package:pgmp4u/Screens/chat/widgets/chatTextField.dart';
+import 'package:pgmp4u/Screens/chat/widgets/senderCard.dart';
 
-import 'chatModel.dart';
+import 'model/chatModel.dart';
 
 class ChatPage extends StatefulWidget {
   var v1;
@@ -11,16 +15,22 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  @override
   TextEditingController chatController = TextEditingController();
   ScrollController chatListController = ScrollController();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
+    FirebaseChatHandler.printCollection();
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.v1,
+          widget.v1 ?? 'Chat',
           style: TextStyle(
             //  fontSize: width * (18 / 420),
             fontFamily: 'Roboto Medium',
@@ -41,14 +51,108 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          Container(
-            height: size.height / 1.25,
-            width: size.width,
-            // color: Colors.amber,
+      bottomSheet: ChatTextField(size: size, chatController: chatController),
+      resizeToAvoidBottomInset: true,
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: FirebaseChatHandler.getAllGroupMessage(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              print('data length: ${snapshot.data.docs}');
+              return ListView.builder(
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  physics: ClampingScrollPhysics(),
+                  reverse: true,
+                  itemCount: snapshot.data?.docs.length ?? 0,
+                  itemBuilder: (context, indexMain) {
+                    int index = (snapshot.data.docs.length - 1) - indexMain;
 
-            // child: ListView.builder(
+                    SenderMessageCard();
+
+                    // MessageModel messageModel = MessageModel(
+                    //   receiverId:
+                    //       snapshot.data?.docs[index].get("receiverId") ??
+                    //           "",
+                    //   senderId:
+                    //       snapshot.data?.docs[index].get("senderId") ?? "",
+                    //   time: snapshot.data?.docs[index]
+                    //           .get("time")
+                    //           .toString() ??
+                    //       "",
+                    //   // Jiffy(time).Hm,
+                    //   message:
+                    //       snapshot.data?.docs[index].get("message") ?? "",
+                    //   senderUserType: snapshot.data?.docs[index]
+                    //           .get("senderUserType")
+                    //           .toString() ??
+                    //       '',
+                    //   profileLink:
+                    //       snapshot.data?.docs[index].get("profileLink") ??
+                    //           "",
+                    //   messageId:
+                    //       snapshot.data?.docs[index].get('messageId'),
+                    //   deletedBy:
+                    //       snapshot.data?.docs[index].get('deletedBy'),
+                    //   messageType:
+                    //       snapshot.data?.docs[index].get('messageType') ??
+                    //           1,
+                    //   deleteLink:
+                    //       snapshot.data?.docs[index].get('deleteLink') ??
+                    //           '',
+                    //   subtitle:
+                    //       snapshot.data?.docs[index].get('subtitle') ?? '',
+                    // );
+
+                    //  if (messageModel.senderId ==
+                    //       HiveConfig.getUserHive()!.userId.toString()) {
+                    //     return SenderMessageCard(
+                    //         );
+                    //   } else {
+                    //     return RecivedMessageCard(
+
+                    //     );
+
+                    // }
+                  });
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          }),
+    );
+  }
+
+  Widget senderChatWidget(ChatModel chatModel) {
+    final Size size = MediaQuery.of(context).size;
+    var d = DateTime.fromMillisecondsSinceEpoch(chatModel.messageDate ?? 0);
+    return Container(
+      width: size.width,
+      alignment: chatModel.sendBy == 1 ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.blue,
+        ),
+        child: Text(
+          chatModel.message,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color _colorfromhex(String hexColor) {
+    final hexCode = hexColor.replaceAll('#', '');
+    return Color(int.parse('FF$hexCode', radix: 16));
+  }
+}
+
+
+// child: ListView.builder(
             //     itemCount: 2,
             //     itemBuilder: ((context, index) {
             //       return ListTile(
@@ -145,87 +249,3 @@ class _ChatPageState extends State<ChatPage> {
             //       //   ),
             //       // );
             //     })),
-          ),
-          Container(
-            height: size.height / 10,
-            width: size.width,
-            alignment: Alignment.center,
-            // color: Colors.blue,
-            child: Container(
-              height: size.height / 15,
-              width: size.width / 1.1,
-              decoration: BoxDecoration(
-                  // color: Colors.amber,
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(30))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: Container(
-                      height: size.height / 17,
-                      width: size.width / 1.3,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: TextField(
-                          controller: chatController,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "   Type your message here...",
-                            // border: OutlineInputBorder(
-                            //     // borderRadius: BorderRadius.circular(8),
-                            //     )
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                      icon: Icon(
-                        Icons.send,
-                      ),
-                      onPressed: () {}),
-                ],
-              ),
-            ),
-          )
-        ]),
-      ),
-    );
-  }
-
-  Widget senderChatWidget(ChatModel chatModel) {
-    final Size size = MediaQuery.of(context).size;
-    var d = DateTime.fromMillisecondsSinceEpoch(chatModel.messageDate ?? 0);
-    return Container(
-      width: size.width,
-      alignment:
-          chatModel.sendBy == 1 ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.blue,
-        ),
-        child: Text(
-          chatModel.message,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Color _colorfromhex(String hexColor) {
-    final hexCode = hexColor.replaceAll('#', '');
-    return Color(int.parse('FF$hexCode', radix: 16));
-  }
-}
