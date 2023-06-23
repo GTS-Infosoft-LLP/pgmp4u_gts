@@ -133,6 +133,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
         });
 
         print(">>>>>>>>> review data $responseData");
+        print("widget.attempt==========${widget.attempt}");
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -141,6 +142,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                     mocktestId: selectedIdNew,
                     attemptData: attemptNew,
                     activeTime: stopTime,
+                    atmptCount: widget.attempt,
+                    
                   )),
         );
       }

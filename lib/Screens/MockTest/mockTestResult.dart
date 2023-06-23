@@ -1,12 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:pgmp4u/Models/mockTest.dart';
-import 'package:intl/intl.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:pgmp4u/Screens/MockTest/MockTestAttempts.dart';
 import 'package:pgmp4u/Screens/MockTest/ReviewMockTest.dart';
 
@@ -15,9 +9,14 @@ class MockTestResult extends StatefulWidget {
   final mocktestId;
   final attemptData;
   final activeTime;
+  final atmptCount;
 
   MockTestResult(
-      {this.resultsData, this.mocktestId, this.attemptData, this.activeTime});
+      {this.resultsData,
+      this.mocktestId,
+      this.attemptData,
+      this.activeTime,
+      this.atmptCount});
 
   @override
   _MockTestResultState createState() => new _MockTestResultState(
@@ -184,10 +183,10 @@ class _MockTestResultState extends State<MockTestResult> {
                                       width: width / 1.6,
                                       margin: EdgeInsets.only(top: 3),
                                       child: Text(
-                                         (percentage <= 25)? "Practice more! You got ${results["correct"]} out of ${results["total"]} Answers Correctly":
-                                        'Congratulations for getting ${results["correct"]} out of ${results["total"]} Answers Correctly'
-                                        
-                                        ,
+                                        (percentage <= 25)
+                                            ? "Practice more! You got ${results["correct"]} out of ${results["total"]} Answers Correctly"
+                                            : 'Congratulations for getting ${results["correct"]} out of ${results["total"]} Answers Correctly',
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: 'Roboto Medium',
                                           fontSize: width * (16 / 420),
@@ -396,11 +395,17 @@ class _MockTestResultState extends State<MockTestResult> {
                       children: [
                         GestureDetector(
                           onTap: () => {
+                            print(
+                                "mocktestIdNew====================$mocktestIdNew"),
+                            print(
+                                "widget.atmptCount====================$widget.atmptCount"),
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MockTestAttempts(
-                                      selectedId: mocktestIdNew)),
+                                        selectedId: mocktestIdNew,
+                                        attemptCnt: widget.atmptCount + 1,
+                                      )),
                             ),
                           },
                           child: Container(
@@ -430,7 +435,7 @@ class _MockTestResultState extends State<MockTestResult> {
                                       attemptData: attemptId)),
                             ),
 
-                                print("mocktestIdNew===${mocktestIdNew}")
+                            print("mocktestIdNew===$mocktestIdNew")
 
                             //  Navigator.of(context).pushNamed('/review-mock-test'),
                             // Navigator.of(context).pushNamed('/review-mock-test',

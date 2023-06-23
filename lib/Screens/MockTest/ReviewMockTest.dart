@@ -10,10 +10,8 @@ import 'model/review_moke_test.dart';
 class ReviewMockTest extends StatefulWidget {
   final selectedId;
   final attemptData;
-  ReviewMockTest({
-    this.selectedId,
-    this.attemptData,
-  });
+  final AttemptCount;
+  ReviewMockTest({this.selectedId, this.attemptData, this.AttemptCount});
 
   @override
   _ReviewMockTestState createState() => _ReviewMockTestState(
@@ -38,6 +36,9 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
   ReviewMokeText mapResponse;
   @override
   var currentIndex;
+
+  int isData;
+
   void initState() {
     currentIndex = 0;
     print("in review mock screemn");
@@ -71,17 +72,31 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
     }}");
     if (response.statusCode == 200) {
       print(convert.jsonDecode(response.body));
+      Map res = convert.jsonDecode(response.body);
+      print("res map==========>>>>>$res");
+
+      print(" res map=== res map data===${res["data"]}");
+
+      List data = res["data"];
+      if (data.isEmpty) {
+        setState(() {
+          isData = 0;
+          print("isData=======$isData");
+        });
+      }
       print("response.body==========${response.body.length}");
 
       if (response.body.isEmpty) {
         listResponse = [];
       } else {
-        setState(() {
-          mapResponse =
-              ReviewMokeText.fromJson(convert.jsonDecode(response.body));
-          listResponse = mapResponse.data;
-          selectedAnswer = listResponse[0].youranswer;
-        });
+        if (data.isNotEmpty) {
+          setState(() {
+            mapResponse =
+                ReviewMokeText.fromJson(convert.jsonDecode(response.body));
+            listResponse = mapResponse.data;
+            selectedAnswer = listResponse[0].youranswer;
+          });
+        }
       }
       // print(convert.jsonDecode(response.body));
     }
@@ -700,19 +715,24 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                 }),
                           )
                         : Container(
-                            child: Text(
-                            "No Questios attempted",
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          )
-
-                            //   child: CircularProgressIndicator(
-                            //   valueColor: AlwaysStoppedAnimation<Color>(
-                            //       _colorfromhex("#4849DF")),
+                            //   child: Text(
+                            //   "No Questios attempted",
+                            //   style: TextStyle(
+                            //     fontSize: 14,
+                            //   ),
                             // )
 
-                            )
+                            child: isData == 0
+                                ? Text(
+                                    "No Questions attempted",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  )
+                                : CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        _colorfromhex("#4849DF")),
+                                  ))
                   ],
                 ),
               ),

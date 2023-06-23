@@ -109,7 +109,9 @@ class _NotificationsState extends State<Notifications> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 15.0),
                               child: Container(
+                                  width: MediaQuery.of(context).size.width * .7,
                                   decoration: BoxDecoration(
+                                      // color: Colors.blue,
                                       border: Border(
                                     // top: BorderSide(width: 16.0, color: Colors.lightBlue.shade600),
                                     bottom: BorderSide(color: Colors.grey[300]),
@@ -150,23 +152,47 @@ class _NotificationsState extends State<Notifications> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            profileProvider
-                                                .NotificationData[index].title,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .7,
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .5,
+                                              // color: Colors.amber,
+                                              child: Text(
+                                                profileProvider
+                                                    .NotificationData[index]
+                                                    .title,
+                                                maxLines: 5,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18),
+                                              ),
+                                            ),
                                           ),
                                           SizedBox(
                                             height: 5,
                                           ),
-                                          Text(
-                                            profileProvider
-                                                .NotificationData[index]
-                                                .message,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .7,
+                                            child: Text(
+                                              profileProvider
+                                                  .NotificationData[index]
+                                                  .message,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14),
+                                            ),
                                           ),
                                           SizedBox(
                                             height: 10,

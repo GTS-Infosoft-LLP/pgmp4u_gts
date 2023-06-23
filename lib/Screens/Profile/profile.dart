@@ -584,9 +584,12 @@ class _ProfileState extends State<Profile> {
                                 ProfileProvider profileProvider = Provider.of(context, listen: false);
                                 profileProvider.getQuesDay(1);
 
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => QuesOfDay()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => QuesOfDay()));
                               },
-                              child: Container(
+                              child: Container(   
                                 margin: EdgeInsets.only(bottom: 6),
                                 padding: EdgeInsets.only(
                                     top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),

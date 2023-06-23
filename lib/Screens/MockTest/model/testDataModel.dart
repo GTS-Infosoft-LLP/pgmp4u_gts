@@ -19,7 +19,14 @@ class TestDataDetails {
     premium = json["premium"];
     masterList = json["masterList"];
     type = json["type"];
-    price = json["price"];
+    price = json["price"].toString();
+    if (json["price"] == null) {
+      print("inside this conditon");
+      price = "0";
+    }
+
+    print("price===========>>>>>>>$price");
+
     question_count = json["question_count"];
     num_attemptes = json["num_attemptes"];
     generated = json["generated"];

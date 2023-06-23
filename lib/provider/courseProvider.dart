@@ -97,15 +97,21 @@ class CourseProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       flashCate.clear();
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+      print("mapResponse=========$mapResponse");
+      if (mapResponse["status"] == 400) {
+        flashCate = [];
+        notifyListeners();
+        return;
+      } else {
+        List temp1 = mapResponse["data"];
+        print("temp list===$temp1");
+        flashCate = temp1.map((e) => FlashCateDetails.fromjson(e)).toList();
 
-      List temp1 = mapResponse["data"];
-      print("temp list===$temp1");
-      flashCate = temp1.map((e) => FlashCateDetails.fromjson(e)).toList();
+        notifyListeners();
 
-      notifyListeners();
-
-      if (flashCate.isNotEmpty) {
-        print("flashCate name 0=== ${flashCate[0].name}");
+        if (flashCate.isNotEmpty) {
+          print("flashCate name 0=== ${flashCate[0].name}");
+        }
       }
     }
     print("respponse=== ${response.body}");
@@ -391,7 +397,7 @@ class CourseProvider extends ChangeNotifier {
   }
 
   MockData mockData;
- Future apiCall(int selectedIdNew) async {
+  Future apiCall(int selectedIdNew) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
@@ -415,18 +421,10 @@ class CourseProvider extends ChangeNotifier {
       print(convert.jsonDecode(response.body));
 
       getit = convert.jsonDecode(response.body);
-        print("mock data==================>>>>>>>>>>${getit["data"]}");
+      print("mock data==================>>>>>>>>>>${getit["data"]}");
 
-       mockData = MockData.fromjd(getit["data"]);
-       notifyListeners();
-
+      mockData = MockData.fromjd(getit["data"]);
+      notifyListeners();
     }
   }
-
-
-
-
-
-
-
 }
