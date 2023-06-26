@@ -63,12 +63,32 @@ class PracticeTextProvider extends ChangeNotifier {
 
       List temp = _mapResponse["data"];
 
+      List<PracTestModel> p1List = temp.map((e) => PracTestModel.fromJson(e)).toList();
+
       pList = temp.map((e) => PracTestModel.fromJson(e)).toList();
+
+      // for (int i = 0; i < p1List.length; i++) {
+      //   var opList = p1List[i].ques;
+      //   var lst = opList.options;
+      //   print("opList=======${opList.options}");
+
+      //   var len = lst.length;
+      //   print("len======$len");
+
+      //   for (int j = 0; j < len; j++) {
+      //     print("option values=========${lst[j].questionOption}");
+
+      //     if(lst[j].questionOption==""){
+      //       pList[i].ques.options[j]
+      //     }
+      //   }
+      // }
+
       practiceApiLoader = false;
       print("pList=============$pList");
 
       if (pList.isNotEmpty) {
-        print("pList[0]============${pList[0].ques.options[1].questionOption}");
+        // print("pList[0]============${pList[0].ques.options[1].questionOption}");
       }
 
       // if()

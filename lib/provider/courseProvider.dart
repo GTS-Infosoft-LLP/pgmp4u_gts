@@ -37,10 +37,7 @@ class CourseProvider extends ChangeNotifier {
 
     var response = await http.post(
       Uri.parse("http://3.227.35.115:1011/api/getMasterData"),
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': stringValue
-      },
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );
 
@@ -86,10 +83,7 @@ class CourseProvider extends ChangeNotifier {
 
     var response = await http.post(
       Uri.parse("http://3.227.35.115:1011/api/getFlashCategories"),
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': stringValue
-      },
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );
 
@@ -126,10 +120,7 @@ class CourseProvider extends ChangeNotifier {
 
     var response = await http.post(
       Uri.parse("http://3.227.35.115:1011/api/getVideoCategories"),
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': stringValue
-      },
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );
 
@@ -173,10 +164,7 @@ class CourseProvider extends ChangeNotifier {
 
     var response = await http.get(
       Uri.parse("http://3.227.35.115:1011/api/getCourse"),
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': stringValue
-      },
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
     );
 
     print("response.statusCode===${response.statusCode}");
@@ -204,10 +192,7 @@ class CourseProvider extends ChangeNotifier {
 
     var response = await http.post(
       Uri.parse("http://3.227.35.115:1011/api/getVideos"),
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': stringValue
-      },
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );
     print("http://3.227.35.115:1011/api/getVideos");
@@ -252,10 +237,7 @@ class CourseProvider extends ChangeNotifier {
 
     var response = await http.post(
       Uri.parse("http://3.227.35.115:1011/api/getFlashCards"),
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': stringValue
-      },
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );
 
@@ -297,10 +279,7 @@ class CourseProvider extends ChangeNotifier {
 
     var response = await http.post(
       Uri.parse("http://3.227.35.115:1011/api/gettestDetails"),
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': stringValue
-      },
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );
 
@@ -331,10 +310,7 @@ class CourseProvider extends ChangeNotifier {
 
     var response = await http.post(
       Uri.parse("http://3.227.35.115:1011/api/gettest"),
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': stringValue
-      },
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );
 
@@ -343,14 +319,21 @@ class CourseProvider extends ChangeNotifier {
       testData.clear();
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
 
-      List temp1 = mapResponse["data"];
-      print("temp list===$temp1");
-      testData = temp1.map((e) => TestDataDetails.fromjson(e)).toList();
+      print("mapResponse===========$mapResponse");
 
-      notifyListeners();
+      if (mapResponse["status"] == 400) {
+        testData = [];
+        notifyListeners();
+      } else {
+        List temp1 = mapResponse["data"];
+        print("temp list===$temp1");
+        testData = temp1.map((e) => TestDataDetails.fromjson(e)).toList();
 
-      if (testData.isNotEmpty) {
-        print("testData 0=== ${testData[0].test_name}");
+        notifyListeners();
+
+        if (testData.isNotEmpty) {
+          print("testData 0=== ${testData[0].test_name}");
+        }
       }
     }
     print("respponse=== ${response.body}");
@@ -365,12 +348,8 @@ class CourseProvider extends ChangeNotifier {
     var request = {"deviceToken": Devtoken};
 
     var response = await http.post(
-      Uri.parse(
-          "https://apivcarestage.vcareprojectmanagement.com/api/updateDeviceToken"),
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': stringValue
-      },
+      Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/updateDeviceToken"),
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );
 
@@ -402,19 +381,11 @@ class CourseProvider extends ChangeNotifier {
     String stringValue = prefs.getString('token');
     http.Response response;
     response = await http.get(Uri.parse(MOCK_TEST + '/$selectedIdNew'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': stringValue
-        });
+        headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
     print("Url :=> ${Uri.parse(MOCK_TEST + "/$selectedIdNew")}");
-    print("header :=> ${{
-      'Content-Type': 'application/json',
-      'Authorization': stringValue
-    }}");
-    print(
-        "API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
-    print(
-        "API Response ; $stringValue => ${response.request.url}; ${response.body}");
+    print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
+    print("API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
+    print("API Response ; $stringValue => ${response.request.url}; ${response.body}");
 
     Map getit;
     if (response.statusCode == 200) {

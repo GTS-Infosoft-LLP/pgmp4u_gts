@@ -33,6 +33,7 @@ class _PracticeNewState extends State<PracticeNew> {
   }
 
   bool _show = true;
+  int _isattempt = 0;
   int _quetionNo = 0;
   int selectedAnswer;
   List<int> selAns = [];
@@ -210,6 +211,9 @@ class _PracticeNewState extends State<PracticeNew> {
                                           currentIndex = index;
                                           print("final index===$currentIndex");
                                         });
+                                        _isattempt = data.pList[_quetionNo].ques.rightAnswer.contains(',')
+                                            ? data.pList[_quetionNo].ques.rightAnswer.split(',').length - 1
+                                            : 0;
                                       },
                                       itemBuilder: (context, index) {
                                         return SingleChildScrollView(
@@ -297,12 +301,27 @@ class _PracticeNewState extends State<PracticeNew> {
                                                         physics: NeverScrollableScrollPhysics(),
                                                         itemCount: data.pList[_quetionNo].ques.options.length,
                                                         itemBuilder: (context, index) {
+                                                          // if (data.pList[_quetionNo].ques.options[index]
+                                                          //         .questionOption ==
+                                                          //     "") {
+                                                          //   data.pList[_quetionNo].ques.options
+                                                          //       .remove(data.pList[_quetionNo].ques.options[index]);
+                                                          // }
                                                           return Padding(
                                                             padding: const EdgeInsets.only(bottom: 15.0, top: 10),
                                                             child: InkWell(
                                                               onTap: () {
+                                                                if (_isattempt <
+                                                                    data.pList[_quetionNo].ques.options
+                                                                        .where((element) => element.isseleted == true)
+                                                                        .toList()
+                                                                        .length) {
+                                                                  return;
+                                                                }
                                                                 setState(() {
-                                                                  
+                                                                  data.pList[_quetionNo].ques.options[index].isseleted =
+                                                                      !data.pList[_quetionNo].ques.options[index]
+                                                                          .isseleted;
                                                                   // selectedAnswer =
                                                                   //     data.pList[_quetionNo].ques.options[index].id;
 
@@ -346,18 +365,56 @@ class _PracticeNewState extends State<PracticeNew> {
                                                               child: Container(
                                                                 decoration: BoxDecoration(
                                                                     // shape: BoxShape.circle,
-
-                                                                    color: correctAns.contains(data.pList[_quetionNo]
-                                                                                .ques.options[index].id) &&
-                                                                            selAns.contains(data.pList[_quetionNo].ques
-                                                                                .options[index].id)
-                                                                        ? _colorfromhex("#E6F7E7")
-                                                                        : correctAns.contains(data.pList[_quetionNo]
-                                                                                    .ques.options[index].id) &&
-                                                                                !selAns.contains(data.pList[_quetionNo]
-                                                                                    .ques.options[index].id)
-                                                                            ? _colorfromhex("#FFF6F6")
+                                                                    color: _isattempt <
+                                                                            data.pList[_quetionNo].ques.options
+                                                                                .where((element) =>
+                                                                                    element.isseleted == true)
+                                                                                .toList()
+                                                                                .length
+                                                                        ? data.pList[_quetionNo].ques.options.any(
+                                                                                (element) => element.isseleted == true)
+                                                                            ? data.pList[_quetionNo].ques.rightAnswer
+                                                                                    .contains(
+                                                                                        "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                ? _colorfromhex("#E6F7E7")
+                                                                                : data.pList[_quetionNo].ques
+                                                                                        .options[index].isseleted
+                                                                                    ? data.pList[_quetionNo].ques
+                                                                                            .rightAnswer
+                                                                                            .contains(
+                                                                                                "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                        ? _colorfromhex("#E6F7E7")
+                                                                                        : _colorfromhex("#FFF6F6")
+                                                                                    : Colors.white
+                                                                            : data.pList[_quetionNo].ques.options[index]
+                                                                                    .isseleted
+                                                                                ? data.pList[_quetionNo].ques
+                                                                                        .rightAnswer
+                                                                                        .contains(
+                                                                                            "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                    ? _colorfromhex("#E6F7E7")
+                                                                                    : _colorfromhex("#FFF6F6")
+                                                                                : Colors.white
+                                                                        : data.pList[_quetionNo].ques.options[index]
+                                                                                .isseleted
+                                                                            ? data.pList[_quetionNo].ques.rightAnswer
+                                                                                    .contains(
+                                                                                        "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                ? _colorfromhex("#E6F7E7")
+                                                                                : _colorfromhex("#FFF6F6")
                                                                             : Colors.white
+
+                                                                    // correctAns.contains(data.pList[_quetionNo]
+                                                                    //             .ques.options[index].id) &&
+                                                                    //         selAns.contains(data.pList[_quetionNo].ques
+                                                                    //             .options[index].id)
+                                                                    //     ? _colorfromhex("#E6F7E7")
+                                                                    //     : correctAns.contains(data.pList[_quetionNo]
+                                                                    //                 .ques.options[index].id) &&
+                                                                    //             !selAns.contains(data.pList[_quetionNo]
+                                                                    //                 .ques.options[index].id)
+                                                                    //         ? _colorfromhex("#FFF6F6")
+                                                                    //         : Colors.white
 
                                                                     // color: data.pList[_quetionNo].ques.options[index].id ==
                                                                     //             selectedAnswer &&
@@ -394,25 +451,38 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                       decoration: BoxDecoration(
                                                                           borderRadius:
                                                                               BorderRadius.circular(width * (25 / 420)),
-                                                                          color: correctAns.contains(data
-                                                                                      .pList[_quetionNo]
-                                                                                      .ques
-                                                                                      .options[index]
-                                                                                      .id) &&
-                                                                                  selAns.contains(data.pList[_quetionNo]
-                                                                                      .ques.options[index].id)
-                                                                              ? _colorfromhex("#E6F7E7")
-                                                                              : correctAns.contains(data
-                                                                                          .pList[_quetionNo]
-                                                                                          .ques
-                                                                                          .options[index]
-                                                                                          .id) &&
-                                                                                      !selAns.contains(data
-                                                                                          .pList[_quetionNo]
-                                                                                          .ques
-                                                                                          .options[index]
-                                                                                          .id)
-                                                                                  ? _colorfromhex("#FFF6F6")
+                                                                          color: _isattempt <
+                                                                                  data.pList[_quetionNo].ques.options
+                                                                                      .where((element) =>
+                                                                                          element.isseleted == true)
+                                                                                      .toList()
+                                                                                      .length
+                                                                              ? data.pList[_quetionNo].ques.options.any(
+                                                                                      (element) =>
+                                                                                          element.isseleted == true)
+                                                                                  ? data.pList[_quetionNo].ques.rightAnswer.contains(
+                                                                                          "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                      ? _colorfromhex("#04AE0B")
+                                                                                      : data.pList[_quetionNo].ques
+                                                                                              .options[index].isseleted
+                                                                                          ? data.pList[_quetionNo].ques.rightAnswer.contains(
+                                                                                                  "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                              ? _colorfromhex("#E6F7E7")
+                                                                                              : _colorfromhex("#FF0000")
+                                                                                          : Colors.white
+                                                                                  : data.pList[_quetionNo].ques
+                                                                                          .options[index].isseleted
+                                                                                      ? data.pList[_quetionNo].ques.rightAnswer.contains(
+                                                                                              "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                          ? _colorfromhex("#E6F7E7")
+                                                                                          : _colorfromhex("#FFF6F6")
+                                                                                      : Colors.white
+                                                                              : data.pList[_quetionNo].ques
+                                                                                      .options[index].isseleted
+                                                                                  ? data.pList[_quetionNo].ques.rightAnswer
+                                                                                          .contains("${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                      ? _colorfromhex("#E6F7E7")
+                                                                                      : _colorfromhex("#FFF6F6")
                                                                                   : Colors.white,
 
                                                                           // color: data.pList[_quetionNo].ques.options[index].id ==
@@ -436,7 +506,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                           //             ? _colorfromhex("#04AE0B")
                                                                           //             : Colors.white,
                                                                           //selectedAnswer == realAnswer ? _colorfromhex("#E6F7E7") : Colors.white,
-                                                                          border: Border.all(color: Colors.grey)),
+                                                                          border: Border.all(color: Colors.black)),
                                                                       child: Center(
                                                                         child: Text(
                                                                           index == 0
@@ -451,32 +521,24 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                           style: TextStyle(
                                                                               fontFamily: 'Roboto Regular',
                                                                               fontSize: width * 14 / 420,
-                                                                              color: data.pList[_quetionNo].ques
-                                                                                              .options[index].id ==
-                                                                                          selectedAnswer &&
-                                                                                      int.parse(data.pList[_quetionNo].ques.rightAnswer) ==
-                                                                                          selectedAnswer
-                                                                                  ? Colors.white
+                                                                              color: data.pList[_quetionNo].ques.options
+                                                                                      .any((element) =>
+                                                                                          element.isseleted == true)
+                                                                                  ? data.pList[_quetionNo].ques
+                                                                                          .rightAnswer
+                                                                                          .contains(
+                                                                                              "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                      ? Colors.black
+                                                                                      : Colors.black
                                                                                   : data.pList[_quetionNo].ques
-                                                                                                  .options[index].id ==
-                                                                                              selectedAnswer &&
-                                                                                          int.parse(data.pList[_quetionNo].ques.rightAnswer) !=
-                                                                                              selectedAnswer
-                                                                                      ? Colors.white
-                                                                                      : selectedAnswer != null &&
-                                                                                              int.parse(data.pList[_quetionNo].ques.rightAnswer) !=
-                                                                                                  selectedAnswer &&
-                                                                                              data
-                                                                                                      .pList[_quetionNo]
-                                                                                                      .ques
-                                                                                                      .options[index]
-                                                                                                      .id ==
-                                                                                                  int.parse(data
-                                                                                                      .pList[_quetionNo]
-                                                                                                      .ques
-                                                                                                      .rightAnswer)
-                                                                                          ? Colors.white
-                                                                                          : Colors.grey),
+                                                                                          .options[index].isseleted
+                                                                                      ? data.pList[_quetionNo].ques
+                                                                                              .rightAnswer
+                                                                                              .contains(
+                                                                                                  "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                          ? Colors.green
+                                                                                          : Colors.red
+                                                                                      : Colors.black),
                                                                         ),
                                                                       ),
                                                                     ),
@@ -581,106 +643,104 @@ class _PracticeNewState extends State<PracticeNew> {
                                                     // ),
 
                                                     // selectedAnswer != null
-                                                    selAns.length == correctAns.length && correctAns.length > 0
-                                                        ? Container(
-                                                            decoration: BoxDecoration(
-                                                                color:
-                                                                    // Colors .amber,
-                                                                    _colorfromhex("#FAFAFA"),
-                                                                borderRadius: BorderRadius.circular(6)),
-                                                            margin: EdgeInsets.only(top: height * (38 / 800)),
-                                                            padding: EdgeInsets.only(
-                                                                top: height * (10 / 800),
-                                                                bottom:
-                                                                    _show ? height * (23 / 800) : height * (12 / 800),
-                                                                left: width * (18 / 420),
-                                                                right: width * (10 / 420)),
-                                                            child: Column(
-                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                                InkWell(
-                                                                  onTap: () {
-                                                                    setState(() {
-                                                                      _show = !_show;
-                                                                    });
-                                                                  },
-                                                                  child: Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                      children: [
-                                                                        Text(
-                                                                          'See Solution',
-                                                                          style: TextStyle(
-                                                                            fontFamily: 'Roboto Regular',
-                                                                            fontSize: width * (15 / 420),
-                                                                            color: _colorfromhex("#ABAFD1"),
-                                                                            height: 1.7,
-                                                                          ),
-                                                                        ),
-                                                                        Icon(
-                                                                          _show ? Icons.expand_less : Icons.expand_more,
-                                                                          size: width * (30 / 420),
-                                                                          color: _colorfromhex("#ABAFD1"),
-                                                                        ),
-                                                                      ]),
-                                                                ),
-                                                                _show
-                                                                    ? Container(
-                                                                        margin:
-                                                                            EdgeInsets.only(top: height * (9 / 800)),
-                                                                        child: Text(
-                                                                          data.pList[_quetionNo].ques.rightAnswer ==
-                                                                                  data.pList[_quetionNo].ques.options[0]
+                                                    if (_isattempt <
+                                                        data.pList[_quetionNo].ques.options
+                                                            .where((element) => element.isseleted == true)
+                                                            .toList()
+                                                            .length)
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                // Colors .amber,
+                                                                _colorfromhex("#FAFAFA"),
+                                                            borderRadius: BorderRadius.circular(6)),
+                                                        margin: EdgeInsets.only(top: height * (38 / 800)),
+                                                        padding: EdgeInsets.only(
+                                                            top: height * (10 / 800),
+                                                            bottom: _show ? height * (23 / 800) : height * (12 / 800),
+                                                            left: width * (18 / 420),
+                                                            right: width * (10 / 420)),
+                                                        child: Column(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            InkWell(
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  _show = !_show;
+                                                                });
+                                                              },
+                                                              child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                      'See Solution',
+                                                                      style: TextStyle(
+                                                                        fontFamily: 'Roboto Regular',
+                                                                        fontSize: width * (15 / 420),
+                                                                        color: _colorfromhex("#ABAFD1"),
+                                                                        height: 1.7,
+                                                                      ),
+                                                                    ),
+                                                                    Icon(
+                                                                      _show ? Icons.expand_less : Icons.expand_more,
+                                                                      size: width * (30 / 420),
+                                                                      color: _colorfromhex("#ABAFD1"),
+                                                                    ),
+                                                                  ]),
+                                                            ),
+                                                            _show
+                                                                ? Container(
+                                                                    margin: EdgeInsets.only(top: height * (9 / 800)),
+                                                                    child: Text(
+                                                                      data.pList[_quetionNo].ques.rightAnswer ==
+                                                                              data.pList[_quetionNo].ques.options[0].id
+                                                                                  .toString()
+                                                                          ? 'Answer A is the correct one'
+                                                                          : data.pList[_quetionNo].ques.rightAnswer ==
+                                                                                  data.pList[_quetionNo].ques.options[1]
                                                                                       .id
                                                                                       .toString()
-                                                                              ? 'Answer A is the correct one'
+                                                                              ? 'Answer B is the correct one'
                                                                               : data.pList[_quetionNo].ques
                                                                                           .rightAnswer ==
                                                                                       data.pList[_quetionNo].ques
-                                                                                          .options[1].id
+                                                                                          .options[2].id
                                                                                           .toString()
-                                                                                  ? 'Answer B is the correct one'
+                                                                                  ? 'Answer c is the correct one'
                                                                                   : data.pList[_quetionNo].ques
                                                                                               .rightAnswer ==
                                                                                           data.pList[_quetionNo].ques
-                                                                                              .options[2].id
+                                                                                              .options[3].id
                                                                                               .toString()
-                                                                                      ? 'Answer c is the correct one'
-                                                                                      : data.pList[_quetionNo].ques
-                                                                                                  .rightAnswer ==
-                                                                                              data.pList[_quetionNo]
-                                                                                                  .ques.options[3].id
-                                                                                                  .toString()
-                                                                                          ? 'Answer D is the correct one'
-                                                                                          : 'Answer E is the correct one',
-                                                                          style: TextStyle(
-                                                                            fontFamily: 'Roboto Regular',
-                                                                            fontSize: width * (15 / 420),
-                                                                            color: _colorfromhex("#04AE0B"),
-                                                                            height: 1.7,
-                                                                          ),
-                                                                        ),
-                                                                      )
-                                                                    : Container(),
-                                                                _show
-                                                                    ? Container(
-                                                                        margin:
-                                                                            EdgeInsets.only(top: height * (9 / 800)),
-                                                                        child: Text(
-                                                                          data.pList[_quetionNo].ques.explanation,
-                                                                          style: TextStyle(
-                                                                            fontFamily: 'Roboto Regular',
-                                                                            fontSize: width * (15 / 420),
-                                                                            color: Colors.black,
-                                                                            height: 1.6,
-                                                                          ),
-                                                                        ),
-                                                                      )
-                                                                    : Container()
-                                                              ],
-                                                            ),
-                                                          )
-                                                        : Container()
+                                                                                      ? 'Answer D is the correct one'
+                                                                                      : 'Answer E is the correct one',
+                                                                      style: TextStyle(
+                                                                        fontFamily: 'Roboto Regular',
+                                                                        fontSize: width * (15 / 420),
+                                                                        color: _colorfromhex("#04AE0B"),
+                                                                        height: 1.7,
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                : Container(),
+                                                            _show
+                                                                ? Container(
+                                                                    margin: EdgeInsets.only(top: height * (9 / 800)),
+                                                                    child: Text(
+                                                                      data.pList[_quetionNo].ques.explanation,
+                                                                      style: TextStyle(
+                                                                        fontFamily: 'Roboto Regular',
+                                                                        fontSize: width * (15 / 420),
+                                                                        color: Colors.black,
+                                                                        height: 1.6,
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                : Container()
+                                                          ],
+                                                        ),
+                                                      )
 
                                                     // Column(
                                                     //   children: data

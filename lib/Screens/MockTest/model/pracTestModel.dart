@@ -42,9 +42,17 @@ class Question {
     image = json['image'];
     status = json['status'];
     deleteStatus = json['deleteStatus'];
+
     if (json['Options'] != null) {
       options = new List<Options>();
+
       json['Options'].forEach((v) {
+        print("*************************************");
+
+        print(json['Options'][0]['question_option']);
+
+        print("*************************************");
+
         options.add(new Options.fromJson(v));
       });
     }
