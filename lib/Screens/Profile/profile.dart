@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/QuesOfDay.dart';
+import 'package:pgmp4u/Screens/chat/chatPage.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +24,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  CollectionReference users =
-      FirebaseFirestore.instance.collection('staticData');
+  CollectionReference users = FirebaseFirestore.instance.collection('staticData');
   Razorpay _razorpay;
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
@@ -88,10 +88,7 @@ class _ProfileState extends State<Profile> {
     http.Response response;
     response = await http.post(
       Uri.parse(TAKE_PAYMENT),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': stringValue
-      },
+      headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
       body: json.encode({
         "payment_status": status,
         "price": 1,
@@ -113,10 +110,7 @@ class _ProfileState extends State<Profile> {
     http.Response response;
     response = await http.post(
       Uri.parse(GET_RAZOR_PAY_ORDER_ID),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': stringValue
-      },
+      headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
       body: json.encode({"amount": 200}),
     );
 
@@ -162,13 +156,9 @@ class _ProfileState extends State<Profile> {
               height: SizerUtil.deviceType == DeviceType.mobile ? 180 : 330,
               width: width,
               decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.only(bottomRight: Radius.circular(40.0)),
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(40.0)),
                 gradient: LinearGradient(
-                    colors: [
-                      _colorfromhex('#3846A9'),
-                      _colorfromhex('#5265F8')
-                    ],
+                    colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
                     begin: const FractionalOffset(0.0, 0.0),
                     end: const FractionalOffset(1.0, 0.0),
                     stops: [0.0, 1.0],
@@ -177,10 +167,8 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(
-                        left: width * (20 / 420),
-                        right: width * (20 / 420),
-                        top: height * (16 / 800)),
+                    margin:
+                        EdgeInsets.only(left: width * (20 / 420), right: width * (20 / 420), top: height * (16 / 800)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -223,10 +211,8 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(
-                        top: height * (30 / 800),
-                        left: width * (28 / 420),
-                        right: width * (34 / 420)),
+                    margin:
+                        EdgeInsets.only(top: height * (30 / 800), left: width * (28 / 420), right: width * (34 / 420)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -481,14 +467,10 @@ class _ProfileState extends State<Profile> {
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),
                                 padding: EdgeInsets.only(
-                                    top: 13,
-                                    bottom: 13,
-                                    left: width * (18 / 420),
-                                    right: width * (18 / 420)),
+                                    top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
                                 color: Colors.white,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -518,24 +500,18 @@ class _ProfileState extends State<Profile> {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
                                 await prefs.clear();
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    '/start-screen',
-                                    (Route<dynamic> route) => false);
+                                Navigator.of(context)
+                                    .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
                               },
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),
                                 padding: EdgeInsets.only(
-                                    top: 13,
-                                    bottom: 13,
-                                    left: width * (18 / 420),
-                                    right: width * (18 / 420)),
+                                    top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
                                 color: Colors.white,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -565,18 +541,16 @@ class _ProfileState extends State<Profile> {
                             ),
 
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage()));
+                              },
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),
                                 padding: EdgeInsets.only(
-                                    top: 13,
-                                    bottom: 13,
-                                    left: width * (18 / 420),
-                                    right: width * (18 / 420)),
+                                    top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
                                 color: Colors.white,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -607,28 +581,21 @@ class _ProfileState extends State<Profile> {
 
                             GestureDetector(
                               onTap: () {
-                                ProfileProvider profileProvider =
-                                    Provider.of(context, listen: false);
+                                ProfileProvider profileProvider = Provider.of(context, listen: false);
                                 profileProvider.getQuesDay(1);
 
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                         QuesOfDay
-                                        ()));
+                                        builder: (context) => QuesOfDay()));
                               },
                               child: Container(   
                                 margin: EdgeInsets.only(bottom: 6),
                                 padding: EdgeInsets.only(
-                                    top: 13,
-                                    bottom: 13,
-                                    left: width * (18 / 420),
-                                    right: width * (18 / 420)),
+                                    top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
                                 color: Colors.white,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -659,22 +626,15 @@ class _ProfileState extends State<Profile> {
 
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Notifications()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
                               },
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),
                                 padding: EdgeInsets.only(
-                                    top: 13,
-                                    bottom: 13,
-                                    left: width * (18 / 420),
-                                    right: width * (18 / 420)),
+                                    top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
                                 color: Colors.white,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
