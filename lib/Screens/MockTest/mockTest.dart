@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Models/mocktestmodel.dart';
 import '../../provider/courseProvider.dart';
-import '../PracticeTests/practiceTest copy.dart';
+import '../PracticeTests/practiceNew.dart';
 
 class MockTest extends StatefulWidget {
   String testName;
@@ -175,14 +175,25 @@ class _MockTestState extends State<MockTest> {
                                       Future.delayed(
                                           const Duration(milliseconds: 400),
                                           () {
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             PracticeTestCopy(
+                                        //               selectedId: courseProvider
+                                        //                   .testData[index].id,
+                                        //             )));
+
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    PracticeTestCopy(
+                                                    PracticeNew(
                                                       selectedId: courseProvider
                                                           .testData[index].id,
                                                     )));
+
+                                        //PracticeNew
                                       });
                                     }
                                   },

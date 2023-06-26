@@ -15,6 +15,21 @@ class PracticeTextProvider extends ChangeNotifier {
 
   List<PracTestModel> pList = [];
 
+  int selectedAnswer;
+  int realAnswer;
+
+  setSelectedAns(int val) {
+    selectedAnswer = val;
+    print("selected answer===$selectedAnswer");
+    notifyListeners();
+  }
+
+  setRealAns(int val) {
+    realAnswer = val;
+    print("realAnswer answer===$realAnswer");
+    notifyListeners();
+  }
+
   updateLoader(bool val) {
     practiceApiLoader = val;
   }
@@ -22,25 +37,21 @@ class PracticeTextProvider extends ChangeNotifier {
   Future apiCall(int id, String type) async {
     updateLoader(true);
     Map body = {"id": id, "type": type};
-    // print("body of pratice $body");
+
+    print("body of pratice $id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     print("stringValue  $stringValue");
     // http.Response response;
     // response = await http.post(Uri.parse(getSubCategoryDetails),
     var response = await http.get(
-      Uri.parse(
-          "https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/124"),
+      Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/126"),
 
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': stringValue
-      },
+      headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
       // body: convert.jsonEncode(body)
     );
 
-    print(
-        "calling this api========>>>.https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/124");
+    print("calling this api========>>>.https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/124");
     // print("body=========>$body");
 
     if (response.statusCode == 200) {

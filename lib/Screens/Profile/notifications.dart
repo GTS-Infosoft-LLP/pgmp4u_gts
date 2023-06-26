@@ -17,12 +17,12 @@ class _NotificationsState extends State<Notifications> {
   ScrollController scrollcontrol = ScrollController();
 
   @override
+  bool _isShow = true;
   void initState() {
     ProfileProvider _dshbrdProvider = Provider.of(context, listen: false);
     _dshbrdProvider.showNotification(isFirstTime: true);
     scrollcontrol.addListener(() {
-      if (scrollcontrol.position.pixels ==
-          scrollcontrol.position.maxScrollExtent) {
+      if (scrollcontrol.position.pixels == scrollcontrol.position.maxScrollExtent) {
         print("call again api");
         _dshbrdProvider.showNotification();
       }
@@ -65,8 +65,7 @@ class _NotificationsState extends State<Notifications> {
                             border: Border.all(color: Colors.white, width: 1)),
                         child: Center(
                             child: IconButton(
-                                icon:
-                                    Icon(Icons.arrow_back, color: Colors.white),
+                                icon: Icon(Icons.arrow_back, color: Colors.white),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 }))),
@@ -78,10 +77,7 @@ class _NotificationsState extends State<Notifications> {
                       // "Video Library",
                       "Notifications",
                       style: TextStyle(
-                          fontSize: 28,
-                          color: Colors.white,
-                          fontFamily: "Raleway",
-                          fontWeight: FontWeight.bold),
+                          fontSize: 28, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
                     )),
                   ]),
                 ),
@@ -94,8 +90,7 @@ class _NotificationsState extends State<Notifications> {
           SingleChildScrollView(
             child: Column(
               children: [
-                Consumer<ProfileProvider>(
-                    builder: (context, profileProvider, child) {
+                Consumer<ProfileProvider>(builder: (context, profileProvider, child) {
                   return Container(
                     // color: Colors.amber,
                     height: MediaQuery.of(context).size.height * .8,
@@ -106,101 +101,108 @@ class _NotificationsState extends State<Notifications> {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 18.0),
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: Container(
-                                  width: MediaQuery.of(context).size.width * .7,
-                                  decoration: BoxDecoration(
-                                      // color: Colors.blue,
-                                      border: Border(
-                                    // top: BorderSide(width: 16.0, color: Colors.lightBlue.shade600),
-                                    bottom: BorderSide(color: Colors.grey[300]),
-                                  )),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Container(
-                                          height: 45,
-                                          width: 45,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            color: index % 2 == 0
-                                                ? AppColor.purpule
-                                                : AppColor.green,
-                                            // gradient: LinearGradient(
-                                            //     begin: Alignment.topLeft,
-                                            //     end: Alignment.bottomRight,
-                                            //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-                                          ),
+                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: InkWell(
+                                onTap: () {
+                                  profileProvider.setNotifiId(profileProvider.NotificationData[index].id);
 
-                                          // color: Colors.black,
-                                          child: Icon(
-                                            Icons.notifications_active,
-                                            color: Colors.white,
-                                          )
-                                          // Icons.edit,color: Colors.white),
-                                          ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                .7,
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  .5,
-                                              // color: Colors.amber,
-                                              child: Text(
-                                                profileProvider
-                                                    .NotificationData[index]
-                                                    .title,
-                                                maxLines: 5,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 18),
+                                  setState(() {
+                                    _isShow = !_isShow;
+                                  });
+                                },
+                                child: Container(
+                                    width: MediaQuery.of(context).size.width * .7,
+                                    decoration: BoxDecoration(
+                                        // color: Colors.blue,
+                                        border: Border(
+                                      // top: BorderSide(width: 16.0, color: Colors.lightBlue.shade600),
+                                      bottom: BorderSide(color: Colors.grey[300]),
+                                    )),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        Container(
+                                            height: 45,
+                                            width: 45,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(8),
+                                              color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                                              // gradient: LinearGradient(
+                                              //     begin: Alignment.topLeft,
+                                              //     end: Alignment.bottomRight,
+                                              //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                                            ),
+
+                                            // color: Colors.black,
+                                            child: Icon(
+                                              Icons.notifications_active,
+                                              color: Colors.white,
+                                            )
+                                            // Icons.edit,color: Colors.white),
+                                            ),
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: MediaQuery.of(context).size.width * .7,
+                                              child: Container(
+                                                width: MediaQuery.of(context).size.width * .5,
+                                                // color: Colors.amber,
+                                                child: Text(
+                                                  profileProvider.NotificationData[index].title,
+                                                  maxLines: 5,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(color: Colors.black, fontSize: 18),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                .7,
-                                            child: Text(
-                                              profileProvider
-                                                  .NotificationData[index]
-                                                  .message,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14),
+                                            SizedBox(
+                                              height: 5,
                                             ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  )),
+                                            // _isShow?
+
+                                            profileProvider.NotificationData[index].id ==
+                                                    profileProvider.selectedNotifiId
+                                                ? Container(
+                                                    width: MediaQuery.of(context).size.width * .7,
+                                                    child: Text(
+                                                      profileProvider.NotificationData[index].message,
+                                                      // maxLines: 2,
+                                                      // overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(color: Colors.black, fontSize: 14),
+                                                    ),
+                                                  )
+                                                : Container(
+                                                    width: MediaQuery.of(context).size.width * .7,
+                                                    child: Text(
+                                                      profileProvider.NotificationData[index].message,
+                                                      maxLines: 2,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(color: Colors.black, fontSize: 14),
+                                                    ),
+                                                  ),
+                                            // : Container(
+                                            //     width: MediaQuery.of(context).size.width * .7,
+                                            //     child: Text(
+                                            //       profileProvider.NotificationData[index].message,
+                                            //       style: TextStyle(color: Colors.black, fontSize: 14),
+                                            //     ),
+                                            //   ),
+
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                              ),
                             ),
                           );
                         }),

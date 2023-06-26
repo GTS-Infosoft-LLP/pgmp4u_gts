@@ -17,6 +17,14 @@ class ProfileProvider extends ChangeNotifier {
   String quesDayQues;
   int quesDayId;
 
+ int selectedNotifiId;
+
+  setNotifiId(int val){
+selectedNotifiId=val;
+print("selectedNotifiId=====${selectedNotifiId}");
+notifyListeners();
+  }
+
 //QuestionDetail
 
   Future showNotification({bool isFirstTime = false}) async {
