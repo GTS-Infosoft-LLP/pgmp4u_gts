@@ -52,15 +52,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
       ),
-      bottomSheet: ChatTextField(
-        size: size,
-        chatController: chatController,
-        sendMessage: () async {
-          if (chatController.text.trim() == '') return;
-          await context.read<ChatProvider>().sendGroupMessage(message: chatController.text.trim());
-          chatController.clear();
-        },
-      ),
+      bottomSheet: ChatTextField(size: size, chatController: chatController), 
       resizeToAvoidBottomInset: true,
       body: Container(
         padding: EdgeInsets.only(bottom: size.height * 0.10),

@@ -297,7 +297,7 @@ class _HomeViewState extends State<HomeView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      courseProvider.course[index].description,
+                                      courseProvider.course[index].lable,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.grey,

@@ -3,6 +3,7 @@ class CourseDetails {
   String course;
   String description;
   String exam_Time;
+  String lable;
   int skip_content_progress;
   int status;
   int deleteStatus;
@@ -12,6 +13,7 @@ class CourseDetails {
     id = json["id"];
     course = json["course"];
     description = json["description"];
+    lable = json["lable"];
     exam_Time = json["exam_Time"];
     skip_content_progress = json["skip_content_progress"];
     status = json["status"];

@@ -6,8 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/QuesOfDay.dart';
 import 'package:pgmp4u/Screens/chat/screen/goupList.dart';
 import 'package:pgmp4u/api/apis.dart';
-import 'package:pgmp4u/provider/profileProvider.dart';
-import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'dart:convert' as convert;
 import 'package:sizer/sizer.dart';

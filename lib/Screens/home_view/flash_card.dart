@@ -98,12 +98,10 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Colors.transparent,
-                                  border: Border.all(
-                                      color: Colors.white, width: 1)),
+                                  border: Border.all(color: Colors.white, width: 1)),
                               child: Center(
                                   child: IconButton(
-                                      icon: Icon(Icons.arrow_back,
-                                          color: Colors.white),
+                                      icon: Icon(Icons.arrow_back, color: Colors.white),
                                       onPressed: () {
                                         Navigator.pop(context);
                                       }))),
@@ -112,14 +110,13 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                               child: Text(
                             widget.heding,
                             style: TextStyle(
-                                fontSize: 22,
-                                color: Colors.white,
-                                fontFamily: "Roboto",
-                                fontWeight: FontWeight.bold),
+                                fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
                           )),
                         ],
                       ),
                     ),
+                       ],
+                ),
 
                     // Center(
                     //   child: Container(
@@ -202,24 +199,20 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                     //     );
                     //   },
                     // ),
-                  ],
-                ),
+               
 
                 Column(
                   children: [
                     SizedBox(
                       height: 5,
                     ),
-                    Consumer<CourseProvider>(
-                        builder: (context, CourseProvider, child) {
+                    Consumer<CourseProvider>(builder: (context, CourseProvider, child) {
                       return CourseProvider.FlashCards.isNotEmpty
                           ? Center(
                               child: Padding(
-                              padding:
-                                  const EdgeInsets.only(bottom: 8.0, top: 10),
+                              padding: const EdgeInsets.only(bottom: 8.0, top: 10),
                               child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * .75,
+                                height: MediaQuery.of(context).size.height * .75,
                                 child: PageView.builder(
                                     itemCount: CourseProvider.FlashCards.length,
                                     itemBuilder: (context, index) {
@@ -227,39 +220,26 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                                         liGrdint = LinearGradient(
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
-                                            colors: [
-                                              Color(0xffF3924D),
-                                              Color(0xffECAB8E)
-                                            ]);
+                                            colors: [Color(0xffF3924D), Color(0xffECAB8E)]);
                                       } else if (index % 3 == 0) {
                                         liGrdint = LinearGradient(
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
-                                            colors: [
-                                              Color(0xff5082BC),
-                                              Color(0xff8AA1C9)
-                                            ]);
+                                            colors: [Color(0xff5082BC), Color(0xff8AA1C9)]);
                                       } else if (index % 2 == 0) {
                                         liGrdint = LinearGradient(
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
-                                            colors: [
-                                              Color(0xff8E8BE6),
-                                              Color(0xffA8B1FC)
-                                            ]);
+                                            colors: [Color(0xff8E8BE6), Color(0xffA8B1FC)]);
                                       } else {
                                         liGrdint = LinearGradient(
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
-                                            colors: [
-                                              Color(0xff4195B7),
-                                              Color(0xff76ACC2)
-                                            ]);
+                                            colors: [Color(0xff4195B7), Color(0xff76ACC2)]);
                                       }
 
                                       return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 18.0),
+                                        padding: const EdgeInsets.symmetric(horizontal: 18.0),
                                         child: Container(
                                           decoration: BoxDecoration(
                                             gradient: liGrdint,
@@ -273,44 +253,40 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                                             // ,color: index % 2 == 0
                                             //     ? Color(0xff76ACC2)
                                             //     : Color(0xffA8B1FC),
-                                            borderRadius:
-                                                BorderRadius.circular(40),
+                                            borderRadius: BorderRadius.circular(40),
                                           ),
                                           height: 50,
 
                                           child: Column(
+                                            // mainAxisAlignment: ,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               SizedBox(
                                                 height: 30,
                                               ),
-                                              Text(
-                                                CourseProvider
-                                                    .FlashCards[index].title,
-                                                textAlign: TextAlign.center,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontSize: 30,
-                                                    fontFamily: "Roboto",
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white),
+                                              Center(
+                                                child: Text(
+                                                  CourseProvider.FlashCards[index].title,
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: 30,
+                                                      fontFamily: "Roboto",
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
                                               ),
                                               SizedBox(
                                                 height: 30,
                                               ),
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 12.0),
+                                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                                                 child: Text(
-                                                  CourseProvider
-                                                      .FlashCards[index]
-                                                      .description,
-                                                  textAlign: TextAlign.center,
+                                                  CourseProvider.FlashCards[index].description,
+                                                  textAlign: TextAlign.left,
                                                   style: TextStyle(
-                                                      fontSize: 24,
-                                                      fontFamily: "NunitoSans",
-                                                      color: Colors.white),
+                                                      fontSize: 24, fontFamily: "NunitoSans", color: Colors.white),
                                                 ),
                                               ),
                                             ],
@@ -326,10 +302,7 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                               // color: Colors.grey[300],
                               child: Center(
                                   child: Text("No Data Found",
-                                      style: TextStyle(
-                                          color: _darkText,
-                                          fontFamily: "NunitoSans",
-                                          fontSize: 18))));
+                                      style: TextStyle(color: _darkText, fontFamily: "NunitoSans", fontSize: 18))));
                     }),
                   ],
                 )
@@ -388,26 +361,18 @@ class FlashCard extends StatelessWidget {
                   child: Center(
                       child: Text(
                     title,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22),
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
                   )),
                   decoration: BoxDecoration(
                     color: Color(0xff72a258),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20)),
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(desc,
                       textAlign: TextAlign.left,
-                      style: TextStyle(
-                          color: _darkText,
-                          fontFamily: "NunitoSans",
-                          fontSize: 18)),
+                      style: TextStyle(color: _darkText, fontFamily: "NunitoSans", fontSize: 18)),
                 ),
               ],
             )));
