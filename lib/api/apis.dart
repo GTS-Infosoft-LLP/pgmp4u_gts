@@ -59,6 +59,8 @@ const getSubCategoryDetails="http://3.227.35.115:1011/api/getSubCategoryDetails"
 
 const deviceToken="https://apivcarestage.vcareprojectmanagement.com/api/updateDeviceToken";
 
+const chatUserListApi ="https://apivcarestage.vcareprojectmanagement.com/api/getChatUsers";
+
 
 
  //new

@@ -20,9 +20,15 @@ class UserModel {
   final String image;
   final String token;
   final String email;
-  UserModel(
-      {@required this.image,
-      @required this.token,
-      @required this.name,
-      @required this.email});
+  UserModel({@required this.image, @required this.token, @required this.name, @required this.email});
+}
+
+class FirestoreUserModel {
+  final String name;
+  final String email;
+  final String image;
+  final String userId;
+  FirestoreUserModel({@required this.image, @required this.userId, @required this.name, @required this.email});
+
+  Map<String, dynamic> toJson() => {"name": name, "email": email, "image": image, "userId": userId};
 }

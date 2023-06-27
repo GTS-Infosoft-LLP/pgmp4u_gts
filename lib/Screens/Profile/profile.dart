@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/QuesOfDay.dart';
-import 'package:pgmp4u/Screens/chat/chatPage.dart';
+import 'package:pgmp4u/Screens/chat/screen/goupList.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:provider/provider.dart';
@@ -540,56 +540,53 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
 
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage()));
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 6),
-                                padding: EdgeInsets.only(
-                                    top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                                color: Colors.white,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.chat,
-                                          size: width * (26 / 420),
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                        Text(
-                                          '   Chat',
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto Medium',
-                                            fontSize: width * (18 / 420),
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                      color: _colorfromhex("#ABAFD1"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage()));
+                            //   },
+                            //   child: Container(
+                            //     margin: EdgeInsets.only(bottom: 6),
+                            //     padding: EdgeInsets.only(
+                            //         top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                            //     color: Colors.white,
+                            //     child: Row(
+                            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //       children: [
+                            //         Row(
+                            //           children: [
+                            //             Icon(
+                            //               Icons.person,
+                            //               size: width * (26 / 420),
+                            //               color: _colorfromhex("#ABAFD1"),
+                            //             ),
+                            //             Text(
+                            //               '   Chat with Admin',
+                            //               style: TextStyle(
+                            //                 fontFamily: 'Roboto Medium',
+                            //                 fontSize: width * (18 / 420),
+                            //                 color: Colors.black,
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //         Icon(
+                            //           Icons.arrow_forward_ios,
+                            //           size: 20,
+                            //           color: _colorfromhex("#ABAFD1"),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
 
                             GestureDetector(
                               onTap: () {
                                 ProfileProvider profileProvider = Provider.of(context, listen: false);
                                 profileProvider.getQuesDay(1);
 
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => QuesOfDay()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => QuesOfDay()));
                               },
-                              child: Container(   
+                              child: Container(
                                 margin: EdgeInsets.only(bottom: 6),
                                 padding: EdgeInsets.only(
                                     top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
@@ -645,6 +642,45 @@ class _ProfileState extends State<Profile> {
                                         ),
                                         Text(
                                           '   Notifications',
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto Medium',
+                                            fontSize: width * (18 / 420),
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 20,
+                                      color: _colorfromhex("#ABAFD1"),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => GroupListPage()));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 6),
+                                padding: EdgeInsets.only(
+                                    top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                color: Colors.white,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.chat,
+                                          size: width * (26 / 420),
+                                          color: _colorfromhex("#ABAFD1"),
+                                        ),
+                                        Text(
+                                          '   Chat',
                                           style: TextStyle(
                                             fontFamily: 'Roboto Medium',
                                             fontSize: width * (18 / 420),

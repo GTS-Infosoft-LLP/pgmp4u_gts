@@ -7,11 +7,12 @@ import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pgmp4u/Screens/Dashboard/dashboard.dart';
+import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/utils/user_object.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:the_apple_sign_in/scope.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -29,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool loading = false;
   bool signInBool = false;
+
   Future loginHandler(user, fromProvider) async {
     print(user);
     setState(() {
@@ -82,9 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
         loading = false;
       });
       Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)),
-          (r) => false);
+          context, MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)), (r) => false);
     } else {
       GFToast.showToast(
         "user is not registered",
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     print("Request => $request");
-  print("GMAIL_REGISTER $GMAIL_REGISTER");
+    print("GMAIL_REGISTER $GMAIL_REGISTER");
     response = await http.post(
       Uri.parse(GMAIL_REGISTER),
       headers: {
@@ -148,8 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         toastPosition: GFToastPosition.BOTTOM,
       );
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
       setState(() {
         loading = false;
       });
@@ -185,19 +184,30 @@ class _LoginScreenState extends State<LoginScreen> {
       await googleSignIn.signOut();
       GoogleSignInAccount user;
       // final user = await GoogleSignInApi.login();
-      final googleUser =
-          await googleSignIn.signIn().catchError((error, stackTrace) {
+      final googleUser = await googleSignIn.signIn().catchError((error, stackTrace) {
         print("error is ${error.toString()}");
       });
 
       final googleAuth = await googleUser.authentication;
+      // print('user uid: ${googleUser.}');
 
       final cred = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      await FirebaseAuth.instance.signInWithCredential(cred);
+      // await FirebaseAuth.instance.signInWithCredential(cred);
+      final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(cred);
+
+      // create firestore user
+      context.read<ChatProvider>().createFirebaseUser(FirestoreUserModel(
+          image: userCredential.user.photoURL ?? '',
+          userId: userCredential.user.uid.toString(),
+          name: userCredential.user.displayName,
+          email: userCredential.user.email));
+
+      // add this user to discussion group
+      context.read<ChatProvider>().addUserToDiscussionGroup(userCredential.user.uid.toString());
 
       if (googleUser != null) {
         if (signInBool) {
@@ -264,17 +274,13 @@ class _LoginScreenState extends State<LoginScreen> {
         final oAuthProvider = OAuthProvider('apple.com');
         final credential = oAuthProvider.credential(
           idToken: String.fromCharCodes(appleIdCredential.identityToken),
-          accessToken:
-              String.fromCharCodes(appleIdCredential.authorizationCode),
+          accessToken: String.fromCharCodes(appleIdCredential.authorizationCode),
         );
-        final userCredential =
-            await FirebaseAuth.instance.signInWithCredential(credential);
+        final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
         final firebaseUser = userCredential.user;
         if ([Scope.fullName].contains(Scope.fullName)) {
           final fullName = appleIdCredential.fullName;
-          if (fullName != null &&
-              fullName.givenName != null &&
-              fullName.familyName != null) {
+          if (fullName != null && fullName.givenName != null && fullName.familyName != null) {
             final displayName = '${fullName.givenName} ${fullName.familyName}';
             await firebaseUser.updateDisplayName(displayName);
 
@@ -327,8 +333,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(
-                          top: height * (54 / 800), left: width * (66 / 420)),
+                      margin: EdgeInsets.only(top: height * (54 / 800), left: width * (66 / 420)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -356,9 +361,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: height * .42,
                     )),
                     Container(
-                      padding: EdgeInsets.only(
-                          top: height * (16 / 800),
-                          bottom: height * (16 / 800)),
+                      padding: EdgeInsets.only(top: height * (16 / 800), bottom: height * (16 / 800)),
                       margin: EdgeInsets.only(
                         left: width * (36 / 420),
                         right: width * (36 / 420),
@@ -386,9 +389,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    !signInBool
-                                        ? "Sign up with Google   "
-                                        : "Sign in with Google   ",
+                                    !signInBool ? "Sign up with Google   " : "Sign in with Google   ",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: width * (20 / 420),
@@ -402,9 +403,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Platform.isIOS
                         ? Container(
-                            padding: EdgeInsets.only(
-                                top: height * (16 / 800),
-                                bottom: height * (16 / 800)),
+                            padding: EdgeInsets.only(top: height * (16 / 800), bottom: height * (16 / 800)),
                             margin: EdgeInsets.only(
                               left: width * (36 / 420),
                               right: width * (36 / 420),
@@ -428,15 +427,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 : GestureDetector(
                                     onTap: signInWithApple,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          !signInBool
-                                              ? "Sign up with Apple   "
-                                              : "Sign in with Apple   ",
+                                          !signInBool ? "Sign up with Apple   " : "Sign in with Apple   ",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: width * (20 / 420),
@@ -453,9 +448,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          signInBool
-                              ? "You dont have an account? "
-                              : "Already have an account? ",
+                          signInBool ? "You dont have an account? " : "Already have an account? ",
                           style: TextStyle(
                             color: _colorfromhex("#76767E"),
                             fontSize: width * (16 / 420),

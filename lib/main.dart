@@ -12,6 +12,7 @@ import 'package:pgmp4u/Screens/Profile/settingsScreen.dart';
 import 'package:pgmp4u/Screens/StartScreen/SplashScreen.dart';
 import 'package:pgmp4u/Screens/StartScreen/startScreen.dart';
 import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
+import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/test.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
@@ -30,18 +31,18 @@ import 'Services/globalcontext.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HiveHandler.hiveRegisterAdapter().then((value) {
-      print("**************** hive register initialization *************");
-    });
+    print("**************** hive register initialization *************");
+  });
   // set the publishable key for Stripe - this is mandatory
   /// For test mode
   // Stripe.publishableKey =
   //     'pk_test_51KVy8SSF6JrV3GLoEosrxIXwRIwVvXRjiwyRzpSuI6ZubE5snkYl17SFsqRkDEHslXrJLWbrxhYWajzZzChqV1o400ubhdYoep';
 
   // Stripe.publishableKey = 'pk_live_kUCek2XygEa1X04d7xu5qTmh';
-  SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown], );
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+  );
   await Firebase.initializeApp();
 
   runApp(MyApp());
@@ -58,26 +59,19 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-
-        ChangeNotifierProvider<PurchaseProvider>(
-            create: (_) => PurchaseProvider()),
-
-        ChangeNotifierProvider<CourseProvider>(create: (_)=>CourseProvider()),
-        ChangeNotifierProvider<ProfileProvider>(create: (_)=>ProfileProvider()),
+        ChangeNotifierProvider<PurchaseProvider>(create: (_) => PurchaseProvider()),
+        ChangeNotifierProvider<CourseProvider>(create: (_) => CourseProvider()),
+        ChangeNotifierProvider<ProfileProvider>(create: (_) => ProfileProvider()),
         ChangeNotifierProvider<ResponseProvider>(
           create: (_) => ResponseProvider(),
         ),
         ChangeNotifierProvider<PlayerProvider>(create: (_) => PlayerProvider()),
-        ChangeNotifierProvider<PracticeTextProvider>(
-            create: (_) => PracticeTextProvider()),
-
-        ChangeNotifierProvider<CategoryProvider>(
-            create: (_) => CategoryProvider()),
-
-
+        ChangeNotifierProvider<PracticeTextProvider>(create: (_) => PracticeTextProvider()),
+        ChangeNotifierProvider<CategoryProvider>(create: (_) => CategoryProvider()),
+        ChangeNotifierProvider<ChatProvider>(create: (_) => ChatProvider()),
       ],
       child: MaterialApp(
-         navigatorKey: GlobalVariable.navState,
+        navigatorKey: GlobalVariable.navState,
         debugShowCheckedModeBanner: false,
         routes: {
           '/': (ctx) => SplashScreen(),

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
 class ChatTextField extends StatelessWidget {
-  const ChatTextField({
+  ChatTextField({
     Key key,
     @required this.size,
     @required this.chatController,
+    @required this.sendMessage,
   }) : super(key: key);
 
   final Size size;
   final TextEditingController chatController;
+  VoidCallback sendMessage;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: size.height / 10,
+      height: size.height * 0.10,
       width: size.width,
       alignment: Alignment.center,
       // color: Colors.blue,
@@ -54,11 +56,10 @@ class ChatTextField extends StatelessWidget {
                 icon: Icon(
                   Icons.send,
                 ),
-                onPressed: () {}),
+                onPressed: sendMessage),
           ],
         ),
       ),
     );
   }
 }
-
