@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../provider/profileProvider.dart';
 import '../../tool/ShapeClipper.dart';
 import '../../utils/app_color.dart';
+import '../QuesOfDay.dart';
 
 class Notifications extends StatefulWidget {
   const Notifications({Key key}) : super(key: key);
@@ -104,7 +105,18 @@ class _NotificationsState extends State<Notifications> {
                               padding: const EdgeInsets.symmetric(horizontal: 15.0),
                               child: InkWell(
                                 onTap: () {
+                                  print("question id========${profileProvider.NotificationData[index].questionId}");
+                                  var quesId = profileProvider.NotificationData[index].questionId;
                                   profileProvider.setNotifiId(profileProvider.NotificationData[index].id);
+
+                                  Future.delayed(Duration(milliseconds: 600), () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => QuesOfDay(
+                                                  seltedId: quesId,
+                                                )));
+                                  });
 
                                   setState(() {
                                     _isShow = !_isShow;

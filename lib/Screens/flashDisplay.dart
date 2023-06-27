@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/courseProvider.dart';
@@ -99,12 +100,12 @@ class _FlashDisplayState extends State<FlashDisplay> {
                               liGrdint = LinearGradient(
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
-                                  colors: [Color(0xffF3924D), Color(0xffECAB8E)]);
+                                  colors: [Color(0xff5082BC), Color(0xff8AA1C9)]);
                             } else if (index % 3 == 0) {
                               liGrdint = LinearGradient(
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
-                                  colors: [Color(0xff5082BC), Color(0xff8AA1C9)]);
+                                  colors: [Color(0xffF3924D), Color(0xffECAB8E)]);
                             } else if (index % 2 == 0) {
                               liGrdint = LinearGradient(
                                   begin: Alignment.topLeft,
@@ -119,49 +120,117 @@ class _FlashDisplayState extends State<FlashDisplay> {
 
                             return Padding(
                               padding: const EdgeInsets.all(18.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: liGrdint,
-                                  // color: Colors.deepPurpleAccent,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 5.0,
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      gradient: liGrdint,
+                                      // color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 5.0,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(40),
                                     ),
-                                  ],
-                                  borderRadius: BorderRadius.circular(40),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 30,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            courseProvider.FlashCards[index].title,
+                                            textAlign: TextAlign.center,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontSize: 30,
+                                                fontFamily: "Roboto",
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                          child: Text(
+                                            courseProvider.FlashCards[index].description,
+                                            textAlign: TextAlign.left,
+                                            style:
+                                                TextStyle(fontSize: 24, fontFamily: "NunitoSans", color: Colors.white),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Center(
-                                      child: Text(
-                                        courseProvider.FlashCards[index].title,
-                                        textAlign: TextAlign.center,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontSize: 30,
-                                            fontFamily: "Roboto",
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        // gradient: liGrdint,
+                                        color: Colors.white,
+
+                                        borderRadius: BorderRadius.circular(40),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 30,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                            child: Text(
+                                              courseProvider.FlashCards[index].title,
+                                              textAlign: TextAlign.left,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 30,
+                                                  fontFamily: "Roboto",
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 30,
+                                          ),
+                                          // Padding(
+                                          //   padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                          //   child: Text(
+                                          //     courseProvider.FlashCards[index].description,
+                                          //     textAlign: TextAlign.left,
+                                          //     style: TextStyle(
+                                          //         fontSize: 24, fontFamily: "NunitoSans", color: Colors.black),
+                                          //   ),
+                                          // ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                            child: Html(
+                                              data: courseProvider.FlashCards[index].description,
+                                              style: {
+                                                "body": Style(
+                                                  padding: EdgeInsets.only(top: 5),
+                                                  margin: EdgeInsets.zero,
+                                                  color: Color(0xff000000),
+                                                  textAlign: TextAlign.left,
+                                                  maxLines: 7,
+                                                  textOverflow: TextOverflow.ellipsis,
+                                                  fontSize: FontSize(22),
+                                                  fontFamily: "NunitoSans",
+                                                )
+                                              },
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 30,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                      child: Text(
-                                        courseProvider.FlashCards[index].description,
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(fontSize: 24, fontFamily: "NunitoSans", color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  )
+                                ],
                               ),
                             );
                           }),

@@ -1,44 +1,6 @@
-import 'dart:convert';
+import '../../Tests/model/practice_test.dart';
 
-import 'package:hive/hive.dart';
-
-@HiveType(typeId: 6)
-class PracListModel{
-    List<PracTestModel> list = [];
-      @HiveField(0)
-    String myList = "";
-    PracListModel();
-      PracListModel.fromjson(List data) {
-    list = data.map((e) => PracTestModel.fromJson(e)).toList();
-    myList = jsonEncode(data);
-    print("************************************************************");
-    print("list is $myList");
-    //  quesAns
-  }
-
-}
-
-
-
-class PracTestModel {
-  int id;
-  int mocktest;
-  int question;
-  int status;
-  int deleteStatus;
-  Question ques;
-
-  PracTestModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    mocktest = json['mocktest'];
-    question = json['question'];
-    status = json['status'];
-    deleteStatus = json['deleteStatus'];
-    ques = json['Question'] != null ? new Question.fromJson(json['Question']) : null;
-  }
-}
-
-class Question {
+class QuesDayModel{
   int id;
   int questionNo;
   int course;
@@ -50,9 +12,11 @@ class Question {
   Null image;
   int status;
   int deleteStatus;
-  List<Options> options;
+  List<OptionsDay> options;
 
-  Question.fromJson(Map<String, dynamic> json) {
+
+  
+  QuesDayModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     questionNo = json['question_no'];
     course = json['course'];
@@ -66,18 +30,20 @@ class Question {
     deleteStatus = json['deleteStatus'];
 
     if (json['Options'] != null) {
-      options = new List<Options>();
+      options = new List<OptionsDay>();
 
       json['Options'].forEach((v) {
      
 
-        options.add(new Options.fromJson(v));
+        options.add(new OptionsDay.fromJson(v));
       });
     }
   }
+
 }
 
-class Options {
+
+class OptionsDay {
   int id;
   int question;
   String questionOption;
@@ -86,7 +52,7 @@ class Options {
   int deleteStatus;
   bool isseleted;
 
-  Options({
+  OptionsDay({
     this.id,
     this.question,
     this.questionOption,
@@ -96,7 +62,7 @@ class Options {
     this.isseleted = false,
   });
 
-  Options.fromJson(Map<String, dynamic> json)
+  OptionsDay.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         question = json['question'],
         questionOption = json['question_option'],

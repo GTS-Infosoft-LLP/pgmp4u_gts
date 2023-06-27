@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:pgmp4u/Screens/MockTest/model/pracTestModel.dart';
 import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
 import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
-import 'package:pgmp4u/api/apis.dart';
 import 'package:provider/provider.dart';
-import 'dart:convert' as convert;
 import 'package:sizer/sizer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PracticeNew extends StatefulWidget {
+  int isFromNotification;
   final selectedId;
 
-  PracticeNew({
-    this.selectedId,
-  });
+  PracticeNew({this.selectedId, this.isFromNotification = 0});
 
   @override
   _PracticeNewState createState() => _PracticeNewState(selectedIdNew: this.selectedId);
@@ -56,40 +52,31 @@ class _PracticeNewState extends State<PracticeNew> {
     practiceProvider = Provider.of(context, listen: false);
     categoryProvider = Provider.of(context, listen: false);
 
-// practiceProvider.pList[_quetionNo].ques.options[0].questionOption
-
-    // print("data.pList[_quetionNo].ques.options[1].id${practiceProvider.pList[0].ques.options[1].id}");
-
     callApi();
-    // if (selectedIdNew == "result") {
-    //   apiCall2();
-    // } else {
-    //   apiCall();
-    // }
   }
 
   Future callApi() async {
     await practiceProvider.apiCall(categoryProvider.subCategoryId, categoryProvider.type);
   }
 
-  Future apiCall2() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('token');
-    print(stringValue);
-    http.Response response; //api/MockTestQuestions/124
-    response = await http.get(Uri.parse(REVIEWS_MOCK_TEST + "/22/4"),
-        headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+  // Future apiCall2() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String stringValue = prefs.getString('token');
+  //   print(stringValue);
+  //   http.Response response; //api/MockTestQuestions/124
+  //   response = await http.get(Uri.parse(REVIEWS_MOCK_TEST + "/22/4"),
+  //       headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
 
-    if (response.statusCode == 200) {
-      print(convert.jsonDecode(response.body));
-      setState(() {
-        var _mapResponse = convert.jsonDecode(response.body);
+  //   if (response.statusCode == 200) {
+  //     print(convert.jsonDecode(response.body));
+  //     setState(() {
+  //       var _mapResponse = convert.jsonDecode(response.body);
 
-        listResponse = _mapResponse["data"];
-      });
-      // print(convert.jsonDecode(response.body));
-    }
-  }
+  //       listResponse = _mapResponse["data"];
+  //     });
+  //     // print(convert.jsonDecode(response.body));
+  //   }
+  // }
 
   // Future apiCall() async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -120,6 +107,13 @@ class _PracticeNewState extends State<PracticeNew> {
     return Sizer(builder: (context, orientation, deviceType) {
       return Scaffold(
         body: Consumer<PracticeTextProvider>(builder: (context, data, child) {
+  List<Options> options =[];
+          if(data.pList.isNotEmpty){
+            options= data.pList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
+
+          }
+        
+              // data.pList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
           return Container(
             color: _colorfromhex("#FCFCFF"),
             child: Stack(
@@ -229,6 +223,55 @@ class _PracticeNewState extends State<PracticeNew> {
                                                 child: Column(
                                                   children: [
                                                     Row(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      children: [
+                                                        Container(
+                                                          height: 35,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                                                              gradient: LinearGradient(
+                                                                  colors: [
+                                                                    _colorfromhex("#3A47AD"),
+                                                                    _colorfromhex("#5163F3"),
+                                                                  ],
+                                                                  begin: const FractionalOffset(0.0, 0.0),
+                                                                  end: const FractionalOffset(1.0, 0.0),
+                                                                  stops: [0.0, 1.0],
+                                                                  tileMode: TileMode.clamp)),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(4.0),
+                                                            child: Center(
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.chat_bubble_rounded,
+                                                                    color: Colors.white,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 5,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.symmetric(horizontal: 4.0),
+                                                                    child: Text(
+                                                                      "Put on discussion",
+                                                                      style:
+                                                                          TextStyle(color: Colors.white, fontSize: 12),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+
+                                                    Row(
                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         _quetionNo != 0
@@ -299,7 +342,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                     ListView.builder(
                                                         shrinkWrap: true,
                                                         physics: NeverScrollableScrollPhysics(),
-                                                        itemCount: data.pList[_quetionNo].ques.options.length,
+                                                        itemCount: options.length,
                                                         itemBuilder: (context, index) {
                                                           // if (data.pList[_quetionNo].ques.options[index]
                                                           //         .questionOption ==
@@ -312,94 +355,88 @@ class _PracticeNewState extends State<PracticeNew> {
                                                             child: InkWell(
                                                               onTap: () {
                                                                 if (_isattempt <
-                                                                    data.pList[_quetionNo].ques.options
+                                                                    options
                                                                         .where((element) => element.isseleted == true)
                                                                         .toList()
                                                                         .length) {
                                                                   return;
                                                                 }
                                                                 setState(() {
-                                                                  data.pList[_quetionNo].ques.options[index].isseleted =
-                                                                      !data.pList[_quetionNo].ques.options[index]
-                                                                          .isseleted;
-                                                                  // selectedAnswer =
-                                                                  //     data.pList[_quetionNo].ques.options[index].id;
-
-                                                                  // // print("selectedAnswer=====================>>>>>>$selectedAnswer");
-                                                                  // rightAns = data.pList[_quetionNo].ques.rightAnswer
-                                                                  //     .split(',');
-
-                                                                  // for (int j = 0; j < rightAns.length; j++) {
-                                                                  //   correctAns.add(int.parse(rightAns[j]));
-                                                                  // }
-                                                                  // print(
-                                                                  //     "correctAns==================****************$correctAns");
-
-                                                                  // // print("==rightAns=======$rightAns");
-
-                                                                  // if (!selAns.contains(
-                                                                  //     data.pList[_quetionNo].ques.options[index].id)) {
-                                                                  //   selAns.add(
-                                                                  //       data.pList[_quetionNo].ques.options[index].id);
-                                                                  //   print("selAns=======$selAns");
-                                                                  // }
-                                                                  // if (selAns.length == rightAns.length) {
-                                                                  //   print("of same length==========");
-                                                                  //   checkAllAns(selAns, rightAns);
-                                                                  // }
-                                                                  // if (isListSame) {
-                                                                  //   print("=========list are same========");
-                                                                  // }
-
-                                                                  // realAnswer = int.parse(
-                                                                  //     data.pList[_quetionNo].ques.rightAnswer);
-
-                                                                  // //   data
-                                                                  // // .pList[
-                                                                  // //     _quetionNo]
-                                                                  // // .ques.question;
-                                                                  // print(
-                                                                  //     "data.pList[ _quetionNo].ques.rightAnswer==========>>>>>>$realAnswer");
+                                                                  options[index].isseleted = !options[index].isseleted;
                                                                 });
                                                               },
+                                                              // selectedAnswer =
+                                                              //     data.pList[_quetionNo].ques.options[index].id;
+
+                                                              // // print("selectedAnswer=====================>>>>>>$selectedAnswer");
+                                                              // rightAns = data.pList[_quetionNo].ques.rightAnswer
+                                                              //     .split(',');
+
+                                                              // for (int j = 0; j < rightAns.length; j++) {
+                                                              //   correctAns.add(int.parse(rightAns[j]));
+                                                              // }
+                                                              // print(
+                                                              //     "correctAns==================****************$correctAns");
+
+                                                              // // print("==rightAns=======$rightAns");
+
+                                                              // if (!selAns.contains(
+                                                              //     data.pList[_quetionNo].ques.options[index].id)) {
+                                                              //   selAns.add(
+                                                              //       data.pList[_quetionNo].ques.options[index].id);
+                                                              //   print("selAns=======$selAns");
+                                                              // }
+                                                              // if (selAns.length == rightAns.length) {
+                                                              //   print("of same length==========");
+                                                              //   checkAllAns(selAns, rightAns);
+                                                              // }
+                                                              // if (isListSame) {
+                                                              //   print("=========list are same========");
+                                                              // }
+
+                                                              // realAnswer = int.parse(
+                                                              //     data.pList[_quetionNo].ques.rightAnswer);
+
+                                                              // //   data
+                                                              // // .pList[
+                                                              // //     _quetionNo]
+                                                              // // .ques.question;
+                                                              // print(
+                                                              //     "data.pList[ _quetionNo].ques.rightAnswer==========>>>>>>$realAnswer");
+
                                                               child: Container(
                                                                 decoration: BoxDecoration(
                                                                     // shape: BoxShape.circle,
                                                                     color: _isattempt <
-                                                                            data.pList[_quetionNo].ques.options
+                                                                            options
                                                                                 .where((element) =>
                                                                                     element.isseleted == true)
                                                                                 .toList()
                                                                                 .length
-                                                                        ? data.pList[_quetionNo].ques.options.any(
+                                                                        ? options.any(
                                                                                 (element) => element.isseleted == true)
                                                                             ? data.pList[_quetionNo].ques.rightAnswer
-                                                                                    .contains(
-                                                                                        "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                    .contains("${options[index].id}")
                                                                                 ? _colorfromhex("#E6F7E7")
-                                                                                : data.pList[_quetionNo].ques
-                                                                                        .options[index].isseleted
+                                                                                : options[index].isseleted
                                                                                     ? data.pList[_quetionNo].ques
                                                                                             .rightAnswer
                                                                                             .contains(
-                                                                                                "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                                "${options[index].id}")
                                                                                         ? _colorfromhex("#E6F7E7")
                                                                                         : _colorfromhex("#FFF6F6")
                                                                                     : Colors.white
-                                                                            : data.pList[_quetionNo].ques.options[index]
-                                                                                    .isseleted
+                                                                            : options[index].isseleted
                                                                                 ? data.pList[_quetionNo].ques
                                                                                         .rightAnswer
                                                                                         .contains(
-                                                                                            "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                            "${options[index].id}")
                                                                                     ? _colorfromhex("#E6F7E7")
                                                                                     : _colorfromhex("#FFF6F6")
                                                                                 : Colors.white
-                                                                        : data.pList[_quetionNo].ques.options[index]
-                                                                                .isseleted
+                                                                        : options[index].isseleted
                                                                             ? data.pList[_quetionNo].ques.rightAnswer
-                                                                                    .contains(
-                                                                                        "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                    .contains("${options[index].id}")
                                                                                 ? _colorfromhex("#E6F7E7")
                                                                                 : _colorfromhex("#FFF6F6")
                                                                             : Colors.white
@@ -452,35 +489,39 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                           borderRadius:
                                                                               BorderRadius.circular(width * (25 / 420)),
                                                                           color: _isattempt <
-                                                                                  data.pList[_quetionNo].ques.options
+                                                                                  options
                                                                                       .where((element) =>
                                                                                           element.isseleted == true)
                                                                                       .toList()
                                                                                       .length
-                                                                              ? data.pList[_quetionNo].ques.options.any(
-                                                                                      (element) =>
-                                                                                          element.isseleted == true)
-                                                                                  ? data.pList[_quetionNo].ques.rightAnswer.contains(
-                                                                                          "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                              ? options.any((element) =>
+                                                                                      element.isseleted == true)
+                                                                                  ? data.pList[_quetionNo].ques
+                                                                                          .rightAnswer
+                                                                                          .contains(
+                                                                                              "${options[index].id}")
                                                                                       ? _colorfromhex("#04AE0B")
-                                                                                      : data.pList[_quetionNo].ques
-                                                                                              .options[index].isseleted
-                                                                                          ? data.pList[_quetionNo].ques.rightAnswer.contains(
-                                                                                                  "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                      : options[index].isseleted
+                                                                                          ? data.pList[_quetionNo].ques
+                                                                                                  .rightAnswer
+                                                                                                  .contains(
+                                                                                                      "${options[index].id}")
                                                                                               ? _colorfromhex("#E6F7E7")
                                                                                               : _colorfromhex("#FF0000")
                                                                                           : Colors.white
-                                                                                  : data.pList[_quetionNo].ques
-                                                                                          .options[index].isseleted
-                                                                                      ? data.pList[_quetionNo].ques.rightAnswer.contains(
-                                                                                              "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                  : options[index].isseleted
+                                                                                      ? data.pList[_quetionNo].ques
+                                                                                              .rightAnswer
+                                                                                              .contains(
+                                                                                                  "${options[index].id}")
                                                                                           ? _colorfromhex("#E6F7E7")
                                                                                           : _colorfromhex("#FFF6F6")
                                                                                       : Colors.white
-                                                                              : data.pList[_quetionNo].ques
-                                                                                      .options[index].isseleted
-                                                                                  ? data.pList[_quetionNo].ques.rightAnswer
-                                                                                          .contains("${data.pList[_quetionNo].ques.options[index].id}")
+                                                                              : options[index].isseleted
+                                                                                  ? data.pList[_quetionNo].ques
+                                                                                          .rightAnswer
+                                                                                          .contains(
+                                                                                              "${options[index].id}")
                                                                                       ? _colorfromhex("#E6F7E7")
                                                                                       : _colorfromhex("#FFF6F6")
                                                                                   : Colors.white,
@@ -506,6 +547,9 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                           //             ? _colorfromhex("#04AE0B")
                                                                           //             : Colors.white,
                                                                           //selectedAnswer == realAnswer ? _colorfromhex("#E6F7E7") : Colors.white,
+
+                                                                          //data.pList[_quetionNo].ques.options.
+
                                                                           border: Border.all(color: Colors.black)),
                                                                       child: Center(
                                                                         child: Text(
@@ -521,21 +565,19 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                           style: TextStyle(
                                                                               fontFamily: 'Roboto Regular',
                                                                               fontSize: width * 14 / 420,
-                                                                              color: data.pList[_quetionNo].ques.options
-                                                                                      .any((element) =>
-                                                                                          element.isseleted == true)
+                                                                              color: options.any((element) =>
+                                                                                      element.isseleted == true)
                                                                                   ? data.pList[_quetionNo].ques
                                                                                           .rightAnswer
                                                                                           .contains(
-                                                                                              "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                              "${options[index].id}")
                                                                                       ? Colors.black
                                                                                       : Colors.black
-                                                                                  : data.pList[_quetionNo].ques
-                                                                                          .options[index].isseleted
+                                                                                  : options[index].isseleted
                                                                                       ? data.pList[_quetionNo].ques
                                                                                               .rightAnswer
                                                                                               .contains(
-                                                                                                  "${data.pList[_quetionNo].ques.options[index].id}")
+                                                                                                  "${options[index].id}")
                                                                                           ? Colors.green
                                                                                           : Colors.red
                                                                                       : Colors.black),
@@ -560,16 +602,14 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                 height: 8,
                                                                               ),
                                                                               Text(
-                                                                                data.pList[_quetionNo].ques
-                                                                                    .options[index].questionOption,
+                                                                                options[index].questionOption,
                                                                                 style: TextStyle(fontSize: 16),
                                                                               ),
                                                                               selectedAnswer != null &&
                                                                                       int.parse(data.pList[_quetionNo]
                                                                                               .ques.rightAnswer) !=
                                                                                           selectedAnswer &&
-                                                                                      data.pList[_quetionNo].ques
-                                                                                              .options[index].id ==
+                                                                                      options[index].id ==
                                                                                           int.parse(data
                                                                                               .pList[_quetionNo]
                                                                                               .ques
@@ -581,8 +621,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                         Text("Correct Answer")
                                                                                       ],
                                                                                     )
-                                                                                  : data.pList[_quetionNo].ques
-                                                                                                  .options[index].id ==
+                                                                                  : options[index].id ==
                                                                                               selectedAnswer &&
                                                                                           int.parse(data
                                                                                                   .pList[_quetionNo]
@@ -644,7 +683,7 @@ class _PracticeNewState extends State<PracticeNew> {
 
                                                     // selectedAnswer != null
                                                     if (_isattempt <
-                                                        data.pList[_quetionNo].ques.options
+                                                        options
                                                             .where((element) => element.isseleted == true)
                                                             .toList()
                                                             .length)
@@ -694,25 +733,18 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                     margin: EdgeInsets.only(top: height * (9 / 800)),
                                                                     child: Text(
                                                                       data.pList[_quetionNo].ques.rightAnswer ==
-                                                                              data.pList[_quetionNo].ques.options[0].id
-                                                                                  .toString()
+                                                                              options[0].id.toString()
                                                                           ? 'Answer A is the correct one'
                                                                           : data.pList[_quetionNo].ques.rightAnswer ==
-                                                                                  data.pList[_quetionNo].ques.options[1]
-                                                                                      .id
-                                                                                      .toString()
+                                                                                  options[1].id.toString()
                                                                               ? 'Answer B is the correct one'
                                                                               : data.pList[_quetionNo].ques
                                                                                           .rightAnswer ==
-                                                                                      data.pList[_quetionNo].ques
-                                                                                          .options[2].id
-                                                                                          .toString()
+                                                                                      options[2].id.toString()
                                                                                   ? 'Answer c is the correct one'
                                                                                   : data.pList[_quetionNo].ques
                                                                                               .rightAnswer ==
-                                                                                          data.pList[_quetionNo].ques
-                                                                                              .options[3].id
-                                                                                              .toString()
+                                                                                          options[3].id.toString()
                                                                                       ? 'Answer D is the correct one'
                                                                                       : 'Answer E is the correct one',
                                                                       style: TextStyle(

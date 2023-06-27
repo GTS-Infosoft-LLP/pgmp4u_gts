@@ -1,10 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/Models/mockquestionanswermodel.dart';
 import 'package:pgmp4u/Screens/PracticeTests/practice_test_response_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
-
 import '../MockTest/model/pracTestModel.dart';
+import '../MockTest/model/quesOfDayModel.dart';
 
 class PracticeTextProvider extends ChangeNotifier {
   bool practiceApiLoader = false;
@@ -14,6 +17,12 @@ class PracticeTextProvider extends ChangeNotifier {
   List<PracitceTextResponseModelList> pracQuesList = [];
 
   List<PracTestModel> pList = [];
+  List<Optionss> quesDayOption = [];
+
+  List<QuesDayModel> qdList = [];
+
+  String quesDayQues;
+  int quesDayId;
 
   int selectedAnswer;
   int realAnswer;
@@ -55,6 +64,7 @@ class PracticeTextProvider extends ChangeNotifier {
     // print("body=========>$body");
 
     if (response.statusCode == 200) {
+      pList = [];
       print(convert.jsonDecode(response.body));
       var _mapResponse = convert.jsonDecode(response.body);
 
@@ -67,23 +77,6 @@ class PracticeTextProvider extends ChangeNotifier {
 
       pList = temp.map((e) => PracTestModel.fromJson(e)).toList();
 
-      // for (int i = 0; i < p1List.length; i++) {
-      //   var opList = p1List[i].ques;
-      //   var lst = opList.options;
-      //   print("opList=======${opList.options}");
-
-      //   var len = lst.length;
-      //   print("len======$len");
-
-      //   for (int j = 0; j < len; j++) {
-      //     print("option values=========${lst[j].questionOption}");
-
-      //     if(lst[j].questionOption==""){
-      //       pList[i].ques.options[j]
-      //     }
-      //   }
-      // }
-
       practiceApiLoader = false;
       print("pList=============$pList");
 
@@ -91,22 +84,53 @@ class PracticeTextProvider extends ChangeNotifier {
         // print("pList[0]============${pList[0].ques.options[1].questionOption}");
       }
 
-      // if()
+      notifyListeners();
+    }
+  }
 
-      // pracQuesList =
-      //     temp.map((e) => PracitceTextResponseModelList.fromJson(e)).toList();
+  Future<void> getQuesDay(int id) async {
+    print("id =================*********************$id");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
 
-      // print("pracQuesList==================================$pracQuesList");
+    print("token valued===$stringValue");
+    var request = {"id": id};
 
-      // pracitceTextResponseModel =
-      //     PracitceTextResponseModelList.fromJson(_mapResponse["data"]);
+    var response = await http.post(
+      Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/getQuestionOfTheDay"),
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+      body: json.encode(request),
+    );
 
-      // updateLoader(false);
+    print("response.statusCode===${response.body}");
+    print("response.statusCode===${response.statusCode}");
 
-      // questionsList = pracitceTextResponseModel.list;
+    var resDDo = json.decode(response.body);
+    var resStatus = (resDDo["status"]);
+    practiceApiLoader = true;
+
+    if (resStatus == 400) {
+      // masterList = [];
+      // videoPresent = 0;
 
       notifyListeners();
-      // print(convert.jsonDecode(response.body));
+      return;
     }
+
+    // print("val of vid present===$videoPresent");
+
+    if (response.statusCode == 200) {
+      qdList = [];
+      // masterList.clear();
+      Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+      List temp = mapResponse["data"];
+      qdList = temp.map((e) => QuesDayModel.fromJson(e)).toList();
+      practiceApiLoader = false;
+      if (qdList.isNotEmpty) {
+        print("qdList[0]============${qdList[0].question}");
+      }
+      notifyListeners();
+    }
+    print("respponse=== ${response.body}");
   }
 }

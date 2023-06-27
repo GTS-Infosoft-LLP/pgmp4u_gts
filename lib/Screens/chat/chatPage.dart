@@ -51,7 +51,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
       ),
-      bottomSheet: ChatTextField(size: size, chatController: chatController),
+      bottomSheet: ChatTextField(size: size, chatController: chatController), 
       resizeToAvoidBottomInset: true,
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: FirebaseChatHandler.getAllGroupMessage(),
