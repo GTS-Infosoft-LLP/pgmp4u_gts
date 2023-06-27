@@ -579,8 +579,8 @@ class _ProfileState extends State<Profile> {
 
                             GestureDetector(
                               onTap: () {
-                                ProfileProvider profileProvider = Provider.of(context, listen: false);
-                                profileProvider.getQuesDay(1);
+                                // ProfileProvider profileProvider = Provider.of(context, listen: false);
+                                // profileProvider.getQuesDay(1);
 
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => QuesOfDay()));
                               },
