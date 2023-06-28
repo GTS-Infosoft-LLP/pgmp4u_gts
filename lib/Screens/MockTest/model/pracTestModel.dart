@@ -1,10 +1,15 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
+   part 'pracTestModel.g.dart';
 
+/// make use of this model   
+/// 
+/// 
+/// 
 @HiveType(typeId: 6)
 class PracListModel{
-    List<PracTestModel> list = [];
+    List<PracTestModel> list = [];     
       @HiveField(0)
     String myList = "";
     PracListModel();

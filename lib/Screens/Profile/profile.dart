@@ -15,6 +15,7 @@ import 'package:sizer/sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/user_object.dart';
+import '../quesDayList.dart';
 import 'notifications.dart';
 
 class Profile extends StatefulWidget {
@@ -583,9 +584,9 @@ class _ProfileState extends State<Profile> {
                             GestureDetector(
                               onTap: () {
                                 // ProfileProvider profileProvider = Provider.of(context, listen: false);
-                                // profileProvider.getQuesDay(1);
+                                // profileProvider.getQuesDay(1);  //QuesListCourse
 
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => QuesOfDay()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => QuesListCourse()));
                               },
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),

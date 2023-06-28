@@ -27,9 +27,17 @@ class _QuesOfDayState extends State<QuesOfDay> {
   List<String> rightAns = [];
   List<int> correctAns = [];
   int isAnsCorrect = 0;
+  int enableTap = 0;
   int realAnswer;
   var currentIndex;
+
+  String finDate = "";
   void initState() {
+    print("date time now========>${DateTime.now()}");
+    String dt = DateTime.now().toString();
+
+    PracticeTextProvider pr = Provider.of(context, listen: false);
+
     selAns = [];
     rightAns = [];
     ansRef = [];
@@ -145,6 +153,8 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                   controller: pageController,
                                   itemCount: data.qdList.length,
                                   onPageChanged: (index) {
+                                    enableTap = 0;
+                                    isAnsCorrect = 0;
                                     selAns = [];
                                     rightAns = [];
                                     correctAns = [];
@@ -191,118 +201,195 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                 bottom: height * (23 / 800)),
                                             color: Colors.white,
                                             child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    _quetionNo != 0
-                                                        ? GestureDetector(
-                                                            onTap: () => {
-                                                              selAns = [],
-                                                              rightAns = [],
-                                                              correctAns = [],
-                                                              setState(() {
-                                                                _quetionNo--;
+                                                // Text("Uploaded on: "),
+                                                // Text("${data.qdList[_quetionNo].sendDate}"),
 
-                                                                selectedAnswer = null;
-                                                              })
-                                                            },
-                                                            child: Icon(
-                                                              Icons.west,
-                                                              size: width * (30 / 420),
-                                                              color: Colors.black,
-                                                            ),
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+                                                    // finDate
+                                                    // finDate
+
+                                                    data.qdList[_quetionNo].sendDate.split(" ")[0].toString() == finDate
+                                                        ? Column(
+                                                            mainAxisAlignment: MainAxisAlignment.start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text("Today's Question "),
+                                                              // Text("${data.qdList[_quetionNo].sendDate}"),
+                                                            ],
                                                           )
-                                                        : Container(),
-                                                    Container(
-                                                      // color: Colors.amber,
-                                                      width: MediaQuery.of(context).size.width * .85,
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            'QUESTION ${_quetionNo + 1}',
-                                                            style: TextStyle(
-                                                              fontFamily: 'Roboto Regular',
-                                                              fontSize: width * (16 / 420),
-                                                              color: Colors.black,
-                                                            ),
+                                                        : Column(
+                                                            mainAxisAlignment: MainAxisAlignment.start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text("Uploaded on: "),
+                                                              Text("${data.qdList[_quetionNo].sendDate}"),
+                                                            ],
                                                           ),
-                                                          Container(
-                                                            height: 35,
-                                                            decoration: BoxDecoration(
-                                                                borderRadius: BorderRadius.all(Radius.circular(20)),
-                                                                gradient: LinearGradient(
-                                                                    colors: [
-                                                                      _colorfromhex("#3A47AD"),
-                                                                      _colorfromhex("#5163F3"),
-                                                                    ],
-                                                                    begin: const FractionalOffset(0.0, 0.0),
-                                                                    end: const FractionalOffset(1.0, 0.0),
-                                                                    stops: [0.0, 1.0],
-                                                                    tileMode: TileMode.clamp)),
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(4.0),
-                                                              child: Center(
-                                                                child: InkWell(
-                                                                  onTap: () {
-                                                                    questionLoader
-                                                                        ? null
-                                                                        : onTapOfPutOnDisscussion(
-                                                                            data.pList != null
-                                                                                ? data.qdList[_quetionNo].question
-                                                                                : '',
-                                                                          );
-                                                                  },
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons.chat_bubble_rounded,
-                                                                        color: Colors.white,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width: 5,
-                                                                      ),
-                                                                      Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.symmetric(horizontal: 4.0),
-                                                                        child: Text(
-                                                                          "Put on discussion",
-                                                                          style: TextStyle(
-                                                                              color: Colors.white, fontSize: 12),
-                                                                        ),
-                                                                      ),
-                                                                    ],
+                                                    new Spacer(),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(right: 15.0),
+                                                      child: Container(
+                                                        height: 35,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                                                            gradient: LinearGradient(
+                                                                colors: [
+                                                                  _colorfromhex("#3A47AD"),
+                                                                  _colorfromhex("#5163F3"),
+                                                                ],
+                                                                begin: const FractionalOffset(0.0, 0.0),
+                                                                end: const FractionalOffset(1.0, 0.0),
+                                                                stops: [0.0, 1.0],
+                                                                tileMode: TileMode.clamp)),
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.all(4.0),
+                                                          child: Center(
+                                                            child: InkWell(
+                                                              onTap: () {
+                                                                questionLoader
+                                                                    ? null
+                                                                    : onTapOfPutOnDisscussion(
+                                                                        data.pList != null
+                                                                            ? data.qdList[_quetionNo].question
+                                                                            : '',
+                                                                      );
+                                                              },
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.chat_outlined,
+                                                                    color: Colors.white,
                                                                   ),
-                                                                ),
+                                                                  SizedBox(
+                                                                    width: 5,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.symmetric(horizontal: 4.0),
+                                                                    child: Text(
+                                                                      "Put on discussion",
+                                                                      style:
+                                                                          TextStyle(color: Colors.white, fontSize: 12),
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ),
                                                           ),
-                                                        ],
+                                                        ),
                                                       ),
                                                     ),
-                                                    data.qdList.length - 1 > _quetionNo
-                                                        ? GestureDetector(
-                                                            onTap: () => {
-                                                              selAns = [],
-                                                              rightAns = [],
-                                                              correctAns = [],
-                                                              setState(() {
-                                                                if (_quetionNo < data.qdList.length) {
-                                                                  _quetionNo = _quetionNo + 1;
-                                                                }
-                                                                selectedAnswer = null;
-                                                              }),
-                                                              print(_quetionNo)
-                                                            },
-                                                            child: Icon(
-                                                              Icons.east,
-                                                              size: width * (30 / 420),
-                                                              color: Colors.black,
-                                                            ),
-                                                          )
-                                                        : Container(),
                                                   ],
+                                                ),
+
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+
+                                                Container(
+                                                  // color: Colors.amber,
+                                                  width: MediaQuery.of(context).size.width * .95,
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                                                      _quetionNo != 0
+                                                          ? GestureDetector(
+                                                              onTap: () => {
+                                                                enableTap = 0,
+                                                                isAnsCorrect = 0,
+                                                                selAns = [],
+                                                                rightAns = [],
+                                                                correctAns = [],
+                                                                setState(() {
+                                                                  _quetionNo--;
+
+                                                                  selectedAnswer = null;
+                                                                })
+                                                              },
+                                                              child: Icon(
+                                                                Icons.west,
+                                                                size: width * (30 / 420),
+                                                                color: Colors.black,
+                                                              ),
+                                                            )
+                                                          : Container(),
+                                                      Container(
+                                                        // color: Colors.amber,
+                                                        width: MediaQuery.of(context).size.width * .75,
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              'QUESTION ${_quetionNo + 1}',
+                                                              style: TextStyle(
+                                                                fontFamily: 'Roboto Regular',
+                                                                fontSize: width * (16 / 420),
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                            new Spacer(),
+                                                            data.qdList.length - 1 > _quetionNo
+                                                                ? Padding(
+                                                                    padding: const EdgeInsets.only(right: 18.0),
+                                                                    child: GestureDetector(
+                                                                      onTap: () => {
+                                                                        enableTap = 0,
+                                                                        isAnsCorrect = 0,
+                                                                        selAns = [],
+                                                                        rightAns = [],
+                                                                        correctAns = [],
+                                                                        setState(() {
+                                                                          if (_quetionNo < data.qdList.length) {
+                                                                            _quetionNo = _quetionNo + 1;
+                                                                          }
+                                                                          selectedAnswer = null;
+                                                                        }),
+                                                                        print(_quetionNo)
+                                                                      },
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.only(right: 8.0),
+                                                                        child: Icon(
+                                                                          Icons.east,
+                                                                          size: width * (30 / 420),
+                                                                          color: Colors.black,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                : Container(),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      // data.qdList.length - 1 > _quetionNo
+                                                      //     ? Padding(
+                                                      //         padding: const EdgeInsets.only(right: 18.0),
+                                                      //         child: GestureDetector(
+                                                      //           onTap: () => {
+                                                      //             selAns = [],
+                                                      //             rightAns = [],
+                                                      //             correctAns = [],
+                                                      //             setState(() {
+                                                      //               if (_quetionNo < data.qdList.length) {
+                                                      //                 _quetionNo = _quetionNo + 1;
+                                                      //               }
+                                                      //               selectedAnswer = null;
+                                                      //             }),
+                                                      //             print(_quetionNo)
+                                                      //           },
+                                                      //           child: Icon(
+                                                      //             Icons.east,
+                                                      //             size: width * (30 / 420),
+                                                      //             color: Colors.black,
+                                                      //           ),
+                                                      //         ),
+                                                      //       )
+                                                      //     : Container(),
+                                                    ],
+                                                  ),
                                                 ),
                                                 Container(
                                                   margin: EdgeInsets.only(top: height * (15 / 800)),
@@ -315,6 +402,25 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                       height: 1.7,
                                                     ),
                                                   ),
+                                                ),
+
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Maximum selection: ${data.qdList[index].rightAnswer.split(',').length}",
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        fontFamily: 'Roboto Regular',
+                                                        fontSize: 18,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+
+                                                SizedBox(
+                                                  height: 10,
                                                 ),
 
                                                 ListView.builder(
@@ -332,42 +438,45 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                         padding: const EdgeInsets.only(bottom: 15.0, top: 10),
                                                         child: InkWell(
                                                           onTap: () {
-                                                            setState(() {
-                                                              selAns.add(options[index].id);
-                                                              print("selAns=============$selAns");
+                                                            if (enableTap == 0) {
+                                                              setState(() {
+                                                                rightAns = [];
+                                                                ansRef = [];
 
-                                                              if (selAns.length == ansRef.length && ansRef.length > 0) {
-                                                                checkAllAns(selAns, ansRef);
+                                                                rightAns =
+                                                                    data.qdList[_quetionNo].rightAnswer.split(',');
+                                                                print("rightAns========>>>$rightAns");
+
+                                                                for (int i = 0; i < rightAns.length; i++) {
+                                                                  ansRef.add(int.parse(rightAns[i]));
+                                                                }
+                                                                print("ansRef=========>>>>>>$ansRef");
+                                                              });
+
+                                                              setState(() {
+                                                                selAns.add(options[index].id);
+                                                                print("selAns=============$selAns");
+
+                                                                if (selAns.length == ansRef.length &&
+                                                                    ansRef.length > 0) {
+                                                                  checkAllAns(selAns, ansRef);
+                                                                  enableTap = 1;
+                                                                }
+                                                              });
+
+                                                              if (_isattempt <
+                                                                  options
+                                                                      .where((element) => element.isseleted == true)
+                                                                      .toList()
+                                                                      .length) {
+                                                                return;
                                                               }
-                                                            });
-
-                                                            // selAns.add(options[index].id);
-                                                            // print("selAns=============$selAns");
-
-                                                            // if (selAns.length == ansRef.length && ansRef.length > 0) {
-                                                            //   checkAllAns(selAns, ansRef);
-                                                            // }
-
-                                                            if (_isattempt <
-                                                                options
-                                                                    .where((element) => element.isseleted == true)
-                                                                    .toList()
-                                                                    .length) {
-                                                              return;
+                                                              setState(() {
+                                                                options[index].isseleted = !options[index].isseleted;
+                                                                // selAns.add(options[index].id);
+                                                                // print("selAns=============$selAns");
+                                                              });
                                                             }
-                                                            setState(() {
-                                                              options[index].isseleted = !options[index].isseleted;
-                                                              // selAns.add(options[index].id);
-                                                              // print("selAns=============$selAns");
-                                                            });
-
-                                                            rightAns = data.qdList[_quetionNo].rightAnswer.split(',');
-                                                            print("rightAns========>>>$rightAns");
-
-                                                            for (int i = 0; i < rightAns.length; i++) {
-                                                              ansRef.add(int.parse(rightAns[i]));
-                                                            }
-                                                            print("ansRef=========>>>>>>$ansRef");
                                                           },
 
                                                           // selectedAnswer =
@@ -1039,12 +1148,15 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                     );
                                   }),
                             )
-                          : Text("No Data Found.....")
+                          : data.qdList.isEmpty
+                              ? Center(child: Container(height: 200, child: Text("No Data Found.....")))
+                              : Text("No Data Found.....")
                 ],
               ),
             ),
             Text(""),
-            realAnswer == selectedAnswer && selectedAnswer != null
+
+            isAnsCorrect == 1
                 ? Positioned(
                     top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
                     left: width / 2.9,
@@ -1053,22 +1165,42 @@ class _QuesOfDayState extends State<QuesOfDay> {
                       height: 110,
                       child: Image.asset('assets/smile.png'),
                     ))
-                : Text(''),
-            realAnswer != selectedAnswer && selectedAnswer != null
-                ? Positioned(
-                    top: SizerUtil.deviceType == DeviceType.mobile ? 100 : 165,
-                    left: width / 2.5,
-                    child: selectedAnswer == null
-                        ? Text('')
-                        : realAnswer == selectedAnswer
-                            ? Container(
-                                width: 100,
-                                height: 100,
-                                child: Image.asset('assets/smile.png'),
-                              )
-                            : Image.asset('assets/smiley-sad1.png'),
-                  )
-                : Text(''),
+                : isAnsCorrect == 2
+                    ? Positioned(
+                        top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
+                        left: width / 2.9,
+                        child: Container(
+                          width: 110,
+                          height: 110,
+                          child: Image.asset('assets/smiley-sad1.png'),
+                        ))
+                    : SizedBox()
+
+            // realAnswer == selectedAnswer && selectedAnswer != null
+            //     ? Positioned(
+            //         top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
+            //         left: width / 2.9,
+            //         child: Container(
+            //           width: 110,
+            //           height: 110,
+            //           child: Image.asset('assets/smile.png'),
+            //         ))
+            //     : Text(''),
+            // realAnswer != selectedAnswer && selectedAnswer != null
+            //     ? Positioned(
+            //         top: SizerUtil.deviceType == DeviceType.mobile ? 100 : 165,
+            //         left: width / 2.5,
+            //         child: selectedAnswer == null
+            //             ? Text('')
+            //             : realAnswer == selectedAnswer
+            //                 ? Container(
+            //                     width: 100,
+            //                     height: 100,
+            //                     child: Image.asset('assets/smile.png'),
+            //                   )
+            //                 : Image.asset('assets/smiley-sad1.png'),
+            //       )
+            //     : Text(''),
           ],
         ),
       );

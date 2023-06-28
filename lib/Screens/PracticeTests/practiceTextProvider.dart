@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pgmp4u/Models/mockquestionanswermodel.dart';
 import 'package:pgmp4u/Screens/PracticeTests/practice_test_response_model.dart';
+import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -80,6 +81,19 @@ class PracticeTextProvider extends ChangeNotifier {
       practiceApiLoader = false;
       print("pList=============$pList");
 
+      // try {
+      //   HiveHandler.addPracTest(pList);
+
+      //   Future.delayed(Duration(microseconds: 800), () {
+      //     List<PracTestModel> tempList = HiveHandler.getPracTestList() ?? [];
+      //     print("*************************************************");
+
+      //     print("tempList==========$tempList");
+      //   });
+      // } catch (e) {
+      //   print("errorr===========>>>>>>$e");
+      // }
+
       if (pList.isNotEmpty) {
         // print("pList[0]============${pList[0].ques.options[1].questionOption}");
       }
@@ -91,6 +105,7 @@ class PracticeTextProvider extends ChangeNotifier {
   }
 
   Future<void> getQuesDay(int id) async {
+    // id = 34;
     print("id =================*********************$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -105,11 +120,18 @@ class PracticeTextProvider extends ChangeNotifier {
     );
 
     print("response.statusCode===${response.body}");
+
     print("response.statusCode===${response.statusCode}");
 
     var resDDo = json.decode(response.body);
+    print("response.body.data===${resDDo['data']}");
     var resStatus = (resDDo["status"]);
     practiceApiLoader = true;
+
+    if (resDDo['data'] == []) {
+      qdList = [];
+      return;
+    }
 
     if (resStatus == 400) {
       // masterList = [];
