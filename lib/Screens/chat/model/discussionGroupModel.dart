@@ -3,14 +3,16 @@ class DisscussionGropModel {
   String groupId;
   String createdAt;
   String createdBy;
-  String viewedBy;
+  int commentsCount;
+  String ownerId;
 
   DisscussionGropModel({
     this.title,
     this.createdAt,
     this.createdBy,
+    this.ownerId,
     this.groupId,
-    this.viewedBy,
+    this.commentsCount,
   });
 
   DisscussionGropModel.fromJson(Map<String, dynamic> json) {
@@ -18,7 +20,9 @@ class DisscussionGropModel {
     createdAt = json['createdAt'] ?? "0";
     createdBy = json['createdBy'] ?? "";
     groupId = json['groupId'] ?? "";
-    viewedBy = json['viewedBy'] ?? "0";
+
+    commentsCount = json['commentsCount'] ?? 0;
+    ownerId = json['ownerId'] ?? "";
   }
 
   Map<String, dynamic> toJson() => {
@@ -27,6 +31,7 @@ class DisscussionGropModel {
         "createdAt": createdAt,
         "createdBy": createdBy,
         "groupId": groupId,
-        "viewedBy": viewedBy
+        "commentsCount": commentsCount,
+        "ownerId": ownerId
       };
 }

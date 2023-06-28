@@ -67,6 +67,8 @@ class GroupListTile extends StatelessWidget {
                 Expanded(
                     child: Text(
                   group.title ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 20, fontFamily: 'Roboto Medium'),
                 )),
                 SizedBox(
@@ -88,8 +90,8 @@ class GroupListTile extends StatelessWidget {
                 Container(
                   height: 29,
                   alignment: Alignment.center,
-                  constraints: BoxConstraints(maxWidth: 100),
-                  padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.38),
+                  padding: EdgeInsets.symmetric(vertical: 6, horizontal: 6),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
                     color: color,
@@ -102,16 +104,15 @@ class GroupListTile extends StatelessWidget {
                       )),
                 ),
                 SizedBox(
-                  width: 4,
+                  width: 6,
                 ),
                 Text(
                   timeToShow,
                   style: TextStyle(fontSize: 12, fontFamily: 'Roboto Medium', color: Color(0XFF63697B)),
                 ),
                 Spacer(),
-                _myIcons(icon: Icons.visibility, count: '540'),
                 SizedBox(width: 20),
-                _myIcons(icon: Icons.chat_rounded, count: '264'),
+                _myIcons(icon: Icons.chat_rounded, count: group.commentsCount.toString()),
               ],
             ),
           ],

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pgmp4u/Screens/MockTest/model/quesOfDayModel.dart';
 import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
+import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
+import 'package:pgmp4u/Screens/chat/screen/goupList.dart';
+import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -33,35 +36,8 @@ class _QuesOfDayState extends State<QuesOfDay> {
     print("date time now========>${DateTime.now()}");
     String dt = DateTime.now().toString();
 
-    // print("dt=====${dt.split(" ")}");
-
-    String dttt = dt.substring(0, 10);
-    String dtae = dttt.substring(7, 10);
-    String mon = dttt.substring(4, 7);
-    String yer = dttt.substring(0, 4);
-
-    finDate = dtae + mon + "-" + yer;
-
-    print("finDate===========$finDate");
-
     PracticeTextProvider pr = Provider.of(context, listen: false);
 
-    print(" ==================*****************${pr.qdList[0].sendDate.split(" ")[0].toString()}");
-
-    if (pr.qdList[0].sendDate.split(" ")[0].toString() == finDate) {
-      print("list are same==============");
-    } else {
-      print("list are not ttttttt same==============");
-    }
-
-    if (pr.qdList[0].sendDate.contains(finDate)) {
-      print("presentttttttt============");
-    } else {
-      print("absenttttttt============");
-    }
-    // .contains(finDate);
-
-    print("===================$dttt");
     selAns = [];
     rightAns = [];
     ansRef = [];
@@ -79,6 +55,32 @@ class _QuesOfDayState extends State<QuesOfDay> {
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
+  }
+
+  bool questionLoader = false;
+  onTapOfPutOnDisscussion(String question) async {
+    setState(() => questionLoader = true);
+    print('Question of The Day question : $question');
+    if (question.isEmpty) return;
+
+    if (!context.read<ChatProvider>().isChatSubscribed()) {
+      setState(() => questionLoader = false);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RandomPage(),
+          ));
+      return;
+    }
+    await context.read<ChatProvider>().createDiscussionGroup(question, context).whenComplete(() {
+      // Navigator.pop(context);
+      setState(() => questionLoader = false);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GroupListPage(),
+          ));
+    });
   }
 
   Widget build(BuildContext context) {
@@ -246,23 +248,36 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                         child: Padding(
                                                           padding: const EdgeInsets.all(4.0),
                                                           child: Center(
-                                                            child: Row(
-                                                              children: [
-                                                                Icon(
-                                                                  Icons.chat_outlined,
-                                                                  color: Colors.white,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                                                  child: Text(
-                                                                    "Put on discussion",
-                                                                    style: TextStyle(color: Colors.white, fontSize: 12),
+                                                            child: InkWell(
+                                                              onTap: () {
+                                                                questionLoader
+                                                                    ? null
+                                                                    : onTapOfPutOnDisscussion(
+                                                                        data.pList != null
+                                                                            ? data.qdList[_quetionNo].question
+                                                                            : '',
+                                                                      );
+                                                              },
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.chat_outlined,
+                                                                    color: Colors.white,
                                                                   ),
-                                                                ),
-                                                              ],
+                                                                  SizedBox(
+                                                                    width: 5,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.symmetric(horizontal: 4.0),
+                                                                    child: Text(
+                                                                      "Put on discussion",
+                                                                      style:
+                                                                          TextStyle(color: Colors.white, fontSize: 12),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
                                                           ),
                                                         ),

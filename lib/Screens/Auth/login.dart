@@ -75,6 +75,9 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
       prefs.setString('name', user.displayName);
       prefs.setString('email', responseData['data'][0]['email']);
+      prefs.setString('id', responseData['data'][0]['id'].toString());
+      prefs.setBool('isChatAdmin', responseData['data'][0]['isChatAdmin'] == 1 ? true : false);
+      prefs.setBool('isChatSubscribed', responseData['data'][0]['isChatSubscribed'] == 1 ? true : false);
       GFToast.showToast(
         'LoggedIn successfully',
         context,
@@ -140,6 +143,8 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString('token', responseData["token"]);
       prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
       prefs.setString('name', user.displayName);
+      prefs.setBool('isChatAdmin', responseData['data'][0]['isChatAdmin'] == 1 ? true : false);
+      prefs.setBool('isChatSubscribed', responseData['data'][0]['isChatSubscribed'] == 1 ? true : false);
       //loginHandler(user);
       // Navigator.push(context,
       //     MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));

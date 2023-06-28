@@ -6,7 +6,11 @@ import 'dart:convert' as convert;
 
 import 'package:getwidget/getwidget.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTestResult.dart';
+import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
+import 'package:pgmp4u/Screens/chat/screen/goupList.dart';
+import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
@@ -209,6 +213,31 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
   var displayTime = '';
 
+  bool questionLoader = false;
+  onTapOfPutOnDisscussion(String question) async {
+    setState(() => questionLoader = true);
+    print('Mock text question : $question');
+    if (question.isEmpty) return;
+
+    if (!context.read<ChatProvider>().isChatSubscribed()) {
+      setState(() => questionLoader = false);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RandomPage(),
+          ));
+      return;
+    }
+    await context.read<ChatProvider>().createDiscussionGroup(question, context).whenComplete(() {
+      setState(() => questionLoader = false);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GroupListPage(),
+          ));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     PageController pageController = PageController();
@@ -403,13 +432,23 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                     SizedBox(
                                                                       width: 5,
                                                                     ),
-                                                                    Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.symmetric(horizontal: 4.0),
-                                                                      child: Text(
-                                                                        "Put on discussion",
-                                                                        style: TextStyle(
-                                                                            color: Colors.white, fontSize: 12),
+                                                                    InkWell(
+                                                                      onTap: () {
+                                                                        questionLoader
+                                                                            ? null
+                                                                            : onTapOfPutOnDisscussion(
+                                                                                _quizList[_quetionNo]
+                                                                                    .questionDetail
+                                                                                    .questiondata);
+                                                                      },
+                                                                      child: Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.symmetric(horizontal: 4.0),
+                                                                        child: Text(
+                                                                          "Put on discussion",
+                                                                          style: TextStyle(
+                                                                              color: Colors.white, fontSize: 12),
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ],

@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pgmp4u/Screens/chat/chatPage.dart';
+import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/userListModel.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UsersList extends StatefulWidget {
@@ -35,14 +38,7 @@ class _UsersListState extends State<UsersList> {
     response = await http.post(Uri.parse(chatUserListApi),
         headers: {'Content-Type': 'application/json', 'Authorization': stringValue}, body: jsonEncode({"page": 1}));
 
-    //response i.e {success: true, cnt: 0, data: {paid_status: 0}}
     if (response.statusCode == 200) {
-      // Future.delayed(Duration(seconds: 1)).then((value) {
-      //   setState(() {
-      //     mapResponse = convert.jsonDecode(response.body);
-      //   });
-      // });
-
       print(jsonDecode(response.body));
       userListResponse = UpadateLocationResponseModel.fromJson(jsonDecode(response.body));
       isLoading = false;
@@ -62,9 +58,9 @@ class _UsersListState extends State<UsersList> {
         children: [
           _appBar(),
           isLoading
-              ? Center(child: CircularProgressIndicator.adaptive())
+              ? Expanded(child: Center(child: CircularProgressIndicator.adaptive()))
               : userListResponse.data.length == 0
-                  ? Center(child: Text('No User Found'))
+                  ? Expanded(child: Center(child: Text('No User Found')))
                   : ListView.separated(
                       shrinkWrap: true,
                       itemCount: userListResponse.data.length,
@@ -76,12 +72,40 @@ class _UsersListState extends State<UsersList> {
   }
 
   Widget _userListTile(Users user) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-      child: Text(
-        user.name ?? "",
-        style: TextStyle(
-          fontSize: 18,
+    return InkWell(
+      onTap: () {
+        context.read<ChatProvider>().generateRoomId(user.userId.toString());
+        // create a admin-user chat group
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatPage(),
+            ));
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 20,
+              child: Text(
+                user.name.characters.first.toUpperCase(),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              user.name ?? "",
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -134,24 +158,28 @@ class _UsersListState extends State<UsersList> {
       child: Padding(
         padding: const EdgeInsets.only(bottom: 18.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Spacer(),
-            Text(
-              "Users",
-              style: TextStyle(fontSize: 22, fontFamily: 'Roboto Medium', color: Colors.white),
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white,
+                ),
+              ),
             ),
-            Spacer(),
-
-            // InkWell(
-            //   onTap: () => MyPopupMenu(),
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(8.0),
-            // child: Icon(
-            //   Icons.more_vert_rounded,
-            //   color: Colors.white,
-            //     ),
-            //   ),
-            // ),
+            Expanded(
+              child: Text(
+                "Users",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 22, fontFamily: 'Roboto Medium', color: Colors.white),
+              ),
+            ),
+            SizedBox(width: 34),
           ],
         ),
       ),

@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:pgmp4u/Screens/chat/chatHandler.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/discussionGroupModel.dart';
+import 'package:pgmp4u/Screens/chat/screen/personalChatGroupList.dart';
 import 'package:pgmp4u/Screens/chat/screen/usersList.dart';
-import 'package:pgmp4u/Screens/chat/widgets/gropuListTile.dart';
+import 'package:pgmp4u/Screens/chat/widgets/groupListTile.dart';
 import 'package:pgmp4u/utils/app_color.dart';
 import 'package:provider/provider.dart';
 
@@ -77,7 +78,7 @@ class _GroupListPageState extends State<GroupListPage> {
     );
   }
 
-  Container _appBar() {
+  Widget _appBar() {
     return Container(
       height: 100,
       width: double.infinity,
@@ -98,23 +99,48 @@ class _GroupListPageState extends State<GroupListPage> {
         padding: const EdgeInsets.only(bottom: 18.0),
         child: Row(
           children: [
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 34,
+            ),
             Spacer(),
             Text(
               "Discussion",
               style: TextStyle(fontSize: 22, fontFamily: 'Roboto Medium', color: Colors.white),
             ),
             Spacer(),
-            MyPopupMenu()
-            // InkWell(
-            //   onTap: () => MyPopupMenu(),
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(8.0),
-            // child: Icon(
-            //   Icons.more_vert_rounded,
-            //   color: Colors.white,
-            //     ),
-            //   ),
-            // ),
+            Row(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PersonalChats(),
+                        ));
+                  },
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(
+                  width: 6,
+                ),
+                context.read<ChatProvider>().isChatAdmin() ? MyPopupMenu() : SizedBox(),
+              ],
+            ),
           ],
         ),
       ),
@@ -256,10 +282,11 @@ class AddDiscussionBottomSheet extends StatelessWidget {
   }
 
   onTapOfPublish(BuildContext context) async {
-    print('title: ${titleController.text}');
+    // print('title: ${titleController.text}');
     if (titleController.text.trim().isNotEmpty) {
-      await context.read<ChatProvider>().createDiscussionGroup(titleController.text.trim()).whenComplete(() {
+      await context.read<ChatProvider>().createDiscussionGroup(titleController.text.trim(), context).whenComplete(() {
         titleController.clear();
+
         Navigator.pop(context);
       });
     }
