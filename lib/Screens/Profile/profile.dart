@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:pgmp4u/Screens/QuesOfDay.dart';
 import 'package:pgmp4u/Screens/chat/screen/goupList.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -12,6 +11,7 @@ import 'package:sizer/sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/user_object.dart';
+import '../quesDayList.dart';
 import 'notifications.dart';
 
 class Profile extends StatefulWidget {
@@ -580,9 +580,9 @@ class _ProfileState extends State<Profile> {
                             GestureDetector(
                               onTap: () {
                                 // ProfileProvider profileProvider = Provider.of(context, listen: false);
-                                // profileProvider.getQuesDay(1);
+                                // profileProvider.getQuesDay(1);  //QuesListCourse
 
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => QuesOfDay()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => QuesListCourse()));
                               },
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),

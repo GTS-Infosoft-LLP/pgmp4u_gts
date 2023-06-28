@@ -109,14 +109,14 @@ class _NotificationsState extends State<Notifications> {
                                   var quesId = profileProvider.NotificationData[index].questionId;
                                   profileProvider.setNotifiId(profileProvider.NotificationData[index].id);
 
-                                  Future.delayed(Duration(milliseconds: 600), () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => QuesOfDay(
-                                                  seltedId: quesId,
-                                                )));
-                                  });
+                                  // Future.delayed(Duration(milliseconds: 600), () {
+                                  //   Navigator.push(
+                                  //       context,
+                                  //       MaterialPageRoute(
+                                  //           builder: (context) => QuesOfDay(
+                                  //                 seltedId: quesId,
+                                  //               )));
+                                  // });
 
                                   setState(() {
                                     _isShow = !_isShow;

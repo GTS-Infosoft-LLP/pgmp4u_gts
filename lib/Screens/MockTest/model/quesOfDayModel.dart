@@ -1,6 +1,4 @@
-import '../../Tests/model/practice_test.dart';
-
-class QuesDayModel{
+class QuesDayModel {
   int id;
   int questionNo;
   int course;
@@ -10,12 +8,11 @@ class QuesDayModel{
   String rightAnswer;
   String explanation;
   Null image;
+  String sendDate;
   int status;
   int deleteStatus;
   List<OptionsDay> options;
 
-
-  
   QuesDayModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     questionNo = json['question_no'];
@@ -26,6 +23,7 @@ class QuesDayModel{
     rightAnswer = json['right_answer'];
     explanation = json['explanation'];
     image = json['image'];
+    sendDate = json['sendDate'];
     status = json['status'];
     deleteStatus = json['deleteStatus'];
 
@@ -33,15 +31,11 @@ class QuesDayModel{
       options = new List<OptionsDay>();
 
       json['Options'].forEach((v) {
-     
-
         options.add(new OptionsDay.fromJson(v));
       });
     }
   }
-
 }
-
 
 class OptionsDay {
   int id;
@@ -65,7 +59,7 @@ class OptionsDay {
   OptionsDay.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         question = json['question'],
-        questionOption = json['question_option'],
+        questionOption = json['question_option'] ?? "",
         rightAnswer = json['right_answer'],
         status = json['status'],
         deleteStatus = json['deleteStatus'],

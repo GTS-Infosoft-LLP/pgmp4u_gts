@@ -120,6 +120,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                 print("flash card category id===>>${courseProvider.flashCate[index].id}");
 
                                 if (courseProvider.flashCate[index].payment_status == 0) {}
+                                courseProvider.FlashCards = [];
 
                                 courseProvider.getFlashCards(courseProvider.flashCate[index].id);
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../Models/mockListmodel.dart';
@@ -21,6 +22,9 @@ class CourseProvider extends ChangeNotifier {
   List<VideoDetails> Videos = [];
   List<FlashCateDetails> flashCate = [];
   List<FlashCardDetails> FlashCards = [];
+
+  List<FlashCardDetails> FlashOfflineList = [];
+
   List<TestDetails> testDetails = [];
   List<TestDataDetails> testData = [];
 
@@ -260,6 +264,25 @@ class CourseProvider extends ChangeNotifier {
       List temp1 = mapResponse["data"];
       print("temp list===$temp1");
       FlashCards = temp1.map((e) => FlashCardDetails.fromjson(e)).toList();
+
+      print("FlashCards=========$FlashCards");
+
+      try {
+        HiveHandler.addFlash(FlashCards);
+
+        Future.delayed(Duration(microseconds: 800), () {
+          List<FlashCardDetails> tempList = HiveHandler.getflashCardsList() ?? [];
+          print("*************************************************");
+          FlashOfflineList = HiveHandler.getflashCardsList() ?? [];
+          print("tempList==========$tempList");
+          print("FlashOfflineList==========$FlashOfflineList");
+        });
+      } catch (e) {
+        print("errorr===========>>>>>>$e");
+      }
+
+      // final List<FlashCardDetails> storedFlashess =
+      //         value.get("categoryKey");
 
       notifyListeners();
 

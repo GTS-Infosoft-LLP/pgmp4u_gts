@@ -39,6 +39,7 @@ class _PracticeNewState extends State<PracticeNew> {
   String stringResponse;
   List listResponse;
   bool isListSame;
+  int enableTap = 0;
   int isAnsCorrect; // 1---- correct   2--- not correct
   // Map mapResponse;
   @override
@@ -107,13 +108,13 @@ class _PracticeNewState extends State<PracticeNew> {
     return Sizer(builder: (context, orientation, deviceType) {
       return Scaffold(
         body: Consumer<PracticeTextProvider>(builder: (context, data, child) {
-  List<Options> options =[];
-          if(data.pList.isNotEmpty){
-            options= data.pList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
-
+          List<Options> options = [];
+          if (data.pList.isNotEmpty) {
+            options =
+                data.pList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
           }
-        
-              // data.pList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
+
+          // data.pList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
           return Container(
             color: _colorfromhex("#FCFCFF"),
             child: Stack(
@@ -173,6 +174,8 @@ class _PracticeNewState extends State<PracticeNew> {
                                       controller: pageController,
                                       itemCount: data.pList.length,
                                       onPageChanged: (index) {
+                                        enableTap = 0;
+                                        isAnsCorrect = 0;
                                         selAns = [];
                                         rightAns = [];
                                         correctAns = [];
@@ -277,6 +280,8 @@ class _PracticeNewState extends State<PracticeNew> {
                                                         _quetionNo != 0
                                                             ? GestureDetector(
                                                                 onTap: () => {
+                                                                  enableTap = 0,
+                                                                  isAnsCorrect = 0,
                                                                   selAns = [],
                                                                   rightAns = [],
                                                                   correctAns = [],
@@ -305,6 +310,8 @@ class _PracticeNewState extends State<PracticeNew> {
                                                         data.pList.length - 1 > _quetionNo
                                                             ? GestureDetector(
                                                                 onTap: () => {
+                                                                  enableTap = 0,
+                                                                  isAnsCorrect = 0,
                                                                   selAns = [],
                                                                   rightAns = [],
                                                                   correctAns = [],
@@ -339,6 +346,25 @@ class _PracticeNewState extends State<PracticeNew> {
                                                       ),
                                                     ),
 
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          "Maximum selection: ${data.pList[index].ques.rightAnswer.split(',').length}",
+                                                          textAlign: TextAlign.left,
+                                                          style: TextStyle(
+                                                            fontFamily: 'Roboto Regular',
+                                                            fontSize: 18,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+
                                                     ListView.builder(
                                                         shrinkWrap: true,
                                                         physics: NeverScrollableScrollPhysics(),
@@ -354,56 +380,44 @@ class _PracticeNewState extends State<PracticeNew> {
                                                             padding: const EdgeInsets.only(bottom: 15.0, top: 10),
                                                             child: InkWell(
                                                               onTap: () {
-                                                                if (_isattempt <
-                                                                    options
-                                                                        .where((element) => element.isseleted == true)
-                                                                        .toList()
-                                                                        .length) {
-                                                                  return;
+                                                                if (enableTap == 0) {
+                                                                  setState(() {
+                                                                    correctAns = [];
+                                                                    rightAns = [];
+                                                                    rightAns = data.pList[_quetionNo].ques.rightAnswer
+                                                                        .split(',');
+                                                                    print("rightAns========>>>$rightAns");
+
+                                                                    for (int i = 0; i < rightAns.length; i++) {
+                                                                      correctAns.add(int.parse(rightAns[i]));
+                                                                    }
+                                                                    print("correctAns=========>>>>>>$correctAns");
+                                                                  });
+
+                                                                  setState(() {
+                                                                    selAns.add(options[index].id);
+                                                                    print("selAns=============$selAns");
+
+                                                                    if (selAns.length == correctAns.length &&
+                                                                        correctAns.length > 0) {
+                                                                      checkAllAns(selAns, correctAns);
+                                                                      enableTap = 1;
+                                                                    }
+                                                                  });
+
+                                                                  if (_isattempt <
+                                                                      options
+                                                                          .where((element) => element.isseleted == true)
+                                                                          .toList()
+                                                                          .length) {
+                                                                    return;
+                                                                  }
+                                                                  setState(() {
+                                                                    options[index].isseleted =
+                                                                        !options[index].isseleted;
+                                                                  });
                                                                 }
-                                                                setState(() {
-                                                                  options[index].isseleted = !options[index].isseleted;
-                                                                });
                                                               },
-                                                              // selectedAnswer =
-                                                              //     data.pList[_quetionNo].ques.options[index].id;
-
-                                                              // // print("selectedAnswer=====================>>>>>>$selectedAnswer");
-                                                              // rightAns = data.pList[_quetionNo].ques.rightAnswer
-                                                              //     .split(',');
-
-                                                              // for (int j = 0; j < rightAns.length; j++) {
-                                                              //   correctAns.add(int.parse(rightAns[j]));
-                                                              // }
-                                                              // print(
-                                                              //     "correctAns==================****************$correctAns");
-
-                                                              // // print("==rightAns=======$rightAns");
-
-                                                              // if (!selAns.contains(
-                                                              //     data.pList[_quetionNo].ques.options[index].id)) {
-                                                              //   selAns.add(
-                                                              //       data.pList[_quetionNo].ques.options[index].id);
-                                                              //   print("selAns=======$selAns");
-                                                              // }
-                                                              // if (selAns.length == rightAns.length) {
-                                                              //   print("of same length==========");
-                                                              //   checkAllAns(selAns, rightAns);
-                                                              // }
-                                                              // if (isListSame) {
-                                                              //   print("=========list are same========");
-                                                              // }
-
-                                                              // realAnswer = int.parse(
-                                                              //     data.pList[_quetionNo].ques.rightAnswer);
-
-                                                              // //   data
-                                                              // // .pList[
-                                                              // //     _quetionNo]
-                                                              // // .ques.question;
-                                                              // print(
-                                                              //     "data.pList[ _quetionNo].ques.rightAnswer==========>>>>>>$realAnswer");
-
                                                               child: Container(
                                                                 decoration: BoxDecoration(
                                                                     // shape: BoxShape.circle,
@@ -605,15 +619,27 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                 options[index].questionOption,
                                                                                 style: TextStyle(fontSize: 16),
                                                                               ),
-                                                                              selectedAnswer != null &&
-                                                                                      int.parse(data.pList[_quetionNo]
-                                                                                              .ques.rightAnswer) !=
-                                                                                          selectedAnswer &&
-                                                                                      options[index].id ==
-                                                                                          int.parse(data
-                                                                                              .pList[_quetionNo]
-                                                                                              .ques
-                                                                                              .rightAnswer)
+                                                                              // selectedAnswer != null &&
+                                                                              //         int.parse(data.pList[_quetionNo]
+                                                                              //                 .ques.rightAnswer) !=
+                                                                              //             selectedAnswer &&
+                                                                              //         options[index].id ==
+                                                                              //             int.parse(data
+                                                                              //                 .pList[_quetionNo]
+                                                                              //                 .ques
+                                                                              //                 .rightAnswer)
+
+                                                                              (selAns.length == correctAns.length &&
+                                                                                          selAns.length > 0 &&
+                                                                                          selAns.contains(
+                                                                                              options[index].id) &&
+                                                                                          correctAns.contains(
+                                                                                              options[index].id)) ||
+                                                                                      (selAns.length ==
+                                                                                              correctAns.length &&
+                                                                                          selAns.length > 0 &&
+                                                                                          correctAns.contains(
+                                                                                              options[index].id))
                                                                                   ? Row(
                                                                                       mainAxisAlignment:
                                                                                           MainAxisAlignment.end,
@@ -621,13 +647,21 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                         Text("Correct Answer")
                                                                                       ],
                                                                                     )
-                                                                                  : options[index].id ==
-                                                                                              selectedAnswer &&
-                                                                                          int.parse(data
-                                                                                                  .pList[_quetionNo]
-                                                                                                  .ques
-                                                                                                  .rightAnswer) !=
-                                                                                              selectedAnswer
+                                                                                  :
+                                                                                  // options[index].id ==
+                                                                                  //             selectedAnswer &&
+                                                                                  //         int.parse(data
+                                                                                  //                 .pList[_quetionNo]
+                                                                                  //                 .ques
+                                                                                  //                 .rightAnswer) !=
+                                                                                  //             selectedAnswer
+
+                                                                                  selAns.length == correctAns.length &&
+                                                                                          selAns.length > 0 &&
+                                                                                          selAns.contains(
+                                                                                              options[index].id) &&
+                                                                                          !correctAns.contains(
+                                                                                              options[index].id)
                                                                                       ? Row(
                                                                                           mainAxisAlignment:
                                                                                               MainAxisAlignment.end,
@@ -984,7 +1018,8 @@ class _PracticeNewState extends State<PracticeNew> {
                   ),
                 ),
                 Text(""),
-                realAnswer == selectedAnswer && selectedAnswer != null
+
+                isAnsCorrect == 1
                     ? Positioned(
                         top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
                         left: width / 2.9,
@@ -993,22 +1028,45 @@ class _PracticeNewState extends State<PracticeNew> {
                           height: 110,
                           child: Image.asset('assets/smile.png'),
                         ))
-                    : Text(''),
-                realAnswer != selectedAnswer && selectedAnswer != null
-                    ? Positioned(
-                        top: SizerUtil.deviceType == DeviceType.mobile ? 100 : 165,
-                        left: width / 2.5,
-                        child: selectedAnswer == null
-                            ? Text('')
-                            : realAnswer == selectedAnswer
-                                ? Container(
-                                    width: 100,
-                                    height: 100,
-                                    child: Image.asset('assets/smile.png'),
-                                  )
-                                : Image.asset('assets/smiley-sad1.png'),
-                      )
-                    : Text(''),
+                    : isAnsCorrect == 2
+                        ? Positioned(
+                            top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
+                            left: width / 2.9,
+                            child: Container(
+                              width: 110,
+                              height: 110,
+                              child: Image.asset('assets/smiley-sad1.png'),
+                            ))
+                        : SizedBox()
+
+                // realAnswer == selectedAnswer && selectedAnswer != null
+                // isAnsCorrect == 1
+                //     ? Positioned(
+                //         top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
+                //         left: width / 2.9,
+                //         child: Container(
+                //           width: 110,
+                //           height: 110,
+                //           child: Image.asset('assets/smile.png'),
+                //         ))
+                //     : Text(''),
+                // // realAnswer != selectedAnswer && selectedAnswer != null
+                // isAnsCorrect == 1
+                //     ? Positioned(
+                //         top: SizerUtil.deviceType == DeviceType.mobile ? 100 : 165,
+                //         left: width / 2.5,
+                //         child: selectedAnswer == null
+                //             ? Text('')
+                //             : realAnswer == selectedAnswer
+                //                 ? Container(
+                //                     width: 100,
+                //                     height: 100,
+                //                     child: Image.asset('assets/smile.png'),
+                //                   )
+                //                 : isAnsCorrect == 2
+                //                     ? Image.asset('assets/smiley-sad1.png')
+                //                     : SizedBox())
+                //     : Text(''),
               ],
             ),
           );
@@ -1017,7 +1075,7 @@ class _PracticeNewState extends State<PracticeNew> {
     });
   }
 
-  void checkAllAns(List<int> selAns, List<String> rightAns) {
+  void checkAllAns(List<int> selAns, List<int> rightAns) {
     isListSame = true;
     print("inside checkAllAns===============================");
     selAns.sort();
@@ -1025,12 +1083,15 @@ class _PracticeNewState extends State<PracticeNew> {
     print("rightAns======$rightAns");
 
     for (int i = 0; i < selAns.length; i++) {
-      if (selAns[i] == int.parse(rightAns[i])) {
+      if (selAns[i] == (rightAns[i])) {
       } else {
         isListSame = false;
+        print("isListSame=======$isListSame");
         break;
       }
     }
+
+    print("isListSame=======$isListSame");
     if (isListSame) {
       isAnsCorrect = 1;
       print("same are both the lkstssss");

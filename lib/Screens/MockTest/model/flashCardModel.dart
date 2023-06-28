@@ -3,6 +3,19 @@
 import 'package:hive/hive.dart';
 part 'flashCardModel.g.dart';
 
+
+
+class FlashApiModel{
+  List<FlashCardDetails> flashList=[];
+FlashApiModel.fromJson(Map<String,dynamic>json){
+  flashList=List<FlashCardDetails>.from(json['list'].map((x)=>FlashCardDetails.fromjson(x)));
+}
+
+
+}
+
+
+
 @HiveType(typeId: 2)
 class FlashCardDetails {
    @HiveField(0)
