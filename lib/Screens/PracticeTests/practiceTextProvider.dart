@@ -60,7 +60,7 @@ class PracticeTextProvider extends ChangeNotifier {
       // body: convert.jsonEncode(body)
     );
 
-    print("calling this api========>>>.https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/124");
+    print("calling this api========>>>.https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/126");
     // print("body=========>$body");
 
     if (response.statusCode == 200) {
@@ -86,6 +86,8 @@ class PracticeTextProvider extends ChangeNotifier {
 
       notifyListeners();
     }
+
+    print('api res:  ${response.body}');
   }
 
   Future<void> getQuesDay(int id) async {

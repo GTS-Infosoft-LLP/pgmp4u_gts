@@ -4,8 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/QuesOfDay.dart';
+import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/screen/goupList.dart';
+import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'dart:convert' as convert;
 import 'package:sizer/sizer.dart';
@@ -659,8 +662,10 @@ class _ProfileState extends State<Profile> {
                             ),
 
                             GestureDetector(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => GroupListPage()));
+                              onTap: () async {
+                                context.read<ChatProvider>().isChatSubscribed()
+                                    ? Navigator.push(context, MaterialPageRoute(builder: (context) => GroupListPage()))
+                                    : Navigator.push(context, MaterialPageRoute(builder: (context) => RandomPage()));
                               },
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pgmp4u/Screens/MockTest/model/quesOfDayModel.dart';
 import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
+import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
+import 'package:pgmp4u/Screens/chat/screen/goupList.dart';
+import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -44,6 +47,32 @@ class _QuesOfDayState extends State<QuesOfDay> {
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
+  }
+
+  bool questionLoader = false;
+  onTapOfPutOnDisscussion(String question) async {
+    setState(() => questionLoader = true);
+    print('Question of The Day question : $question');
+    if (question.isEmpty) return;
+
+    if (!context.read<ChatProvider>().isChatSubscribed()) {
+      setState(() => questionLoader = false);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RandomPage(),
+          ));
+      return;
+    }
+    await context.read<ChatProvider>().createDiscussionGroup(question, context).whenComplete(() {
+      // Navigator.pop(context);
+      setState(() => questionLoader = false);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GroupListPage(),
+          ));
+    });
   }
 
   Widget build(BuildContext context) {
@@ -215,25 +244,36 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                             child: Padding(
                                                               padding: const EdgeInsets.all(4.0),
                                                               child: Center(
-                                                                child: Row(
-                                                                  children: [
-                                                                    Icon(
-                                                                      Icons.chat_bubble_rounded,
-                                                                      color: Colors.white,
-                                                                    ),
-                                                                    SizedBox(
-                                                                      width: 5,
-                                                                    ),
-                                                                    Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.symmetric(horizontal: 4.0),
-                                                                      child: Text(
-                                                                        "Put on discussion",
-                                                                        style: TextStyle(
-                                                                            color: Colors.white, fontSize: 12),
+                                                                child: InkWell(
+                                                                  onTap: () {
+                                                                    questionLoader
+                                                                        ? null
+                                                                        : onTapOfPutOnDisscussion(
+                                                                            data.pList != null
+                                                                                ? data.qdList[_quetionNo].question
+                                                                                : '',
+                                                                          );
+                                                                  },
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Icon(
+                                                                        Icons.chat_bubble_rounded,
+                                                                        color: Colors.white,
                                                                       ),
-                                                                    ),
-                                                                  ],
+                                                                      SizedBox(
+                                                                        width: 5,
+                                                                      ),
+                                                                      Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.symmetric(horizontal: 4.0),
+                                                                        child: Text(
+                                                                          "Put on discussion",
+                                                                          style: TextStyle(
+                                                                              color: Colors.white, fontSize: 12),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),

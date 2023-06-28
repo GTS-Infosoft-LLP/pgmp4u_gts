@@ -36,16 +36,17 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
     final Size size = MediaQuery.of(context).size;
     DateTime time = DateTime.fromMillisecondsSinceEpoch(int.tryParse(widget.group.createdAt));
     String timeToShow = Jiffy(time).fromNow();
-  
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 2,
         toolbarHeight: 80,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               widget.group.title ?? '',
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 //  fontSize: width * (18 / 420),
                 fontFamily: 'Roboto Medium',
@@ -97,7 +98,7 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
             color: Colors.black,
           ),
         ),
-        leadingWidth: 30,
+        leadingWidth: 36,
         backgroundColor: Colors.white,
       ),
       bottomSheet: ChatTextField(

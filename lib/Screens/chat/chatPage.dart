@@ -27,6 +27,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget build(BuildContext context) {
+    String chatRoomId = context.watch<ChatProvider>().singleChatRoomId;
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -52,12 +53,23 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
       ),
-      bottomSheet: ChatTextField(size: size, chatController: chatController), 
+      bottomSheet: ChatTextField(
+        size: size,
+        chatController: chatController,
+        sendMessage: () async {
+          if (chatController.text.trim() == '') return;
+          await context
+              .read<ChatProvider>()
+              .sendGroupMessage(message: chatController.text.trim(), chatRoomId: chatRoomId);
+
+          chatController.clear();
+        },
+      ),
       resizeToAvoidBottomInset: true,
       body: Container(
         padding: EdgeInsets.only(bottom: size.height * 0.10),
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseChatHandler.getAllGroupMessage(),
+            stream: FirebaseChatHandler.getAllGroupMessage(chatRoomId),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(
@@ -68,12 +80,14 @@ class _ChatPageState extends State<ChatPage> {
                     itemBuilder: (context, indexMain) {
                       var data = snapshot.data.docs[indexMain].data();
 
-                      ChatModel chatModel = ChatModel(
-                        messageId: data.containsKey('messageId') ? data['messageId'] ?? '' : '',
-                        text: data['text'] ?? '',
-                        sentBy: data['sentBy'] ?? '',
-                        sentAt: data['sentAt'] ?? "0",
-                      );
+                      // ChatModel chatModel = ChatModel(
+                      //   messageId: data.containsKey('messageId') ? data['messageId'] ?? '' : '',
+                      //   text: data['text'] ?? '',
+                      //   sentBy: data['sentBy'] ?? '',
+                      //   sentAt: data['sentAt'] ?? "0",
+
+                      // );
+                      ChatModel chatModel = ChatModel.fromJson(data);
 
                       if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
                         return SenderMessageCard(

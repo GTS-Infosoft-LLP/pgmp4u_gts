@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/user_object.dart';
@@ -17,8 +19,11 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   String tokenData;
+  ChatProvider chatProvider;
   getValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    chatProvider = Provider.of(context, listen: false);
+    chatProvider.initSharePreferecne();
     //Return String
     String stringValue = prefs.getString('token');
     return stringValue;
@@ -36,15 +41,12 @@ class _SplashScreenState extends State<SplashScreen> {
         String photo = prefs.getString('photo');
         String name = prefs.getString('name');
         String email = prefs.getString('email');
-        var _user =
-            UserModel(image: photo, name: name, token: token, email: email);
+        var _user = UserModel(image: photo, name: name, token: token, email: email);
         UserObject.setUser(_user);
 
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil('/dashboard', (r) => false);
+        Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (r) => false);
       } else {
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil('/start-screen', (r) => false);
+        Navigator.of(context).pushNamedAndRemoveUntil('/start-screen', (r) => false);
       }
     });
   }
@@ -134,10 +136,8 @@ class _SplashScreenState extends State<SplashScreen> {
 //  // // for local Notification.........
 class LocalNotifications {
   static final _notification = FlutterLocalNotificationsPlugin();
-  final AndroidInitializationSettings initializationSettingsAndroid =
-      const AndroidInitializationSettings('app_icon');
-  final IOSInitializationSettings initializationSettingsIOS =
-      const IOSInitializationSettings(
+  final AndroidInitializationSettings initializationSettingsAndroid = const AndroidInitializationSettings('app_icon');
+  final IOSInitializationSettings initializationSettingsIOS = const IOSInitializationSettings(
     requestSoundPermission: true,
     requestBadgePermission: true,
     requestAlertPermission: true,
@@ -145,13 +145,10 @@ class LocalNotifications {
   var initializationSettings;
   Future init() async {
     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-------text1");
-    initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS: initializationSettingsIOS,
-        macOS: null);
+    initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS, macOS: null);
     print("text2");
-    _notification.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
+    _notification.initialize(initializationSettings, onSelectNotification: selectNotification);
   }
 
   Future showNotification({
@@ -160,14 +157,13 @@ class LocalNotifications {
     String body = "",
     String payload = "",
   }) async {
-    print(
-        ">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage 2 $id, title $title body $body ");
-    _notification.show(id, title, body, await _notificationDetails(),
-        payload: payload);
+    print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage 2 $id, title $title body $body ");
+    _notification.show(id, title, body, await _notificationDetails(), payload: payload);
   }
 
   void selectNotification(String pay) {
     print("selectNotification type$pay");
+    // if(){}
     // if (pay == "one") {
     //   Navigator.of(GlobalVariable.navState.currentContext!)
     //       .push(MaterialPageRoute(builder: (context) => const Notifications()));
@@ -179,9 +175,7 @@ class LocalNotifications {
 
   static Future _notificationDetails() async {
     return const NotificationDetails(
-        android: AndroidNotificationDetails('channelId', 'channelName',
-            importance: Importance.max),
-        iOS: IOSNotificationDetails(
-            presentBadge: true, presentSound: true, presentAlert: true));
+        android: AndroidNotificationDetails('channelId', 'channelName', importance: Importance.max),
+        iOS: IOSNotificationDetails(presentBadge: true, presentSound: true, presentAlert: true));
   }
 }
