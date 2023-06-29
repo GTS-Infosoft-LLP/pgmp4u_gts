@@ -28,6 +28,8 @@ class PracticeTextProvider extends ChangeNotifier {
   int selectedAnswer;
   int realAnswer;
 
+  PracListModel plm = new PracListModel();
+
   setSelectedAns(int val) {
     selectedAnswer = val;
     print("selected answer===$selectedAnswer");
@@ -67,32 +69,28 @@ class PracticeTextProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       pList = [];
       print(convert.jsonDecode(response.body));
+      //  HiveHandler.setstringdata(key: "PracTestModel", value: response.body);
       var _mapResponse = convert.jsonDecode(response.body);
-
       print("map respoanse========$_mapResponse");
       print("map resposne datat=====>>>${_mapResponse["data"]}");
 
       List temp = _mapResponse["data"];
+      HiveHandler.setstringdata(key: "PracTestModel", value: _mapResponse['data']);
 
-      List<PracTestModel> p1List = temp.map((e) => PracTestModel.fromJson(e)).toList();
+      var v1 = await HiveHandler.getstringdata(key: "PracTestModel");
+      print("v1===========================================${(v1.toString())}");
+
+      // List<PracTestModel> p1List = v1.map((e) => PracTestModel.fromJson(e)).toList();
 
       pList = temp.map((e) => PracTestModel.fromJson(e)).toList();
 
+      List<PracListModel> pltm = [];
+      plm.myList = pList.toString();
+
+      // print("")
+
       practiceApiLoader = false;
       print("pList=============$pList");
-
-      // try {
-      //   HiveHandler.addPracTest(pList);
-
-      //   Future.delayed(Duration(microseconds: 800), () {
-      //     List<PracTestModel> tempList = HiveHandler.getPracTestList() ?? [];
-      //     print("*************************************************");
-
-      //     print("tempList==========$tempList");
-      //   });
-      // } catch (e) {
-      //   print("errorr===========>>>>>>$e");
-      // }
 
       if (pList.isNotEmpty) {
         // print("pList[0]============${pList[0].ques.options[1].questionOption}");

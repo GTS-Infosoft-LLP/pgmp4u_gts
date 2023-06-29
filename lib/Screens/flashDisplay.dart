@@ -95,9 +95,10 @@ class _FlashDisplayState extends State<FlashDisplay> {
                   ValueListenableBuilder<Box<List<FlashCardDetails>>>(
                       valueListenable: HiveHandler.getFlashListener(),
                       builder: (context, value, child) {
-                        List<FlashCardDetails> storedFlash = value.get("flashKey");
+                        CourseProvider cp = Provider.of(context, listen: false);
+
+                        List<FlashCardDetails> storedFlash = value.get(cp.selectedFlashCategory.toString());
                         print("storedFlash========================$storedFlash");
-                        print("storedFlash========================${storedFlash[0].description}");
 
                         return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
                           return Container(

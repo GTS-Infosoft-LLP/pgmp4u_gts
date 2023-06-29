@@ -710,7 +710,11 @@ class _QuesOfDayState extends State<QuesOfDay> {
 
                                                                       //data.pList[_quetionNo].ques.options.
 
-                                                                      border: Border.all(color: Colors.black)),
+                                                                      border: Border.all(
+                                                                          color: selAns.length == ansRef.length &&
+                                                                                  selAns.length > 0
+                                                                              ? Colors.grey
+                                                                              : Colors.black)),
                                                                   child: Center(
                                                                     child: Text(
                                                                       index == 0

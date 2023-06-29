@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
+import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
 import 'package:pgmp4u/provider/response_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -7,11 +9,13 @@ import '../../provider/courseProvider.dart';
 import '../../tool/ShapeClipper.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_textstyle.dart';
+import '../MockTest/model/flashCateModel.dart';
 import '../flashDisplay.dart';
 import 'VideoLibrary/RandomPage.dart';
 
 class FlashCardItem extends StatefulWidget {
-  const FlashCardItem({Key key}) : super(key: key);
+  String title;
+  FlashCardItem({Key key, this.title}) : super(key: key);
 
   @override
   State<FlashCardItem> createState() => _FlashCardItemState();
@@ -59,150 +63,170 @@ class _FlashCardItemState extends State<FlashCardItem> {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.transparent,
-                                border: Border.all(color: Colors.white, width: 1)),
-                            child: Center(
-                                child: IconButton(
-                                    icon: Icon(Icons.arrow_back, color: Colors.white),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    }))),
-                        SizedBox(width: 20),
-                        Center(
+                  Consumer<CourseProvider>(builder: (context, cp, child) {
+                    return Container(
+                      padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.transparent,
+                                  border: Border.all(color: Colors.white, width: 1)),
+                              child: Center(
+                                  child: IconButton(
+                                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      }))),
+                          SizedBox(width: 20),
+                          Center(
+                              child: Container(
+                            // color: Colors.amber,
+                            width: MediaQuery.of(context).size.width * .65,
                             child: Text(
-                          "Flash Card",
-                          style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.transparent,
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.bold),
-                        )),
-                      ],
-                    ),
-                  ),
+                              cp.selectedCourseName,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
+                            ),
+                          )),
+                        ],
+                      ),
+                    );
+                  }),
                 ]),
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    "FlashCards4U",
+                    widget.title,
                     style: TextStyle(fontSize: 24, color: _darkText, fontWeight: FontWeight.bold),
                   ),
                 ),
 
-                Consumer<CourseProvider>(builder: (context, courseProvider, child) {
-                  return courseProvider.flashCate.length == 0
-                      ? Container(
-                          height: MediaQuery.of(context).size.height * .5,
-                          child: Center(
-                            child: Text(
-                              "No Data Found...",
-                              style: TextStyle(color: Colors.black, fontSize: 18),
-                            ),
-                          ),
-                        )
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: courseProvider.flashCate.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                print("flash card category id===>>${courseProvider.flashCate[index].id}");
+                ValueListenableBuilder<Box<List<FlashCateDetails>>>(
+                    valueListenable: HiveHandler.getFlashCateListener(),
+                    builder: (context, value, child) {
+                      CourseProvider cp = Provider.of(context, listen: false);
+                      List<FlashCateDetails> storedFlashCate = value.get(cp.selectedMasterId.toString());
 
-                                if (courseProvider.flashCate[index].payment_status == 0) {}
-                                courseProvider.FlashCards = [];
+                      print("storedFlashCate========================$storedFlashCate");
 
-                                courseProvider.getFlashCards(courseProvider.flashCate[index].id);
+                      if (storedFlashCate == null) {
+                        storedFlashCate = [];
+                      }
 
-                                Future.delayed(const Duration(milliseconds: 400), () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //             FlashCardsPage(
-                                  //               heding: courseProvider
-                                  //                   .flashCate[index].name,
-                                  //             )));
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => FlashDisplay(
-                                                heding: courseProvider.flashCate[index].name,
-                                              )));
-                                  //FlashDisplay
-                                });
-                              },
-                              child: Card(
-                                margin: EdgeInsets.symmetric(
-                                  vertical: 0.5,
+                      return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
+                        return storedFlashCate.length == 0
+                            ? Container(
+                                height: MediaQuery.of(context).size.height * .5,
+                                child: Center(
+                                  child: Text(
+                                    "No Data Found...",
+                                    style: TextStyle(color: Colors.black, fontSize: 18),
+                                  ),
                                 ),
-                                child: Container(
-                                    decoration: BoxDecoration(color: Colors.white),
-                                    child: ListTile(
-                                        leading: Container(
-                                            height: 60,
-                                            width: 60,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                            ),
-                                            child: Icon(
-                                              index % 2 == 0 ? FontAwesomeIcons.book : FontAwesomeIcons.airbnb,
-                                              color: Colors.white,
-                                            )
-                                            // Icon
-                                            // Image.asset(AppImage.picture_placeholder),
-                                            // Image.network(
-                                            //   "",width: 80,errorBuilder: (context, error, stackTrace) {
-                                            //     return Image.asset(AppImage.picture_placeholder);
-                                            //   },
-                                            //   fit: BoxFit.fill,
-                                            // )
-                                            ),
-                                        title: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Read",
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                            courseProvider.flashCate[index].payment_status == 1
-                                                ? InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) => RandomPage(index: 1)));
-                                                    },
-                                                    child: Text(
-                                                      "Premium",
-                                                      style: TextStyle(fontSize: 12),
-                                                    ),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: storedFlashCate.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      print("flash card category id===>>${storedFlashCate[index].id}");
+
+                                      courseProvider.setSelectedFlashCategory(storedFlashCate[index].id);
+
+                                      if (storedFlashCate[index].payment_status == 0) {}
+                                      courseProvider.FlashCards = [];
+
+                                      courseProvider.getFlashCards(storedFlashCate[index].id);
+
+                                      Future.delayed(const Duration(milliseconds: 400), () {
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             FlashCardsPage(
+                                        //               heding: courseProvider
+                                        //                   .flashCate[index].name,
+                                        //             )));
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => FlashDisplay(
+                                                      heding: storedFlashCate[index].name,
+                                                    )));
+                                        //FlashDisplay
+                                      });
+                                    },
+                                    child: Card(
+                                      margin: EdgeInsets.symmetric(
+                                        vertical: 0.5,
+                                      ),
+                                      child: Container(
+                                          decoration: BoxDecoration(color: Colors.white),
+                                          child: ListTile(
+                                              leading: Container(
+                                                  height: 60,
+                                                  width: 60,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(8),
+                                                    color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                                                  ),
+                                                  child: Icon(
+                                                    index % 2 == 0 ? FontAwesomeIcons.book : FontAwesomeIcons.airbnb,
+                                                    color: Colors.white,
                                                   )
-                                                : SizedBox(),
-                                          ],
-                                        ),
-                                        subtitle: Text(
-                                          courseProvider.flashCate[index].name,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: AppTextStyle.titleTile,
-                                        ))),
-                              ),
-                            );
-                            // );
-                          });
-                })
+                                                  // Icon
+                                                  // Image.asset(AppImage.picture_placeholder),
+                                                  // Image.network(
+                                                  //   "",width: 80,errorBuilder: (context, error, stackTrace) {
+                                                  //     return Image.asset(AppImage.picture_placeholder);
+                                                  //   },
+                                                  //   fit: BoxFit.fill,
+                                                  // )
+                                                  ),
+                                              title: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "Read",
+                                                    style: TextStyle(fontSize: 12),
+                                                  ),
+                                                  storedFlashCate[index].payment_status == 1
+                                                      ? InkWell(
+                                                          onTap: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => RandomPage(index: 1)));
+                                                          },
+                                                          child: Text(
+                                                            "Premium",
+                                                            style: TextStyle(fontSize: 12),
+                                                          ),
+                                                        )
+                                                      : SizedBox(),
+                                                ],
+                                              ),
+                                              subtitle: Text(
+                                                storedFlashCate[index].name,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: AppTextStyle.titleTile,
+                                              ))),
+                                    ),
+                                  );
+                                  // );
+                                });
+                      });
+                    })
 
                 // Consumer<ResponseProvider>(
                 //   builder: ((context, responseProvider, child) {

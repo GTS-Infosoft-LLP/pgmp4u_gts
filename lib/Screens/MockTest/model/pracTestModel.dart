@@ -1,28 +1,27 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
-   part 'pracTestModel.g.dart';
+part 'pracTestModel.g.dart';
 
-/// make use of this model   
-/// 
-/// 
-/// 
+/// make use of this model
+///
+///
+///
 @HiveType(typeId: 6)
-class PracListModel{
-    List<PracTestModel> list = [];     
-      @HiveField(0)
-    String myList = "";
-    PracListModel();
-      PracListModel.fromjson(List data) {
+class PracListModel {
+  List<PracTestModel> list = [];
+  @HiveField(0)
+  String myList = "";
+  PracListModel();
+  PracListModel.fromjson(List data) {
+    print("this is printing=======");
     list = data.map((e) => PracTestModel.fromJson(e)).toList();
     myList = jsonEncode(data);
     print("************************************************************");
     print("list is $myList");
     //  quesAns
   }
-
 }
-
 
 
 class PracTestModel {
@@ -32,7 +31,6 @@ class PracTestModel {
   int status;
   int deleteStatus;
   Question ques;
-
   PracTestModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     mocktest = json['mocktest'];
@@ -71,11 +69,10 @@ class Question {
     deleteStatus = json['deleteStatus'];
 
     if (json['Options'] != null) {
+     
       options = new List<Options>();
 
       json['Options'].forEach((v) {
-     
-
         options.add(new Options.fromJson(v));
       });
     }

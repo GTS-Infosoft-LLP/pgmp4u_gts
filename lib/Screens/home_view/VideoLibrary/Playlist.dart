@@ -32,6 +32,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
   // }
   @override
   void initState() {
+    print("titleee======>>>.${widget.title}");
     print(" call playlist screen");
     print(" video type ${widget.videoType}");
 
@@ -48,8 +49,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ResponseProvider responseProvider =
-        Provider.of(context, listen: false);
+    final ResponseProvider responseProvider = Provider.of(context, listen: false);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -85,7 +85,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                           Flexible(
                             child: Center(
                               child: Text(
-                                widget.title,
+                                "",
                                 style: TextStyle(
                                     fontSize: 22,
                                     color: Colors.white,
@@ -107,8 +107,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                             ),
                             child: Center(
                               child: IconButton(
-                                icon:
-                                    Icon(Icons.arrow_back, color: Colors.white),
+                                icon: Icon(Icons.arrow_back, color: Colors.white),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -126,17 +125,13 @@ class _PlaylistPageState extends State<PlaylistPage> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    "Videos 4 U",
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: AppColor.darkText,
-                        fontWeight: FontWeight.bold),
+                    widget.title,
+                    style: TextStyle(fontSize: 24, color: AppColor.darkText, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
                     child: FutureBuilder<GetVideoByType>(
-                  future:
-                      responseProvider.getCardVideoTypeApi(widget.videoType),
+                  future: responseProvider.getCardVideoTypeApi(widget.videoType),
                   builder: (ctx, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.none:
@@ -144,8 +139,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                       case ConnectionState.waiting:
                         return Container(
                             height: MediaQuery.of(context).size.height * .5,
-                            child:
-                                Center(child: new CircularProgressIndicator()));
+                            child: Center(child: new CircularProgressIndicator()));
 
                       case ConnectionState.active:
                         return Text("data");
@@ -158,8 +152,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                               child: Center(
                                   child: Text(
                                 "No Data Found",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                               )));
                         }
                       // return snapshot.data.videoListing.isNotEmpty
@@ -205,8 +198,7 @@ class VideoList extends StatelessWidget {
               itemCount: videoList.length,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding:
-                      const EdgeInsets.only(left: 15, right: 15, bottom: 10),
+                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
                   child: Card(
                     margin: EdgeInsets.only(bottom: 1),
                     elevation: 2,
@@ -223,8 +215,7 @@ class VideoList extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(13),
                                   child: Image.network(
                                     courseProvider.Videos[index].videoType == 1
-                                        ? courseProvider
-                                            .Videos[index].thumbnailUrl
+                                        ? courseProvider.Videos[index].thumbnailUrl
                                         : "https://img.youtube.com/vi/${courseProvider.Videos[index].videoUrl}/hqdefault.jpg",
                                     //  "https://pgmp4ubucket.s3.amazonaws.com/uploads/document/thumb/",
                                     fit: BoxFit.cover,
@@ -232,8 +223,7 @@ class VideoList extends StatelessWidget {
                                       return Image.asset(
                                         AppImage.picture_placeholder2,
                                         fit: BoxFit.cover,
-                                        width:
-                                            MediaQuery.of(context).size.width,
+                                        width: MediaQuery.of(context).size.width,
                                       );
                                     },
                                   ),
@@ -245,28 +235,20 @@ class VideoList extends StatelessWidget {
                                 left: MediaQuery.of(context).size.width * 0.4,
                                 child: InkWell(
                                   onTap: () {
-                                    print(
-                                        "Videos[index].videoUrl===${courseProvider.Videos[index].videoUrl}");
+                                    print("Videos[index].videoUrl===${courseProvider.Videos[index].videoUrl}");
                                     print("");
-                                    print(
-                                        "Videos[index].videoUrl===${courseProvider.Videos[index].videoUrl}");
+                                    print("Videos[index].videoUrl===${courseProvider.Videos[index].videoUrl}");
 
-                                    if (courseProvider
-                                            .Videos[index].videoType ==
-                                        2) {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  YoutubePlayerDemo(
-                                                    videoid: courseProvider
-                                                        .Videos[index].videoUrl,
-                                                  )));
+                                    if (courseProvider.Videos[index].videoType == 2) {
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context) => YoutubePlayerDemo(
+                                                videoid: courseProvider.Videos[index].videoUrl,
+                                              )));
                                     } else {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) => new VideoPlay(
-                                            url: courseProvider
-                                                .Videos[index].videoUrl,
+                                            url: courseProvider.Videos[index].videoUrl,
                                             videoDuration: "",
                                           ),
                                         ),
@@ -457,10 +439,8 @@ class _VideoPlayState extends State<VideoPlay> {
   }
 
   Future<bool> onwill() async {
-    await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     return true;
   }
 
@@ -501,8 +481,7 @@ class _VideoPlayState extends State<VideoPlay> {
                               ? Center(
                                   child: AspectRatio(
                                     child: VideoPlayer(_controller),
-                                    aspectRatio:
-                                        _controller.value.aspectRatio + 0.5,
+                                    aspectRatio: _controller.value.aspectRatio + 0.5,
                                   ),
                                 )
                               : Positioned(
@@ -510,9 +489,7 @@ class _VideoPlayState extends State<VideoPlay> {
                                   bottom: 50,
                                   left: 50,
                                   right: 50,
-                                  child: Center(
-                                      child:
-                                          CircularProgressIndicator.adaptive()),
+                                  child: Center(child: CircularProgressIndicator.adaptive()),
                                 ),
                           Positioned(
                             top: 50,
@@ -539,10 +516,7 @@ class _VideoPlayState extends State<VideoPlay> {
                                             width: 45,
                                             color: Colors.white,
                                           )
-                                        : Image.asset(AppImage.playIcon,
-                                            height: 45,
-                                            width: 45,
-                                            color: Colors.white)
+                                        : Image.asset(AppImage.playIcon, height: 45, width: 45, color: Colors.white)
                                     : SizedBox(),
                               ),
                             ),
@@ -567,8 +541,7 @@ class _VideoPlayState extends State<VideoPlay> {
                               child: InkWell(
                                   onTap: () async {
                                     isLandScape = await setOrientation(context);
-                                    print(
-                                        "issssssLandScapesssssss$isLandScape");
+                                    print("issssssLandScapesssssss$isLandScape");
                                     setState(() {});
 
                                     // if(AutoOrientation.landscapeLeftMode()){
@@ -577,13 +550,9 @@ class _VideoPlayState extends State<VideoPlay> {
                                   },
                                   child: BackButton(
                                     onPressed: () async {
-                                      await SystemChrome
-                                          .setPreferredOrientations([
-                                        DeviceOrientation.portraitUp,
-                                        DeviceOrientation.portraitDown
-                                      ]);
-                                      await SystemChrome.setEnabledSystemUIMode(
-                                          SystemUiMode.manual,
+                                      await SystemChrome.setPreferredOrientations(
+                                          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+                                      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
                                           overlays: SystemUiOverlay.values);
                                       Navigator.pop(context);
                                     },
@@ -595,8 +564,7 @@ class _VideoPlayState extends State<VideoPlay> {
                                 padding: const EdgeInsets.all(12),
                                 child: Row(
                                     mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       TextWidget(controller: _controller),
                                     ]),
@@ -676,21 +644,16 @@ class _VideoPlayState extends State<VideoPlay> {
 }
 
 Future<bool> setOrientation(BuildContext context) async {
-  bool isLandScape =
-      MediaQuery.of(context).orientation == Orientation.landscape;
+  bool isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
   print("isLandScapeeeeeeee//////// $isLandScape");
   if (isLandScape) {
-    await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
 
     return false;
   } else {
-    await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: []);
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     return true;
   }
 }
@@ -724,9 +687,6 @@ class _TextWidgetState extends State<TextWidget> {
 }
 
 String getPosition(VideoPlayerController _controller) {
-  final duration =
-      Duration(milliseconds: _controller.value.position.inMilliseconds.round());
-  return [duration.inMinutes, duration.inSeconds]
-      .map((e) => e.remainder(60).toString().padLeft(2, "0"))
-      .join(":");
+  final duration = Duration(milliseconds: _controller.value.position.inMilliseconds.round());
+  return [duration.inMinutes, duration.inSeconds].map((e) => e.remainder(60).toString().padLeft(2, "0")).join(":");
 }

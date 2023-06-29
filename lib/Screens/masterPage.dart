@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
 import 'package:pgmp4u/Screens/home_view/application_support.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/tool/ShapeClipper.dart';
@@ -7,6 +8,8 @@ import 'package:provider/provider.dart';
 
 import '../utils/app_color.dart';
 import 'MockTest/mockTest.dart';
+import 'MockTest/model/masterdataModel.dart';
+import 'Tests/local_handler/hive_handler.dart';
 import 'home_view/flash_card_item.dart';
 import 'home_view/video_library.dart';
 
@@ -63,12 +66,10 @@ class _MasterListPageState extends State<MasterListPage> {
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.transparent,
-                              border:
-                                  Border.all(color: Colors.white, width: 1)),
+                              border: Border.all(color: Colors.white, width: 1)),
                           child: Center(
                               child: IconButton(
-                                  icon: Icon(Icons.arrow_back,
-                                      color: Colors.white),
+                                  icon: Icon(Icons.arrow_back, color: Colors.white),
                                   onPressed: () {
                                     Navigator.pop(context);
                                   }))),
@@ -80,10 +81,7 @@ class _MasterListPageState extends State<MasterListPage> {
                         // "Video Library",
                         "Master Content",
                         style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.white,
-                            fontFamily: "Raleway",
-                            fontWeight: FontWeight.bold),
+                            fontSize: 28, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
                       )),
                     ]),
                   ),
@@ -100,229 +98,192 @@ class _MasterListPageState extends State<MasterListPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 18.0),
-                    child: Consumer<CourseProvider>(
-                        builder: (context, courseProvider, child) {
-                      return courseProvider.masterList.isNotEmpty
-                          ? Container(
-                              height: MediaQuery.of(context).size.height * .75,
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: courseProvider.masterList.length,
-                                  itemBuilder: (context, index) {
-                                    if (courseProvider.masterList[index].type ==
-                                        "Videos") {
-                                      icon1 = FontAwesomeIcons.video;
-                                    } else if (courseProvider
-                                            .masterList[index].type ==
-                                        "Flash Cards") {
-                                      icon1 = FontAwesomeIcons.tableColumns;
-                                    } else if (courseProvider
-                                            .masterList[index].type ==
-                                        "Support") {
-                                      icon1 = FontAwesomeIcons.userGraduate;
-                                    } else if (courseProvider
-                                            .masterList[index].type ==
-                                        "Mock Test") {
-                                      icon1 = FontAwesomeIcons.bookOpenReader;
-                                    } else if (courseProvider
-                                            .masterList[index].type ==
-                                        "Practice Test") {
-                                      icon1 = FontAwesomeIcons.book;
-                                    } else {
-                                      icon1 = (Icons.add_chart_rounded);
-                                    }
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 18.0,
-                                      ),
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 8.0),
-                                        child: Container(
-                                            height: 65,
-                                            //  color: Colors.amber,
-                                            decoration: BoxDecoration(
-                                                // shape: BoxShape.circle,
-                                                color: Colors.transparent,
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                      width: 1.5,
-                                                      color: Colors.grey[300]),
-                                                )),
-                                            // Border.all(color: Colors.black, width: 1)),
-                                            child: InkWell(
-                                              onTap: () {
-                                                print(
-                                                    "id of the master list===${courseProvider.masterList[index].id}");
-                                                String page = courseProvider
-                                                    .masterList[index].type;
-                                                print("page=====$page");
+                    child: ValueListenableBuilder<Box<List<MasterDetails>>>(
+                        valueListenable: HiveHandler.getMasterListener(),
+                        builder: (context, value, child) {
+                          CourseProvider cp = Provider.of(context, listen: false);
+                          List<MasterDetails> storedMaster = value.get(cp.selectedCourseId.toString());
 
-                                                if (page == "Videos") {
-                                                  courseProvider.getVideoCate(
-                                                      courseProvider
-                                                          .masterList[index]
-                                                          .id);
+                          print("storedFlash========================$storedMaster");
 
-                                                  Future.delayed(
-                                                      Duration(
-                                                          milliseconds: 400),
-                                                      () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                VideoLibraryPage()));
-                                                  });
-                                                }
+                          if (storedMaster == null) {
+                            storedMaster = [];
+                          }
+                          // print("storedFlash========================${storedMaster[0].name}");
 
-                                                if (page == "Support") {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ApplicationSupportPage()));
-                                                }
+                          return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
+                            return storedMaster.isNotEmpty
+                                ? Container(
+                                    height: MediaQuery.of(context).size.height * .75,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: storedMaster.length,
+                                        itemBuilder: (context, index) {
+                                          if (storedMaster[index].type == "Videos") {
+                                            icon1 = FontAwesomeIcons.video;
+                                          } else if (storedMaster[index].type == "Flash Cards") {
+                                            icon1 = FontAwesomeIcons.tableColumns;
+                                          } else if (storedMaster[index].type == "Support") {
+                                            icon1 = FontAwesomeIcons.userGraduate;
+                                          } else if (storedMaster[index].type == "Mock Test") {
+                                            icon1 = FontAwesomeIcons.bookOpenReader;
+                                          } else if (storedMaster[index].type == "Practice Test") {
+                                            icon1 = FontAwesomeIcons.book;
+                                          } else {
+                                            icon1 = (Icons.add_chart_rounded);
+                                          }
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 18.0,
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(top: 8.0),
+                                              child: Container(
+                                                  height: 70,
+                                                  //  color: Colors.amber,
+                                                  decoration: BoxDecoration(
+                                                      // shape: BoxShape.circle,
+                                                      color: Colors.transparent,
+                                                      border: Border(
+                                                        bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
+                                                      )),
+                                                  // Border.all(color: Colors.black, width: 1)),
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      courseProvider.setSelectedMasterId(storedMaster[index].id);
 
-                                                if (page == "Flash Cards") {
-                                                  courseProvider.getFlashCate(
-                                                      courseProvider
-                                                          .masterList[index]
-                                                          .id);
+                                                      print("id of the master list===${storedMaster[index].id}");
+                                                      String page = storedMaster[index].type;
+                                                      print("page=====$page");
 
-                                                  Future.delayed(
-                                                      Duration(
-                                                          milliseconds: 400),
-                                                      () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                FlashCardItem()));
-                                                  });
-                                                }
+                                                      if (page == "Videos") {
+                                                        courseProvider.getVideoCate(storedMaster[index].id);
 
-                                                if (page == "Mock Test") {
-                                                  courseProvider.getTest(
-                                                      courseProvider
-                                                          .masterList[index]
-                                                          .id);
+                                                        Future.delayed(Duration(milliseconds: 400), () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => VideoLibraryPage(
+                                                                      title: storedMaster[index].name)));
+                                                        });
+                                                      }
 
-                                                  Future.delayed(
-                                                      Duration(
-                                                          milliseconds: 700),
-                                                      () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    MockTest(
-                                                                      testName:
-                                                                          "Mock Test",
-                                                                    )));
-                                                  });
-                                                }
+                                                      if (page == "Support") {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) => ApplicationSupportPage()));
+                                                      }
 
-                                                if (page == "Practice Test") {
-                                                  courseProvider.getTest(
-                                                      courseProvider
-                                                          .masterList[index]
-                                                          .id);
+                                                      if (page == "Flash Cards") {
+                                                        courseProvider.getFlashCate(storedMaster[index].id);
 
-                                                  Future.delayed(
-                                                      const Duration(
-                                                          milliseconds: 700),
-                                                      () async {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    MockTest(
-                                                                      testName:
-                                                                          "Practice Test",
-                                                                    )));
-                                                  });
-                                                }
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Container(
-                                                      height: 60,
-                                                      width: 60,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                        color: index % 2 == 0
-                                                            ? AppColor.purpule
-                                                            : AppColor.green,
-                                                        // gradient: LinearGradient(
-                                                        //     begin: Alignment.topLeft,
-                                                        //     end: Alignment.bottomRight,
-                                                        //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-                                                      ),
+                                                        Future.delayed(Duration(milliseconds: 400), () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => FlashCardItem(
+                                                                        title: storedMaster[index].name,
+                                                                      )));
+                                                        });
+                                                      }
 
-                                                      // color: Colors.black,
-                                                      child: Icon(
-                                                        icon1,
-                                                        color: Colors.white,
-                                                      )
-                                                      // Icons.edit,color: Colors.white),
-                                                      ),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        courseProvider
-                                                            .masterList[index]
-                                                            .label,
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.grey,
+                                                      if (page == "Mock Test") {
+                                                        courseProvider.getTest(storedMaster[index].id);
+
+                                                        Future.delayed(Duration(milliseconds: 700), () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => MockTest(
+                                                                        testName: storedMaster[index].name,
+                                                                      )));
+                                                        });
+                                                      }
+
+                                                      if (page == "Practice Test") {
+                                                        courseProvider.getTest(storedMaster[index].id);
+
+                                                        Future.delayed(const Duration(milliseconds: 700), () async {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => MockTest(
+                                                                        testName: storedMaster[index].name,
+                                                                      )));
+                                                        });
+                                                      }
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 15,
                                                         ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 4,
-                                                      ),
-                                                      Text(
-                                                        courseProvider
-                                                            .masterList[index]
-                                                            .name,
-                                                        style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.black,
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(bottom: 4.0),
+                                                          child: Container(
+                                                              height: 60,
+                                                              width: 60,
+                                                              decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.circular(8),
+                                                                color:
+                                                                    index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                                                                // gradient: LinearGradient(
+                                                                //     begin: Alignment.topLeft,
+                                                                //     end: Alignment.bottomRight,
+                                                                //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                                                              ),
+
+                                                              // color: Colors.black,
+                                                              child: Icon(
+                                                                icon1,
+                                                                color: Colors.white,
+                                                              )
+                                                              // Icons.edit,color: Colors.white),
+                                                              ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            )),
-                                      ),
-                                    );
-                                    // Center(child: Text("No Data Found",style: TextStyle(color: Colors.black,fontSize: 18)),);
-                                  }),
-                            )
-                          : Container(
-                              height: 150,
-                              child: Center(
-                                child: Text("No Data Found",
-                                    style: TextStyle(fontSize: 18)),
-                              ),
-                            );
-                    }),
+                                                        SizedBox(
+                                                          width: 15,
+                                                        ),
+                                                        Column(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              storedMaster[index].label,
+                                                              style: TextStyle(
+                                                                fontSize: 14,
+                                                                color: Colors.grey,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 4,
+                                                            ),
+                                                            Text(
+                                                              storedMaster[index].name,
+                                                              style: TextStyle(
+                                                                fontSize: 18,
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )),
+                                            ),
+                                          );
+                                          // Center(child: Text("No Data Found",style: TextStyle(color: Colors.black,fontSize: 18)),);
+                                        }),
+                                  )
+                                : Container(
+                                    height: 150,
+                                    child: Center(
+                                      child: Text("No Data Found", style: TextStyle(fontSize: 18)),
+                                    ),
+                                  );
+                          });
+                        }),
                   ),
 
                   // SizedBox(height: 20,)

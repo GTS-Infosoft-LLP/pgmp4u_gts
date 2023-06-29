@@ -32,7 +32,37 @@ class CourseProvider extends ChangeNotifier {
 
   int videoPresent = 1;
 
+  int selectedCourseId;
+  int selectedMasterId;
+
+  int selectedFlashCategory;
+  String selectedCourseName;
+
+  setSelectedCourseName(String val) {
+    selectedCourseName = val;
+    notifyListeners();
+  }
+
+  setSelectedFlashCategory(int val) {
+    selectedFlashCategory = val;
+    print("selectedFlashCategory===========$selectedFlashCategory");
+    notifyListeners();
+  }
+
+  setSelectedMasterId(int val) {
+    selectedMasterId = val;
+    print("selectedMasterId===========$selectedMasterId");
+    notifyListeners();
+  }
+
+  setSelectedCourseId(int val) {
+    selectedCourseId = val;
+    print("selectedCourseId========>>>>>>>$selectedCourseId");
+    notifyListeners();
+  }
+
   Future<void> getMasterData(int id) async {
+    print("idddd=========>>>>>>>>>>>>>>>$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -68,6 +98,20 @@ class CourseProvider extends ChangeNotifier {
       List temp1 = mapResponse["data"];
       print("temp list===$temp1");
       masterList = temp1.map((e) => MasterDetails.fromjson(e)).toList();
+      print("master list=========$masterList");
+
+      try {
+        print("id.toString=====${id.toString}");
+        HiveHandler.addMasterData(masterList, keyName: id.toString());
+
+        Future.delayed(Duration(microseconds: 800), () {
+          List<MasterDetails> tempList = HiveHandler.getMasterDataList(key: id.toString()) ?? [];
+          print("*************************************************");
+          print("tempList==========$tempList");
+        });
+      } catch (e) {
+        print("errorr===========>>>>>>$e");
+      }
 
       notifyListeners();
 
@@ -79,6 +123,7 @@ class CourseProvider extends ChangeNotifier {
   }
 
   Future<void> getFlashCate(int id) async {
+    print("flash category iddd=====$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -104,6 +149,20 @@ class CourseProvider extends ChangeNotifier {
         List temp1 = mapResponse["data"];
         print("temp list===$temp1");
         flashCate = temp1.map((e) => FlashCateDetails.fromjson(e)).toList();
+
+        print("flashCate================${flashCate.length}");
+
+        try {
+          HiveHandler.addFlashCateData(flashCate, id.toString());
+
+          Future.delayed(Duration(microseconds: 800), () {
+            List<FlashCateDetails> tempList = HiveHandler.getFlashCateDataList(key: id.toString()) ?? [];
+            print("*************************************************");
+            print("tempList==========$tempList");
+          });
+        } catch (e) {
+          print("errorr===========>>>>>>$e");
+        }
 
         notifyListeners();
 
@@ -161,6 +220,7 @@ class CourseProvider extends ChangeNotifier {
   }
 
   Future<void> getCourse() async {
+    print("getCourse api calllllllll");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -178,6 +238,20 @@ class CourseProvider extends ChangeNotifier {
       List temp1 = mapResponse["data"];
       print("temp list===$temp1");
       course = temp1.map((e) => CourseDetails.fromjson(e)).toList();
+
+      try {
+        // print("id.toString=====${id.toString}");
+        HiveHandler.addCourseData(course);
+
+        Future.delayed(Duration(microseconds: 800), () {
+          List<CourseDetails> tempList = HiveHandler.getCourseDataList();
+          print("*************************************************");
+          print("tempList==========$tempList");
+        });
+      } catch (e) {
+        print("errorr===========>>>>>>$e");
+      }
+
       notifyListeners();
       print("course lkengrtht=====${course.length}");
       if (course.isNotEmpty) {
@@ -268,10 +342,10 @@ class CourseProvider extends ChangeNotifier {
       print("FlashCards=========$FlashCards");
 
       try {
-        HiveHandler.addFlash(FlashCards);
+        HiveHandler.addFlash(FlashCards, KeyName: id.toString());
 
         Future.delayed(Duration(microseconds: 800), () {
-          List<FlashCardDetails> tempList = HiveHandler.getflashCardsList() ?? [];
+          List<FlashCardDetails> tempList = HiveHandler.getflashCardsList(keyName: id.toString()) ?? [];
           print("*************************************************");
           FlashOfflineList = HiveHandler.getflashCardsList() ?? [];
           print("tempList==========$tempList");

@@ -75,48 +75,54 @@ class _MockTestState extends State<MockTest> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 149,
-                width: width,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/vector1d.png"),
-                    fit: BoxFit.cover,
+              Consumer<CourseProvider>(builder: (context, cp, child) {
+                return Container(
+                  height: 149,
+                  width: width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/vector1d.png"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                child: Container(
-                  margin:
-                      EdgeInsets.only(left: width * (20 / 420), right: width * (20 / 420), top: height * (16 / 800)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Icon(
-                              Icons.arrow_back_ios,
-                              size: width * (24 / 420),
-                              color: Colors.white,
+                  child: Container(
+                    margin:
+                        EdgeInsets.only(left: width * (20 / 420), right: width * (20 / 420), top: height * (16 / 800)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                size: width * (24 / 420),
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          Text(
-                            widget.testName,
-                            style: TextStyle(
-                                fontFamily: 'Roboto Medium',
-                                fontSize: width * (20 / 420),
-                                color: Colors.transparent,
-                                letterSpacing: 0.3),
-                          ),
-                        ],
-                      ),
-                    ],
+                            Container(
+                              width: MediaQuery.of(context).size.width * .82,
+                              // color: Colors.amber,
+                              child: Text(
+                                cp.selectedCourseName,
+                                style: TextStyle(
+                                    fontFamily: 'Roboto Medium',
+                                    fontSize: width * (20 / 420),
+                                    color: Colors.white,
+                                    letterSpacing: 0.3),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
               Container(
                 // color: Colors.amber,
                 child: SingleChildScrollView(
@@ -129,7 +135,7 @@ class _MockTestState extends State<MockTest> {
                         Container(
                           margin: EdgeInsets.only(bottom: height * (22 / 800)),
                           child: Text(
-                            '${widget.testName}s 4U',
+                            '${widget.testName}',
                             style: TextStyle(
                               fontFamily: 'Roboto Bold',
                               fontSize: width * (18 / 420),
