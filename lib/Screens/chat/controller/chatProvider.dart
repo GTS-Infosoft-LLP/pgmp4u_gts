@@ -159,7 +159,7 @@ class ChatProvider extends ChangeNotifier {
   bool isChatAdmin() {
     bool isChatAdmin = prefs.getBool('isChatAdmin');
 
-    print("isChatAdmin : $isChatSubscribed");
+    print("isChatAdmin : $isChatAdmin");
     if (isChatAdmin == null) {
       return false;
     }
