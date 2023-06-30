@@ -9,6 +9,7 @@ import '../../MockTest/model/flashCardModel.dart';
 import '../../MockTest/model/flashCateModel.dart';
 import '../../MockTest/model/masterdataModel.dart';
 import '../../MockTest/model/pracTestModel.dart';
+import '../../MockTest/model/testDataModel.dart';
 import '../model/categorymodel.dart';
 import '../model/mock_test.dart';
 
@@ -39,6 +40,9 @@ class HiveHandler {
 
   static const String FlashCateBox = "flashCateBox";
 
+  static const String TestDataBox = "testListBox";
+  static const String TestDataKey = "testListBox";
+
   static Box<List<CourseDetails>> courseListBox;
   static Box<List<FlashCateDetails>> flashListCateBox;
 
@@ -48,6 +52,8 @@ class HiveHandler {
   static Box<List<MockTestListApiModel>> MockListBox;
   static Box<List<QuestionAnswerModel>> MockTextBox;
   static Box<List<PracListModel>> PracTestBox;
+
+  static Box<List<TestDataDetails>> TestPMListBox;
 
   static Future hiveRegisterAdapter() async {
     await Hive.initFlutter();
@@ -60,6 +66,8 @@ class HiveHandler {
     Hive.registerAdapter(CourseDetailsAdapter());
     Hive.registerAdapter(FlashCateDetailsAdapter());
 
+    Hive.registerAdapter(TestDataDetailsAdapter());
+
     courseListBox = await Hive.openBox<List<CourseDetails>>(CourseBox);
     flashListCateBox = await Hive.openBox<List<FlashCateDetails>>(FlashCateBox);
     categoryListBox = await Hive.openBox<List<CategoryListModel>>(userDataBox);
@@ -69,6 +77,8 @@ class HiveHandler {
 
     MockListBox = await Hive.openBox<List<MockTestListApiModel>>(MockTestBox);
     PracTestBox = await Hive.openBox<List<PracListModel>>(PracticeTestBox);
+
+    TestPMListBox = await Hive.openBox<List<TestDataDetails>>(TestDataBox);
 
     await Hive.openBox("deviceTokenBox");
     MockTextBox = await Hive.openBox<List<QuestionAnswerModel>>(MockQuesBox);
@@ -80,6 +90,27 @@ class HiveHandler {
     print("incomimg valueeeeee=====>>>>$value");
 
     await box.put(key, jsonEncode(value));
+  }
+
+
+
+
+ 
+  static setMockTestPercent({dynamic value, String key}) async {
+    final box = Hive.box("categoryData");
+    print("*********************************");
+    print("incomimg valueeeeee=====>>>>$value");
+    await box.put(key, jsonEncode(value));
+  }
+
+  static ValueListenable getMockPercentListener() {
+    return Hive.box("categoryData").listenable();
+  }
+
+
+ static Future<dynamic> getMockTestPercent({String key}) async {
+    final box = Hive.box("categoryData");
+    return await box.get(key, defaultValue: "");
   }
 
   static Future<dynamic> getstringdata({String key}) async {
@@ -174,6 +205,31 @@ class HiveHandler {
     }
   }
 
+  static addTestMpData(List<TestDataDetails> list, String keyName) async {
+    final Box<List<TestDataDetails>> testDataListBox = await Hive.openBox<List<TestDataDetails>>(TestDataBox);
+    testDataListBox.put(keyName, list);
+    if (testDataListBox.isNotEmpty) {
+      print("===========added to box=========");
+      print("testDataListBox.get${testDataListBox.get(keyName)}");
+    } else {
+      print("===========box is empty=========");
+    }
+  }
+
+  static ValueListenable<Box<List<TestDataDetails>>> getTestDataListener() {
+    return Hive.box<List<TestDataDetails>>(TestDataBox).listenable();
+  }
+
+  static List<TestDataDetails> getTestDataList({String key}) {
+    try {
+      final List<TestDataDetails> storedTestData = TestPMListBox.get(key);
+      print("storedFlashCateData list length ${storedTestData.length}");
+      return storedTestData;
+    } catch (e) {
+      return [];
+    }
+  }
+
   static addFlashCateData(List<FlashCateDetails> list, String keyName) async {
     final Box<List<FlashCateDetails>> flashCateListBox = await Hive.openBox<List<FlashCateDetails>>(FlashCateBox);
     flashCateListBox.put(keyName, list);
@@ -200,7 +256,7 @@ class HiveHandler {
   }
 
   static addMasterData(List<MasterDetails> list, {String keyName}) async {
-    final Box<List<MasterDetails>> masterListBox = await Hive.openBox<List<MasterDetails>>(MasterDataBox);  
+    final Box<List<MasterDetails>> masterListBox = await Hive.openBox<List<MasterDetails>>(MasterDataBox);
     masterListBox.put(keyName, list);
     if (masterListBox.isNotEmpty) {
       print("===========added to box=========");
@@ -224,7 +280,7 @@ class HiveHandler {
     }
   }
 
-  static addFlash(List<FlashCardDetails> list,{String KeyName}) async {
+  static addFlash(List<FlashCardDetails> list, {String KeyName}) async {
     final Box<List<FlashCardDetails>> flashListBox = await Hive.openBox<List<FlashCardDetails>>(FlashCardBox);
     flashListBox.put(KeyName, list);
     if (flashListBox.isNotEmpty) {
@@ -239,7 +295,7 @@ class HiveHandler {
     return Hive.box<List<FlashCardDetails>>(FlashCardBox).listenable();
   }
 
-  static List<FlashCardDetails> getflashCardsList({ String keyName}) {
+  static List<FlashCardDetails> getflashCardsList({String keyName}) {
     try {
       final List<FlashCardDetails> storedflash = flashListBox.get(keyName);
       print("storedCategories list length ${storedflash.length}");

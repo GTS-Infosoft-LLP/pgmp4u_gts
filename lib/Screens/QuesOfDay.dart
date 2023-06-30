@@ -58,9 +58,27 @@ class _QuesOfDayState extends State<QuesOfDay> {
   }
 
   bool questionLoader = false;
-  onTapOfPutOnDisscussion(String question) async {
+  onTapOfPutOnDisscussion(String question, List<OptionsDay> li) async {
+
+
+    List<String> optsName=[];
+    for(int i=0;i<li.length;i++){
+     String name='';
+
+       name =li[i].questionOption;
+
+      if(name.isEmpty  || name==null){}else{
+        optsName.add(name);
+      }
+
+
+
+    }
+
+    print("optsName=========>>${optsName}");
     setState(() => questionLoader = true);
     print('Question of The Day question : $question');
+    print('Question of The Day question options : $li');
     if (question.isEmpty) return;
 
     if (!context.read<ChatProvider>().isChatSubscribed()) {
@@ -72,7 +90,8 @@ class _QuesOfDayState extends State<QuesOfDay> {
           ));
       return;
     }
-    await context.read<ChatProvider>().createDiscussionGroup(question, context).whenComplete(() {
+    print("*******************");
+    await context.read<ChatProvider>().createDiscussionGroup(question,optsName, context).whenComplete(() {
       // Navigator.pop(context);
       setState(() => questionLoader = false);
       Navigator.push(
@@ -256,7 +275,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                         data.pList != null
                                                                             ? data.qdList[_quetionNo].question
                                                                             : '',
-                                                                      );
+                                                                        data.qdList[_quetionNo].options);
                                                               },
                                                               child: Row(
                                                                 children: [

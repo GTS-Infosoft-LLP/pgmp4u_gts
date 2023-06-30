@@ -61,6 +61,7 @@ class CourseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<MasterDetails> masterTemp = [];
   Future<void> getMasterData(int id) async {
     print("idddd=========>>>>>>>>>>>>>>>$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -69,11 +70,17 @@ class CourseProvider extends ChangeNotifier {
     print("token valued===$stringValue");
     var request = {"id": id};
 
-    var response = await http.post(
+    var response = await http
+        .post(
       Uri.parse("http://3.227.35.115:1011/api/getMasterData"),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
-    );
+    )
+        .onError((error, stackTrace) {
+      print("errore======>>>>$error");
+      masterTemp = [];
+      return;
+    });
 
     print("response.statusCode===${response.body}");
     print("response.statusCode===${response.statusCode}");
@@ -100,17 +107,21 @@ class CourseProvider extends ChangeNotifier {
       masterList = temp1.map((e) => MasterDetails.fromjson(e)).toList();
       print("master list=========$masterList");
 
-      try {
-        print("id.toString=====${id.toString}");
-        HiveHandler.addMasterData(masterList, keyName: id.toString());
+      if (masterList.isNotEmpty) {
+        try {
+          print("id.toString=====${id.toString}");
+          HiveHandler.addMasterData(masterList, keyName: id.toString());
 
-        Future.delayed(Duration(microseconds: 800), () {
-          List<MasterDetails> tempList = HiveHandler.getMasterDataList(key: id.toString()) ?? [];
-          print("*************************************************");
-          print("tempList==========$tempList");
-        });
-      } catch (e) {
-        print("errorr===========>>>>>>$e");
+          Future.delayed(Duration(microseconds: 800), () {
+            List<MasterDetails> tempList = HiveHandler.getMasterDataList(key: id.toString()) ?? [];
+
+            masterTemp = HiveHandler.getMasterDataList(key: id.toString()) ?? [];
+            print("*************************************************");
+            print("tempList==========$tempList");
+          });
+        } catch (e) {
+          print("errorr===========>>>>>>$e");
+        }
       }
 
       notifyListeners();
@@ -122,6 +133,7 @@ class CourseProvider extends ChangeNotifier {
     print("respponse=== ${response.body}");
   }
 
+  List<FlashCateDetails> flashCateTempList = [];
   Future<void> getFlashCate(int id) async {
     print("flash category iddd=====$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -130,11 +142,17 @@ class CourseProvider extends ChangeNotifier {
     print("token valued===$stringValue");
     var request = {"id": id};
 
-    var response = await http.post(
+    var response = await http
+        .post(
       Uri.parse("http://3.227.35.115:1011/api/getFlashCategories"),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
-    );
+    )
+        .onError((error, stackTrace) {
+      print("error========>>$error");
+      flashCateTempList = [];
+      // return;
+    });
 
     print("response.statusCode===${response.statusCode}");
     if (response.statusCode == 200) {
@@ -157,8 +175,9 @@ class CourseProvider extends ChangeNotifier {
 
           Future.delayed(Duration(microseconds: 800), () {
             List<FlashCateDetails> tempList = HiveHandler.getFlashCateDataList(key: id.toString()) ?? [];
+            flashCateTempList = HiveHandler.getFlashCateDataList(key: id.toString()) ?? [];
             print("*************************************************");
-            print("tempList==========$tempList");
+            print("tempList==========$flashCateTempList");
           });
         } catch (e) {
           print("errorr===========>>>>>>$e");
@@ -219,6 +238,7 @@ class CourseProvider extends ChangeNotifier {
     print("respponse=== ${response.body}");
   }
 
+  List<CourseDetails> tempList = [];
   Future<void> getCourse() async {
     print("getCourse api calllllllll");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -229,7 +249,10 @@ class CourseProvider extends ChangeNotifier {
     var response = await http.get(
       Uri.parse("http://3.227.35.115:1011/api/getCourse"),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
-    );
+    ).onError((error, stackTrace) {
+      print("error====>>$error");
+      tempList = [];
+    });
 
     print("response.statusCode===${response.statusCode}");
     if (response.statusCode == 200) {
@@ -244,7 +267,9 @@ class CourseProvider extends ChangeNotifier {
         HiveHandler.addCourseData(course);
 
         Future.delayed(Duration(microseconds: 800), () {
-          List<CourseDetails> tempList = HiveHandler.getCourseDataList();
+          tempList = HiveHandler.getCourseDataList();
+
+          notifyListeners();
           print("*************************************************");
           print("tempList==========$tempList");
         });
@@ -306,6 +331,7 @@ class CourseProvider extends ChangeNotifier {
     print("respponse=== ${response.body}");
   }
 
+  List<FlashCardDetails> flashTemp = [];
   Future<void> getFlashCards(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -313,11 +339,16 @@ class CourseProvider extends ChangeNotifier {
     print("token valued===$stringValue");
     var request = {"id": id};
 
-    var response = await http.post(
+    var response = await http
+        .post(
       Uri.parse("http://3.227.35.115:1011/api/getFlashCards"),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
-    );
+    )
+        .onError((error, stackTrace) {
+      print("erroeee===>>$error");
+      flashTemp = [];
+    });
 
     var resDDo = json.decode(response.body);
     var resStatus = (resDDo["status"]);
@@ -348,6 +379,7 @@ class CourseProvider extends ChangeNotifier {
           List<FlashCardDetails> tempList = HiveHandler.getflashCardsList(keyName: id.toString()) ?? [];
           print("*************************************************");
           FlashOfflineList = HiveHandler.getflashCardsList() ?? [];
+          flashTemp = HiveHandler.getflashCardsList() ?? [];
           print("tempList==========$tempList");
           print("FlashOfflineList==========$FlashOfflineList");
         });
@@ -398,18 +430,25 @@ class CourseProvider extends ChangeNotifier {
     print("respponse=== ${response.body}");
   }
 
+  List<TestDataDetails> testListTemp = [];
   Future<void> getTest(int id) async {
+    print("id valueeee===========>>>>>>>>>>>$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
     print("token valued===$stringValue");
     var request = {"id": id};
 
-    var response = await http.post(
+    var response = await http
+        .post(
       Uri.parse("http://3.227.35.115:1011/api/gettest"),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
-    );
+    )
+        .onError((error, stackTrace) {
+      print("erroroe=====>>>>>$error");
+      testListTemp = [];
+    });
 
     print("response.statusCode===${response.statusCode}");
     if (response.statusCode == 200) {
@@ -425,6 +464,20 @@ class CourseProvider extends ChangeNotifier {
         List temp1 = mapResponse["data"];
         print("temp list===$temp1");
         testData = temp1.map((e) => TestDataDetails.fromjson(e)).toList();
+
+        try {
+          HiveHandler.addTestMpData(testData, id.toString());
+
+          Future.delayed(Duration(microseconds: 800), () {
+            List<TestDataDetails> tempList = HiveHandler.getTestDataList(key: id.toString());
+            testListTemp = HiveHandler.getTestDataList(key: id.toString());
+            print("*************************************************");
+
+            print("tempList==========$tempList");
+          });
+        } catch (e) {
+          print("errorr===========>>>>>>$e");
+        }
 
         notifyListeners();
 

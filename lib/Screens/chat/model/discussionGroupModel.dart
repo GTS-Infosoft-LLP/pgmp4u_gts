@@ -5,6 +5,7 @@ class DisscussionGropModel {
   String createdBy;
   int commentsCount;
   String ownerId;
+  List<String> ops;
 
   DisscussionGropModel({
     this.title,
@@ -13,6 +14,7 @@ class DisscussionGropModel {
     this.ownerId,
     this.groupId,
     this.commentsCount,
+    this.ops,
   });
 
   DisscussionGropModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class DisscussionGropModel {
 
     commentsCount = json['commentsCount'] ?? 0;
     ownerId = json['ownerId'] ?? "";
+    // ops=json['options']??[];
   }
 
   Map<String, dynamic> toJson() => {

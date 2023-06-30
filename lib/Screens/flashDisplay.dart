@@ -22,10 +22,13 @@ class _FlashDisplayState extends State<FlashDisplay> {
   ResponseProvider responseProvider;
 
   LinearGradient liGrdint;
+  List<FlashCardDetails>flashTemp=[];
 
   void initState() {
     responseProvider = Provider.of(context, listen: false);
     CourseProvider courseProvider = Provider.of(context, listen: false);
+
+    flashTemp=HiveHandler.getflashCardsList( keyName: courseProvider.selectedFlashCategory.toString());
 
     print("length of flash list ==>> ${courseProvider.FlashCards.length}");
 
@@ -92,129 +95,137 @@ class _FlashDisplayState extends State<FlashDisplay> {
                       ),
                     ],
                   ),
-                  ValueListenableBuilder<Box<List<FlashCardDetails>>>(
-                      valueListenable: HiveHandler.getFlashListener(),
-                      builder: (context, value, child) {
-                        CourseProvider cp = Provider.of(context, listen: false);
+                  flashTemp.isEmpty
+                      ? Center(
+                          child: Container(
+                          height: 400,
+                          child: Text("No Data Found..."),
+                        ))
+                      : Container(
+                          child: ValueListenableBuilder<Box<List<FlashCardDetails>>>(
+                              valueListenable: HiveHandler.getFlashListener(),
+                              builder: (context, value, child) {
+                                CourseProvider cp = Provider.of(context, listen: false);
 
-                        List<FlashCardDetails> storedFlash = value.get(cp.selectedFlashCategory.toString());
-                        print("storedFlash========================$storedFlash");
+                                List<FlashCardDetails> storedFlash = value.get(cp.selectedFlashCategory.toString());
+                                print("storedFlash========================$storedFlash");
 
-                        return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
-                          return Container(
-                            // color: Colors.amber,
-                            height: MediaQuery.of(context).size.height * .8,
-                            child: PageView.builder(
-                                itemCount: storedFlash.length,
-                                itemBuilder: (context, index) {
-                                  if (index % 4 == 0) {
-                                    liGrdint = LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [Color(0xff5082BC), Color(0xff8AA1C9)]);
-                                  } else if (index % 3 == 0) {
-                                    liGrdint = LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [Color(0xffF3924D), Color(0xffECAB8E)]);
-                                  } else if (index % 2 == 0) {
-                                    liGrdint = LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [Color(0xff8E8BE6), Color(0xffA8B1FC)]);
-                                  } else {
-                                    liGrdint = LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [Color(0xff4195B7), Color(0xff76ACC2)]);
-                                  }
+                                return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
+                                  return Container(
+                                    // color: Colors.amber,
+                                    height: MediaQuery.of(context).size.height * .8,
+                                    child: PageView.builder(
+                                        itemCount: storedFlash.length,
+                                        itemBuilder: (context, index) {
+                                          if (index % 4 == 0) {
+                                            liGrdint = LinearGradient(
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: [Color(0xff5082BC), Color(0xff8AA1C9)]);
+                                          } else if (index % 3 == 0) {
+                                            liGrdint = LinearGradient(
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: [Color(0xffF3924D), Color(0xffECAB8E)]);
+                                          } else if (index % 2 == 0) {
+                                            liGrdint = LinearGradient(
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: [Color(0xff8E8BE6), Color(0xffA8B1FC)]);
+                                          } else {
+                                            liGrdint = LinearGradient(
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: [Color(0xff4195B7), Color(0xff76ACC2)]);
+                                          }
 
-                                  return Padding(
-                                    padding: const EdgeInsets.all(18.0),
-                                    child: Stack(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            gradient: liGrdint,
-                                            // color: Colors.white,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                blurRadius: 5.0,
-                                              ),
-                                            ],
-                                            borderRadius: BorderRadius.circular(40),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 8.0),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              // gradient: liGrdint,
-                                              color: Colors.white,
-
-                                              borderRadius: BorderRadius.circular(40),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                          return Padding(
+                                            padding: const EdgeInsets.all(18.0),
+                                            child: Stack(
                                               children: [
-                                                SizedBox(
-                                                  height: 30,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                                  child: Text(
-                                                    storedFlash[index].title,
-                                                    textAlign: TextAlign.left,
-                                                    maxLines: 2,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        fontSize: 30,
-                                                        fontFamily: "Roboto",
-                                                        fontWeight: FontWeight.bold,
-                                                        color: Colors.black),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    gradient: liGrdint,
+                                                    // color: Colors.white,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        blurRadius: 5.0,
+                                                      ),
+                                                    ],
+                                                    borderRadius: BorderRadius.circular(40),
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                  height: 30,
-                                                ),
-                                                Expanded(
-                                                  child: SingleChildScrollView(
-                                                    child: Container(
-                                                      height: MediaQuery.of(context).size.height * .6,
-                                                      // color: Colors.blue,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                                        child: SingleChildScrollView(
-                                                          child: Html(
-                                                            data: storedFlash[index].description,
-                                                            style: {
-                                                              "body": Style(
-                                                                padding: EdgeInsets.only(top: 5),
-                                                                margin: EdgeInsets.zero,
-                                                                color: Color(0xff000000),
-                                                                textAlign: TextAlign.left,
-                                                                // maxLines: 7,
-                                                                // textOverflow: TextOverflow.ellipsis,
-                                                                fontSize: FontSize(22),
-                                                              )
-                                                            },
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 8.0),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      // gradient: liGrdint,
+                                                      color: Colors.white,
+
+                                                      borderRadius: BorderRadius.circular(40),
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 30,
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                                          child: Text(
+                                                            storedFlash[index].title,
+                                                            textAlign: TextAlign.left,
+                                                            maxLines: 2,
+                                                            overflow: TextOverflow.ellipsis,
+                                                            style: TextStyle(
+                                                                fontSize: 30,
+                                                                fontFamily: "Roboto",
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.black),
                                                           ),
                                                         ),
-                                                      ),
+                                                        SizedBox(
+                                                          height: 30,
+                                                        ),
+                                                        Expanded(
+                                                          child: SingleChildScrollView(
+                                                            child: Container(
+                                                              height: MediaQuery.of(context).size.height * .6,
+                                                              // color: Colors.blue,
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                                                child: SingleChildScrollView(
+                                                                  child: Html(
+                                                                    data: storedFlash[index].description,
+                                                                    style: {
+                                                                      "body": Style(
+                                                                        padding: EdgeInsets.only(top: 5),
+                                                                        margin: EdgeInsets.zero,
+                                                                        color: Color(0xff000000),
+                                                                        textAlign: TextAlign.left,
+                                                                        // maxLines: 7,
+                                                                        // textOverflow: TextOverflow.ellipsis,
+                                                                        fontSize: FontSize(22),
+                                                                      )
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
                                                     ),
                                                   ),
                                                 )
                                               ],
                                             ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                          );
+                                        }),
                                   );
-                                }),
-                          );
-                        });
-                      })
+                                });
+                              }),
+                        )
                 ],
               ),
             )),

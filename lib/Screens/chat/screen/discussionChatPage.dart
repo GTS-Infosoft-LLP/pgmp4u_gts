@@ -114,45 +114,56 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
         },
       ),
       resizeToAvoidBottomInset: true,
-      body: Container(
-        padding: EdgeInsets.only(bottom: size.height * 0.10),
-        child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseChatHandler.getAllDiscussionGroupMessage(groupId: widget.group.groupId),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                    physics: ClampingScrollPhysics(),
-                    reverse: true,
-                    itemCount: snapshot.data?.docs?.length ?? 0,
-                    itemBuilder: (context, indexMain) {
-                      var data = snapshot.data.docs[indexMain].data();
+      body: Column(
+        children: [
+          Container(
+            child: Column(
+              children: [
+                Text(""),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(bottom: size.height * 0.10),
+            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: FirebaseChatHandler.getAllDiscussionGroupMessage(groupId: widget.group.groupId),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                        physics: ClampingScrollPhysics(),
+                        reverse: true,
+                        itemCount: snapshot.data?.docs?.length ?? 0,
+                        itemBuilder: (context, indexMain) {
+                          var data = snapshot.data.docs[indexMain].data();
 
-                      // print("get images ${getImg(data['sentBy'])}");
+                          // print("get images ${getImg(data['sentBy'])}");
 
-                      ChatModel chatModel = ChatModel(
-                        messageId: data.containsKey('messageId') ? data['messageId'] ?? '' : '',
-                        text: data['text'] ?? '',
-                        sentBy: data['sentBy'] ?? '',
-                        sentAt: data['sentAt'] ?? "0",
-                        profileUrl: data['profileUrl'] ?? "",
-                        senderName: data.containsKey('senderName') ? data['senderName'] ?? '' : '',
-                      );
+                          ChatModel chatModel = ChatModel(
+                            messageId: data.containsKey('messageId') ? data['messageId'] ?? '' : '',
+                            text: data['text'] ?? '',
+                            sentBy: data['sentBy'] ?? '',
+                            sentAt: data['sentAt'] ?? "0",
+                            profileUrl: data['profileUrl'] ?? "",
+                            senderName: data.containsKey('senderName') ? data['senderName'] ?? '' : '',
+                          );
 
-                      if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
-                        return SenderMessageCard(
-                          chatModel: chatModel,
-                        );
-                      } else {
-                        return RecivedMessageCard(
-                          chatModel: chatModel,
-                        );
-                      }
-                    });
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            }),
+                          if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
+                            return SenderMessageCard(
+                              chatModel: chatModel,
+                            );
+                          } else {
+                            return RecivedMessageCard(
+                              chatModel: chatModel,
+                            );
+                          }
+                        });
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }),
+          ),
+        ],
       ),
     );
   }

@@ -63,6 +63,9 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   );
   var currentIndex;
 
+
+
+
   @override
   void initState() {
     print("***********************************************");
@@ -222,9 +225,24 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   var displayTime = '';
 
   bool questionLoader = false;
-  onTapOfPutOnDisscussion(String question) async {
+  onTapOfPutOnDisscussion(String question,List<Optionss> list01) async {
     setState(() => questionLoader = true);
     print('Mock text question : $question');
+
+List<String> mckOptions=[];
+
+    for(int i=0;i<list01.length;i++){
+      String optsValue="";
+      optsValue=list01[i].question_option;
+
+      if(optsValue.isEmpty || optsValue==null){}else{
+        mckOptions.add(optsValue);
+      }
+    }
+
+    print("optsValue=========${mckOptions}");
+
+
     if (question.isEmpty) return;
 
     if (!context.read<ChatProvider>().isChatSubscribed()) {
@@ -236,7 +254,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
           ));
       return;
     }
-    await context.read<ChatProvider>().createDiscussionGroup(question, context).whenComplete(() {
+    await context.read<ChatProvider>().createDiscussionGroup(question, mckOptions, context).whenComplete(() {
       setState(() => questionLoader = false);
       Navigator.push(
           context,
@@ -453,7 +471,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                                   : onTapOfPutOnDisscussion(
                                                                                       _quizList[_quetionNo]
                                                                                           .questionDetail
-                                                                                          .questiondata);
+                                                                                          .questiondata,
+                                                                                          _quizList[_quetionNo].questionDetail.Options
+                                                                                          
+                                                                                          
+                                                                                          
+                                                                                          );
                                                                             },
                                                                             child: Padding(
                                                                               padding: const EdgeInsets.symmetric(

@@ -23,7 +23,6 @@ class PracListModel {
   }
 }
 
-
 class PracTestModel {
   int id;
   int mocktest;
@@ -32,11 +31,11 @@ class PracTestModel {
   int deleteStatus;
   Question ques;
   PracTestModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    mocktest = json['mocktest'];
-    question = json['question'];
-    status = json['status'];
-    deleteStatus = json['deleteStatus'];
+    id = json['id'] ?? 0;
+    mocktest = json['mocktest'] ?? 0;
+    question = json['question'] ?? 0;
+    status = json['status'] ?? 0;
+    deleteStatus = json['deleteStatus'] ?? 0;
     ques = json['Question'] != null ? new Question.fromJson(json['Question']) : null;
   }
 }
@@ -56,20 +55,19 @@ class Question {
   List<Options> options;
 
   Question.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    questionNo = json['question_no'];
-    course = json['course'];
-    category = json['category'];
-    question = json['question'];
-    questionType = json['question_type'];
-    rightAnswer = json['right_answer'];
-    explanation = json['explanation'];
+    id = json['id'] ?? 0;
+    questionNo = json['question_no'] ?? 0;
+    course = json['course'] ?? 0;
+    category = json['category'] ?? 0;
+    question = json['question'] ?? "";
+    questionType = json['question_type'] ?? "";
+    rightAnswer = json['right_answer'] ?? "";
+    explanation = json['explanation'] ?? "";
     image = json['image'];
-    status = json['status'];
-    deleteStatus = json['deleteStatus'];
+    status = json['status'] ?? "";
+    deleteStatus = json['deleteStatus'] ?? 0;
 
     if (json['Options'] != null) {
-     
       options = new List<Options>();
 
       json['Options'].forEach((v) {
@@ -98,12 +96,13 @@ class Options {
     this.isseleted = false,
   });
 
-  Options.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        question = json['question'],
-        questionOption = json['question_option'],
-        rightAnswer = json['right_answer'],
-        status = json['status'],
-        deleteStatus = json['deleteStatus'],
-        isseleted = false;
+  Options.fromJson(Map<String, dynamic> json) {
+    id = json['id'] ?? 0;
+    question = json['question'] ?? 0;
+    questionOption = json['question_option'] ?? "";
+    rightAnswer = json['right_answer'] ?? 0;
+    status = json['status'] ?? 0;
+    deleteStatus = json['deleteStatus'] ?? 0;
+    isseleted = false;
+  }
 }

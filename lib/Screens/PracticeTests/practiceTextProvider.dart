@@ -28,6 +28,13 @@ class PracticeTextProvider extends ChangeNotifier {
   int selectedAnswer;
   int realAnswer;
 
+  int selectedPracTestId;
+
+  setSelectedPracTestId(int val) {
+    selectedPracTestId = val;
+    notifyListeners();
+  }
+
   PracListModel plm = new PracListModel();
 
   setSelectedAns(int val) {
@@ -47,6 +54,8 @@ class PracticeTextProvider extends ChangeNotifier {
   }
 
   Future apiCall(int id, String type) async {
+    print("iddd=======>>>>>>>>>>>$id");
+
     updateLoader(true);
     Map body = {"id": id, "type": type};
 
@@ -57,13 +66,13 @@ class PracticeTextProvider extends ChangeNotifier {
     // http.Response response;
     // response = await http.post(Uri.parse(getSubCategoryDetails),
     var response = await http.get(
-      Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/126"),
+      Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/$id"),
 
       headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
       // body: convert.jsonEncode(body)
     );
 
-    print("calling this api========>>>.https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/126");
+    print("calling this api========>>>.https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/$id");
     // print("body=========>$body");
 
     if (response.statusCode == 200) {
@@ -75,9 +84,9 @@ class PracticeTextProvider extends ChangeNotifier {
       print("map resposne datat=====>>>${_mapResponse["data"]}");
 
       List temp = _mapResponse["data"];
-      HiveHandler.setstringdata(key: "PracTestModel", value: _mapResponse['data']);
+      HiveHandler.setstringdata(key: id.toString(), value: _mapResponse['data']);
 
-      var v1 = await HiveHandler.getstringdata(key: "PracTestModel");
+      var v1 = await HiveHandler.getstringdata(key: id.toString());
       print("v1===========================================${(v1.toString())}");
 
       // List<PracTestModel> p1List = v1.map((e) => PracTestModel.fromJson(e)).toList();

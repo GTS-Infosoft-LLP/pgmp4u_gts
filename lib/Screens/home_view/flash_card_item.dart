@@ -8,10 +8,8 @@ import 'package:provider/provider.dart';
 import '../../provider/courseProvider.dart';
 import '../../tool/ShapeClipper.dart';
 import '../../utils/app_color.dart';
-import '../../utils/app_textstyle.dart';
 import '../MockTest/model/flashCateModel.dart';
 import '../flashDisplay.dart';
-import 'VideoLibrary/RandomPage.dart';
 
 class FlashCardItem extends StatefulWidget {
   String title;
@@ -26,6 +24,8 @@ class _FlashCardItemState extends State<FlashCardItem> {
   Color _lightText = Color(0xff989d9e);
   ResponseProvider responseProvider;
 
+  List<FlashCateDetails> flashCateTempList = [];
+
   Future callCategoryApi() async {
     print(" api calling");
     responseProvider = Provider.of(context, listen: false);
@@ -37,7 +37,8 @@ class _FlashCardItemState extends State<FlashCardItem> {
   void initState() {
     CourseProvider courseProvider = Provider.of(context, listen: false);
     print("courseProvider.flashCate.length==========${courseProvider.flashCate.length}");
-
+    flashCateTempList = HiveHandler.getFlashCateDataList(key: courseProvider.selectedMasterId.toString());
+    print("flashCateTempList=========$flashCateTempList");
     callCategoryApi();
     super.initState();
   }
@@ -109,124 +110,170 @@ class _FlashCardItemState extends State<FlashCardItem> {
                   ),
                 ),
 
-                ValueListenableBuilder<Box<List<FlashCateDetails>>>(
-                    valueListenable: HiveHandler.getFlashCateListener(),
-                    builder: (context, value, child) {
-                      CourseProvider cp = Provider.of(context, listen: false);
-                      List<FlashCateDetails> storedFlashCate = value.get(cp.selectedMasterId.toString());
+                flashCateTempList.isEmpty
+                    ? Center(
+                        child: Container(
+                        child: Text("No Data Found"),
+                      ))
+                    : Container(
+                        child: ValueListenableBuilder<Box<List<FlashCateDetails>>>(
+                            valueListenable: HiveHandler.getFlashCateListener(),
+                            builder: (context, value, child) {
+                              CourseProvider cp = Provider.of(context, listen: false);
+                              List<FlashCateDetails> storedFlashCate = value.get(cp.selectedMasterId.toString());
 
-                      print("storedFlashCate========================$storedFlashCate");
+                              print("storedFlashCate========================$storedFlashCate");
 
-                      if (storedFlashCate == null) {
-                        storedFlashCate = [];
-                      }
+                              if (storedFlashCate == null) {
+                                storedFlashCate = [];
+                              }
 
-                      return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
-                        return storedFlashCate.length == 0
-                            ? Container(
-                                height: MediaQuery.of(context).size.height * .5,
-                                child: Center(
-                                  child: Text(
-                                    "No Data Found...",
-                                    style: TextStyle(color: Colors.black, fontSize: 18),
-                                  ),
-                                ),
-                              )
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: storedFlashCate.length,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      print("flash card category id===>>${storedFlashCate[index].id}");
+                              return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
+                                return storedFlashCate.length == 0
+                                    ? Container(
+                                        height: MediaQuery.of(context).size.height * .5,
+                                        child: Center(
+                                          child: Text(
+                                            "No Data Found...",
+                                            style: TextStyle(color: Colors.black, fontSize: 18),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        height: MediaQuery.of(context).size.height * .70,
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: storedFlashCate.length,
+                                            itemBuilder: (context, index) {
+                                              return InkWell(
+                                                onTap: () {
+                                                  print("flash card category id===>>${storedFlashCate[index].id}");
 
-                                      courseProvider.setSelectedFlashCategory(storedFlashCate[index].id);
+                                                  courseProvider.setSelectedFlashCategory(storedFlashCate[index].id);
 
-                                      if (storedFlashCate[index].payment_status == 0) {}
-                                      courseProvider.FlashCards = [];
+                                                  if (storedFlashCate[index].payment_status == 0) {}
+                                                  courseProvider.FlashCards = [];
 
-                                      courseProvider.getFlashCards(storedFlashCate[index].id);
+                                                  courseProvider.getFlashCards(storedFlashCate[index].id);
 
-                                      Future.delayed(const Duration(milliseconds: 400), () {
-                                        // Navigator.push(
-                                        //     context,
-                                        //     MaterialPageRoute(
-                                        //         builder: (context) =>
-                                        //             FlashCardsPage(
-                                        //               heding: courseProvider
-                                        //                   .flashCate[index].name,
-                                        //             )));
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => FlashDisplay(
-                                                      heding: storedFlashCate[index].name,
-                                                    )));
-                                        //FlashDisplay
-                                      });
-                                    },
-                                    child: Card(
-                                      margin: EdgeInsets.symmetric(
-                                        vertical: 0.5,
-                                      ),
-                                      child: Container(
-                                          decoration: BoxDecoration(color: Colors.white),
-                                          child: ListTile(
-                                              leading: Container(
-                                                  height: 60,
-                                                  width: 60,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(8),
-                                                    color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                                  ),
-                                                  child: Icon(
-                                                    index % 2 == 0 ? FontAwesomeIcons.book : FontAwesomeIcons.airbnb,
-                                                    color: Colors.white,
-                                                  )
-                                                  // Icon
-                                                  // Image.asset(AppImage.picture_placeholder),
-                                                  // Image.network(
-                                                  //   "",width: 80,errorBuilder: (context, error, stackTrace) {
-                                                  //     return Image.asset(AppImage.picture_placeholder);
-                                                  //   },
-                                                  //   fit: BoxFit.fill,
-                                                  // )
-                                                  ),
-                                              title: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Read",
-                                                    style: TextStyle(fontSize: 12),
-                                                  ),
-                                                  storedFlashCate[index].payment_status == 1
-                                                      ? InkWell(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => RandomPage(index: 1)));
-                                                          },
-                                                          child: Text(
-                                                            "Premium",
-                                                            style: TextStyle(fontSize: 12),
+                                                  Future.delayed(const Duration(milliseconds: 400), () {
+                                                    // Navigator.push(
+                                                    //     context,
+                                                    //     MaterialPageRoute(
+                                                    //         builder: (context) =>
+                                                    //             FlashCardsPage(
+                                                    //               heding: courseProvider
+                                                    //                   .flashCate[index].name,
+                                                    //             )));
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => FlashDisplay(
+                                                                  heding: storedFlashCate[index].name,
+                                                                )));
+                                                    //FlashDisplay
+                                                  });
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                                                  child: Container(
+                                                      decoration: BoxDecoration(
+                                                          border: Border(
+                                                              bottom: BorderSide(width: 1.5, color: Colors.grey[300])),
+                                                          color: Colors.transparent),
+                                                      child: Row(
+                                                        children: [
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(bottom: 6.0),
+                                                            child: Container(
+                                                                height: 60,
+                                                                width: 60,
+                                                                decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.circular(8),
+                                                                  color: index % 2 == 0
+                                                                      ? AppColor.purpule
+                                                                      : AppColor.green,
+                                                                ),
+                                                                child: Icon(
+                                                                  index % 2 == 0
+                                                                      ? FontAwesomeIcons.book
+                                                                      : FontAwesomeIcons.airbnb,
+                                                                  color: Colors.white,
+                                                                )),
                                                           ),
-                                                        )
-                                                      : SizedBox(),
-                                                ],
-                                              ),
-                                              subtitle: Text(
-                                                storedFlashCate[index].name,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: AppTextStyle.titleTile,
-                                              ))),
-                                    ),
-                                  );
-                                  // );
-                                });
-                      });
-                    })
+
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+
+                                                          Text(
+                                                            storedFlashCate[index].name,
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontFamily: 'Roboto Medium',
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                            maxLines: 2,
+                                                            overflow: TextOverflow.ellipsis,
+                                                          )
+                                                          // )
+                                                        ],
+                                                      )
+
+                                                      // ListTile(
+                                                      //     leading: Container(
+                                                      //         height: 60,
+                                                      //         width: 60,
+                                                      //         decoration: BoxDecoration(
+                                                      //           borderRadius: BorderRadius.circular(8),
+                                                      //           color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                                                      //         ),
+                                                      //         child: Icon(
+                                                      //           index % 2 == 0
+                                                      //               ? FontAwesomeIcons.book
+                                                      //               : FontAwesomeIcons.airbnb,
+                                                      //           color: Colors.white,
+                                                      //         )
+
+                                                      //         ),
+                                                      //     // title: Row(
+                                                      //     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      //     //   children: [
+                                                      //     //     // Text(
+                                                      //     //     //   "",
+                                                      //     //     //   style: TextStyle(fontSize: 12),
+                                                      //     //     // ),
+                                                      //     //     storedFlashCate[index].payment_status == 1
+                                                      //     //         ? InkWell(
+                                                      //     //             onTap: () {
+                                                      //     //               Navigator.push(
+                                                      //     //                   context,
+                                                      //     //                   MaterialPageRoute(
+                                                      //     //                       builder: (context) => RandomPage(index: 1)));
+                                                      //     //             },
+                                                      //     //             child: Text(
+                                                      //     //               "Premium",
+                                                      //     //               style: TextStyle(fontSize: 12),
+                                                      //     //             ),
+                                                      //     //           )
+                                                      //     //         : SizedBox(),
+                                                      //     //   ],
+                                                      //     // ),
+                                                      //     title: Text(
+                                                      //       storedFlashCate[index].name,
+                                                      //       maxLines: 2,
+                                                      //       overflow:  TextOverflow.ellipsis,
+                                                      //     ))
+
+                                                      ),
+                                                ),
+                                              );
+                                              // );
+                                            }),
+                                      );
+                              });
+                            }),
+                      )
 
                 // Consumer<ResponseProvider>(
                 //   builder: ((context, responseProvider, child) {

@@ -184,7 +184,7 @@ class MyPopupMenu extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
       ),
-      icon: Icon(Icons.more_vert_rounded, color: Colors.white),
+      icon: Icon(Icons.supervised_user_circle_sharp, color: Colors.white),
       onSelected: (int value) {
         // Handle menu item selection
         switch (value) {
@@ -283,8 +283,13 @@ class AddDiscussionBottomSheet extends StatelessWidget {
 
   onTapOfPublish(BuildContext context) async {
     // print('title: ${titleController.text}');
+
+    List<String> mtyList = [];
     if (titleController.text.trim().isNotEmpty) {
-      await context.read<ChatProvider>().createDiscussionGroup(titleController.text.trim(), context).whenComplete(() {
+      await context
+          .read<ChatProvider>()
+          .createDiscussionGroup(titleController.text.trim(), mtyList, context)
+          .whenComplete(() {
         titleController.clear();
 
         Navigator.pop(context);

@@ -138,112 +138,119 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                       children: <Widget>[
                         Consumer<CourseProvider>(builder: (context, courseProvider, child) {
                           return courseProvider.videoPresent == 1
-                              ? ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: courseProvider.videoCate.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        if (courseProvider.videoCate[index].payment_status == 0) {
-                                          print("id:::: ${courseProvider.videoCate[index].id}");
-                                          courseProvider.getVideos(courseProvider.videoCate[index].id);
+                              ? Container(
+                                  height: MediaQuery.of(context).size.height * .70,
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: courseProvider.videoCate.length,
+                                      itemBuilder: (context, index) {
+                                        return InkWell(
+                                          onTap: () {
+                                            if (courseProvider.videoCate[index].payment_status == 0) {
+                                              print("id:::: ${courseProvider.videoCate[index].id}");
+                                              courseProvider.getVideos(courseProvider.videoCate[index].id);
 
-                                          Future.delayed(const Duration(milliseconds: 400), () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => PlaylistPage(
-                                                    title: courseProvider.videoCate[index].name,
-                                                    videoType: 2,
-                                                  ),
-                                                ));
-                                          });
-                                        }
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(bottom: 18.0, left: 12, right: 12),
-                                        child: Container(
-                                          height: 70,
-                                          decoration: BoxDecoration(
-                                              // shape: BoxShape.circle,
-                                              color: Colors.transparent,
-                                              border: Border(
-                                                bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
-                                              )),
-                                          child: Row(children: [
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(bottom: 5.0),
-                                              child: Container(
-                                                  height: 60,
-                                                  width: 60,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(8),
-                                                    color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                                  ),
-                                                  child: Icon(
-                                                    FontAwesomeIcons.video,
-                                                    color: Colors.white,
+                                              Future.delayed(const Duration(milliseconds: 400), () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => PlaylistPage(
+                                                        title: courseProvider.videoCate[index].name,
+                                                        videoType: 2,
+                                                      ),
+                                                    ));
+                                              });
+                                            }
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(bottom: 18.0, left: 18, right: 18),
+                                            child: Container(
+                                              height: 70,
+                                              decoration: BoxDecoration(
+                                                  // shape: BoxShape.circle,
+                                                  color: Colors.transparent,
+                                                  border: Border(
+                                                    bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
                                                   )),
-                                            ),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Video Library",
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.grey,
-                                                  ),
+                                              child: Row(children: [
+                                                SizedBox(
+                                                    // width: 15,
+                                                    ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 5.0),
+                                                  child: Container(
+                                                      height: 60,
+                                                      width: 60,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(8),
+                                                        color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                                                      ),
+                                                      child: Icon(
+                                                        FontAwesomeIcons.video,
+                                                        color: Colors.white,
+                                                      )),
                                                 ),
                                                 SizedBox(
-                                                  height: 5,
+                                                  width: 15,
                                                 ),
-                                                Text(
-                                                  courseProvider.videoCate[index].name,
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          ]),
-                                        ),
-                                      ),
-                                    );
+                                                Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    // Text(
+                                                    //   "",
+                                                    //   style: TextStyle(
+                                                    //     fontSize: 14,
+                                                    //     color: Colors.grey,
+                                                    //   ),
+                                                    // ),
+                                                    // SizedBox(
+                                                    //   height: 5,
+                                                    // ),
+                                                    Container(
+                                                      width: MediaQuery.of(context).size.width * .7,
+                                                      child: Text(
+                                                        courseProvider.videoCate[index].name,
+                                                        maxLines: 2,
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ]),
+                                            ),
+                                          ),
+                                        );
 
-//                           Options(iconBackground: Color(0xff72a258), icon:  Icon(
-//                         FontAwesomeIcons.video,
-//                         size: 50,
-//                         color: Colors.white,
-//                       ), text: courseProvider.videoCate[index].name, isShowPremium:courseProvider.videoCate[index].payment_status==1?true:false, onPremiumTap: (){
-//                          Navigator.push(context,MaterialPageRoute(builder: (context)=>RandomPage(index: 2,price:courseProvider.videoCate[index].price ,)));
-//                       }, onTap: (){
+                                        //                           Options(iconBackground: Color(0xff72a258), icon:  Icon(
+                                        //                         FontAwesomeIcons.video,
+                                        //                         size: 50,
+                                        //                         color: Colors.white,
+                                        //                       ), text: courseProvider.videoCate[index].name, isShowPremium:courseProvider.videoCate[index].payment_status==1?true:false, onPremiumTap: (){
+                                        //                          Navigator.push(context,MaterialPageRoute(builder: (context)=>RandomPage(index: 2,price:courseProvider.videoCate[index].price ,)));
+                                        //                       }, onTap: (){
 
-//                    if(courseProvider.videoCate[index].payment_status==0){
+                                        //                    if(courseProvider.videoCate[index].payment_status==0){
 
-//             print("id:::: ${courseProvider.videoCate[index].id}");
-//                         courseProvider.getVideos(courseProvider.videoCate[index].id);
+                                        //             print("id:::: ${courseProvider.videoCate[index].id}");
+                                        //                         courseProvider.getVideos(courseProvider.videoCate[index].id);
 
-//  Future.delayed(const Duration(milliseconds: 400), () {
+                                        //  Future.delayed(const Duration(milliseconds: 400), () {
 
-//         Navigator.push(context,MaterialPageRoute(builder: (context)=>PlaylistPage(
-//                               title: "PgMP Recorded Program Premium",
-//                               videoType: 2,
-//                             ),));
-//     });
+                                        //         Navigator.push(context,MaterialPageRoute(builder: (context)=>PlaylistPage(
+                                        //                               title: "PgMP Recorded Program Premium",
+                                        //                               videoType: 2,
+                                        //                             ),));
+                                        //     });
 
-//                    }
+                                        //                    }
 
-//                       });
-                                  })
+                                        //                       });
+                                      }),
+                                )
                               : Column(
                                   children: [
                                     SizedBox(

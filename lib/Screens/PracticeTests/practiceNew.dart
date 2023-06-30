@@ -10,13 +10,15 @@ import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../MockTest/model/quesOfDayModel.dart';
 import '../Tests/local_handler/hive_handler.dart';
 
 class PracticeNew extends StatefulWidget {
+  String pracTestName;
   int isFromNotification;
   final selectedId;
 
-  PracticeNew({this.selectedId, this.isFromNotification = 0});
+  PracticeNew({this.selectedId, this.isFromNotification = 0, this.pracTestName});
 
   @override
   _PracticeNewState createState() => _PracticeNewState(selectedIdNew: this.selectedId);
@@ -52,7 +54,7 @@ class _PracticeNewState extends State<PracticeNew> {
   // 1---- correct   2--- not correct
   // Map mapResponse;
 
-  List PTList = [];
+  List<PracTestModel> PTList = [];
 
   @override
   var currentIndex;
@@ -60,6 +62,9 @@ class _PracticeNewState extends State<PracticeNew> {
     currentIndex = 0;
     selAns = [];
     correctAns = [];
+
+    print("widhet test name=====>>>${widget.pracTestName}");
+    print("widhet test selectedId=====>>>${widget.selectedId}");
 
     super.initState();
     practiceProvider = Provider.of(context, listen: false);
@@ -69,7 +74,7 @@ class _PracticeNewState extends State<PracticeNew> {
   }
 
   Future callApi() async {
-    await practiceProvider.apiCall(categoryProvider.subCategoryId, categoryProvider.type);
+    await practiceProvider.apiCall(widget.selectedId, categoryProvider.type);
   }
 
   // Future apiCall2() async {
@@ -111,9 +116,16 @@ class _PracticeNewState extends State<PracticeNew> {
   //   }
   // }
   bool questionLoader = false;
-  onTapOfPutOnDisscussion(String question) async {
+  onTapOfPutOnDisscussion(String question,List<String>optionQues) async {
     setState(() => questionLoader = true);
     print('Practice question : $question');
+
+    
+
+      print("optionQues=========${optionQues}");
+
+
+
     if (question.isEmpty) return;
 
     if (!context.read<ChatProvider>().isChatSubscribed()) {
@@ -125,7 +137,7 @@ class _PracticeNewState extends State<PracticeNew> {
           ));
       return;
     }
-    await context.read<ChatProvider>().createDiscussionGroup(question, context).whenComplete(() {
+    await context.read<ChatProvider>().createDiscussionGroup(question, optionQues,context).whenComplete(() {
       setState(() => questionLoader = false);
       Navigator.push(
           context,
@@ -146,19 +158,24 @@ class _PracticeNewState extends State<PracticeNew> {
         body: ValueListenableBuilder(
             valueListenable: HiveHandler.getPracTestListener(),
             builder: (context, value, child) {
-              var v1 = value.get("PracTestModel");
-              List temp = jsonDecode(v1);
-              // print("temp list=======$temp");
+              PracticeTextProvider pracTestProv = Provider.of(context, listen: false);
+              var v1 = value.get(pracTestProv.selectedPracTestId.toString());
+              print("value of v1111======>>>>>>>>>$v1");
 
-              // print("v1=========$v1");
-
-              PTList = temp.map((e) => PracTestModel.fromJson(e)).toList();
+              if (v1 != null) {
+                List temp = jsonDecode(v1);
+                PTList = temp.map((e) => PracTestModel.fromJson(e)).toList();
+              } else {
+                PTList = [];
+                pracTestProv.practiceApiLoader = false;
+              }
 
               print("=====PTList=======$PTList");
 
               print("**************************************************");
               List<Options> op = [];
               if (PTList.isNotEmpty) {
+                pracTestProv.practiceApiLoader = false;
                 print("list is not emptyyyyy");
                 op = PTList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
 
@@ -287,17 +304,44 @@ class _PracticeNewState extends State<PracticeNew> {
                                                       color: Colors.white,
                                                       child: Column(
                                                         children: [
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.start,
+                                                            children: [
+                                                              Container(
+                                                                width: MediaQuery.of(context).size.width * .85,
+                                                                child: Text(
+                                                                  widget.pracTestName,
+                                                                  maxLines: 2,
+                                                                  style: TextStyle(
+                                                                    color: Colors.black,
+                                                                    fontSize: 20,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+
                                                           InkWell(
                                                             onTap: () {
+
+                                                               List<String>otsList=  getList( PTList[_quetionNo].ques.options);
                                                               questionLoader
                                                                   ? null
-                                                                  : onTapOfPutOnDisscussion(PTList != null
+                                                                  : onTapOfPutOnDisscussion(
+                                                                    PTList != null
                                                                       ? PTList[_quetionNo].ques.question
-                                                                      : '');
+                                                                      : '',otsList                                                                      
+                                                                      );
                                                             },
                                                             child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.end,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
                                                               children: [
+                                                                Text(""),
+                                                                new Spacer(),
                                                                 Container(
                                                                   height: 35,
                                                                   decoration: BoxDecoration(
@@ -494,85 +538,114 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                     },
                                                                     child: Container(
                                                                       decoration: BoxDecoration(
-                                                                          // shape: BoxShape.circle,
-                                                                          color: _isattempt <
-                                                                                  op
-                                                                                      .where((element) =>
-                                                                                          element.isseleted == true)
-                                                                                      .toList()
-                                                                                      .length
-                                                                              ? op.any((element) =>
-                                                                                      element.isseleted == true)
-                                                                                  ? PTList[_quetionNo]
-                                                                                          .ques
-                                                                                          .rightAnswer
-                                                                                          .contains("${op[index].id}")
-                                                                                      ? _colorfromhex("#E6F7E7")
-                                                                                      : op[index].isseleted
-                                                                                          ? PTList[_quetionNo]
-                                                                                                  .ques
-                                                                                                  .rightAnswer
-                                                                                                  .contains(
-                                                                                                      "${op[index].id}")
-                                                                                              ? _colorfromhex("#E6F7E7")
-                                                                                              : _colorfromhex("#FFF6F6")
-                                                                                          : Colors.white
-                                                                                  : op[index].isseleted
-                                                                                      ? PTList[_quetionNo]
-                                                                                              .ques
-                                                                                              .rightAnswer
-                                                                                              .contains(
-                                                                                                  "${op[index].id}")
-                                                                                          ? _colorfromhex("#E6F7E7")
-                                                                                          : _colorfromhex("#FFF6F6")
-                                                                                      : Colors.white
-                                                                              : op[index].isseleted
-                                                                                  ? PTList[_quetionNo]
-                                                                                          .ques
-                                                                                          .rightAnswer
-                                                                                          .contains("${op[index].id}")
-                                                                                      ? _colorfromhex("#E6F7E7")
-                                                                                      : _colorfromhex("#FFF6F6")
-                                                                                  : Colors.white
+                                                                        // shape: BoxShape.circle,
 
-                                                                          // correctAns.contains(data.pList[_quetionNo]
-                                                                          //             .ques.options[index].id) &&
-                                                                          //         selAns.contains(data.pList[_quetionNo].ques
-                                                                          //             .options[index].id)
-                                                                          //     ? _colorfromhex("#E6F7E7")
-                                                                          //     : correctAns.contains(data.pList[_quetionNo]
-                                                                          //                 .ques.options[index].id) &&
-                                                                          //             !selAns.contains(data.pList[_quetionNo]
-                                                                          //                 .ques.options[index].id)
-                                                                          //         ? _colorfromhex("#FFF6F6")
-                                                                          //         : Colors.white
+                                                                        color: selAns.contains(op[index].id) &&
+                                                                                correctAns.contains(op[index].id) &&
+                                                                                selAns.length == correctAns.length &&
+                                                                                selAns.length > 0
+                                                                            ? _colorfromhex("#E6F7E7")
+                                                                            : selAns.contains(op[index].id) &&
+                                                                                    !correctAns
+                                                                                        .contains(op[index].id) &&
+                                                                                    selAns.length ==
+                                                                                        correctAns.length &&
+                                                                                    selAns.length > 0
+                                                                                ? _colorfromhex("#FFF6F6")
+                                                                                : correctAns.contains(op[index].id) &&
+                                                                                        selAns.length ==
+                                                                                            correctAns.length &&
+                                                                                        selAns.length > 0
+                                                                                    ? _colorfromhex("#E6F7E7")
+                                                                                    : selAns.contains(op[index].id) &&
+                                                                                            correctAns
+                                                                                                .contains(op[index].id)
+                                                                                        ? _colorfromhex("#E6F7E7")
+                                                                                        : selAns.contains(
+                                                                                                    op[index].id) &&
+                                                                                                !correctAns.contains(
+                                                                                                    op[index].id)
+                                                                                            ? _colorfromhex("#FFF6F6")
+                                                                                            : Colors.white,
 
-                                                                          // color: data.pList[_quetionNo].ques.options[index].id ==
-                                                                          //             selectedAnswer &&
-                                                                          //         int.parse(data.pList[_quetionNo].ques.rightAnswer) ==
-                                                                          //             selectedAnswer
-                                                                          //     ? _colorfromhex("#E6F7E7")
-                                                                          //     : data.pList[_quetionNo].ques.options[index].id ==
-                                                                          //                 selectedAnswer &&
-                                                                          //             int.parse(data.pList[_quetionNo].ques.rightAnswer) !=
-                                                                          //                 selectedAnswer
-                                                                          //         ? _colorfromhex("#FFF6F6")
-                                                                          //         : selectedAnswer != null &&
-                                                                          //                 int.parse(data.pList[_quetionNo].ques
-                                                                          //                         .rightAnswer) !=
-                                                                          //                     selectedAnswer &&
-                                                                          //                 data.pList[_quetionNo].ques
-                                                                          //                         .options[index].id ==
-                                                                          //                     int.parse(data.pList[_quetionNo]
-                                                                          //                         .ques.rightAnswer)
-                                                                          //             ? _colorfromhex("#E6F7E7")
-                                                                          //             : Colors.white,
+                                                                        // color: _isattempt <
+                                                                        //         op
+                                                                        //             .where((element) =>
+                                                                        //                 element.isseleted == true)
+                                                                        //             .toList()
+                                                                        //             .length
+                                                                        //     ? op.any((element) =>
+                                                                        //             element.isseleted == true)
+                                                                        //         ? PTList[_quetionNo]
+                                                                        //                 .ques
+                                                                        //                 .rightAnswer
+                                                                        //                 .contains("${op[index].id}")
+                                                                        //             ? _colorfromhex("#E6F7E7")
+                                                                        //             : op[index].isseleted
+                                                                        //                 ? PTList[_quetionNo]
+                                                                        //                         .ques
+                                                                        //                         .rightAnswer
+                                                                        //                         .contains(
+                                                                        //                             "${op[index].id}")
+                                                                        //                     ? _colorfromhex("#E6F7E7")
+                                                                        //                     : _colorfromhex("#FFF6F6")
+                                                                        //                 : Colors.white
+                                                                        //         : op[index].isseleted
+                                                                        //             ? PTList[_quetionNo]
+                                                                        //                     .ques
+                                                                        //                     .rightAnswer
+                                                                        //                     .contains(
+                                                                        //                         "${op[index].id}")
+                                                                        //                 ? _colorfromhex("#E6F7E7")
+                                                                        //                 : _colorfromhex("#FFF6F6")
+                                                                        //             : Colors.white
+                                                                        //     : op[index].isseleted
+                                                                        //         ? PTList[_quetionNo]
+                                                                        //                 .ques
+                                                                        //                 .rightAnswer
+                                                                        //                 .contains("${op[index].id}")
+                                                                        //             ? _colorfromhex("#E6F7E7")
+                                                                        //             : _colorfromhex("#FFF6F6")
+                                                                        //         : Colors.white
 
-                                                                          // border: Border(
-                                                                          //   bottom: BorderSide(
-                                                                          //       width: 1.5, color: Colors.grey[300]),
-                                                                          // )
-                                                                          ),
+                                                                        // correctAns.contains(data.pList[_quetionNo]
+                                                                        //             .ques.options[index].id) &&
+                                                                        //         selAns.contains(data.pList[_quetionNo].ques
+                                                                        //             .options[index].id)
+                                                                        //     ? _colorfromhex("#E6F7E7")
+                                                                        //     : correctAns.contains(data.pList[_quetionNo]
+                                                                        //                 .ques.options[index].id) &&
+                                                                        //             !selAns.contains(data.pList[_quetionNo]
+                                                                        //                 .ques.options[index].id)
+                                                                        //         ? _colorfromhex("#FFF6F6")
+                                                                        //         : Colors.white
+
+                                                                        // color: data.pList[_quetionNo].ques.options[index].id ==
+                                                                        //             selectedAnswer &&
+                                                                        //         int.parse(data.pList[_quetionNo].ques.rightAnswer) ==
+                                                                        //             selectedAnswer
+                                                                        //     ? _colorfromhex("#E6F7E7")
+                                                                        //     : data.pList[_quetionNo].ques.options[index].id ==
+                                                                        //                 selectedAnswer &&
+                                                                        //             int.parse(data.pList[_quetionNo].ques.rightAnswer) !=
+                                                                        //                 selectedAnswer
+                                                                        //         ? _colorfromhex("#FFF6F6")
+                                                                        //         : selectedAnswer != null &&
+                                                                        //                 int.parse(data.pList[_quetionNo].ques
+                                                                        //                         .rightAnswer) !=
+                                                                        //                     selectedAnswer &&
+                                                                        //                 data.pList[_quetionNo].ques
+                                                                        //                         .options[index].id ==
+                                                                        //                     int.parse(data.pList[_quetionNo]
+                                                                        //                         .ques.rightAnswer)
+                                                                        //             ? _colorfromhex("#E6F7E7")
+                                                                        //             : Colors.white,
+
+                                                                        // border: Border(
+                                                                        //   bottom: BorderSide(
+                                                                        //       width: 1.5, color: Colors.grey[300]),
+                                                                        // )
+                                                                      ),
                                                                       child: Row(children: [
                                                                         Padding(
                                                                           padding: const EdgeInsets.only(
@@ -592,11 +665,8 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                             .length
                                                                                     ? op.any((element) =>
                                                                                             element.isseleted == true)
-                                                                                        ? PTList[_quetionNo]
-                                                                                                .ques
-                                                                                                .rightAnswer
-                                                                                                .contains(
-                                                                                                    "${op[index].id}")
+                                                                                        ? PTList[_quetionNo].ques.rightAnswer.contains(
+                                                                                                "${op[index].id}")
                                                                                             ? _colorfromhex("#04AE0B")
                                                                                             : op[index].isseleted
                                                                                                 ? PTList[_quetionNo]
@@ -654,14 +724,11 @@ class _PracticeNewState extends State<PracticeNew> {
 
                                                                                 //data.pList[_quetionNo].ques.options.
 
-                                                                                border:
-                                                                                    Border.all(color:
-                                                                                    
-                                                                                    selAns.length ==
-                                                                                                    correctAns.length &&
-                                                                                                selAns.length > 0?Colors.grey:
-                                                                                    
-                                                                                     Colors.black)),
+                                                                                border: Border.all(
+                                                                                    color: selAns.length == correctAns.length &&
+                                                                                            selAns.length > 0
+                                                                                        ? Colors.grey
+                                                                                        : Colors.black)),
                                                                             child: Center(
                                                                               child: Text(
                                                                                 index == 0
@@ -711,6 +778,10 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                 padding:
                                                                                     const EdgeInsets.only(bottom: 6.0),
                                                                                 child: Column(
+                                                                                  mainAxisAlignment:
+                                                                                      MainAxisAlignment.start,
+                                                                                  crossAxisAlignment:
+                                                                                      CrossAxisAlignment.start,
                                                                                   children: [
                                                                                     SizedBox(
                                                                                       height: 8,
@@ -819,11 +890,13 @@ class _PracticeNewState extends State<PracticeNew> {
                                                           // ),
 
                                                           // selectedAnswer != null
-                                                          if (_isattempt <
-                                                              op
-                                                                  .where((element) => element.isseleted == true)
-                                                                  .toList()
-                                                                  .length)
+                                                          // if (_isattempt <
+                                                          //     op
+                                                          //         .where((element) => element.isseleted == true)
+                                                          //         .toList()
+                                                          //         .length)
+                                                          if (selAns.length == correctAns.length &&
+                                                              correctAns.length > 0)
                                                             Container(
                                                               decoration: BoxDecoration(
                                                                   color:
@@ -874,21 +947,63 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                           margin:
                                                                               EdgeInsets.only(top: height * (9 / 800)),
                                                                           child: Text(
-                                                                            PTList[_quetionNo].ques.rightAnswer ==
-                                                                                    op[0].id.toString()
+                                                                            // PTList[_quetionNo].ques.rightAnswer
+                                                                            //  ==
+                                                                            //         op[0].id.toString()
+
+                                                                            // correctAns.contains(op[0].id) &&
+                                                                            //         correctAns.contains(op[1].id)
+                                                                            //     ? 'Answer A and B are the correct one'
+                                                                            //     : correctAns.contains(op[0].id) &&
+                                                                            //             correctAns.contains(op[2].id)
+                                                                            //         ? 'Answer A and C are the correct one'
+                                                                            //         : correctAns.contains(op[0].id) &&
+                                                                            //                 correctAns
+                                                                            //                     .contains(op[3].id)
+                                                                            //             ? 'Answer A and D are the correct one'
+                                                                            //             : correctAns.contains(op[0].id) &&
+                                                                            //                     correctAns
+                                                                            //                         .contains(op[4].id)
+                                                                            //                 ? 'Answer A and E are the correct one'
+                                                                            //                 : correctAns.contains(
+                                                                            //                             op[1].id) &&
+                                                                            //                         correctAns.contains(
+                                                                            //                             op[2].id)
+                                                                            //                     ? 'Answer B and C are the correct one'
+                                                                            //                     : correctAns.contains(
+                                                                            //                                 op[1].id) &&
+                                                                            //                             correctAns.contains(
+                                                                            //                                 op[3].id)
+                                                                            //                         ? 'Answer B and D are the correct one'
+                                                                            //                         : correctAns.contains(
+                                                                            //                                     op[1]
+                                                                            //                                         .id) &&
+                                                                            //                                 correctAns.contains(
+                                                                            //                                     op[4].id)
+                                                                            //                             ? 'Answer B and E are the correct one'
+                                                                            //                             :
+                                                                            correctAns.contains(op[0].id)
                                                                                 ? 'Answer A is the correct one'
-                                                                                : PTList[_quetionNo].ques.rightAnswer ==
-                                                                                        op[1].id.toString()
+                                                                                :
+
+                                                                                // PTList[_quetionNo].ques.rightAnswer ==
+                                                                                //         op[1].id.toString()
+                                                                                correctAns.contains(op[1].id)
                                                                                     ? 'Answer B is the correct one'
-                                                                                    : PTList[_quetionNo]
-                                                                                                .ques
-                                                                                                .rightAnswer ==
-                                                                                            op[2].id.toString()
+                                                                                    :
+                                                                                    // PTList[_quetionNo]
+                                                                                    //             .ques
+                                                                                    //             .rightAnswer ==
+                                                                                    //         op[2].id.toString()
+
+                                                                                    correctAns.contains(op[2].id)
                                                                                         ? 'Answer c is the correct one'
-                                                                                        : PTList[_quetionNo]
-                                                                                                    .ques
-                                                                                                    .rightAnswer ==
-                                                                                                op[3].id.toString()
+                                                                                        :
+                                                                                        // PTList[_quetionNo]
+                                                                                        //             .ques
+                                                                                        //             .rightAnswer ==
+                                                                                        //         op[3].id.toString()
+                                                                                        correctAns.contains(op[3].id)
                                                                                             ? 'Answer D is the correct one'
                                                                                             : 'Answer E is the correct one',
                                                                             style: TextStyle(
@@ -1124,7 +1239,14 @@ class _PracticeNewState extends State<PracticeNew> {
                                               );
                                             }),
                                       )
-                                    : Text("No Data Found.....")
+                                    : PTList == []
+                                        ? Container(
+                                            height: 250,
+                                            child: Text(
+                                              "No Data Found.....",
+                                              style: TextStyle(fontSize: 20),
+                                            ))
+                                        : Text("No Data Found.....")
                           ],
                         ),
                       ),
@@ -1211,5 +1333,23 @@ class _PracticeNewState extends State<PracticeNew> {
       isAnsCorrect = 2;
       print("  list are not same are both the lkstssss");
     }
+  }
+  
+  List<String> getList(List<Options> options) {
+
+   List<String> optsValueList=[];
+
+   for(int i=0;i<options.length;i++){
+    String name='';
+    name=options[i].questionOption;
+    if(name.isEmpty || name==null){
+      optsValueList.add(name);
+    }
+   }
+   print("optsValueList==========${optsValueList}");
+
+   return optsValueList;
+
+
   }
 }

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intro_slider/intro_slider.dart';
 // import 'package:intro_slider/dot_animation_enum.dart';
 // import 'package:intro_slider/intro_slider.dart';

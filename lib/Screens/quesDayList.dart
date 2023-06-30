@@ -65,7 +65,7 @@ class _QuesListCourseState extends State<QuesListCourse> {
                       Center(
                           child: Text(
                         // "Video Library",
-                        "Question of the day category",
+                        "Question of the day",
                         style: TextStyle(
                             fontSize: 20, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
                       )),

@@ -11,6 +11,8 @@ import 'package:pgmp4u/utils/user_object.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import '../../MockTest/model/quesOfDayModel.dart';
+
 class ChatProvider extends ChangeNotifier {
   SharedPreferences prefs;
 
@@ -70,14 +72,16 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future createDiscussionGroup(String title, BuildContext context) async {
+  Future createDiscussionGroup(String title, List<String> opss, BuildContext context) async {
     updateDiscussionGroupLoader(true);
     var body = {
       "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
       "createdBy": getUser().displayName,
       "ownerId": getUser().uid,
       "title": title,
-      "groupId": ''
+      "groupId": '',
+      "options":opss
+      
     };
 
     // don't post same question again
