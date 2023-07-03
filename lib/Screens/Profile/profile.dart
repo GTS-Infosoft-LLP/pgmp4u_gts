@@ -3,17 +3,18 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:pgmp4u/Screens/QuesOfDay.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/screen/goupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'dart:convert' as convert;
 import 'package:sizer/sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../provider/profileProvider.dart';
 import '../../utils/user_object.dart';
 import '../quesDayList.dart';
 import 'notifications.dart';
@@ -664,9 +665,32 @@ class _ProfileState extends State<Profile> {
 
                             GestureDetector(
                               onTap: () async {
-                                context.read<ChatProvider>().isChatSubscribed()
-                                    ? Navigator.push(context, MaterialPageRoute(builder: (context) => GroupListPage()))
-                                    : Navigator.push(context, MaterialPageRoute(builder: (context) => RandomPage()));
+
+
+                                CourseProvider crsProvi=Provider.of(context,listen: false);
+                                crsProvi.setMasterListType("Chat");
+                                ProfileProvider profprovi = Provider.of(context, listen: false);
+                                await profprovi.subscriptionStatus("Chat");
+
+                                print("profprovi.successValue=======${profprovi.successValue}");
+
+                                if (profprovi.successValue == "false") {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => RandomPage(price: profprovi.subsPrice,categoryType: crsProvi.selectedMasterType,categoryId: 0,)));
+                                } else {
+                                  context.read<ChatProvider>().isChatSubscribed()
+                                      ? Navigator.push(
+                                          context, MaterialPageRoute(builder: (context) => GroupListPage()))
+                                      : Navigator.push(context, MaterialPageRoute(builder: (context) => RandomPage()));
+                                }
+
+                                //Question
+
+                                // subscriptionStatus
+
+                                // context.read<ChatProvider>().isChatSubscribed()
+                                //     ? Navigator.push(context, MaterialPageRoute(builder: (context) => GroupListPage()))
+                                //     : Navigator.push(context, MaterialPageRoute(builder: (context) => RandomPage()));
                               },
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../Models/mockListmodel.dart';
 import '../../../Models/mockquestionanswermodel.dart';
 import '../../MockTest/model/courseModel.dart';
 import '../../MockTest/model/flashCardModel.dart';
@@ -10,6 +11,7 @@ import '../../MockTest/model/flashCateModel.dart';
 import '../../MockTest/model/masterdataModel.dart';
 import '../../MockTest/model/pracTestModel.dart';
 import '../../MockTest/model/testDataModel.dart';
+import '../../MockTest/model/testDetails.dart';
 import '../model/categorymodel.dart';
 import '../model/mock_test.dart';
 
@@ -43,6 +45,11 @@ class HiveHandler {
   static const String TestDataBox = "testListBox";
   static const String TestDataKey = "testListBox";
 
+  static const String TestPercentBox = "testPercentBox";
+  static const String TestPercentKey = "testPercentBox";
+
+  static const String MockAttemptsBox = "moclAttemptBox";
+
   static Box<List<CourseDetails>> courseListBox;
   static Box<List<FlashCateDetails>> flashListCateBox;
 
@@ -54,7 +61,11 @@ class HiveHandler {
   static Box<List<PracListModel>> PracTestBox;
 
   static Box<List<TestDataDetails>> TestPMListBox;
+  static Box<List<MockPercentModel>> TestPercentListBox;
 
+  static Box<List<MockDataDetails>> mockAttempList;
+
+//MockPercentModel
   static Future hiveRegisterAdapter() async {
     await Hive.initFlutter();
     Hive.registerAdapter(CategoryListModelAdapter());
@@ -67,6 +78,7 @@ class HiveHandler {
     Hive.registerAdapter(FlashCateDetailsAdapter());
 
     Hive.registerAdapter(TestDataDetailsAdapter());
+    Hive.registerAdapter(MockDataDetailsAdapter());
 
     courseListBox = await Hive.openBox<List<CourseDetails>>(CourseBox);
     flashListCateBox = await Hive.openBox<List<FlashCateDetails>>(FlashCateBox);
@@ -80,8 +92,33 @@ class HiveHandler {
 
     TestPMListBox = await Hive.openBox<List<TestDataDetails>>(TestDataBox);
 
+    mockAttempList = await Hive.openBox<List<MockDataDetails>>(MockAttemptsBox);
+
     await Hive.openBox("deviceTokenBox");
+
+    await Hive.openBox("testPercentBox");
+    await Hive.openBox("userDataBox");
+
     MockTextBox = await Hive.openBox<List<QuestionAnswerModel>>(MockQuesBox);
+  }
+
+//TestPercentListBox
+
+  static setMockPercentdata({dynamic value, String key}) async {
+    final box = Hive.box("testPercentBox");
+    print("*********************************");
+    print("incomimg valueeeeee=====>>>>$value");
+
+    await box.put(key, jsonEncode(value));
+  }
+
+  static ValueListenable getMockPercentListener() {
+    return Hive.box("testPercentBox").listenable();
+  }
+
+  static Future<dynamic> getMockTestPercent({String key}) async {
+    final box = Hive.box("testPercentBox");
+    return await box.get(key, defaultValue: "");
   }
 
   static setstringdata({dynamic value, String key}) async {
@@ -92,25 +129,40 @@ class HiveHandler {
     await box.put(key, jsonEncode(value));
   }
 
+  // static setMockTestPercent({dynamic value, String key}) async {
+  //   final box = Hive.box("categoryData");
+  //   print("*********************************");
+  //   print("incomimg valueeeeee=====>>>>$value");
+  //   await box.put(key, jsonEncode(value));
+  // }
 
+  // static ValueListenable getMockPercentListener() {
+  //   return Hive.box("categoryData").listenable();
+  // }
 
-
- 
-  static setMockTestPercent({dynamic value, String key}) async {
-    final box = Hive.box("categoryData");
-    print("*********************************");
-    print("incomimg valueeeeee=====>>>>$value");
-    await box.put(key, jsonEncode(value));
+  static addMockAttempt(List<MockDataDetails> list, String key) async {
+    final Box<List<MockDataDetails>> mockAttemptBox = await Hive.openBox<List<MockDataDetails>>(MockAttemptsBox);
+    mockAttemptBox.put(key, list);
+    if (mockAttemptBox.isNotEmpty) {
+      print("===========added to box=========");
+      print("courseListBox.get${mockAttemptBox.get(key)}");
+    } else {
+      print("===========box is empty=========");
+    }
   }
 
-  static ValueListenable getMockPercentListener() {
-    return Hive.box("categoryData").listenable();
+  static ValueListenable<Box<List<MockDataDetails>>> getMockAttemptListener() {
+    return Hive.box<List<MockDataDetails>>(MockAttemptsBox).listenable();
   }
 
-
- static Future<dynamic> getMockTestPercent({String key}) async {
-    final box = Hive.box("categoryData");
-    return await box.get(key, defaultValue: "");
+  static List<MockDataDetails> getMockAttemptList({String key}) {
+    try {
+      final List<MockDataDetails> storedMockAttemptData = mockAttempList.get(key);
+      print("storedMockAttemptData list length ${storedMockAttemptData.length}");
+      return storedMockAttemptData;
+    } catch (e) {
+      return [];
+    }
   }
 
   static Future<dynamic> getstringdata({String key}) async {
@@ -122,14 +174,22 @@ class HiveHandler {
     return Hive.box("deviceTokenBox").listenable();
   }
 
+/////////////
   static setMockData({dynamic value, String key}) async {
+    await Hive.openBox("userDataBox");
     final box = Hive.box("userDataBox");
     print("*********************************");
     print("incomimg valueeeeee=====>>>>$value");
 
     await box.put(key, jsonEncode(value));
+    try {
+      print("get boxxxxx=======${box.get(key, defaultValue: "")}");
+    } catch (e) {
+      print("errororor====$e");
+    }
   }
 
+///////////////
   static Future<dynamic> getMockData({String key}) async {
     final box = Hive.box("userDataBox");
     return await box.get(key, defaultValue: "");
@@ -242,6 +302,10 @@ class HiveHandler {
   }
 
   static ValueListenable<Box<List<FlashCateDetails>>> getFlashCateListener() {
+    var listte = Hive.box<List<FlashCateDetails>>(FlashCateBox);
+    print("getFlashCateListener=========>");
+
+    print("listte=============${listte.listenable().runtimeType}");
     return Hive.box<List<FlashCateDetails>>(FlashCateBox).listenable();
   }
 

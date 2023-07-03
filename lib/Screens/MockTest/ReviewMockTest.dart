@@ -43,21 +43,20 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
     print("in review mock screemn");
 
     super.initState();
-    apiCall2();
+    apiCall2(widget.selectedId);
   }
 
-  Future apiCall2() async {
+  Future apiCall2(int id) async {
     print("calling this apiiiiii=========");
+    print("id==============${id}"); 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     print(stringValue);
     http.Response response;
-    response = await http.get(
-        Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/ReviewsMockTest/120/4" ),
+    response = await http.get(Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/ReviewsMockTest/178/4"),
         headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
 
     print(">>>>>> url  https://apivcarestage.vcareprojectmanagement.com/api/ReviewsMockTest/120/4");
-
 
     print("header : ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
     if (response.statusCode == 200) {

@@ -7,6 +7,9 @@ import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../provider/courseProvider.dart';
+import '../provider/profileProvider.dart';
+
 class QuesOfDay extends StatefulWidget {
   var seltedId;
   QuesOfDay({Key key, this.seltedId}) : super(key: key);
@@ -59,23 +62,19 @@ class _QuesOfDayState extends State<QuesOfDay> {
 
   bool questionLoader = false;
   onTapOfPutOnDisscussion(String question, List<OptionsDay> li) async {
+    List<String> optsName = [];
+    for (int i = 0; i < li.length; i++) {
+      String name = '';
 
+      name = li[i].questionOption;
 
-    List<String> optsName=[];
-    for(int i=0;i<li.length;i++){
-     String name='';
-
-       name =li[i].questionOption;
-
-      if(name.isEmpty  || name==null){}else{
+      if (name.isEmpty || name == null) {
+      } else {
         optsName.add(name);
       }
-
-
-
     }
 
-    print("optsName=========>>${optsName}");
+    print("optsName=========>>$optsName");
     setState(() => questionLoader = true);
     print('Question of The Day question : $question');
     print('Question of The Day question options : $li');
@@ -91,7 +90,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
       return;
     }
     print("*******************");
-    await context.read<ChatProvider>().createDiscussionGroup(question,optsName, context).whenComplete(() {
+    await context.read<ChatProvider>().createDiscussionGroup(question, optsName, context).whenComplete(() {
       // Navigator.pop(context);
       setState(() => questionLoader = false);
       Navigator.push(
@@ -268,14 +267,34 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                           padding: const EdgeInsets.all(4.0),
                                                           child: Center(
                                                             child: InkWell(
-                                                              onTap: () {
-                                                                questionLoader
-                                                                    ? null
-                                                                    : onTapOfPutOnDisscussion(
-                                                                        data.pList != null
-                                                                            ? data.qdList[_quetionNo].question
-                                                                            : '',
-                                                                        data.qdList[_quetionNo].options);
+                                                              onTap: () async {
+                                                                CourseProvider crsProvi =
+                                                                    Provider.of(context, listen: false);
+                                                                crsProvi.setMasterListType("Question");
+                                                                ProfileProvider profprovi =
+                                                                    Provider.of(context, listen: false);
+                                                                await profprovi.subscriptionStatus("Question");
+
+                                                                if (profprovi.successValue == "false") {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => RandomPage(
+                                                                                price: profprovi.subsPrice,
+                                                                                categoryType:
+                                                                                    crsProvi.selectedMasterType,
+                                                                                categoryId: 0,
+                                                                              )));
+                                                                } else {
+                                                                  // subscriptionStatus
+                                                                  questionLoader
+                                                                      ? null
+                                                                      : onTapOfPutOnDisscussion(
+                                                                          data.pList != null
+                                                                              ? data.qdList[_quetionNo].question
+                                                                              : '',
+                                                                          data.qdList[_quetionNo].options);
+                                                                }
                                                               },
                                                               child: Row(
                                                                 children: [

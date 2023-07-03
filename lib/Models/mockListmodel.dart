@@ -1,3 +1,6 @@
+import 'package:hive/hive.dart';
+   part 'mockListmodel.g.dart';
+
 class MockData {
   MockDataDetails detailsofMock;
   List<AvailableAttempts> attemptList = [];
@@ -13,18 +16,31 @@ class MockData {
 
 
 
-
+@HiveType(typeId: 17)
 class MockDataDetails {
+    @HiveField(0)
   int id;
+   @HiveField(1)
   int course;
+   @HiveField(2)
   String test_name;
+   @HiveField(3)
   int premium;
+   @HiveField(4)
   int price;
+   @HiveField(5)
   int question_count;
+   @HiveField(6)
   int num_attemptes;
+   @HiveField(7)
   int generated;
+   @HiveField(8)
   int status;
+   @HiveField(9)
   int deleteStatus;
+
+MockDataDetails();
+
   MockDataDetails.fromjson(Map<String, dynamic> jsn) {
     id = jsn["id"];
     course = jsn["course"];

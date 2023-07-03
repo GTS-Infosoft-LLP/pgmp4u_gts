@@ -421,9 +421,18 @@ class CourseProvider extends ChangeNotifier {
       print("temp list===$temp1");
       testDetails = temp1.map((e) => TestDetails.fromjson(e)).toList();
 
+      try {
+        if (testDetails.isNotEmpty) {
+          print("before set to boxxxxxxxxx");
+          HiveHandler.setMockPercentdata(key: id.toString(), value: temp1);
+        }
+      } catch (e) {
+        print("errororororor======$e");
+      }
+
       notifyListeners();
 
-      if (FlashCards.isNotEmpty) {
+      if (testDetails.isNotEmpty) {
         print("testDetails 0=== ${testDetails[0].testName}");
       }
     }
@@ -526,7 +535,10 @@ class CourseProvider extends ChangeNotifier {
   }
 
   MockData mockData;
+
   Future apiCall(int selectedIdNew) async {
+    print("this api is callingggggg======");
+    print("selectedIdNew==========$selectedIdNew");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
@@ -547,5 +559,19 @@ class CourseProvider extends ChangeNotifier {
       mockData = MockData.fromjd(getit["data"]);
       notifyListeners();
     }
+  }
+
+  int selectedMockPercentId;
+  void setMockTestPercentId(int id) {
+    selectedMockPercentId = id;
+    print("selectedMockPercentId============$selectedMockPercentId");
+    notifyListeners();
+  }
+
+  String selectedMasterType;
+  void setMasterListType(String type) {
+    selectedMasterType = type;
+    print("selectedMasterType=======$selectedMasterType");
+    notifyListeners();
   }
 }

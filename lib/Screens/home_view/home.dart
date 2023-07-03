@@ -35,18 +35,20 @@ class _HomeViewState extends State<HomeView> {
   Color clr;
   List<CourseDetails> tempList = [];
   initState() {
+    print("0======call init");
     PurchaseProvider purchaseProvider = Provider.of(context, listen: false);
     CourseProvider courseProvider = Provider.of(context, listen: false);
     purchaseProvider.updateStatusNew();
 
-    tempList = HiveHandler.getCourseDataList();
-    print("*************************************************");
-    print("tempList==========$tempList");
-
+    if (tempList.isEmpty) {
+      tempList = HiveHandler.getCourseDataList();
+      print("*************************************************");
+      print("tempList==========${tempList.length}");
+    }
     //   maintainStatus=purchaseProvider.latestStatus;
     print("initcalling");
-    _getData();
-    callFlashCardHideShowApi();
+    // _getData();
+    // callFlashCardHideShowApi();
     print("object");
 
     courseProvider.getCourse();
@@ -234,18 +236,25 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                 ),
-                cp.tempList.isEmpty
-                    ? Center(child: Container(height: 400, child: Text("No Data Found")))
-                    : Container(
+                // tempList.isNotEmpty
+                //     ? Center(child: Container(height: 400, child: Text("No Data Found2222")))
+                //     : 
+                    
+                    
+                    Container(
                         child: ValueListenableBuilder<Box<List<CourseDetails>>>(
                             valueListenable: HiveHandler.getCourseListener(),
                             builder: (context, value, child) {
                               List<CourseDetails> storedCourse = value.get("courseKey");
                               print("*****************************");
+                              print("list has data......");
                               print("storedCourse========$storedCourse");
 
                               return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
-                                return Container(
+                                return 
+                                
+                                storedCourse.isEmpty?Center(child: Container(height: 400, child: Text("No Data Found"))):
+                                Container(
                                     decoration: BoxDecoration(
                                       // color: Colors.amber,
                                       border: Border(
