@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/Screens/Profile/paymentstripe2.dart';
+import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:pgmp4u/Screens/Profile/PaymentStatus.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RandomPage extends StatefulWidget {
   int index;
   String price;
+  int categoryId;
+  String categoryType;
 
-  RandomPage({this.index = 0, this.price = "\$199"});
+  RandomPage({this.index = 0, this.price = "\$199", this.categoryId, this.categoryType});
   @override
   _RandomPageState createState() => _RandomPageState();
 }
@@ -25,6 +28,8 @@ class _RandomPageState extends State<RandomPage> {
   @override
   void initState() {
     print("perice value is===>> ${widget.price}");
+    print("category idddd======${widget.categoryId}");
+    print("categoryyy typeee======${widget.categoryType}");
 
     if (widget.price == null) {
       widget.price = "\$199";
@@ -139,26 +144,28 @@ class _RandomPageState extends State<RandomPage> {
                       Container(
                         margin: EdgeInsets.only(top: 20),
                         child: Center(
-                          child: widget.index == 1
-                              ? Text(
-                                  'Lifetime Access On \n ${widget.price}',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto Bold',
-                                      fontSize: 24,
-                                      color: _colorfromhex("#3D4AB4"),
-                                      letterSpacing: 0.3),
-                                )
-                              : Text(
-                                  'Lifetime Access On \n \$${widget.price}',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto Bold',
-                                      fontSize: 24,
-                                      color: _colorfromhex("#3D4AB4"),
-                                      letterSpacing: 0.3),
-                                ),
-                        ),
+                            child:
+                                // widget.index == 1
+                                //     ?
+                                Text(
+                          'Lifetime Access On \n ${widget.price}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily: 'Roboto Bold',
+                              fontSize: 24,
+                              color: _colorfromhex("#3D4AB4"),
+                              letterSpacing: 0.3),
+                        )
+                            // : Text(
+                            //     'Lifetime Access On \n \$${widget.price}',
+                            //     textAlign: TextAlign.center,
+                            //     style: TextStyle(
+                            //         fontFamily: 'Roboto Bold',
+                            //         fontSize: 24,
+                            //         color: _colorfromhex("#3D4AB4"),
+                            //         letterSpacing: 0.3),
+                            //   ),
+                            ),
                       ),
                       // mapResponse != null && buttonPress == false
                       //     ? Center(
@@ -214,15 +221,14 @@ class _RandomPageState extends State<RandomPage> {
                             value.showToast(context, latestState.message);
                           }
 
-                          print(
-                              "value.serverResponse = ${latestState is Success}");
+                          print("value.serverResponse = ${latestState is Success}");
                           if (latestState is Success) {
                             print("Pop called");
                             Future.delayed(Duration.zero, () async {
                               Navigator.pop(context, true);
                             });
                           }
-                          return BuyButton2(context, value, widget.index);
+                          return BuyButton2(context, value, widget.index, widget.categoryType, widget.categoryId);
                         },
                       )
                     ],
@@ -264,8 +270,8 @@ Future<void> _handlePaymentError2(BuildContext context) async {
       ));
 }
 
-Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider,
-    int index1forFlash2forvideoLib) {
+Widget BuyButton2(
+    BuildContext context, PurchaseProvider purchaseProvider, int index1forFlash2forvideoLib, String type, int IdValue) {
   //index1forFlash2forvideoLib   1  for flash card and  2 for video Library
   return Column(
     children: [
@@ -276,8 +282,9 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider,
           height: 40,
           // alignment: Alignment.center,
           decoration: BoxDecoration(
-              //color: Colors.blue,
-              color: Colors.indigo.shade600,
+              color: Colors.amber,
+              // color: Colors.indigo.shade600,
+
               borderRadius: BorderRadius.circular(30.0)),
           child: OutlinedButton(
             onPressed: () async {
@@ -287,11 +294,9 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider,
                 print("price ${purchaseProvider.products[0].price}");
                 purchaseProvider.products.forEach((e) {
                   print("Product id => ${e.id}");
-                  if (e.id == videoLibraryLearningPrograms &&
-                      index1forFlash2forvideoLib == 2) {
+                  if (e.id == videoLibraryLearningPrograms && index1forFlash2forvideoLib == 2) {
                     purchaseProvider.buy(e);
-                  } else if (e.id == flashCards &&
-                      index1forFlash2forvideoLib == 1) {
+                  } else if (e.id == flashCards && index1forFlash2forvideoLib == 1) {
                     purchaseProvider.buy(e);
                   }
                 });
@@ -299,14 +304,15 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider,
                 ////////android payment with stripe
                 var token = await getToken();
 
+                ProfileProvider profProvi = Provider.of(context, listen: false);
+                await profProvi.callCreateOrder(IdValue, type);
+
                 /// Payment implement with stripe
                 bool status = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PaymentAndroid(
-                          token: token,
-                          statusFlash1videoLibrary2:
-                              index1forFlash2forvideoLib),
+                      builder: (context) =>
+                          PaymentAndroid(token: token, statusFlash1videoLibrary2: index1forFlash2forvideoLib),
                     ));
 
                 if (status) {
@@ -332,16 +338,11 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider,
               }
             },
             style: ButtonStyle(
-              shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0))),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
             ),
             child: Text(
               'Buy Now',
-              style: TextStyle(
-                  fontFamily: 'Roboto Medium',
-                  fontSize: 20,
-                  color: Colors.white,
-                  letterSpacing: 0.3),
+              style: TextStyle(fontFamily: 'Roboto Medium', fontSize: 20, color: Colors.white, letterSpacing: 0.3),
             ),
           ),
         ),
@@ -359,9 +360,7 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider,
       SizedBox(
         height: 32,
       ),
-      context.watch<PurchaseProvider>().loaderStatus
-          ? CircularProgressIndicator()
-          : SizedBox(),
+      context.watch<PurchaseProvider>().loaderStatus ? CircularProgressIndicator() : SizedBox(),
       Platform.isIOS
           ? Center(
               child: Row(

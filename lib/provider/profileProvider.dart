@@ -118,4 +118,97 @@ class ProfileProvider extends ChangeNotifier {
     }
     print("respponse=== ${response.body}");
   }
+
+  var successValue;
+  var Subsmsg;
+  var subsPrice;
+
+  Future<void> subscriptionStatus(String type) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+
+    print("token valued===$stringValue");
+    var request = {"type": type};
+
+    var response = await http.post(
+      Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/getsubscriptionStatus"),
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+      body: json.encode(request),
+    );
+    print("https://apivcarestage.vcareprojectmanagement.com/api/getsubscriptionStatus");
+
+    print("response.statusCode===${response.body}");
+    print("response.statusCode===${response.statusCode}");
+
+    var resDDo = json.decode(response.body);
+    var resStatus = (resDDo["status"]);
+
+    if (resStatus == 400) {
+      // masterList = [];
+      // videoPresent = 0;
+
+      notifyListeners();
+      return;
+    }
+
+    // print("val of vid present===$videoPresent");
+
+    if (response.statusCode == 200) {
+      // masterList.clear();
+      Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+      print("mapResponse==========$mapResponse");
+
+      successValue = mapResponse["success"];
+      // Subsmsg = mapResponse["message"];
+      print("successValue============$successValue");
+      // print("Subsmsg============$Subsmsg");
+
+      Map<String, dynamic> temp1 = mapResponse["data"];
+
+subsPrice=mapResponse["data"]["price"];
+      print("priveeeee=====${subsPrice}");
+      print("temp list===$temp1");
+      // masterList = temp1.map((e) => MasterDetails.fromjson(e)).toList();
+
+      notifyListeners();
+    }
+    print("respponse=== ${response.body}");
+  }
+
+
+
+    Future callCreateOrder(int selectedId,String categoryType) async {
+      print("selectedId===================${selectedId}");
+       print("categoryType===============${categoryType}"); 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    http.Response response;
+    var createOrder="https://apivcarestage.vcareprojectmanagement.com/api/createOrder";
+    response = await http.get(Uri.parse("$createOrder+'/$selectedId'+'/$categoryType'"),
+        headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+
+
+    print("Url :=> ${Uri.parse("$createOrder+'/$selectedId'+'/$categoryType'")}");
+
+
+    print("API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
+    print("API Response ; $stringValue => ${response.request.url}; ${response.body}");
+
+
+    if (response.statusCode == 200) {
+
+      print(convert.jsonDecode(response.body));
+
+      notifyListeners();
+    }
+  }
+
+
+
+
+
+
+
+
+
 }
