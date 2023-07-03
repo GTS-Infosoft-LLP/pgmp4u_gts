@@ -24,11 +24,20 @@ class CourseProvider extends ChangeNotifier {
   List<FlashCardDetails> FlashCards = [];
 
   List<FlashCardDetails> FlashOfflineList = [];
-
+//TestDataDetails
   List<TestDetails> testDetails = [];
   List<TestDataDetails> testData = [];
 
   // const _BASE_URL ="https://apivcarestage.vcareprojectmanagement.com/api/";
+
+  ///
+
+  int firstCourse = 0;
+  int firstMaster = 0;
+  int firstFlashCate = 0;
+  int firstFlshData = 0;
+
+  ///
 
   int videoPresent = 1;
 
@@ -79,6 +88,10 @@ class CourseProvider extends ChangeNotifier {
         .onError((error, stackTrace) {
       print("errore======>>>>$error");
       masterTemp = [];
+      if (firstMaster == 0) {
+        HiveHandler.addMasterData(masterList, keyName: id.toString());
+        firstMaster = 1;
+      }
       return;
     });
 
@@ -122,7 +135,7 @@ class CourseProvider extends ChangeNotifier {
         } catch (e) {
           print("errorr===========>>>>>>$e");
         }
-      }
+      } else {}
 
       notifyListeners();
 
@@ -150,6 +163,11 @@ class CourseProvider extends ChangeNotifier {
     )
         .onError((error, stackTrace) {
       print("error========>>$error");
+      flashCate = [];
+      if (firstFlashCate == 0) {
+        HiveHandler.addFlashCateData(flashCate, id.toString());
+        firstFlashCate = 1;
+      }
       flashCateTempList = [];
       // return;
     });
@@ -169,6 +187,9 @@ class CourseProvider extends ChangeNotifier {
         flashCate = temp1.map((e) => FlashCateDetails.fromjson(e)).toList();
 
         print("flashCate================${flashCate.length}");
+        if (flashCate == null || flashCate.isEmpty) {
+          flashCate = [];
+        }
 
         try {
           HiveHandler.addFlashCateData(flashCate, id.toString());
@@ -189,6 +210,9 @@ class CourseProvider extends ChangeNotifier {
           print("flashCate name 0=== ${flashCate[0].name}");
         }
       }
+    } else {
+      // flashCate = [];
+      // HiveHandler.addFlashCateData(flashCate, id.toString());
     }
     print("respponse=== ${response.body}");
   }
@@ -251,6 +275,12 @@ class CourseProvider extends ChangeNotifier {
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
     ).onError((error, stackTrace) {
       print("error====>>$error");
+      course = [];
+      if (firstCourse == 0) {
+        HiveHandler.addCourseData(course);
+        firstCourse = 1;
+      }
+
       tempList = [];
     });
 
@@ -347,6 +377,12 @@ class CourseProvider extends ChangeNotifier {
     )
         .onError((error, stackTrace) {
       print("erroeee===>>$error");
+      FlashCards = [];
+      if (firstFlshData == 0) {
+        HiveHandler.addFlash(FlashCards, KeyName: id.toString());
+        firstFlshData = 1;
+      }
+
       flashTemp = [];
     });
 
@@ -406,11 +442,16 @@ class CourseProvider extends ChangeNotifier {
     print("token valued===$stringValue");
     var request = {"id": id};
 
-    var response = await http.post(
+    var response = await http
+        .post(
       Uri.parse("http://3.227.35.115:1011/api/gettestDetails"),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
-    );
+    )
+        .onError((error, stackTrace) {
+      print("erorororrrr======>>>$error");
+      // HiveHandler.setMockPercentdata(key: id.toString(), value: temp1);
+    });
 
     print("response.statusCode===${response.statusCode}");
     if (response.statusCode == 200) {
@@ -439,8 +480,10 @@ class CourseProvider extends ChangeNotifier {
     print("respponse=== ${response.body}");
   }
 
+  int firstTestDataMock = 0;
+  int firstTestDataPractice = 0;
   List<TestDataDetails> testListTemp = [];
-  Future<void> getTest(int id) async {
+  Future<void> getTest(int id, String testType) async {
     print("id valueeee===========>>>>>>>>>>>$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -456,6 +499,20 @@ class CourseProvider extends ChangeNotifier {
     )
         .onError((error, stackTrace) {
       print("erroroe=====>>>>>$error");
+      testData = [];
+      print("firstTestData============$firstTestDataMock");
+      if (testType == "Mock Test") {
+        if (firstTestDataMock == 0) {
+          HiveHandler.addTestMpData(testData, id.toString());
+          firstTestDataMock = 1;
+        }
+      } else if (testType == "Practice Test") {
+        if (firstTestDataPractice == 0) {
+          HiveHandler.addTestMpData(testData, id.toString());
+          firstTestDataPractice = 1;
+        }
+      }
+
       testListTemp = [];
     });
 

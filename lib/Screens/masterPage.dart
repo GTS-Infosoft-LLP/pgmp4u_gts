@@ -117,7 +117,11 @@ class _MasterListPageState extends State<MasterListPage> {
                           valueListenable: HiveHandler.getMasterListener(),
                           builder: (context, value, child) {
                             CourseProvider cp = Provider.of(context, listen: false);
-                            storedMaster = value.get(cp.selectedCourseId.toString());
+                            print('temp: >>');
+                            storedMaster = value.get(cp.selectedCourseId.toString()).cast<MasterDetails>() ?? [];
+                            var temp = value.get(cp.selectedCourseId);
+                            print('temp: $temp');
+                            print('temp: ${temp.runtimeType}');
 
                             print("storedMaster========================$storedMaster");
 
@@ -179,12 +183,6 @@ class _MasterListPageState extends State<MasterListPage> {
 
                                                         courseProvider.setMasterListType(storedMaster[index].type);
 
-
-
-
-
-
-
                                                         print("page=====$page");
 
                                                         if (page == "Videos") {
@@ -220,7 +218,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                         }
 
                                                         if (page == "Mock Test") {
-                                                          courseProvider.getTest(storedMaster[index].id);
+                                                          courseProvider.getTest(storedMaster[index].id,"Mock Test");
 
                                                           Future.delayed(Duration(milliseconds: 700), () {
                                                             Navigator.push(
@@ -234,7 +232,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                         }
 
                                                         if (page == "Practice Test") {
-                                                          courseProvider.getTest(storedMaster[index].id);
+                                                          courseProvider.getTest(storedMaster[index].id,"Practice Test");
 
                                                           Future.delayed(const Duration(milliseconds: 700), () async {
                                                             Navigator.push(

@@ -48,7 +48,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
 
   Future apiCall2(int id) async {
     print("calling this apiiiiii=========");
-    print("id==============${id}"); 
+    print("id==============$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     print(stringValue);
@@ -429,7 +429,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                                             ? 'C'
                                                                             : index == 3
                                                                                 ? 'D'
-                                                                                : '',
+                                                                                : 'E',
                                                                 style: TextStyle(
                                                                     fontFamily: 'Roboto Regular',
                                                                     color: selectedAnswer.contains(title.id) &&

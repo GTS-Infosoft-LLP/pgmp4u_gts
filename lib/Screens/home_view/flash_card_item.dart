@@ -30,7 +30,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
     print(" api calling");
     responseProvider = Provider.of(context, listen: false);
     // ignore: unnecessary_statements
-    responseProvider.getcategoryList();
+    // responseProvider.getcategoryList();
   }
 
   List<FlashCateDetails> storedFlashCate = [];

@@ -140,30 +140,19 @@ class HiveHandler {
   //   return Hive.box("categoryData").listenable();
   // }
 
-  static addMockAttempt(List<MockDataDetails> list, String key) async {
-    final Box<List<MockDataDetails>> mockAttemptBox = await Hive.openBox<List<MockDataDetails>>(MockAttemptsBox);
-    mockAttemptBox.put(key, list);
-    if (mockAttemptBox.isNotEmpty) {
-      print("===========added to box=========");
-      print("courseListBox.get${mockAttemptBox.get(key)}");
-    } else {
-      print("===========box is empty=========");
-    }
-  }
+  // static ValueListenable<Box<List<MockDataDetails>>> getMockAttemptListener() {
+  //   return Hive.box<List<MockDataDetails>>(MockAttemptsBox).listenable();
+  // }
 
-  static ValueListenable<Box<List<MockDataDetails>>> getMockAttemptListener() {
-    return Hive.box<List<MockDataDetails>>(MockAttemptsBox).listenable();
-  }
-
-  static List<MockDataDetails> getMockAttemptList({String key}) {
-    try {
-      final List<MockDataDetails> storedMockAttemptData = mockAttempList.get(key);
-      print("storedMockAttemptData list length ${storedMockAttemptData.length}");
-      return storedMockAttemptData;
-    } catch (e) {
-      return [];
-    }
-  }
+  // static List<MockDataDetails> getMockAttemptList({String key}) {
+  //   try {
+  //     final List<MockDataDetails> storedMockAttemptData = mockAttempList.get(key);
+  //     print("storedMockAttemptData list length ${storedMockAttemptData.length}");
+  //     return storedMockAttemptData;
+  //   } catch (e) {
+  //     return [];
+  //   }
+  // }
 
   static Future<dynamic> getstringdata({String key}) async {
     final box = Hive.box("deviceTokenBox");
@@ -172,6 +161,29 @@ class HiveHandler {
 
   static ValueListenable getPracTestListener() {
     return Hive.box("deviceTokenBox").listenable();
+  }
+
+  static addMockAttempt(dynamic value, String key) async {
+    await Hive.openBox("MockAttemptsBox");
+    final box = Hive.box("MockAttemptsBox");
+    print("*********************************");
+    print("incomimg valueeeeee=====>>>>$value");
+
+    await box.put(key, jsonEncode(value));
+    try {
+      print("get boxxxxx=======${box.get(key, defaultValue: "")}");
+    } catch (e) {
+      print("errororor====$e");
+    }
+  }
+
+  static Future<dynamic> getMockAttemptData({String key}) async {
+    final box = Hive.box("MockAttemptsBox");
+    return await box.get(key, defaultValue: "");
+  }
+
+  static ValueListenable getMockTestAttemptListener() {
+    return Hive.box("MockAttemptsBox").listenable();
   }
 
 /////////////
@@ -331,7 +343,7 @@ class HiveHandler {
   }
 
   static ValueListenable<Box<List<MasterDetails>>> getMasterListener() {
-    return Hive.box<List<MasterDetails>>(MasterDataBox).listenable();
+    return Hive.box<List<MasterDetails>>(MasterDataBox).listenable()??[];
   }
 
   static List<MasterDetails> getMasterDataList({String key}) {
