@@ -20,27 +20,51 @@ class FirebaseChatHandler {
   ///// single chat work   ////
 
   /// create single chat room
-  static createPersonalChatRoom({MyUserInfo user1 , MyUserInfo user2}) {
+  static Future<bool> createPersonalChatRoom({String chatRoomId, MyUserInfo me, MyUserInfo reciver}) async {
+    bool isDone = false;
+
+    // if group already exists
+    if (await checkIfDocExistsInColl(docId: chatRoomId, collection: groupsCollectionRef)) {
+      isDone = true;
+      return isDone;
+    }
+
     PersonalGroupModel groupModel = PersonalGroupModel(
       createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
-      groupId: "",
+      groupId: chatRoomId,
       lastMessage: "",
-      members: [user1, user2],
+      members: [me, reciver],
+      membersId: [me.id, reciver.id],
     );
 
     print('group body: ${groupModel.toJson()}');
 
-    groupsCollectionRef.add(groupModel.toJson()).then((value) {
-      groupsCollectionRef.doc(value.id).update({'groupId': value.id});
-      print('New Group created');
-    }).catchError((error) => print('Add failed: $error'));
+    await groupsCollectionRef.doc(chatRoomId).set(groupModel.toJson()).then((value) {
+      print('Chat Room Created');
+      isDone = true;
+    }).catchError((error) {
+      print('Add failed: $error');
+      isDone = false;
+      return isDone;
+    });
+
+    await userChatCollectionRef.doc(chatRoomId).set({"createdAt": DateTime.now().millisecondsSinceEpoch}).then((value) {
+      print('Gropu Created In user_chat');
+      isDone = true;
+    }).catchError((error) {
+      print('Add failed: $error');
+      isDone = false;
+      return isDone;
+    });
+
+    return isDone;
   }
 
   // personal chat group list
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllPersonalChatGroups({String myUUID}) {
     return groupsCollectionRef
         .orderBy('createdAt', descending: true)
-        .where("members", arrayContains: myUUID)
+        .where("membersId", arrayContains: myUUID)
         .snapshots();
   }
 
@@ -54,44 +78,56 @@ class FirebaseChatHandler {
   }
 
   // send message in personal chat group
-  static sendGroupMessage({ChatModel chat, String chatRoomId, String adminId, String userId}) async {
+  // static sendGroupMessage1({ChatModel chat, String chatRoomId, String adminId, String userId}) async {
+  //   Map jsonChat = chat.toJson();
+  //   print('message sent: ${chat.toJson()}');
+
+  //   /// if doc does not exist in user_chat create one
+  //   bool isDocExistsInUserChat = await checkIfDocExistsInColl(docId: chatRoomId, collection: userChatCollectionRef);
+  //   if (!isDocExistsInUserChat) {
+  //     await userChatCollectionRef.doc(chatRoomId).set({"createdAt": DateTime.now().millisecondsSinceEpoch}).then((_) {
+  //       print('New Group created In UserChat');
+  //     }).catchError((error) => print('Add failed: $error'));
+  //   }
+  //   // add message to collection
+  //   await userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).add(chat.toJson()).then((value) {
+  //     userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).doc(value.id).update({
+  //       "messageId": value.id,
+  //     });
+  //   });
+
+  //   // create a new group with chatRoomId
+  //   if (await checkIfDocExistsInColl(docId: chatRoomId, collection: groupsCollectionRef)) {
+  //     groupsCollectionRef.doc(chatRoomId).update({"lastMessage": chat.text});
+
+  //     return;
+  //   } else {
+  //     PersonalGroupModel groupModel = PersonalGroupModel(
+  //       createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
+  //       groupId: chatRoomId,
+  //       lastMessage: chat.text,
+  //       members: [MyUserInfo(), MyUserInfo()],
+  //     );
+
+  //     print('group body: ${groupModel.toJson()}');
+  //     groupsCollectionRef
+  //         .doc(chatRoomId)
+  //         .set(groupModel.toJson(), SetOptions(merge: true))
+  //         .then((_) => print('New Group created'))
+  //         .catchError((error) => print('Add failed: $error'));
+  //   }
+  // }
+
+  static sendGroupMessage({ChatModel chat, String chatRoomId}) async {
     Map jsonChat = chat.toJson();
     print('message sent: ${chat.toJson()}');
 
-    /// if doc does not exist in user_chat create one
-    bool isDocExistsInUserChat = await checkIfDocExistsInColl(docId: chatRoomId, collection: userChatCollectionRef);
-    if (!isDocExistsInUserChat) {
-      await userChatCollectionRef.doc(chatRoomId).set({"createdAt": DateTime.now().millisecondsSinceEpoch}).then((_) {
-        print('New Group created In UserChat');
-      }).catchError((error) => print('Add failed: $error'));
-    }
-    // add message to collection
     await userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).add(chat.toJson()).then((value) {
       userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).doc(value.id).update({
         "messageId": value.id,
       });
     });
-
-    // create a new group with chatRoomId
-    if (await checkIfDocExistsInColl(docId: chatRoomId, collection: groupsCollectionRef)) {
-      groupsCollectionRef.doc(chatRoomId).update({"lastMessage": chat.text});
-
-      return;
-    } else {
-      PersonalGroupModel groupModel = PersonalGroupModel(
-        createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
-        groupId: chatRoomId,
-        lastMessage: chat.text,
-        members: [MyUserInfo(), MyUserInfo()],
-      );
-
-      print('group body: ${groupModel.toJson()}');
-      groupsCollectionRef
-          .doc(chatRoomId)
-          .set(groupModel.toJson(), SetOptions(merge: true))
-          .then((_) => print('New Group created'))
-          .catchError((error) => print('Add failed: $error'));
-    }
+    await groupsCollectionRef.doc(chatRoomId).update({"lastMessage": chat.text});
   }
 
   ///// disussion group work   ////

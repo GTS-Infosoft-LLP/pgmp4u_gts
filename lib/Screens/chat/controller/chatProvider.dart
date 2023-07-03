@@ -56,8 +56,8 @@ class ChatProvider extends ChangeNotifier {
     FirebaseChatHandler.sendGroupMessage(
       chat: chatModel,
       chatRoomId: chatRoomId,
-      adminId: getUser().uid,
-      userId: reciverUserId,
+      // adminId: getUser().uid,
+      // userId: reciverUserId,
     );
   }
 
@@ -134,9 +134,20 @@ class ChatProvider extends ChangeNotifier {
   /// if called first time then new group will be created
   ///
   /// second time
-  initiatePersonalChat({MyUserInfo user1, MyUserInfo user2}) {
-    generateRoomId();
-    FirebaseChatHandler.createPersonalChatRoom(user1: user1, user2: user2);
+  Future<bool> initiatePersonalChat({MyUserInfo reciver}) async {
+    String roomId = createRoomId(getUser().uid, reciver.id);
+    setChatRoomId(roomId);
+
+
+
+
+    return await FirebaseChatHandler.createPersonalChatRoom(
+            chatRoomId: roomId,
+            me: MyUserInfo(id: getUser().uid, isAdmin: isChatAdmin() ? 1 : 0, name: getUser().displayName),
+            reciver: reciver)
+        .then((value) {
+      return value;
+    });
   }
 
   String singleChatRoomId = '';

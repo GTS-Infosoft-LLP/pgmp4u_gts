@@ -5,12 +5,14 @@ class PersonalGroupModel {
   String lastMessage;
 
   List<MyUserInfo> members;
+  List<dynamic> membersId;
 
   PersonalGroupModel({
     this.createdAt,
     this.groupId,
     this.lastMessage,
     this.members,
+    this.membersId,
   });
 
   PersonalGroupModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +20,7 @@ class PersonalGroupModel {
     groupId = json['groupId'] ?? "";
 
     lastMessage = json['lastMessage'] ?? '';
+    membersId = json['membersId'] ?? [];
 
     if (json['members'] == null) {
       members = [];
@@ -29,14 +32,15 @@ class PersonalGroupModel {
         "createdAt": createdAt,
         "groupId": groupId,
         "lastMessage": lastMessage,
-        "members": members,
+        "members": List<Map>.from(members.map((x) => x.toJson())),
+        "membersId": membersId
       };
 }
 
 class MyUserInfo {
   final String id;
   final String name;
-  final bool isAdmin;
+  final int isAdmin;
 
   MyUserInfo({this.id, this.name, this.isAdmin});
 

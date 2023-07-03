@@ -4,6 +4,7 @@ import 'package:pgmp4u/Screens/chat/chatHandler.dart';
 import 'package:pgmp4u/Screens/chat/screen/chatPage.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/singleGroupModel.dart';
+import 'package:pgmp4u/utils/extensions.dart';
 import 'package:provider/provider.dart';
 
 class PersonalChats extends StatefulWidget {
@@ -34,6 +35,18 @@ class _PersonalChatsState extends State<PersonalChats> {
   }
 
   Widget _userListTile(PersonalGroupModel personal) {
+    String name = '';
+    personal.members.forEach((member) {
+      if (member.id != context.read<ChatProvider>().getUser().uid) {
+        print('member name: ${member.name}');
+        name = member.name;
+
+        if (member.isAdmin == 1) {
+          name += "  (Admin)";
+        }
+      }
+    });
+
     return InkWell(
       onTap: () {
         context.read<ChatProvider>().setChatRoomId(personal.groupId);
@@ -52,7 +65,7 @@ class _PersonalChatsState extends State<PersonalChats> {
               radius: 20,
               child: Text(
                 // user.name.characters.first.toUpperCase(),
-                "A",
+                name.characters.first.toUpperCase() ?? '',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
@@ -66,7 +79,7 @@ class _PersonalChatsState extends State<PersonalChats> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Admin" ?? "",
+                  name.capitalizeFirstLetter() ?? "",
                   style: TextStyle(
                     fontSize: 18,
                   ),
@@ -91,6 +104,7 @@ class _PersonalChatsState extends State<PersonalChats> {
           stream: FirebaseChatHandler.getAllPersonalChatGroups(myUUID: context.read<ChatProvider>().getUser().uid),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              print('legth: ${snapshot.data.docs.length}');
               return ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),

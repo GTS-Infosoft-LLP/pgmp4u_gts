@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
-import 'package:pgmp4u/Screens/chat/chatHandler.dart';
 import 'package:pgmp4u/Screens/chat/model/singleGroupModel.dart';
 import 'package:pgmp4u/Screens/chat/screen/chatPage.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
@@ -63,11 +63,20 @@ class _UsersListState extends State<UsersList> {
               ? Expanded(child: Center(child: CircularProgressIndicator.adaptive()))
               : userListResponse.data.length == 0
                   ? Expanded(child: Center(child: Text('No User Found')))
-                  : ListView.separated(
+                  : ListView.builder(
                       shrinkWrap: true,
                       itemCount: userListResponse.data.length,
-                      separatorBuilder: (context, index) => Divider(),
-                      itemBuilder: (context, index) => _userListTile(userListResponse.data[index])),
+                      // separatorBuilder: (context, index) => Divider(),
+                      itemBuilder: (context, index) {
+                        if (userListResponse.data[index].uuid.isEmpty || userListResponse.data[index].uuid == null) {
+                          return SizedBox();
+                        }
+                        if (userListResponse.data[index].uuid == context.read<ChatProvider>().getUser().uid) {
+                          return SizedBox();
+                        }
+
+                        return _userListTile(userListResponse.data[index]);
+                      }),
         ],
       ),
     );
@@ -75,16 +84,26 @@ class _UsersListState extends State<UsersList> {
 
   Widget _userListTile(Users user) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
         // create a admin-user chat group
-        context.read<ChatProvider>().initiatePersonalChat();
-        
         context.read<ChatProvider>().generateRoomId(reciverId: user.userId.toString());
-        Navigator.push(
+        bool isRoomCreated = await context
+            .read<ChatProvider>()
+            .initiatePersonalChat(reciver: MyUserInfo(id: user.uuid, name: user.name, isAdmin: user.isChatAdmin));
+
+        if (isRoomCreated) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatPage(v1: user.name),
+              ));
+        } else {
+          GFToast.showToast(
+            'Exception occured while initiating chat!',
             context,
-            MaterialPageRoute(
-              builder: (context) => ChatPage(),
-            ));
+            toastPosition: GFToastPosition.BOTTOM,
+          );
+        }
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),

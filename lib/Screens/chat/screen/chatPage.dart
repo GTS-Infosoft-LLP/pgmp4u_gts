@@ -79,14 +79,6 @@ class _ChatPageState extends State<ChatPage> {
                     itemCount: snapshot.data?.docs.length ?? 0,
                     itemBuilder: (context, indexMain) {
                       var data = snapshot.data.docs[indexMain].data();
-
-                      // ChatModel chatModel = ChatModel(
-                      //   messageId: data.containsKey('messageId') ? data['messageId'] ?? '' : '',
-                      //   text: data['text'] ?? '',
-                      //   sentBy: data['sentBy'] ?? '',
-                      //   sentAt: data['sentAt'] ?? "0",
-
-                      // );
                       ChatModel chatModel = ChatModel.fromJson(data);
 
                       if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
