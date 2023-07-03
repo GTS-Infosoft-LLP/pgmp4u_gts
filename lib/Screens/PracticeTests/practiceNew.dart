@@ -5,7 +5,7 @@ import 'package:pgmp4u/Screens/MockTest/model/pracTestModel.dart';
 import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
 import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
-import 'package:pgmp4u/Screens/chat/screen/goupList.dart';
+import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -116,15 +116,11 @@ class _PracticeNewState extends State<PracticeNew> {
   //   }
   // }
   bool questionLoader = false;
-  onTapOfPutOnDisscussion(String question,List<String>optionQues) async {
+  onTapOfPutOnDisscussion(String question, List<String> optionQues) async {
     setState(() => questionLoader = true);
     print('Practice question : $question');
 
-    
-
-      print("optionQues=========${optionQues}");
-
-
+    print("optionQues=========${optionQues}");
 
     if (question.isEmpty) return;
 
@@ -137,7 +133,7 @@ class _PracticeNewState extends State<PracticeNew> {
           ));
       return;
     }
-    await context.read<ChatProvider>().createDiscussionGroup(question, optionQues,context).whenComplete(() {
+    await context.read<ChatProvider>().createDiscussionGroup(question, optionQues, context).whenComplete(() {
       setState(() => questionLoader = false);
       Navigator.push(
           context,
@@ -327,15 +323,15 @@ class _PracticeNewState extends State<PracticeNew> {
 
                                                           InkWell(
                                                             onTap: () {
-
-                                                               List<String>otsList=  getList( PTList[_quetionNo].ques.options);
+                                                              List<String> otsList =
+                                                                  getList(PTList[_quetionNo].ques.options);
                                                               questionLoader
                                                                   ? null
                                                                   : onTapOfPutOnDisscussion(
-                                                                    PTList != null
-                                                                      ? PTList[_quetionNo].ques.question
-                                                                      : '',otsList                                                                      
-                                                                      );
+                                                                      PTList != null
+                                                                          ? PTList[_quetionNo].ques.question
+                                                                          : '',
+                                                                      otsList);
                                                             },
                                                             child: Row(
                                                               mainAxisAlignment: MainAxisAlignment.start,
@@ -1334,22 +1330,19 @@ class _PracticeNewState extends State<PracticeNew> {
       print("  list are not same are both the lkstssss");
     }
   }
-  
+
   List<String> getList(List<Options> options) {
+    List<String> optsValueList = [];
 
-   List<String> optsValueList=[];
-
-   for(int i=0;i<options.length;i++){
-    String name='';
-    name=options[i].questionOption;
-    if(name.isEmpty || name==null){
-      optsValueList.add(name);
+    for (int i = 0; i < options.length; i++) {
+      String name = '';
+      name = options[i].questionOption;
+      if (name.isEmpty || name == null) {
+        optsValueList.add(name);
+      }
     }
-   }
-   print("optsValueList==========${optsValueList}");
+    print("optsValueList==========${optsValueList}");
 
-   return optsValueList;
-
-
+    return optsValueList;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pgmp4u/Screens/chat/chatHandler.dart';
-import 'package:pgmp4u/Screens/chat/chatPage.dart';
+import 'package:pgmp4u/Screens/chat/screen/chatPage.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/singleGroupModel.dart';
 import 'package:provider/provider.dart';
@@ -88,7 +88,7 @@ class _PersonalChatsState extends State<PersonalChats> {
   Expanded _groups() {
     return Expanded(
       child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: FirebaseChatHandler.getAllPersonalChatGroups(),
+          stream: FirebaseChatHandler.getAllPersonalChatGroups(myUUID: context.read<ChatProvider>().getUser().uid),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
@@ -97,11 +97,7 @@ class _PersonalChatsState extends State<PersonalChats> {
                   itemCount: snapshot.data?.docs.length ?? 0,
                   itemBuilder: (context, index) {
                     PersonalGroupModel group = PersonalGroupModel.fromJson(snapshot.data?.docs[index].data());
-                    // return GroupListTile(
-                    //   index: index,
-                    //   color: colors[index % colors.length],
-                    //   group: group,
-                    // );
+
                     return _userListTile(group);
                   });
             } else {

@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future registerHandler(user, fromProvider) async {
+  Future registerHandler(user, {String fromProvider, String uuid}) async {
     print(user);
     print("call function");
     http.Response response;
@@ -111,7 +111,8 @@ class _LoginScreenState extends State<LoginScreen> {
       "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
       "email": user.email,
       "name": user.displayName,
-      "access_type": fromProvider
+      "access_type": fromProvider,
+      'uuid': uuid
     });
 
     print("Request => $request");
@@ -211,14 +212,11 @@ class _LoginScreenState extends State<LoginScreen> {
           name: userCredential.user.displayName,
           email: userCredential.user.email));
 
-      // add this user to discussion group
-      context.read<ChatProvider>().addUserToDiscussionGroup(userCredential.user.uid.toString());
-
       if (googleUser != null) {
         if (signInBool) {
           loginHandler(googleUser, "google");
         } else {
-          registerHandler(googleUser, "google");
+          registerHandler(googleUser, fromProvider: "google", uuid: userCredential.user.uid);
         }
 
         // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -298,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (signInBool) {
           loginHandler(firebaseUser, "apple");
         } else {
-          registerHandler(firebaseUser, "apple");
+          registerHandler(firebaseUser, fromProvider: "apple", uuid: firebaseUser.uid);
         }
 
         break;

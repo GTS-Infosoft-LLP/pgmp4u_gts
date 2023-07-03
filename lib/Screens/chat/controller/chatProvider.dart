@@ -6,12 +6,11 @@ import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
 import 'package:pgmp4u/Screens/chat/chatHandler.dart';
 import 'package:pgmp4u/Screens/chat/model/chatModel.dart';
+import 'package:pgmp4u/Screens/chat/model/singleGroupModel.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/utils/user_object.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-
-import '../../MockTest/model/quesOfDayModel.dart';
 
 class ChatProvider extends ChangeNotifier {
   SharedPreferences prefs;
@@ -42,10 +41,6 @@ class ChatProvider extends ChangeNotifier {
 
   createFirebaseUser(FirestoreUserModel user) {
     FirebaseChatHandler.createFirestoreUser(user);
-  }
-
-  addUserToDiscussionGroup(String uid) {
-    FirebaseChatHandler.addUserToDiscussionGroup(uid: uid);
   }
 
   sendGroupMessage({String message, String chatRoomId}) {
@@ -80,30 +75,47 @@ class ChatProvider extends ChangeNotifier {
       "ownerId": getUser().uid,
       "title": title,
       "groupId": '',
-      "options":opss
-      
+      "options": opss
     };
 
     // don't post same question again
     // check with id and question
-    await FirebaseChatHandler.isQuestionAlreadyPostedByMe(body).then((isQueExists) {
-      if (isQueExists) {
-        GFToast.showToast(
-          'You have already posted this question.',
-          context,
-          toastPosition: GFToastPosition.BOTTOM,
-        );
+    bool isQuesExists = await FirebaseChatHandler.isQuestionAlreadyPostedByMe(body);
+
+    if (isQuesExists) {
+      updateDiscussionGroupLoader(false);
+      GFToast.showToast(
+        'You have already posted this question.',
+        context,
+        toastPosition: GFToastPosition.BOTTOM,
+      );
+      return;
+    }
+
+    // 1. create the group if not exists
+    // 2. send notification
+    // 3. send the question in same group as first message
+    await FirebaseChatHandler.createDiscussionGroup(body).then((value) async {
+      updateDiscussionGroupLoader(false);
+
+      if (value == null) {
         return;
       }
-    });
-
-    await FirebaseChatHandler.createDiscussionGroup(body).whenComplete(() {
-      updateDiscussionGroupLoader(false);
       sendNotification(title: 'New Discussion added', message: 'New Discussion has been created');
+      // send the question as first message in group
+      String questionToPost = title;
+      for (int i = 0; i < opss.length; i++) {
+        questionToPost += "\n\n${i + 1} ${opss[i]} \n";
+      }
+
+      print('Question to Post : $questionToPost');
+      await sendDisscussionGroupMessage(groupId: value, message: questionToPost);
+    }).whenComplete(() {
+      updateDiscussionGroupLoader(false);
     });
   }
 
-  sendDisscussionGroupMessage({String message, String groupId}) {
+  Future sendDisscussionGroupMessage({String message, String groupId}) async {
     print('>>>>>>>>>>>>  g ${getUser().photoURL}');
     ChatModel chatModel = ChatModel(
       messageId: '',
@@ -114,7 +126,17 @@ class ChatProvider extends ChangeNotifier {
       senderName: getUser().displayName,
       profileUrl: getUser().photoURL,
     );
-    FirebaseChatHandler.sendDiscussionGroupMessage(chat: chatModel, gropuId: groupId);
+    await FirebaseChatHandler.sendDiscussionGroupMessage(chat: chatModel, gropuId: groupId);
+  }
+
+  /// sigle chat /////
+
+  /// if called first time then new group will be created
+  ///
+  /// second time
+  initiatePersonalChat({MyUserInfo user1, MyUserInfo user2}) {
+    generateRoomId();
+    FirebaseChatHandler.createPersonalChatRoom(user1: user1, user2: user2);
   }
 
   String singleChatRoomId = '';
@@ -124,7 +146,7 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  generateRoomId(String reciverId) {
+  generateRoomId({String reciverId}) {
     reciverUserId = reciverId;
     String id = createRoomId(getUser().uid, reciverId);
 
@@ -163,7 +185,7 @@ class ChatProvider extends ChangeNotifier {
   bool isChatAdmin() {
     bool isChatAdmin = prefs.getBool('isChatAdmin');
 
-    print("isChatAdmin : $isChatAdmin");
+    // print("isChatAdmin : $isChatAdmin");
     if (isChatAdmin == null) {
       return false;
     }

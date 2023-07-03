@@ -44,19 +44,23 @@ class UpadateLocationResponseModel {
 class Users {
   final int userId;
   final String name;
+  final String uuid;
 
   Users({
     this.userId,
     this.name,
+    this.uuid,
   });
 
   factory Users.fromJson(Map<String, dynamic> json) => Users(
         userId: json["user_id"],
         name: json["name"],
+        uuid: json["uuid"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
         "user_id": userId,
         "name": name,
+        "uuid": uuid,
       };
 }

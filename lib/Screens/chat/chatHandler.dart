@@ -17,16 +17,34 @@ class FirebaseChatHandler {
   static CollectionReference discussionCollectionRef =
       FirebaseFirestore.instance.collection(FirebaseConstant.discussionsCollection);
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> reference() {
-    return userChatCollectionRef.doc('mVax4zbwnAONkHNtOWh0').collection(FirebaseConstant.messages).snapshots();
+  ///// single chat work   ////
+
+  /// create single chat room
+  static createPersonalChatRoom({MyUserInfo user1 , MyUserInfo user2}) {
+    PersonalGroupModel groupModel = PersonalGroupModel(
+      createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
+      groupId: "",
+      lastMessage: "",
+      members: [user1, user2],
+    );
+
+    print('group body: ${groupModel.toJson()}');
+
+    groupsCollectionRef.add(groupModel.toJson()).then((value) {
+      groupsCollectionRef.doc(value.id).update({'groupId': value.id});
+      print('New Group created');
+    }).catchError((error) => print('Add failed: $error'));
   }
 
-   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllPersonalChatGroups() {
-    return groupsCollectionRef.orderBy('createdAt', descending: true)
-    .where("members",arrayContains: '1246')
-    .snapshots();
+  // personal chat group list
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllPersonalChatGroups({String myUUID}) {
+    return groupsCollectionRef
+        .orderBy('createdAt', descending: true)
+        .where("members", arrayContains: myUUID)
+        .snapshots();
   }
 
+  // personal chat group messages
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllGroupMessage(String chatRoomId) {
     return userChatCollectionRef
         .doc(chatRoomId)
@@ -35,7 +53,8 @@ class FirebaseChatHandler {
         .snapshots();
   }
 
-  static sendGroupMessage({ChatModel chat, String chatRoomId, String adminId, String userId }) async {
+  // send message in personal chat group
+  static sendGroupMessage({ChatModel chat, String chatRoomId, String adminId, String userId}) async {
     Map jsonChat = chat.toJson();
     print('message sent: ${chat.toJson()}');
 
@@ -44,21 +63,14 @@ class FirebaseChatHandler {
     if (!isDocExistsInUserChat) {
       await userChatCollectionRef.doc(chatRoomId).set({"createdAt": DateTime.now().millisecondsSinceEpoch}).then((_) {
         print('New Group created In UserChat');
-        // a message to collection
-        userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).add(chat.toJson()).then((value) {
-          userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).doc(value.id).update({
-            "messageId": value.id,
-          });
-        });
       }).catchError((error) => print('Add failed: $error'));
-    } else {
-      // a message to collection
-      userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).add(chat.toJson()).then((value) {
-        userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).doc(value.id).update({
-          "messageId": value.id,
-        });
-      });
     }
+    // add message to collection
+    await userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).add(chat.toJson()).then((value) {
+      userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).doc(value.id).update({
+        "messageId": value.id,
+      });
+    });
 
     // create a new group with chatRoomId
     if (await checkIfDocExistsInColl(docId: chatRoomId, collection: groupsCollectionRef)) {
@@ -70,10 +82,7 @@ class FirebaseChatHandler {
         createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
         groupId: chatRoomId,
         lastMessage: chat.text,
-        ownerId: '',
-        members: [
-          adminId, userId
-        ],
+        members: [MyUserInfo(), MyUserInfo()],
       );
 
       print('group body: ${groupModel.toJson()}');
@@ -85,34 +94,68 @@ class FirebaseChatHandler {
     }
   }
 
-  static Future<bool> checkIfDocExists(String docId) async {
-    try {
-      // Get reference to Firestore collection
-      // var collectionRef = FirebaseFirestore.instance.collection('collectionName');
+  ///// disussion group work   ////
 
-      var doc = await groupsCollectionRef.doc(docId).get();
-      return doc.exists;
-    } catch (e) {
-      throw e;
-    }
+  /// create a new disscuesion group
+  ///
+  static Future<String> createDiscussionGroup(Map<String, dynamic> body) async {
+    return await discussionCollectionRef.add(body).then((value) {
+      discussionCollectionRef.doc(value.id).update({
+        'groupId': value.id,
+      });
+
+      print('Disscussion Group: ${value.id} created');
+      return value.id;
+    }).onError((error, stackTrace) {
+      return null;
+    });
   }
+
+  // list of disscussion groups
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllDiscussionGroups() {
+    return discussionCollectionRef.orderBy('createdAt', descending: true).snapshots();
+  }
+
+  // discussion group message
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllDiscussionGroupMessage({String groupId}) {
+    return userChatCollectionRef
+        .doc(groupId)
+        .collection(FirebaseConstant.messages)
+        .orderBy('sentAt', descending: true)
+        .snapshots();
+  }
+
+  // send message in disscussion
+  static sendDiscussionGroupMessage({ChatModel chat, String gropuId}) async {
+    Map jsonChat = chat.toJson();
+    print('message sent: ${chat.toJson()}');
+
+    await userChatCollectionRef
+        .doc(gropuId)
+        .collection(FirebaseConstant.messages)
+        .add(chat.toJson())
+        .then((value) async {
+      // add the message id to message
+      userChatCollectionRef.doc(gropuId).collection(FirebaseConstant.messages).doc(value.id).update({
+        "messageId": value.id,
+      });
+      var count = await userChatCollectionRef.doc(gropuId).collection(FirebaseConstant.messages).get();
+      // update message count
+      discussionCollectionRef.doc(gropuId).update({
+        "commentsCount": count.docs.length ?? 0,
+      });
+    });
+  }
+
+  ///// extra   ////
 
   static Future<bool> checkIfDocExistsInColl({String docId, CollectionReference collection}) async {
     try {
-      // Get reference to Firestore collection
-      // var collectionRef = FirebaseFirestore.instance.collection('collectionName');
-
       var doc = await collection.doc(docId).get();
       return doc.exists;
     } catch (e) {
       throw e;
     }
-  }
-
-  static addUserToDiscussionGroup({String uid}) {
-    groupsCollectionRef.doc("qT95cU2W4UuuHHL5YSju").update({
-      FirebaseConstant.groupMembers: FieldValue.arrayUnion([uid]),
-    });
   }
 
   static createFirestoreUser(FirestoreUserModel user) {
@@ -128,66 +171,32 @@ class FirebaseChatHandler {
     bool isExists = false;
 
     // check if a doc exists with same owner id and question
-    discussionCollectionRef.get().then((value) {
-      value.docs.firstWhere((disGroup) {
-        Map group = disGroup.data();
-        if (group['ownerId'] == body['ownerId'] && group['title'] == body["title"]) {
-          isExists = true;
-        }
-      });
-    }).onError((error, stackTrace) {
-      isExists = false;
-    });
+    QuerySnapshot groups = await discussionCollectionRef
+        .where("ownerId", isEqualTo: body['ownerId'])
+        .where('title', isEqualTo: body['title'])
+        .get();
+
+    print('length of groups: .. ${groups.docs.isNotEmpty}');
+    isExists = groups.docs.isNotEmpty ?? false;
 
     return isExists;
   }
 
-  /// create a new disscuesion group
-  ///
-  /// todo: send notification to all paid users
-  static Future createDiscussionGroup(Map<String, dynamic> body) async {
-    await discussionCollectionRef.add(body).then((value) {
-      discussionCollectionRef.doc(value.id).update({
-        'groupId': value.id,
-      });
-    });
+  static Future<void> findDocumentWithArrayElement(String userUUID) async {
+    CollectionReference collection = FirebaseFirestore.instance.collection('your_collection');
+
+    QuerySnapshot snapshot = await collection.where('members', arrayContains: {'name': userUUID}).get();
+
+    if (snapshot.docs.isNotEmpty) {
+      // The document(s) containing the array element with the matching name exist
+      for (DocumentSnapshot doc in snapshot.docs) {
+        print(doc.id); // Output: Document ID(s) with the matching array element
+      }
+    } else {
+      // No document(s) found with the matching array element
+      print('No documents found');
+    }
   }
-
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllDiscussionGroups() {
-    return discussionCollectionRef.orderBy('createdAt', descending: true).snapshots();
-  }
-
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllDiscussionGroupMessage({String groupId}) {
-    return userChatCollectionRef
-        .doc(groupId)
-        .collection(FirebaseConstant.messages)
-        .orderBy('sentAt', descending: true)
-        .snapshots();
-  }
-
-  static sendDiscussionGroupMessage({ChatModel chat, String gropuId}) {
-    Map jsonChat = chat.toJson();
-    print('message sent: ${chat.toJson()}');
-
-    userChatCollectionRef.doc(gropuId).collection(FirebaseConstant.messages).add(chat.toJson()).then((value) async {
-      // add the message id to message
-      userChatCollectionRef.doc(gropuId).collection(FirebaseConstant.messages).doc(value.id).update({
-        "messageId": value.id,
-      });
-      var count = await userChatCollectionRef.doc(gropuId).collection(FirebaseConstant.messages).get();
-      // update message count
-      discussionCollectionRef.doc(gropuId).update({
-        "commentsCount": count.docs.length ?? 0,
-      });
-    });
-  }
-
-  // getAlldis() {
-  //   bool isAdmin = true;
-  //   if(admin){
-  //     FirebaseFirestore.instance.collection()
-  //   }
-  // }
 }
 
 class FirebaseConstant {

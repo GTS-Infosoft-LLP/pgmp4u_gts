@@ -36,7 +36,7 @@ class _SenderMessageCardState extends State<SenderMessageCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(widget.chatModel.senderName ?? '',
+                    Text(widget.chatModel.senderName.capitalizeFirstLetter() ?? '',
                         style: Theme.of(context).textTheme.titleSmall.copyWith(
                               color: Colors.white,
                               fontSize: 14,

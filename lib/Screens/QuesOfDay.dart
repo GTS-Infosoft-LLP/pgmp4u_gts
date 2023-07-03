@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pgmp4u/Screens/MockTest/model/quesOfDayModel.dart';
 import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
-import 'package:pgmp4u/Screens/chat/screen/goupList.dart';
+import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -59,20 +59,15 @@ class _QuesOfDayState extends State<QuesOfDay> {
 
   bool questionLoader = false;
   onTapOfPutOnDisscussion(String question, List<OptionsDay> li) async {
-
-
-    List<String> optsName=[];
-    for(int i=0;i<li.length;i++){
-     String name='';
-
-       name =li[i].questionOption;
-
-      if(name.isEmpty  || name==null){}else{
+    List<String> optsName = [];
+    for (int i = 0; i < li.length; i++) {
+      String name = '';
+      name = li[i].questionOption;
+      
+      if (name.isEmpty || name == null) {
+      } else {
         optsName.add(name);
       }
-
-
-
     }
 
     print("optsName=========>>${optsName}");
@@ -91,7 +86,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
       return;
     }
     print("*******************");
-    await context.read<ChatProvider>().createDiscussionGroup(question,optsName, context).whenComplete(() {
+    await context.read<ChatProvider>().createDiscussionGroup(question, optsName, context).whenComplete(() {
       // Navigator.pop(context);
       setState(() => questionLoader = false);
       Navigator.push(

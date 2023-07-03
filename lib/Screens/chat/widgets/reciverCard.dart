@@ -39,7 +39,7 @@ class _RecivedMessageCardState extends State<RecivedMessageCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(widget.chatModel.senderName ?? '',
+                    Text(widget.chatModel.senderName.capitalizeFirstLetter() ?? '',
                         style: Theme.of(context).textTheme.titleSmall.copyWith(
                               color: Colors.black,
                               fontSize: 14,

@@ -8,7 +8,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTestResult.dart';
 import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
-import 'package:pgmp4u/Screens/chat/screen/goupList.dart';
+import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:provider/provider.dart';
@@ -229,7 +229,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     setState(() => questionLoader = true);
     print('Mock text question : $question');
 
-List<String> mckOptions=[];
+    List<String> mckOptions=[];
 
     for(int i=0;i<list01.length;i++){
       String optsValue="";

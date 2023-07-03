@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:pgmp4u/Screens/chat/chatPage.dart';
+import 'package:pgmp4u/Screens/chat/chatHandler.dart';
+import 'package:pgmp4u/Screens/chat/model/singleGroupModel.dart';
+import 'package:pgmp4u/Screens/chat/screen/chatPage.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/userListModel.dart';
 import 'package:pgmp4u/api/apis.dart';
@@ -74,8 +76,10 @@ class _UsersListState extends State<UsersList> {
   Widget _userListTile(Users user) {
     return InkWell(
       onTap: () {
-        context.read<ChatProvider>().generateRoomId(user.userId.toString());
         // create a admin-user chat group
+        context.read<ChatProvider>().initiatePersonalChat();
+        
+        context.read<ChatProvider>().generateRoomId(reciverId: user.userId.toString());
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -109,33 +113,6 @@ class _UsersListState extends State<UsersList> {
         ),
       ),
     );
-    // return ListTile(
-    //   // leading: CircleAvatar(
-    //   //   radius: 24,
-    //   //   child: Text(
-    //   //     '1',
-    //   //     style: TextStyle(
-    //   //       fontWeight: FontWeight.bold,
-    //   //       fontSize: 18,
-    //   //     ),
-    //   //   ),
-    //   // ),
-    //   title: Text(
-    //     user.name ?? "",
-    //     style: TextStyle(
-    //       fontSize: 16,
-    //     ),
-    //   ),
-    //   // subtitle: Text(
-    //   //   Jiffy(notificationProvider
-    //   //           .notificationList[index].createdAt)
-    //   //       .fromNow(),
-    //   //   style: TextStyle(
-    //   //     fontSize: 12,
-    //   //     fontFamily: AppFont.poppinsRegular,
-    //   //   ),
-    //   // ),
-    // );
   }
 
   Container _appBar() {

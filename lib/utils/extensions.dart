@@ -23,3 +23,13 @@ extension StringToTimeOfDay on String {
     return TimeOfDay(hour: hour, minute: minute);
   }
 }
+
+extension StringExtension on String {
+  String capitalizeFirstLetter() {
+    if (this == null || this.isEmpty) {
+      return this;
+    }
+
+    return this[0].toUpperCase() + this.substring(1);
+  }
+}

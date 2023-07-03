@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/utils/app_color.dart';
 
 class ProfilePic extends StatefulWidget {
   ProfilePic({Key key, this.image}) : super(key: key);
@@ -11,14 +13,17 @@ class ProfilePic extends StatefulWidget {
 class _ProfilePicState extends State<ProfilePic> {
   @override
   Widget build(BuildContext context) {
-    
-    return Container(
-      // height: height,
-      // width: width,
+    return ClipOval(
       child: Container(
         height: 40,
         width: 40,
-        decoration: BoxDecoration(shape: BoxShape.circle, image: DecorationImage(image: NetworkImage(widget.image))),
+        child: CachedNetworkImage(
+          imageUrl: widget.image,
+          placeholder: (context, url) => CircularProgressIndicator.adaptive(
+            backgroundColor: AppColor.purpule,
+          ),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        ),
       ),
     );
   }

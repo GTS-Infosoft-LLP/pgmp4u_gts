@@ -3,6 +3,7 @@ import 'package:jiffy/jiffy.dart';
 
 import 'package:pgmp4u/Screens/chat/model/discussionGroupModel.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionChatPage.dart';
+import 'package:pgmp4u/utils/extensions.dart';
 
 class GroupListTile extends StatelessWidget {
   GroupListTile({Key key, this.index, this.color, this.group});
@@ -96,7 +97,7 @@ class GroupListTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                     color: color,
                   ),
-                  child: Text(group.createdBy ?? '',
+                  child: Text(group.createdBy.capitalizeFirstLetter() ?? '',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,
