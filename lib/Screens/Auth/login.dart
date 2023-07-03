@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool loading = false;
   bool signInBool = false;
 
-  Future loginHandler(user, fromProvider) async {
+  Future loginHandler(user, fromProvider, {String uuid}) async {
     print(user);
     setState(() {
       loading = true;
@@ -41,7 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
     var request = json.encode({
       "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
       "email": user.email,
-      "access_type": fromProvider
+      "access_type": fromProvider,
+      'uuid': uuid,
     });
 
     print("Request Data => $request");
@@ -214,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (googleUser != null) {
         if (signInBool) {
-          loginHandler(googleUser, "google");
+          loginHandler(googleUser, "google", uuid: userCredential.user.uid);
         } else {
           registerHandler(googleUser, fromProvider: "google", uuid: userCredential.user.uid);
         }
@@ -294,7 +295,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print(firebaseUser);
 
         if (signInBool) {
-          loginHandler(firebaseUser, "apple");
+          loginHandler(firebaseUser, "apple", uuid: firebaseUser.uid);
         } else {
           registerHandler(firebaseUser, fromProvider: "apple", uuid: firebaseUser.uid);
         }
