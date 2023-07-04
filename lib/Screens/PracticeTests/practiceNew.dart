@@ -7,6 +7,8 @@ import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
+import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -69,6 +71,9 @@ class _PracticeNewState extends State<PracticeNew> {
     practiceProvider = Provider.of(context, listen: false);
     categoryProvider = Provider.of(context, listen: false);
 
+    context.read<CourseProvider>().setMasterListType("Chat");
+    context.read<ProfileProvider>().subscriptionStatus("Chat");
+
     callApi();
   }
 
@@ -116,7 +121,23 @@ class _PracticeNewState extends State<PracticeNew> {
   // }
   bool questionLoader = false;
   onTapOfPutOnDisscussion(String question, List<String> optionQues) async {
+    if (!context.read<ProfileProvider>().isChatSubscribed) {
+      setState(() => questionLoader = false);
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => RandomPage(
+                    index: 4,
+                    price: context.read<ProfileProvider>().subsPrice.toString(),
+                    categoryType: context.read<CourseProvider>().selectedMasterType,
+                    categoryId: 0,
+                  )));
+      return;
+    }
+
     setState(() => questionLoader = true);
+
     print('Practice question : $question');
 
     print("optionQues=========$optionQues");
@@ -331,11 +352,15 @@ class _PracticeNewState extends State<PracticeNew> {
 
                                                               questionLoader
                                                                   ? null
-                                                                  : onTapOfPutOnDisscussion(
-                                                                      PTList != null
-                                                                          ? PTList[_quetionNo].ques.question
-                                                                          : '',
-                                                                      otsList);
+                                                                  : context
+                                                                          .read<ProfileProvider>()
+                                                                          .subscriptionApiCalling
+                                                                      ? null
+                                                                      : onTapOfPutOnDisscussion(
+                                                                          PTList != null
+                                                                              ? PTList[_quetionNo].ques.question
+                                                                              : '',
+                                                                          otsList);
                                                             },
                                                             child: Row(
                                                               mainAxisAlignment: MainAxisAlignment.start,
