@@ -166,7 +166,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) => RandomPage(
-                                                        index: 2,
+                                                            index: 2,
                                                             categoryId: courseProvider.videoCate[index].id,
                                                             price: courseProvider.videoCate[index].price,
                                                           )));
@@ -214,8 +214,14 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           Text(
-                                                            courseProvider.videoCate[index].videoLibraries.toString() +
-                                                                " videos available",
+                                                            courseProvider.videoCate[index].videoLibraries.toString() ==
+                                                                    "1"
+                                                                ? courseProvider.videoCate[index].videoLibraries
+                                                                        .toString() +
+                                                                    " video available"
+                                                                : courseProvider.videoCate[index].videoLibraries
+                                                                        .toString() +
+                                                                    " videos available",
                                                             style: TextStyle(
                                                               fontSize: 14,
                                                               color: Colors.grey,

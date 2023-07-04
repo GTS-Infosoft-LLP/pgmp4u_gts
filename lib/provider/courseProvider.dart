@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
+import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
+import 'package:pgmp4u/Services/globalcontext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../Models/mockListmodel.dart';
@@ -28,8 +30,7 @@ class CourseProvider extends ChangeNotifier {
   List<TestDetails> testDetails = [];
   List<TestDataDetails> testData = [];
 
- List<AvailableAttempts> aviAttempts = [];
-
+  List<AvailableAttempts> aviAttempts = [];
 
   // const _BASE_URL ="https://apivcarestage.vcareprojectmanagement.com/api/";
 
@@ -110,8 +111,11 @@ class CourseProvider extends ChangeNotifier {
     var resDDo = json.decode(response.body);
     var resStatus = (resDDo["status"]);
     videoPresent = 1;
-    if (resStatus == 400) {
+    if (response.statusCode == 400) {
+      print("statussssssss");
       masterList = [];
+      tempListMaster = [];
+      HiveHandler.addMasterData(tempListMaster, keyName: id.toString());
       videoPresent = 0;
 
       notifyListeners();
@@ -122,7 +126,14 @@ class CourseProvider extends ChangeNotifier {
 
     if (response.statusCode == 200) {
       masterList.clear();
+      print("");
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+      print("mapResponse====${mapResponse['status']}");
+      if (mapResponse['status'] == 400) {
+        tempListMaster = [];
+        HiveHandler.addMasterData(tempListMaster, keyName: id.toString());
+        return;
+      }
 
       List temp1 = mapResponse["data"];
       print("temp list===$temp1");
@@ -144,7 +155,10 @@ class CourseProvider extends ChangeNotifier {
         } catch (e) {
           print("errorr===========>>>>>>$e");
         }
-      } else {}
+      } else {
+        tempListMaster = [];
+        HiveHandler.addMasterData(tempListMaster, keyName: id.toString());
+      }
 
       notifyListeners();
 
@@ -378,8 +392,10 @@ class CourseProvider extends ChangeNotifier {
     print("respponse=== ${response.body}");
   }
 
+  var successValue;
+
   List<FlashCardDetails> flashTempDisplay = [];
-  Future<void> getFlashCards(int id) async {
+  Future<void> getFlashCards(int id, String strr) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -406,6 +422,21 @@ class CourseProvider extends ChangeNotifier {
     });
 
     var resDDo = json.decode(response.body);
+    print("resDDo=========$resDDo");
+    print("success valueee====>>>>${resDDo['success']}");
+    successValue = resDDo['success'];
+    if (successValue == false) {
+      print(":this valueee=====??");
+      Navigator.push(
+          GlobalVariable.navState.currentContext,
+          MaterialPageRoute(
+              builder: (context) => RandomPage(
+                    categoryId: id,
+                    price: strr,
+                    index: 1,
+                  )));
+      return;
+    }
     var resStatus = (resDDo["status"]);
     videoPresent = 1;
     if (resStatus == 400) {

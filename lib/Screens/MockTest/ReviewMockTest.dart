@@ -467,16 +467,22 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                               child: Column(
                                                                 mainAxisSize: MainAxisSize.min,
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
                                                                 children: [
-                                                                  Text(title.questionOption,
-                                                                      style: TextStyle(fontSize: width * 14 / 420)),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets.all(8.0),
-                                                                    child: Align(
-                                                                        alignment: Alignment.bottomRight,
-                                                                        child: getTextSelecd(_currentAnserIndex,
-                                                                            _currentYourAnserIndex, index)),
-                                                                  )
+                                                                  SizedBox(
+                                                                    height: 3,
+                                                                  ),
+                                                                  title.questionOption.isEmpty
+                                                                      ? Text("None of these")
+                                                                      : Text(title.questionOption,
+                                                                          style: TextStyle(fontSize: width * 14 / 420)),
+                                                                  // Padding(
+                                                                  //   padding: const EdgeInsets.all(8.0),
+                                                                  //   child: Align(
+                                                                  //       alignment: Alignment.bottomRight,
+                                                                  //       child: getTextSelecd(_currentAnserIndex,
+                                                                  //           _currentYourAnserIndex, index)),
+                                                                  // )
                                                                 ],
                                                               ))
                                                         ],

@@ -118,10 +118,10 @@ class _MasterListPageState extends State<MasterListPage> {
                           builder: (context, value, child) {
                             CourseProvider cp = Provider.of(context, listen: false);
                             print('temp: >>');
-                            storedMaster = value.get(cp.selectedCourseId.toString()).cast<MasterDetails>() ?? [];
-                            var temp = value.get(cp.selectedCourseId);
-                            print('temp: $temp');
-                            print('temp: ${temp.runtimeType}');
+                            storedMaster = value.get(cp.selectedCourseId.toString()) ?? [];
+                            // var temp = value.get(cp.selectedCourseId);
+                            // print('temp: $temp');
+                            // print('temp: ${temp.runtimeType}');
 
                             print("storedMaster========================$storedMaster");
 
@@ -143,7 +143,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                               icon1 = FontAwesomeIcons.video;
                                             } else if (storedMaster[index].label == "Revise") {
                                               icon1 = Icons.numbers_outlined;
-                                            } else if (storedMaster[index].label == "Bytes") {
+                                            } else if (storedMaster[index].label == "Remember") {
                                               icon1 = FontAwesomeIcons.lightbulb;
                                             } else if (storedMaster[index].name == "Tips4U") {
                                               icon1 = FontAwesomeIcons.rankingStar;
@@ -218,7 +218,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                         }
 
                                                         if (page == "Mock Test") {
-                                                          courseProvider.getTest(storedMaster[index].id,"Mock Test");
+                                                          courseProvider.getTest(storedMaster[index].id, "Mock Test");
 
                                                           Future.delayed(Duration(milliseconds: 700), () {
                                                             Navigator.push(
@@ -232,7 +232,8 @@ class _MasterListPageState extends State<MasterListPage> {
                                                         }
 
                                                         if (page == "Practice Test") {
-                                                          courseProvider.getTest(storedMaster[index].id,"Practice Test");
+                                                          courseProvider.getTest(
+                                                              storedMaster[index].id, "Practice Test");
 
                                                           Future.delayed(const Duration(milliseconds: 700), () async {
                                                             Navigator.push(
