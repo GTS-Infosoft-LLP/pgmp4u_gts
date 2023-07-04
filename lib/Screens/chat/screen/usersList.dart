@@ -47,7 +47,15 @@ class _UsersListState extends State<UsersList> {
 
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));
-      userListResponse = UpadateLocationResponseModel.fromJson(jsonDecode(response.body));
+      UpadateLocationResponseModel userListResponseTemp =
+          UpadateLocationResponseModel.fromJson(jsonDecode(response.body));
+
+      if (currentPageIndex == 1) {
+        userListResponse = userListResponseTemp;
+      } else {
+        userListResponse.data.addAll(userListResponseTemp.data);
+      }
+
       // filter list if user's uuid is null or empty
       userListResponse.data.removeWhere((user) => user.uuid.isEmpty || user.uuid == null);
 
@@ -60,6 +68,8 @@ class _UsersListState extends State<UsersList> {
           : userListResponse.data.removeWhere((user) => user.isChatAdmin == 0);
 
       isLoading = false;
+
+      currentPageIndex++;
       setState(() {});
     } else {
       isLoading = false;
@@ -71,6 +81,7 @@ class _UsersListState extends State<UsersList> {
 
   void _scrollListener() {
     if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      print('_listener called');
       getUser();
     }
   }

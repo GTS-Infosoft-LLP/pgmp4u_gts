@@ -11,7 +11,7 @@ String upadateLocationResponseModelToJson(UpadateLocationResponseModel data) => 
 
 class UpadateLocationResponseModel {
   final bool success;
-  final List<Users> data;
+  List<Users> data;
   final int count;
   final int pages;
   final String message;
