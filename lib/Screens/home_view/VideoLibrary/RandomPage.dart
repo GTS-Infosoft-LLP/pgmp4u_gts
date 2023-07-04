@@ -289,9 +289,8 @@ Widget BuyButton2(
           height: 40,
           // alignment: Alignment.center,
           decoration: BoxDecoration(
-              color: Colors.purple,
-              // color: Colors.indigo.shade600,
-
+              // color: Colors.purple,
+              color: Colors.indigo.shade600,
               borderRadius: BorderRadius.circular(30.0)),
           child: OutlinedButton(
             onPressed: () async {
@@ -313,16 +312,16 @@ Widget BuyButton2(
 
                 ProfileProvider profProvi = Provider.of(context, listen: false);
                 await profProvi.callCreateOrder(IdValue, type);
-                type=type.replaceAll(" ", "");
+                type = type.replaceAll(" ", "");
 
-                String urll="https://apivcarestage.vcareprojectmanagement.com/api/createOrder/$IdValue/$type";
+                String urll = "https://apivcarestage.vcareprojectmanagement.com/api/createOrder/$IdValue/$type";
 
                 /// Payment implement with stripe
                 bool status = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          PaymentAndroid(token: token, statusFlash1videoLibrary2: index1forFlash2forvideoLib,urlll:urll),
+                      builder: (context) => PaymentAndroid(
+                          token: token, statusFlash1videoLibrary2: index1forFlash2forvideoLib, urlll: urll),
                     ));
                 print("statueeess====>>>$status");
 

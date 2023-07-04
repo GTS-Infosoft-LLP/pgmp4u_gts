@@ -299,6 +299,7 @@ class CourseProvider extends ChangeNotifier {
       List temp1 = mapResponse["data"];
       print("temp list===$temp1");
       course = temp1.map((e) => CourseDetails.fromjson(e)).toList();
+      print("course=========$course");
 
       try {
         // print("id.toString=====${id.toString}");
@@ -309,7 +310,7 @@ class CourseProvider extends ChangeNotifier {
 
           notifyListeners();
           print("*************************************************");
-          print("tempList==========$tempListCourse");
+          print("tempList course get box==========$tempListCourse");
         });
       } catch (e) {
         print("errorr===========>>>>>>$e");

@@ -246,8 +246,10 @@ class _HomeViewState extends State<HomeView> {
                   child: ValueListenableBuilder<Box<List<CourseDetails>>>(
                       valueListenable: HiveHandler.getCourseListener(),
                       builder: (context, value, child) {
+                       
+                        print("*****************************>Sdwsfwefw  ${value.get("courseKey")}");
                         storedCourse = value.get("courseKey");
-                        print("*****************************");
+
                         print("list has data......");
                         print("storedCourse========$storedCourse");
 

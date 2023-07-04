@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
+import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/Screens/testScreen.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:provider/provider.dart';
@@ -200,46 +201,55 @@ class _MockTestState extends State<MockTest> {
                                         itemCount: storedTestData.length,
                                         itemBuilder: (context, index) {
                                           print("storedTestData.length,=========${storedTestData.length}");
+                                          print("${storedTestData[index].premium}");
                                           return InkWell(
                                             onTap: () {
-                                              print("testData[index].id===========${storedTestData[index].id}");
-                                              if (widget.testType == "Mock Test") {
-                                                 courseProvider.setMockTestPercentId(storedTestData[index].id);
-
-
-                                                courseProvider.getTestDetails(storedTestData[index].id);
-
-                                                Future.delayed(Duration(milliseconds: 500), () {
-                                                  Navigator.push(context,
-                                                      MaterialPageRoute(builder: (context) => TextPreDetail()));
-                                                });
+                                              if (storedTestData[index].premium == 1) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => RandomPage(
+                                                            categoryId: storedTestData[index].id,
+                                                            price: storedTestData[index].price)));
                                               } else {
-                                                // courseProvider.
+                                                print("testData[index].id===========${storedTestData[index].id}");
+                                                if (widget.testType == "Mock Test") {
+                                                  courseProvider.setMockTestPercentId(storedTestData[index].id);
 
-                                                PracticeTextProvider pracTestProvi =
-                                                    Provider.of(context, listen: false);
-                                                pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
+                                                  courseProvider.getTestDetails(storedTestData[index].id);
 
-                                                Future.delayed(const Duration(milliseconds: 400), () {
-                                                  // Navigator.push(
-                                                  //     context,
-                                                  //     MaterialPageRoute(
-                                                  //         builder: (context) =>
-                                                  //             PracticeTestCopy(
-                                                  //               selectedId: courseProvider
-                                                  //                   .testData[index].id,
-                                                  //             )));
+                                                  Future.delayed(Duration(milliseconds: 500), () {
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(builder: (context) => TextPreDetail()));
+                                                  });
+                                                } else {
+                                                  // courseProvider.
 
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) => PracticeNew(
-                                                                pracTestName: storedTestData[index].test_name,
-                                                                selectedId: storedTestData[index].id,
-                                                              )));
+                                                  PracticeTextProvider pracTestProvi =
+                                                      Provider.of(context, listen: false);
+                                                  pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
 
-                                                  //PracticeNew
-                                                });
+                                                  Future.delayed(const Duration(milliseconds: 400), () {
+                                                    // Navigator.push(
+                                                    //     context,
+                                                    //     MaterialPageRoute(
+                                                    //         builder: (context) =>
+                                                    //             PracticeTestCopy(
+                                                    //               selectedId: courseProvider
+                                                    //                   .testData[index].id,
+                                                    //             )));
+
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => PracticeNew(
+                                                                  pracTestName: storedTestData[index].test_name,
+                                                                  selectedId: storedTestData[index].id,
+                                                                )));
+
+                                                    //PracticeNew
+                                                  });
+                                                }
                                               }
                                             },
                                             child: Padding(
@@ -282,7 +292,7 @@ class _MockTestState extends State<MockTest> {
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Container(
-                                                          width: MediaQuery.of(context).size.width * .55,
+                                                          width: MediaQuery.of(context).size.width * .45,
                                                           child: Text(
                                                             storedTestData[index].test_name,
                                                             style: TextStyle(
@@ -298,12 +308,17 @@ class _MockTestState extends State<MockTest> {
                                                     ),
                                                   ),
                                                   new Spacer(),
-                                                  Container(
-                                                    child: Icon(
-                                                      Icons.east,
-                                                      size: 30,
-                                                      color: _colorfromhex("#ABAFD1"),
-                                                    ),
+                                                  Column(
+                                                    children: [
+                                                      storedTestData[index].premium == 1 ? Text("Premium") : Text(""),
+                                                      Container(
+                                                        child: Icon(
+                                                          Icons.east,
+                                                          size: 30,
+                                                          color: _colorfromhex("#ABAFD1"),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   )
                                                 ]),
                                               ),

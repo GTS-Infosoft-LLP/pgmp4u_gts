@@ -264,7 +264,7 @@ class HiveHandler {
   }
 
   static ValueListenable<Box<List<CourseDetails>>> getCourseListener() {
-    return Hive.box<List<CourseDetails>>(CourseBox).listenable();
+    return Hive.box<List<CourseDetails>>(CourseBox).listenable() ?? [];
   }
 
   static List<CourseDetails> getCourseDataList() {
@@ -343,7 +343,7 @@ class HiveHandler {
   }
 
   static ValueListenable<Box<List<MasterDetails>>> getMasterListener() {
-    return Hive.box<List<MasterDetails>>(MasterDataBox).listenable()??[];
+    return Hive.box<List<MasterDetails>>(MasterDataBox).listenable() ?? [];
   }
 
   static List<MasterDetails> getMasterDataList({String key}) {
