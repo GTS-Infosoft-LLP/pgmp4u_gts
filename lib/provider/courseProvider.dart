@@ -70,8 +70,10 @@ class CourseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<MasterDetails> tempListMaster = [];
   List<MasterDetails> masterTemp = [];
   Future<void> getMasterData(int id) async {
+    tempListMaster = [];
     print("idddd=========>>>>>>>>>>>>>>>$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -85,13 +87,17 @@ class CourseProvider extends ChangeNotifier {
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     )
-        .onError((error, stackTrace) {
+        .onError((error, stackTrace) async {
       print("errore======>>>>$error");
-      masterTemp = [];
-      if (firstMaster == 0) {
-        HiveHandler.addMasterData(masterList, keyName: id.toString());
-        firstMaster = 1;
+      tempListMaster = [];
+      tempListMaster = HiveHandler.getMasterDataList(key: id.toString()) ?? [];
+      print("tempList===========$tempListMaster");
+      if (tempListMaster.isEmpty) {
+        print("templist is empty.......");
+        tempListMaster = [];
+        HiveHandler.addMasterData(tempListMaster, keyName: id.toString());
       }
+
       return;
     });
 
@@ -164,12 +170,14 @@ class CourseProvider extends ChangeNotifier {
         .onError((error, stackTrace) {
       print("error========>>$error");
       flashCate = [];
-      if (firstFlashCate == 0) {
+      flashCate =  HiveHandler.getFlashCateDataList(key: id.toString()) ?? [];
+      if (flashCate.isEmpty) {
+            flashCate = [];
         HiveHandler.addFlashCateData(flashCate, id.toString());
-        firstFlashCate = 1;
+     
       }
-      flashCateTempList = [];
-      // return;
+     
+  
     });
 
     print("response.statusCode===${response.statusCode}");
@@ -262,7 +270,7 @@ class CourseProvider extends ChangeNotifier {
     print("respponse=== ${response.body}");
   }
 
-  List<CourseDetails> tempList = [];
+  List<CourseDetails> tempListCourse = [];
   Future<void> getCourse() async {
     print("getCourse api calllllllll");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -274,14 +282,14 @@ class CourseProvider extends ChangeNotifier {
       Uri.parse("http://3.227.35.115:1011/api/getCourse"),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
     ).onError((error, stackTrace) {
+      tempListCourse = [];
+      tempListCourse = HiveHandler.getCourseDataList();
       print("error====>>$error");
-      course = [];
-      if (firstCourse == 0) {
-        HiveHandler.addCourseData(course);
-        firstCourse = 1;
-      }
+      if (tempListCourse.isEmpty) {
+        course = [];
 
-      tempList = [];
+        HiveHandler.addCourseData(course);
+      }
     });
 
     print("response.statusCode===${response.statusCode}");
@@ -297,11 +305,11 @@ class CourseProvider extends ChangeNotifier {
         HiveHandler.addCourseData(course);
 
         Future.delayed(Duration(microseconds: 800), () {
-          tempList = HiveHandler.getCourseDataList();
+          tempListCourse = HiveHandler.getCourseDataList();
 
           notifyListeners();
           print("*************************************************");
-          print("tempList==========$tempList");
+          print("tempList==========$tempListCourse");
         });
       } catch (e) {
         print("errorr===========>>>>>>$e");
@@ -361,7 +369,7 @@ class CourseProvider extends ChangeNotifier {
     print("respponse=== ${response.body}");
   }
 
-  List<FlashCardDetails> flashTemp = [];
+  List<FlashCardDetails> flashTempDisplay = [];
   Future<void> getFlashCards(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -377,13 +385,15 @@ class CourseProvider extends ChangeNotifier {
     )
         .onError((error, stackTrace) {
       print("erroeee===>>$error");
-      FlashCards = [];
-      if (firstFlshData == 0) {
+      flashTempDisplay = [];
+      flashTempDisplay = HiveHandler.getflashCardsList(keyName: id.toString()) ?? [];
+
+      if (flashTempDisplay.isEmpty) {
+        FlashCards = [];
         HiveHandler.addFlash(FlashCards, KeyName: id.toString());
-        firstFlshData = 1;
       }
 
-      flashTemp = [];
+      flashTempDisplay = [];
     });
 
     var resDDo = json.decode(response.body);
@@ -415,7 +425,7 @@ class CourseProvider extends ChangeNotifier {
           List<FlashCardDetails> tempList = HiveHandler.getflashCardsList(keyName: id.toString()) ?? [];
           print("*************************************************");
           FlashOfflineList = HiveHandler.getflashCardsList() ?? [];
-          flashTemp = HiveHandler.getflashCardsList() ?? [];
+          flashTempDisplay = HiveHandler.getflashCardsList() ?? [];
           print("tempList==========$tempList");
           print("FlashOfflineList==========$FlashOfflineList");
         });
@@ -499,18 +509,13 @@ class CourseProvider extends ChangeNotifier {
     )
         .onError((error, stackTrace) {
       print("erroroe=====>>>>>$error");
-      testData = [];
+      testListTemp = [];
+      testListTemp = HiveHandler.getTestDataList(key: id.toString());
+
       print("firstTestData============$firstTestDataMock");
-      if (testType == "Mock Test") {
-        if (firstTestDataMock == 0) {
-          HiveHandler.addTestMpData(testData, id.toString());
-          firstTestDataMock = 1;
-        }
-      } else if (testType == "Practice Test") {
-        if (firstTestDataPractice == 0) {
-          HiveHandler.addTestMpData(testData, id.toString());
-          firstTestDataPractice = 1;
-        }
+      if (testListTemp.isEmpty) {
+        testData = [];
+        HiveHandler.addTestMpData(testData, id.toString());
       }
 
       testListTemp = [];

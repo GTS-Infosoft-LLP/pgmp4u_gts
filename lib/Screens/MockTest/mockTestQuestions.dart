@@ -233,7 +233,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     setState(() => questionLoader = true);
     print('Mock text question : $question');
 
-    List<String> mckOptions=[];
+    List<String> mckOptions = [];
 
     for (int i = 0; i < list01.length; i++) {
       String optsValue = "";
@@ -592,6 +592,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
                                                         int rightAnswerLength =
                                                             mockQuestion[_quetionNo].questionDetail.rightAnswer.length;
+
+                                                        // return title.question_option.where((element)=>element.question_option.isNotEmpty).toList();
                                                         return title.question_option.isNotEmpty
                                                             ? GestureDetector(
                                                                 onTap: () => {
