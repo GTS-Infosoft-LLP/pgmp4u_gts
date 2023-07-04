@@ -643,6 +643,8 @@ class CourseProvider extends ChangeNotifier {
   void setMasterListType(String type) {
     selectedMasterType = type;
     print("selectedMasterType=======$selectedMasterType");
-    notifyListeners();
+    Future.delayed(Duration.zero, () {
+      notifyListeners();
+    });
   }
 }

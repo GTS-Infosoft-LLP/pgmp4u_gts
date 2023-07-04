@@ -124,7 +124,17 @@ class ProfileProvider extends ChangeNotifier {
   var Subsmsg;
   var subsPrice;
 
+  bool isChatSubscribed;
+  bool subscriptionApiCalling = false;
+  updateSubApi(bool v) {
+    subscriptionApiCalling = v;
+    Future.delayed(Duration.zero, () {
+      notifyListeners();
+    });
+  }
+
   Future<void> subscriptionStatus(String type) async {
+    updateSubApi(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -144,25 +154,14 @@ class ProfileProvider extends ChangeNotifier {
     var resDDo = json.decode(response.body);
     var resStatus = (resDDo["status"]);
 
-    if (resStatus == 400) {
-      // masterList = [];
-      // videoPresent = 0;
-
-      notifyListeners();
-      return;
-    }
-
-    // print("val of vid present===$videoPresent");
-
+    print("respponse=== ${response.body}");
     if (response.statusCode == 200) {
-      // masterList.clear();
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
       print("mapResponse==========$mapResponse");
 
       successValue = mapResponse["success"];
-      // Subsmsg = mapResponse["message"];
+
       print("successValue============$successValue");
-      // print("Subsmsg============$Subsmsg");
 
       Map<String, dynamic> temp1 = mapResponse["data"];
 
@@ -171,9 +170,23 @@ class ProfileProvider extends ChangeNotifier {
       print("temp list===$temp1");
       // masterList = temp1.map((e) => MasterDetails.fromjson(e)).toList();
 
-      notifyListeners();
+      print('isChatSubscribed condition ${mapResponse["success"]}');
+      if (mapResponse["success"] == true) {
+        isChatSubscribed = true;
+      } else {
+        isChatSubscribed = false;
+      }
+      updateSubApi(false);
     }
-    print("respponse=== ${response.body}");
+    if (resStatus == 400) {
+      isChatSubscribed = false;
+      updateSubApi(false);
+
+      return;
+    } else {
+      isChatSubscribed = false;
+      updateSubApi(false);
+    }
   }
 
   Future callCreateOrder(int selectedId, String categoryType) async {
