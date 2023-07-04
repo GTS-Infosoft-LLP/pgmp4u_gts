@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:pgmp4u/api/apis.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PaymentAndroid extends StatefulWidget {
   final String token;
   int statusFlash1videoLibrary2;
-  PaymentAndroid({Key key, this.token, this.statusFlash1videoLibrary2})
-      : super(key: key);
+  String urlll;
+  PaymentAndroid({Key key, this.token, this.statusFlash1videoLibrary2, this.urlll}) : super(key: key);
 
   @override
   State<PaymentAndroid> createState() => _PaymentWithStripeState();
@@ -58,10 +56,11 @@ class _PaymentWithStripeState extends State<PaymentAndroid> {
           ),
           body: InAppWebView(
             initialUrlRequest: URLRequest(
-              url: Uri.parse(widget.statusFlash1videoLibrary2 == 1
-                  ? 
-                  stripeFlashCard
-                  : stripeVideoLib),
+              // url: Uri.parse(widget.statusFlash1videoLibrary2 == 1
+              //     ?
+              //     stripeFlashCard
+              //     : stripeVideoLib),
+              url: Uri.parse(widget.urlll),
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': widget.token,
@@ -73,12 +72,11 @@ class _PaymentWithStripeState extends State<PaymentAndroid> {
             },
 
             onLoadStart: (InAppWebViewController controller, Uri url) {
-              print("current url >>>>>>  ${url}");
+              print("current url >>>>>>  $url");
             },
             onLoadStop: (InAppWebViewController controller, Uri url) {},
-            onConsoleMessage: (InAppWebViewController _controller,
-                ConsoleMessage consoleMessage) async {
-              print("console message: ${consoleMessage}");
+            onConsoleMessage: (InAppWebViewController _controller, ConsoleMessage consoleMessage) async {
+              print("console message: $consoleMessage");
               _controller.addJavaScriptHandler(
                   handlerName: "pgmp4u",
                   callback: (args) {

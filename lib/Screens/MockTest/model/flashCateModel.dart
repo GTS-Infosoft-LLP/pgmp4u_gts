@@ -1,29 +1,30 @@
-
 import 'package:hive/hive.dart';
-    part 'flashCateModel.g.dart';
+part 'flashCateModel.g.dart';
+
 @HiveType(typeId: 14)
 class FlashCateDetails {
   @HiveField(0)
   int id;
-    @HiveField(1)
+  @HiveField(1)
   String name;
-    @HiveField(2)
+  @HiveField(2)
   int position;
-    @HiveField(3)
+  @HiveField(3)
   int courseId;
-    @HiveField(4)
+  @HiveField(4)
   int masterList;
-    @HiveField(5)
+  @HiveField(5)
   int payment_status;
-    @HiveField(6)
+  @HiveField(6)
   String price;
-    @HiveField(7)
+  @HiveField(7)
   int status;
-    @HiveField(8)
+  @HiveField(8)
   int deleteStatus;
+  @HiveField(9)
+  int flashcards;
 
-
- FlashCateDetails();
+  FlashCateDetails();
 
   FlashCateDetails.fromjson(Map<String, dynamic> json) {
     id = json["id"];
@@ -35,5 +36,6 @@ class FlashCateDetails {
     price = json["price"];
     status = json["status"];
     deleteStatus = json["deleteStatus"];
+    flashcards = json["flashcards"] ?? 0;
   }
 }

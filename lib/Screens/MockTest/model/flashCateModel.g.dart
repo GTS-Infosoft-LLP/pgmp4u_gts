@@ -25,13 +25,14 @@ class FlashCateDetailsAdapter extends TypeAdapter<FlashCateDetails> {
       ..payment_status = fields[5] as int
       ..price = fields[6] as String
       ..status = fields[7] as int
-      ..deleteStatus = fields[8] as int;
+      ..deleteStatus = fields[8] as int
+      ..flashcards = fields[9] as int;
   }
 
   @override
   void write(BinaryWriter writer, FlashCateDetails obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -49,7 +50,9 @@ class FlashCateDetailsAdapter extends TypeAdapter<FlashCateDetails> {
       ..writeByte(7)
       ..write(obj.status)
       ..writeByte(8)
-      ..write(obj.deleteStatus);
+      ..write(obj.deleteStatus)
+      ..writeByte(9)
+      ..write(obj.flashcards);
   }
 
   @override

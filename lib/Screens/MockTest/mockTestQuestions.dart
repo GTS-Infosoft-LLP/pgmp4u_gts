@@ -593,8 +593,16 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                         int rightAnswerLength =
                                                             mockQuestion[_quetionNo].questionDetail.rightAnswer.length;
 
-                                                        // return title.question_option.where((element)=>element.question_option.isNotEmpty).toList();
-                                                        return title.question_option.isNotEmpty
+                                                        if (title.question_option.isEmpty) {
+                                                          // continue;
+                                                          
+                                            
+                                                          title.question_option = "None of these";
+                                                          
+                                                        }
+
+                                                        // return mockQuestion[_quetionNo] .questionDetail.Options.where((element)=>element.question_option.isNotEmpty).toList();
+                                                        return title.question_option != null
                                                             ? GestureDetector(
                                                                 onTap: () => {
                                                                   if (selectedAnswer.length != rightAnswerLength)
@@ -669,7 +677,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                         ),
                                                                         child: Center(
                                                                           child: Text(
-                                                                            index == 0
+                                                                            
+                                                                            index == 0 
                                                                                 ? 'A'
                                                                                 : index == 1
                                                                                     ? 'B'

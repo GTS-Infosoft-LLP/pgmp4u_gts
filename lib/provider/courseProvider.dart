@@ -170,14 +170,11 @@ class CourseProvider extends ChangeNotifier {
         .onError((error, stackTrace) {
       print("error========>>$error");
       flashCate = [];
-      flashCate =  HiveHandler.getFlashCateDataList(key: id.toString()) ?? [];
+      flashCate = HiveHandler.getFlashCateDataList(key: id.toString()) ?? [];
       if (flashCate.isEmpty) {
-            flashCate = [];
+        flashCate = [];
         HiveHandler.addFlashCateData(flashCate, id.toString());
-     
       }
-     
-  
     });
 
     print("response.statusCode===${response.statusCode}");
@@ -186,7 +183,10 @@ class CourseProvider extends ChangeNotifier {
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
       print("mapResponse=========$mapResponse");
       if (mapResponse["status"] == 400) {
+        print("status 400");
         flashCate = [];
+        HiveHandler.addFlashCateData(flashCate, id.toString());
+
         notifyListeners();
         return;
       } else {
@@ -320,6 +320,11 @@ class CourseProvider extends ChangeNotifier {
       if (course.isNotEmpty) {
         print("course 0=== ${course[0].description}");
       }
+    } else {
+      print("status codeee====>>>>${response.statusCode}");
+      course = [];
+
+      HiveHandler.addCourseData(course);
     }
     print("respponse=== ${response.body}");
   }

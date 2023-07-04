@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -165,8 +166,8 @@ class ProfileProvider extends ChangeNotifier {
 
       Map<String, dynamic> temp1 = mapResponse["data"];
 
-subsPrice=mapResponse["data"]["price"];
-      print("priveeeee=====${subsPrice}");
+      subsPrice = mapResponse["data"]["price"];
+      print("priveeeee=====$subsPrice");
       print("temp list===$temp1");
       // masterList = temp1.map((e) => MasterDetails.fromjson(e)).toList();
 
@@ -175,40 +176,27 @@ subsPrice=mapResponse["data"]["price"];
     print("respponse=== ${response.body}");
   }
 
-
-
-    Future callCreateOrder(int selectedId,String categoryType) async {
-      print("selectedId===================${selectedId}");
-       print("categoryType===============${categoryType}"); 
+  Future callCreateOrder(int selectedId, String categoryType) async {
+    print("selectedId===================$selectedId");
+    print("categoryType===============$categoryType");
+    categoryType = categoryType.replaceAll(" ", "");
+    print("categoryType==============$categoryType");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
-    var createOrder="https://apivcarestage.vcareprojectmanagement.com/api/createOrder";
-    response = await http.get(Uri.parse("$createOrder+'/$selectedId'+'/$categoryType'"),
+    var createOrder = "https://apivcarestage.vcareprojectmanagement.com/api/createOrder/";
+    response = await http.get(Uri.parse("$createOrder$selectedId/$categoryType"),
         headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
 
+    print("Url :=> ${Uri.parse("$createOrder$selectedId/$categoryType")}");
 
-    print("Url :=> ${Uri.parse("$createOrder+'/$selectedId'+'/$categoryType'")}");
-
-
-    print("API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
+    log("API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
     print("API Response ; $stringValue => ${response.request.url}; ${response.body}");
 
-
     if (response.statusCode == 200) {
-
-      print(convert.jsonDecode(response.body));
+      // print(convert.jsonDecode(response.body));
 
       notifyListeners();
     }
   }
-
-
-
-
-
-
-
-
-
 }

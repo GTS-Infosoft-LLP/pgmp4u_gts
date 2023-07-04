@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -127,7 +128,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                   itemCount: testPercent.length,
                                   itemBuilder: (context, index) {
                                     return InkWell(
-                                      onTap: () {
+                                      onTap: () async {
                                         var startval;
 
                                         if (testPercent[index].numAttemptes == testPercent[index].attempts.length) {
@@ -138,6 +139,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
 
                                         CourseProvider courseProvider = Provider.of(context, listen: false);
                                         // print("selectedIdNew======>> $selectedIdNew");
+                                           await Hive.openBox("MockAttemptsBox");  
                                         courseProvider.apiCall(testPercent[index].id);
 
                                         Future.delayed(const Duration(milliseconds: 400), () {
@@ -253,7 +255,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                                                       ? _colorfromhex("#FFEFDC")
                                                                                       : _colorfromhex("#E4FFE6"),
                                                                       border: Border.all(
-                                                                        color: courseprovider.testDetails[index]
+                                                                        color: testPercent[index]
                                                                                     .attempts[inx].perc ==
                                                                                 ''
                                                                             ? Colors.grey
@@ -284,7 +286,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                                     ),
                                                                     child: Center(
                                                                         child: Text(
-                                                                      courseprovider.testDetails[index].attempts[inx]
+                                                                      testPercent[index].attempts[inx]
                                                                                   .perc !=
                                                                               ''
                                                                           ? ((double.parse(testPercent[index]
@@ -298,7 +300,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                                         fontFamily: 'Roboto Medium',
                                                                         fontWeight: FontWeight.w600,
                                                                         fontSize: 8,
-                                                                        color: courseprovider.testDetails[index]
+                                                                        color: testPercent[index]
                                                                                     .attempts[inx].perc ==
                                                                                 ''
                                                                             ? Colors.grey
@@ -322,7 +324,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                                                             ((double.parse(testPercent[index].attempts[inx].perc))
                                                                                                     .toInt()) <=
                                                                                                 75)
-                                                                                        ? _colorfromhex("#FE9E45")
+                                                                                        ? _colorfromhex("#FE9E45")  
                                                                                         : _colorfromhex("#04AE0B"),
                                                                         letterSpacing: 0.3,
                                                                       ),

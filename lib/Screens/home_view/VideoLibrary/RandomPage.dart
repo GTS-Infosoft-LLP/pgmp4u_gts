@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/Screens/Profile/paymentstripe2.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:pgmp4u/Screens/Profile/PaymentStatus.dart';
@@ -30,6 +31,9 @@ class _RandomPageState extends State<RandomPage> {
     print("perice value is===>> ${widget.price}");
     print("category idddd======${widget.categoryId}");
     print("categoryyy typeee======${widget.categoryType}");
+
+    CourseProvider cp = Provider.of(context, listen: false);
+    print("cp.selectedMasterType==============${cp.selectedMasterType}");
 
     if (widget.price == null) {
       widget.price = "\$199";
@@ -210,8 +214,8 @@ class _RandomPageState extends State<RandomPage> {
                       //         ),
                       //       )
                       //     : Container(),
-                      Consumer<PurchaseProvider>(
-                        builder: (context, value, child) {
+                      Consumer2<PurchaseProvider, CourseProvider>(
+                        builder: (context, value, cp, child) {
                           var latestState = value.serverResponse.getContent();
                           if (latestState is Loading) {
                             return Center(child: CircularProgressIndicator());
@@ -228,7 +232,7 @@ class _RandomPageState extends State<RandomPage> {
                               Navigator.pop(context, true);
                             });
                           }
-                          return BuyButton2(context, value, widget.index, widget.categoryType, widget.categoryId);
+                          return BuyButton2(context, value, widget.index, cp.selectedMasterType, widget.categoryId);
                         },
                       )
                     ],
@@ -273,6 +277,9 @@ Future<void> _handlePaymentError2(BuildContext context) async {
 Widget BuyButton2(
     BuildContext context, PurchaseProvider purchaseProvider, int index1forFlash2forvideoLib, String type, int IdValue) {
   //index1forFlash2forvideoLib   1  for flash card and  2 for video Library
+  print("type============$type");
+  print("IdValue=============$IdValue");
+
   return Column(
     children: [
       Center(
@@ -282,7 +289,7 @@ Widget BuyButton2(
           height: 40,
           // alignment: Alignment.center,
           decoration: BoxDecoration(
-              color: Colors.amber,
+              color: Colors.purple,
               // color: Colors.indigo.shade600,
 
               borderRadius: BorderRadius.circular(30.0)),
@@ -306,14 +313,18 @@ Widget BuyButton2(
 
                 ProfileProvider profProvi = Provider.of(context, listen: false);
                 await profProvi.callCreateOrder(IdValue, type);
+                type=type.replaceAll(" ", "");
+
+                String urll="https://apivcarestage.vcareprojectmanagement.com/api/createOrder/$IdValue/$type";
 
                 /// Payment implement with stripe
                 bool status = await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          PaymentAndroid(token: token, statusFlash1videoLibrary2: index1forFlash2forvideoLib),
+                          PaymentAndroid(token: token, statusFlash1videoLibrary2: index1forFlash2forvideoLib,urlll:urll),
                     ));
+                print("statueeess====>>>$status");
 
                 if (status) {
                   Navigator.pop(context);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
+import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/provider/response_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -38,10 +39,10 @@ class _FlashCardItemState extends State<FlashCardItem> {
   void initState() {
     CourseProvider courseProvider = Provider.of(context, listen: false);
     print("courseProvider.flashCate.length==========${courseProvider.flashCate.length}");
-    if (flashCateTempList.isEmpty) {
-      flashCateTempList = HiveHandler.getFlashCateDataList(key: courseProvider.selectedMasterId.toString());
-      print("flashCateTempList=========$flashCateTempList");
-    }
+    // if (flashCateTempList.isEmpty) {
+    //   flashCateTempList = HiveHandler.getFlashCateDataList(key: courseProvider.selectedMasterId.toString());
+    //   print("flashCateTempList=========$flashCateTempList");
+    // }
 
     callCategoryApi();
     super.initState();
@@ -132,6 +133,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
                         // } on Exception catch (e) {
                         //   print("erororrrr=====$e");
                         // }
+                        print("cp.selectedMasterId=======${cp.selectedMasterId}");
                         storedFlashCate = value.get(cp.selectedMasterId.toString(), defaultValue: []) ?? [];
 
                         print("storedFlashCate========================$storedFlashCate");
@@ -159,32 +161,41 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                       itemBuilder: (context, index) {
                                         return InkWell(
                                           onTap: () {
-                                            print("flash card category id===>>${storedFlashCate[index].id}");
-
-                                            courseProvider.setSelectedFlashCategory(storedFlashCate[index].id);
-
-                                            if (storedFlashCate[index].payment_status == 0) {}
-                                            courseProvider.FlashCards = [];
-
-                                            courseProvider.getFlashCards(storedFlashCate[index].id);
-
-                                            Future.delayed(const Duration(milliseconds: 400), () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     MaterialPageRoute(
-                                              //         builder: (context) =>
-                                              //             FlashCardsPage(
-                                              //               heding: courseProvider
-                                              //                   .flashCate[index].name,
-                                              //             )));
+                                            if (storedFlashCate[index].payment_status == 1) {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) => FlashDisplay(
-                                                            heding: storedFlashCate[index].name,
-                                                          )));
-                                              //FlashDisplay
-                                            });
+                                                      builder: (context) => RandomPage(
+                                                          price: storedFlashCate[index].price,
+                                                          categoryId: storedFlashCate[index].id)));
+                                            } else {
+                                              print("flash card category id===>>${storedFlashCate[index].id}");
+
+                                              courseProvider.setSelectedFlashCategory(storedFlashCate[index].id);
+
+                                              if (storedFlashCate[index].payment_status == 0) {}
+                                              courseProvider.FlashCards = [];
+
+                                              courseProvider.getFlashCards(storedFlashCate[index].id);
+
+                                              Future.delayed(const Duration(milliseconds: 400), () {
+                                                // Navigator.push(
+                                                //     context,
+                                                //     MaterialPageRoute(
+                                                //         builder: (context) =>
+                                                //             FlashCardsPage(
+                                                //               heding: courseProvider
+                                                //                   .flashCate[index].name,
+                                                //             )));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => FlashDisplay(
+                                                              heding: storedFlashCate[index].name,
+                                                            )));
+                                                //FlashDisplay
+                                              });
+                                            }
                                           },
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -196,7 +207,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                 child: Row(
                                                   children: [
                                                     Padding(
-                                                      padding: const EdgeInsets.only(bottom: 6.0),
+                                                      padding: const EdgeInsets.only(bottom: 6.0, top: 6),
                                                       child: Container(
                                                           height: 60,
                                                           width: 60,
@@ -216,16 +227,80 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                       width: 10,
                                                     ),
 
-                                                    Text(
-                                                      storedFlashCate[index].name,
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        fontFamily: 'Roboto Medium',
-                                                        fontWeight: FontWeight.w600,
-                                                      ),
-                                                      maxLines: 2,
-                                                      overflow: TextOverflow.ellipsis,
-                                                    )
+                                                    Column(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Container(
+                                                          width: MediaQuery.of(context).size.width * .7,
+                                                          // color: Colors.amber,
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              Container(
+                                                                // width: MediaQuery.of(context).size.width * .7,
+                                                                child: Text(
+                                                                  storedFlashCate[index].flashcards.toString() +
+                                                                      " ${widget.title} available",
+                                                                  style: TextStyle(
+                                                                      fontSize: 14,
+                                                                      fontFamily: 'Roboto Medium',
+                                                                      // fontWeight: FontWeight.w600,
+                                                                      color: Colors.grey),
+                                                                  maxLines: 2,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                ),
+                                                              ),
+                                                              storedFlashCate[index].payment_status == 1
+                                                                  ? Text(
+                                                                      "Premium",
+                                                                      style: TextStyle(
+                                                                        fontSize: 14,
+                                                                        fontFamily: 'Roboto Medium',
+                                                                        fontWeight: FontWeight.w600,
+                                                                      ),
+                                                                      maxLines: 2,
+                                                                      overflow: TextOverflow.ellipsis,
+                                                                    )
+                                                                  : Text(""),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 2),
+                                                        Container(
+                                                          width: MediaQuery.of(context).size.width * .7,
+                                                          child: Text(
+                                                            storedFlashCate[index].name,
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontFamily: 'Roboto Medium',
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                            maxLines: 2,
+                                                            overflow: TextOverflow.ellipsis,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                    // Container(
+                                                    //   child: Row(
+                                                    //     mainAxisAlignment: MainAxisAlignment.end,
+                                                    //     children: [
+                                                    //       Text(
+                                                    //         "Premium",
+                                                    //         style: TextStyle(
+                                                    //           fontSize: 16,
+                                                    //           fontFamily: 'Roboto Medium',
+                                                    //           fontWeight: FontWeight.w600,
+                                                    //         ),
+                                                    //         maxLines: 2,
+                                                    //         overflow: TextOverflow.ellipsis,
+                                                    //       ),
+                                                    //     ],
+                                                    //   ),
+                                                    // ),
+
                                                     // )
                                                   ],
                                                 )

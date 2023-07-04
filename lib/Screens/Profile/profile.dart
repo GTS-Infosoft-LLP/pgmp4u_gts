@@ -665,9 +665,7 @@ class _ProfileState extends State<Profile> {
 
                             GestureDetector(
                               onTap: () async {
-
-
-                                CourseProvider crsProvi=Provider.of(context,listen: false);
+                                CourseProvider crsProvi = Provider.of(context, listen: false);
                                 crsProvi.setMasterListType("Chat");
                                 ProfileProvider profprovi = Provider.of(context, listen: false);
                                 await profprovi.subscriptionStatus("Chat");
@@ -675,8 +673,14 @@ class _ProfileState extends State<Profile> {
                                 print("profprovi.successValue=======${profprovi.successValue}");
 
                                 if (profprovi.successValue == "false") {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) => RandomPage(price: profprovi.subsPrice,categoryType: crsProvi.selectedMasterType,categoryId: 0,)));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => RandomPage(
+                                                price: profprovi.subsPrice,
+                                                categoryType: crsProvi.selectedMasterType,
+                                                categoryId: 0,
+                                              )));
                                 } else {
                                   context.read<ChatProvider>().isChatSubscribed()
                                       ? Navigator.push(
@@ -686,7 +690,7 @@ class _ProfileState extends State<Profile> {
 
                                 //Question
 
-                                // subscriptionStatus
+                                // subscriptionStatusP
 
                                 // context.read<ChatProvider>().isChatSubscribed()
                                 //     ? Navigator.push(context, MaterialPageRoute(builder: (context) => GroupListPage()))

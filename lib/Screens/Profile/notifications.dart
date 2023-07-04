@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../provider/profileProvider.dart';
 import '../../tool/ShapeClipper.dart';
 import '../../utils/app_color.dart';
-import '../QuesOfDay.dart';
 
 class Notifications extends StatefulWidget {
   const Notifications({Key key}) : super(key: key);
@@ -193,7 +192,7 @@ class _NotificationsState extends State<Notifications> {
                                                 : Container(
                                                     width: MediaQuery.of(context).size.width * .7,
                                                     child: Text(
-                                                      profileProvider.NotificationData[index].message,
+                                                      profileProvider.NotificationData[index].message ?? "",
                                                       maxLines: 2,
                                                       overflow: TextOverflow.ellipsis,
                                                       style: TextStyle(color: Colors.black, fontSize: 14),

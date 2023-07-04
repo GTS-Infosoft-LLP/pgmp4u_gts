@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pgmp4u/Screens/Profile/notifications.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
+import 'package:pgmp4u/Services/globalcontext.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -115,13 +118,42 @@ class _SplashScreenState extends State<SplashScreen> {
         LocalNotifications().showNotification(
           title: '${event.notification.body}',
           body: '',
-          payload: event.data["notificationType"] == "1" ? "one" : "two",
+          payload: jsonEncode(event.data),
         );
       }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print("Listen onMessageOpenedApp   ${message.data}");
+
+      print("Notificationsssssss>>>>>>");
+      print("NOTIFICATION json$message");
+
+      print("NOTIFICATION======$json");
+      print("tpmdjsdvjsdv======${["notificationType"]}");
+      print("   ${['Notificationtype']}");
+
+      print("Notificationsssssss>>>>>>");
+
+      print("NOTIFICATION======$json");
+      print("   ${['Notificationtype']}");
+
+      switch (['Notificationtype'].toString()) {
+        case "1":
+        // Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
+        //   break;
+        case "2":
+        //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
+        //   break;
+        case "3":
+        //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
+        //   break;
+        case "4":
+          Navigator.push(
+              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+          break;
+      }
+
       // if (message.data["notificationType"] == "1") {
       //   Navigator.of(GlobalVariable.navState.currentContext!).push(
       //       MaterialPageRoute(builder: (context) => const Notifications()));
@@ -162,7 +194,30 @@ class LocalNotifications {
   }
 
   void selectNotification(String pay) {
+    print("Notificationsssssss>>>>>>");
+    print("NOTIFICATION json $pay");
+    var json = jsonDecode(pay);
+
+    print("NOTIFICATION======$json");
+    print(" typeeeee=====  ${['Notificationtype']}");
+    print(" typeeeee sdsd=====  ${json['notificationType']}");
+
     print("selectNotification type$pay");
+    switch (json["notificationType"].toString()) {
+      case "1":
+      // Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
+      //   break;
+      case "2":
+      //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
+      //   break;
+      case "3":
+      //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
+      //   break;
+      case "4":
+        Navigator.push(
+            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+        break;
+    }
     // if(){}
     // if (pay == "one") {
     //   Navigator.of(GlobalVariable.navState.currentContext!)

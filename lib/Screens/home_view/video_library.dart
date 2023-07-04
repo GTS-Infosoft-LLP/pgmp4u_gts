@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:provider/provider.dart';
@@ -160,6 +161,14 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                       ),
                                                     ));
                                               });
+                                            } else {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => RandomPage(
+                                                            categoryId: courseProvider.videoCate[index].id,
+                                                            price: courseProvider.videoCate[index].price,
+                                                          )));
                                             }
                                           },
                                           child: Padding(
@@ -197,16 +206,36 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    // Text(
-                                                    //   "",
-                                                    //   style: TextStyle(
-                                                    //     fontSize: 14,
-                                                    //     color: Colors.grey,
-                                                    //   ),
-                                                    // ),
-                                                    // SizedBox(
-                                                    //   height: 5,
-                                                    // ),
+                                                    Container(
+                                                      width: MediaQuery.of(context).size.width * .7,
+                                                      // color: Colors.amber,
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            courseProvider.videoCate[index].videoLibraries.toString() +
+                                                                " videos available",
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              color: Colors.grey,
+                                                            ),
+                                                          ),
+                                                          courseProvider.videoCate[index].payment_status == 1
+                                                              ? Text(
+                                                                  "Premium",
+                                                                  maxLines: 2,
+                                                                  style: TextStyle(
+                                                                    fontSize: 14,
+                                                                    color: Colors.black,
+                                                                  ),
+                                                                )
+                                                              : Text(""),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 2,
+                                                    ),
                                                     Container(
                                                       width: MediaQuery.of(context).size.width * .7,
                                                       child: Text(

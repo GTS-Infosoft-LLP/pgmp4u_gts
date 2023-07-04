@@ -34,6 +34,8 @@ class _HomeViewState extends State<HomeView> {
   @override
   Color clr;
   List<CourseDetails> tempList = [];
+
+  List<CourseDetails> storedCourse = [];
   initState() {
     print("0======call init");
     PurchaseProvider purchaseProvider = Provider.of(context, listen: false);
@@ -238,189 +240,187 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 // tempList.isNotEmpty
                 //     ? Center(child: Container(height: 400, child: Text("No Data Found2222")))
-                //     : 
-                    
-                    
-                    Container(
-                        child: ValueListenableBuilder<Box<List<CourseDetails>>>(
-                            valueListenable: HiveHandler.getCourseListener(),
-                            builder: (context, value, child) {
-                              List<CourseDetails> storedCourse = value.get("courseKey");
-                              print("*****************************");
-                              print("list has data......");
-                              print("storedCourse========$storedCourse");
+                //     :
 
-                              return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
-                                return 
-                                
-                                storedCourse.isEmpty?Center(child: Container(height: 400, child: Text("No Data Found"))):
-                                Container(
-                                    decoration: BoxDecoration(
-                                      // color: Colors.amber,
-                                      border: Border(
-                                          // top: BorderSide(width: 16.0, color: Colors.lightBlue.shade600),
-                                          // bottom: BorderSide(
-                                          //     width: 16.0, color: Colors.lightBlue.shade900),
-                                          ),
-                                    ),
-                                    height: MediaQuery.of(context).size.height * .55,
-                                    child: ListView.builder(
-                                        itemCount: storedCourse.length,
-                                        itemBuilder: (context, index) {
-                                          if (index % 4 == 0) {
-                                            clr = Color(0xff3F9FC9);
-                                          } else if (index % 3 == 0) {
-                                            clr = Color(0xff3FC964);
-                                          } else if (index % 2 == 0) {
-                                            clr = Color(0xffDE682B);
-                                          } else {
-                                            clr = Color(0xffC93F7F);
-                                          }
-                                          return Padding(
-                                            padding: const EdgeInsets.only(bottom: 20),
-                                            child: InkWell(
-                                              onTap: () {
-                                                print("id Is======>>>${storedCourse[index].id}");
+                Container(
+                  child: ValueListenableBuilder<Box<List<CourseDetails>>>(
+                      valueListenable: HiveHandler.getCourseListener(),
+                      builder: (context, value, child) {
+                        storedCourse = value.get("courseKey");
+                        print("*****************************");
+                        print("list has data......");
+                        print("storedCourse========$storedCourse");
 
-                                                courseProvider.setSelectedCourseId(storedCourse[index].id);
+                        return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
+                          return storedCourse.isEmpty
+                              ? Center(child: Container(height: 400, child: Text("No Data Found")))
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    // color: Colors.amber,
+                                    border: Border(
+                                        // top: BorderSide(width: 16.0, color: Colors.lightBlue.shade600),
+                                        // bottom: BorderSide(
+                                        //     width: 16.0, color: Colors.lightBlue.shade900),
+                                        ),
+                                  ),
+                                  height: MediaQuery.of(context).size.height * .55,
+                                  child: ListView.builder(
+                                      itemCount: storedCourse.length,
+                                      itemBuilder: (context, index) {
+                                        if (index % 4 == 0) {
+                                          clr = Color(0xff3F9FC9);
+                                        } else if (index % 3 == 0) {
+                                          clr = Color(0xff3FC964);
+                                        } else if (index % 2 == 0) {
+                                          clr = Color(0xffDE682B);
+                                        } else {
+                                          clr = Color(0xffC93F7F);
+                                        }
+                                        return Padding(
+                                          padding: const EdgeInsets.only(bottom: 20),
+                                          child: InkWell(
+                                            onTap: () {
+                                              print("id Is======>>>${storedCourse[index].id}");
 
-                                                courseProvider.setSelectedCourseName(storedCourse[index].lable);
+                                              courseProvider.setSelectedCourseId(storedCourse[index].id);
 
-                                                courseProvider.getMasterData(storedCourse[index].id);
-                                                Future.delayed(const Duration(milliseconds: 600), () {
-                                                  Navigator.push(context,
-                                                      MaterialPageRoute(builder: (context) => MasterListPage()));
-                                                });
+                                              courseProvider.setSelectedCourseName(storedCourse[index].lable);
 
-                                                // Navigator.push(context, MaterialPageRoute(builder: (context)=>MasterListPage  ()));
-                                                //MasterListPage    VideoLibraryPage
-                                              },
-                                              child: ListTile(
-                                                leading: Container(
-                                                    height: 70,
-                                                    width: 65,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(8),
-                                                      color: clr,
-                                                      // index % 2 == 0
-                                                      //     ? Color(0xff3F9FC9)
-                                                      //     : Color(0xffDE682B),
+                                              courseProvider.getMasterData(storedCourse[index].id);
+                                              Future.delayed(const Duration(milliseconds: 600), () {
+                                                Navigator.push(
+                                                    context, MaterialPageRoute(builder: (context) => MasterListPage()));
+                                              });
+
+                                              // Navigator.push(context, MaterialPageRoute(builder: (context)=>MasterListPage  ()));
+                                              //MasterListPage    VideoLibraryPage
+                                            },
+                                            child: ListTile(
+                                              leading: Container(
+                                                  height: 70,
+                                                  width: 65,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(8),
+                                                    color: clr,
+                                                    // index % 2 == 0
+                                                    //     ? Color(0xff3F9FC9)
+                                                    //     : Color(0xffDE682B),
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(12),
+                                                    child: Icon(FontAwesomeIcons.graduationCap, color: Colors.white),
+                                                  )),
+                                              title: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    storedCourse[index].lable,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.grey,
                                                     ),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.all(12),
-                                                      child: Icon(FontAwesomeIcons.graduationCap, color: Colors.white),
-                                                    )),
-                                                title: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      storedCourse[index].lable,
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey,
-                                                      ),
+                                                  ),
+                                                  Text(
+                                                    storedCourse[index].course,
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: Colors.black,
                                                     ),
-                                                    Text(
-                                                      storedCourse[index].course,
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          );
-                                        })
+                                          ),
+                                        );
+                                      })
 
-                                    // GridView.builder(
-                                    //     itemCount: courseProvider.course.length,
-                                    //     // shrinkWrap: true,
-                                    //     // physics: ClampingScrollPhysics(),
-                                    //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    //       crossAxisCount: 3,
-                                    //       // mainAxisExtent: 160,
-                                    //       crossAxisSpacing: 0,
-                                    //       mainAxisSpacing: 9,
-                                    //     ),
-                                    //     itemBuilder: (context, index) {
-                                    //       return Padding(
-                                    //         padding: const EdgeInsets.all(8.0),
-                                    //         child: InkWell(
-                                    //           onTap: () {
-                                    //             print(
-                                    //                 "id Is======>>>${courseProvider.course[index].id}");
+                                  // GridView.builder(
+                                  //     itemCount: courseProvider.course.length,
+                                  //     // shrinkWrap: true,
+                                  //     // physics: ClampingScrollPhysics(),
+                                  //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  //       crossAxisCount: 3,
+                                  //       // mainAxisExtent: 160,
+                                  //       crossAxisSpacing: 0,
+                                  //       mainAxisSpacing: 9,
+                                  //     ),
+                                  //     itemBuilder: (context, index) {
+                                  //       return Padding(
+                                  //         padding: const EdgeInsets.all(8.0),
+                                  //         child: InkWell(
+                                  //           onTap: () {
+                                  //             print(
+                                  //                 "id Is======>>>${courseProvider.course[index].id}");
 
-                                    //             courseProvider.getMasterData(
-                                    //                 courseProvider.course[index].id);
-                                    //             Future.delayed(const Duration(milliseconds: 600),
-                                    //                 () {
-                                    //               Navigator.push(
-                                    //                   context,
-                                    //                   MaterialPageRoute(
-                                    //                       builder: (context) =>
-                                    //                           MasterListPage()));
-                                    //             });
+                                  //             courseProvider.getMasterData(
+                                  //                 courseProvider.course[index].id);
+                                  //             Future.delayed(const Duration(milliseconds: 600),
+                                  //                 () {
+                                  //               Navigator.push(
+                                  //                   context,
+                                  //                   MaterialPageRoute(
+                                  //                       builder: (context) =>
+                                  //                           MasterListPage()));
+                                  //             });
 
-                                    //             // Navigator.push(context, MaterialPageRoute(builder: (context)=>MasterListPage  ()));
-                                    //             //MasterListPage    VideoLibraryPage
-                                    //           },
-                                    //           child: Container(
-                                    //             height: 80,
+                                  //             // Navigator.push(context, MaterialPageRoute(builder: (context)=>MasterListPage  ()));
+                                  //             //MasterListPage    VideoLibraryPage
+                                  //           },
+                                  //           child: Container(
+                                  //             height: 80,
 
-                                    //             // color: Colors.amber,
-                                    //             child: Column(
-                                    //               crossAxisAlignment: CrossAxisAlignment.center,
-                                    //               children: [
-                                    //                 Padding(
-                                    //                   padding: const EdgeInsets.only(
-                                    //                       top: 15.0, left: 12),
-                                    //                   child: Container(
-                                    //                     height: 60,
-                                    //                     width: 60,
-                                    //                     decoration: BoxDecoration(
-                                    //                       borderRadius: BorderRadius.circular(8),
-                                    //                       color: index % 2 == 0
-                                    //                           ? AppColor.purpule
-                                    //                           : AppColor.green,
-                                    //                     ),
-                                    //                     child: Icon(
-                                    //                         index % 2 == 0
-                                    //                             ? FontAwesomeIcons.graduationCap
-                                    //                             : FontAwesomeIcons.atom,
-                                    //                         color: Colors.white),
-                                    //                   ),
-                                    //                 ),
-                                    //                 SizedBox(
-                                    //                   height: 5,
-                                    //                 ),
-                                    //                 Padding(
-                                    //                   padding: const EdgeInsets.only(left: 10.0),
-                                    //                   child: Container(
-                                    //                     // color: Colors.amber,
-                                    //                     child: Text(
-                                    //                       courseProvider.course[index].course,
-                                    //                       textAlign: TextAlign.center,
-                                    //                       style: TextStyle(
-                                    //                         fontSize: 18,
-                                    //                         color: Colors.black,
-                                    //                       ),
-                                    //                     ),
-                                    //                   ),
-                                    //                 ),
-                                    //               ],
-                                    //             ),
-                                    //           ),
-                                    //         ),
-                                    //       );
-                                    //     }),
+                                  //             // color: Colors.amber,
+                                  //             child: Column(
+                                  //               crossAxisAlignment: CrossAxisAlignment.center,
+                                  //               children: [
+                                  //                 Padding(
+                                  //                   padding: const EdgeInsets.only(
+                                  //                       top: 15.0, left: 12),
+                                  //                   child: Container(
+                                  //                     height: 60,
+                                  //                     width: 60,
+                                  //                     decoration: BoxDecoration(
+                                  //                       borderRadius: BorderRadius.circular(8),
+                                  //                       color: index % 2 == 0
+                                  //                           ? AppColor.purpule
+                                  //                           : AppColor.green,
+                                  //                     ),
+                                  //                     child: Icon(
+                                  //                         index % 2 == 0
+                                  //                             ? FontAwesomeIcons.graduationCap
+                                  //                             : FontAwesomeIcons.atom,
+                                  //                         color: Colors.white),
+                                  //                   ),
+                                  //                 ),
+                                  //                 SizedBox(
+                                  //                   height: 5,
+                                  //                 ),
+                                  //                 Padding(
+                                  //                   padding: const EdgeInsets.only(left: 10.0),
+                                  //                   child: Container(
+                                  //                     // color: Colors.amber,
+                                  //                     child: Text(
+                                  //                       courseProvider.course[index].course,
+                                  //                       textAlign: TextAlign.center,
+                                  //                       style: TextStyle(
+                                  //                         fontSize: 18,
+                                  //                         color: Colors.black,
+                                  //                       ),
+                                  //                     ),
+                                  //                   ),
+                                  //                 ),
+                                  //               ],
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //     }),
 
-                                    );
-                              });
-                            }),
-                      )
+                                  );
+                        });
+                      }),
+                )
 
                 // Text(
                 //   course[index].course

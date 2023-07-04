@@ -1,4 +1,3 @@
-
 class VideoCateDetails {
   int id;
   String name;
@@ -9,7 +8,7 @@ class VideoCateDetails {
   String price;
   int status;
   int deleteStatus;
- 
+  int videoLibraries;
 
   VideoCateDetails.fromjson(Map<String, dynamic> json) {
     id = json["id"];
@@ -21,5 +20,6 @@ class VideoCateDetails {
     price = json["price"];
     status = json["status"];
     deleteStatus = json["deleteStatus"];
+    videoLibraries = json["videoLibraries"] ?? 0;
   }
 }
