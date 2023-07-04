@@ -28,6 +28,9 @@ class CourseProvider extends ChangeNotifier {
   List<TestDetails> testDetails = [];
   List<TestDataDetails> testData = [];
 
+ List<AvailableAttempts> aviAttempts = [];
+
+
   // const _BASE_URL ="https://apivcarestage.vcareprojectmanagement.com/api/";
 
   ///

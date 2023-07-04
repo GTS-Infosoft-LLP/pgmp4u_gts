@@ -243,10 +243,10 @@ class _HomeViewState extends State<HomeView> {
                 //     :
 
                 Container(
+                  // color: _colorfromhex("#ABAFD1").withOpacity(0.13),
                   child: ValueListenableBuilder<Box<List<CourseDetails>>>(
                       valueListenable: HiveHandler.getCourseListener(),
                       builder: (context, value, child) {
-                       
                         print("*****************************>Sdwsfwefw  ${value.get("courseKey")}");
                         storedCourse = value.get("courseKey");
 
@@ -715,5 +715,11 @@ class _HomeViewState extends State<HomeView> {
 
 //   }
 }
+
+Color _colorfromhex(String hexColor) {
+  final hexCode = hexColor.replaceAll('#', '');
+  return Color(int.parse('FF$hexCode', radix: 16));
+}
+
 
 //class SharedPreferences {}

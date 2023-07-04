@@ -41,6 +41,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
   void initState() {
     currentIndex = 0;
     print("in review mock screemn");
+    print("AttemptCount========${widget.attemptData}");
 
     super.initState();
     apiCall2(widget.selectedId);
@@ -53,7 +54,9 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
     String stringValue = prefs.getString('token');
     print(stringValue);
     http.Response response;
-    response = await http.get(Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/ReviewsMockTest/178/4"),
+    response = await http.get(
+        Uri.parse(
+            "https://apivcarestage.vcareprojectmanagement.com/api/ReviewsMockTest/${widget.selectedId}/${widget.attemptData}"),
         headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
 
     print(">>>>>> url  https://apivcarestage.vcareprojectmanagement.com/api/ReviewsMockTest/120/4");

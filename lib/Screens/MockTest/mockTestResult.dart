@@ -11,12 +11,7 @@ class MockTestResult extends StatefulWidget {
   final activeTime;
   final atmptCount;
 
-  MockTestResult(
-      {this.resultsData,
-      this.mocktestId,
-      this.attemptData,
-      this.activeTime,
-      this.atmptCount});
+  MockTestResult({this.resultsData, this.mocktestId, this.attemptData, this.activeTime, this.atmptCount});
 
   @override
   _MockTestResultState createState() => new _MockTestResultState(
@@ -37,8 +32,7 @@ class _MockTestResultState extends State<MockTestResult> {
   final attemptId;
   final activeTimeNew;
 
-  _MockTestResultState(
-      {this.results, this.mocktestIdNew, this.attemptId, this.activeTimeNew});
+  _MockTestResultState({this.results, this.mocktestIdNew, this.attemptId, this.activeTimeNew});
 
   @override
   void initState() {
@@ -47,8 +41,7 @@ class _MockTestResultState extends State<MockTestResult> {
   }
 
   Future<bool> _onWillPop() async {
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil('/dashboard', (Route<dynamic> route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (Route<dynamic> route) => false);
     // return (await showDialog(
     //       context: context,
     //       builder: (context) => new AlertDialog(
@@ -101,9 +94,7 @@ class _MockTestResultState extends State<MockTestResult> {
                       ),
                       child: Container(
                         margin: EdgeInsets.only(
-                            left: width * (20 / 420),
-                            right: width * (20 / 420),
-                            top: height * (16 / 800)),
+                            left: width * (20 / 420), right: width * (20 / 420), top: height * (16 / 800)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,8 +104,7 @@ class _MockTestResultState extends State<MockTestResult> {
                                 GestureDetector(
                                   onTap: () => {
                                     Navigator.of(context)
-                                        .pushNamedAndRemoveUntil('/dashboard',
-                                            (Route<dynamic> route) => false)
+                                        .pushNamedAndRemoveUntil('/dashboard', (Route<dynamic> route) => false)
                                   },
                                   child: Icon(
                                     Icons.arrow_back_ios,
@@ -148,17 +138,13 @@ class _MockTestResultState extends State<MockTestResult> {
                                 width: double.infinity,
                                 color: Colors.white,
                                 margin: EdgeInsets.only(bottom: 10, top: 10),
-                                padding: EdgeInsets.only(
-                                    top: height * (21 / 800),
-                                    bottom: height * (25 / 800)),
+                                padding: EdgeInsets.only(top: height * (21 / 800), bottom: height * (25 / 800)),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Image.asset(
-                                      (percentage >= 0) && (percentage <= 25)
-                                          ? 'assets/cross.png'
-                                          : 'assets/right.png',
+                                      (percentage >= 0) && (percentage <= 25) ? 'assets/cross.png' : 'assets/right.png',
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(top: 3),
@@ -171,8 +157,7 @@ class _MockTestResultState extends State<MockTestResult> {
                                         style: TextStyle(
                                           fontFamily: 'Roboto Bold',
                                           fontSize: width * (19 / 420),
-                                          color: (percentage >= 0) &&
-                                                  (percentage <= 25)
+                                          color: (percentage >= 0) && (percentage <= 25)
                                               ? Colors.red
                                               : _colorfromhex("#04AE0B"),
                                           letterSpacing: 0.3,
@@ -234,26 +219,21 @@ class _MockTestResultState extends State<MockTestResult> {
                                       progressColor: _colorfromhex("#3846A9"),
                                     ),
                                     Container(
-                                        margin: EdgeInsets.only(
-                                            top: height * (35 / 800)),
+                                        margin: EdgeInsets.only(top: height * (35 / 800)),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Container(
-                                              padding: EdgeInsets.only(
-                                                  left: width * (34 / 420),
-                                                  right: width * (24 / 420)),
+                                              padding:
+                                                  EdgeInsets.only(left: width * (34 / 420), right: width * (24 / 420)),
                                               child: Column(
                                                 children: [
                                                   Text(
                                                     '${results["correct"]}',
                                                     style: TextStyle(
                                                       fontFamily: 'Roboto Bold',
-                                                      fontSize:
-                                                          width * (22 / 420),
-                                                      color: _colorfromhex(
-                                                          "#00C925"),
+                                                      fontSize: width * (22 / 420),
+                                                      color: _colorfromhex("#00C925"),
                                                       letterSpacing: 0.3,
                                                     ),
                                                   ),
@@ -261,10 +241,8 @@ class _MockTestResultState extends State<MockTestResult> {
                                                     'Correct',
                                                     style: TextStyle(
                                                       fontFamily: 'Roboto Bold',
-                                                      fontSize:
-                                                          width * (17 / 420),
-                                                      color: _colorfromhex(
-                                                          "#ABAFD1"),
+                                                      fontSize: width * (17 / 420),
+                                                      color: _colorfromhex("#ABAFD1"),
                                                       letterSpacing: 0.3,
                                                     ),
                                                   )
@@ -272,19 +250,16 @@ class _MockTestResultState extends State<MockTestResult> {
                                               ),
                                             ),
                                             Container(
-                                              padding: EdgeInsets.only(
-                                                  left: width * (24 / 420),
-                                                  right: width * (24 / 420)),
+                                              padding:
+                                                  EdgeInsets.only(left: width * (24 / 420), right: width * (24 / 420)),
                                               child: Column(
                                                 children: [
                                                   Text(
                                                     '${results["wrong"]}',
                                                     style: TextStyle(
                                                       fontFamily: 'Roboto Bold',
-                                                      fontSize:
-                                                          width * (22 / 420),
-                                                      color: _colorfromhex(
-                                                          "#FF0000"),
+                                                      fontSize: width * (22 / 420),
+                                                      color: _colorfromhex("#FF0000"),
                                                       letterSpacing: 0.3,
                                                     ),
                                                   ),
@@ -292,10 +267,8 @@ class _MockTestResultState extends State<MockTestResult> {
                                                     'Wrong',
                                                     style: TextStyle(
                                                       fontFamily: 'Roboto Bold',
-                                                      fontSize:
-                                                          width * (17 / 420),
-                                                      color: _colorfromhex(
-                                                          "#ABAFD1"),
+                                                      fontSize: width * (17 / 420),
+                                                      color: _colorfromhex("#ABAFD1"),
                                                       letterSpacing: 0.3,
                                                     ),
                                                   )
@@ -303,19 +276,16 @@ class _MockTestResultState extends State<MockTestResult> {
                                               ),
                                             ),
                                             Container(
-                                              padding: EdgeInsets.only(
-                                                  left: width * (24 / 420),
-                                                  right: width * (34 / 420)),
+                                              padding:
+                                                  EdgeInsets.only(left: width * (24 / 420), right: width * (34 / 420)),
                                               child: Column(
                                                 children: [
                                                   Text(
                                                     '${results["skip"]}',
                                                     style: TextStyle(
                                                       fontFamily: 'Roboto Bold',
-                                                      fontSize:
-                                                          width * (20 / 420),
-                                                      color: _colorfromhex(
-                                                          "#FFC107"),
+                                                      fontSize: width * (20 / 420),
+                                                      color: _colorfromhex("#FFC107"),
                                                       letterSpacing: 0.3,
                                                     ),
                                                   ),
@@ -323,10 +293,8 @@ class _MockTestResultState extends State<MockTestResult> {
                                                     'Skipped',
                                                     style: TextStyle(
                                                       fontFamily: 'Roboto Bold',
-                                                      fontSize:
-                                                          width * (17 / 420),
-                                                      color: _colorfromhex(
-                                                          "#ABAFD1"),
+                                                      fontSize: width * (17 / 420),
+                                                      color: _colorfromhex("#ABAFD1"),
                                                       letterSpacing: 0.3,
                                                     ),
                                                   )
@@ -342,13 +310,9 @@ class _MockTestResultState extends State<MockTestResult> {
                                 color: Colors.white,
                                 margin: EdgeInsets.only(top: 10),
                                 padding: EdgeInsets.only(
-                                    top: width * (25 / 420),
-                                    bottom: width * (25 / 420),
-                                    left: 10,
-                                    right: 10),
+                                    top: width * (25 / 420), bottom: width * (25 / 420), left: 10, right: 10),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -395,10 +359,8 @@ class _MockTestResultState extends State<MockTestResult> {
                       children: [
                         GestureDetector(
                           onTap: () => {
-                            print(
-                                "mocktestIdNew====================$mocktestIdNew"),
-                            print(
-                                "widget.atmptCount====================$widget.atmptCount"),
+                            print("mocktestIdNew====================$mocktestIdNew"),
+                            print("widget.atmptCount====================$widget.atmptCount"),
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -427,12 +389,12 @@ class _MockTestResultState extends State<MockTestResult> {
                         ),
                         GestureDetector(
                           onTap: () => {
+                            print("attemptId======$attemptId"),
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ReviewMockTest(
-                                      selectedId: mocktestIdNew,
-                                      attemptData: attemptId)),
+                                  builder: (context) =>
+                                      ReviewMockTest(selectedId: mocktestIdNew, attemptData: attemptId)),
                             ),
 
                             print("mocktestIdNew===$mocktestIdNew")
@@ -442,9 +404,7 @@ class _MockTestResultState extends State<MockTestResult> {
                             //     arguments: {"screen": "result"})
                           },
                           child: Container(
-                            padding: EdgeInsets.only(
-                                top: height * (20 / 800),
-                                bottom: height * (16 / 800)),
+                            padding: EdgeInsets.only(top: height * (20 / 800), bottom: height * (16 / 800)),
                             width: width / 2,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(

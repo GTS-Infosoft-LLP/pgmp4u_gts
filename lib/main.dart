@@ -29,6 +29,36 @@ import 'Screens/Tests/local_handler/hive_handler.dart';
 import 'Services/globalcontext.dart';
 
 void main() async {
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    print("calliinnuf thiss......");
+    showLoader = true;
+    callMe();
+    return Material(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: Container(
+              color: Colors.transparent,
+              height: MediaQuery.of(GlobalVariable.navState.currentContext).size.height * .5,
+              width: MediaQuery.of(GlobalVariable.navState.currentContext).size.width * .5,
+              alignment: Alignment.center,
+              child: Center(
+                  child: SizedBox(
+                width: 70,
+                height: 70,
+                child: showLoader
+                    ? CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.blue,
+                        ),
+                      )
+                    : Container(width: 150, height: 150, child: Center(child: Text("No Data found"))),
+              ))),
+        ),
+      ),
+    );
+  };
+
   WidgetsFlutterBinding.ensureInitialized();
   await HiveHandler.hiveRegisterAdapter().then((value) {
     print("**************** hive register initialization *************");
@@ -46,6 +76,18 @@ void main() async {
   await Firebase.initializeApp();
 
   runApp(MyApp());
+}
+
+bool showLoader = true;
+void callMe() {
+  Future.delayed(Duration(seconds: 3), () {
+    showLoader = false;
+  });
+}
+
+Color _colorfromhex(String hexColor) {
+  final hexCode = hexColor.replaceAll('#', '');
+  return Color(int.parse('FF$hexCode', radix: 16));
 }
 
 class MyApp extends StatelessWidget {
