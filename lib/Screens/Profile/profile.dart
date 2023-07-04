@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
@@ -28,6 +29,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   CollectionReference users = FirebaseFirestore.instance.collection('staticData');
   Razorpay _razorpay;
+
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
@@ -54,6 +56,11 @@ class _ProfileState extends State<Profile> {
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
 
     getValue();
+
+    context.read<CourseProvider>().setMasterListType("Chat");
+    context.read<ProfileProvider>().subscriptionApiCalling
+        ? null
+        : context.read<ProfileProvider>().subscriptionStatus("Chat");
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
@@ -663,37 +670,36 @@ class _ProfileState extends State<Profile> {
                             ),
 
                             GestureDetector(
-                              onTap: () async {
-                                CourseProvider crsProvi = Provider.of(context, listen: false);
-                                crsProvi.setMasterListType("Chat");
-                                ProfileProvider profprovi = Provider.of(context, listen: false);
-                                await profprovi.subscriptionStatus("Chat");
+                              onTap: context.watch<ProfileProvider>().subscriptionApiCalling
+                                  ? null
+                                  : () async {
+                                      bool isSub = context.read<ProfileProvider>().isChatSubscribed;
 
-                                print("profprovi.successValue=======${profprovi.successValue}");
+                                      print("isChatSubscribed ======= $isSub");
 
-                                if (profprovi.successValue == "false") {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => RandomPage(
-                                            index: 4,
-                                                price: profprovi.subsPrice,
-                                                categoryType: crsProvi.selectedMasterType,
-                                                categoryId: 0,
-                                              )));
-                                } else {
-                                   Navigator.push(
-                                          context, MaterialPageRoute(builder: (context) => GroupListPage()));
-                                }
+                                      if (isSub == null) {
+                                        GFToast.showToast(
+                                          "Something went wrong,please try again",
+                                          context,
+                                          toastPosition: GFToastPosition.BOTTOM,
+                                        );
+                                      }
 
-                                //Question
-
-                                // subscriptionStatusP
-
-                                // context.read<ChatProvider>().isChatSubscribed()
-                                //     ? Navigator.push(context, MaterialPageRoute(builder: (context) => GroupListPage()))
-                                //     : Navigator.push(context, MaterialPageRoute(builder: (context) => RandomPage()));
-                              },
+                                      if (!isSub) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => RandomPage(
+                                                      index: 4,
+                                                      price: context.read<ProfileProvider>().subsPrice.toString(),
+                                                      categoryType: context.read<CourseProvider>().selectedMasterType,
+                                                      categoryId: 0,
+                                                    )));
+                                      } else {
+                                        Navigator.push(
+                                            context, MaterialPageRoute(builder: (context) => GroupListPage()));
+                                      }
+                                    },
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),
                                 padding: EdgeInsets.only(
@@ -714,7 +720,9 @@ class _ProfileState extends State<Profile> {
                                           style: TextStyle(
                                             fontFamily: 'Roboto Medium',
                                             fontSize: width * (18 / 420),
-                                            color: Colors.black,
+                                            color: context.watch<ProfileProvider>().subscriptionApiCalling
+                                                ? Colors.black54
+                                                : Colors.black,
                                           ),
                                         ),
                                       ],
