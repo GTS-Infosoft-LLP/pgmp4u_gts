@@ -301,7 +301,7 @@ class AddDiscussionBottomSheet extends StatelessWidget {
     if (titleController.text.trim().isNotEmpty) {
       await context
           .read<ChatProvider>()
-          .createDiscussionGroup(titleController.text.trim(), mtyList, context)
+          .createDiscussionGroup(titleController.text.trim(), mtyList, context, isFromBottomSheet: true)
           .whenComplete(() {
         titleController.clear();
 

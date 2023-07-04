@@ -67,7 +67,8 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future createDiscussionGroup(String title, List<String> opss, BuildContext context, {String testName = ''}) async {
+  Future createDiscussionGroup(String title, List<String> opss, BuildContext context,
+      {String testName = '', bool isFromBottomSheet = false}) async {
     updateDiscussionGroupLoader(true);
     var body = {
       "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
@@ -102,24 +103,28 @@ class ChatProvider extends ChangeNotifier {
         return;
       }
       sendNotification(title: 'New Discussion added', message: 'New Discussion has been created');
-      // send the question as first message in group
-      String questionToPost = title;
-      for (int i = 0; i < opss.length; i++) {
-        String initial = '';
-        try {
-          initial = i.toAlphabet();
-        } on Exception catch (e) {
-          print('Exception Occured: ${e.toString()}');
-        }
-        questionToPost += "\n\n$initial.  ${opss[i]} \n";
-      }
-      questionToPost += "\n$testName";
-
-      print('Question to Post : $questionToPost');
-      await sendDisscussionGroupMessage(groupId: value, message: questionToPost);
+      // send the question as first message in group if not from bottom sheet
+      isFromBottomSheet ? null : await sendMessage(title, opss, testName, value);
     }).whenComplete(() {
       updateDiscussionGroupLoader(false);
     });
+  }
+
+  Future<void> sendMessage(String title, List<String> opss, String testName, String value) async {
+    String questionToPost = title;
+    for (int i = 0; i < opss.length; i++) {
+      String initial = '';
+      try {
+        initial = i.toAlphabet();
+      } on Exception catch (e) {
+        print('Exception Occured: ${e.toString()}');
+      }
+      questionToPost += "\n\n$initial.  ${opss[i]} \n";
+    }
+    questionToPost += "\n$testName";
+
+    print('Question to Post : $questionToPost');
+    await sendDisscussionGroupMessage(groupId: value, message: questionToPost);
   }
 
   Future sendDisscussionGroupMessage({String message, String groupId}) async {
