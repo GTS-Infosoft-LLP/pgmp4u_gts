@@ -46,6 +46,8 @@ class _QuesOfDayState extends State<QuesOfDay> {
     ansRef = [];
     currentIndex = 0;
     QuesDay();
+    context.read<CourseProvider>().setMasterListType("Chat");
+    context.read<ProfileProvider>().subscriptionStatus("Chat");
     // TODO: implement initState
     super.initState();
   }
@@ -62,6 +64,21 @@ class _QuesOfDayState extends State<QuesOfDay> {
 
   bool questionLoader = false;
   onTapOfPutOnDisscussion(String question, List<OptionsDay> li) async {
+    if (!context.read<ProfileProvider>().isChatSubscribed) {
+      setState(() => questionLoader = false);
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => RandomPage(
+                    index: 4,
+                    price: context.read<ProfileProvider>().subsPrice.toString(),
+                    categoryType: context.read<CourseProvider>().selectedMasterType,
+                    categoryId: 0,
+                  )));
+      return;
+    }
+
     List<String> optsName = [];
     for (int i = 0; i < li.length; i++) {
       String name = '';
@@ -80,21 +97,10 @@ class _QuesOfDayState extends State<QuesOfDay> {
     print('Question of The Day question options : $li');
     if (question.isEmpty) return;
 
-    if (!context.read<ChatProvider>().isChatSubscribed()) {
-      setState(() => questionLoader = false);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RandomPage(),
-          ));
-      return;
-    }
-    print("*******************");
     await context
         .read<ChatProvider>()
         .createDiscussionGroup(question, optsName, context, testName: 'Question of the day')
         .whenComplete(() {
-      // Navigator.pop(context);
       setState(() => questionLoader = false);
       Navigator.push(
           context,
@@ -271,33 +277,18 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                           child: Center(
                                                             child: InkWell(
                                                               onTap: () async {
-                                                                CourseProvider crsProvi =
-                                                                    Provider.of(context, listen: false);
-                                                                crsProvi.setMasterListType("Question");
-                                                                ProfileProvider profprovi =
-                                                                    Provider.of(context, listen: false);
-                                                                await profprovi.subscriptionStatus("Question");
-
-                                                                if (profprovi.successValue == "false") {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => RandomPage(
-                                                                                price: profprovi.subsPrice,
-                                                                                categoryType:
-                                                                                    crsProvi.selectedMasterType,
-                                                                                categoryId: 0,
-                                                                              )));
-                                                                } else {
-                                                                  // subscriptionStatus
-                                                                  questionLoader
-                                                                      ? null
-                                                                      : onTapOfPutOnDisscussion(
-                                                                          data.pList != null
-                                                                              ? data.qdList[_quetionNo].question
-                                                                              : '',
-                                                                          data.qdList[_quetionNo].options);
-                                                                }
+                                                                // subscriptionStatus
+                                                                questionLoader
+                                                                    ? null
+                                                                    : context
+                                                                            .read<ProfileProvider>()
+                                                                            .subscriptionApiCalling
+                                                                        ? null
+                                                                        : onTapOfPutOnDisscussion(
+                                                                            data.pList != null
+                                                                                ? data.qdList[_quetionNo].question
+                                                                                : '',
+                                                                            data.qdList[_quetionNo].options);
                                                               },
                                                               child: Row(
                                                                 children: [

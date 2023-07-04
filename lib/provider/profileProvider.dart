@@ -177,6 +177,8 @@ class ProfileProvider extends ChangeNotifier {
         isChatSubscribed = false;
       }
       updateSubApi(false);
+
+      return;
     }
     if (resStatus == 400) {
       isChatSubscribed = false;

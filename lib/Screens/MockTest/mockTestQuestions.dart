@@ -10,6 +10,8 @@ import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
+import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
@@ -75,13 +77,16 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     print("attempt======${widget.attempt}");
 
     print("***********************************************");
-    super.initState();
     currentIndex = 0;
     _stopWatchTimer.rawTime.listen((value) => {});
     _stopWatchTimer.minuteTime.listen((value) => {});
     _stopWatchTimer.secondTime.listen((value) => {});
     _stopWatchTimer.records.listen((value) => {});
+
     beforeCallApi();
+    context.read<CourseProvider>().setMasterListType("Chat");
+    context.read<ProfileProvider>().subscriptionStatus("Chat");
+    super.initState();
   }
 
   beforeCallApi() async {
@@ -230,6 +235,21 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
   bool questionLoader = false;
   onTapOfPutOnDisscussion(String question, List<Optionss> list01) async {
+    if (!context.read<ProfileProvider>().isChatSubscribed) {
+      setState(() => questionLoader = false);
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => RandomPage(
+                    index: 4,
+                    price: context.read<ProfileProvider>().subsPrice.toString(),
+                    categoryType: context.read<CourseProvider>().selectedMasterType,
+                    categoryId: 0,
+                  )));
+      return;
+    }
+
     setState(() => questionLoader = true);
     print('Mock text question : $question');
 
@@ -502,13 +522,17 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                     onTap: () {
                                                                       questionLoader
                                                                           ? null
-                                                                          : onTapOfPutOnDisscussion(
-                                                                              mockQuestion[_quetionNo]
-                                                                                  .questionDetail
-                                                                                  .questiondata,
-                                                                              mockQuestion[_quetionNo]
-                                                                                  .questionDetail
-                                                                                  .Options);
+                                                                          : context
+                                                                                  .read<ProfileProvider>()
+                                                                                  .subscriptionApiCalling
+                                                                              ? null
+                                                                              : onTapOfPutOnDisscussion(
+                                                                                  mockQuestion[_quetionNo]
+                                                                                      .questionDetail
+                                                                                      .questiondata,
+                                                                                  mockQuestion[_quetionNo]
+                                                                                      .questionDetail
+                                                                                      .Options);
                                                                     },
                                                                     child: Padding(
                                                                       padding:
@@ -598,10 +622,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
                                                         if (title.question_option.isEmpty) {
                                                           // continue;
-                                                          
-                                            
+
                                                           title.question_option = "None of these";
-                                                          
                                                         }
 
                                                         // return mockQuestion[_quetionNo] .questionDetail.Options.where((element)=>element.question_option.isNotEmpty).toList();
@@ -680,8 +702,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                         ),
                                                                         child: Center(
                                                                           child: Text(
-                                                                            
-                                                                            index == 0 
+                                                                            index == 0
                                                                                 ? 'A'
                                                                                 : index == 1
                                                                                     ? 'B'
