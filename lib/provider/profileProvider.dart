@@ -165,7 +165,7 @@ class ProfileProvider extends ChangeNotifier {
 
       Map<String, dynamic> temp1 = mapResponse["data"];
 
-subsPrice=mapResponse["data"]["price"];
+      subsPrice=mapResponse["data"]["price"];
       print("priveeeee=====${subsPrice}");
       print("temp list===$temp1");
       // masterList = temp1.map((e) => MasterDetails.fromjson(e)).toList();

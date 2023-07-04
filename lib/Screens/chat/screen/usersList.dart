@@ -21,11 +21,15 @@ class UsersList extends StatefulWidget {
 class _UsersListState extends State<UsersList> {
   bool isLoading = false;
   UpadateLocationResponseModel userListResponse;
+  int currentPageIndex = 1;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+
     getUser();
+    _scrollController.addListener(_scrollListener);
   }
 
   getUser() async {
@@ -38,11 +42,23 @@ class _UsersListState extends State<UsersList> {
     print(stringValue);
     http.Response response;
     response = await http.post(Uri.parse(chatUserListApi),
-        headers: {'Content-Type': 'application/json', 'Authorization': stringValue}, body: jsonEncode({"page": 1}));
+        headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
+        body: jsonEncode({"page": currentPageIndex}));
 
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));
       userListResponse = UpadateLocationResponseModel.fromJson(jsonDecode(response.body));
+      // filter list if user's uuid is null or empty
+      userListResponse.data.removeWhere((user) => user.uuid.isEmpty || user.uuid == null);
+
+      /// remove my self
+      userListResponse.data.removeWhere((user) => user.uuid == context.read<ChatProvider>().getUser().uid);
+
+      // only shows admin if i'm normal user
+      context.read<ChatProvider>().isChatAdmin()
+          ? null
+          : userListResponse.data.removeWhere((user) => user.isChatAdmin == 0);
+
       isLoading = false;
       setState(() {});
     } else {
@@ -50,6 +66,12 @@ class _UsersListState extends State<UsersList> {
       setState(() {});
       print('error while calling api');
       print(jsonDecode(response.body));
+    }
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      getUser();
     }
   }
 
@@ -65,16 +87,9 @@ class _UsersListState extends State<UsersList> {
                   ? Expanded(child: Center(child: Text('No User Found')))
                   : ListView.builder(
                       shrinkWrap: true,
+                      controller: _scrollController,
                       itemCount: userListResponse.data.length,
-                      // separatorBuilder: (context, index) => Divider(),
                       itemBuilder: (context, index) {
-                        if (userListResponse.data[index].uuid.isEmpty || userListResponse.data[index].uuid == null) {
-                          return SizedBox();
-                        }
-                        if (userListResponse.data[index].uuid == context.read<ChatProvider>().getUser().uid) {
-                          return SizedBox();
-                        }
-
                         return _userListTile(userListResponse.data[index]);
                       }),
         ],
@@ -86,16 +101,19 @@ class _UsersListState extends State<UsersList> {
     return InkWell(
       onTap: () async {
         // create a admin-user chat group
-        context.read<ChatProvider>().generateRoomId(reciverId: user.userId.toString());
+        // context.read<ChatProvider>().generateRoomId(reciverId: user.userId.toString());
         bool isRoomCreated = await context
             .read<ChatProvider>()
             .initiatePersonalChat(reciver: MyUserInfo(id: user.uuid, name: user.name, isAdmin: user.isChatAdmin));
 
+        String name = '';
+        name = user.name;
+        name += user.isChatAdmin == 1 ? " (Admin)" : '';
         if (isRoomCreated) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ChatPage(v1: user.name),
+                builder: (context) => ChatPage(v1: name),
               ));
         } else {
           GFToast.showToast(
@@ -128,6 +146,14 @@ class _UsersListState extends State<UsersList> {
                 fontSize: 18,
               ),
             ),
+            user.isChatAdmin == 1
+                ? Text(
+                    "  (Admin)" ?? "",
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  )
+                : SizedBox(),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pgmp4u/Screens/chat/chatHandler.dart';
 import 'package:pgmp4u/Screens/chat/screen/chatPage.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
@@ -47,6 +48,9 @@ class _PersonalChatsState extends State<PersonalChats> {
       }
     });
 
+    DateTime time = DateTime.fromMillisecondsSinceEpoch(personal.lastMessageSentAt);
+    String timeToShow = DateFormat.Hm().format(time);
+
     return InkWell(
       onTap: () {
         context.read<ChatProvider>().setChatRoomId(personal.groupId);
@@ -54,7 +58,9 @@ class _PersonalChatsState extends State<PersonalChats> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChatPage(),
+              builder: (context) => ChatPage(
+                v1: name,
+              ),
             ));
       },
       child: Container(
@@ -75,22 +81,35 @@ class _PersonalChatsState extends State<PersonalChats> {
             SizedBox(
               width: 12,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name.capitalizeFirstLetter() ?? "",
-                  style: TextStyle(
-                    fontSize: 18,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name.capitalizeFirstLetter() ?? "",
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-                Text(
-                  personal.lastMessage ?? "",
-                  style: TextStyle(
-                    fontSize: 12,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        personal.lastMessage ?? "",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                      Text(
+                        timeToShow ?? "",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

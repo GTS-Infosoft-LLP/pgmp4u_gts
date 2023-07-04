@@ -32,21 +32,23 @@ class ChatTextField extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 4.0),
-              child: Container(
-                height: size.height / 17,
-                width: size.width / 1.3,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18.0),
-                  child: TextField(
-                    controller: chatController,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "   Type your message here...",
-                      // border: OutlineInputBorder(
-                      //     // borderRadius: BorderRadius.circular(8),
-                      //     )
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 2.0),
+                child: Container(
+                  height: size.height / 17,
+                  // width: size.width / 1.3,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 18.0),
+                    child: TextField(
+                      controller: chatController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: " Type your message here...",
+                        // border: OutlineInputBorder(
+                        //     // borderRadius: BorderRadius.circular(8),
+                        //     )
+                      ),
                     ),
                   ),
                 ),

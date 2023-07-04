@@ -90,7 +90,10 @@ class _QuesOfDayState extends State<QuesOfDay> {
       return;
     }
     print("*******************");
-    await context.read<ChatProvider>().createDiscussionGroup(question, optsName, context).whenComplete(() {
+    await context
+        .read<ChatProvider>()
+        .createDiscussionGroup(question, optsName, context, testName: 'Question of the day')
+        .whenComplete(() {
       // Navigator.pop(context);
       setState(() => questionLoader = false);
       Navigator.push(
