@@ -8,6 +8,7 @@ import 'package:pgmp4u/Screens/chat/chatHandler.dart';
 import 'package:pgmp4u/Screens/chat/model/chatModel.dart';
 import 'package:pgmp4u/Screens/chat/model/singleGroupModel.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/utils/extensions.dart';
 import 'package:pgmp4u/utils/user_object.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -53,11 +54,10 @@ class ChatProvider extends ChangeNotifier {
       senderName: getUser().displayName,
       profileUrl: getUser().photoURL,
     );
+
     FirebaseChatHandler.sendGroupMessage(
       chat: chatModel,
       chatRoomId: chatRoomId,
-      // adminId: getUser().uid,
-      // userId: reciverUserId,
     );
   }
 
@@ -67,7 +67,7 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future createDiscussionGroup(String title, List<String> opss, BuildContext context) async {
+  Future createDiscussionGroup(String title, List<String> opss, BuildContext context, {String testName = ''}) async {
     updateDiscussionGroupLoader(true);
     var body = {
       "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
@@ -105,8 +105,15 @@ class ChatProvider extends ChangeNotifier {
       // send the question as first message in group
       String questionToPost = title;
       for (int i = 0; i < opss.length; i++) {
-        questionToPost += "\n\n${i + 1} ${opss[i]} \n";
+        String initial = '';
+        try {
+          initial = i.toAlphabet();
+        } on Exception catch (e) {
+          print('Exception Occured: ${e.toString()}');
+        }
+        questionToPost += "\n\n$initial.  ${opss[i]} \n";
       }
+      questionToPost += "\n$testName";
 
       print('Question to Post : $questionToPost');
       await sendDisscussionGroupMessage(groupId: value, message: questionToPost);
@@ -137,9 +144,6 @@ class ChatProvider extends ChangeNotifier {
   Future<bool> initiatePersonalChat({MyUserInfo reciver}) async {
     String roomId = createRoomId(getUser().uid, reciver.id);
     setChatRoomId(roomId);
-
-
-
 
     return await FirebaseChatHandler.createPersonalChatRoom(
             chatRoomId: roomId,

@@ -33,6 +33,7 @@ class FirebaseChatHandler {
       createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
       groupId: chatRoomId,
       lastMessage: "",
+      lastMessageSentAt: 0,
       members: [me, reciver],
       membersId: [me.id, reciver.id],
     );
@@ -63,7 +64,7 @@ class FirebaseChatHandler {
   // personal chat group list
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllPersonalChatGroups({String myUUID}) {
     return groupsCollectionRef
-        .orderBy('createdAt', descending: true)
+        .orderBy('lastMessageSentAt', descending: true)
         .where("membersId", arrayContains: myUUID)
         .snapshots();
   }
@@ -75,6 +76,20 @@ class FirebaseChatHandler {
         .collection(FirebaseConstant.messages)
         .orderBy('sentAt', descending: true)
         .snapshots();
+  }
+
+  static sendGroupMessage({ChatModel chat, String chatRoomId}) async {
+    Map jsonChat = chat.toJson();
+    print('message sent: ${chat.toJson()}');
+
+    await userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).add(chat.toJson()).then((value) {
+      userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).doc(value.id).update({
+        "messageId": value.id,
+      });
+    });
+    await groupsCollectionRef
+        .doc(chatRoomId)
+        .update({"lastMessage": chat.text, "lastMessageSentAt": DateTime.now().millisecondsSinceEpoch});
   }
 
   // send message in personal chat group
@@ -117,18 +132,6 @@ class FirebaseChatHandler {
   //         .catchError((error) => print('Add failed: $error'));
   //   }
   // }
-
-  static sendGroupMessage({ChatModel chat, String chatRoomId}) async {
-    Map jsonChat = chat.toJson();
-    print('message sent: ${chat.toJson()}');
-
-    await userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).add(chat.toJson()).then((value) {
-      userChatCollectionRef.doc(chatRoomId).collection(FirebaseConstant.messages).doc(value.id).update({
-        "messageId": value.id,
-      });
-    });
-    await groupsCollectionRef.doc(chatRoomId).update({"lastMessage": chat.text});
-  }
 
   ///// disussion group work   ////
 

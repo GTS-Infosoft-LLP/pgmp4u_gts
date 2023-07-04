@@ -10,7 +10,6 @@ import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../MockTest/model/quesOfDayModel.dart';
 import '../Tests/local_handler/hive_handler.dart';
 
 class PracticeNew extends StatefulWidget {
@@ -120,7 +119,7 @@ class _PracticeNewState extends State<PracticeNew> {
     setState(() => questionLoader = true);
     print('Practice question : $question');
 
-    print("optionQues=========${optionQues}");
+    print("optionQues=========$optionQues");
 
     if (question.isEmpty) return;
 
@@ -133,7 +132,10 @@ class _PracticeNewState extends State<PracticeNew> {
           ));
       return;
     }
-    await context.read<ChatProvider>().createDiscussionGroup(question, optionQues, context).whenComplete(() {
+    await context
+        .read<ChatProvider>()
+        .createDiscussionGroup(question, optionQues, context, testName: 'From Practice Test: ' + widget.pracTestName)
+        .whenComplete(() {
       setState(() => questionLoader = false);
       Navigator.push(
           context,
@@ -323,8 +325,10 @@ class _PracticeNewState extends State<PracticeNew> {
 
                                                           InkWell(
                                                             onTap: () {
-                                                              List<String> otsList =
-                                                                  getList(PTList[_quetionNo].ques.options);
+                                                              print("op le ${op.length}");
+                                                              List<String> otsList = getList(op);
+                                                              print("otsList le ${otsList.length}");
+
                                                               questionLoader
                                                                   ? null
                                                                   : onTapOfPutOnDisscussion(
@@ -1337,11 +1341,11 @@ class _PracticeNewState extends State<PracticeNew> {
     for (int i = 0; i < options.length; i++) {
       String name = '';
       name = options[i].questionOption;
-      if (name.isEmpty || name == null) {
+      if (name.isNotEmpty || name != null) {
         optsValueList.add(name);
       }
     }
-    print("optsValueList==========${optsValueList}");
+    print("optsValueList==========$optsValueList");
 
     return optsValueList;
   }

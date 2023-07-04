@@ -33,3 +33,15 @@ extension StringExtension on String {
     return this[0].toUpperCase() + this.substring(1);
   }
 }
+
+extension NumberToAlphabet on int {
+  String toAlphabet() {
+    // Assuming input is in the range of 0-25
+    if (this < 0 || this > 25) {
+      throw Exception('Number must be between 0 and 25');
+    }
+
+    final charCode = this + 'A'.codeUnitAt(0);
+    return String.fromCharCode(charCode);
+  }
+}

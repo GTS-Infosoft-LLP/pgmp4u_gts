@@ -106,11 +106,11 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
         chatController: chatController,
         sendMessage: () async {
           if (chatController.text.trim() == '') return;
+          String message = chatController.text.trim();
+          chatController.clear();
           await context
               .read<ChatProvider>()
-              .sendDisscussionGroupMessage(message: chatController.text.trim(), groupId: widget.group.groupId);
-          // sendDisscussionGroupMessage();
-          chatController.clear();
+              .sendDisscussionGroupMessage(message: message, groupId: widget.group.groupId);
         },
       ),
       resizeToAvoidBottomInset: true,
@@ -127,17 +127,6 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
                     itemCount: snapshot.data?.docs?.length ?? 0,
                     itemBuilder: (context, indexMain) {
                       var data = snapshot.data.docs[indexMain].data();
-
-                      // print("get images ${getImg(data['sentBy'])}");
-
-                      // ChatModel chatModel = ChatModel(
-                      //   messageId: data.containsKey('messageId') ? data['messageId'] ?? '' : '',
-                      //   text: data['text'] ?? '',
-                      //   sentBy: data['sentBy'] ?? '',
-                      //   sentAt: data['sentAt'] ?? "0",
-                      //   profileUrl: data['profileUrl'] ?? "",
-                      //   senderName: data.containsKey('senderName') ? data['senderName'] ?? '' : '',
-                      // );
 
                       ChatModel chatModel = ChatModel.fromJson(data);
 

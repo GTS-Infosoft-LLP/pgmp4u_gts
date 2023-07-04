@@ -258,7 +258,10 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
           ));
       return;
     }
-    await context.read<ChatProvider>().createDiscussionGroup(question, mckOptions, context).whenComplete(() {
+    await context
+        .read<ChatProvider>()
+        .createDiscussionGroup(question, mckOptions, context, testName: 'From Mock Test: ' + mockNameNew)
+        .whenComplete(() {
       setState(() => questionLoader = false);
       Navigator.push(
           context,

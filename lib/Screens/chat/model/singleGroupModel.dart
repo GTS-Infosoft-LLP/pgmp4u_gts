@@ -3,6 +3,7 @@ class PersonalGroupModel {
   String createdAt;
 
   String lastMessage;
+  int lastMessageSentAt;
 
   List<MyUserInfo> members;
   List<dynamic> membersId;
@@ -13,6 +14,7 @@ class PersonalGroupModel {
     this.lastMessage,
     this.members,
     this.membersId,
+    this.lastMessageSentAt,
   });
 
   PersonalGroupModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class PersonalGroupModel {
     groupId = json['groupId'] ?? "";
 
     lastMessage = json['lastMessage'] ?? '';
+    lastMessageSentAt = int.tryParse(json['lastMessageSentAt'].toString()) ?? 0;
     membersId = json['membersId'] ?? [];
 
     if (json['members'] == null) {
@@ -32,6 +35,7 @@ class PersonalGroupModel {
         "createdAt": createdAt,
         "groupId": groupId,
         "lastMessage": lastMessage,
+        "lastMessageSentAt": lastMessageSentAt,
         "members": List<Map>.from(members.map((x) => x.toJson())),
         "membersId": membersId
       };

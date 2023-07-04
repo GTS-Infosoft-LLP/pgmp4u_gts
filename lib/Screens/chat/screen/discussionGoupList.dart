@@ -138,7 +138,20 @@ class _GroupListPageState extends State<GroupListPage> {
                 SizedBox(
                   width: 6,
                 ),
-                context.read<ChatProvider>().isChatAdmin() ? MyPopupMenu() : SizedBox(),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UsersList(),
+                        ));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Icon(Icons.supervised_user_circle_sharp, color: Colors.white),
+                  ),
+                )
+                // MyPopupMenu(),
               ],
             ),
           ],
