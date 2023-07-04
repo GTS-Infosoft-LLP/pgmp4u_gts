@@ -119,15 +119,25 @@ class _RandomPageState extends State<RandomPage> {
                                                 color: _colorfromhex("#3D4AB4"),
                                                 letterSpacing: 0.3),
                                           )
-                                        : Text(
-                                            'Get Unlimited Access to Pgmp Success Stories',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontFamily: 'Roboto Bold',
-                                                fontSize: width * (30 / 420),
-                                                color: _colorfromhex("#3D4AB4"),
-                                                letterSpacing: 0.3),
-                                          )),
+                                        : widget.index == 4
+                                            ? Text(
+                                                'Get Unlimited Access to Chats',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontFamily: 'Roboto Bold',
+                                                    fontSize: width * (30 / 420),
+                                                    color: _colorfromhex("#3D4AB4"),
+                                                    letterSpacing: 0.3),
+                                              )
+                                            : Text(
+                                                'Get Unlimited Access to Pgmp Question of the day',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily: 'Roboto Bold',
+                                                  fontSize: width * (30 / 420),
+                                                  color: _colorfromhex("#3D4AB4"),
+                                                ),
+                                              )),
                       ),
                       // Container(
                       //   margin: EdgeInsets.only(top: 20),
@@ -152,7 +162,7 @@ class _RandomPageState extends State<RandomPage> {
                                 // widget.index == 1
                                 //     ?
                                 Text(
-                          'Lifetime Access On \n ${widget.price}',
+                          'Lifetime Access On \n \$${widget.price}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: 'Roboto Bold',

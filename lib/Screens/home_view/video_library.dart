@@ -166,6 +166,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) => RandomPage(
+                                                        index: 2,
                                                             categoryId: courseProvider.videoCate[index].id,
                                                             price: courseProvider.videoCate[index].price,
                                                           )));

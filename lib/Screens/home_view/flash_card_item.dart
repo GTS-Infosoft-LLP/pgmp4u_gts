@@ -166,6 +166,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) => RandomPage(
+                                                          index: 1,
                                                           price: storedFlashCate[index].price,
                                                           categoryId: storedFlashCate[index].id)));
                                             } else {

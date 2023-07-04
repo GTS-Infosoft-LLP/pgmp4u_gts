@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/api/apis.dart';
@@ -677,15 +676,14 @@ class _ProfileState extends State<Profile> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => RandomPage(
+                                            index: 4,
                                                 price: profprovi.subsPrice,
                                                 categoryType: crsProvi.selectedMasterType,
                                                 categoryId: 0,
                                               )));
                                 } else {
-                                  context.read<ChatProvider>().isChatSubscribed()
-                                      ? Navigator.push(
-                                          context, MaterialPageRoute(builder: (context) => GroupListPage()))
-                                      : Navigator.push(context, MaterialPageRoute(builder: (context) => RandomPage()));
+                                   Navigator.push(
+                                          context, MaterialPageRoute(builder: (context) => GroupListPage()));
                                 }
 
                                 //Question

@@ -155,11 +155,17 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                       aviAttempts = temp2.map((e) => AvailableAttempts.fromjsons(e)).toList();
 
                       print("aviAttempts==========$aviAttempts");
+                      if (aviAttempts == null) {
+                        aviAttempts = [];
+                      }
                     } else {
                       aviAttempts = [];
                     }
 
-                    return aviAttempts.isEmpty
+                    return 
+
+                    
+                    aviAttempts.isEmpty
                         ? Container(
                             width: width,
                             child: Center(

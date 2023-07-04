@@ -209,6 +209,7 @@ class _MockTestState extends State<MockTest> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) => RandomPage(
+                                                          index: 3,
                                                             categoryId: storedTestData[index].id,
                                                             price: storedTestData[index].price)));
                                               } else {
