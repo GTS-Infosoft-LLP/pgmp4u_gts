@@ -112,6 +112,7 @@ class PracticeTextProvider extends ChangeNotifier {
   }
 
   Future<void> getQuesDay(int id) async {
+    updateLoader(true);
     // id = 34;
     print("id =================*********************$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -137,13 +138,14 @@ class PracticeTextProvider extends ChangeNotifier {
 
     if (resDDo['data'] == []) {
       qdList = [];
+      updateLoader(false);
       return;
     }
 
     if (resStatus == 400) {
       // masterList = [];
       // videoPresent = 0;
-
+      updateLoader(false);
       notifyListeners();
       return;
     }
@@ -160,6 +162,7 @@ class PracticeTextProvider extends ChangeNotifier {
       if (qdList.isNotEmpty) {
         print("qdList[0]============${qdList[0].question}");
       }
+      updateLoader(false);
       notifyListeners();
     }
     print("respponse=== ${response.body}");
