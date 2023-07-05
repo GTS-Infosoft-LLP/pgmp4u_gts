@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pgmp4u/Screens/Profile/notifications.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
+import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Services/globalcontext.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -106,6 +107,7 @@ class _SplashScreenState extends State<SplashScreen> {
   fireNotification() async {
     LocalNotifications().init();
     print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase Notification");
+    
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage");
       print("notification====${event.data}");
@@ -211,12 +213,18 @@ class LocalNotifications {
       //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
       //   break;
       case "3":
-      //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
-      //   break;
+        //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
+        //   break;
+        Navigator.push(
+            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => GroupListPage()));
+        break;
       case "4":
         Navigator.push(
             GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
         break;
+      default:
+        Navigator.push(
+            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
     }
     // if(){}
     // if (pay == "one") {

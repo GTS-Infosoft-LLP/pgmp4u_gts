@@ -286,6 +286,11 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                   var index = listResponse[_quetionNo].question.options.indexOf(title);
                                                   // print("index >>>>>> $index");
 
+                                                  // remove option if empty
+                                                  if (title.questionOption.isEmpty || title.questionOption == null) {
+                                                    listResponse[_quetionNo].question.options.removeAt(index);
+                                                  }
+
                                                   print(
                                                       "is right answer ${listResponse[_quetionNo].question.options[index].customRight}");
 
@@ -472,10 +477,8 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                                   SizedBox(
                                                                     height: 3,
                                                                   ),
-                                                                  title.questionOption.isEmpty
-                                                                      ? Text("None of these")
-                                                                      : Text(title.questionOption,
-                                                                          style: TextStyle(fontSize: width * 14 / 420)),
+                                                                  Text(title.questionOption,
+                                                                      style: TextStyle(fontSize: width * 14 / 420)),
                                                                   // Padding(
                                                                   //   padding: const EdgeInsets.all(8.0),
                                                                   //   child: Align(

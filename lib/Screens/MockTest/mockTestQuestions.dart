@@ -574,6 +574,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                         //     : Container(),
                                                       ],
                                                     ),
+                                                    // Question
                                                     Container(
                                                       margin: EdgeInsets.only(top: height * (15 / 800)),
                                                       child: Text(
@@ -621,9 +622,11 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                             mockQuestion[_quetionNo].questionDetail.rightAnswer.length;
 
                                                         if (title.question_option.isEmpty) {
-                                                          // continue;
-
-                                                          title.question_option = "None of these";
+                                                          // title.question_option = "None of these";
+                                                          mockQuestion[_quetionNo]
+                                                              .questionDetail
+                                                              .Options
+                                                              .removeAt(index);
                                                         }
 
                                                         // return mockQuestion[_quetionNo] .questionDetail.Options.where((element)=>element.question_option.isNotEmpty).toList();
