@@ -7,7 +7,7 @@
     </intent>
   </queries>
    <application
-        android:label="PgMP4U"
+        android:label="vCare PMI Exam Mentor"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity

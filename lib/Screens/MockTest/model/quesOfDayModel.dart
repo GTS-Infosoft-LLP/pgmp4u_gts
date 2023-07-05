@@ -8,7 +8,8 @@ class QuesDayModel {
   String rightAnswer;
   String explanation;
   Null image;
-  String sendDate;
+  DateTime sendDate;
+  String sendDateFormat;
   int status;
   int deleteStatus;
   List<OptionsDay> options;
@@ -24,6 +25,7 @@ class QuesDayModel {
     explanation = json['explanation'];
     image = json['image'];
     sendDate = json['sendDate'];
+    sendDateFormat = json['sendDateFormat'];
     status = json['status'];
     deleteStatus = json['deleteStatus'];
 

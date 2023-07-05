@@ -1,35 +1,33 @@
-
-
 import 'package:hive/hive.dart';
-   part 'testDataModel.g.dart';
+part 'testDataModel.g.dart';
 
 @HiveType(typeId: 15)
 class TestDataDetails {
-    @HiveField(0)
+  @HiveField(0)
   int id;
-    @HiveField(1)
+  @HiveField(1)
   int course;
-    @HiveField(2)
+  @HiveField(2)
   String test_name;
-    @HiveField(3)
+  @HiveField(3)
   int premium;
-    @HiveField(4)
+  @HiveField(4)
   String price;
-    @HiveField(5)
+  @HiveField(5)
   int masterList;
-    @HiveField(6)
+  @HiveField(6)
   String type;
-    @HiveField(7)
+  @HiveField(7)
   String question_count;
-    @HiveField(8)
+  @HiveField(8)
   int num_attemptes;
-    @HiveField(9)
+  @HiveField(9)
   int generated;
-    @HiveField(10)
+  @HiveField(10)
   int status;
-    @HiveField(11)
+  @HiveField(11)
   int deleteStatus;
-
+  @HiveField(12)
   TestDataDetails();
 
   TestDataDetails.fromjson(Map<String, dynamic> json) {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:provider/provider.dart';
 import '../../tool/ShapeClipper.dart';
 import '../../utils/app_color.dart';
 import 'VideoLibrary/Playlist.dart';
+import 'VideoLibrary/RandomPage.dart';
 
 class VideoLibraryPage extends StatefulWidget {
   String title;
@@ -146,30 +146,33 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                       itemCount: courseProvider.videoCate.length,
                                       itemBuilder: (context, index) {
                                         return InkWell(
-                                          onTap: () {
-                                            if (courseProvider.videoCate[index].payment_status == 0) {
+                                          onTap: () async {
+                                            {
                                               print("id:::: ${courseProvider.videoCate[index].id}");
                                               courseProvider.getVideos(courseProvider.videoCate[index].id);
-
-                                              Future.delayed(const Duration(milliseconds: 400), () {
+                                              var vdoSucVal = await courseProvider.vedioStatusValue;
+                                              print("vdoSucVal==============$vdoSucVal");
+                                              if (vdoSucVal == false) {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                      builder: (context) => PlaylistPage(
-                                                        title: courseProvider.videoCate[index].name,
-                                                        videoType: 2,
-                                                      ),
-                                                    ));
-                                              });
-                                            } else {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => RandomPage(
-                                                            index: 2,
-                                                            categoryId: courseProvider.videoCate[index].id,
-                                                            price: courseProvider.videoCate[index].price,
-                                                          )));
+                                                        builder: (context) => RandomPage(
+                                                              index: 2,
+                                                              categoryId: courseProvider.videoCate[index].id,
+                                                              price: courseProvider.videoCate[index].price,
+                                                            )));
+                                              } else {
+                                                Future.delayed(const Duration(milliseconds: 400), () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => PlaylistPage(
+                                                          title: courseProvider.videoCate[index].name,
+                                                          videoType: 2,
+                                                        ),
+                                                      ));
+                                                });
+                                              }
                                             }
                                           },
                                           child: Padding(

@@ -58,28 +58,30 @@ class _TextPreDetailState extends State<TextPreDetail> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            size: width * (24 / 420),
-                            color: Colors.white,
+                    Consumer<CourseProvider>(builder: (context, cp, child) {
+                      return Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios,
+                              size: width * (24 / 420),
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                        Text(
-                          '  Mock Test',
-                          style: TextStyle(
-                              fontFamily: 'Roboto Medium',
-                              fontSize: width * (20 / 420),
-                              color: Colors.transparent,
-                              letterSpacing: 0.3),
-                        ),
-                      ],
-                    ),
+                          Text(
+                            cp.selectedCourseName,
+                            style: TextStyle(
+                                fontFamily: 'Roboto Medium',
+                                fontSize: width * (20 / 420),
+                                color: Colors.white,
+                                letterSpacing: 0.3),
+                          ),
+                        ],
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -122,318 +124,322 @@ class _TextPreDetailState extends State<TextPreDetail> {
                             }
 
                             return Consumer<CourseProvider>(builder: (context, courseprovider, child) {
-                              return Container(
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: testPercent.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () async {
-                                        var startval;
+                              return testPercent.isEmpty
+                                  ? Center(
+                                      child: Container(
+                                      child: Text("No Data Found..."),
+                                    ))
+                                  : Container(
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: testPercent.length,
+                                        itemBuilder: (context, index) {
+                                          return InkWell(
+                                            onTap: () async {
+                                              var startval;
 
-                                        if (testPercent[index].numAttemptes == testPercent[index].attempts.length) {
-                                          startval = 0;
-                                        } else {
-                                          startval = 1;
-                                        }
+                                              if (testPercent[index].numAttemptes ==
+                                                  testPercent[index].attempts.length) {
+                                                startval = 0;
+                                              } else {
+                                                startval = 1;
+                                              }
 
-                                        CourseProvider courseProvider = Provider.of(context, listen: false);
-                                        // print("selectedIdNew======>> $selectedIdNew");
-                                           await Hive.openBox("MockAttemptsBox");  
-                                        courseProvider.apiCall(testPercent[index].id);
+                                              CourseProvider courseProvider = Provider.of(context, listen: false);
+                                              // print("selectedIdNew======>> $selectedIdNew");
+                                              await Hive.openBox("MockAttemptsBox");
+                                              courseProvider.apiCall(testPercent[index].id);
 
-                                        Future.delayed(const Duration(milliseconds: 400), () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => MockTestAttempts(
-                                                      selectedId: testPercent[index].id,
-                                                      startAgn: startval,
-                                                      attemptCnt: testPercent[index].noOfattempts)));
-                                        });
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                            top: 12,
-                                            bottom: 12,
-                                            // left: width * (14 / 320),
-                                            right: width * (14 / 320),
-                                          ),
-                                          decoration: const BoxDecoration(
-                                              // color: Colors.amber,
-                                              border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                              Future.delayed(const Duration(milliseconds: 400), () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => MockTestAttempts(
+                                                            selectedId: testPercent[index].id,
+                                                            startAgn: startval,
+                                                            attemptCnt: testPercent[index].noOfattempts)));
+                                              });
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                  top: 12,
+                                                  bottom: 12,
+                                                  // left: width * (14 / 320),
+                                                  right: width * (14 / 320),
+                                                ),
+                                                decoration: const BoxDecoration(
+                                                    // color: Colors.amber,
+                                                    border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
+                                                child: Column(
                                                   children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 0.0),
-                                                      child: Container(
-                                                        width: 60,
-                                                        height: 60,
-                                                        padding: EdgeInsets.all(17),
-                                                        decoration: BoxDecoration(
-                                                            color: _colorfromhex("#72A258"),
-                                                            borderRadius: BorderRadius.circular(10)),
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.white,
-                                                            borderRadius: BorderRadius.circular(100),
-                                                          ),
-                                                          child: Center(
-                                                            child: Text('${index + 1}'),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      margin: EdgeInsets.only(left: width * (17 / 420)),
-                                                      child: Column(
+                                                    Row(
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
-                                                          Text(
-                                                            testPercent[index].testName,
-                                                            style: TextStyle(
-                                                              fontFamily: 'Roboto Medium',
-                                                              fontWeight: FontWeight.w600,
-                                                              fontSize: width * (17 / 420),
-                                                              color: _colorfromhex("171726"),
-                                                              letterSpacing: 0.3,
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0.0),
+                                                            child: Container(
+                                                              width: 60,
+                                                              height: 60,
+                                                              padding: EdgeInsets.all(17),
+                                                              decoration: BoxDecoration(
+                                                                  color: _colorfromhex("#72A258"),
+                                                                  borderRadius: BorderRadius.circular(10)),
+                                                              child: Container(
+                                                                decoration: BoxDecoration(
+                                                                  color: Colors.white,
+                                                                  borderRadius: BorderRadius.circular(100),
+                                                                ),
+                                                                child: Center(
+                                                                  child: Text('${index + 1}'),
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
-                                                          SizedBox(
-                                                            height: 10,
-                                                          ),
                                                           Container(
-                                                        
-                                                            width: MediaQuery.of(context).size.width * .5,
-                                                            height: 25,
-                                                            child: ListView.builder(
-                                                                shrinkWrap: true,
-                                                                itemCount: testPercent[index].attempts.length,
-                                                                scrollDirection: Axis.horizontal,
-                                                                itemBuilder: (context, inx) {
-                                                                  return Container(
-                                                                    width: 25,
-                                                                    height: 25,
-                                                                    margin: EdgeInsets.only(right: 6),
-                                                                    decoration: BoxDecoration(
-                                                                      color: testPercent[index] //testPercent
-                                                                                  .attempts[inx]
-                                                                                  .perc ==
-                                                                              ''
-                                                                          ? Colors.white
-                                                                          : (((double.parse(testPercent[index].attempts[inx].perc)).toInt()) >=
-                                                                                      0 &&
-                                                                                  ((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                          .toInt()) <=
-                                                                                      25)
-                                                                              ? _colorfromhex("#FFECEC")
-                                                                              : (((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                              .toInt()) >=
-                                                                                          26 &&
-                                                                                      ((double.parse(testPercent[index]
-                                                                                                  .attempts[inx]
-                                                                                                  .perc))
-                                                                                              .toInt()) <=
-                                                                                          50)
-                                                                                  ? _colorfromhex("#FFFAEB")
+                                                            margin: EdgeInsets.only(left: width * (17 / 420)),
+                                                            child: Column(
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Text(
+                                                                  testPercent[index].testName,
+                                                                  style: TextStyle(
+                                                                    fontFamily: 'Roboto Medium',
+                                                                    fontWeight: FontWeight.w600,
+                                                                    fontSize: width * (17 / 420),
+                                                                    color: _colorfromhex("171726"),
+                                                                    letterSpacing: 0.3,
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 10,
+                                                                ),
+                                                                Container(
+                                                                  width: MediaQuery.of(context).size.width * .5,
+                                                                  height: 25,
+                                                                  child: ListView.builder(
+                                                                      shrinkWrap: true,
+                                                                      itemCount: testPercent[index].attempts.length,
+                                                                      scrollDirection: Axis.horizontal,
+                                                                      itemBuilder: (context, inx) {
+                                                                        return Container(
+                                                                          width: 25,
+                                                                          height: 25,
+                                                                          margin: EdgeInsets.only(right: 6),
+                                                                          decoration: BoxDecoration(
+                                                                            color: testPercent[index] //testPercent
+                                                                                        .attempts[inx]
+                                                                                        .perc ==
+                                                                                    ''
+                                                                                ? Colors.white
+                                                                                : (((double.parse(testPercent[index].attempts[inx].perc)).toInt()) >=
+                                                                                            0 &&
+                                                                                        ((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                .toInt()) <=
+                                                                                            25)
+                                                                                    ? _colorfromhex("#FFECEC")
+                                                                                    : (((double.parse(testPercent[index]
+                                                                                                        .attempts[inx]
+                                                                                                        .perc))
+                                                                                                    .toInt()) >=
+                                                                                                26 &&
+                                                                                            ((double.parse(testPercent[index]
+                                                                                                        .attempts[inx]
+                                                                                                        .perc))
+                                                                                                    .toInt()) <=
+                                                                                                50)
+                                                                                        ? _colorfromhex("#FFFAEB")
+                                                                                        : (((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                        .toInt()) >=
+                                                                                                    51 &&
+                                                                                                ((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                        .toInt()) <=
+                                                                                                    75)
+                                                                                            ? _colorfromhex("#FFEFDC")
+                                                                                            : _colorfromhex("#E4FFE6"),
+                                                                            border: Border.all(
+                                                                              color: testPercent[index]
+                                                                                          .attempts[inx]
+                                                                                          .perc ==
+                                                                                      ''
+                                                                                  ? Colors.grey
                                                                                   : (((double.parse(testPercent[index].attempts[inx].perc))
                                                                                                   .toInt()) >=
-                                                                                              51 &&
-                                                                                          ((double.parse(
-                                                                                                      testPercent[index]
-                                                                                                          .attempts[inx]
-                                                                                                          .perc))
+                                                                                              0 &&
+                                                                                          ((double.parse(testPercent[index].attempts[inx].perc))
                                                                                                   .toInt()) <=
-                                                                                              75)
-                                                                                      ? _colorfromhex("#FFEFDC")
-                                                                                      : _colorfromhex("#E4FFE6"),
-                                                                      border: Border.all(
-                                                                        color: testPercent[index]
-                                                                                    .attempts[inx].perc ==
-                                                                                ''
-                                                                            ? Colors.grey
-                                                                            : (((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                            .toInt()) >=
-                                                                                        0 &&
-                                                                                    ((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                            .toInt()) <=
-                                                                                        25)
-                                                                                ? _colorfromhex("#FF0000")
-                                                                                : (((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                                .toInt()) >=
-                                                                                            26 &&
-                                                                                        ((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                                .toInt()) <=
-                                                                                            50)
-                                                                                    ? _colorfromhex("#FFD236")
-                                                                                    : (((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                                    .toInt()) >=
-                                                                                                51 &&
-                                                                                            ((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                                    .toInt()) <=
-                                                                                                75)
-                                                                                        ? _colorfromhex("#FE9E45")
-                                                                                        : _colorfromhex("#04AE0B"),
-                                                                      ),
-                                                                      borderRadius: BorderRadius.circular(3.0),
-                                                                    ),
-                                                                    child: Center(
-                                                                        child: Text(
-                                                                      testPercent[index].attempts[inx]
-                                                                                  .perc !=
-                                                                              ''
-                                                                          ? ((double.parse(testPercent[index]
+                                                                                              25)
+                                                                                      ? _colorfromhex("#FF0000")
+                                                                                      : (((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                      .toInt()) >=
+                                                                                                  26 &&
+                                                                                              ((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                      .toInt()) <=
+                                                                                                  50)
+                                                                                          ? _colorfromhex("#FFD236")
+                                                                                          : (((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                          .toInt()) >=
+                                                                                                      51 &&
+                                                                                                  ((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                          .toInt()) <=
+                                                                                                      75)
+                                                                                              ? _colorfromhex("#FE9E45")
+                                                                                              : _colorfromhex("#04AE0B"),
+                                                                            ),
+                                                                            borderRadius: BorderRadius.circular(3.0),
+                                                                          ),
+                                                                          child: Center(
+                                                                              child: Text(
+                                                                            testPercent[index].attempts[inx].perc != ''
+                                                                                ? ((double.parse(testPercent[index]
+                                                                                                .attempts[inx]
+                                                                                                .perc))
+                                                                                            .toInt())
+                                                                                        .toString() +
+                                                                                    '%'
+                                                                                : '--',
+                                                                            style: TextStyle(
+                                                                              fontFamily: 'Roboto Medium',
+                                                                              fontWeight: FontWeight.w600,
+                                                                              fontSize: 8,
+                                                                              color: testPercent[index]
                                                                                           .attempts[inx]
-                                                                                          .perc))
-                                                                                      .toInt())
-                                                                                  .toString() +
-                                                                              '%'
-                                                                          : '--',
-                                                                      style: TextStyle(
-                                                                        fontFamily: 'Roboto Medium',
-                                                                        fontWeight: FontWeight.w600,
-                                                                        fontSize: 8,
-                                                                        color: testPercent[index]
-                                                                                    .attempts[inx].perc ==
-                                                                                ''
-                                                                            ? Colors.grey
-                                                                            : (((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                            .toInt()) >=
-                                                                                        0 &&
-                                                                                    ((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                            .toInt()) <=
-                                                                                        25)
-                                                                                ? _colorfromhex("#FF0000")
-                                                                                : (((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                                .toInt()) >=
-                                                                                            26 &&
-                                                                                        ((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                                .toInt()) <=
-                                                                                            50)
-                                                                                    ? _colorfromhex("#FFD236")
-                                                                                    : (((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                                    .toInt()) >=
-                                                                                                51 &&
-                                                                                            ((double.parse(testPercent[index].attempts[inx].perc))
-                                                                                                    .toInt()) <=
-                                                                                                75)
-                                                                                        ? _colorfromhex("#FE9E45")  
-                                                                                        : _colorfromhex("#04AE0B"),
-                                                                        letterSpacing: 0.3,
-                                                                      ),
-                                                                    )),
-                                                                  );
-                                                                }),
+                                                                                          .perc ==
+                                                                                      ''
+                                                                                  ? Colors.grey
+                                                                                  : (((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                  .toInt()) >=
+                                                                                              0 &&
+                                                                                          ((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                  .toInt()) <=
+                                                                                              25)
+                                                                                      ? _colorfromhex("#FF0000")
+                                                                                      : (((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                      .toInt()) >=
+                                                                                                  26 &&
+                                                                                              ((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                      .toInt()) <=
+                                                                                                  50)
+                                                                                          ? _colorfromhex("#FFD236")
+                                                                                          : (((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                          .toInt()) >=
+                                                                                                      51 &&
+                                                                                                  ((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                          .toInt()) <=
+                                                                                                      75)
+                                                                                              ? _colorfromhex("#FE9E45")
+                                                                                              : _colorfromhex("#04AE0B"),
+                                                                              letterSpacing: 0.3,
+                                                                            ),
+                                                                          )),
+                                                                        );
+                                                                      }),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          new Spacer(),
+                                                          Container(
+                                                            child: Icon(
+                                                              Icons.east,
+                                                              size: 30,
+                                                              color: _colorfromhex("#ABAFD1"),
+                                                            ),
                                                           )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    new Spacer(),
-                                                    Container(
-                                                      child: Icon(
-                                                        Icons.east,
-                                                        size: 30,
-                                                        color: _colorfromhex("#ABAFD1"),
-                                                      ),
-                                                    )
-                                                  ]),
-                                              // Container(
-                                              //   height: 25,
-                                              //   child: ListView.builder(
-                                              //       shrinkWrap: true,
-                                              //       itemCount: courseprovider
-                                              //           .testDetails[index].attempts.length,
-                                              //       scrollDirection: Axis.horizontal,
-                                              //       itemBuilder: (context, inx) {
-                                              //         return Container(
-                                              //           width: 25,
-                                              //           height: 25,
-                                              //           margin: EdgeInsets.only(right: 6),
-                                              //           decoration: BoxDecoration(
-                                              //             color: courseprovider
-                                              //                         .testDetails[index]
-                                              //                         .attempts[inx]
-                                              //                         .perc ==
-                                              //                     ''
-                                              //                 ? Colors.white
-                                              //                 : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                              //                                 .toInt()) >=
-                                              //                             0 &&
-                                              //                         ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                              //                                 .toInt()) <=
-                                              //                             25)
-                                              //                     ? _colorfromhex("#FFECEC")
-                                              //                     : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                              //                                     .toInt()) >=
-                                              //                                 26 &&
-                                              //                             ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                              //                                     .toInt()) <=
-                                              //                                 50)
-                                              //                         ? _colorfromhex(
-                                              //                             "#FFFAEB")
-                                              //                         : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc)).toInt()) >=
-                                              //                                     51 &&
-                                              //                                 ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                              //                                         .toInt()) <=
-                                              //                                     75)
-                                              //                             ? _colorfromhex("#FFEFDC")
-                                              //                             : _colorfromhex("#E4FFE6"),
-                                              //             border: Border.all(
-                                              //               color: courseprovider
-                                              //                           .testDetails[index]
-                                              //                           .attempts[inx]
-                                              //                           .perc ==
-                                              //                       ''
-                                              //                   ? Colors.grey
-                                              //                   : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                              //                                   .toInt()) >=
-                                              //                               0 &&
-                                              //                           ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                              //                                   .toInt()) <=
-                                              //                               25)
-                                              //                       ? _colorfromhex(
-                                              //                           "#FF0000")
-                                              //                       : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                              //                                       .toInt()) >=
-                                              //                                   26 &&
-                                              //                               ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                              //                                       .toInt()) <=
-                                              //                                   50)
-                                              //                           ? _colorfromhex(
-                                              //                               "#FFD236")
-                                              //                           : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc)).toInt()) >=
-                                              //                                       51 &&
-                                              //                                   ((double.parse(courseprovider.testDetails[index].attempts[inx].perc)).toInt()) <=
-                                              //                                       75)
-                                              //                               ? _colorfromhex("#FE9E45")
-                                              //                               : _colorfromhex("#04AE0B"),
-                                              //             ),
-                                              //             borderRadius:
-                                              //                 BorderRadius.circular(3.0),
-                                              //           ),
-                                              //           child: Center(
-                                              //               child: Text(courseprovider
-                                              //                   .testDetails[index]
-                                              //                   .attempts[inx]
-                                              //                   .perc)),
-                                              //         );
-                                              //       }),
-                                              // )
-                                            ],
-                                          ),
-                                        ),
+                                                        ]),
+                                                    // Container(
+                                                    //   height: 25,
+                                                    //   child: ListView.builder(
+                                                    //       shrinkWrap: true,
+                                                    //       itemCount: courseprovider
+                                                    //           .testDetails[index].attempts.length,
+                                                    //       scrollDirection: Axis.horizontal,
+                                                    //       itemBuilder: (context, inx) {
+                                                    //         return Container(
+                                                    //           width: 25,
+                                                    //           height: 25,
+                                                    //           margin: EdgeInsets.only(right: 6),
+                                                    //           decoration: BoxDecoration(
+                                                    //             color: courseprovider
+                                                    //                         .testDetails[index]
+                                                    //                         .attempts[inx]
+                                                    //                         .perc ==
+                                                    //                     ''
+                                                    //                 ? Colors.white
+                                                    //                 : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
+                                                    //                                 .toInt()) >=
+                                                    //                             0 &&
+                                                    //                         ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
+                                                    //                                 .toInt()) <=
+                                                    //                             25)
+                                                    //                     ? _colorfromhex("#FFECEC")
+                                                    //                     : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
+                                                    //                                     .toInt()) >=
+                                                    //                                 26 &&
+                                                    //                             ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
+                                                    //                                     .toInt()) <=
+                                                    //                                 50)
+                                                    //                         ? _colorfromhex(
+                                                    //                             "#FFFAEB")
+                                                    //                         : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc)).toInt()) >=
+                                                    //                                     51 &&
+                                                    //                                 ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
+                                                    //                                         .toInt()) <=
+                                                    //                                     75)
+                                                    //                             ? _colorfromhex("#FFEFDC")
+                                                    //                             : _colorfromhex("#E4FFE6"),
+                                                    //             border: Border.all(
+                                                    //               color: courseprovider
+                                                    //                           .testDetails[index]
+                                                    //                           .attempts[inx]
+                                                    //                           .perc ==
+                                                    //                       ''
+                                                    //                   ? Colors.grey
+                                                    //                   : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
+                                                    //                                   .toInt()) >=
+                                                    //                               0 &&
+                                                    //                           ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
+                                                    //                                   .toInt()) <=
+                                                    //                               25)
+                                                    //                       ? _colorfromhex(
+                                                    //                           "#FF0000")
+                                                    //                       : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
+                                                    //                                       .toInt()) >=
+                                                    //                                   26 &&
+                                                    //                               ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
+                                                    //                                       .toInt()) <=
+                                                    //                                   50)
+                                                    //                           ? _colorfromhex(
+                                                    //                               "#FFD236")
+                                                    //                           : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc)).toInt()) >=
+                                                    //                                       51 &&
+                                                    //                                   ((double.parse(courseprovider.testDetails[index].attempts[inx].perc)).toInt()) <=
+                                                    //                                       75)
+                                                    //                               ? _colorfromhex("#FE9E45")
+                                                    //                               : _colorfromhex("#04AE0B"),
+                                                    //             ),
+                                                    //             borderRadius:
+                                                    //                 BorderRadius.circular(3.0),
+                                                    //           ),
+                                                    //           child: Center(
+                                                    //               child: Text(courseprovider
+                                                    //                   .testDetails[index]
+                                                    //                   .attempts[inx]
+                                                    //                   .perc)),
+                                                    //         );
+                                                    //       }),
+                                                    // )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     );
-                                  },
-                                ),
-                              );
                             });
                           })
                     ],

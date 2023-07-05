@@ -76,6 +76,7 @@ class CourseProvider extends ChangeNotifier {
 
   List<MasterDetails> tempListMaster = [];
   List<MasterDetails> masterTemp = [];
+
   Future<void> getMasterData(int id) async {
     tempListMaster = [];
     print("idddd=========>>>>>>>>>>>>>>>$id");
@@ -347,7 +348,9 @@ class CourseProvider extends ChangeNotifier {
     print("respponse=== ${response.body}");
   }
 
+  var vedioStatusValue;
   Future<void> getVideos(int id) async {
+    vedioStatusValue = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -378,7 +381,13 @@ class CourseProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       Videos.clear();
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+      print("mapResponse=======$mapResponse");
 
+      vedioStatusValue = mapResponse['success'];
+      if (vedioStatusValue == false) {
+        print("vedioStatusValue=======$vedioStatusValue");
+        return;
+      }
       List temp1 = mapResponse["data"];
       print("temp list===$temp1");
       Videos = temp1.map((e) => VideoDetails.fromjson(e)).toList();
@@ -396,6 +405,7 @@ class CourseProvider extends ChangeNotifier {
 
   List<FlashCardDetails> flashTempDisplay = [];
   Future<void> getFlashCards(int id, String strr) async {
+    successValue = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -485,7 +495,9 @@ class CourseProvider extends ChangeNotifier {
     print("respponse=== ${response.body}");
   }
 
+  var valOfSuccess;
   Future<void> getTestDetails(int id) async {
+    valOfSuccess = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -507,6 +519,14 @@ class CourseProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       testDetails.clear();
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+      print("mapResponse======$mapResponse");
+      valOfSuccess = mapResponse['success'];
+          print("valOfSuccess========>>$valOfSuccess");
+      if (valOfSuccess == false) {
+        print("value is falseeeeeee");
+        return;
+      }
+  
 
       List temp1 = mapResponse["data"]["list"];
       print("temp list===$temp1");
@@ -675,6 +695,18 @@ class CourseProvider extends ChangeNotifier {
     selectedMasterType = type;
     print("selectedMasterType=======$selectedMasterType");
     Future.delayed(Duration.zero, () {
+      notifyListeners();
+    });
+  }
+
+  bool showLoader;
+  void errorWidgetCall() {
+    print("method called");
+    showLoader = true;
+    Future.delayed(Duration(seconds: 4), () {
+      print("4 secondes after method called");
+      showLoader = false;
+      print("showLoader==============$showLoader");
       notifyListeners();
     });
   }

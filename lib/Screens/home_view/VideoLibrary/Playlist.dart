@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../provider/courseProvider.dart';
-import '../../../tool/ShapeClipper2.dart';
+import '../../../tool/ShapeClipper.dart';
 import '../../../utils/sizes.dart';
 import '../../Tests/video_player.dart';
 
@@ -60,67 +60,120 @@ class _PlaylistPageState extends State<PlaylistPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Stack(
-                  children: <Widget>[
+                  children: [
                     ClipPath(
-                      clipper: ShapeClipperMirrored(),
+                      clipper: ShapeClipper(),
                       child: Container(
                         height: 150,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [Color(0xff3643a3), Color(0xff5468ff)],
-                          ),
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Color(0xff3643a3), Color(0xff5468ff)]),
                         ),
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.fromLTRB(20, 40, 10, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Flexible(
-                            child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(20, 50, 0, 0),
+                        child: Consumer<CourseProvider>(builder: (context, cp, child) {
+                          return Row(children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                // size: width * (24 / 420),
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Center(
+                                child: Container(
+                              width: MediaQuery.of(context).size.width * .72,
                               child: Text(
-                                "",
+                                widget.title
+                                // "Video Library",
+                                ,
                                 style: TextStyle(
                                     fontSize: 22,
                                     color: Colors.white,
                                     fontFamily: "Raleway",
                                     fontWeight: FontWeight.bold),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.transparent,
-                              border: Border.all(color: Colors.white, width: 1),
-                            ),
-                            child: Center(
-                              child: IconButton(
-                                icon: Icon(Icons.arrow_back, color: Colors.white),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
+                            )),
+                          ]);
+                        }),
                       ),
-
-                      //Text("Flash Cards", style: TextStyle(fontSize: 28,color: Colors.white,fontFamily: "Raleway", fontWeight: FontWeight.bold),)
-                    ),
+                    )
                   ],
                 ),
+
+                // Stack(
+                //   children: <Widget>[
+                //     ClipPath(
+                //       clipper: ShapeClipperMirrored(),
+                //       child: Container(
+                //         height: 150,
+                //         decoration: BoxDecoration(
+                //           gradient: LinearGradient(
+                //             begin: Alignment.topLeft,
+                //             end: Alignment.bottomRight,
+                //             colors: [Color(0xff3643a3), Color(0xff5468ff)],
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //     Container(
+                //       padding: EdgeInsets.fromLTRB(20, 40, 10, 0),
+                //       child: Row(
+                //         mainAxisAlignment: MainAxisAlignment.end,
+                //         children: <Widget>[
+                //           SizedBox(
+                //             width: 15,
+                //           ),
+                //           Flexible(
+                //             child: Center(
+                //               child: Text(
+                //                 "",
+                //                 style: TextStyle(
+                //                     fontSize: 22,
+                //                     color: Colors.white,
+                //                     fontFamily: "Raleway",
+                //                     fontWeight: FontWeight.bold),
+                //                 maxLines: 2,
+                //                 overflow: TextOverflow.ellipsis,
+                //               ),
+                //             ),
+                //           ),
+                //           SizedBox(width: 10),
+                //           Container(
+                //             width: 40,
+                //             height: 40,
+                //             decoration: BoxDecoration(
+                //               shape: BoxShape.circle,
+                //               color: Colors.transparent,
+                //               border: Border.all(color: Colors.white, width: 1),
+                //             ),
+                //             child: Center(
+                //               child: IconButton(
+                //                 icon: Icon(Icons.arrow_back, color: Colors.white),
+                //                 onPressed: () {
+                //                   Navigator.pop(context);
+                //                 },
+                //               ),
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+
+                //       //Text("Flash Cards", style: TextStyle(fontSize: 28,color: Colors.white,fontFamily: "Raleway", fontWeight: FontWeight.bold),)
+                //     ),
+                //   ],
+                // ),
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -199,18 +252,18 @@ class VideoList extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
-                  child: Card(
-                    margin: EdgeInsets.only(bottom: 1),
-                    elevation: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .9,
                           height: 210,
                           child: Stack(
                             children: [
                               Container(
+                                width: MediaQuery.of(context).size.width * .9,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(13),
                                   child: Image.network(
@@ -232,7 +285,7 @@ class VideoList extends StatelessWidget {
                               Positioned(
                                 top: 50,
                                 bottom: 50,
-                                left: MediaQuery.of(context).size.width * 0.4,
+                                left: MediaQuery.of(context).size.width * 0.9,
                                 child: InkWell(
                                   onTap: () {
                                     print("Videos[index].videoUrl===${courseProvider.Videos[index].videoUrl}");
@@ -255,21 +308,26 @@ class VideoList extends StatelessWidget {
                                       );
                                     }
                                   },
-                                  child: Image.asset(
-                                    AppImage.playIcon,
-                                    height: 55,
-                                    width: 55,
+                                  child: Center(
+                                    child: Image.asset(
+                                      AppImage.playIcon,
+                                      height: 55,
+                                      width: 55,
+                                    ),
                                   ),
                                 ),
                               )
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4),
+                        child: Container(
+                          // color: Colors.amber,
                           child: Text(
                             courseProvider.Videos[index].title,
                             style: TextStyle(
@@ -279,8 +337,11 @@ class VideoList extends StatelessWidget {
                                 color: AppColor.darkText),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      // Divider(
+                      //   color: Colors.grey,
+                      // )
+                    ],
                   ),
                 );
               })

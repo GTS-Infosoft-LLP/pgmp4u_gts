@@ -162,22 +162,23 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
 
                         cp.aviAttempts = temp2.map((e) => AvailableAttempts.fromjsons(e)).toList() ?? [];
 
-                        print("aviAttempts==========$cp.aviAttempts");
+                        print("aviAttempts==========${cp.aviAttempts}");
                         if (cp.aviAttempts == null) {
                           cp.aviAttempts = [];
                         }
                       } else {
                         cp.aviAttempts = [];
                       }
+                      print("cp.aviAttempts=========>>>>>>${cp.aviAttempts}");
 
                       return cp.aviAttempts.isEmpty
                           ? Container(
                               width: width,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF")),
-                                ),
-                              ))
+                              child: Center(child: Text("No Data Found..")
+                                  // CircularProgressIndicator(
+                                  //   valueColor: AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF")),
+                                  // ),
+                                  ))
                           : Expanded(
                               // height: height - 150 - 65,
                               child: SingleChildScrollView(

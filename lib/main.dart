@@ -80,8 +80,11 @@ void main() async {
 
 bool showLoader = true;
 void callMe() {
+  print("this is callleddddd");
   Future.delayed(Duration(seconds: 3), () {
+    print("and now this is callleddddd");
     showLoader = false;
+    // setState((){});
   });
 }
 

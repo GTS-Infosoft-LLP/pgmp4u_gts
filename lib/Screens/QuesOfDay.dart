@@ -239,16 +239,17 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                     // finDate
                                                     // finDate
 
-                                                    data.qdList[_quetionNo].sendDate.split(" ")[0].toString() == finDate
-                                                        ? Column(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              Text("Today's Question "),
-                                                              // Text("${data.qdList[_quetionNo].sendDate}"),
-                                                            ],
-                                                          )
-                                                        : Column(
+                                                    // data.qdList[_quetionNo].sendDate.split(" ")[0].toString() == finDate
+                                                        // ? Column(
+                                                        //     mainAxisAlignment: MainAxisAlignment.start,
+                                                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                                                        //     children: [
+                                                        //       Text("Today's Question "),
+                                                        //       // Text("${data.qdList[_quetionNo].sendDate}"),
+                                                        //     ],
+                                                        //   )
+                                                        // : 
+                                                        Column(
                                                             mainAxisAlignment: MainAxisAlignment.start,
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [

@@ -249,6 +249,9 @@ class _HomeViewState extends State<HomeView> {
                       builder: (context, value, child) {
                         print("*****************************>Sdwsfwefw  ${value.get("courseKey")}");
                         storedCourse = value.get("courseKey");
+                        if (storedCourse == null) {
+                          storedCourse = [];
+                        }
 
                         print("list has data......");
                         print("storedCourse========$storedCourse");
