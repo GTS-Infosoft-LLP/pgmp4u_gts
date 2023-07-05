@@ -4,6 +4,7 @@ import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
+import 'package:pgmp4u/utils/extensions.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -217,6 +218,9 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                         : 0;
                                   },
                                   itemBuilder: (context, index) {
+                                    final date = DateTime.fromMillisecondsSinceEpoch(data.qdList[_quetionNo].sendDate);
+
+                                    final timeStamp = date.formatDateLabel();
                                     return SingleChildScrollView(
                                       child: Column(
                                         children: [
@@ -240,23 +244,24 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                     // finDate
 
                                                     // data.qdList[_quetionNo].sendDate.split(" ")[0].toString() == finDate
-                                                        // ? Column(
-                                                        //     mainAxisAlignment: MainAxisAlignment.start,
-                                                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                                                        //     children: [
-                                                        //       Text("Today's Question "),
-                                                        //       // Text("${data.qdList[_quetionNo].sendDate}"),
-                                                        //     ],
-                                                        //   )
-                                                        // : 
-                                                        Column(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              Text("Uploaded on: "),
-                                                              Text("${data.qdList[_quetionNo].sendDate}"),
-                                                            ],
-                                                          ),
+                                                    // ? Column(
+                                                    //     mainAxisAlignment: MainAxisAlignment.start,
+                                                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                                                    //     children: [
+                                                    //       Text("Today's Question "),
+                                                    //       // Text("${data.qdList[_quetionNo].sendDate}"),
+                                                    //     ],
+                                                    //   )
+                                                    // :
+                                                    Column(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text("Uploaded on: "),
+                                                        // Text("${data.qdList[_quetionNo].sendDate}"),
+                                                        Text(timeStamp),
+                                                      ],
+                                                    ),
                                                     new Spacer(),
                                                     Padding(
                                                       padding: const EdgeInsets.only(right: 15.0),
