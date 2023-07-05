@@ -10,6 +10,7 @@ import '../../tool/ShapeClipper.dart';
 import '../../utils/app_color.dart';
 import '../MockTest/model/flashCateModel.dart';
 import '../flashDisplay.dart';
+import 'VideoLibrary/RandomPage.dart';
 
 class FlashCardItem extends StatefulWidget {
   String title;
@@ -146,9 +147,19 @@ class _FlashCardItemState extends State<FlashCardItem> {
                               ? Container(
                                   height: MediaQuery.of(context).size.height * .5,
                                   child: Center(
-                                    child: Text(
-                                      "No Data Found...",
-                                      style: TextStyle(color: Colors.black, fontSize: 18),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "No Data Found...",
+                                          style: TextStyle(color: Colors.black, fontSize: 18),
+                                        ),
+                                        courseProvider.checkInternet == 1
+                                            ? Text(
+                                                "Check your internet connection",
+                                                style: TextStyle(color: Colors.black, fontSize: 18),
+                                              )
+                                            : Text(""),
+                                      ],
                                     ),
                                   ),
                                 )
@@ -159,53 +170,39 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                       itemCount: storedFlashCate.length,
                                       itemBuilder: (context, index) {
                                         return InkWell(
-                                          onTap: () {
-                                            // if (storedFlashCate[index].payment_status == 1) {
-                                            //   Navigator.push(
-                                            //       context,
-                                            //       MaterialPageRoute(
-                                            //           builder: (context) => RandomPage(
-                                            //               index: 1,
-                                            //               price: storedFlashCate[index].price,
-                                            //               categoryId: storedFlashCate[index].id)));
-                                            // } else {
+                                          onTap: () async {
                                             print("flash card category id===>>${storedFlashCate[index].id}");
 
                                             courseProvider.setSelectedFlashCategory(storedFlashCate[index].id);
-
-                                            if (storedFlashCate[index].payment_status == 0) {}
                                             courseProvider.FlashCards = [];
 
-                                            courseProvider.getFlashCards(
+                                            await courseProvider.getFlashCards(
                                                 storedFlashCate[index].id, storedFlashCate[index].price);
-
-                                            Future.delayed(const Duration(milliseconds: 400), () async {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     MaterialPageRoute(
-                                              //         builder: (context) =>
-                                              //             FlashCardsPage(
-                                              //               heding: courseProvider
-                                              //                   .flashCate[index].name,
-                                              //
-                                              //
-                                              //         )));
-
-                                              CourseProvider cp = Provider.of(context, listen: false);
-                                              var statVal = await cp.successValue;
-                                              print("statValstatValstatVal==============>>>$statVal");
-                                              if (statVal == false) {
-                                              } else {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) => FlashDisplay(
-                                                              heding: storedFlashCate[index].name,
-                                                            )));
-                                                //FlashDisplay
-                                              }
-                                            });
-                                            // }
+                                            var flashPayStat = await cp.successValueFlash;
+                                            print("flashPayStat=======$flashPayStat");
+                                            if (flashPayStat == false) {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => RandomPage(
+                                                            categoryId: storedFlashCate[index].id,
+                                                            price: storedFlashCate[index].price,
+                                                            index: 1,
+                                                          )));
+                                            } else {
+                                              Future.delayed(const Duration(milliseconds: 400), () async {
+                                                {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => FlashDisplay(
+                                                                heding: storedFlashCate[index].name,
+                                                              )));
+                                                  //FlashDisplay
+                                                }
+                                              });
+                                              // }
+                                            }
                                           },
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 18.0),

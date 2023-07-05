@@ -95,7 +95,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                 child: Container(
                               width: MediaQuery.of(context).size.width * .72,
                               child: Text(
-                                widget.title
+                                cp.selectedCourseName
+                                // widget.title
                                 // "Video Library",
                                 ,
                                 style: TextStyle(
@@ -285,7 +286,7 @@ class VideoList extends StatelessWidget {
                               Positioned(
                                 top: 50,
                                 bottom: 50,
-                                left: MediaQuery.of(context).size.width * 0.9,
+                                left: MediaQuery.of(context).size.width * 0.38,
                                 child: InkWell(
                                   onTap: () {
                                     print("Videos[index].videoUrl===${courseProvider.Videos[index].videoUrl}");
@@ -311,6 +312,7 @@ class VideoList extends StatelessWidget {
                                   child: Center(
                                     child: Image.asset(
                                       AppImage.playIcon,
+                                      // color: Colors.white,
                                       height: 55,
                                       width: 55,
                                     ),

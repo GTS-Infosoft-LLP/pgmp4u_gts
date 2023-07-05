@@ -221,7 +221,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                                   width: MediaQuery.of(context).size.width * .5,
                                                                   height: 25,
                                                                   child: ListView.builder(
-                                                                      shrinkWrap: true,
+                                                                      shrinkWrap: false,  
                                                                       itemCount: testPercent[index].attempts.length,
                                                                       scrollDirection: Axis.horizontal,
                                                                       itemBuilder: (context, inx) {

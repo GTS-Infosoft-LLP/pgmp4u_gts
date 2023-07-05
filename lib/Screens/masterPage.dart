@@ -241,6 +241,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 MaterialPageRoute(
                                                                     builder: (context) => MockTest(
                                                                           testName: storedMaster[index].name,
+                                                                          testType: storedMaster[index].type,
                                                                         )));
                                                           });
                                                         }

@@ -51,8 +51,7 @@ class CourseProvider extends ChangeNotifier {
   int selectedFlashCategory;
   String selectedCourseName;
 
-
-  int checkInternet=0;
+  int checkInternet = 0;
 
   setSelectedCourseName(String val) {
     selectedCourseName = val;
@@ -175,7 +174,7 @@ class CourseProvider extends ChangeNotifier {
 
   List<FlashCateDetails> flashCateTempList = [];
   Future<void> getFlashCate(int id) async {
-    checkInternet=0;
+    checkInternet = 0;
     print("flash category iddd=====$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -191,8 +190,12 @@ class CourseProvider extends ChangeNotifier {
     )
         .onError((error, stackTrace) {
       print("error========>>$error");
+      if (error.toString() == "Connection failed") {
+        print("Connection failed *** Connection failed *** Connection failed");
+        checkInternet=1;
+      }
       flashCate = [];
-      checkInternet=1;
+      checkInternet = 1;
       flashCate = HiveHandler.getFlashCateDataList(key: id.toString()) ?? [];
       if (flashCate.isEmpty) {
         flashCate = [];
@@ -406,11 +409,12 @@ class CourseProvider extends ChangeNotifier {
     print("respponse=== ${response.body}");
   }
 
-  var successValue;
+  var successValueFlash;
+  var flashPrice;
 
   List<FlashCardDetails> flashTempDisplay = [];
   Future<void> getFlashCards(int id, String strr) async {
-    successValue = true;
+    successValueFlash = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -439,17 +443,10 @@ class CourseProvider extends ChangeNotifier {
     var resDDo = json.decode(response.body);
     print("resDDo=========$resDDo");
     print("success valueee====>>>>${resDDo['success']}");
-    successValue = resDDo['success'];
-    if (successValue == false) {
+    successValueFlash = resDDo['success'];
+    if (successValueFlash == false) {
       print(":this valueee=====??");
-      Navigator.push(
-          GlobalVariable.navState.currentContext,
-          MaterialPageRoute(
-              builder: (context) => RandomPage(
-                    categoryId: id,
-                    price: strr,
-                    index: 1,
-                  )));
+   
       return;
     }
     var resStatus = (resDDo["status"]);
@@ -526,12 +523,11 @@ class CourseProvider extends ChangeNotifier {
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
       print("mapResponse======$mapResponse");
       valOfSuccess = mapResponse['success'];
-          print("valOfSuccess========>>$valOfSuccess");
+      print("valOfSuccess========>>$valOfSuccess");
       if (valOfSuccess == false) {
         print("value is falseeeeeee");
         return;
       }
-  
 
       List temp1 = mapResponse["data"]["list"];
       print("temp list===$temp1");

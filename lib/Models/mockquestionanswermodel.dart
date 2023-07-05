@@ -33,8 +33,13 @@ class Queans {
     status = js["status"];
     deleteStatus = js["deleteStatus"];
     var _questionnamemap = js["Question"] ?? {};
-
+    // print("options length===${questionDetail.Options.length}");
     questionDetail = QuestionDetail.fromjsons(_questionnamemap);
+    questionDetail.Options.removeWhere(
+      (element) => (element.question_option == null || element.question_option.isEmpty),
+    );
+
+    print("options length===${questionDetail.Options.length}");
   }
 }
 
@@ -78,11 +83,16 @@ class Optionss {
   String question_option;
   int status;
   int deleteStatus;
+
   Optionss.fromjsons(Map<String, dynamic> js) {
-    id = js["id"];
-    question = js["question"];
-    question_option = js["question_option"];
-    status = js["status"];
-    deleteStatus = js["deleteStatus"];
+    if (js["question_option"] == null || js["question_option"].isEmpty) {
+    } else {
+      id = js["id"];
+      question = js["question"];
+      question_option = js["question_option"];
+
+      status = js["status"];
+      deleteStatus = js["deleteStatus"];
+    }
   }
 }

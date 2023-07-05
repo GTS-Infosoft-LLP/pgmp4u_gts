@@ -205,65 +205,49 @@ class _MockTestState extends State<MockTest> {
                                                   onTap: () async {
                                                     await courseProvider.getTestDetails(storedTestData[index].id);
 
-                                                    CourseProvider cp = Provider.of(context, listen: false);
-                                                    sucval = await cp.valOfSuccess;
-                                                    print("sucvalsakdka=======$sucval");
-                                                    if (sucval == false) {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) => RandomPage(
-                                                                  index: 3,
-                                                                  categoryId: storedTestData[index].id,
-                                                                  price: storedTestData[index].price)));
-                                                    }
-                                                    // if (storedTestData[index].premium == 1) {
-                                                    //   Navigator.push(
-                                                    //       context,
-                                                    //       MaterialPageRoute(
-                                                    //           builder: (context) => RandomPage(
-                                                    //             index: 3,
-                                                    //               categoryId: storedTestData[index].id,
-                                                    //               price: storedTestData[index].price)));
-                                                    // }
-                                                    else {
-                                                      print("testData[index].id===========${storedTestData[index].id}");
-                                                      if (widget.testType == "Mock Test") {
-                                                        courseProvider.setMockTestPercentId(storedTestData[index].id);
+                                                    if (widget.testType == "Practice Test") {
+                                                      PracticeTextProvider pracTestProvi =
+                                                          Provider.of(context, listen: false);
+                                                      pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
 
-                                                        // courseProvider.getTestDetails(storedTestData[index].id);
+                                                      Future.delayed(const Duration(milliseconds: 400), () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) => PracticeNew(
+                                                                      pracTestName: storedTestData[index].test_name,
+                                                                      selectedId: storedTestData[index].id,
+                                                                    )));
 
-                                                        Future.delayed(Duration(milliseconds: 500), () {
-                                                          Navigator.push(context,
-                                                              MaterialPageRoute(builder: (context) => TextPreDetail()));
-                                                        });
+                                                        //PracticeNew
+                                                      });
+                                                    } else {
+                                                      CourseProvider cp = Provider.of(context, listen: false);
+                                                      sucval = await cp.valOfSuccess;
+                                                      print("sucvalsakdka=======$sucval");
+                                                      if (sucval == false) {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) => RandomPage(
+                                                                    index: 3,
+                                                                    categoryId: storedTestData[index].id,
+                                                                    price: storedTestData[index].price)));
                                                       } else {
-                                                        // courseProvider.
+                                                        print(
+                                                            "testData[index].id===========${storedTestData[index].id}");
+                                                        if (widget.testType == "Mock Test") {
+                                                          courseProvider.setMockTestPercentId(storedTestData[index].id);
 
-                                                        PracticeTextProvider pracTestProvi =
-                                                            Provider.of(context, listen: false);
-                                                        pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
+                                                          // courseProvider.getTestDetails(storedTestData[index].id);
 
-                                                        Future.delayed(const Duration(milliseconds: 400), () {
-                                                          // Navigator.push(
-                                                          //     context,
-                                                          //     MaterialPageRoute(
-                                                          //         builder: (context) =>
-                                                          //             PracticeTestCopy(
-                                                          //               selectedId: courseProvider
-                                                          //                   .testData[index].id,
-                                                          //             )));
-
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) => PracticeNew(
-                                                                        pracTestName: storedTestData[index].test_name,
-                                                                        selectedId: storedTestData[index].id,
-                                                                      )));
-
-                                                          //PracticeNew
-                                                        });
+                                                          Future.delayed(Duration(milliseconds: 500), () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => TextPreDetail()));
+                                                          });
+                                                        }
                                                       }
                                                     }
                                                   },

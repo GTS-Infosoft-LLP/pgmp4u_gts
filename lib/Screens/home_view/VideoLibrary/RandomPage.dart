@@ -91,7 +91,7 @@ class _RandomPageState extends State<RandomPage> {
                         child: Center(
                             child: widget.index == 1
                                 ? Text(
-                                    'Get Unlimited Access to Flash Card',
+                                    'Get 1 year Access to Flash Card',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontFamily: 'Roboto Bold',
@@ -101,7 +101,7 @@ class _RandomPageState extends State<RandomPage> {
                                   )
                                 : widget.index == 2
                                     ? Text(
-                                        'Get Unlimited Access to Video Library',
+                                        'Get 1 year Access to Video Library',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontFamily: 'Roboto Bold',
@@ -111,7 +111,7 @@ class _RandomPageState extends State<RandomPage> {
                                       )
                                     : widget.index == 3
                                         ? Text(
-                                            'Get Unlimited Access to Mock Tests',
+                                            'Get 1 year Access to Mock Tests',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontFamily: 'Roboto Bold',
@@ -121,7 +121,7 @@ class _RandomPageState extends State<RandomPage> {
                                           )
                                         : widget.index == 4
                                             ? Text(
-                                                'Get Unlimited Access to Chats',
+                                                'Get 1 year Access to Chats',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontFamily: 'Roboto Bold',
@@ -130,7 +130,7 @@ class _RandomPageState extends State<RandomPage> {
                                                     letterSpacing: 0.3),
                                               )
                                             : Text(
-                                                'Get Unlimited Access to Pgmp Question of the day',
+                                                'Get 1 year Access to Pgmp Question of the day',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily: 'Roboto Bold',
@@ -162,7 +162,7 @@ class _RandomPageState extends State<RandomPage> {
                                 // widget.index == 1
                                 //     ?
                                 Text(
-                          'Lifetime Access On \n \$${widget.price}',
+                          'Yearly Access On \n \$${widget.price}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: 'Roboto Bold',

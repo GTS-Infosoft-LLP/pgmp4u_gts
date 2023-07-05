@@ -126,6 +126,7 @@ class Question {
       json['Options'].forEach((v) {
         options.add(new Options.fromJson(v, rightAnswer));
       });
+      options.removeWhere((element) => (element.questionOption == null || element.questionOption.isEmpty));
     }
   }
 }

@@ -51,7 +51,7 @@ class _PaymentStatusState extends State<PaymentStatus> {
             ),
             Text(
               statusNew == "success"
-                  ? 'You have unlocked unlimited access to mock test.'
+                  ? 'You have unlocked 1 year access to mock test.'
                   : "Something went wrong!",
               textAlign: TextAlign.center,
               style: TextStyle(
