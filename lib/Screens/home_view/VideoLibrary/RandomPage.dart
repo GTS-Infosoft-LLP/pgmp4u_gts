@@ -242,7 +242,7 @@ class _RandomPageState extends State<RandomPage> {
                               Navigator.pop(context, true);
                             });
                           }
-                          return BuyButton2(context, value, widget.index, cp.selectedMasterType, widget.categoryId);
+                          return BuyButton2(context, value, widget.index, cp.selectedMasterType, widget.categoryId,widget.index);
                         },
                       )
                     ],
@@ -285,7 +285,7 @@ Future<void> _handlePaymentError2(BuildContext context) async {
 }
 
 Widget BuyButton2(
-    BuildContext context, PurchaseProvider purchaseProvider, int index1forFlash2forvideoLib, String type, int IdValue) {
+    BuildContext context, PurchaseProvider purchaseProvider, int index1forFlash2forvideoLib, String type, int IdValue,int indexVal ) {
   //index1forFlash2forvideoLib   1  for flash card and  2 for video Library
   print("type============$type");
   print("IdValue=============$IdValue");

@@ -5,8 +5,9 @@ import '../home_view/flash_card_item.dart';
 
 class PaymentStatus extends StatefulWidget {
   final status;
+  int index;
 
-  PaymentStatus({this.status});
+  PaymentStatus({this.status, this.index});
 
   @override
   _PaymentStatusState createState() => _PaymentStatusState(
@@ -49,9 +50,10 @@ class _PaymentStatusState extends State<PaymentStatus> {
             Container(
               height: 2,
             ),
-            Text(
+           widget.index==1? Text(
               statusNew == "success"
-                  ? 'You have unlocked 1 year access to mock test.'
+                  ? 'Premium plan purchsed successfully'
+                  // 'You have unlocked 1 year access to flash cards.'
                   : "Something went wrong!",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -59,7 +61,58 @@ class _PaymentStatusState extends State<PaymentStatus> {
                 fontSize: width * (22 / 420),
                 color: _colorfromhex("#ABAFD1"),
               ),
-            ),
+            )
+            :  widget.index==2? 
+            Text(
+              statusNew == "success"
+                  ?'Premium plan purchsed successfully'
+                  //  'You have unlocked 1 year access to Video Library.'
+                  : "Something went wrong!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Roboto Regular',
+                fontSize: width * (22 / 420),
+                color: _colorfromhex("#ABAFD1"),
+              ),
+            ):
+            widget.index==3? 
+               Text(
+              statusNew == "success"
+                  ?'Premium plan purchsed successfully'
+                  //  'You have unlocked 1 year access to Mock Tests'
+                  : "Something went wrong!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Roboto Regular',
+                fontSize: width * (22 / 420),
+                color: _colorfromhex("#ABAFD1"),
+              ),
+            ):
+                widget.index==4?   Text(
+              statusNew == "success"
+                  ? 'Premium plan purchsed successfully'
+                  // 'You have unlocked 1 year access to Chats'
+                  : "Something went wrong!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Roboto Regular',
+                fontSize: width * (22 / 420),
+                color: _colorfromhex("#ABAFD1"),
+              ),
+            ):
+               Text(
+              statusNew == "success"
+                  ? 'Premium plan purchsed successfully'
+                  // 'You have unlocked 1 year access to Pgmp Question of the day'
+                  : "Something went wrong!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Roboto Regular',
+                fontSize: width * (22 / 420),
+                color: _colorfromhex("#ABAFD1"),
+              ),
+            )
+            ,
             Center(
               child: Container(
                 margin: EdgeInsets.only(top: 30),

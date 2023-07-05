@@ -57,7 +57,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => PaymentStatus(status: "success"),
+          builder: (context) => PaymentStatus(status: "success",),
         ));
   }
 
