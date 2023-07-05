@@ -51,6 +51,9 @@ class CourseProvider extends ChangeNotifier {
   int selectedFlashCategory;
   String selectedCourseName;
 
+
+  int checkInternet=0;
+
   setSelectedCourseName(String val) {
     selectedCourseName = val;
     notifyListeners();
@@ -172,6 +175,7 @@ class CourseProvider extends ChangeNotifier {
 
   List<FlashCateDetails> flashCateTempList = [];
   Future<void> getFlashCate(int id) async {
+    checkInternet=0;
     print("flash category iddd=====$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -188,6 +192,7 @@ class CourseProvider extends ChangeNotifier {
         .onError((error, stackTrace) {
       print("error========>>$error");
       flashCate = [];
+      checkInternet=1;
       flashCate = HiveHandler.getFlashCateDataList(key: id.toString()) ?? [];
       if (flashCate.isEmpty) {
         flashCate = [];

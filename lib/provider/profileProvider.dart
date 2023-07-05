@@ -71,7 +71,7 @@ class ProfileProvider extends ChangeNotifier {
       // print("notifiaction list========>${NotificationData.length}");
 
       for (int i = 0; i < NotificationData.length; i++) {
-        print("************************************************************");
+        // print("************************************************************");
         print("notifiaction list qId========>${NotificationData[i].questionId}");
       }
       notifyListeners();

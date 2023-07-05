@@ -60,8 +60,9 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     print(double.infinity);
     localDataUpdate();
-    fireNotification();
+
     navigateToScreen();
+    fireNotification();
   }
   // @override
   // void initState() {
@@ -81,8 +82,8 @@ class _SplashScreenState extends State<SplashScreen> {
       child: Center(
         child: Container(
           child: Image.asset(
-            'assets/pgmp4u.png',
-          ),
+              // 'assets/pgmp4u.png',
+              'assets/Discussion A.png'),
         ),
       ),
     );
@@ -105,9 +106,58 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   fireNotification() async {
+    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
     LocalNotifications().init();
     print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase Notification");
-    
+
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      print("inside this getInitialMessage");
+
+      print("message=======>>>>$message");
+      if (message != null) {
+        print("message data=====${message.data}");
+        // var json = jsonDecode(message.data);
+        print("Notificationtype====getInitialMessage=====>>>>${message.data['notificationType']}");
+        switch (message.data["notificationType"].toString()) {
+          case "1":
+            Navigator.push(
+                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+            break;
+          case "2":
+            Navigator.push(
+                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+            break;
+          case "3":
+            //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
+            //   break;
+            Navigator.push(
+                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => GroupListPage()));
+            return;
+            break;
+          case "4":
+            Navigator.push(
+                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+            break;
+          default:
+            Navigator.push(
+                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+        }
+      } else {
+        print("this is in the else condition ");
+        Navigator.push(
+            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+      }
+    });
+
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage");
       print("notification====${event.data}");
@@ -135,21 +185,22 @@ class _SplashScreenState extends State<SplashScreen> {
       print("tpmdjsdvjsdv======${["notificationType"]}");
       print("   ${['Notificationtype']}");
 
-      print("Notificationsssssss>>>>>>");
-
       print("NOTIFICATION======$json");
       print("   ${['Notificationtype']}");
 
       switch (['Notificationtype'].toString()) {
         case "1":
-        // Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
-        //   break;
+          Navigator.push(
+              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+          break;
         case "2":
-        //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
-        //   break;
+          Navigator.push(
+              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+          break;
         case "3":
-        //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
-        //   break;
+          Navigator.push(
+              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => GroupListPage()));
+          break;
         case "4":
           Navigator.push(
               GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
@@ -207,11 +258,13 @@ class LocalNotifications {
     print("selectNotification type$pay");
     switch (json["notificationType"].toString()) {
       case "1":
-      // Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
-      //   break;
+        Navigator.push(
+            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+        break;
       case "2":
-      //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
-      //   break;
+        Navigator.push(
+            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+        break;
       case "3":
         //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
         //   break;
