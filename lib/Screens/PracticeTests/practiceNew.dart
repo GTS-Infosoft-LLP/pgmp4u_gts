@@ -142,17 +142,11 @@ class _PracticeNewState extends State<PracticeNew> {
 
     print("optionQues=========$optionQues");
 
-    if (question.isEmpty) return;
+    if (question.isEmpty) {
+      setState(() => questionLoader = false);
+      return;
+    }
 
-    // if (!context.read<ChatProvider>().isChatSubscribed()) {
-    //   setState(() => questionLoader = false);
-    //   Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) => RandomPage(),
-    //       ));
-    //   return;
-    // }
     await context
         .read<ChatProvider>()
         .createDiscussionGroup(question, optionQues, context, testName: 'From Practice Test: ' + widget.pracTestName)
@@ -344,72 +338,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                             height: 10,
                                                           ),
 
-                                                          InkWell(
-                                                            onTap: () {
-                                                              print("op le ${op.length}");
-                                                              List<String> otsList = getList(op);
-                                                              print("otsList le ${otsList.length}");
-
-                                                              questionLoader
-                                                                  ? null
-                                                                  : context
-                                                                          .read<ProfileProvider>()
-                                                                          .subscriptionApiCalling
-                                                                      ? null
-                                                                      : onTapOfPutOnDisscussion(
-                                                                          PTList != null
-                                                                              ? PTList[_quetionNo].ques.question
-                                                                              : '',
-                                                                          otsList);
-                                                            },
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                              children: [
-                                                                Text(""),
-                                                                new Spacer(),
-                                                                Container(
-                                                                  height: 35,
-                                                                  decoration: BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.all(Radius.circular(20)),
-                                                                      gradient: LinearGradient(
-                                                                          colors: [
-                                                                            _colorfromhex("#3A47AD"),
-                                                                            _colorfromhex("#5163F3"),
-                                                                          ],
-                                                                          begin: const FractionalOffset(0.0, 0.0),
-                                                                          end: const FractionalOffset(1.0, 0.0),
-                                                                          stops: [0.0, 1.0],
-                                                                          tileMode: TileMode.clamp)),
-                                                                  child: Padding(
-                                                                    padding: const EdgeInsets.all(4.0),
-                                                                    child: Center(
-                                                                      child: Row(
-                                                                        children: [
-                                                                          Icon(
-                                                                            Icons.chat_bubble_rounded,
-                                                                            color: Colors.white,
-                                                                          ),
-                                                                          SizedBox(
-                                                                            width: 5,
-                                                                          ),
-                                                                          Padding(
-                                                                            padding: const EdgeInsets.symmetric(
-                                                                                horizontal: 4.0),
-                                                                            child: Text(
-                                                                              "Put on discussion",
-                                                                              style: TextStyle(
-                                                                                  color: Colors.white, fontSize: 12),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
+                                                          putOnDiscussionButton(op, context),
 
                                                           SizedBox(
                                                             height: 10,
@@ -1332,6 +1261,75 @@ class _PracticeNewState extends State<PracticeNew> {
             }),
       );
     });
+  }
+
+  Widget putOnDiscussionButton(List<Options> op, BuildContext context) {
+    return InkWell(
+                                                          onTap: () {
+                                                            print("op le ${op.length}");
+                                                            List<String> otsList = getList(op);
+                                                            print("otsList le ${otsList.length}");
+
+                                                            questionLoader
+                                                                ? null
+                                                                : context
+                                                                        .read<ProfileProvider>()
+                                                                        .subscriptionApiCalling
+                                                                    ? null
+                                                                    : onTapOfPutOnDisscussion(
+                                                                        PTList != null
+                                                                            ? PTList[_quetionNo].ques.question
+                                                                            : '',
+                                                                        otsList);
+                                                          },
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.start,
+                                                            children: [
+                                                              Text(""),
+                                                              new Spacer(),
+                                                              Container(
+                                                                height: 35,
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.all(Radius.circular(20)),
+                                                                    gradient: LinearGradient(
+                                                                        colors: [
+                                                                          _colorfromhex("#3A47AD"),
+                                                                          _colorfromhex("#5163F3"),
+                                                                        ],
+                                                                        begin: const FractionalOffset(0.0, 0.0),
+                                                                        end: const FractionalOffset(1.0, 0.0),
+                                                                        stops: [0.0, 1.0],
+                                                                        tileMode: TileMode.clamp)),
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.all(4.0),
+                                                                  child: Center(
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons.chat_bubble_rounded,
+                                                                          color: Colors.white,
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width: 5,
+                                                                        ),
+                                                                        Padding(
+                                                                          padding: const EdgeInsets.symmetric(
+                                                                              horizontal: 4.0),
+                                                                          child: Text(
+                                                                            "Put on discussion",
+                                                                            style: TextStyle(
+                                                                                color: Colors.white, fontSize: 12),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
   }
 
   void checkAllAns(List<int> selAns, List<int> rightAns) {

@@ -267,17 +267,11 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
     print("optsValue=========$mckOptions");
 
-    if (question.isEmpty) return;
+    if (question.isEmpty) {
+      setState(() => questionLoader = false);
+      return;
+    }
 
-    // if (!context.read<ChatProvider>().isChatSubscribed()) {
-    //   setState(() => questionLoader = false);
-    //   Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) => RandomPage(),
-    //       ));
-    //   return;
-    // }
     await context
         .read<ChatProvider>()
         .createDiscussionGroup(question, mckOptions, context, testName: 'From Mock Test: ' + mockNameNew)
@@ -493,62 +487,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                           ),
                                                         ),
 
-                                                        Container(
-                                                          height: 35,
-                                                          decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                                                              gradient: LinearGradient(
-                                                                  colors: [
-                                                                    _colorfromhex("#3A47AD"),
-                                                                    _colorfromhex("#5163F3"),
-                                                                  ],
-                                                                  begin: const FractionalOffset(0.0, 0.0),
-                                                                  end: const FractionalOffset(1.0, 0.0),
-                                                                  stops: [0.0, 1.0],
-                                                                  tileMode: TileMode.clamp)),
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(4.0),
-                                                            child: Center(
-                                                              child: Row(
-                                                                children: [
-                                                                  Icon(
-                                                                    Icons.chat_bubble_rounded,
-                                                                    color: Colors.white,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    width: 5,
-                                                                  ),
-                                                                  InkWell(
-                                                                    onTap: () {
-                                                                      questionLoader
-                                                                          ? null
-                                                                          : context
-                                                                                  .read<ProfileProvider>()
-                                                                                  .subscriptionApiCalling
-                                                                              ? null
-                                                                              : onTapOfPutOnDisscussion(
-                                                                                  mockQuestion[_quetionNo]
-                                                                                      .questionDetail
-                                                                                      .questiondata,
-                                                                                  mockQuestion[_quetionNo]
-                                                                                      .questionDetail
-                                                                                      .Options);
-                                                                    },
-                                                                    child: Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.symmetric(horizontal: 4.0),
-                                                                      child: Text(
-                                                                        "Put on discussion",
-                                                                        style: TextStyle(
-                                                                            color: Colors.white, fontSize: 12),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
+                                                        putOnDiscussionButton(context),
 
                                                         // listResponse.length - 1 > _quetionNo
                                                         //     ? GestureDetector(
@@ -890,6 +829,59 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                 );
               }),
         ),
+      ),
+    );
+  }
+
+  Widget putOnDiscussionButton(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        questionLoader
+            ? null
+            : context.read<ProfileProvider>().subscriptionApiCalling
+                ? null
+                : onTapOfPutOnDisscussion(mockQuestion[_quetionNo].questionDetail.questiondata,
+                    mockQuestion[_quetionNo].questionDetail.Options);
+      },
+      child: Container(
+        height: 35,
+        constraints: BoxConstraints(minWidth: 100),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            gradient: LinearGradient(
+                colors: [
+                  _colorfromhex("#3A47AD"),
+                  _colorfromhex("#5163F3"),
+                ],
+                begin: const FractionalOffset(0.0, 0.0),
+                end: const FractionalOffset(1.0, 0.0),
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp)),
+        child: questionLoader || context.read<ProfileProvider>().subscriptionApiCalling
+            ? Center(child: SizedBox(width: 20, height: 20, child: Center(child: CircularProgressIndicator.adaptive())))
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.chat_bubble_rounded,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Text(
+                          "Put on discussion",
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
       ),
     );
   }

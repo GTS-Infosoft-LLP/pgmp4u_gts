@@ -79,7 +79,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                   )));
       return;
     }
-
+    setState(() => questionLoader = true);
     List<String> optsName = [];
     for (int i = 0; i < li.length; i++) {
       String name = '';
@@ -93,10 +93,14 @@ class _QuesOfDayState extends State<QuesOfDay> {
     }
 
     print("optsName=========>>$optsName");
-    setState(() => questionLoader = true);
+
     print('Question of The Day question : $question');
     print('Question of The Day question options : $li');
-    if (question.isEmpty) return;
+
+    if (question.isEmpty) {
+      setState(() => questionLoader = false);
+      return;
+    }
 
     await context
         .read<ChatProvider>()
@@ -263,64 +267,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                       ],
                                                     ),
                                                     new Spacer(),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(right: 15.0),
-                                                      child: Container(
-                                                        height: 35,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                                                            gradient: LinearGradient(
-                                                                colors: [
-                                                                  _colorfromhex("#3A47AD"),
-                                                                  _colorfromhex("#5163F3"),
-                                                                ],
-                                                                begin: const FractionalOffset(0.0, 0.0),
-                                                                end: const FractionalOffset(1.0, 0.0),
-                                                                stops: [0.0, 1.0],
-                                                                tileMode: TileMode.clamp)),
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.all(4.0),
-                                                          child: Center(
-                                                            child: InkWell(
-                                                              onTap: () async {
-                                                                // subscriptionStatus
-                                                                questionLoader
-                                                                    ? null
-                                                                    : context
-                                                                            .read<ProfileProvider>()
-                                                                            .subscriptionApiCalling
-                                                                        ? null
-                                                                        : onTapOfPutOnDisscussion(
-                                                                            data.pList != null
-                                                                                ? data.qdList[_quetionNo].question
-                                                                                : '',
-                                                                            data.qdList[_quetionNo].options);
-                                                              },
-                                                              child: Row(
-                                                                children: [
-                                                                  Icon(
-                                                                    Icons.chat_outlined,
-                                                                    color: Colors.white,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    width: 5,
-                                                                  ),
-                                                                  Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.symmetric(horizontal: 4.0),
-                                                                    child: Text(
-                                                                      "Put on discussion",
-                                                                      style:
-                                                                          TextStyle(color: Colors.white, fontSize: 12),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
+                                                    putOnDiscussionWidget(context, data),
                                                   ],
                                                 ),
 
@@ -1247,6 +1194,65 @@ class _QuesOfDayState extends State<QuesOfDay> {
         ),
       );
     }));
+  }
+
+  Widget putOnDiscussionWidget(BuildContext context, PracticeTextProvider data) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 10.0),
+      child: InkWell(
+        onTap: () async {
+          // subscriptionStatus
+          print(
+              'questionLoader : $questionLoader, context.read<ProfileProvider>().subscriptionApiCalling: ${context.read<ProfileProvider>().subscriptionApiCalling}');
+          questionLoader
+              ? null
+              : context.read<ProfileProvider>().subscriptionApiCalling
+                  ? null
+                  : onTapOfPutOnDisscussion(
+                      data.pList != null ? data.qdList[_quetionNo].question : '', data.qdList[_quetionNo].options);
+        },
+        child: Container(
+          height: 35,
+          constraints: BoxConstraints(minWidth: 100),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              gradient: LinearGradient(
+                  colors: [
+                    _colorfromhex("#3A47AD"),
+                    _colorfromhex("#5163F3"),
+                  ],
+                  begin: const FractionalOffset(0.0, 0.0),
+                  end: const FractionalOffset(1.0, 0.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp)),
+          child: Center(
+            child: questionLoader || context.read<ProfileProvider>().subscriptionApiCalling
+                ? SizedBox(width: 20, height: 20, child: Center(child: CircularProgressIndicator.adaptive()))
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.chat_outlined,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          child: Text(
+                            "Put on discussion",
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+          ),
+        ),
+      ),
+    );
   }
 
   void checkAllAns(List<int> selAns, List<int> rightAns) {
