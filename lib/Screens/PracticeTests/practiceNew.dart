@@ -144,15 +144,15 @@ class _PracticeNewState extends State<PracticeNew> {
 
     if (question.isEmpty) return;
 
-    if (!context.read<ChatProvider>().isChatSubscribed()) {
-      setState(() => questionLoader = false);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RandomPage(),
-          ));
-      return;
-    }
+    // if (!context.read<ChatProvider>().isChatSubscribed()) {
+    //   setState(() => questionLoader = false);
+    //   Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => RandomPage(),
+    //       ));
+    //   return;
+    // }
     await context
         .read<ChatProvider>()
         .createDiscussionGroup(question, optionQues, context, testName: 'From Practice Test: ' + widget.pracTestName)

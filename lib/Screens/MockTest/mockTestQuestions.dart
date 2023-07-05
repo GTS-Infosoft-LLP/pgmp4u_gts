@@ -269,15 +269,15 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
     if (question.isEmpty) return;
 
-    if (!context.read<ChatProvider>().isChatSubscribed()) {
-      setState(() => questionLoader = false);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RandomPage(),
-          ));
-      return;
-    }
+    // if (!context.read<ChatProvider>().isChatSubscribed()) {
+    //   setState(() => questionLoader = false);
+    //   Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => RandomPage(),
+    //       ));
+    //   return;
+    // }
     await context
         .read<ChatProvider>()
         .createDiscussionGroup(question, mckOptions, context, testName: 'From Mock Test: ' + mockNameNew)
