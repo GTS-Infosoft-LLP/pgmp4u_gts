@@ -141,52 +141,56 @@ class ProfileProvider extends ChangeNotifier {
     print("token valued===$stringValue");
     var request = {"type": type};
 
-    var response = await http.post(
-      Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/getsubscriptionStatus"),
-      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
-      body: json.encode(request),
-    );
-    print("https://apivcarestage.vcareprojectmanagement.com/api/getsubscriptionStatus");
+    try {
+      var response = await http.post(
+        Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/getsubscriptionStatus"),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
 
-    print("response.statusCode===${response.body}");
-    print("response.statusCode===${response.statusCode}");
+      print("response.statusCode===${response.body}");
+      print("response.statusCode===${response.statusCode}");
 
-    var resDDo = json.decode(response.body);
-    var resStatus = (resDDo["status"]);
+      var resDDo = json.decode(response.body);
+      var resStatus = (resDDo["status"]);
 
-    print("respponse=== ${response.body}");
-    if (response.statusCode == 200) {
-      Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
-      print("mapResponse==========$mapResponse");
+      print("respponse=== ${response.body}");
+      if (response.statusCode == 200) {
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+        print("mapResponse==========$mapResponse");
 
-      successValue = mapResponse["success"];
+        successValue = mapResponse["success"];
 
-      print("successValue============$successValue");
+        print("successValue============$successValue");
 
-      Map<String, dynamic> temp1 = mapResponse["data"];
+        Map<String, dynamic> temp1 = mapResponse["data"];
 
-      subsPrice = mapResponse["data"]["price"];
-      print("priveeeee=====$subsPrice");
-      print("temp list===$temp1");
-      // masterList = temp1.map((e) => MasterDetails.fromjson(e)).toList();
+        subsPrice = mapResponse["data"]["price"];
+        print("priveeeee=====$subsPrice");
+        print("temp list===$temp1");
+        // masterList = temp1.map((e) => MasterDetails.fromjson(e)).toList();
 
-      print('isChatSubscribed condition ${mapResponse["success"]}');
-      if (mapResponse["success"] == true) {
-        isChatSubscribed = true;
+        print('isChatSubscribed condition ${mapResponse["success"]}');
+        if (mapResponse["success"] == true) {
+          isChatSubscribed = true;
+        } else {
+          isChatSubscribed = false;
+        }
+        updateSubApi(false);
+
+        return;
+      }
+      if (resStatus == 400) {
+        isChatSubscribed = false;
+        updateSubApi(false);
+
+        return;
       } else {
         isChatSubscribed = false;
+        updateSubApi(false);
       }
-      updateSubApi(false);
-
-      return;
-    }
-    if (resStatus == 400) {
-      isChatSubscribed = false;
-      updateSubApi(false);
-
-      return;
-    } else {
-      isChatSubscribed = false;
+    } on Exception {
+      // TODO
       updateSubApi(false);
     }
   }

@@ -129,6 +129,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
 
     print("API Response => ${response.request.url}; $params; ${response.body}");
+    print("response.statusCode===========${response.statusCode}");
 
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
@@ -169,7 +170,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       GFToast.showToast(
         'Mock test submitted successfully',
         context,
-        toastPosition: GFToastPosition.BOTTOM, 
+        toastPosition: GFToastPosition.BOTTOM,
       );
       print("success");
     } else {
