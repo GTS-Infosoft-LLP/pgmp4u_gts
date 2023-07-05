@@ -149,7 +149,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                           onTap: () async {
                                             {
                                               print("id:::: ${courseProvider.videoCate[index].id}");
-                                              courseProvider.getVideos(courseProvider.videoCate[index].id);
+                                              await courseProvider.getVideos(courseProvider.videoCate[index].id);
                                               var vdoSucVal = await courseProvider.vedioStatusValue;
                                               print("vdoSucVal==============$vdoSucVal");
                                               if (vdoSucVal == false) {

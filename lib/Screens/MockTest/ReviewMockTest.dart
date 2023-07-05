@@ -647,6 +647,40 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
     return correct;
   }
 
+  // String getRightAnser(List value) {
+  //   print("value is >> $value");
+  //   String correct = "";
+  //   int customIndex;
+  //   String finaString = value.join(" and ");
+  //   correct = finaString.replaceFirst("1", "A");
+  //   correct = correct.replaceFirst("2", "B");
+  //   correct = correct.replaceFirst("3", "C");
+  //   correct = correct.replaceFirst("4", "D");
+  //   correct = correct.replaceFirst("5", "E");
+  //   print("finaString $finaString");
+  //   // for (int i = 0; i < value.length; i++) {
+  //   //   customIndex;
+  //   //   switch (value[i]) {
+  //   //     case 1:
+  //   //       // correct = correct + ” A “;
+  //   //       break;
+  //   //     case 2:
+  //   //       // correct = correct + ” B “;
+  //   //       break;
+  //   //     case 3:
+  //   //       // correct = correct + ” C “;
+  //   //       break;
+  //   //     case 4:
+  //   //       // correct = correct + ” D “;
+  //   //       break;
+  //   //     case 5:
+  //   //       // correct = correct + ” E”;
+  //   //   }
+  //   // }
+  //   // print(“final is >>> $correct”);
+  //   return correct;
+  // }
+
   Widget getTextSelecd(List rightIndex, List wrongIndex, currentIndex) {
     print("rightIndex is >>> $rightIndex");
     print("current index >> $wrongIndex");

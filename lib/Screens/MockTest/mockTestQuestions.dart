@@ -133,7 +133,19 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
       if (data == "back") {
-        Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (Route<dynamic> route) => false);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MockTestResult(
+                    resultsData: responseData["data"],
+                    mocktestId: selectedIdNew,
+                    attemptData: attemptNew,
+                    activeTime: stopTime,
+                    atmptCount: widget.attempt,
+                  )),
+        );
+
+        // Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (Route<dynamic> route) => false);
       } else {
         setState(() {
           loader = false;
@@ -157,7 +169,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       GFToast.showToast(
         'Mock test submitted successfully',
         context,
-        toastPosition: GFToastPosition.BOTTOM,
+        toastPosition: GFToastPosition.BOTTOM, 
       );
       print("success");
     } else {
@@ -318,6 +330,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
                   // pracTestProv.practiceApiLoader = false;
                 }
+                // print("question number=====>>$_quetionNo");
+                // print("question number=====>>${mockQuestion[_quetionNo].questionDetail.Options}");
+                // mockQuestion[_quetionNo]
+                //     .questionDetail
+                //     .Options
+                //     .removeWhere((element) => (element.question_option == null || element.question_option.isEmpty));
 
                 return Container(
                   color: _colorfromhex("#FCFCFF"),
@@ -557,16 +575,15 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                             .Options
                                                             .indexOf(title);
 
+                                                        // if (title.question_option.isEmpty) {
+                                                        //   // title.question_option = "None of these";
+                                                        //   mockQuestion[_quetionNo]
+                                                        //       .questionDetail
+                                                        //       .Options
+                                                        //       .removeAt(index);
+                                                        // }
                                                         int rightAnswerLength =
                                                             mockQuestion[_quetionNo].questionDetail.rightAnswer.length;
-
-                                                        if (title.question_option.isEmpty) {
-                                                          // title.question_option = "None of these";
-                                                          mockQuestion[_quetionNo]
-                                                              .questionDetail
-                                                              .Options
-                                                              .removeAt(index);
-                                                        }
 
                                                         // return mockQuestion[_quetionNo] .questionDetail.Options.where((element)=>element.question_option.isNotEmpty).toList();
                                                         return title.question_option != null

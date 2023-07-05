@@ -39,7 +39,7 @@ class _FlashDisplayState extends State<FlashDisplay> {
   }
 
   callCardDetailsApi() async {
-    await responseProvider.getCardDetails();
+    // await responseProvider.getCardDetails();
   }
 
   Widget build(BuildContext context) {

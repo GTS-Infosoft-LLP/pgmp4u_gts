@@ -152,9 +152,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
         }
       } else {
-        print("this is in the else condition ");
-        Navigator.push(
-            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+        // print("this is in the else condition ");
+        // Navigator.push(
+        //     GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
       }
     });
 
