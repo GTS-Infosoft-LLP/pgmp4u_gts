@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 extension StringToTimeOfDay on String {
   TimeOfDay toTimeOfDay() {
@@ -43,5 +44,23 @@ extension NumberToAlphabet on int {
 
     final charCode = this + 'A'.codeUnitAt(0);
     return String.fromCharCode(charCode);
+  }
+}
+
+extension DateTimeExtension on DateTime {
+  String formatDateLabel() {
+    final now = DateTime.now();
+
+    if (this.year == now.year && this.month == now.month && this.day == now.day) {
+      return 'Today ${formatTime()}';
+    } else if (this.year == now.year && this.month == now.month && this.day == now.day - 1) {
+      return 'Yesterday ${formatTime()}';
+    } else {
+      return '${DateFormat('dd/MM/yyyy').format(this)} ${formatTime()}';
+    }
+  }
+
+  String formatTime() {
+    return DateFormat('hh:mm a').format(this);
   }
 }

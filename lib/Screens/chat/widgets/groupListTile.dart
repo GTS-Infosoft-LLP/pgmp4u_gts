@@ -26,13 +26,15 @@ class GroupListTile extends StatelessWidget {
     DateTime time = DateTime.fromMillisecondsSinceEpoch(int.tryParse(group.createdAt));
     String timeToShow = Jiffy(time).fromNow();
     // FieldValue.serverTimestamp();
+    Color newColor = Colors.grey.withOpacity(0.4);
+    Color newTextColor = Colors.black54;
 
     return GestureDetector(
       onTap: () => onTapOfGroup(context),
       child: Container(
         height: MediaQuery.of(context).size.height * 0.17,
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 14),
+        padding: EdgeInsets.only(top: 2, bottom: 2, left: 16, right: 14),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.white,
@@ -55,11 +57,16 @@ class GroupListTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  radius: 14,
-                  backgroundColor: color,
+                  radius: 12,
+                  // backgroundColor: color,
+                  backgroundColor: newColor,
                   child: Text(
                     (index + 1).toString(),
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      // color: Colors.white,
+                      color: newTextColor,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -90,19 +97,24 @@ class GroupListTile extends StatelessWidget {
               children: [
                 Container(
                   height: 29,
-                  alignment: Alignment.center,
                   constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.38),
-                  padding: EdgeInsets.symmetric(vertical: 6, horizontal: 6),
+                  padding: EdgeInsets.only(top: 4, bottom: 4, right: 8, left: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
-                    color: color,
+                    color: newColor,
                   ),
-                  child: Text(group.createdBy.capitalizeFirstLetter() ?? '',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      )),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(group.createdBy.capitalizeFirstLetter() ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: newTextColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11,
+                          )),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   width: 6,
