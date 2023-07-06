@@ -211,18 +211,18 @@ class HiveHandler {
     return Hive.box("userDataBox").listenable();
   }
 
-  static addPract(List<PracListModel> list) async {
-    final Box<List<PracListModel>> practiceTestBox = await Hive.openBox<List<PracListModel>>(PracticeTestBox);
-    practiceTestBox.put(PracticeTestKey, list);
+  // static addPract(List<PracListModel> list) async {
+  //   final Box<List<PracListModel>> practiceTestBox = await Hive.openBox<List<PracListModel>>(PracticeTestBox);
+  //   practiceTestBox.put(PracticeTestKey, list);
 
-    try {
-      final List<PracListModel> storedPracti = PracTestBox.get(PracticeTestKey);
-      print("storedPracti list length ${storedPracti.length}");
-      return storedPracti;
-    } catch (e) {
-      return [];
-    }
-  }
+  //   try {
+  //     final List<PracListModel> storedPracti = PracTestBox.get(PracticeTestKey);
+  //     print("storedPracti list length ${storedPracti.length}");
+  //     return storedPracti;
+  //   } catch (e) {
+  //     return [];
+  //   }
+  // }
 
   static addCategory(List<CategoryListModel> list) async {
     final Box<List<CategoryListModel>> categoryListBox = await Hive.openBox<List<CategoryListModel>>(userDataBox);
@@ -255,9 +255,10 @@ class HiveHandler {
   static addCourseData(List<CourseDetails> list) async {
     final Box<List<CourseDetails>> courseListBox = await Hive.openBox<List<CourseDetails>>(CourseBox);
     courseListBox.put(CourseKey, list);
+
     if (courseListBox.isNotEmpty) {
       print("===========added to box=========");
-      print("courseListBox.get${courseListBox.get(CourseKey)}");
+      print("courseListBox.get ${courseListBox.get(CourseKey)}");
     } else {
       print("===========box is empty=========");
     }
@@ -268,11 +269,17 @@ class HiveHandler {
   }
 
   static List<CourseDetails> getCourseDataList() {
+    List<CourseDetails> storedCourseData;
+
     try {
-      final List<CourseDetails> storedCourseData = courseListBox.get(CourseKey);
+      storedCourseData = courseListBox.get(CourseKey);
+
+     
       print("storedCourseData list length ${storedCourseData.length}");
       return storedCourseData;
     } catch (e) {
+      print("----- Exception Occured while getting getCourseDataList -----");
+      print(e.toString());
       return [];
     }
   }

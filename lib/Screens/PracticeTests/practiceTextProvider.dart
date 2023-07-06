@@ -65,50 +65,54 @@ class PracticeTextProvider extends ChangeNotifier {
     print("stringValue  $stringValue");
     // http.Response response;
     // response = await http.post(Uri.parse(getSubCategoryDetails),
-    var response = await http.get(
-      Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/$id"),
+    try {
+      var response = await http.get(
+        Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/$id"),
 
-      headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
-      // body: convert.jsonEncode(body)
-    );
+        headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
+        // body: convert.jsonEncode(body)
+      );
 
-    print("calling this api========>>>.https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/$id");
-    // print("body=========>$body");
+      print("calling this api========>>>.https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/$id");
+      // print("body=========>$body");
 
-    if (response.statusCode == 200) {
-      pList = [];
-      print(convert.jsonDecode(response.body));
-      //  HiveHandler.setstringdata(key: "PracTestModel", value: response.body);
-      var _mapResponse = convert.jsonDecode(response.body);
-      print("map respoanse========$_mapResponse");
-      print("map resposne datat=====>>>${_mapResponse["data"]}");
+      if (response.statusCode == 200) {
+        pList = [];
+        print(convert.jsonDecode(response.body));
+        //  HiveHandler.setstringdata(key: "PracTestModel", value: response.body);
+        var _mapResponse = convert.jsonDecode(response.body);
+        print("map respoanse========$_mapResponse");
+        print("map resposne datat=====>>>${_mapResponse["data"]}");
 
-      List temp = _mapResponse["data"];
-      HiveHandler.setstringdata(key: id.toString(), value: _mapResponse['data']);
+        List temp = _mapResponse["data"];
+        HiveHandler.setstringdata(key: id.toString(), value: _mapResponse['data']);
 
-      var v1 = await HiveHandler.getstringdata(key: id.toString());
-      print("v1===========================================${(v1.toString())}");
+        var v1 = await HiveHandler.getstringdata(key: id.toString());
+        print("v1===========================================${(v1.toString())}");
 
-      // List<PracTestModel> p1List = v1.map((e) => PracTestModel.fromJson(e)).toList();
+        // List<PracTestModel> p1List = v1.map((e) => PracTestModel.fromJson(e)).toList();
 
-      pList = temp.map((e) => PracTestModel.fromJson(e)).toList();
+        pList = temp.map((e) => PracTestModel.fromJson(e)).toList();
 
-      List<PracListModel> pltm = [];
-      plm.myList = pList.toString();
+        List<PracListModel> pltm = [];
+        plm.myList = pList.toString();
 
-      // print("")
+ 
 
-      practiceApiLoader = false;
-      print("pList=============$pList");
+        practiceApiLoader = false;
+        print("pList=============$pList");
 
-      if (pList.isNotEmpty) {
-        // print("pList[0]============${pList[0].ques.options[1].questionOption}");
+        if (pList.isNotEmpty) {
+          // print("pList[0]============${pList[0].ques.options[1].questionOption}");
+        }
+
+        notifyListeners();
       }
 
-      notifyListeners();
+      print('api res:  ${response.body}');
+    } on Exception {
+      // TODO
     }
-
-    print('api res:  ${response.body}');
   }
 
   Future<void> getQuesDay(int id) async {

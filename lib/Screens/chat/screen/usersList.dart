@@ -214,7 +214,7 @@ class _UsersListState extends State<UsersList> {
             ),
             Expanded(
               child: Text(
-                "Users",
+                isLoading ? "Users... " : "Users (${userListResponse.data.length})",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 22, fontFamily: 'Roboto Medium', color: Colors.white),
               ),
