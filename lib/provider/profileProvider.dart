@@ -142,13 +142,17 @@ class ProfileProvider extends ChangeNotifier {
     var request = {"type": type};
 
     try {
-      var response = await http.post(
+      var response = await http
+          .post(
         Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/getsubscriptionStatus"),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
-      );
+      )
+          .timeout(Duration(seconds: 5), onTimeout: () {
+        updateSubApi(false);
+      });
 
-      print("response.statusCode===${response.body}");
+      // print("response.statusCode===${response.body}");
       print("response.statusCode===${response.statusCode}");
 
       var resDDo = json.decode(response.body);

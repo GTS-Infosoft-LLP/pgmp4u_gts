@@ -6,18 +6,14 @@ import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
-import 'package:http/http.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/Models/purchaseable_product.dart';
 import 'package:pgmp4u/Models/store_state.dart';
-import 'package:pgmp4u/Screens/home_view/home.dart';
 import 'package:pgmp4u/api/apis.dart';
-import 'package:pgmp4u/provider/purchase_interface.dart';
 import 'package:pgmp4u/utils/event.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 import '../Models/apppurchasestatusmodel.dart';
 import '../Services/globalcontext.dart';
@@ -121,29 +117,24 @@ class PurchaseProvider extends ChangeNotifier {
     print("start buy ");
     switch (product.id) {
       case storeKeyConsumable:
-        var res =
-            await iapConnection.buyConsumable(purchaseParam: purchaseParam);
+        var res = await iapConnection.buyConsumable(purchaseParam: purchaseParam);
 
         //print("apple payment status $res");
         break;
       case flashCards:
-        var res =
-            await iapConnection.buyNonConsumable(purchaseParam: purchaseParam);
+        var res = await iapConnection.buyNonConsumable(purchaseParam: purchaseParam);
 
         //print("apple payment status $res");
         break;
       case videoLibraryLearningPrograms:
-        var res =
-            await iapConnection.buyNonConsumable(purchaseParam: purchaseParam);
+        var res = await iapConnection.buyNonConsumable(purchaseParam: purchaseParam);
 
         //print("apple payment status $res");
         break;
       default:
-        serverResponse =
-            Event(Default(message: "${product.id} is not a known product"));
+        serverResponse = Event(Default(message: "${product.id} is not a known product"));
 
-        throw ArgumentError.value(
-            product.productDetails, '${product.id} is not a known product');
+        throw ArgumentError.value(product.productDetails, '${product.id} is not a known product');
     }
   }
 
@@ -165,13 +156,11 @@ class PurchaseProvider extends ChangeNotifier {
     } else {
       updatehere(false);
     }
-    if (purchaseDetails.status == PurchaseStatus.purchased ||
-        purchaseDetails.status == PurchaseStatus.restored) {
+    if (purchaseDetails.status == PurchaseStatus.purchased || purchaseDetails.status == PurchaseStatus.restored) {
       // print("receiptttt dataa ${purchaseDetails.verificationData.serverVerificationData}");
       switch (purchaseDetails.productID) {
         case storeKeyConsumable:
-          paymentStatus(purchaseDetails.status,
-              purchaseDetails.verificationData.serverVerificationData);
+          paymentStatus(purchaseDetails.status, purchaseDetails.verificationData.serverVerificationData);
 /*
           print("Purchased successfully \n Status => ${purchaseDetails.status};"
               "\n Error => ${purchaseDetails.error}"
@@ -185,19 +174,15 @@ class PurchaseProvider extends ChangeNotifier {
           break;
         case flashCards:
           handlestatusFlashCardAndVideoLib(
-              purchaseDetails.status,
-              purchaseDetails.verificationData.serverVerificationData,
-              2); // 2 for FLASH CARD
+              purchaseDetails.status, purchaseDetails.verificationData.serverVerificationData, 2); // 2 for FLASH CARD
           //flashCardStatus=true;
           notifyListeners();
           // paymentStatus(purchaseDetails.status,
           //     purchaseDetails.verificationData.serverVerificationData);
           break;
         case videoLibraryLearningPrograms:
-          handlestatusFlashCardAndVideoLib(
-              purchaseDetails.status,
-              purchaseDetails.verificationData.serverVerificationData,
-              3); // 3 FOR  VIDEO LIBRARY
+          handlestatusFlashCardAndVideoLib(purchaseDetails.status,
+              purchaseDetails.verificationData.serverVerificationData, 3); // 3 FOR  VIDEO LIBRARY
           //videoLibraryStatus=true;
           notifyListeners();
           //  paymentStatus(purchaseDetails.status,
@@ -221,8 +206,7 @@ class PurchaseProvider extends ChangeNotifier {
     http.Response response;
     print("Token => $stringValue Purchase status $status");
     var request = json.encode({
-      "payment_status":
-          (status == PurchaseStatus.purchased) ? 'success' : status.toString(),
+      "payment_status": (status == PurchaseStatus.purchased) ? 'success' : status.toString(),
       "price": 1,
       "payment_receipt": receiptData,
       "payment_source": "app_store",
@@ -236,10 +220,7 @@ class PurchaseProvider extends ChangeNotifier {
 
     response = await http.post(
       Uri.parse(IN_APP_PURCHASE),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': stringValue
-      },
+      headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
       body: request,
     );
 
@@ -259,8 +240,7 @@ class PurchaseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future handlestatusFlashCardAndVideoLib(
-      PurchaseStatus status, receiptData, int planTyp) async {
+  Future handlestatusFlashCardAndVideoLib(PurchaseStatus status, receiptData, int planTyp) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
@@ -270,8 +250,7 @@ class PurchaseProvider extends ChangeNotifier {
 
       "deviceType": "I",
       "planType": planTyp,
-      "productId":
-          planTyp == 2 ? "flash_cards" : "video_recorded_learning_program",
+      "productId": planTyp == 2 ? "flash_cards" : "video_recorded_learning_program",
       "payment_receipt": receiptData
     };
     //);
@@ -279,10 +258,7 @@ class PurchaseProvider extends ChangeNotifier {
 
     response = await http.post(
       Uri.parse(InAppPurchasePaymentNew),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': stringValue
-      },
+      headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
       body: json.encode(request),
     );
     print(response.body);
@@ -301,49 +277,47 @@ class PurchaseProvider extends ChangeNotifier {
 
   Future updateStatusofPurchaseFLASHANDVIDEO({bool noNavigate = false}) async {
     Map mapResponse;
-    print("Get Status of FlashCard  ${mapResponse}");
+    print("Get Status of FlashCard  $mapResponse");
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     print(stringValue);
     http.Response response;
-    response = await http.get(Uri.parse(checkStatusFlashAndVideo), headers: {
-      'Content-Type': 'application/json',
-      'Authorization': "Bearer " + stringValue
-    });
-    print("Authorization");
-    print("Bearer " + stringValue);
-                      
-    print("api url===>${checkStatusFlashAndVideo}");
-    print("status code===${response.statusCode}");
+    try {
+      response = await http.get(Uri.parse(checkStatusFlashAndVideo),
+          headers: {'Content-Type': 'application/json', 'Authorization': "Bearer " + stringValue});
+      print("Authorization");
+      print("Bearer " + stringValue);
 
-    if (response.statusCode == 200) {
-      print("Calling successfull");
-      print("response===${response}");
-      Map<String, dynamic> mapResponse=convert.jsonDecode(response.body);
+      print("api url===>$checkStatusFlashAndVideo");
+      print("status code===${response.statusCode}");
 
-      print("map resposense====${mapResponse}");
-      print(convert.jsonDecode(response.body));
-      // setState(() {
-      
-     
-      PurchaseProvider purchaseProvider =
-          Provider.of(GlobalVariable.navState.currentContext, listen: false);
-      print("datadatdtdatdatdasdtasdasdt>>>>>>>>>>$mapResponse");
-      purchaseProvider.setStatus(ModelStatus.fromjson(mapResponse["data"]));
-      latestStatus = purchaseProvider.getLatestStatus();
-      print(
-          "real valuee of flash card status  ${latestStatus.flashCardStatus}");
-      print(
-          "real valuee of video library status  ${latestStatus.videoLibStatus}");
-      notifyListeners();
-      if (Platform.isIOS && noNavigate) {
-        Navigator.pop(GlobalVariable.navState.currentContext);
+      if (response.statusCode == 200) {
+        print("Calling successfull");
+        print("response===$response");
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+
+        print("map resposense====$mapResponse");
+        print(convert.jsonDecode(response.body));
+        // setState(() {
+
+        PurchaseProvider purchaseProvider = Provider.of(GlobalVariable.navState.currentContext, listen: false);
+        print("datadatdtdatdatdasdtasdasdt>>>>>>>>>>$mapResponse");
+        purchaseProvider.setStatus(ModelStatus.fromjson(mapResponse["data"]));
+        latestStatus = purchaseProvider.getLatestStatus();
+        print("real valuee of flash card status  ${latestStatus.flashCardStatus}");
+        print("real valuee of video library status  ${latestStatus.videoLibStatus}");
+        notifyListeners();
+        if (Platform.isIOS && noNavigate) {
+          Navigator.pop(GlobalVariable.navState.currentContext);
+        }
+
+        // });
+        // print(convert.jsonDecode(response.body));
       }
-
-      // });
-      // print(convert.jsonDecode(response.body));
+    } on Exception {
+      // TODO
     }
   }
 }
