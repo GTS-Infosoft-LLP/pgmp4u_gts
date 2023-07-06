@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Models/mocktestmodel.dart';
 import '../../provider/courseProvider.dart';
+import '../../tool/ShapeClipper.dart';
 import '../../utils/app_color.dart';
 import '../PracticeTests/practiceNew.dart';
 import '../PracticeTests/practiceTextProvider.dart';
@@ -98,52 +99,99 @@ class _MockTestState extends State<MockTest> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Consumer<CourseProvider>(builder: (context, cp, child) {
-                return Container(
-                  height: 149,
-                  width: width,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/vector1d.png"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Container(
-                    margin:
-                        EdgeInsets.only(left: width * (20 / 420), right: width * (20 / 420), top: height * (16 / 800)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Icon(
-                                Icons.arrow_back_ios,
-                                size: width * (24 / 420),
-                                color: Colors.white,
-                              ),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * .82,
-                              // color: Colors.amber,
-                              child: Text(
-                                cp.selectedCourseName,
-                                style: TextStyle(
-                                    fontFamily: 'Roboto Medium',
-                                    fontSize: width * (20 / 420),
-                                    color: Colors.white,
-                                    letterSpacing: 0.3),
-                              ),
-                            ),
-                          ],
+                return Stack(
+                  children: [
+                    ClipPath(
+                      clipper: ShapeClipper(),
+                      child: Container(
+                        height: 150,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Color(0xff3643a3), Color(0xff5468ff)]),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                    Container(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(20, 50, 0, 0),
+                        child: Row(children: [
+                          Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.transparent,
+                                  border: Border.all(color: Colors.white, width: 1)),
+                              child: Center(
+                                  child: IconButton(
+                                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      }))),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Center(
+                              child: Text(
+                            // "Video Library",
+                            cp.selectedCourseName,
+                            style: TextStyle(
+                                fontSize: 28, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
+                          )),
+                        ]),
+                      ),
+                    )
+                  ],
                 );
+
+                // Container(
+                //   height: 149,
+                //   width: width,
+                //   decoration: BoxDecoration(
+                //     image: DecorationImage(
+                //       image: AssetImage("assets/vector1d.png"),
+                //       fit: BoxFit.cover,
+                //     ),
+                //   ),
+                //   child: Container(
+                //     margin:
+                //         EdgeInsets.only(left: width * (20 / 420), right: width * (20 / 420), top: height * (16 / 800)),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Row(
+                //           children: [
+                //             GestureDetector(
+                //               onTap: () {
+                //                 Navigator.of(context).pop();
+                //               },
+                //               child: Icon(
+                //                 Icons.arrow_back_ios,
+                //                 size: width * (24 / 420),
+                //                 color: Colors.white,
+                //               ),
+                //             ),
+                //             Container(
+                //               width: MediaQuery.of(context).size.width * .82,
+                //               // color: Colors.amber,
+                //               child: Text(
+                //                 cp.selectedCourseName,
+                //                 style: TextStyle(
+                //                     fontFamily: 'Roboto Medium',
+                //                     fontSize: width * (20 / 420),
+                //                     color: Colors.white,
+                //                     letterSpacing: 0.3),
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // );
               }),
               Consumer<CourseProvider>(builder: (context, cp, child) {
                 return
@@ -159,6 +207,9 @@ class _MockTestState extends State<MockTest> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(
+                            height: 10,
+                          ),
                           Container(
                             margin: EdgeInsets.only(bottom: height * (22 / 800)),
                             child: Text(
@@ -194,7 +245,8 @@ class _MockTestState extends State<MockTest> {
                                             style: TextStyle(fontSize: 14),
                                           )))
                                       : Container(
-                                          height: MediaQuery.of(context).size.height * .7,
+                                          // color: Colors.amber,
+                                          height: MediaQuery.of(context).size.height * .65,
                                           child: ListView.builder(
                                               shrinkWrap: true,
                                               itemCount: storedTestData.length,

@@ -133,6 +133,7 @@ class _MasterListPageState extends State<MasterListPage> {
                             return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
                               return storedMaster.isNotEmpty
                                   ? Container(
+                                      // color: Colors.amber,
                                       height: MediaQuery.of(context).size.height * .75,
                                       child: ListView.builder(
                                           shrinkWrap: true,

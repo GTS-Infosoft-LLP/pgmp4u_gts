@@ -177,7 +177,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                       ? Container(
                           child: CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF"))))
-                      : data.qdList != null
+                      : data.qdList != null && data.qdList.isNotEmpty
                           ? Expanded(
                               // width: width,
                               // height: height - 235,

@@ -483,7 +483,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                         style: TextStyle(
                                                                             fontFamily: 'Roboto Bold',
                                                                             fontSize: width * (20 / 420),
-                                                                            color: Colors.black,
+                                                                            color: Colors.black,   
                                                                             letterSpacing: 0.3),
                                                                       ),
                                                                       Text(
@@ -519,7 +519,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                     ],
                                                                   ),
                                                                 ),
-                                                              ],
+                                                              ], 
                                                             ),
                                                           )
                                                   ])),

@@ -157,6 +157,7 @@ class PracticeTextProvider extends ChangeNotifier {
       // masterList.clear();
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
       List temp = mapResponse["data"];
+      print("temp========$temp");
       qdList = temp.map((e) => QuesDayModel.fromJson(e)).toList();
       practiceApiLoader = false;
       if (qdList.isNotEmpty) {
