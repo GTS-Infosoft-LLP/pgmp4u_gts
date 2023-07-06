@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-   part 'mockListmodel.g.dart';
+part 'mockListmodel.g.dart';
 
 class MockData {
   MockDataDetails detailsofMock;
@@ -14,32 +14,30 @@ class MockData {
   }
 }
 
-
-
 @HiveType(typeId: 17)
 class MockDataDetails {
-    @HiveField(0)
+  @HiveField(0)
   int id;
-   @HiveField(1)
+  @HiveField(1)
   int course;
-   @HiveField(2)
+  @HiveField(2)
   String test_name;
-   @HiveField(3)
+  @HiveField(3)
   int premium;
-   @HiveField(4)
+  @HiveField(4)
   int price;
-   @HiveField(5)
+  @HiveField(5)
   int question_count;
-   @HiveField(6)
+  @HiveField(6)
   int num_attemptes;
-   @HiveField(7)
+  @HiveField(7)
   int generated;
-   @HiveField(8)
+  @HiveField(8)
   int status;
-   @HiveField(9)
+  @HiveField(9)
   int deleteStatus;
 
-MockDataDetails();
+  MockDataDetails();
 
   MockDataDetails.fromjson(Map<String, dynamic> jsn) {
     id = jsn["id"];
@@ -76,6 +74,8 @@ class AvailableAttempts {
     if (jsn["attempted_date"] != null) {
       attempted_date = jsn["attempted_date"]["date"] ?? "";
       start_date = jsn["attempted_date"]["start_date"] ?? "";
+    } else {
+      jsn["attempted_date"] = "";
     }
   }
 }
