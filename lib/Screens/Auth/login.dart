@@ -118,54 +118,71 @@ class _LoginScreenState extends State<LoginScreen> {
 
     print("Request => $request");
     print("GMAIL_REGISTER $GMAIL_REGISTER");
-    response = await http.post(
-      Uri.parse(GMAIL_REGISTER),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: request,
-    );
-    print("response is >> $response");
 
-    print("Response => ${response.body}");
-
-    if (response.statusCode == 200) {
-      Map responseData = json.decode(response.body);
-      print(json.decode(response.body));
-
-      print("user email ${responseData['data'][0]['email']}");
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var _user = UserModel(
-          image: fromProvider == "google" ? user.photoUrl : '',
-          name: user.displayName,
-          token: responseData["token"],
-          email: responseData['data'][0]['email']);
-
-      UserObject.setUser(_user);
-      prefs.setString('token', responseData["token"]);
-      prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
-      prefs.setString('name', user.displayName);
-      prefs.setBool('isChatAdmin', responseData['data'][0]['isChatAdmin'] == 1 ? true : false);
-      prefs.setBool('isChatSubscribed', responseData['data'][0]['isChatSubscribed'] == 1 ? true : false);
-      //loginHandler(user);
-      // Navigator.push(context,
-      //     MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
-      GFToast.showToast(
-        'Registered successfully',
-        context,
-        toastPosition: GFToastPosition.BOTTOM,
+    try {
+      response = await http.post(
+        Uri.parse(GMAIL_REGISTER),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: request,
       );
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
-      setState(() {
-        loading = false;
-      });
-    } else {
-      Map responseData = json.decode(response.body);
-      GFToast.showToast(
-        responseData["message"],
-        context,
-        toastPosition: GFToastPosition.BOTTOM,
-      );
+      print("response is >> $response");
+      print("Response => ${response.body}");
+
+      if (response.statusCode == 200) {
+        Map responseData = json.decode(response.body);
+        print(json.decode(response.body));
+
+        print("user email ${responseData['data'][0]['email']}");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var _user = UserModel(
+            image: fromProvider == "google" ? user.photoUrl : '',
+            name: user.displayName,
+            token: responseData["token"],
+            email: responseData['data'][0]['email']);
+
+        UserObject.setUser(_user);
+        prefs.setString('token', responseData["token"]);
+        prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
+        prefs.setString('name', user.displayName);
+        prefs.setBool('isChatAdmin', responseData['data'][0]['isChatAdmin'] == 1 ? true : false);
+        prefs.setBool('isChatSubscribed', responseData['data'][0]['isChatSubscribed'] == 1 ? true : false);
+        //loginHandler(user);
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
+        GFToast.showToast(
+          'Registered successfully',
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
+        setState(() {
+          loading = false;
+        });
+      } else {
+        Map responseData = json.decode(response.body);
+        GFToast.showToast(
+          responseData["message"],
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+        setState(() {
+          loading = false;
+        });
+
+        if (responseData["alreadyExist"] != null && responseData["alreadyExist"] == 1) {
+          print("Do login flow");
+          GFToast.showToast(
+            "Logging in... ",
+            context,
+            toastPosition: GFToastPosition.BOTTOM,
+          );
+          loginHandler(user, fromProvider);
+        }
+      }
+    } on Exception {
+      // TODO
       setState(() {
         loading = false;
       });
@@ -364,36 +381,37 @@ class _LoginScreenState extends State<LoginScreen> {
                       'assets/login_image1.png',
                       height: height * .42,
                     )),
-                    Container(
-                      padding: EdgeInsets.only(top: height * (16 / 800), bottom: height * (16 / 800)),
-                      margin: EdgeInsets.only(
-                        left: width * (36 / 420),
-                        right: width * (36 / 420),
-                        bottom: height * (15 / 800),
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: _colorfromhex('#494AE2').withOpacity(0.12),
-                      ),
-                      child: loading
-                          ? Center(
-                              child: SizedBox(
-                              width: 33,
-                              height: 33,
-                              child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  _colorfromhex("#4849DF"),
+                    GestureDetector(
+                      onTap: signIn,
+                      child: Container(
+                        padding: EdgeInsets.only(top: height * (16 / 800), bottom: height * (16 / 800)),
+                        margin: EdgeInsets.only(
+                          left: width * (36 / 420),
+                          right: width * (36 / 420),
+                          bottom: height * (15 / 800),
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: _colorfromhex('#494AE2').withOpacity(0.12),
+                        ),
+                        child: loading
+                            ? Center(
+                                child: SizedBox(
+                                width: 33,
+                                height: 33,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    _colorfromhex("#4849DF"),
+                                  ),
                                 ),
-                              ),
-                            ))
-                          : GestureDetector(
-                              onTap: signIn,
-                              child: Row(
+                              ))
+                            : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    !signInBool ? "Sign up with Google   " : "Sign in with Google   ",
+                                    // !signInBool ? "Sign up with Google   " : "Sign in with Google   ",
+                                    "Sign with Google  ",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: width * (20 / 420),
@@ -403,7 +421,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Image.asset('assets/google.png'),
                                 ],
                               ),
-                            ),
+                      ),
                     ),
                     Platform.isIOS
                         ? Container(
@@ -448,34 +466,34 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                           )
                         : Container(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          signInBool ? "You dont have an account? " : "Already have an account? ",
-                          style: TextStyle(
-                            color: _colorfromhex("#76767E"),
-                            fontSize: width * (16 / 420),
-                            fontFamily: 'Roboto Regular',
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => {
-                            setState(() {
-                              signInBool = !signInBool;
-                            })
-                          },
-                          child: Text(
-                            signInBool ? "Sign Up" : "Sign In",
-                            style: TextStyle(
-                              color: _colorfromhex("#494AE2"),
-                              fontSize: width * (16 / 420),
-                              fontFamily: 'Roboto Bold',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     Text(
+                    //       signInBool ? "You dont have an account? " : "Already have an account? ",
+                    //       style: TextStyle(
+                    //         color: _colorfromhex("#76767E"),
+                    //         fontSize: width * (16 / 420),
+                    //         fontFamily: 'Roboto Regular',
+                    //       ),
+                    //     ),
+                    //     GestureDetector(
+                    //       onTap: () => {
+                    //         setState(() {
+                    //           signInBool = !signInBool;
+                    //         })
+                    //       },
+                    //       child: Text(
+                    //         signInBool ? "Sign Up" : "Sign In",
+                    //         style: TextStyle(
+                    //           color: _colorfromhex("#494AE2"),
+                    //           fontSize: width * (16 / 420),
+                    //           fontFamily: 'Roboto Bold',
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
