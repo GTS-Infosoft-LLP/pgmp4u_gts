@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
-import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
-import 'package:pgmp4u/Services/globalcontext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../Models/mockListmodel.dart';
@@ -192,7 +190,7 @@ class CourseProvider extends ChangeNotifier {
       print("error========>>$error");
       if (error.toString() == "Connection failed") {
         print("Connection failed *** Connection failed *** Connection failed");
-        checkInternet=1;
+        checkInternet = 1;
       }
       flashCate = [];
       checkInternet = 1;
@@ -310,6 +308,7 @@ class CourseProvider extends ChangeNotifier {
     ).onError((error, stackTrace) {
       tempListCourse = [];
       tempListCourse = HiveHandler.getCourseDataList();
+      print("tempListCourse=====$tempListCourse");
       print("error====>>$error");
       if (tempListCourse.isEmpty) {
         course = [];
@@ -446,7 +445,7 @@ class CourseProvider extends ChangeNotifier {
     successValueFlash = resDDo['success'];
     if (successValueFlash == false) {
       print(":this valueee=====??");
-   
+
       return;
     }
     var resStatus = (resDDo["status"]);
