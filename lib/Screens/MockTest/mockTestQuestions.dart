@@ -364,7 +364,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                     children: [
                                       GestureDetector(
                                         onTap: () => {
-                                          if (loader) {} else {submitMockTest("back", displayTime)}
+                                          _onWillPop()
+                                          // if (loader) {} else {submitMockTest("back", displayTime)}
                                         },
                                         child: Icon(
                                           Icons.arrow_back_ios,

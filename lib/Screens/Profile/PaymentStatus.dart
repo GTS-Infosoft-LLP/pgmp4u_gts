@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../home_view/VideoLibrary/Playlist.dart';
-import '../home_view/flash_card_item.dart';
-
 class PaymentStatus extends StatefulWidget {
   final status;
   int index;
@@ -36,9 +33,7 @@ class _PaymentStatusState extends State<PaymentStatus> {
           children: [
             Container(
                 margin: EdgeInsets.only(bottom: 25),
-                child: statusNew == "success"
-                    ? Image.asset('assets/succs.png')
-                    : Image.asset('assets/succ.png')),
+                child: statusNew == "success" ? Image.asset('assets/succs.png') : Image.asset('assets/succ.png')),
             Text(
               statusNew == "success" ? 'Payment Successful' : 'Payment Fail',
               style: TextStyle(
@@ -50,78 +45,77 @@ class _PaymentStatusState extends State<PaymentStatus> {
             Container(
               height: 2,
             ),
-           widget.index==1? Text(
-              statusNew == "success"
-                  ? 'Premium plan purchsed successfully'
-                  // 'You have unlocked 1 year access to flash cards.'
-                  : "Something went wrong!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Roboto Regular',
-                fontSize: width * (22 / 420),
-                color: _colorfromhex("#ABAFD1"),
-              ),
-            )
-            :  widget.index==2? 
-            Text(
-              statusNew == "success"
-                  ?'Premium plan purchsed successfully'
-                  //  'You have unlocked 1 year access to Video Library.'
-                  : "Something went wrong!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Roboto Regular',
-                fontSize: width * (22 / 420),
-                color: _colorfromhex("#ABAFD1"),
-              ),
-            ):
-            widget.index==3? 
-               Text(
-              statusNew == "success"
-                  ?'Premium plan purchsed successfully'
-                  //  'You have unlocked 1 year access to Mock Tests'
-                  : "Something went wrong!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Roboto Regular',
-                fontSize: width * (22 / 420),
-                color: _colorfromhex("#ABAFD1"),
-              ),
-            ):
-                widget.index==4?   Text(
-              statusNew == "success"
-                  ? 'Premium plan purchsed successfully'
-                  // 'You have unlocked 1 year access to Chats'
-                  : "Something went wrong!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Roboto Regular',
-                fontSize: width * (22 / 420),
-                color: _colorfromhex("#ABAFD1"),
-              ),
-            ):
-               Text(
-              statusNew == "success"
-                  ? 'Premium plan purchsed successfully'
-                  // 'You have unlocked 1 year access to Pgmp Question of the day'
-                  : "Something went wrong!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Roboto Regular',
-                fontSize: width * (22 / 420),
-                color: _colorfromhex("#ABAFD1"),
-              ),
-            )
-            ,
+            widget.index == 1
+                ? Text(
+                    statusNew == "success"
+                        ? 'Premium plan purchsed successfully'
+                        // 'You have unlocked 1 year access to flash cards.'
+                        : "Something went wrong!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Roboto Regular',
+                      fontSize: width * (22 / 420),
+                      color: _colorfromhex("#ABAFD1"),
+                    ),
+                  )
+                : widget.index == 2
+                    ? Text(
+                        statusNew == "success"
+                            ? 'Premium plan purchsed successfully'
+                            //  'You have unlocked 1 year access to Video Library.'
+                            : "Something went wrong!",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Roboto Regular',
+                          fontSize: width * (22 / 420),
+                          color: _colorfromhex("#ABAFD1"),
+                        ),
+                      )
+                    : widget.index == 3
+                        ? Text(
+                            statusNew == "success"
+                                ? 'Premium plan purchsed successfully'
+                                //  'You have unlocked 1 year access to Mock Tests'
+                                : "Something went wrong!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Roboto Regular',
+                              fontSize: width * (22 / 420),
+                              color: _colorfromhex("#ABAFD1"),
+                            ),
+                          )
+                        : widget.index == 4
+                            ? Text(
+                                statusNew == "success"
+                                    ? 'Premium plan purchsed successfully'
+                                    // 'You have unlocked 1 year access to Chats'
+                                    : "Something went wrong!",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto Regular',
+                                  fontSize: width * (22 / 420),
+                                  color: _colorfromhex("#ABAFD1"),
+                                ),
+                              )
+                            : Text(
+                                statusNew == "success"
+                                    ? 'Premium plan purchsed successfully'
+                                    // 'You have unlocked 1 year access to Pgmp Question of the day'
+                                    : "Something went wrong!",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto Regular',
+                                  fontSize: width * (22 / 420),
+                                  color: _colorfromhex("#ABAFD1"),
+                                ),
+                              ),
             Center(
               child: Container(
                 margin: EdgeInsets.only(top: 30),
                 padding: EdgeInsets.only(left: 0, right: 0),
                 height: 50,
                 // alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: _colorfromhex("#3A47AD"),
-                    borderRadius: BorderRadius.circular(30.0)),
+                decoration: BoxDecoration(color: _colorfromhex("#3A47AD"), borderRadius: BorderRadius.circular(30.0)),
                 child: OutlinedButton(
                   onPressed: () => {
                     if (statusNew == "success")
@@ -130,16 +124,12 @@ class _PaymentStatusState extends State<PaymentStatus> {
                       {Navigator.pop(context)}
                   },
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0))),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
                   ),
                   child: Text(
                     statusNew == "success" ? 'Access Mock Test' : "Try Again",
-                    style: TextStyle(
-                        fontFamily: 'Roboto Medium',
-                        fontSize: 20,
-                        color: Colors.white,
-                        letterSpacing: 0.3),
+                    style:
+                        TextStyle(fontFamily: 'Roboto Medium', fontSize: 20, color: Colors.white, letterSpacing: 0.3),
                   ),
                 ),
               ),
@@ -150,10 +140,6 @@ class _PaymentStatusState extends State<PaymentStatus> {
     );
   }
 }
-
-
-
-
 
 class PaymentStatus2 extends StatefulWidget {
   final status;
@@ -166,14 +152,10 @@ class PaymentStatus2 extends StatefulWidget {
       );
 }
 
-
-
-
-
 class _PaymentStatusState2 extends State<PaymentStatus2> {
   final statusNew;
   int typ;
-  _PaymentStatusState2({this.statusNew,this.typ});
+  _PaymentStatusState2({this.statusNew});
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
@@ -192,9 +174,7 @@ class _PaymentStatusState2 extends State<PaymentStatus2> {
           children: [
             Container(
                 margin: EdgeInsets.only(bottom: 25),
-                child: statusNew == "success"
-                    ? Image.asset('assets/succs.png')
-                    : Image.asset('assets/succ.png')),
+                child: statusNew == "success" ? Image.asset('assets/succs.png') : Image.asset('assets/succ.png')),
             Text(
               statusNew == "success" ? 'Payment Successful' : 'Payment Fail',
               style: TextStyle(
@@ -207,9 +187,7 @@ class _PaymentStatusState2 extends State<PaymentStatus2> {
               height: 2,
             ),
             Text(
-              statusNew == "success"
-                  ? 'You have unlocked unlimited access to mock test.'
-                  : "Something went wrong!",
+              statusNew == "success" ? 'You have unlocked 1 year access of this feature.' : "Something went wrong!",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Roboto Regular',
@@ -223,39 +201,34 @@ class _PaymentStatusState2 extends State<PaymentStatus2> {
                 padding: EdgeInsets.only(left: 0, right: 0),
                 height: 50,
                 // alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: _colorfromhex("#3A47AD"),
-                    borderRadius: BorderRadius.circular(30.0)),
+                decoration: BoxDecoration(color: _colorfromhex("#3A47AD"), borderRadius: BorderRadius.circular(30.0)),
                 child: OutlinedButton(
                   onPressed: () => {
                     if (statusNew == "success")
-                  {Navigator.pop(context),
-                    // Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (BuildContext context) =>
-                    //         typ==1? 
-                    //          new PlaylistPage(
-                    //           videoType: 1,
-                    //           title: "PgMP Prep",
-                    //         ):FlashCardItem()
-                    //       ),
-                    //     )
+                      {
+                        Navigator.pop(context),
+                        // Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (BuildContext context) =>
+                        //         typ==1?
+                        //          new PlaylistPage(
+                        //           videoType: 1,
+                        //           title: "PgMP Prep",
+                        //         ):FlashCardItem()
+                        //       ),
+                        //     )
                       }
                     else
                       {Navigator.pop(context)}
                   },
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0))),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
                   ),
                   child: Text(
                     statusNew == "success" ? 'Allow Access' : "Try Again",
-                    style: TextStyle(
-                        fontFamily: 'Roboto Medium',
-                        fontSize: 20,
-                        color: Colors.white,
-                        letterSpacing: 0.3),
+                    style:
+                        TextStyle(fontFamily: 'Roboto Medium', fontSize: 20, color: Colors.white, letterSpacing: 0.3),
                   ),
                 ),
               ),

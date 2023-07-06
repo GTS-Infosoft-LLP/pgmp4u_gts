@@ -282,7 +282,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                               Column(
                                                 children:
                                                     listResponse[_quetionNo].question.options.map<Widget>((title) {
-                                                  print("question option $title");
+                                                  print("question option====== ${title.questionOption}");
                                                   var index = listResponse[_quetionNo].question.options.indexOf(title);
                                                   // print("index >>>>>> $index");
 
@@ -625,27 +625,87 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
   // }
 
   String getRightAnser(List value) {
+    print("value.length=====${value.length}");
+    print("first element===${value[0]}");
+    print("value=======$value");
     String correct = "";
     int customIndex;
-    for (int i = 0; i < value.length; i++) {
-      customIndex;
-      switch (value[i]) {
-        case 1:
-          correct = "A";
-          break;
-        case 2:
-          correct = "B";
-          break;
-        case 3:
-          correct = "C";
-          break;
-        case 4:
-          correct = "D";
-          break;
+    if (value.length == 1) {
+      for (int i = 0; i < value.length; i++) {
+        customIndex;
+        switch (value[i]) {
+          case 0:
+            correct = "A";
+            break;
+          case 1:
+            correct = "B";
+            break;
+          case 2:
+            correct = "C";
+            break;
+          case 3:
+            correct = "D";
+            break;
+          case 4:
+            correct = "E";
+        }
+      }
+    } else if (value.length == 2) {
+      if (value.contains(0) && value.contains(3)) {
+        print("and a and d are correct");
+        correct = "A and D";
+      } else if (value.contains(0) && value.contains(1)) {
+        correct = "A and B";
+      } else if (value.contains(0) && value.contains(2)) {
+        correct = "A and C";
+      } else if (value.contains(0) && value.contains(4)) {
+        correct = "A and E";
+      } else if (value.contains(1) && value.contains(2)) {
+        correct = "B and C";
+      } else if (value.contains(1) && value.contains(3)) {
+        correct = "B and D";
+      } else if (value.contains(1) && value.contains(4)) {
+        correct = "B and E";
+      } else if (value.contains(2) && value.contains(3)) {
+        correct = "C and D";
+      } else if (value.contains(2) && value.contains(4)) {
+        correct = "C and E";
+      } else if (value.contains(3) && value.contains(4)) {
+        correct = "D and E";
+      }
+    } else if (value.length == 3) {
+      if (value.contains(0) && value.contains(1) && value.contains(2)) {
+        correct = "A, B and C";
+      } else if (value.contains(0) && value.contains(1) && value.contains(3)) {
+        correct = "A, B and D";
+      } else if (value.contains(0) && value.contains(2) && value.contains(4)) {
+        correct = "A, B and E";
+      } else if (value.contains(1) && value.contains(2) && value.contains(3)) {
+        correct = "B, C and D";
+      } else if (value.contains(1) && value.contains(2) && value.contains(4)) {
+        correct = "B, C and E";
+      } else if (value.contains(2) && value.contains(3) && value.contains(4)) {
+        correct = "C, D and E";
       }
     }
+
     return correct;
   }
+
+  //  switch (value[i]) {
+  //       case 1:
+  //         correct = "A";
+  //         break;
+  //       case 2:
+  //         correct = "B";
+  //         break;
+  //       case 3:
+  //         correct = "C";
+  //         break;
+  //       case 4:
+  //         correct = "D";
+  //         break;
+  //     }
 
   // String getRightAnser(List value) {
   //   print("value is >> $value");
