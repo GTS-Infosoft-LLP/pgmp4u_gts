@@ -155,6 +155,8 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) => MockTestAttempts(
+                                                          attemptLength: testPercent[index].attempts.length,
+
                                                             selectedId: testPercent[index].id,
                                                             startAgn: startval,
                                                             attemptCnt: testPercent[index].noOfattempts)));
