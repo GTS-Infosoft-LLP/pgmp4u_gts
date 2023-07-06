@@ -56,8 +56,6 @@ class _HomeViewState extends State<HomeView> {
 
     courseProvider.getCourse();
 
-    // var data = HiveHandler.getCourseDataList();
-    // print('--> data : $data');
 
     super.initState();
   }
