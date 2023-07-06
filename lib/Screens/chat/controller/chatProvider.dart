@@ -203,9 +203,15 @@ class ChatProvider extends ChangeNotifier {
   }
 
   bool isChatAdmin() {
-    bool isChatAdmin = prefs.getBool('isChatAdmin');
+    bool isChatAdmin = false;
 
-    // print("isChatAdmin : $isChatAdmin");
+    try {
+      isChatAdmin = prefs.getBool('isChatAdmin');
+    } on Exception {
+      print("Exception occured while geting isChatAdmin");
+    }
+
+    print("isChatAdmin : $isChatAdmin");
     if (isChatAdmin == null) {
       return false;
     }

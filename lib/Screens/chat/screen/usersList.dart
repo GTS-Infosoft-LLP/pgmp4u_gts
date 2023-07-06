@@ -41,41 +41,48 @@ class _UsersListState extends State<UsersList> {
     String stringValue = prefs.getString('token');
     print(stringValue);
     http.Response response;
-    response = await http.post(Uri.parse(chatUserListApi),
-        headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
-        body: jsonEncode({"page": currentPageIndex}));
 
-    if (response.statusCode == 200) {
-      print(jsonDecode(response.body));
-      UpadateLocationResponseModel userListResponseTemp =
-          UpadateLocationResponseModel.fromJson(jsonDecode(response.body));
+    try {
+      response = await http.post(Uri.parse(chatUserListApi),
+          headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
+          body: jsonEncode({"page": currentPageIndex}));
 
-      if (currentPageIndex == 1) {
-        userListResponse = userListResponseTemp;
+      if (response.statusCode == 200) {
+        print(jsonDecode(response.body));
+        UpadateLocationResponseModel userListResponseTemp =
+            UpadateLocationResponseModel.fromJson(jsonDecode(response.body));
+
+        if (currentPageIndex == 1) {
+          userListResponse = userListResponseTemp;
+        } else {
+          userListResponse.data.addAll(userListResponseTemp.data);
+        }
+
+        // filter list if user's uuid is null or empty
+        userListResponse.data.removeWhere((user) => user.uuid.isEmpty || user.uuid == null);
+
+        /// remove my self
+        userListResponse.data.removeWhere((user) => user.uuid == context.read<ChatProvider>().getUser().uid);
+
+        // only shows admin if i'm normal user
+        context.read<ChatProvider>().isChatAdmin()
+            ? null
+            : userListResponse.data.removeWhere((user) => user.isChatAdmin == 0);
+
+        isLoading = false;
+
+        currentPageIndex++;
+        setState(() {});
       } else {
-        userListResponse.data.addAll(userListResponseTemp.data);
+        isLoading = false;
+        setState(() {});
+        print('error while calling api');
+        print(jsonDecode(response.body));
       }
-
-      // filter list if user's uuid is null or empty
-      userListResponse.data.removeWhere((user) => user.uuid.isEmpty || user.uuid == null);
-
-      /// remove my self
-      userListResponse.data.removeWhere((user) => user.uuid == context.read<ChatProvider>().getUser().uid);
-
-      // only shows admin if i'm normal user
-      context.read<ChatProvider>().isChatAdmin()
-          ? null
-          : userListResponse.data.removeWhere((user) => user.isChatAdmin == 0);
-
-      isLoading = false;
-
-      currentPageIndex++;
-      setState(() {});
-    } else {
+    } on Exception {
       isLoading = false;
       setState(() {});
       print('error while calling api');
-      print(jsonDecode(response.body));
     }
   }
 
