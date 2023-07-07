@@ -124,7 +124,7 @@ class ProfileProvider extends ChangeNotifier {
   var Subsmsg;
   var subsPrice;
 
-  bool isChatSubscribed;
+  bool isChatSubscribed = false;
   bool subscriptionApiCalling = false;
   updateSubApi(bool v) {
     subscriptionApiCalling = v;
@@ -193,8 +193,10 @@ class ProfileProvider extends ChangeNotifier {
         isChatSubscribed = false;
         updateSubApi(false);
       }
-    } on Exception {
+    } catch (e) {
       // TODO
+      print("---- EXCEPTION OCCURED WHILE CHECKING FOR CHATSUBSCRIPTION ----");
+      print(e.toString());
       updateSubApi(false);
     }
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:pgmp4u/Screens/MockTest/MockTestDetails.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTestQuestions.dart';
@@ -30,6 +31,8 @@ class MockTestAttempts extends StatefulWidget {
 class _MockTestAttemptsState extends State<MockTestAttempts> {
   final selectedIdNew;
   MockData mockData;
+  CourseProvider cp;
+
   _MockTestAttemptsState({
     this.selectedIdNew,
   });
@@ -49,7 +52,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
     print("widget.attemptCnt=${widget.attemptLength}");
     super.initState();
 
-    CourseProvider courseProvider = Provider.of(context, listen: false);
+    cp = Provider.of(context, listen: false);
 
     apiCall();
   }
@@ -70,14 +73,16 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
     http.Response response;
     try {
       response = await http.get(Uri.parse(MOCK_TEST + '/$selectedIdNew'),
-          headers: {'Content-Type': 'application/json', 'Authorization': stringValue}).onError((error, stackTrace) {
-        print("errorrr=====>>>$error");
-        // HiveHandler.addMockAttempt(, selectedIdNew.toString());
-        CourseProvider cp = Provider.of(context, listen: false);
-        cp.aviAttempts = [];
-        // setState(() {});
-        updateLoader(false);
-      });
+          headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+
+      //     .onError((error, stackTrace) {
+      //   print("errorrr=====>>>$error");
+      //   // HiveHandler.addMockAttempt(, selectedIdNew.toString());
+      //   CourseProvider cp = Provider.of(context, listen: false);
+      //   cp.aviAttempts = [];
+      //   // setState(() {});
+      //   updateLoader(false);
+      // });
       print("Url :=> ${Uri.parse(MOCK_TEST + "/$selectedIdNew")}");
       print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
       print("API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
@@ -88,24 +93,18 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
         print(convert.jsonDecode(response.body));
 
         getit = convert.jsonDecode(response.body);
-
+        print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+        await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), selectedIdNew.toString());
         setState(() {
-          // responseData = getit["data"]["mocktest"];
-          //listResponse = getit["data"]["attempts"];
-          print("mock data==================>>>>>>>>>>${getit["data"]}");
-
-          HiveHandler.addMockAttempt(getit["data"], selectedIdNew.toString());
+          print("mock data==================>>>>>>>>>>${jsonEncode(getit["data"])}");
 
           mockData = MockData.fromjd(getit["data"]);
         });
         updateLoader(false);
-      }
-
-      if (response.statusCode == 400) {
+      } else {
         updateLoader(false);
       }
     } on Exception {
-      // TODO
       updateLoader(false);
     }
   }
@@ -160,47 +159,51 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                   ),
                 ),
               ),
-              // responseData != null
-              // mockData != null
-              //     ?
               apiLoader
                   ? Center(child: CircularProgressIndicator.adaptive())
                   : Consumer<CourseProvider>(builder: (context, cp, child) {
-                      return ValueListenableBuilder(
+                      return ValueListenableBuilder<Box<String>>(
                           valueListenable: HiveHandler.getMockTestAttemptListener(),
                           builder: (context, value, child) {
-                            var v1 = value.get(selectedIdNew.toString());
-                            print("v1111==========$v1");
+                            Map mockAttempt = {};
 
-                            if (v1 != null) {
-                              var temp = jsonDecode(v1);
+                            if (value.containsKey(selectedIdNew.toString())) {
+                              mockAttempt = jsonDecode(value.get(selectedIdNew.toString()));
+                              mockData = MockData.fromjd(jsonDecode(value.get(selectedIdNew.toString())));
+                              print(">>> mockAttempt :  $mockAttempt");
+                              detailsofMockAttempt = MockDataDetails.fromjson(mockAttempt["mocktest"]);
+                              print(" details of MockAttempt======== $detailsofMockAttempt");
 
-                              print("temp listtt=====$temp");
-                              List temp2 = temp["attempts"].toList();
-                              print("temp2==============$temp2");
+                              List attempts = mockAttempt["attempts"].toList();
+                              print(" details of attempts======== $attempts");
 
-                              detailsofMockAttempt = MockDataDetails.fromjson(temp["mocktest"]);
-                              print("detailsofMockAttempt========$detailsofMockAttempt");
-
-                              cp.aviAttempts = temp2.map((e) => AvailableAttempts.fromjsons(e)).toList() ?? [];
-
-                              print("aviAttempts==========${cp.aviAttempts}");
-                              if (cp.aviAttempts == null) {
-                                cp.aviAttempts = [];
-                              }
+                              cp.aviAttempts = attempts.map((e) => AvailableAttempts.fromjsons(e)).toList() ?? [];
                             } else {
                               cp.aviAttempts = [];
                             }
-                            print("cp.aviAttempts=========>>>>>>${cp.aviAttempts}");
+
+                            // if (v1 != null) {
+                            //   var temp = jsonDecode(v1);
+
+                            //   print("temp listtt=====$temp");
+                            //   List temp2 = temp["attempts"].toList();
+                            //   print("temp2==============$temp2");
+                            //   cp.aviAttempts = temp2.map((e) => AvailableAttempts.fromjsons(e)).toList() ?? [];
+
+                            //   detailsofMockAttempt = MockDataDetails.fromjson(temp["mocktest"]);
+                            //   print("detailsofMockAttempt========$detailsofMockAttempt");
+
+                            //   print("aviAttempts==========${cp.aviAttempts}");
+                            //   if (cp.aviAttempts == null) {
+                            //     cp.aviAttempts = [];
+                            //   }
+                            // } else {
+                            //   cp.aviAttempts = [];
+                            // }
+                            // print("cp.aviAttempts=========>>>>>>${cp.aviAttempts}");
 
                             return cp.aviAttempts.isEmpty
-                                ? Container(
-                                    width: width,
-                                    child: Center(child: Text("No Data Found..")
-                                        // CircularProgressIndicator(
-                                        //   valueColor: AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF")),
-                                        // ),
-                                        ))
+                                ? Container(width: width, child: Center(child: Text("No Data Found..")))
                                 : Expanded(
                                     // height: height - 150 - 65,
                                     child: SingleChildScrollView(

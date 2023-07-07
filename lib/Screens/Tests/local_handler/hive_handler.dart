@@ -53,19 +53,19 @@ class HiveHandler {
 
   static Box<String> courseListBox;
   static Box<String> displayFlashBox;
-  static Box<List<FlashCateDetails>> flashListCateBox;
+  static Box<String> flashListCateBox;
 
   static Box<List<CategoryListModel>> categoryListBox;
   static Box<List<FlashCardDetails>> flashListBox;
-  static Box<List<MasterDetails>> masterListBox;
+  static Box<String> masterListBox;
   static Box<List<MockTestListApiModel>> MockListBox;
   static Box<List<QuestionAnswerModel>> MockTextBox;
   static Box<List<PracListModel>> PracTestBox;
 
-  static Box<List<TestDataDetails>> TestPMListBox;
+  static Box<String> TestPMListBox;
   static Box<List<MockPercentModel>> TestPercentListBox;
 
-  static Box<List<MockDataDetails>> mockAttempList;
+  static Box<String> mockAttempList;
 
 //MockPercentModel
   static Future hiveRegisterAdapter() async {
@@ -84,18 +84,18 @@ class HiveHandler {
 
     courseListBox = await Hive.openBox<String>(CourseBox);
     displayFlashBox = await Hive.openBox<String>(FlashCardBox);
-    flashListCateBox = await Hive.openBox<List<FlashCateDetails>>(FlashCateBox);
+    flashListCateBox = await Hive.openBox<String>(FlashCateBox);
     categoryListBox = await Hive.openBox<List<CategoryListModel>>(userDataBox);
     // flashListBox = await Hive.openBox<List<FlashCardDetails>>(FlashCardBox);
 
-    masterListBox = await Hive.openBox<List<MasterDetails>>(MasterDataBox);
+    masterListBox = await Hive.openBox<String>(MasterDataBox);
 
     MockListBox = await Hive.openBox<List<MockTestListApiModel>>(MockTestBox);
     PracTestBox = await Hive.openBox<List<PracListModel>>(PracticeTestBox);
 
-    TestPMListBox = await Hive.openBox<List<TestDataDetails>>(TestDataBox);
+    TestPMListBox = await Hive.openBox<String>(TestDataBox);
 
-    mockAttempList = await Hive.openBox<List<MockDataDetails>>(MockAttemptsBox);
+    mockAttempList = await Hive.openBox<String>(MockAttemptsBox);
 
     await Hive.openBox("deviceTokenBox");
 
@@ -105,7 +105,7 @@ class HiveHandler {
     MockTextBox = await Hive.openBox<List<QuestionAnswerModel>>(MockQuesBox);
   }
 
-//TestPercentListBox
+  // TestPercentListBox start
 
   static setMockPercentdata({dynamic value, String key}) async {
     final box = Hive.box("testPercentBox");
@@ -123,6 +123,8 @@ class HiveHandler {
     final box = Hive.box("testPercentBox");
     return await box.get(key, defaultValue: "");
   }
+
+  /// TestPercentListBox end
 
   static setstringdata({dynamic value, String key}) async {
     final box = Hive.box("deviceTokenBox");
@@ -166,28 +168,29 @@ class HiveHandler {
     return Hive.box("deviceTokenBox").listenable();
   }
 
-  static addMockAttempt(dynamic value, String key) async {
-    await Hive.openBox("MockAttemptsBox");
-    final box = Hive.box("MockAttemptsBox");
-    print("*********************************");
-    print("incomimg valueeeeee=====>>>>$value");
+  //// mock attempt start
 
-    await box.put(key, jsonEncode(value));
-    try {
-      print("get boxxxxx=======${box.get(key, defaultValue: "")}");
-    } catch (e) {
-      print("errororor====$e");
+  static addMockAttempt(String mockAttempts, String key) async {
+    print("incomimg valueeeeee=====>>>>$mockAttempts");
+
+    mockAttempList.put(key, mockAttempts);
+    if (mockAttempList.containsKey(key)) {
+      print("===========added to box=========");
+      print("mockAttempList.get  key: $key, Data: ${mockAttempList.get(key)}");
+    } else {
+      print("===========box is empty=========");
     }
   }
 
-  static Future<dynamic> getMockAttemptData({String key}) async {
-    final box = Hive.box("MockAttemptsBox");
-    return await box.get(key, defaultValue: "");
+  static Future<String> getMockAttemptData({String key}) async {
+    return mockAttempList.get(key, defaultValue: "");
   }
 
-  static ValueListenable getMockTestAttemptListener() {
-    return Hive.box("MockAttemptsBox").listenable();
+  static ValueListenable<Box<String>> getMockTestAttemptListener() {
+    return Hive.box<String>(MockAttemptsBox).listenable() ?? "";
   }
+
+  //// mock attempt end
 
 /////////////
   static setMockData({dynamic value, String key}) async {
@@ -338,30 +341,56 @@ class HiveHandler {
     }
   }
 
-  static addTestMpData(List<TestDataDetails> list, String keyName) async {
-    final Box<List<TestDataDetails>> testDataListBox = await Hive.openBox<List<TestDataDetails>>(TestDataBox);
-    testDataListBox.put(keyName, list);
-    if (testDataListBox.isNotEmpty) {
+  ///// cousers data end
+
+  ////// master data start
+
+  static addMasterData(String masterListResponse, {String keyName}) async {
+    // final Box<List<MasterDetails>> masterListBox = await Hive.openBox<List<MasterDetails>>(MasterDataBox);
+    masterListBox.put(keyName, masterListResponse);
+
+    if (masterListBox.isNotEmpty) {
       print("===========added to box=========");
-      print("testDataListBox.get${testDataListBox.get(keyName)}");
+      print("masterListBox.get for key: $keyName = ${masterListBox.get(keyName)}");
     } else {
       print("===========box is empty=========");
     }
   }
 
-  static ValueListenable<Box<List<TestDataDetails>>> getTestDataListener() {
-    return Hive.box<List<TestDataDetails>>(TestDataBox).listenable();
+  static ValueListenable<Box<String>> getMasterListener() {
+    return Hive.box<String>(MasterDataBox).listenable() ?? '';
   }
 
-  static List<TestDataDetails> getTestDataList({String key}) {
+  static List<MasterDetails> getMasterDataList({String key}) {
+    List<MasterDetails> storedMasterData = [];
+
     try {
-      final List<TestDataDetails> storedTestData = TestPMListBox.get(key);
-      print("storedFlashCateData list length ${storedTestData.length}");
-      return storedTestData;
+      String masterData = masterListBox.get(key);
+      print(" >> courseData :  $masterData");
+      List masterList = jsonDecode(masterData);
+
+      storedMasterData = masterList.map((e) => MasterDetails.fromjson(e)).toList();
+      print(" >> couserList : $storedMasterData");
+
+      // storedCourseData =
+      print("storedMasterData list length ${storedMasterData.length}");
+      return storedMasterData;
     } catch (e) {
-      return [];
+      print("----- Exception Occured while getting getMasterDataList -----");
+      print(e.toString());
+      return storedMasterData;
     }
   }
+
+  // static List<TestDataDetails> getTestDataList({String key}) {
+  //   try {
+  //     final List<TestDataDetails> storedTestData = TestPMListBox.get(key);
+  //     print("storedFlashCateData list length ${storedTestData.length}");
+  //     return storedTestData;
+  //   } catch (e) {
+  //     return [];
+  //   }
+  // }
 
   static setFlashCateData({dynamic value, String Key}) async {
     await Hive.openBox(FlashCateBox);
@@ -375,55 +404,67 @@ class HiveHandler {
     }
   }
 
-  static addFlashCateData(List<FlashCateDetails> list, String keyName) async {
-    final Box<List<FlashCateDetails>> flashCateListBox = await Hive.openBox<List<FlashCateDetails>>(FlashCateBox);
-    flashCateListBox.put(keyName, list);
-    if (flashCateListBox.isNotEmpty) {
+  ///// master data end
+
+  ///// mock test data start
+  static addTestMpData(String mockTestsList, String keyName) async {
+    TestPMListBox.put(keyName, mockTestsList);
+    if (TestPMListBox.isNotEmpty) {
       print("===========added to box=========");
-      print("flashCateListBox.get${flashCateListBox.get(keyName)}");
+      print("testDataListBox.get Key: $keyName , Data: ${TestPMListBox.get(keyName)}");
     } else {
       print("===========box is empty=========");
     }
   }
 
-  static ValueListenable<Box<List<FlashCateDetails>>> getFlashCateListener() {
-    var listte = Hive.box<List<FlashCateDetails>>(FlashCateBox);
-    print("getFlashCateListener=========>");
+  static ValueListenable<Box<String>> getTestDataListener() {
+    return Hive.box<String>(TestDataBox).listenable();
+  }
 
-    print("listte=============${listte.listenable().runtimeType}");
-    return Hive.box<List<FlashCateDetails>>(FlashCateBox).listenable();
+  static List<TestDataDetails> getTestDataList({String key}) {
+    List<TestDataDetails> storedTestData = [];
+
+    try {
+      String testData = TestPMListBox.get(key);
+      print(" >> testData :  $testData");
+      List testsList = jsonDecode(testData);
+
+      storedTestData = testsList.map((e) => TestDataDetails.fromjson(e)).toList();
+      print(" >> couserList : $storedTestData");
+
+      // storedCourseData =
+      print("storedCourseData list length ${storedTestData.length}");
+      return storedTestData;
+    } catch (e) {
+      print("----- Exception Occured while getting getCourseDataList -----");
+      print(e.toString());
+      return storedTestData;
+    }
+  }
+
+  ///// mock test data end
+
+  static addFlashCateData(String flashCardData, String keyName) async {
+    flashListCateBox.put(keyName, flashCardData);
+
+    if (flashListCateBox.containsKey(keyName)) {
+      print("===========added to box=========");
+      print("flashCateListBox.get Key: $keyName  ,Data: ${flashListCateBox.get(keyName)}");
+    } else {
+      print("===========box is empty=========");
+    }
+  }
+
+  static ValueListenable<Box<String>> getFlashCateListener() {
+    
+    return Hive.box<String>(FlashCateBox).listenable() ?? "";
   }
 
   static List<FlashCateDetails> getFlashCateDataList({String key}) {
     try {
-      final List<FlashCateDetails> storedFlashCateData = flashListCateBox.get(key);
-      print("storedFlashCateData list length ${storedFlashCateData.length}");
-      return storedFlashCateData;
-    } catch (e) {
-      return [];
-    }
-  }
-
-  static addMasterData(List<MasterDetails> list, {String keyName}) async {
-    final Box<List<MasterDetails>> masterListBox = await Hive.openBox<List<MasterDetails>>(MasterDataBox);
-    masterListBox.put(keyName, list);
-    if (masterListBox.isNotEmpty) {
-      print("===========added to box=========");
-      print("masterListBox.get${masterListBox.get(keyName)}");
-    } else {
-      print("===========box is empty=========");
-    }
-  }
-
-  static ValueListenable<Box<List<MasterDetails>>> getMasterListener() {
-    return Hive.box<List<MasterDetails>>(MasterDataBox).listenable() ?? [];
-  }
-
-  static List<MasterDetails> getMasterDataList({String key}) {
-    try {
-      final List<MasterDetails> storedMasterData = masterListBox.get(key);
-      print("storedCategories list length ${storedMasterData.length}");
-      return storedMasterData;
+      // final List<FlashCateDetails> storedFlashCateData = flashListCateBox.get(key);
+      // print("storedFlashCateData list length ${storedFlashCateData.length}");
+      // return storedFlashCateData;
     } catch (e) {
       return [];
     }

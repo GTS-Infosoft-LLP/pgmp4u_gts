@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
@@ -24,6 +26,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
   Color _darkText = Color(0xff424b53);
   Color _lightText = Color(0xff989d9e);
   ResponseProvider responseProvider;
+  CourseProvider cp;
 
   List<FlashCateDetails> flashCateTempList = [];
 
@@ -38,10 +41,10 @@ class _FlashCardItemState extends State<FlashCardItem> {
   @override
   IconData icon1;
   void initState() {
-    CourseProvider courseProvider = Provider.of(context, listen: false);
-    print("courseProvider.flashCate.length==========${courseProvider.flashCate.length}");
+    cp = Provider.of(context, listen: false);
+    print("cp.flashCate.length==========${cp.flashCate.length}");
     // if (flashCateTempList.isEmpty) {
-    //   flashCateTempList = HiveHandler.getFlashCateDataList(key: courseProvider.selectedMasterId.toString());
+    //   flashCateTempList = HiveHandler.getFlashCateDataList(key: cp.selectedMasterId.toString());
     //   print("flashCateTempList=========$flashCateTempList");
     // }
 
@@ -123,19 +126,18 @@ class _FlashCardItemState extends State<FlashCardItem> {
                 //       ))
                 //     :
                 Container(
-                  child: ValueListenableBuilder<Box<List<FlashCateDetails>>>(
+                  child: ValueListenableBuilder<Box<String>>(
                       valueListenable: HiveHandler.getFlashCateListener(),
                       builder: (context, value, child) {
-                        CourseProvider cp = Provider.of(context, listen: false);
-                        // try {
-                        //   print(
-                        //       "value.get(cp.selectedMasterId==========${value.get(cp.selectedMasterId, defaultValue: [])}");
-                        //   // print("thrfhfhdfh ========================${value.get(cp.selectedMasterId.toString())}");
-                        // } on Exception catch (e) {
-                        //   print("erororrrr=====$e");
-                        // }
-                        print("cp.selectedMasterId=======${cp.selectedMasterId}");
-                        storedFlashCate = value.get(cp.selectedMasterId.toString(), defaultValue: []) ?? [];
+                        print("cp.selectedMasterId======= ${cp.selectedMasterId}");
+
+                        if (value.containsKey(cp.selectedMasterId.toString())) {
+                          List flashCardList = jsonDecode(value.get(cp.selectedMasterId.toString()));
+                          print(">>> flashCardList :  $flashCardList");
+                          storedFlashCate = flashCardList.map((e) => FlashCateDetails.fromjson(e)).toList();
+                        } else {
+                          storedFlashCate = [];
+                        }
 
                         print("storedFlashCate========================$storedFlashCate");
 

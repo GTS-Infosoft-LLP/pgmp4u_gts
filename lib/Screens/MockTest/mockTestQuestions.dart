@@ -886,12 +886,10 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   Widget putOnDiscussionButton(BuildContext context) {
     return InkWell(
       onTap: () {
-        questionLoader
+        questionLoader || context.read<ProfileProvider>().subscriptionApiCalling
             ? null
-            : context.read<ProfileProvider>().subscriptionApiCalling
-                ? null
-                : onTapOfPutOnDisscussion(mockQuestion[_quetionNo].questionDetail.questiondata,
-                    mockQuestion[_quetionNo].questionDetail.Options);
+            : onTapOfPutOnDisscussion(
+                mockQuestion[_quetionNo].questionDetail.questiondata, mockQuestion[_quetionNo].questionDetail.Options);
       },
       child: Container(
         height: 35,
@@ -907,7 +905,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                 end: const FractionalOffset(1.0, 0.0),
                 stops: [0.0, 1.0],
                 tileMode: TileMode.clamp)),
-        child: questionLoader || context.read<ProfileProvider>().subscriptionApiCalling
+        child: questionLoader || context.watch<ProfileProvider>().subscriptionApiCalling
             ? Center(child: SizedBox(width: 20, height: 20, child: Center(child: CircularProgressIndicator.adaptive())))
             : Padding(
                 padding: const EdgeInsets.all(8.0),

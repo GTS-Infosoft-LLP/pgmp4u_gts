@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
@@ -25,16 +27,16 @@ class _MasterListPageState extends State<MasterListPage> {
   IconData icon1;
   List<MasterDetails> storedMaster = [];
 
-  List<MasterDetails> Mastertemplist = [];
+  // List<MasterDetails> Mastertemplist = [];
   void initState() {
     CourseProvider courseProvider = Provider.of(context, listen: false);
     print("master list===${courseProvider.masterList}");
 
-    if (Mastertemplist.isEmpty) {
-      Mastertemplist = HiveHandler.getMasterDataList(key: courseProvider.selectedCourseId.toString());
-      print("*************************************************");
-      print("tempList==========$Mastertemplist");
-    }
+    // if (Mastertemplist.isEmpty) {
+    //   Mastertemplist = HiveHandler.getMasterDataList(key: courseProvider.selectedCourseId.toString());
+    //   print("*************************************************");
+    //   print("tempList==========$Mastertemplist");
+    // }
 
     if (courseProvider.masterList.isEmpty) {
       print("list is empty");
@@ -105,30 +107,28 @@ class _MasterListPageState extends State<MasterListPage> {
 
             Consumer<CourseProvider>(builder: (context, cp, child) {
               return SingleChildScrollView(
-                child:
-                    // Mastertemplist.isEmpty
-                    //     ? Center(child: Container(height: 400, child: Text("No Data Found")))
-                    //     :
-                    Column(
+                child: Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 18.0),
-                      child: ValueListenableBuilder<Box<List<MasterDetails>>>(
+                      child: ValueListenableBuilder<Box<String>>(
                           valueListenable: HiveHandler.getMasterListener(),
                           builder: (context, value, child) {
-                            CourseProvider cp = Provider.of(context, listen: false);
-                            print('temp: >>');
-                            storedMaster = value.get(cp.selectedCourseId.toString()) ?? [];
-                            // var temp = value.get(cp.selectedCourseId);
-                            // print('temp: $temp');
-                            // print('temp: ${temp.runtimeType}');
+                            String courseId = context.read<CourseProvider>().selectedCourseId.toString();
+
+                            if (value.containsKey(courseId)) {
+                              List masterDataList = jsonDecode(value.get(courseId));
+                              print(">>> masterDataList :  $masterDataList");
+                              storedMaster = masterDataList.map((e) => MasterDetails.fromjson(e)).toList();
+                            } else {
+                              storedMaster = [];
+                            }
 
                             print("storedMaster========================$storedMaster");
 
                             if (storedMaster == null) {
                               storedMaster = [];
                             }
-                            // print("storedFlash========================${storedMaster[0].name}");
 
                             return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
                               return storedMaster.isNotEmpty

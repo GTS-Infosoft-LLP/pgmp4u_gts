@@ -110,6 +110,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
                       ValueListenableBuilder(
                           valueListenable: HiveHandler.getMockPercentListener(),
                           builder: (context, value, child) {
+                            
                             CourseProvider courseProv = Provider.of(context, listen: false);
                             var v1 = value.get(courseProv.selectedMockPercentId.toString());
                             print("value of v1111======>>>>>>>>>$v1");

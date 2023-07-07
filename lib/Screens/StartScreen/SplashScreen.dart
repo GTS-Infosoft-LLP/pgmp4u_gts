@@ -8,6 +8,7 @@ import 'package:pgmp4u/Screens/Profile/notifications.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Services/globalcontext.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,6 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     chatProvider = Provider.of(context, listen: false);
     chatProvider.initSharePreferecne();
+    context.read<CourseProvider>().initSharePreferecne();
     //Return String
     String stringValue = prefs.getString('token');
     return stringValue;

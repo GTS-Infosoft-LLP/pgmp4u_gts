@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert' as convert;
+import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -152,20 +153,34 @@ class _HomeViewState extends State<HomeView> {
                   child: ValueListenableBuilder<Box<String>>(
                       valueListenable: HiveHandler.getCourseListener(),
                       builder: (context, value, child) {
-                        String courseData = value.get(HiveHandler.CourseKey);
-
-                        List courselist = convert.jsonDecode(courseData);
-                        print(" >> courseData :  $courseData");
-
-                        try {
-                          storedCourse = courselist.map((e) => CourseDetails.fromjson(e)).toList();
-                          print(" >> couserList : $storedCourse");
-                        } on Exception {
-                          // TODO
-                        }
-                        if (storedCourse == null || storedCourse.isEmpty) {
+                        if (value.containsKey(HiveHandler.CourseKey)) {
+                          List masterDataList = jsonDecode(value.get(HiveHandler.CourseKey));
+                          print(">>> masterDataList :  $masterDataList");
+                          storedCourse = masterDataList.map((e) => CourseDetails.fromjson(e)).toList();
+                        } else {
                           storedCourse = [];
                         }
+
+                        print("storedMaster========================$storedCourse");
+
+                        if (storedCourse == null) {
+                          storedCourse = [];
+                        }
+
+                        // String courseData = value.get(HiveHandler.CourseKey);
+
+                        // List courselist = convert.jsonDecode(courseData);
+                        // print(" >> courseData :  $courseData");
+
+                        // try {
+                        //   storedCourse = courselist.map((e) => CourseDetails.fromjson(e)).toList();
+                        //   print(" >> couserList : $storedCourse");
+                        // } on Exception {
+                        //   // TODO
+                        // }
+                        // if (storedCourse == null || storedCourse.isEmpty) {
+                        //   storedCourse = [];
+                        // }
 
                         return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
                           return storedCourse.isEmpty
