@@ -60,7 +60,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
             REVIEW_MOCK_TEST+"/${widget.selectedId}/${widget.attemptData}"),
         headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
 
-    print(">>>>>> url  https://apivcarestage.vcareprojectmanagement.com/api/ReviewsMockTest/120/4");
+    print(">>>>>> url  /api/ReviewsMockTest/120/4");
 
     print("header : ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
     if (response.statusCode == 200) {

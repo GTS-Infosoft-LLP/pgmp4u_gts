@@ -72,7 +72,7 @@ class _PaymentWithStripeState extends State<PaymentAndroid> {
             },
 
             onLoadStart: (InAppWebViewController controller, Uri url) {
-              print("current url >>>>>>  $url");
+              print("current url >>>>>> from paymentStripe2  $url");
             },
             onLoadStop: (InAppWebViewController controller, Uri url) {},
             onConsoleMessage: (InAppWebViewController _controller, ConsoleMessage consoleMessage) async {

@@ -74,7 +74,7 @@ class PracticeTextProvider extends ChangeNotifier {
         // body: convert.jsonEncode(body)
       );
 
-      print("calling this api========>>>.https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/$id");
+      // print("calling this api========>>>./api/v2/MockTestQuestions/$id");
       // print("body=========>$body");
 
       if (response.statusCode == 200) {

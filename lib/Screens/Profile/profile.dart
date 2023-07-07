@@ -274,7 +274,7 @@ class _ProfileState extends State<Profile> {
                         //           borderRadius: BorderRadius.circular(80),
                         //         ),
                         //       )
-                        //     : Container(
+                        //     : Container( 
                         //         width: width * (80 / 420),
                         //         height: width * (80 / 420),
                         //         decoration: BoxDecoration(

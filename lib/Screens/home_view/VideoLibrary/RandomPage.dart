@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/Screens/Profile/paymentstripe2.dart';
+import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
@@ -324,7 +325,7 @@ Widget BuyButton2(
                 await profProvi.callCreateOrder(IdValue, type);
                 type = type.replaceAll(" ", "");
 
-                String urll = "https://apivcarestage.vcareprojectmanagement.com/api/createOrder/$IdValue/$type";
+                String urll = CREATE_ORDER+"/$IdValue/$type";
 
                 /// Payment implement with stripe
                 bool status = await Navigator.push(

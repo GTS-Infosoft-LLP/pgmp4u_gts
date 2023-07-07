@@ -210,7 +210,7 @@ class ProfileProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
-    var createOrder = "https://apivcarestage.vcareprojectmanagement.com/api/createOrder/";
+    var createOrder = CREATE_ORDER+"/";
     response = await http.get(Uri.parse("$createOrder$selectedId/$categoryType"),
         headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
 

@@ -32,7 +32,7 @@ class _PaymentWithStripeState extends State<PaymentWithStripe> {
 
   @override
   Widget build(BuildContext context) {
-    print("open url ${CREATE_ORDER}");
+    print("open url $CREATE_ORDER");
     print(">>>> token");
     print(">>>> token ${widget.token}");
     return WillPopScope(
@@ -53,8 +53,7 @@ class _PaymentWithStripeState extends State<PaymentWithStripe> {
             backgroundColor: Colors.transparent,
           ),
           body: InAppWebView(
-            initialUrlRequest:
-                URLRequest(url: Uri.parse(CREATE_ORDER), headers: {
+            initialUrlRequest: URLRequest(url: Uri.parse(CREATE_ORDER), headers: {
               'Content-Type': 'application/json',
               'Authorization': widget.token,
             }),
@@ -62,12 +61,11 @@ class _PaymentWithStripeState extends State<PaymentWithStripe> {
               webView = controller;
             },
             onLoadStart: (InAppWebViewController controller, Uri url) {
-              print("current url >>>>>>  ${url}");
+              print("current url >>>>>> 1  $url");
             },
             onLoadStop: (InAppWebViewController controller, Uri url) {},
-            onConsoleMessage: (InAppWebViewController _controller,
-                ConsoleMessage consoleMessage) async {
-              print("console message: ${consoleMessage}");
+            onConsoleMessage: (InAppWebViewController _controller, ConsoleMessage consoleMessage) async {
+              print("console message: $consoleMessage");
               _controller.addJavaScriptHandler(
                   handlerName: "pgmp4u",
                   callback: (args) {
@@ -82,7 +80,8 @@ class _PaymentWithStripeState extends State<PaymentWithStripe> {
                       naviagteBack(context, false);
                     }
                   });
-            },initialOptions: options,
+            },
+            initialOptions: options,
           ),
         ));
   }

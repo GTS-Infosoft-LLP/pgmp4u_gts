@@ -36,8 +36,6 @@ class CourseProvider extends ChangeNotifier {
 
   List<AvailableAttempts> aviAttempts = [];
 
-  // const _BASE_URL ="https://apivcarestage.vcareprojectmanagement.com/api/";
-
   ///
 
   int firstCourse = 0;
@@ -83,7 +81,16 @@ class CourseProvider extends ChangeNotifier {
   List<MasterDetails> tempListMaster = [];
   List<MasterDetails> masterTemp = [];
 
+  bool masterDataApiCall = false;
+  updateMasterDataApiCall(bool val) {
+    // val = !val;
+    masterDataApiCall = val;
+
+    notifyListeners();
+  }
+
   Future<void> getMasterData(int id) async {
+    updateMasterDataApiCall(true);
     tempListMaster = [];
     print("idddd=========>>>>>>>>>>>>>>>$id");
 
@@ -106,6 +113,7 @@ class CourseProvider extends ChangeNotifier {
       var resStatus = (resDDo["status"]);
       videoPresent = 1;
       if (response.statusCode == 400) {
+        updateMasterDataApiCall(false);
         print("statussssssss");
         masterList = [];
         tempListMaster = [];
@@ -119,6 +127,7 @@ class CourseProvider extends ChangeNotifier {
       print("val of vid present===$videoPresent");
 
       if (response.statusCode == 200) {
+        updateMasterDataApiCall(false);
         masterList.clear();
         print("");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
@@ -163,7 +172,9 @@ class CourseProvider extends ChangeNotifier {
         }
       }
       print("respponse=== ${response.body}");
-    } on Exception {}
+    } on Exception {
+      updateMasterDataApiCall(false);
+    }
     notifyListeners();
   }
 

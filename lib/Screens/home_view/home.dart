@@ -210,7 +210,7 @@ class _HomeViewState extends State<HomeView> {
                                               courseProvider.setSelectedCourseName(storedCourse[index].lable);
 
                                               courseProvider.getMasterData(storedCourse[index].id);
-                                              Future.delayed(const Duration(milliseconds: 600), () {
+                                              Future.delayed(const Duration(milliseconds: 100), () {
                                                 Navigator.push(
                                                     context, MaterialPageRoute(builder: (context) => MasterListPage()));
                                               });

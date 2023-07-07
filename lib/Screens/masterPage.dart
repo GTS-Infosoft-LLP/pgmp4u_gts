@@ -106,228 +106,238 @@ class _MasterListPageState extends State<MasterListPage> {
             ),
 
             Consumer<CourseProvider>(builder: (context, cp, child) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 18.0),
-                      child: ValueListenableBuilder<Box<String>>(
-                          valueListenable: HiveHandler.getMasterListener(),
-                          builder: (context, value, child) {
-                            String courseId = context.read<CourseProvider>().selectedCourseId.toString();
+              return cp.masterDataApiCall
+                  ? Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    )
+                  : SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 18.0),
+                            child: ValueListenableBuilder<Box<String>>(
+                                valueListenable: HiveHandler.getMasterListener(),
+                                builder: (context, value, child) {
+                                  String courseId = context.read<CourseProvider>().selectedCourseId.toString();
 
-                            if (value.containsKey(courseId)) {
-                              List masterDataList = jsonDecode(value.get(courseId));
-                              print(">>> masterDataList :  $masterDataList");
-                              storedMaster = masterDataList.map((e) => MasterDetails.fromjson(e)).toList();
-                            } else {
-                              storedMaster = [];
-                            }
+                                  if (value.containsKey(courseId)) {
+                                    List masterDataList = jsonDecode(value.get(courseId));
+                                    print(">>> masterDataList :  $masterDataList");
+                                    storedMaster = masterDataList.map((e) => MasterDetails.fromjson(e)).toList();
+                                  } else {
+                                    storedMaster = [];
+                                  }
 
-                            print("storedMaster========================$storedMaster");
+                                  print("storedMaster========================$storedMaster");
 
-                            if (storedMaster == null) {
-                              storedMaster = [];
-                            }
+                                  if (storedMaster == null) {
+                                    storedMaster = [];
+                                  }
 
-                            return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
-                              return storedMaster.isNotEmpty
-                                  ? Container(
-                                      // color: Colors.amber,
-                                      height: MediaQuery.of(context).size.height * .75,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: storedMaster.length,
-                                          itemBuilder: (context, index) {
-                                            print("storedMaster[index].label=====${storedMaster[index].label}");
-                                            if (storedMaster[index].type == "Videos") {
-                                              icon1 = FontAwesomeIcons.video;
-                                            } else if (storedMaster[index].label == "Revise") {
-                                              icon1 = Icons.numbers_outlined;
-                                            } else if (storedMaster[index].label == "Remember") {
-                                              icon1 = FontAwesomeIcons.lightbulb;
-                                            } else if (storedMaster[index].name == "Tips4U") {
-                                              icon1 = FontAwesomeIcons.rankingStar;
-                                            } else if (storedMaster[index].type == "Flash Cards") {
-                                              icon1 = FontAwesomeIcons.tableColumns;
-                                            } else if (storedMaster[index].type == "Support") {
-                                              icon1 = FontAwesomeIcons.userGraduate;
-                                            } else if (storedMaster[index].type == "Mock Test") {
-                                              icon1 = FontAwesomeIcons.bookOpenReader;
-                                            } else if (storedMaster[index].type == "Practice Test") {
-                                              icon1 = FontAwesomeIcons.book;
-                                            } else {
-                                              icon1 = (Icons.add_chart_rounded);
-                                            }
-                                            return Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                horizontal: 22.0,
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(top: 8.0),
-                                                child: Container(
-                                                    height: 70,
-                                                    //  color: Colors.amber,
-                                                    decoration: BoxDecoration(
-                                                        // shape: BoxShape.circle,
-                                                        color: Colors.transparent,
-                                                        border: Border(
-                                                          bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
-                                                        )),
-                                                    // Border.all(color: Colors.black, width: 1)),
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        courseProvider.setSelectedMasterId(storedMaster[index].id);
+                                  return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
+                                    return storedMaster.isNotEmpty
+                                        ? Container(
+                                            // color: Colors.amber,
+                                            height: MediaQuery.of(context).size.height * .75,
+                                            child: ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: storedMaster.length,
+                                                itemBuilder: (context, index) {
+                                                  print("storedMaster[index].label=====${storedMaster[index].label}");
+                                                  if (storedMaster[index].type == "Videos") {
+                                                    icon1 = FontAwesomeIcons.video;
+                                                  } else if (storedMaster[index].label == "Revise") {
+                                                    icon1 = Icons.numbers_outlined;
+                                                  } else if (storedMaster[index].label == "Remember") {
+                                                    icon1 = FontAwesomeIcons.lightbulb;
+                                                  } else if (storedMaster[index].name == "Tips4U") {
+                                                    icon1 = FontAwesomeIcons.rankingStar;
+                                                  } else if (storedMaster[index].type == "Flash Cards") {
+                                                    icon1 = FontAwesomeIcons.tableColumns;
+                                                  } else if (storedMaster[index].type == "Support") {
+                                                    icon1 = FontAwesomeIcons.userGraduate;
+                                                  } else if (storedMaster[index].type == "Mock Test") {
+                                                    icon1 = FontAwesomeIcons.bookOpenReader;
+                                                  } else if (storedMaster[index].type == "Practice Test") {
+                                                    icon1 = FontAwesomeIcons.book;
+                                                  } else {
+                                                    icon1 = (Icons.add_chart_rounded);
+                                                  }
+                                                  return Padding(
+                                                    padding: const EdgeInsets.symmetric(
+                                                      horizontal: 22.0,
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(top: 8.0),
+                                                      child: Container(
+                                                          height: 70,
+                                                          //  color: Colors.amber,
+                                                          decoration: BoxDecoration(
+                                                              // shape: BoxShape.circle,
+                                                              color: Colors.transparent,
+                                                              border: Border(
+                                                                bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
+                                                              )),
+                                                          // Border.all(color: Colors.black, width: 1)),
+                                                          child: InkWell(
+                                                            onTap: () {
+                                                              courseProvider
+                                                                  .setSelectedMasterId(storedMaster[index].id);
 
-                                                        print("id of the master list===${storedMaster[index].id}");
-                                                        String page = storedMaster[index].type;
+                                                              print(
+                                                                  "id of the master list===${storedMaster[index].id}");
+                                                              String page = storedMaster[index].type;
 
-                                                        courseProvider.setMasterListType(storedMaster[index].type);
+                                                              courseProvider
+                                                                  .setMasterListType(storedMaster[index].type);
 
-                                                        print("page=====$page");
+                                                              print("page=====$page");
 
-                                                        if (page == "Videos") {
-                                                          courseProvider.getVideoCate(storedMaster[index].id);
+                                                              if (page == "Videos") {
+                                                                courseProvider.getVideoCate(storedMaster[index].id);
 
-                                                          Future.delayed(Duration(milliseconds: 400), () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => VideoLibraryPage(
-                                                                        title: storedMaster[index].name)));
-                                                          });
-                                                        }
+                                                                Future.delayed(Duration(milliseconds: 400), () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => VideoLibraryPage(
+                                                                              title: storedMaster[index].name)));
+                                                                });
+                                                              }
 
-                                                        if (page == "Support") {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) => ApplicationSupportPage()));
-                                                        }
+                                                              if (page == "Support") {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) =>
+                                                                            ApplicationSupportPage()));
+                                                              }
 
-                                                        if (page == "Flash Cards") {
-                                                          courseProvider.getFlashCate(storedMaster[index].id);
+                                                              if (page == "Flash Cards") {
+                                                                courseProvider.getFlashCate(storedMaster[index].id);
 
-                                                          Future.delayed(Duration(milliseconds: 400), () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => FlashCardItem(
-                                                                          title: storedMaster[index].name,
-                                                                        )));
-                                                          });
-                                                        }
+                                                                Future.delayed(Duration(milliseconds: 400), () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => FlashCardItem(
+                                                                                title: storedMaster[index].name,
+                                                                              )));
+                                                                });
+                                                              }
 
-                                                        if (page == "Mock Test") {
-                                                          courseProvider.getTest(storedMaster[index].id, "Mock Test");
+                                                              if (page == "Mock Test") {
+                                                                courseProvider.getTest(
+                                                                    storedMaster[index].id, "Mock Test");
 
-                                                          Future.delayed(Duration(milliseconds: 700), () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => MockTest(
-                                                                          testName: storedMaster[index].name,
-                                                                          testType: storedMaster[index].type,
-                                                                        )));
-                                                          });
-                                                        }
+                                                                Future.delayed(Duration(milliseconds: 700), () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => MockTest(
+                                                                                testName: storedMaster[index].name,
+                                                                                testType: storedMaster[index].type,
+                                                                              )));
+                                                                });
+                                                              }
 
-                                                        if (page == "Practice Test") {
-                                                          courseProvider.getTest(
-                                                              storedMaster[index].id, "Practice Test");
+                                                              if (page == "Practice Test") {
+                                                                courseProvider.getTest(
+                                                                    storedMaster[index].id, "Practice Test");
 
-                                                          Future.delayed(const Duration(milliseconds: 700), () async {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => MockTest(
-                                                                          testName: storedMaster[index].name,
-                                                                          testType: storedMaster[index].type,
-                                                                        )));
-                                                          });
-                                                        }
-                                                      },
-                                                      child: Row(
-                                                        children: [
-                                                          SizedBox(
-                                                            width: 0,
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(bottom: 4.0),
-                                                            child: Container(
-                                                                height: 60,
-                                                                width: 60,
-                                                                decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(8),
-                                                                  color: index % 2 == 0
-                                                                      ? AppColor.purpule
-                                                                      : AppColor.green,
-                                                                  // gradient: LinearGradient(
-                                                                  //     begin: Alignment.topLeft,
-                                                                  //     end: Alignment.bottomRight,
-                                                                  //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                                                                Future.delayed(const Duration(milliseconds: 700),
+                                                                    () async {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => MockTest(
+                                                                                testName: storedMaster[index].name,
+                                                                                testType: storedMaster[index].type,
+                                                                              )));
+                                                                });
+                                                              }
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 0,
                                                                 ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets.only(bottom: 4.0),
+                                                                  child: Container(
+                                                                      height: 60,
+                                                                      width: 60,
+                                                                      decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(8),
+                                                                        color: index % 2 == 0
+                                                                            ? AppColor.purpule
+                                                                            : AppColor.green,
+                                                                        // gradient: LinearGradient(
+                                                                        //     begin: Alignment.topLeft,
+                                                                        //     end: Alignment.bottomRight,
+                                                                        //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                                                                      ),
 
-                                                                // color: Colors.black,
-                                                                child: Icon(
-                                                                  icon1,
-                                                                  color: Colors.white,
-                                                                )
-                                                                // Icons.edit,color: Colors.white),
+                                                                      // color: Colors.black,
+                                                                      child: Icon(
+                                                                        icon1,
+                                                                        color: Colors.white,
+                                                                      )
+                                                                      // Icons.edit,color: Colors.white),
+                                                                      ),
                                                                 ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 15,
-                                                          ),
-                                                          Column(
-                                                            mainAxisAlignment: MainAxisAlignment.center,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              Text(
-                                                                storedMaster[index].label,
-                                                                style: TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Colors.grey,
+                                                                SizedBox(
+                                                                  width: 15,
                                                                 ),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 3,
-                                                              ),
-                                                              Container(
-                                                                width: MediaQuery.of(context).size.width * .65,
-                                                                child: Text(
-                                                                  storedMaster[index].name,
-                                                                  maxLines: 2,
-                                                                  style: TextStyle(
-                                                                    fontSize: 18,
-                                                                    color: Colors.black,
-                                                                  ),
+                                                                Column(
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  children: [
+                                                                    Text(
+                                                                      storedMaster[index].label,
+                                                                      style: TextStyle(
+                                                                        fontSize: 14,
+                                                                        color: Colors.grey,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 3,
+                                                                    ),
+                                                                    Container(
+                                                                      width: MediaQuery.of(context).size.width * .65,
+                                                                      child: Text(
+                                                                        storedMaster[index].name,
+                                                                        maxLines: 2,
+                                                                        style: TextStyle(
+                                                                          fontSize: 18,
+                                                                          color: Colors.black,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    )),
-                                              ),
-                                            );
-                                            // Center(child: Text("No Data Found",style: TextStyle(color: Colors.black,fontSize: 18)),);
-                                          }),
-                                    )
-                                  : Container(
-                                      height: 150,
-                                      child: Center(
-                                        child: Text("No Data Found", style: TextStyle(fontSize: 18)),
-                                      ),
-                                    );
-                            });
-                          }),
-                    ),
+                                                              ],
+                                                            ),
+                                                          )),
+                                                    ),
+                                                  );
+                                                  // Center(child: Text("No Data Found",style: TextStyle(color: Colors.black,fontSize: 18)),);
+                                                }),
+                                          )
+                                        : Container(
+                                            height: 150,
+                                            child: Center(
+                                              child: Text("No Data Found", style: TextStyle(fontSize: 18)),
+                                            ),
+                                          );
+                                  });
+                                }),
+                          ),
 
-                    // SizedBox(height: 20,)
-                  ],
-                ),
-              );
+                          // SizedBox(height: 20,)
+                        ],
+                      ),
+                    );
             }),
 
             //  SizedBox(height: 20,)
