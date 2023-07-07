@@ -633,7 +633,7 @@ class _ProfileState extends State<Profile> {
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
-                              },
+                              },   
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),
                                 padding: EdgeInsets.only(

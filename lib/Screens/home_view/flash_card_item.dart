@@ -36,6 +36,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
 
   List<FlashCateDetails> storedFlashCate = [];
   @override
+  IconData icon1;
   void initState() {
     CourseProvider courseProvider = Provider.of(context, listen: false);
     print("courseProvider.flashCate.length==========${courseProvider.flashCate.length}");
@@ -169,6 +170,17 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                       shrinkWrap: true,
                                       itemCount: storedFlashCate.length,
                                       itemBuilder: (context, index) {
+                                        if (index % 5 == 0) {
+                                          icon1 = FontAwesomeIcons.book;
+                                        } else if (index % 4 == 0) {
+                                          icon1 = FontAwesomeIcons.cloud;
+                                        } else if (index % 3 == 0) {
+                                          icon1 = FontAwesomeIcons.coins;
+                                        } else if (index % 2 == 0) {
+                                          icon1 = FontAwesomeIcons.deezer;
+                                        } else {
+                                          icon1 = FontAwesomeIcons.airbnb;
+                                        }
                                         return InkWell(
                                           onTap: () async {
                                             print("flash card category id===>>${storedFlashCate[index].id}");
@@ -223,9 +235,11 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                             color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
                                                           ),
                                                           child: Icon(
-                                                            index % 2 == 0
-                                                                ? FontAwesomeIcons.book
-                                                                : FontAwesomeIcons.airbnb,
+                                                            icon1,
+
+                                                            // index % 2 == 0
+                                                            //     ? FontAwesomeIcons.book
+                                                            //     : FontAwesomeIcons.airbnb,
                                                             color: Colors.white,
                                                           )),
                                                     ),

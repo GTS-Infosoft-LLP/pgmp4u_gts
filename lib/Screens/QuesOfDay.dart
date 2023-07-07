@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:pgmp4u/Screens/MockTest/model/quesOfDayModel.dart';
 import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
@@ -378,15 +379,30 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                 ),
                                                 Container(
                                                   margin: EdgeInsets.only(top: height * (15 / 800)),
-                                                  child: Text(
-                                                    data.qdList != null ? data.qdList[_quetionNo].question : '',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Roboto Regular',
-                                                      fontSize: width * (15 / 420),
-                                                      color: Colors.black,
-                                                      height: 1.7,
-                                                    ),
+                                                  child: Html(
+                                                    data: data.qdList != null ? data.qdList[_quetionNo].question : '',
+                                                    style: {
+                                                      "body": Style(
+                                                        padding: EdgeInsets.only(top: 5),
+                                                        margin: EdgeInsets.zero,
+                                                        color: Color(0xff000000),
+                                                        textAlign: TextAlign.left,
+                                                        // maxLines: 7,
+                                                        // textOverflow: TextOverflow.ellipsis,
+                                                        fontSize: FontSize(18),
+                                                      )
+                                                    },
                                                   ),
+
+                                                  //  Text(
+                                                  //   data.qdList != null ? data.qdList[_quetionNo].question : '',
+                                                  //   style: TextStyle(
+                                                  //     fontFamily: 'Roboto Regular',
+                                                  //     fontSize: width * (15 / 420),
+                                                  //     color: Colors.black,
+                                                  //     height: 1.7,
+                                                  //   ),
+                                                  // ),
                                                 ),
 
                                                 Row(
@@ -748,10 +764,26 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                           SizedBox(
                                                                             height: 8,
                                                                           ),
-                                                                          Text(
-                                                                            options[index].questionOption,
-                                                                            style: TextStyle(fontSize: 16),
+
+                                                                          Html(
+                                                                            data: options[index].questionOption,
+                                                                            style: {
+                                                                              "body": Style(
+                                                                                padding: EdgeInsets.only(top: 5),
+                                                                                margin: EdgeInsets.zero,
+                                                                                color: Color(0xff000000),
+                                                                                textAlign: TextAlign.left,
+                                                                                // maxLines: 7,
+                                                                                // textOverflow: TextOverflow.ellipsis,
+                                                                                fontSize: FontSize(18),
+                                                                              )
+                                                                            },
                                                                           ),
+
+                                                                          // Text(
+                                                                          //   options[index].questionOption,
+                                                                          //   style: TextStyle(fontSize: 16),
+                                                                          // ),
                                                                           // selectedAnswer != null &&
                                                                           //         int.parse(data.qdList[_quetionNo]
                                                                           //                 .rightAnswer) !=

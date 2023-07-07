@@ -222,7 +222,6 @@ class CourseProvider extends ChangeNotifier {
         if (flashCate == null || flashCate.isEmpty) {
           flashCate = [];
         }
-
         try {
           HiveHandler.addFlashCateData(flashCate, id.toString());
 
@@ -307,15 +306,6 @@ class CourseProvider extends ChangeNotifier {
         Uri.parse("http://3.227.35.115:1011/api/getCourse"),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       );
-      // .onError((error, stackTrace) {
-      //   // tempListCourse = [];
-      //   // tempListCourse = HiveHandler.getCourseDataList();
-
-      //   // if (tempListCourse.isEmpty) {
-      //   //   course = [];
-
-      //   // }
-      // });
 
       if (response.statusCode == 200) {
         course.clear();
@@ -326,7 +316,6 @@ class CourseProvider extends ChangeNotifier {
         print("course=========$course");
 
         try {
-        
           HiveHandler.addCourseData(jsonEncode(mapResponse["data"]));
 
           Future.delayed(Duration(microseconds: 800), () {
@@ -414,90 +403,130 @@ class CourseProvider extends ChangeNotifier {
   var successValueFlash;
   var flashPrice;
 
-  List<FlashCardDetails> flashTempDisplay = [];
   Future<void> getFlashCards(int id, String strr) async {
-    successValueFlash = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
     print("token valued===$stringValue");
     var request = {"id": id};
+    try {
+      var response = await http.post(
+        Uri.parse("http://3.227.35.115:1011/api/getFlashCards"),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
 
-    var response = await http
-        .post(
-      Uri.parse("http://3.227.35.115:1011/api/getFlashCards"),
-      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
-      body: json.encode(request),
-    )
-        .onError((error, stackTrace) {
-      print("erroeee===>>$error");
-      flashTempDisplay = [];
-      flashTempDisplay = HiveHandler.getflashCardsList(keyName: id.toString()) ?? [];
+      if (response.statusCode == 200) {
+        FlashCards.clear();
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
 
-      if (flashTempDisplay.isEmpty) {
-        FlashCards = [];
-        HiveHandler.addFlash(FlashCards, KeyName: id.toString());
+        List temp1 = mapResponse["data"];
+        int stsVal = mapResponse["status"];
+        print("temp list===$temp1");
+        FlashCards = temp1.map((e) => FlashCardDetails.fromjson(e)).toList();
+
+        print("FlashCards=========$FlashCards");
+        if (stsVal == 200) {
+          try {
+            HiveHandler.addFlashDisplayData(jsonEncode(mapResponse["data"]), id.toString());
+          } catch (e) {
+            print("errorr===========>>>>>>$e");
+          }
+        }
       }
-
-      flashTempDisplay = [];
-    });
-
-    var resDDo = json.decode(response.body);
-    print("resDDo=========$resDDo");
-    print("success valueee====>>>>${resDDo['success']}");
-    successValueFlash = resDDo['success'];
-    if (successValueFlash == false) {
-      print(":this valueee=====??");
-
-      return;
-    }
-    var resStatus = (resDDo["status"]);
-    videoPresent = 1;
-    if (resStatus == 400) {
-      FlashCards = [];
-      // videoPresent = 0;
-
-      notifyListeners();
-      return;
-    }
-
-    print("response.statusCode===${response.statusCode}");
-    if (response.statusCode == 200) {
-      FlashCards.clear();
-      Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
-
-      List temp1 = mapResponse["data"];
-      print("temp list===$temp1");
-      FlashCards = temp1.map((e) => FlashCardDetails.fromjson(e)).toList();
-
-      print("FlashCards=========$FlashCards");
-
-      try {
-        HiveHandler.addFlash(FlashCards, KeyName: id.toString());
-
-        Future.delayed(Duration(microseconds: 800), () {
-          List<FlashCardDetails> tempList = HiveHandler.getflashCardsList(keyName: id.toString()) ?? [];
-          print("*************************************************");
-          FlashOfflineList = HiveHandler.getflashCardsList() ?? [];
-          flashTempDisplay = HiveHandler.getflashCardsList() ?? [];
-          print("tempList==========$tempList");
-          print("FlashOfflineList==========$FlashOfflineList");
-        });
-      } catch (e) {
-        print("errorr===========>>>>>>$e");
-      }
-
-      // final List<FlashCardDetails> storedFlashess =
-      //         value.get("categoryKey");
-
-      notifyListeners();
-
-      if (FlashCards.isNotEmpty) {
-        print("FlashCards 0=== ${FlashCards[0].title}");
-      }
-    }
-    print("respponse=== ${response.body}");
+    } on Exception {}
   }
+
+  List<FlashCardDetails> flashTempDisplay = [];
+  // Future<void> getFlashCards(int id, String strr) async {
+  //   successValueFlash = true;
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String stringValue = prefs.getString('token');
+
+  //   print("token valued===$stringValue");
+  //   var request = {"id": id};
+
+  //   var response = await http
+  //       .post(
+  //     Uri.parse("http://3.227.35.115:1011/api/getFlashCards"),
+  //     headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+  //     body: json.encode(request),
+  //   )
+  //       .onError((error, stackTrace) {
+  //     print("erroeee===>>$error");
+  //     flashTempDisplay = [];
+  //     flashTempDisplay = HiveHandler.getflashCardsList(keyName: id.toString()) ?? [];
+
+  //     if (flashTempDisplay.isEmpty) {
+  //       FlashCards = [];
+  //       HiveHandler.addFlash(FlashCards, KeyName: id.toString());
+  //     }
+
+  //     flashTempDisplay = [];
+  //   });
+
+  //   var resDDo = json.decode(response.body);
+  //   print("resDDo=========$resDDo");
+  //   print("success valueee====>>>>${resDDo['success']}");
+  //   successValueFlash = resDDo['success'];
+  //   if (successValueFlash == false) {
+  //     print(":this valueee=====??");
+
+  //     return;
+  //   }
+  //   var resStatus = (resDDo["status"]);
+  //   videoPresent = 1;
+  //   if (resStatus == 400) {
+  //     FlashCards = [];
+  //     // videoPresent = 0;
+
+  //     notifyListeners();
+  //     return;
+  //   }
+
+  //   print("response.statusCode===${response.statusCode}");
+  //   if (response.statusCode == 200) {
+  //     FlashCards.clear();
+  //     Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+
+  //     List temp1 = mapResponse["data"];
+  //     int stsVal = mapResponse["status"];
+  //     if (stsVal == 200) {
+  //       print("stsValstsValstsVal=====200");
+  //     } else {
+  //       print("stsValstsValstsVal=====400");
+  //     }
+  //     print("temp list===$temp1");
+  //     FlashCards = temp1.map((e) => FlashCardDetails.fromjson(e)).toList();
+
+  //     print("FlashCards=========$FlashCards");
+
+  //     try {
+  //       HiveHandler.addFlash(FlashCards, KeyName: id.toString());
+
+  //       Future.delayed(Duration(microseconds: 800), () {
+  //         List<FlashCardDetails> tempList = HiveHandler.getflashCardsList(keyName: id.toString()) ?? [];
+  //         print("*************************************************");
+  //         FlashOfflineList = HiveHandler.getflashCardsList() ?? [];
+  //         flashTempDisplay = HiveHandler.getflashCardsList() ?? [];
+  //         print("tempList==========$tempList");
+  //         print("FlashOfflineList==========$FlashOfflineList");
+  //       });
+  //     } catch (e) {
+  //       print("errorr===========>>>>>>$e");
+  //     }
+
+  //     // final List<FlashCardDetails> storedFlashess =
+  //     //         value.get("categoryKey");
+
+  //     notifyListeners();
+
+  //     if (FlashCards.isNotEmpty) {
+  //       print("FlashCards 0=== ${FlashCards[0].title}");
+  //     }
+  //   }
+  //   print("respponse=== ${response.body}");
+  // }
 
   var valOfSuccess;
   Future<void> getTestDetails(int id) async {
@@ -725,17 +754,18 @@ class CourseProvider extends ChangeNotifier {
     });
   }
 
-int selectedMokAtmptCnt;
+  int selectedMokAtmptCnt;
 
   void setSelectedMokAtemptCnt(int numAttemptesCnts) {
-    selectedMokAtmptCnt=numAttemptesCnts;
-    print("selectedMokAtmptCnt=========${selectedMokAtmptCnt}");
+    selectedMokAtmptCnt = numAttemptesCnts;
+    print("selectedMokAtmptCnt=========$selectedMokAtmptCnt");
     notifyListeners();
   }
-int selectedAtemptListLength;
+
+  int selectedAtemptListLength;
   void setSelectedAttemptListLenght(int length) {
-    selectedAtemptListLength=length;
-    print("selectedAtemptListLength====${selectedAtemptListLength}");
+    selectedAtemptListLength = length;
+    print("selectedAtemptListLength====$selectedAtemptListLength");
     notifyListeners();
   }
 }

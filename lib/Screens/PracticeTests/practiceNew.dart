@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:pgmp4u/Screens/MockTest/model/pracTestModel.dart';
 import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
 import 'package:pgmp4u/Screens/Tests/provider/category_provider.dart';
@@ -405,15 +406,36 @@ class _PracticeNewState extends State<PracticeNew> {
                                                           ),
                                                           Container(
                                                             margin: EdgeInsets.only(top: height * (15 / 800)),
-                                                            child: Text(
-                                                              PTList != null ? PTList[_quetionNo].ques.question : '',
-                                                              style: TextStyle(
-                                                                fontFamily: 'Roboto Regular',
-                                                                fontSize: width * (15 / 420),
-                                                                color: Colors.black,
-                                                                height: 1.7,
-                                                              ),
-                                                            ),
+                                                            child: 
+
+
+                                                             Html(
+                                                                    data:  PTList != null ? PTList[_quetionNo].ques.question : '',
+                                                                    style: {
+                                                                      "body": Style(
+                                                                        padding: EdgeInsets.only(top: 5),
+                                                                        margin: EdgeInsets.zero,
+                                                                        color: Color(0xff000000),
+                                                                        textAlign: TextAlign.left,
+                                                                        // maxLines: 7,
+                                                                        // textOverflow: TextOverflow.ellipsis,
+                                                                        fontSize: FontSize(18),
+                                                                      )
+                                                                    },
+                                                                  ),
+                                                            
+                                                            // Text(
+                                                            //   PTList != null ? PTList[_quetionNo].ques.question : '',
+                                                            //   style: TextStyle(
+                                                            //     fontFamily: 'Roboto Regular',
+                                                            //     fontSize: width * (15 / 420),
+                                                            //     color: Colors.black,
+                                                            //     height: 1.7,
+                                                            //   ),
+                                                            // ),
+
+
+
                                                           ),
 
                                                           SizedBox(
@@ -740,10 +762,34 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                     SizedBox(
                                                                                       height: 8,
                                                                                     ),
-                                                                                    Text(
-                                                                                      op[index].questionOption,
-                                                                                      style: TextStyle(fontSize: 16),
-                                                                                    ),
+
+                                                                                     Html(
+                                                                    data:    op[index].questionOption,
+                                                                    style: {
+                                                                      "body": Style(
+                                                                        padding: EdgeInsets.only(top: 5),
+                                                                        margin: EdgeInsets.zero,
+                                                                        color: Color(0xff000000),
+                                                                        textAlign: TextAlign.left,
+                                                                        // maxLines: 7,
+                                                                        // textOverflow: TextOverflow.ellipsis,
+                                                                        fontSize: FontSize(18),
+                                                                      )
+                                                                    },
+                                                                  ),
+
+
+
+
+
+
+
+
+
+                                                                                    // Text(
+                                                                                    //   op[index].questionOption,
+                                                                                    //   style: TextStyle(fontSize: 16),
+                                                                                    // ),
                                                                                     // selectedAnswer != null &&
                                                                                     //         int.parse(data.pList[_quetionNo]
                                                                                     //                 .ques.rightAnswer) !=

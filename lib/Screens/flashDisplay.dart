@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -105,13 +107,25 @@ class _FlashDisplayState extends State<FlashDisplay> {
                   //       ))
                   //     :
                   Container(
-                    child: ValueListenableBuilder<Box<List<FlashCardDetails>>>(
-                        valueListenable: HiveHandler.getFlashListener(),
+                    child: ValueListenableBuilder<Box<String>>(
+                        valueListenable: HiveHandler.getDisplayFlashListener(),
                         builder: (context, value, child) {
                           CourseProvider cp = Provider.of(context, listen: false);
+                          List<FlashCardDetails> storedFlash = [];
 
-                          List<FlashCardDetails> storedFlash = value.get(cp.selectedFlashCategory.toString());
-                          print("storedFlash========================$storedFlash");
+                          if (value.containsKey(cp.selectedFlashCategory.toString())) {
+                            List flashCardDisplay = jsonDecode(value.get(cp.selectedFlashCategory.toString()));
+                            print(">>> flashCardList :  $flashCardDisplay");
+                            storedFlash = flashCardDisplay.map((e) => FlashCardDetails.fromjson(e)).toList();
+                          } else {
+                            storedFlash = [];
+                          }
+
+                          print("storedFlashCate========================$storedFlash");
+
+                          if (storedFlash == null) {
+                            storedFlash = [];
+                          }
 
                           return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
                             return storedFlash.isEmpty

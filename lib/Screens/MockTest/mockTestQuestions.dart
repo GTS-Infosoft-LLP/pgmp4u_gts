@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -130,7 +131,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
     print("API Response => ${response.request.url}; $params; ${response.body}");
     print("response.statusCode===========${response.statusCode}");
-  CourseProvider cp=Provider.of(context,listen: false);
+    CourseProvider cp = Provider.of(context, listen: false);
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
       if (data == "back") {
@@ -138,12 +139,11 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
           context,
           MaterialPageRoute(
               builder: (context) => MockTestResult(
-                    resultsData: responseData["data"],
-                    mocktestId: selectedIdNew,
-                    attemptData: attemptNew,
-                    activeTime: stopTime,
-                    atmptCount: cp.selectedMokAtmptCnt
-                  )),
+                  resultsData: responseData["data"],
+                  mocktestId: selectedIdNew,
+                  attemptData: attemptNew,
+                  activeTime: stopTime,
+                  atmptCount: cp.selectedMokAtmptCnt)),
         );
 
         // Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (Route<dynamic> route) => false);
@@ -536,22 +536,37 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                     // Question
                                                     Container(
                                                       margin: EdgeInsets.only(top: height * (15 / 800)),
-                                                      child: Text(
-                                                        mockQuestion[_quetionNo].questionDetail.questiondata,
-                                                        // _quizList.isNotEmpty
-                                                        //     //questionAnswersList != null
-                                                        //     ? _quizList[_quetionNo].questionDetail.questiondata
-                                                        //     //listResponse[_quetionNo]
-                                                        //     //      ["Question"]
-                                                        //     //["question"]
-                                                        //     : '',
-                                                        style: TextStyle(
-                                                          fontFamily: 'Roboto Regular',
-                                                          fontSize: width * (15 / 420),
-                                                          color: Colors.black,
-                                                          height: 1.7,
-                                                        ),
+                                                      child: Html(
+                                                        data: mockQuestion[_quetionNo].questionDetail.questiondata,
+                                                        style: {
+                                                          "body": Style(
+                                                            padding: EdgeInsets.only(top: 5),
+                                                            margin: EdgeInsets.zero,
+                                                            color: Color(0xff000000),
+                                                            textAlign: TextAlign.left,
+                                                            // maxLines: 7,
+                                                            // textOverflow: TextOverflow.ellipsis,
+                                                            fontSize: FontSize(18),
+                                                          )
+                                                        },
                                                       ),
+
+                                                      // Text(
+                                                      //   mockQuestion[_quetionNo].questionDetail.questiondata,
+                                                      //   // _quizList.isNotEmpty
+                                                      //   //     //questionAnswersList != null
+                                                      //   //     ? _quizList[_quetionNo].questionDetail.questiondata
+                                                      //   //     //listResponse[_quetionNo]
+                                                      //   //     //      ["Question"]
+                                                      //   //     //["question"]
+                                                      //   //     : '',
+                                                      //   style: TextStyle(
+                                                      //     fontFamily: 'Roboto Regular',
+                                                      //     fontSize: width * (15 / 420),
+                                                      //     color: Colors.black,
+                                                      //     height: 1.7,
+                                                      //   ),
+                                                      // ),
                                                     ),
                                                     SizedBox(
                                                       height: 10,
@@ -682,11 +697,27 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                         ),
                                                                       ),
                                                                       Container(
-                                                                          margin: EdgeInsets.only(left: 8),
-                                                                          width: width - (width * (25 / 420) * 5),
-                                                                          child: Text(title.question_option,
-                                                                              style: TextStyle(
-                                                                                  fontSize: width * 14 / 420)))
+                                                                        margin: EdgeInsets.only(left: 8),
+                                                                        width: width - (width * (25 / 420) * 5),
+                                                                        child: Html(
+                                                                          data: title.question_option,
+                                                                          style: {
+                                                                            "body": Style(
+                                                                              padding: EdgeInsets.only(top: 5),
+                                                                              margin: EdgeInsets.zero,
+                                                                              color: Color(0xff000000),
+                                                                              textAlign: TextAlign.left,
+                                                                              // maxLines: 7,
+                                                                              // textOverflow: TextOverflow.ellipsis,
+                                                                              fontSize: FontSize(18),
+                                                                            )
+                                                                          },
+                                                                        ),
+
+                                                                        // Text(title.question_option,
+                                                                        //     style: TextStyle(
+                                                                        //         fontSize: width * 14 / 420))
+                                                                      )
                                                                     ],
                                                                   ),
                                                                 ),

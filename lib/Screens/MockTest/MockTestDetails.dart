@@ -11,8 +11,8 @@ class MockTestDetails extends StatefulWidget {
   MockTestDetails({this.selectedId, this.attempt});
 
   @override
-  _MockTestDetailsState createState() => _MockTestDetailsState(
-      selectedIdNew: this.selectedId, attemptNew: this.attempt);
+  _MockTestDetailsState createState() =>
+      _MockTestDetailsState(selectedIdNew: this.selectedId, attemptNew: this.attempt);
 }
 
 class _MockTestDetailsState extends State<MockTestDetails> {
@@ -43,18 +43,17 @@ class _MockTestDetailsState extends State<MockTestDetails> {
     print(MOCK_TEST_DETAILS + '/' + selectedIdNew.toString() + '/' + attemptNew.toString());
     response = await http.get(
         Uri.parse(MOCK_TEST_DETAILS + '/' + selectedIdNew.toString() + '/' + attemptNew.toString()),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': stringValue
-        });
-        print("authorization $stringValue");
+        headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+    print("authorization $stringValue");
     Map getit;
     if (response.statusCode == 200) {
       print(convert.jsonDecode(response.body));
       getit = convert.jsonDecode(response.body);
+      print("getit==============================================$getit");
       setState(() {
         responseData = getit["data"];
         listResponse = getit["data"]["categories"];
+        print("listResponse==========$listResponse");
       });
     }
   }
@@ -81,10 +80,7 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                 ),
               ),
               child: Container(
-                margin: EdgeInsets.only(
-                    left: width * (20 / 420),
-                    right: width * (20 / 420),
-                    top: height * (16 / 800)),
+                margin: EdgeInsets.only(left: width * (20 / 420), right: width * (20 / 420), top: height * (16 / 800)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,17 +127,16 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                             ),
                             Column(
                               children: listResponse.map<Widget>((title) {
-                                String category="";
-                                if( title["category"]!=null){
-                                  category=title["category"];
+                                String category = "";
+                                if (title["category"] != null) {
+                                  category = title["category"];
+                                  print("category=======>>>>????+++$category");
                                 }
                                 return Container(
                                   margin: EdgeInsets.only(top: 20),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  padding: EdgeInsets.only(
-                                      top: 15, bottom: 15, left: 14),
+                                  decoration:
+                                      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                                  padding: EdgeInsets.only(top: 15, bottom: 15, left: 14),
                                   child: Row(
                                     children: [
                                       Expanded(
@@ -151,29 +146,26 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                             right: width * (15 / 420),
                                           ),
                                           decoration: BoxDecoration(
+                                            // color: (title["id"]) % 2 == 0 ? _colorfromhex("#72A258") : AppColor.purpule,
                                             color: _colorfromhex("#72A258"),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
                                           padding: EdgeInsets.all(16),
-                                          child: Image.asset(
-                                              'assets/detailicon.png'),
+                                          child: Image.asset('assets/detailicon.png'),
                                         ),
                                       ),
                                       Expanded(
-                                         flex: 8,
+                                        flex: 8,
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Container(
                                               margin: EdgeInsets.only(
                                                 bottom: height * (15 / 800),
                                               ),
                                               child: Text(
-                                               category,
+                                                category,
                                                 style: TextStyle(
                                                     fontFamily: 'Roboto Medium',
                                                     fontSize: width * (18 / 420),
@@ -182,8 +174,7 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                               ),
                                             ),
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Container(
                                                   margin: EdgeInsets.only(
@@ -194,22 +185,17 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                                       Text(
                                                         '${title["Tot_Ans"]}',
                                                         style: TextStyle(
-                                                            fontFamily:
-                                                                'Roboto Bold',
-                                                            fontSize: width *
-                                                                (20 / 420),
+                                                            fontFamily: 'Roboto Bold',
+                                                            fontSize: width * (20 / 420),
                                                             color: Colors.black,
                                                             letterSpacing: 0.3),
                                                       ),
                                                       Text(
                                                         'Total',
                                                         style: TextStyle(
-                                                            fontFamily:
-                                                                'Roboto Regular',
-                                                            fontSize: width *
-                                                                (18 / 420),
-                                                            color: _colorfromhex(
-                                                                "#ABAFD1"),
+                                                            fontFamily: 'Roboto Regular',
+                                                            fontSize: width * (18 / 420),
+                                                            color: _colorfromhex("#ABAFD1"),
                                                             letterSpacing: 0.3),
                                                       ),
                                                     ],
@@ -224,22 +210,17 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                                       Text(
                                                         '${title["Correct_Ans"]}',
                                                         style: TextStyle(
-                                                            fontFamily:
-                                                                'Roboto Bold',
-                                                            fontSize: width *
-                                                                (20 / 420),
+                                                            fontFamily: 'Roboto Bold',
+                                                            fontSize: width * (20 / 420),
                                                             color: Colors.black,
                                                             letterSpacing: 0.3),
                                                       ),
                                                       Text(
                                                         'Right',
                                                         style: TextStyle(
-                                                            fontFamily:
-                                                                'Roboto Regular',
-                                                            fontSize: width *
-                                                                (18 / 420),
-                                                            color: _colorfromhex(
-                                                                "#ABAFD1"),
+                                                            fontFamily: 'Roboto Regular',
+                                                            fontSize: width * (18 / 420),
+                                                            color: _colorfromhex("#ABAFD1"),
                                                             letterSpacing: 0.3),
                                                       ),
                                                     ],
@@ -254,22 +235,17 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                                       Text(
                                                         '${title["Wrong_Ans"]}',
                                                         style: TextStyle(
-                                                            fontFamily:
-                                                                'Roboto Bold',
-                                                            fontSize: width *
-                                                                (20 / 420),
+                                                            fontFamily: 'Roboto Bold',
+                                                            fontSize: width * (20 / 420),
                                                             color: Colors.black,
                                                             letterSpacing: 0.3),
                                                       ),
                                                       Text(
                                                         'Wrong',
                                                         style: TextStyle(
-                                                            fontFamily:
-                                                                'Roboto Regular',
-                                                            fontSize: width *
-                                                                (18 / 420),
-                                                            color: _colorfromhex(
-                                                                "#ABAFD1"),
+                                                            fontFamily: 'Roboto Regular',
+                                                            fontSize: width * (18 / 420),
+                                                            color: _colorfromhex("#ABAFD1"),
                                                             letterSpacing: 0.3),
                                                       ),
                                                     ],
@@ -281,23 +257,21 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                                       Text(
                                                         '${title["Skip_Ans"]}',
                                                         style: TextStyle(
-                                                            fontFamily:
-                                                                'Roboto Bold',
-                                                            fontSize: width *
-                                                                (20 / 420),
+                                                            fontFamily: 'Roboto Bold',
+                                                            fontSize: width * (20 / 420),
                                                             color: Colors.black,
                                                             letterSpacing: 0.3),
                                                       ),
-                                                      Text(
-                                                        'Skipped',
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                'Roboto Regular',
-                                                            fontSize: width *
-                                                                (18 / 420),
-                                                            color: _colorfromhex(
-                                                                "#ABAFD1"),
-                                                            letterSpacing: 0.3),
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(right: 14.0),
+                                                        child: Text(
+                                                          'Skipped',
+                                                          style: TextStyle(
+                                                              fontFamily: 'Roboto Regular',
+                                                              fontSize: width * (18 / 420),
+                                                              color: _colorfromhex("#ABAFD1"),
+                                                              letterSpacing: 0.3),
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -321,8 +295,7 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                     width: width,
                     child: Center(
                       child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            _colorfromhex("#4849DF")),
+                        valueColor: AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF")),
                       ),
                     ))
           ],

@@ -180,11 +180,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
 
                                       realAnswer = mapResponse.data[_quetionNo].question.rightAnswer;
 
-                                      //  mapResponse[
-                                      //                 "data"]
-                                      //             [_quetionNo]
-                                      //         ["Question"]
-                                      //     ["right_answer"];
+                                
                                     });
                                   }
 

@@ -19,6 +19,7 @@ class _NotificationsState extends State<Notifications> {
   @override
   bool _isShow = true;
   void initState() {
+    _isShow = false;
     ProfileProvider _dshbrdProvider = Provider.of(context, listen: false);
     _dshbrdProvider.showNotification(isFirstTime: true);
     scrollcontrol.addListener(() {
@@ -105,6 +106,11 @@ class _NotificationsState extends State<Notifications> {
                                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                                 child: InkWell(
                                   onTap: () {
+                                    setState(() {
+                                      _isShow = !_isShow;
+                                    });
+                                    print("_isShow===========$_isShow");
+
                                     print("question id========${profileProvider.NotificationData[index].questionId}");
                                     var quesId = profileProvider.NotificationData[index].questionId;
                                     profileProvider.setNotifiId(profileProvider.NotificationData[index].id);
@@ -118,9 +124,9 @@ class _NotificationsState extends State<Notifications> {
                                     //               )));
                                     // });
 
-                                    setState(() {
-                                      _isShow = !_isShow;
-                                    });
+                                    // setState(() {
+                                    //   _isShow = !_isShow;
+                                    // });
                                   },
                                   child: Container(
                                       width: MediaQuery.of(context).size.width * .7,
@@ -179,26 +185,40 @@ class _NotificationsState extends State<Notifications> {
                                               ),
                                               // _isShow?
 
-                                              profileProvider.NotificationData[index].id ==
-                                                      profileProvider.selectedNotifiId
+                                              // profileProvider.NotificationData[index].id ==
+                                              //         profileProvider.selectedNotifiId
+                                              //     ?
+                                              Container(
+                                                width: MediaQuery.of(context).size.width * .7,
+                                                child: Text(
+                                                  profileProvider.NotificationData[index].message,
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(color: Colors.black, fontSize: 14),
+                                                ),
+                                              ),
+                                              // : Container(
+                                              //     width: MediaQuery.of(context).size.width * .7,
+                                              //     child: Text(
+                                              //       profileProvider.NotificationData[index].message ?? "",
+                                              //       maxLines: 2,
+                                              //       overflow: TextOverflow.ellipsis,
+                                              //       style: TextStyle(color: Colors.black, fontSize: 14),
+                                              //     ),
+                                              //   ),
+
+                                              _isShow
                                                   ? Container(
                                                       width: MediaQuery.of(context).size.width * .7,
                                                       child: Text(
-                                                        profileProvider.NotificationData[index].message,
+                                                        profileProvider.NotificationData[index].message ?? "",
                                                         // maxLines: 2,
                                                         // overflow: TextOverflow.ellipsis,
                                                         style: TextStyle(color: Colors.black, fontSize: 14),
                                                       ),
                                                     )
-                                                  : Container(
-                                                      width: MediaQuery.of(context).size.width * .7,
-                                                      child: Text(
-                                                        profileProvider.NotificationData[index].message ?? "",
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: TextStyle(color: Colors.black, fontSize: 14),
-                                                      ),
-                                                    ),
+                                                  : Container(),
+
                                               // : Container(
                                               //     width: MediaQuery.of(context).size.width * .7,
                                               //     child: Text(

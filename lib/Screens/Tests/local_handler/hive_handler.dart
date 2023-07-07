@@ -20,6 +20,7 @@ class HiveHandler {
   static const String userDataBoxKey = "categoryKey";
 
   static const String FlashCardBox = "flashData";
+  static const String FlashDisplayBox = "flashDisplayBox";
   static const String FlashCardKey = "flashKey";
 
   static const String MockTestBox = "mockData";
@@ -51,6 +52,7 @@ class HiveHandler {
   static const String MockAttemptsBox = "moclAttemptBox";
 
   static Box<String> courseListBox;
+  static Box<String> displayFlashBox;
   static Box<List<FlashCateDetails>> flashListCateBox;
 
   static Box<List<CategoryListModel>> categoryListBox;
@@ -81,9 +83,10 @@ class HiveHandler {
     Hive.registerAdapter(MockDataDetailsAdapter());
 
     courseListBox = await Hive.openBox<String>(CourseBox);
+    displayFlashBox = await Hive.openBox<String>(FlashCardBox);
     flashListCateBox = await Hive.openBox<List<FlashCateDetails>>(FlashCateBox);
     categoryListBox = await Hive.openBox<List<CategoryListModel>>(userDataBox);
-    flashListBox = await Hive.openBox<List<FlashCardDetails>>(FlashCardBox);
+    // flashListBox = await Hive.openBox<List<FlashCardDetails>>(FlashCardBox);
 
     masterListBox = await Hive.openBox<List<MasterDetails>>(MasterDataBox);
 
@@ -283,6 +286,21 @@ class HiveHandler {
   //   }
   // }
 
+  static addFlashDisplayData(String flashListResponse, String key) async {
+    displayFlashBox.put(key, flashListResponse);
+
+    if (displayFlashBox.containsKey(key)) {
+      print("===========added to box=========");
+      print("displayFlashBox.get ${displayFlashBox.get(key)}");
+    } else {
+      print("===========box is empty=========");
+    }
+  }
+
+  static ValueListenable<Box<String>> getDisplayFlashListener() {
+    return Hive.box<String>(FlashCardBox).listenable() ?? "";
+  }
+
   static addCourseData(String courseListResponse) async {
     // final Box<List<CourseDetails>> courseListBox = await Hive.openBox<List<CourseDetails>>(CourseBox);
     courseListBox.put(CourseKey, courseListResponse);
@@ -342,6 +360,18 @@ class HiveHandler {
       return storedTestData;
     } catch (e) {
       return [];
+    }
+  }
+
+  static setFlashCateData({dynamic value, String Key}) async {
+    await Hive.openBox(FlashCateBox);
+    final box = Hive.box(FlashCateBox);
+    print("incomimg valueeeeee=====>>>>$value");
+    await box.put(Key, jsonEncode(value));
+    try {
+      print("get boxxxxx=======${box.get(Key, defaultValue: "")}");
+    } catch (e) {
+      print("errororor====$e");
     }
   }
 
