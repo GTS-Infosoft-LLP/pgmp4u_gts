@@ -69,6 +69,8 @@ class QuestionDetail {
     quedeleteStatus = questionMap["deleteStatus"];
     if (questionMap['right_answer'] != null) {
       rightAnswer = questionMap['right_answer'].toString().split(",");
+    } else {
+      rightAnswer = [];
     }
 
     List temp = questionMap["Options"];

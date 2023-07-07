@@ -50,6 +50,7 @@ class HiveHandler {
   static const String TestPercentKey = "testPercentBox";
 
   static const String MockAttemptsBox = "moclAttemptBox";
+  static const String MockQuestionBoxKey = "mockQuestionsBox";
 
   static Box<String> courseListBox;
   static Box<String> displayFlashBox;
@@ -60,6 +61,8 @@ class HiveHandler {
   static Box<String> masterListBox;
   static Box<List<MockTestListApiModel>> MockListBox;
   static Box<List<QuestionAnswerModel>> MockTextBox;
+  static Box<String> MockQuestionBox;
+
   static Box<List<PracListModel>> PracTestBox;
 
   static Box<String> TestPMListBox;
@@ -90,7 +93,8 @@ class HiveHandler {
 
     masterListBox = await Hive.openBox<String>(MasterDataBox);
 
-    MockListBox = await Hive.openBox<List<MockTestListApiModel>>(MockTestBox);
+    // MockListBox = await Hive.openBox<List<MockTestListApiModel>>(MockTestBox);
+    MockQuestionBox = await Hive.openBox<String>(MockQuestionBoxKey);
     PracTestBox = await Hive.openBox<List<PracListModel>>(PracticeTestBox);
 
     TestPMListBox = await Hive.openBox<String>(TestDataBox);
@@ -193,28 +197,32 @@ class HiveHandler {
   //// mock attempt end
 
 /////////////
-  static setMockData({dynamic value, String key}) async {
-    await Hive.openBox("userDataBox");
-    final box = Hive.box("userDataBox");
-    print("*********************************");
-    print("incomimg valueeeeee=====>>>>$value");
+  static setMockData({String value, String key}) async {
+    // await Hive.openBox("userDataBox");
+    // final box = Hive.box("userDataBox");
 
-    await box.put(key, jsonEncode(value));
-    try {
-      print("get boxxxxx=======${box.get(key, defaultValue: "")}");
-    } catch (e) {
-      print("errororor====$e");
+    MockQuestionBox.put(key, value);
+    if (MockQuestionBox.containsKey(key)) {
+      print("===========added to box=========");
+      print("MockQuestionBox.get  Key: $key, Data:${MockQuestionBox.get(key)}");
+    } else {
+      print("===========box is empty=========");
     }
+    // try {
+    //   print("get boxxxxx=======${box.get(key, defaultValue: "")}");
+    // } catch (e) {
+    //   print("errororor====$e");
+    // }
   }
 
-///////////////
-  static Future<dynamic> getMockData({String key}) async {
-    final box = Hive.box("userDataBox");
-    return await box.get(key, defaultValue: "");
-  }
+// ///////////////
+//   static Future<dynamic> getMockData({String key}) async {
+//     final box = Hive.box("userDataBox");
+//     return await box.get(key, defaultValue: "");
+//   }
 
-  static ValueListenable getMockTestListener() {
-    return Hive.box("userDataBox").listenable();
+  static ValueListenable<Box<String>> getMockTestListener() {
+    return Hive.box<String>(MockQuestionBoxKey).listenable() ?? '';
   }
 
   // static addPract(List<PracListModel> list) async {
@@ -304,6 +312,7 @@ class HiveHandler {
     return Hive.box<String>(FlashCardBox).listenable() ?? "";
   }
 
+  ///// cousers data end
   static addCourseData(String courseListResponse) async {
     // final Box<List<CourseDetails>> courseListBox = await Hive.openBox<List<CourseDetails>>(CourseBox);
     courseListBox.put(CourseKey, courseListResponse);
@@ -456,7 +465,6 @@ class HiveHandler {
   }
 
   static ValueListenable<Box<String>> getFlashCateListener() {
-    
     return Hive.box<String>(FlashCateBox).listenable() ?? "";
   }
 

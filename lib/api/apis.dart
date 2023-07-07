@@ -1,19 +1,15 @@
-
 //staging BASe URL
 //const stagingBASE="http://18.119.55.81:1011/api/";
 ///////// Staging  URLS
 //const _BASE_URL = "http://18.119.55.81:3003/api/";
 //const _BASE_URL2 = "http://18.119.55.81:3003/api/";
 
-
-
-//PRODUCTION BASE URL  
-  // const _BASE_URL ="https://pgmp4uapiconnect.vcareprojectmanagement.com/api/";
-const _BASE_URL ="http://3.227.35.115:1011/api/";
+//PRODUCTION BASE URL
+// const _BASE_URL ="https://pgmp4uapiconnect.vcareprojectmanagement.com/api/";
+const _BASE_URL = "http://3.227.35.115:1011/api/";
 // const _BASE_URL ="https://apivcarestage.vcareprojectmanagement.com/api/";
 
 //const _BASE_URL2 = "https://tspgmp4uapiconnect.vcareprojectmanagement.com/api/";
-
 
 // const _BASE_URL2 = "http://192.168.2.6:1011/api/";
 // const _BASE_URL2 = "http://18.119.55.81:1011/api/";
@@ -39,7 +35,7 @@ const CHECK_COUPON = _BASE_URL + "CheckCoupon";
 const GET_RAZOR_PAY_ORDER_ID = _BASE_URL + "GetRazorPayOrderid";
 const getHideShowStatus = _BASE_URL + "getMasterList";
 
-const checkStatusFlashAndVideo = _BASE_URL + "checkStatus";  //new
+const checkStatusFlashAndVideo = _BASE_URL + "checkStatus"; //new
 const GetCategoryListUrl = _BASE_URL + "getCategoryList";
 const GetCardUrl = _BASE_URL + "getCardDetailByCatId";
 
@@ -48,22 +44,47 @@ const GetCardUrl = _BASE_URL + "getCardDetailByCatId";
 const CREATE_ORDER = _BASE_URL + "createOrder";
 const videoListByTypeUrl = _BASE_URL + "videoListByViType";
 
-const InAppPurchasePaymentNew = _BASE_URL + "InAppPurchasePaymentNew";  //new
-const stripeFlashCard = _BASE_URL + "createOrderNew?planType=2&deviceType=A";  //new
-const stripeVideoLib = _BASE_URL + "createOrderNew?planType=3&deviceType=A"; 
+const InAppPurchasePaymentNew = _BASE_URL + "InAppPurchasePaymentNew"; //new
+const stripeFlashCard = _BASE_URL + "createOrderNew?planType=2&deviceType=A"; //new
+const stripeVideoLib = _BASE_URL + "createOrderNew?planType=3&deviceType=A";
 
-const getCourseCategory="http://3.227.35.115:1011/api/getCourseCategory";
-const getCourseSubCategory="http://3.227.35.115:1011/api/getCourseSubCategory";
-const getSubCategoryDetails="http://3.227.35.115:1011/api/getSubCategoryDetails";
+const getCourseCategory = _BASE_URL + "getCourseCategory";
+const getCourseSubCategory = _BASE_URL + "getCourseSubCategory";
+const getSubCategoryDetails = _BASE_URL + "getSubCategoryDetails";
 
+const deviceToken = _BASE_URL + "updateDeviceToken";
 
-const deviceToken="https://apivcarestage.vcareprojectmanagement.com/api/updateDeviceToken";
+const chatUserListApi = _BASE_URL + "getChatUsers" ;
+const sendChatUserNotification =  _BASE_URL + "sendChatUsersNotification";
 
-const chatUserListApi ="https://apivcarestage.vcareprojectmanagement.com/api/getChatUsers";
-const sendChatUserNotification ="https://apivcarestage.vcareprojectmanagement.com/api/sendChatUsersNotification";
-
-
-
- //new
+// couses
+const GET_COURSES = _BASE_URL + "getCourse" ;
 
 
+// master 
+const GET_MASTER_DATA = _BASE_URL + "getMasterData" ;
+
+
+// VIDEOS
+const GET_VIDEOS = _BASE_URL + "getVideos" ;
+
+
+// practice
+
+// mock
+
+// quest of the day
+
+// notification
+
+// logut
+
+// chatUser
+
+// flash
+const GET_FLASH_CATEGORIES = _BASE_URL + "getFlashCategories" ;
+const GET_VIDEO_CATEGORIES = _BASE_URL + "getVideoCategories" ;
+
+
+
+//new

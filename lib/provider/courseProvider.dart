@@ -94,7 +94,7 @@ class CourseProvider extends ChangeNotifier {
 
     try {
       var response = await http.post(
-        Uri.parse("http://3.227.35.115:1011/api/getMasterData"),
+        Uri.parse(GET_MASTER_DATA),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );
@@ -179,7 +179,7 @@ class CourseProvider extends ChangeNotifier {
 
     var response = await http
         .post(
-      Uri.parse("http://3.227.35.115:1011/api/getFlashCategories"),
+      Uri.parse(GET_FLASH_CATEGORIES),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     )
@@ -255,12 +255,12 @@ class CourseProvider extends ChangeNotifier {
     var request = {"id": id};
 
     var response = await http.post(
-      Uri.parse("http://3.227.35.115:1011/api/getVideoCategories"),
+      Uri.parse(GET_VIDEO_CATEGORIES),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );
 
-    print("http://3.227.35.115:1011/api/getVideoCategories");
+    print(GET_VIDEO_CATEGORIES);
     print("response====${response.body}");
     var resp = response.body;
 
@@ -302,7 +302,7 @@ class CourseProvider extends ChangeNotifier {
 
     try {
       var response = await http.get(
-        Uri.parse("http://3.227.35.115:1011/api/getCourse"),
+        Uri.parse(GET_COURSES),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       );
 
@@ -356,7 +356,7 @@ class CourseProvider extends ChangeNotifier {
     var request = {"id": id};
 
     var response = await http.post(
-      Uri.parse("http://3.227.35.115:1011/api/getVideos"),
+      Uri.parse(GET_VIDEOS),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );

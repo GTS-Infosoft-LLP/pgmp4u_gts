@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -100,7 +101,16 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     await _stopWatchTimer.dispose();
   }
 
+  // 0 -> fine
+  // 1 -> error
+  int isContinue = 0;
+  updateIsContinue(int val) {
+    isContinue = val;
+    setState(() {});
+  }
+
   Future submitMockTest(data, stopTime) async {
+    updateIsContinue(0);
     print("*****************************");
     print("attemptNew==========$attemptNew");
     setState(() {
@@ -119,70 +129,80 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
     print("api body==========$params");
 
-    response = await http.post(
+    response = await http
+        .post(
       Uri.parse(SUBMIT_MOCK_TEST),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: params,
-    );
+    )
+        .onError((error, stackTrace) {
+      print("ONERRROR: $error");
+      loader = false;
+      updateIsContinue(1);
 
-    print("Url :=> $SUBMIT_MOCK_TEST");
-    print("request body  :=> $params");
-    print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
+      return;
+    });
 
-    print("API Response => ${response.request.url}; $params; ${response.body}");
-    print("response.statusCode===========${response.statusCode}");
-    CourseProvider cp = Provider.of(context, listen: false);
-    if (response.statusCode == 200) {
-      Map responseData = json.decode(response.body);
-      if (data == "back") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MockTestResult(
-                  resultsData: responseData["data"],
-                  mocktestId: selectedIdNew,
-                  attemptData: attemptNew,
-                  activeTime: stopTime,
-                  atmptCount: cp.selectedMokAtmptCnt)),
-        );
+    if (isContinue == 0) {
+      print("Url :=> $SUBMIT_MOCK_TEST");
+      print("request body  :=> $params");
+      print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
 
-        // Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (Route<dynamic> route) => false);
-      } else {
-        setState(() {
-          loader = false;
-        });
-
-        print(">>>>>>>>> review data $responseData");
-        print("widget.attempt==========${widget.attempt}");
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MockTestResult(
+      print("API Response => ${response.request.url}; $params; ${response.body}");
+      print("response.statusCode===========${response.statusCode}");
+      CourseProvider cp = Provider.of(context, listen: false);
+      if (response.statusCode == 200) {
+        Map responseData = json.decode(response.body);
+        if (data == "back") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MockTestResult(
                     resultsData: responseData["data"],
                     mocktestId: selectedIdNew,
                     attemptData: attemptNew,
                     activeTime: stopTime,
-                    atmptCount: cp.selectedMokAtmptCnt,
-                  )),
+                    atmptCount: cp.selectedMokAtmptCnt)),
+          );
+
+          // Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (Route<dynamic> route) => false);
+        } else {
+          setState(() {
+            loader = false;
+          });
+
+          print(">>>>>>>>> review data $responseData");
+          print("widget.attempt==========${widget.attempt}");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MockTestResult(
+                      resultsData: responseData["data"],
+                      mocktestId: selectedIdNew,
+                      attemptData: attemptNew,
+                      activeTime: stopTime,
+                      atmptCount: cp.selectedMokAtmptCnt,
+                    )),
+          );
+        }
+
+        GFToast.showToast(
+          'Mock test submitted successfully',
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+        print("success");
+      } else {
+        setState(() {
+          loader = false;
+        });
+        print(response.body);
+        GFToast.showToast(
+          "Something went wrong,please submit again",
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
         );
       }
-
-      GFToast.showToast(
-        'Mock test submitted successfully',
-        context,
-        toastPosition: GFToastPosition.BOTTOM,
-      );
-      print("success");
-    } else {
-      setState(() {
-        loader = false;
-      });
-      print(response.body);
-      GFToast.showToast(
-        "Something went wrong,please submit again",
-        context,
-        toastPosition: GFToastPosition.BOTTOM,
-      );
     }
   }
 
@@ -201,7 +221,24 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                 child: new Text('No'),
               ),
               TextButton(
-                onPressed: () => {submitMockTest("back", displayTime)},
+                onPressed: () {
+                  if (isContinue == 1) {
+                    Navigator.pop(context);
+                    updateIsContinue(0);
+                    GFToast.showToast(
+                      'Check Your Internet Connection',
+                      context,
+                      toastPosition: GFToastPosition.BOTTOM,
+                    );
+                    setState(() {
+                      loader = false;
+                    });
+                    Navigator.pop(context);
+                    return;
+                  }
+
+                  submitMockTest("back", displayTime);
+                },
                 child: new Text('Yes'),
               ),
             ],
@@ -218,29 +255,33 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     print("s********electedIdNew============$selectedIdNew");
 
     http.Response response;
-    response = await http.get(Uri.parse(MOCK_TEST_QUESTIONS + '/$selectedIdNew'),
-        headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+    try {
+      response = await http.get(Uri.parse(MOCK_TEST_QUESTIONS + '/$selectedIdNew'),
+          headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
 
-    print("Url :=> ${Uri.parse(MOCK_TEST_QUESTIONS + '/$selectedIdNew')}");
+      print("Url :=> ${Uri.parse(MOCK_TEST_QUESTIONS + '/$selectedIdNew')}");
 
-    print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
-    print("response.statusCode::: ${response.statusCode}");
+      print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
+      print("response.statusCode::: ${response.statusCode}");
 
-    if (response.statusCode == 200) {
-      print(">>>>>> quiz data ${response.body}");
-      var _mapResponse = convert.jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        print(">>>>>> quiz data ${response.body}");
+        var _mapResponse = convert.jsonDecode(response.body);
 
-      print("map resposne datat=====>>>${_mapResponse["data"]}");
+        print("map resposne datat=====>>>${_mapResponse["data"]}");
 
-      HiveHandler.setMockData(key: selectedIdNew.toString(), value: _mapResponse['data']);
+        HiveHandler.setMockData(key: selectedIdNew.toString(), value: jsonEncode(_mapResponse['data']));
 
-      setState(() {
-        startTime = (new DateTime.now()).toString();
-        mapResponse = convert.jsonDecode(response.body);
-        listResponse = mapResponse["data"];
-        questionAnswersList = QuestionAnswerModel.fromjson(mapResponse["data"]);
-        _stopWatchTimer.onExecute.add(StopWatchExecute.start);
-      });
+        setState(() {
+          startTime = (new DateTime.now()).toString();
+          mapResponse = convert.jsonDecode(response.body);
+          listResponse = mapResponse["data"];
+          questionAnswersList = QuestionAnswerModel.fromjson(mapResponse["data"]);
+          _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+        });
+      }
+    } on Exception {
+      // TODO
     }
   }
 
@@ -312,31 +353,21 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       child: WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
-          body: ValueListenableBuilder(
+          body: ValueListenableBuilder<Box<String>>(
               valueListenable: HiveHandler.getMockTestListener(),
               builder: (context, value, child) {
-                var v1 = value.get(selectedIdNew.toString());
-                print("v1111==========$v1");
-                if (v1 != null) {
-                  print("mockQuestion==============$mockQuestion");
-                  if (mockQuestion.isEmpty) {
-                    List temp = jsonDecode(v1);
-                    mockQuestion = temp.map((e) => Queans.fromjss(e)).toList();
+                print("selecteed id:: ${selectedIdNew.toString()}");
+                if (value.containsKey(selectedIdNew.toString())) {
+                  print("value:>> ${value.get(selectedIdNew.toString())} ");
+                  String data = value.get(selectedIdNew.toString());
+                  List resList = jsonDecode(data);
 
-                    print("mockQuestion==============$mockQuestion");
-                    print("mockQuestion lenght====${mockQuestion.length}");
-                  } else {}
+                  mockQuestion = resList.map((e) => Queans.fromjss(e)).toList();
                 } else {
-                  mockQuestion = [];
-
-                  // pracTestProv.practiceApiLoader = false;
+                  print("errror  v1111==========");
                 }
-                // print("question number=====>>$_quetionNo");
-                // print("question number=====>>${mockQuestion[_quetionNo].questionDetail.Options}");
-                // mockQuestion[_quetionNo]
-                //     .questionDetail
-                //     .Options
-                //     .removeWhere((element) => (element.question_option == null || element.question_option.isEmpty));
+
+                print("mockQuestion==============>>   $mockQuestion");
 
                 return Container(
                   color: _colorfromhex("#FCFCFF"),
