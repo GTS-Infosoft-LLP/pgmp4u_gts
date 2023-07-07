@@ -7,6 +7,7 @@ import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import '../../api/apis.dart';
 import '../MockTest/model/pracTestModel.dart';
 import '../MockTest/model/quesOfDayModel.dart';
 
@@ -67,7 +68,7 @@ class PracticeTextProvider extends ChangeNotifier {
     // response = await http.post(Uri.parse(getSubCategoryDetails),
     try {
       var response = await http.get(
-        Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/MockTestQuestions/$id"),
+        Uri.parse(MOCK_TEST_QUES+"/${id}"),
 
         headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
         // body: convert.jsonEncode(body)
@@ -126,7 +127,7 @@ class PracticeTextProvider extends ChangeNotifier {
     var request = {"id": id};
 
     var response = await http.post(
-      Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/getQuestionOfTheDay"),
+      Uri.parse(GET_QUES_OF_DAY),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );

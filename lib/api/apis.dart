@@ -88,3 +88,10 @@ const GET_VIDEO_CATEGORIES = _BASE_URL + "getVideoCategories" ;
 
 
 //new
+
+
+
+
+const GET_QUES_OF_DAY = _BASE_URL + "getQuestionOfTheDay";
+const MOCK_TEST_QUES = _BASE_URL + "MockTestQuestions";
+const REVIEW_MOCK_TEST = _BASE_URL + "ReviewsMockTest";
