@@ -43,19 +43,7 @@ class _HomeViewState extends State<HomeView> {
     CourseProvider courseProvider = Provider.of(context, listen: false);
     purchaseProvider.updateStatusNew();
 
-    if (tempList.isEmpty) {
-      tempList = HiveHandler.getCourseDataList();
-      print("*************************************************");
-      print("tempList==========${tempList.length}");
-    }
-    //   maintainStatus=purchaseProvider.latestStatus;
-    print("initcalling");
-    // _getData();
-    // callFlashCardHideShowApi();
-    print("object");
-
     courseProvider.getCourse();
-
 
     super.initState();
   }
@@ -161,17 +149,23 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
                 Container(
-                  child: ValueListenableBuilder<Box<List<CourseDetails>>>(
+                  child: ValueListenableBuilder<Box<String>>(
                       valueListenable: HiveHandler.getCourseListener(),
                       builder: (context, value, child) {
-                        print("*****************************>Sdwsfwefw  ${value.get("courseKey")}");
-                        storedCourse = value.get("courseKey");
-                        if (storedCourse == null) {
+                        String courseData = value.get(HiveHandler.CourseKey);
+
+                        List courselist = convert.jsonDecode(courseData);
+                        print(" >> courseData :  $courseData");
+
+                        try {
+                          storedCourse = courselist.map((e) => CourseDetails.fromjson(e)).toList();
+                          print(" >> couserList : $storedCourse");
+                        } on Exception {
+                          // TODO
+                        }
+                        if (storedCourse == null || storedCourse.isEmpty) {
                           storedCourse = [];
                         }
-
-                        print("list has data......");
-                        // print("storedCourse========$storedCourse");
 
                         return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
                           return storedCourse.isEmpty

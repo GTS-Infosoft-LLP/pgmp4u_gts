@@ -50,7 +50,7 @@ class HiveHandler {
 
   static const String MockAttemptsBox = "moclAttemptBox";
 
-  static Box<List<CourseDetails>> courseListBox;
+  static Box<String> courseListBox;
   static Box<List<FlashCateDetails>> flashListCateBox;
 
   static Box<List<CategoryListModel>> categoryListBox;
@@ -80,7 +80,7 @@ class HiveHandler {
     Hive.registerAdapter(TestDataDetailsAdapter());
     Hive.registerAdapter(MockDataDetailsAdapter());
 
-    courseListBox = await Hive.openBox<List<CourseDetails>>(CourseBox);
+    courseListBox = await Hive.openBox<String>(CourseBox);
     flashListCateBox = await Hive.openBox<List<FlashCateDetails>>(FlashCateBox);
     categoryListBox = await Hive.openBox<List<CategoryListModel>>(userDataBox);
     flashListBox = await Hive.openBox<List<FlashCardDetails>>(FlashCardBox);
@@ -252,9 +252,40 @@ class HiveHandler {
     return Hive.box<List<PracTestModel>>(PracticeTestBox).listenable();
   }
 
-  static addCourseData(List<CourseDetails> list) async {
-    final Box<List<CourseDetails>> courseListBox = await Hive.openBox<List<CourseDetails>>(CourseBox);
-    courseListBox.put(CourseKey, list);
+  // static addCourseData(List<CourseDetails> list) async {
+  //   final Box<List<CourseDetails>> courseListBox = await Hive.openBox<List<CourseDetails>>(CourseBox);
+  //   courseListBox.put(CourseKey, list);
+
+  //   if (courseListBox.isNotEmpty) {
+  //     print("===========added to box=========");
+  //     print("courseListBox.get ${courseListBox.get(CourseKey)}");
+  //   } else {
+  //     print("===========box is empty=========");
+  //   }
+  // }
+
+  // static ValueListenable<Box<List<CourseDetails>>> getCourseListener() {
+  //   return Hive.box<List<CourseDetails>>(CourseBox).listenable() ?? [];
+  // }
+
+  // static List<CourseDetails> getCourseDataList() {
+  //   List<CourseDetails> storedCourseData;
+
+  //   try {
+  //     storedCourseData = courseListBox.get(CourseKey);
+
+  //     print("storedCourseData list length ${storedCourseData.length}");
+  //     return storedCourseData;
+  //   } catch (e) {
+  //     print("----- Exception Occured while getting getCourseDataList -----");
+  //     print(e.toString());
+  //     return [];
+  //   }
+  // }
+
+  static addCourseData(String courseListResponse) async {
+    // final Box<List<CourseDetails>> courseListBox = await Hive.openBox<List<CourseDetails>>(CourseBox);
+    courseListBox.put(CourseKey, courseListResponse);
 
     if (courseListBox.isNotEmpty) {
       print("===========added to box=========");
@@ -264,23 +295,28 @@ class HiveHandler {
     }
   }
 
-  static ValueListenable<Box<List<CourseDetails>>> getCourseListener() {
-    return Hive.box<List<CourseDetails>>(CourseBox).listenable() ?? [];
+  static ValueListenable<Box<String>> getCourseListener() {
+    return Hive.box<String>(CourseBox).listenable() ?? "";
   }
 
   static List<CourseDetails> getCourseDataList() {
-    List<CourseDetails> storedCourseData;
+    List<CourseDetails> storedCourseData = [];
 
     try {
-      storedCourseData = courseListBox.get(CourseKey);
+      String courseData = courseListBox.get(CourseKey);
+      print(" >> courseData :  $courseData");
+      List courselist = jsonDecode(courseData);
 
-     
+      storedCourseData = courselist.map((e) => CourseDetails.fromjson(e)).toList();
+      print(" >> couserList : $storedCourseData");
+
+      // storedCourseData =
       print("storedCourseData list length ${storedCourseData.length}");
       return storedCourseData;
     } catch (e) {
       print("----- Exception Occured while getting getCourseDataList -----");
       print(e.toString());
-      return [];
+      return storedCourseData;
     }
   }
 

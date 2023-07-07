@@ -321,20 +321,21 @@ class CourseProvider extends ChangeNotifier {
         course.clear();
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         List temp1 = mapResponse["data"];
-        print("temp list===$temp1");
+        print("temp list course === $temp1");
         course = temp1.map((e) => CourseDetails.fromjson(e)).toList();
         print("course=========$course");
 
         try {
-          // print("id.toString=====${id.toString}");
-          HiveHandler.addCourseData(course);
+        
+          HiveHandler.addCourseData(jsonEncode(mapResponse["data"]));
 
           Future.delayed(Duration(microseconds: 800), () {
-            tempListCourse = HiveHandler.getCourseDataList();
+            // tempListCourse
+            List<CourseDetails> res = HiveHandler.getCourseDataList();
 
             notifyListeners();
             print("*************************************************");
-            print("tempList course get box==========$tempListCourse");
+            print("tempList course get box========== $res");
           });
         } catch (e) {
           print("errorr===========>>>>>>$e");
@@ -349,7 +350,7 @@ class CourseProvider extends ChangeNotifier {
         print("status codeee====>>>>${response.statusCode}");
         course = [];
 
-        HiveHandler.addCourseData(course);
+        HiveHandler.addCourseData(jsonEncode(course));
       }
       print("respponse=== ${response.body}");
     } on Exception {
