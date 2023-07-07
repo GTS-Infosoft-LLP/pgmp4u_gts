@@ -4,6 +4,7 @@ import 'dart:convert' as convert;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../api/apis.dart';
 import 'model/review_moke_test.dart';
 
 class ReviewMockTest extends StatefulWidget {
@@ -56,7 +57,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
     http.Response response;
     response = await http.get(
         Uri.parse(
-            "https://apivcarestage.vcareprojectmanagement.com/api/ReviewsMockTest/${widget.selectedId}/${widget.attemptData}"),
+            REVIEW_MOCK_TEST+"/${widget.selectedId}/${widget.attemptData}"),
         headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
 
     print(">>>>>> url  https://apivcarestage.vcareprojectmanagement.com/api/ReviewsMockTest/120/4");
