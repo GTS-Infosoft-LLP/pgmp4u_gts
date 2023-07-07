@@ -340,6 +340,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                       child: GestureDetector(
                                                                         onTap: () => {
                                                                           {
+                                                                            print(
+                                                                                "===== cp.selectedMokAtmptCnt: ${cp.selectedMokAtmptCnt}: widget.attemptLength ${widget.attemptLength}"),
                                                                             if (cp.selectedMokAtmptCnt <
                                                                                 widget.attemptLength)
                                                                               {

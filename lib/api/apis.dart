@@ -6,7 +6,8 @@
 
 //PRODUCTION BASE URL
 // const _BASE_URL ="https://pgmp4uapiconnect.vcareprojectmanagement.com/api/";
-const _BASE_URL = "http://3.227.35.115:1011/api/";
+// const _BASE_URL = "http://3.227.35.115:1011/api/";
+const _BASE_URL = "https://apivcarestage.vcareprojectmanagement.com/api/v2/";
 // const _BASE_URL ="https://apivcarestage.vcareprojectmanagement.com/api/";
 
 //const _BASE_URL2 = "https://tspgmp4uapiconnect.vcareprojectmanagement.com/api/";
@@ -54,52 +55,44 @@ const getSubCategoryDetails = _BASE_URL + "getSubCategoryDetails";
 
 const deviceToken = _BASE_URL + "updateDeviceToken";
 
-const chatUserListApi = _BASE_URL + "getChatUsers" ;
-const sendChatUserNotification =  _BASE_URL + "sendChatUsersNotification";
+const chatUserListApi = _BASE_URL + "getChatUsers";
+const sendChatUserNotification = _BASE_URL + "sendChatUsersNotification";
 
-const UPDATE_DEVICE_TOKEN = _BASE_URL + "updateDeviceToken" ;
-const GET_SUBSCRIPTION_STATUS = _BASE_URL + "getsubscriptionStatus" ;
+const UPDATE_DEVICE_TOKEN = _BASE_URL + "updateDeviceToken";
+const GET_SUBSCRIPTION_STATUS = _BASE_URL + "getsubscriptionStatus";
 
 // couses
-const GET_COURSES = _BASE_URL + "getCourse" ;
+const GET_COURSES = _BASE_URL + "getCourse";
 
-
-// master 
-const GET_MASTER_DATA = _BASE_URL + "getMasterData" ;
-
+// master
+const GET_MASTER_DATA = _BASE_URL + "getMasterData";
 
 // VIDEOS
-const GET_VIDEOS = _BASE_URL + "getVideos" ;
-const VIDEO_LIST_BY_VI_TYPE = _BASE_URL + "videoListByViType" ;
-
+const GET_VIDEOS = _BASE_URL + "getVideos";
+const VIDEO_LIST_BY_VI_TYPE = _BASE_URL + "videoListByViType";
 
 // practice
 
 // mock
-const GET_TEST_DETAILS = _BASE_URL + "gettestDetails" ;
-const GET_TEST = _BASE_URL + "gettest" ;
+const GET_TEST_DETAILS = _BASE_URL + "gettestDetails";
+const GET_TEST = _BASE_URL + "gettest";
 
 // quest of the day
-const SUBMIT_QUESTION_OF_THE_DAY = _BASE_URL + "submitQuestionOfTheDay" ;
+const SUBMIT_QUESTION_OF_THE_DAY = _BASE_URL + "submitQuestionOfTheDay";
 
 // notification
-const NOTIFICATION_LIST = _BASE_URL + "notificationList" ;
+const NOTIFICATION_LIST = _BASE_URL + "notificationList";
 
 // logut
 
 // chatUser
 
 // flash
-const GET_FLASH_CATEGORIES = _BASE_URL + "getFlashCategories" ;
-const GET_VIDEO_CATEGORIES = _BASE_URL + "getVideoCategories" ;
-const GET_FLASH_CARDS = _BASE_URL + "getFlashCards" ;
-
-
+const GET_FLASH_CATEGORIES = _BASE_URL + "getFlashCategories";
+const GET_VIDEO_CATEGORIES = _BASE_URL + "getVideoCategories";
+const GET_FLASH_CARDS = _BASE_URL + "getFlashCards";
 
 //new
-
-
-
 
 const GET_QUES_OF_DAY = _BASE_URL + "getQuestionOfTheDay";
 const MOCK_TEST_QUES = _BASE_URL + "MockTestQuestions";

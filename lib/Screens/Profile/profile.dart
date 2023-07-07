@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
@@ -250,26 +251,37 @@ class _ProfileState extends State<Profile> {
                             )
                           ],
                         ),
-                        photoUrl != null && photoUrl != ""
-                            ? Container(
-                                width: width * (80 / 420),
-                                height: width * (80 / 420),
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(photoUrl),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.circular(80),
-                                ),
-                              )
-                            : Container(
-                                width: width * (80 / 420),
-                                height: width * (80 / 420),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(80),
-                                ),
-                              )
+
+                        ClipOval(
+                          child: CachedNetworkImage(
+                            imageUrl: photoUrl != null ? photoUrl : '',
+                            fit: BoxFit.cover,
+                            width: width * (80 / 420),
+                            height: width * (80 / 420),
+                            placeholder: (context, url) => CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
+                          ),
+                        ),
+                        // photoUrl != null && photoUrl != ""
+                        //     ? Container(
+                        //         width: width * (80 / 420),
+                        //         height: width * (80 / 420),
+                        //         decoration: BoxDecoration(
+                        //           image: DecorationImage(
+                        //             image: NetworkImage(photoUrl),
+                        //             fit: BoxFit.cover,
+                        //           ),
+                        //           borderRadius: BorderRadius.circular(80),
+                        //         ),
+                        //       )
+                        //     : Container(
+                        //         width: width * (80 / 420),
+                        //         height: width * (80 / 420),
+                        //         decoration: BoxDecoration(
+                        //           color: Colors.white,
+                        //           borderRadius: BorderRadius.circular(80),
+                        //         ),
+                        //       )
                       ],
                     ),
                   )
@@ -633,7 +645,7 @@ class _ProfileState extends State<Profile> {
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
-                              },   
+                              },
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 6),
                                 padding: EdgeInsets.only(

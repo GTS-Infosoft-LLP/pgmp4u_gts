@@ -106,9 +106,9 @@ class _NotificationsState extends State<Notifications> {
                                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                                 child: InkWell(
                                   onTap: () {
-                                    setState(() {
-                                      _isShow = !_isShow;
-                                    });
+                                    // setState(() {
+                                    //   _isShow = !_isShow;
+                                    // });
                                     print("_isShow===========$_isShow");
 
                                     print("question id========${profileProvider.NotificationData[index].questionId}");

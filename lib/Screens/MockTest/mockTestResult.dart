@@ -381,6 +381,11 @@ class _MockTestResultState extends State<MockTestResult> {
                             //     ),
                             //     (route) => false);
 
+                            int v1 = cp.selectedMokAtmptCnt + 1;
+                            print("fjhzdjvkbxjbk====$v1");
+
+                            cp.setSelectedMokAtemptCnt(v1);
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -389,7 +394,7 @@ class _MockTestResultState extends State<MockTestResult> {
 
                                     MockTestAttempts(
                                   selectedId: mocktestIdNew,
-                                  attemptCnt: cp.selectedMokAtmptCnt + 1,
+                                  attemptCnt: v1,
                                   attemptLength: cp.selectedAtemptListLength,
                                 ),
                               ),
