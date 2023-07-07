@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/mockquestionanswermodel.dart';
 import '../Screens/MockTest/model/pracTestModel.dart';
@@ -48,7 +49,7 @@ class ProfileProvider extends ChangeNotifier {
     print("page index============$_pageIndex");
     var request = {"page": _pageIndex};
     var res = await http.post(
-      Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/notificationList"),
+      Uri.parse(NOTIFICATION_LIST),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );
@@ -86,7 +87,7 @@ class ProfileProvider extends ChangeNotifier {
     var request = {"question": ques, "type": typ, "answer": ans};
 
     var response = await http.post(
-      Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/submitQuestionOfTheDay"),
+      Uri.parse(SUBMIT_QUESTION_OF_THE_DAY),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );
@@ -144,7 +145,7 @@ class ProfileProvider extends ChangeNotifier {
     try {
       var response = await http
           .post(
-        Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/getsubscriptionStatus"),
+        Uri.parse(GET_SUBSCRIPTION_STATUS),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       )

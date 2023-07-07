@@ -410,7 +410,7 @@ class CourseProvider extends ChangeNotifier {
     var request = {"id": id};
     try {
       var response = await http.post(
-        Uri.parse("http://3.227.35.115:1011/api/getFlashCards"),
+        Uri.parse(GET_FLASH_CARDS),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );
@@ -537,7 +537,7 @@ class CourseProvider extends ChangeNotifier {
 
     try {
       var response = await http.post(
-        Uri.parse("http://3.227.35.115:1011/api/gettestDetails"),
+        Uri.parse(GET_TEST_DETAILS),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );
@@ -594,7 +594,7 @@ class CourseProvider extends ChangeNotifier {
 
     try {
       var response = await http.post(
-        Uri.parse("http://3.227.35.115:1011/api/gettest"),
+        Uri.parse(GET_TEST),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );
@@ -649,7 +649,7 @@ class CourseProvider extends ChangeNotifier {
 
     try {
       var response = await http.post(
-        Uri.parse("https://apivcarestage.vcareprojectmanagement.com/api/updateDeviceToken"),
+        Uri.parse(UPDATE_DEVICE_TOKEN),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );

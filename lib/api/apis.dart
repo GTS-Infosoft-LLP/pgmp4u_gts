@@ -57,6 +57,9 @@ const deviceToken = _BASE_URL + "updateDeviceToken";
 const chatUserListApi = _BASE_URL + "getChatUsers" ;
 const sendChatUserNotification =  _BASE_URL + "sendChatUsersNotification";
 
+const UPDATE_DEVICE_TOKEN = _BASE_URL + "updateDeviceToken" ;
+const GET_SUBSCRIPTION_STATUS = _BASE_URL + "getsubscriptionStatus" ;
+
 // couses
 const GET_COURSES = _BASE_URL + "getCourse" ;
 
@@ -67,15 +70,20 @@ const GET_MASTER_DATA = _BASE_URL + "getMasterData" ;
 
 // VIDEOS
 const GET_VIDEOS = _BASE_URL + "getVideos" ;
+const VIDEO_LIST_BY_VI_TYPE = _BASE_URL + "videoListByViType" ;
 
 
 // practice
 
 // mock
+const GET_TEST_DETAILS = _BASE_URL + "gettestDetails" ;
+const GET_TEST = _BASE_URL + "gettest" ;
 
 // quest of the day
+const SUBMIT_QUESTION_OF_THE_DAY = _BASE_URL + "submitQuestionOfTheDay" ;
 
 // notification
+const NOTIFICATION_LIST = _BASE_URL + "notificationList" ;
 
 // logut
 
@@ -84,6 +92,7 @@ const GET_VIDEOS = _BASE_URL + "getVideos" ;
 // flash
 const GET_FLASH_CATEGORIES = _BASE_URL + "getFlashCategories" ;
 const GET_VIDEO_CATEGORIES = _BASE_URL + "getVideoCategories" ;
+const GET_FLASH_CARDS = _BASE_URL + "getFlashCards" ;
 
 
 
