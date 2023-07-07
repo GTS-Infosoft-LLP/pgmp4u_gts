@@ -178,11 +178,10 @@ class _LoginScreenState extends State<LoginScreen> {
             context,
             toastPosition: GFToastPosition.BOTTOM,
           );
-          loginHandler(user, fromProvider);
+          loginHandler(user, fromProvider, uuid: uuid);
         }
       }
     } on Exception {
-      // TODO
       setState(() {
         loading = false;
       });
