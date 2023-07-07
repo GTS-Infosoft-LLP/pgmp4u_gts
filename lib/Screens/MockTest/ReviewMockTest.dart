@@ -479,13 +479,13 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                                   ),
                                                                   Text(title.questionOption,
                                                                       style: TextStyle(fontSize: width * 14 / 420)),
-                                                                  // Padding(
-                                                                  //   padding: const EdgeInsets.all(8.0),
-                                                                  //   child: Align(
-                                                                  //       alignment: Alignment.bottomRight,
-                                                                  //       child: getTextSelecd(_currentAnserIndex,
-                                                                  //           _currentYourAnserIndex, index)),
-                                                                  // )
+                                                                  Padding(
+                                                                    padding: const EdgeInsets.all(8.0),
+                                                                    child: Align(
+                                                                        alignment: Alignment.bottomRight,
+                                                                        child: getTextSelecd(_currentAnserIndex,
+                                                                            _currentYourAnserIndex, index)),
+                                                                  )
                                                                 ],
                                                               ))
                                                         ],

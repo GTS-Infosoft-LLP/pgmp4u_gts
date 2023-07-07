@@ -723,4 +723,18 @@ class CourseProvider extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+int selectedMokAtmptCnt;
+
+  void setSelectedMokAtemptCnt(int numAttemptesCnts) {
+    selectedMokAtmptCnt=numAttemptesCnts;
+    print("selectedMokAtmptCnt=========${selectedMokAtmptCnt}");
+    notifyListeners();
+  }
+int selectedAtemptListLength;
+  void setSelectedAttemptListLenght(int length) {
+    selectedAtemptListLength=length;
+    print("selectedAtemptListLength====${selectedAtemptListLength}");
+    notifyListeners();
+  }
 }

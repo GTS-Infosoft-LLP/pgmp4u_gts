@@ -71,7 +71,7 @@ class AvailableAttempts {
     wrong = jsn["wrong"];
     answered = jsn["answered"];
     notanswered = jsn["notanswered"];
-    if (jsn["attempted_date"] != null) {
+    if (jsn["attempted_date"] != null && jsn["attempted_date"].isNotEmpty) {
       attempted_date = jsn["attempted_date"]["date"] ?? "";
       start_date = jsn["attempted_date"]["start_date"] ?? "";
     } else {

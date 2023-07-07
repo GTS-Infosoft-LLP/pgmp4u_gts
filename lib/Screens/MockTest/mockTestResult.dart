@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:pgmp4u/Screens/MockTest/MockTestAttempts.dart';
 import 'package:pgmp4u/Screens/MockTest/ReviewMockTest.dart';
+import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
+import 'package:provider/provider.dart';
+
+import 'MockTestAttempts.dart';
 
 class MockTestResult extends StatefulWidget {
   final Map resultsData;
@@ -358,17 +362,38 @@ class _MockTestResultState extends State<MockTestResult> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () => {
-                            print("mocktestIdNew====================$mocktestIdNew"),
-                            print("widget.atmptCount====================$widget.atmptCount"),
+                          onTap: () async {
+                            PracticeTextProvider ptp = Provider.of(context, listen: false);
+
+                            CourseProvider cp = Provider.of(context, listen: false);
+                            await cp.getTestDetails(ptp.selectedPracTestId);
+
+                            print("mocktestIdNew====================$mocktestIdNew");
+                            print("widget.atmptCount====================$widget.atmptCount");
+                            // Navigator.pushAndRemoveUntil(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => MockTestAttempts(
+                            //         selectedId: mocktestIdNew,
+                            //         attemptCnt: cp.selectedMokAtmptCnt + 1,
+                            //         attemptLength: cp.selectedAtemptListLength,
+                            //       ),
+                            //     ),
+                            //     (route) => false);
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MockTestAttempts(
-                                        selectedId: mocktestIdNew,
-                                        attemptCnt: widget.atmptCount + 1,
-                                      )),
-                            ),
+                                builder: (context) =>
+                                    // TextPreDetail()
+
+                                    MockTestAttempts(
+                                  selectedId: mocktestIdNew,
+                                  attemptCnt: cp.selectedMokAtmptCnt + 1,
+                                  attemptLength: cp.selectedAtemptListLength,
+                                ),
+                              ),
+                            );
                           },
                           child: Container(
                             width: width / 2,

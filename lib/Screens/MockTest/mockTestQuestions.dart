@@ -130,7 +130,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
     print("API Response => ${response.request.url}; $params; ${response.body}");
     print("response.statusCode===========${response.statusCode}");
-
+  CourseProvider cp=Provider.of(context,listen: false);
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
       if (data == "back") {
@@ -142,7 +142,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                     mocktestId: selectedIdNew,
                     attemptData: attemptNew,
                     activeTime: stopTime,
-                    atmptCount: widget.attempt,
+                    atmptCount: cp.selectedMokAtmptCnt
                   )),
         );
 
@@ -162,7 +162,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                     mocktestId: selectedIdNew,
                     attemptData: attemptNew,
                     activeTime: stopTime,
-                    atmptCount: widget.attempt,
+                    atmptCount: cp.selectedMokAtmptCnt,
                   )),
         );
       }

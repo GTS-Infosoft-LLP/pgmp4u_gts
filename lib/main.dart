@@ -133,6 +133,7 @@ class MyApp extends StatelessWidget {
           '/settings': (ctx) => SettingsScreen(),
           '/payment': (ctx) => PaymentScreen(),
           '/payment-status': (ctx) => PaymentStatus(),
+          '/attempt-mock':(ctx)=>MockTestAttempts(),
         },
       ),
     );

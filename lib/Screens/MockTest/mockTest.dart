@@ -252,15 +252,20 @@ class _MockTestState extends State<MockTest> {
                                               itemCount: storedTestData.length,
                                               itemBuilder: (context, index) {
                                                 print("storedTestData.length,=========${storedTestData.length}");
+
                                                 print("${storedTestData[index].premium}");
                                                 return InkWell(
                                                   onTap: () async {
                                                     await courseProvider.getTestDetails(storedTestData[index].id);
+                                                    PracticeTextProvider pracTestProvi =
+                                                        Provider.of(context, listen: false);
 
+                                                    pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
                                                     if (widget.testType == "Practice Test") {
                                                       PracticeTextProvider pracTestProvi =
                                                           Provider.of(context, listen: false);
-                                                      pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
+
+                                                      // pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
 
                                                       Future.delayed(const Duration(milliseconds: 400), () {
                                                         Navigator.push(

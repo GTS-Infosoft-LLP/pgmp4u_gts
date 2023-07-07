@@ -235,7 +235,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                   return InkWell(
                                                     onTap: () {
                                                       {
-                                                        if (widget.attemptCnt < widget.attemptLength) {
+                                                        if (cp.selectedMokAtmptCnt < widget.attemptLength) {
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
@@ -244,7 +244,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                     mockName: detailsofMockAttempt.test_name,
                                                                     // responseData[
                                                                     //     "test_name"],
-                                                                    attempt: widget.attemptCnt),
+                                                                    attempt: cp.selectedMokAtmptCnt),
                                                               ));
                                                         } else {
                                                           Navigator.push(
@@ -294,7 +294,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                       children: [
                                                                         Text(
                                                                           cp.aviAttempts[index].attempted_date == null
-                                                                              ? 'Attempt ${widget.attemptCnt + 1}'
+                                                                              ? 'Attempt ${cp.selectedMokAtmptCnt + 1}'
                                                                               : "Attemped",
                                                                           style: TextStyle(
                                                                               fontFamily: 'Roboto Medium',
@@ -305,7 +305,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                         ),
                                                                         Text(
                                                                           // title.attempted_date ==null
-                                                                          widget.attemptCnt < widget.attemptLength
+                                                                          cp.selectedMokAtmptCnt < widget.attemptLength
                                                                               ? '--/--'
                                                                               : 'Result ${((double.parse(title.percentage.toString())).toInt())}%',
                                                                           style: TextStyle(
@@ -337,7 +337,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                       child: GestureDetector(
                                                                         onTap: () => {
                                                                           {
-                                                                            if (widget.attemptCnt <
+                                                                            if (cp.selectedMokAtmptCnt <
                                                                                 widget.attemptLength)
                                                                               {
                                                                                 Navigator.push(
@@ -351,8 +351,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                                                       .test_name,
                                                                                               // responseData[
                                                                                               //     "test_name"],
-                                                                                              attempt:
-                                                                                                  widget.attemptCnt),
+                                                                                              attempt: cp
+                                                                                                  .selectedMokAtmptCnt),
                                                                                     )),
                                                                               }
                                                                             else
@@ -407,15 +407,17 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                             ],
                                                           ),
                                                           // title.attempted_date == null
-                                                          widget.attemptCnt < widget.attemptLength
+                                                          cp.selectedMokAtmptCnt < widget.attemptLength
                                                               ? Container(
                                                                   margin: EdgeInsets.only(top: 20),
                                                                   child: Row(
                                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                     children: [
                                                                       Text(
-                                                                        mockData.attemptList[index].attempted_date !=
-                                                                                null
+                                                                        (mockData.attemptList[index].attempted_date !=
+                                                                                    null &&
+                                                                                mockData.attemptList[index]
+                                                                                    .attempted_date.isNotEmpty)
                                                                             ? 'Date of Attempt: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(mockData.attemptList[index].attempted_date))}'
                                                                             : "",
                                                                         style: TextStyle(
@@ -444,7 +446,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                               : Container(),
                                                           // title.attempted_date == null
 
-                                                          widget.attemptCnt < widget.attemptLength
+                                                          cp.selectedMokAtmptCnt < widget.attemptLength
                                                               ? Container()
                                                               : Container(
                                                                   margin: EdgeInsets.only(top: 25),

@@ -135,8 +135,13 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                         itemCount: testPercent.length,
                                         itemBuilder: (context, index) {
                                           return InkWell(
-                                            onTap: () async {
-                                              var startval;
+                                            onTap: () async {  
+                                              print("attempt count length====>>>${testPercent[index].numAttemptes}");
+
+                                    CourseProvider courseProvider = Provider.of(context, listen: false);
+                                    courseProvider.setSelectedMokAtemptCnt(testPercent[index].noOfattempts);  
+                                       courseProvider.setSelectedAttemptListLenght(testPercent[index].attempts.length);  
+                                              var startval;  
 
                                               if (testPercent[index].numAttemptes ==
                                                   testPercent[index].attempts.length) {
@@ -145,10 +150,11 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                 startval = 1;
                                               }
 
-                                              CourseProvider courseProvider = Provider.of(context, listen: false);
+                                             
                                               // print("selectedIdNew======>> $selectedIdNew");
                                               await Hive.openBox("MockAttemptsBox");
                                               courseProvider.apiCall(testPercent[index].id);
+
 
                                               Future.delayed(const Duration(milliseconds: 400), () {
                                                 Navigator.push(
@@ -156,10 +162,9 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                     MaterialPageRoute(
                                                         builder: (context) => MockTestAttempts(
                                                           attemptLength: testPercent[index].attempts.length,
-
                                                             selectedId: testPercent[index].id,
                                                             startAgn: startval,
-                                                            attemptCnt: testPercent[index].noOfattempts)));
+                                                            attemptCnt: courseProvider.selectedMokAtmptCnt)));
                                               });
                                             },
                                             child: Padding(
