@@ -1,29 +1,36 @@
-// class ChatModel {
-//   String userName;
-//   String message;
-//   int messageDate;
-//   int messageType;
-//   int sendBy;
-//   int userId;
+/*
+{
+  "messageId": "",
+  "messageType": 0,
+  "sentAt": 1688978670855,
+  "sentBy": "NT1FkEp254PFw1HwcNOoL7Ih91y1",
+  "text": "Hi there",
+  "senderName": "muhanish Chouhan",
+  "profileUrl": "https://lh3.googleusercontent.com/a/AAcHTtdxeMHKcFfFuYnOMjlsXPxs7U0CP88QncU90NP6=s96-c",
+  "reactions": [
+    {
+      "reactionType": "like",
+      "count": 5,
+      "senderid": ["sender1", "sender2"]
+    },
+    {
+      "reactionType": "love",
+      "count": 2,
+      "senderid": ["sender3"]
+    }
+  ]
+}
+*/
 
-//   ChatModel({
-//     this.userName,
-//     this.message,
-//     this.messageDate,
-//     this.messageType,
-//     this.sendBy,
-//     this.userId,
-//   });
+import 'package:flutter/material.dart';
 
-//   ChatModel.fromJson(Map<String, dynamic> json) {
-//     userName = json['firstName'] ?? "";
-//     message = json['message'] ?? "";
-//     messageDate = json['messageDate'] ?? 0;
-//     messageType = json['messageType'] ?? 0;
-//     sendBy = json['sendBy'] ?? 0;
-//     userId = json['userId'] ?? 0;
-//   }
-// }
+enum Reaction { favorite, thumbsDown, thumbsUp }
+
+final reactionIcons = {
+  Reaction.favorite: Icons.favorite,
+  Reaction.thumbsDown: Icons.thumb_down,
+  Reaction.thumbsUp: Icons.thumb_up,
+};
 
 class ChatModel {
   String text;
@@ -33,15 +40,17 @@ class ChatModel {
   String sentBy;
   String senderName;
   String profileUrl;
+  List<ReactionModel> reactions;
 
   ChatModel({
-    this.messageId,
-    this.messageType,
-    this.sentAt,
-    this.sentBy,
-    this.senderName,
-    this.profileUrl,
-    this.text,
+    @required this.messageId,
+    @required this.messageType,
+    @required this.sentAt,
+    @required this.sentBy,
+    @required this.senderName,
+    @required this.profileUrl,
+    @required this.text,
+    @required this.reactions,
   });
 
   ChatModel.fromJson(Map<String, dynamic> json) {
@@ -52,6 +61,9 @@ class ChatModel {
     text = json['text'] ?? "";
     profileUrl = json['profileUrl'];
     senderName = json['senderName'] ?? '';
+    List<dynamic> temp = json["reactions"] ?? [];
+    reactions =
+        temp != null || temp.isNotEmpty ? List<ReactionModel>.from(temp.map((x) => ReactionModel.fromJson(x))) : [];
   }
 
   Map<String, dynamic> toJson() => {
@@ -61,6 +73,31 @@ class ChatModel {
         "sentBy": sentBy,
         "text": text,
         "senderName": senderName,
-        "profileUrl": profileUrl
+        "profileUrl": profileUrl,
+        "reactions": List<dynamic>.from(reactions.map((x) => x.toJson())),
+      };
+}
+
+class ReactionModel {
+  String reactionType;
+  int count;
+  List<String> senderid;
+
+  ReactionModel({
+    this.reactionType,
+    this.count,
+    this.senderid,
+  });
+
+  factory ReactionModel.fromJson(Map<String, dynamic> json) => ReactionModel(
+        reactionType: json["reactionType"],
+        count: json["count"],
+        senderid: List<String>.from(json["senderid"].map((x) => x)),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "reactionType": reactionType,
+        "count": count,
+        "senderid": List<dynamic>.from(senderid.map((x) => x)),
       };
 }

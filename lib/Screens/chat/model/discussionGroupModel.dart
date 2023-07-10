@@ -25,7 +25,8 @@ class DisscussionGropModel {
 
     commentsCount = json['commentsCount'] ?? 0;
     ownerId = json['ownerId'] ?? "";
-    // ops=json['options']??[];
+    List<dynamic> olist = json['options'] ?? [];
+    ops = olist.map((item) => item.toString()).toList();
   }
 
   Map<String, dynamic> toJson() => {

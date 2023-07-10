@@ -57,7 +57,9 @@ class CourseProvider extends ChangeNotifier {
 
   setSelectedCourseName(String val) {
     selectedCourseName = val;
-    notifyListeners();
+    Future.delayed(Duration.zero, () {
+      notifyListeners();
+    });
   }
 
   setSelectedFlashCategory(int val) {
@@ -764,11 +766,10 @@ class CourseProvider extends ChangeNotifier {
     print("selectedAtemptListLength====$selectedAtemptListLength");
     notifyListeners();
   }
-var selectedTestName;
-  void setSelectedTestName(String test_name) {
-    selectedTestName=test_name;
+
+  var selectedTestName;
+  void setSelectedTestName(String testName) {
+    selectedTestName = testName;
     notifyListeners();
-
-
   }
 }
