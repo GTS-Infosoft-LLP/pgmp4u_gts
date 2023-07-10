@@ -994,7 +994,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   void showPausePopup() {
     showDialog(
         context: context,
-        // barrierDismissible: false,
+        barrierDismissible: false,
         builder: (context) => AlertDialog(
               elevation: 20,
               backgroundColor: Colors.white,

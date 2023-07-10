@@ -199,7 +199,7 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                         Padding(
                                                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
                                                           child: Text(
-                                                            storedFlash[index].title ,
+                                                            storedFlash[index].title,
                                                             textAlign: TextAlign.left,
                                                             // maxLines: 2,
                                                             // overflow: TextOverflow.ellipsis,
@@ -225,12 +225,25 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                                     data: storedFlash[index].description,
                                                                     style: {
                                                                       "body": Style(
+                                                                        // padding: HtmlPaddings(top: HtmlPadding(5)),
+
                                                                         padding: EdgeInsets.only(top: 5),
                                                                         margin: EdgeInsets.zero,
                                                                         color: Color(0xff000000),
                                                                         textAlign: TextAlign.left,
                                                                         // maxLines: 7,
                                                                         // textOverflow: TextOverflow.ellipsis,
+                                                                        fontSize: FontSize(22),
+                                                                      ),
+                                                                      "ol": Style(
+                                                                        alignment: Alignment.center,
+                                                                        fontSize: FontSize(22),
+                                                                      ),
+                                                                      "ul": Style(
+                                                                        fontSize: FontSize(22),
+                                                                      ),
+                                                                      "li": Style(
+                                                                        // markerContent: Icon(Icons.circle),
                                                                         fontSize: FontSize(22),
                                                                       )
                                                                     },

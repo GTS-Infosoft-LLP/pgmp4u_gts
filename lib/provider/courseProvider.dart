@@ -452,6 +452,7 @@ class CourseProvider extends ChangeNotifier {
   var flashPrice;
 
   Future<void> getFlashCards(int id, String strr) async {
+    successValueFlash = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -471,9 +472,9 @@ class CourseProvider extends ChangeNotifier {
         List temp1 = mapResponse["data"];
         int stsVal = mapResponse["status"];
         print("stsVal=======$stsVal");
-        var sucesssvalue = mapResponse['success'];
-        print("sucesssvalue======$sucesssvalue");
-        if (sucesssvalue == false) {
+        successValueFlash = mapResponse['success'];
+        print("sucesssvalue======$successValueFlash");
+        if (successValueFlash == false) {
           successValueFlash = false;
           return;
         }
