@@ -139,7 +139,7 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                         courseProvider.course[index].lable,
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Colors.grey,
+                                          color: Colors.grey,  
                                         ),
                                       ),
                                       Text(

@@ -5,6 +5,7 @@ import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../Models/mockListmodel.dart';
+import '../Models/mockquestionanswermodel.dart';
 import '../Screens/MockTest/model/courseModel.dart';
 import '../Screens/MockTest/model/flashCardModel.dart';
 import '../Screens/MockTest/model/flashCateModel.dart';
@@ -113,15 +114,12 @@ class CourseProvider extends ChangeNotifier {
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
-      videoPresent = 1;
+    
       if (response.statusCode == 400) {
         updateMasterDataApiCall(false);
         print("statussssssss");
         masterList = [];
         tempListMaster = [];
-        // HiveHandler.addMasterData(tempListMaster, keyName: id.toString());
-        videoPresent = 0;
-
         notifyListeners();
         return;
       }
@@ -169,15 +167,60 @@ class CourseProvider extends ChangeNotifier {
           // }
         }
 
-        if (masterList.isNotEmpty) {
-          print("masterList 0=== ${masterList[0].name}");
-        }
+       
       }
       print("respponse=== ${response.body}");
     } on Exception {
       updateMasterDataApiCall(false);
     }
     notifyListeners();
+  }
+List<Queans>mockDomainList=[];
+  Future<void> getReviewTestDomain(int id, int atmptCount, String domainName) async {
+    String stringValue = prefs.getString('token');
+
+    print("token valued===$stringValue");
+    var request = {"id": id, "attempt": atmptCount, "domain": domainName};
+    try{
+      var response = await http.post(
+        Uri.parse(REVIEW_MOCK_DOMAIN),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
+
+      print("response.statusCode===${response.body}");
+      print("response.statusCode===${response.statusCode}");
+
+       if (response.statusCode == 400) {
+     
+        print("statussssssss");
+        mockDomainList=[];
+        notifyListeners();
+        return;
+      }
+
+      if(response.statusCode == 200){
+mockDomainList.clear();
+   Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+        print("mapResponse====${mapResponse['status']}");
+        if (mapResponse['status'] == 400) {
+            mockDomainList=[];
+          return;
+        }
+ if (mapResponse["status"] == 200){
+    List temp1 = mapResponse["data"];
+          print("temp list===$temp1");
+           mockDomainList = temp1.map((e) => Queans.fromjss(e)).toList();
+          print("master list=========$mockDomainList");
+ }
+
+
+      }
+
+    }on Exception{
+
+    }
+      notifyListeners();
   }
 
   List<FlashCateDetails> flashCateTempList = [];
@@ -770,6 +813,13 @@ class CourseProvider extends ChangeNotifier {
   var selectedTestName;
   void setSelectedTestName(String testName) {
     selectedTestName = testName;
+    notifyListeners();
+  }
+
+  bool timerValue = false;
+
+  resPauseTimer() {
+    timerValue = !timerValue;
     notifyListeners();
   }
 }

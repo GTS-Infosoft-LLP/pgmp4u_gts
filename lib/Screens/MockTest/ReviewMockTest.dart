@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -11,7 +13,10 @@ class ReviewMockTest extends StatefulWidget {
   final selectedId;
   final attemptData;
   final AttemptCount;
-  ReviewMockTest({this.selectedId, this.attemptData, this.AttemptCount});
+  final fromDetails;
+  final domainName;
+
+  ReviewMockTest({this.selectedId, this.attemptData, this.AttemptCount, this.domainName, this.fromDetails = 0});
 
   @override
   _ReviewMockTestState createState() =>
@@ -40,34 +45,40 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
   int isData;
 
   void initState() {
+    print('from detailssss========${widget.fromDetails}');
     currentIndex = 0;
     print("in review mock screemn");
-    print("AttemptCount========${widget.attemptData}");
+    // print("AttemptCount========${widget.attemptData + 1}");
 
     super.initState();
-    apiCall2(widget.selectedId);
+    if (widget.fromDetails == 1) {
+      apiCall1(widget.selectedId, widget.AttemptCount, widget.domainName);
+    } else {
+      apiCall2(widget.selectedId + 1);
+    }
   }
 
-  Future apiCall2(int id) async {
-    print("calling this apiiiiii=========");
-    print("id==============$id");
+  Future apiCall1(int id, int count, String domain) async {
+    print("id=======$id");
+    print("count=======$count");
+    print("domain=======$domain");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
+    stringValue = "Bearer " + stringValue;
     print(stringValue);
     http.Response response;
-    response = await http.get(
-        Uri.parse(
-            REVIEW_MOCK_TEST+"/${widget.selectedId}/${widget.attemptData}"),
-        headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+    var request = {"id": id, "attempt": count, "domain": domain};
 
-    print(">>>>>> url  /api/ReviewsMockTest/120/4");
+    response = await http.post(
+      Uri.parse(REVIEW_MOCK_DOMAIN),
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+      body: json.encode(request),
+    );
 
-    print("header : ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
     if (response.statusCode == 200) {
       print(convert.jsonDecode(response.body));
       Map res = convert.jsonDecode(response.body);
       print("res map==========>>>>>$res");
-
       print(" res map=== res map data===${res["data"]}");
 
       List data = res["data"];
@@ -78,7 +89,45 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
         });
       }
       print("response.body==========${response.body.length}");
+      if (response.body.isEmpty) {
+        listResponse = [];
+      } else {
+        if (data.isNotEmpty) {
+          setState(() {
+            mapResponse = ReviewMokeText.fromJson(convert.jsonDecode(response.body));
+            listResponse = mapResponse.data;
+            selectedAnswer = listResponse[0].youranswer;
+          });
+        }
+      }
+    }
+  }
 
+  Future apiCall2(int id) async {
+    print("calling this apiiiiii=========");
+    print("id==============$id");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    stringValue = "Bearer " + stringValue;
+    print(stringValue);
+    http.Response response;
+    response = await http.get(Uri.parse(REVIEW_MOCK_TEST + "/${widget.selectedId}/${widget.attemptData + 1}"),
+        headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+    print("header : ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
+    print(REVIEW_MOCK_TEST + "/${widget.selectedId}/${widget.attemptData + 1}");
+    if (response.statusCode == 200) {
+      print(convert.jsonDecode(response.body));
+      Map res = convert.jsonDecode(response.body);
+      print("res map==========>>>>>$res");
+      print(" res map=== res map data===${res["data"]}");
+      List data = res["data"];
+      if (data.isEmpty) {
+        setState(() {
+          isData = 0;
+          print("isData=======$isData");
+        });
+      }
+      print("response.body==========${response.body.length}");
       if (response.body.isEmpty) {
         listResponse = [];
       } else {
@@ -180,8 +229,6 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                       selectedAnswer = listResponse[_quetionNo].youranswer;
 
                                       realAnswer = mapResponse.data[_quetionNo].question.rightAnswer;
-
-                                
                                     });
                                   }
 
@@ -342,7 +389,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                   // print(
                                                   //     "your answer inde ${_currentYourAnserIndex}");
                                                   print("selectedAnswer answer $selectedAnswer");
-                                                  print("selectedAnswer title.id is >>> ${title.question}");
+                                                  print("selectedAnswer title.id is >>> ${title.id}");
                                                   print(
                                                       "selectedAnswer answer right ${listResponse[_quetionNo].question.rightAnswer}");
 
@@ -380,8 +427,6 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                                           .question
                                                                           .rightAnswer
                                                                           .contains(title.id)
-                                                                  //     ["Question"]
-                                                                  // ["right_answer"]
                                                                   ? _colorfromhex("#E6F7E7")
                                                                   : Colors.white,
                                                       margin: EdgeInsets.only(top: height * (21 / 800)),

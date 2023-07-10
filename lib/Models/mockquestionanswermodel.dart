@@ -52,6 +52,7 @@ class QuestionDetail {
   String question_type;
   String explanation;
   String image;
+  
   int questatus;
   int quedeleteStatus;
   List<String> rightAnswer;

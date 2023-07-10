@@ -242,7 +242,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                   return InkWell(
                                                     onTap: () {
                                                       {
-                                                        if (cp.selectedMokAtmptCnt < widget.attemptLength) {
+                                                        if (title.attempted_date == null) {
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
@@ -318,9 +318,9 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                                 letterSpacing: 0.3),
                                                                           ),
                                                                           Text(
-                                                                            // title.attempted_date ==null
-                                                                            cp.selectedMokAtmptCnt <
-                                                                                    widget.attemptLength
+                                                                            title.attempted_date == null
+                                                                                // cp.selectedMokAtmptCnt <
+                                                                                //         widget.attemptLength
                                                                                 ? '--/--'
                                                                                 : 'Result ${((double.parse(title.percentage.toString())).toInt())}%',
                                                                             style: TextStyle(

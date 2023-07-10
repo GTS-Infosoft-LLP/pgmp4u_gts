@@ -72,6 +72,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
   @override
   void initState() {
+    CourseProvider cp = Provider.of(context, listen: false);
+    cp.timerValue = false;
     print("***********************************************");
 
     print("selectedId======${widget.selectedId}");
@@ -375,73 +377,96 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                     children: [
                       Column(
                         children: [
-                          Container(
-                            height: 149,
-                            width: width,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage("assets/vector1d.png"),
-                                fit: BoxFit.cover,
+                          Consumer<CourseProvider>(builder: (context, cp, child) {
+                            return Container(
+                              height: 149,
+                              width: width,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage("assets/vector1d.png"),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                  left: width * (20 / 420), right: width * (20 / 420), top: height * (16 / 800)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () => {
-                                          _onWillPop()
-                                          // if (loader) {} else {submitMockTest("back", displayTime)}
-                                        },
-                                        child: Icon(
-                                          Icons.arrow_back_ios,
-                                          size: width * (24 / 420),
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        mockNameNew,
-                                        style: TextStyle(
-                                            fontFamily: 'Roboto Medium',
-                                            fontSize: width * (16 / 420),
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    left: width * (20 / 420), right: width * (20 / 420), top: height * (16 / 800)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () => {
+                                            _onWillPop()
+                                            // if (loader) {} else {submitMockTest("back", displayTime)}
+                                          },
+                                          child: Icon(
+                                            Icons.arrow_back_ios,
+                                            size: width * (24 / 420),
                                             color: Colors.white,
-                                            letterSpacing: 0.3),
-                                      ),
-                                    ],
-                                  ),
-                                  StreamBuilder<int>(
-                                      stream: _stopWatchTimer.rawTime,
-                                      initialData: _stopWatchTimer.rawTime.value,
-                                      builder: (context, snap) {
-                                        
-                                        if (snap.hasData) {
-                                          final value = snap.data;
-                                          displayTime =
-                                              StopWatchTimer.getDisplayTime(value, hours: true, milliSecond: false);
+                                          ),
+                                        ),
+                                        Text(
+                                          mockNameNew,
+                                          style: TextStyle(
+                                              fontFamily: 'Roboto Medium',
+                                              fontSize: width * (16 / 420),
+                                              color: Colors.white,
+                                              letterSpacing: 0.3),
+                                        ),
+                                      ],
+                                    ),
+                                    StreamBuilder<int>(
+                                        stream: _stopWatchTimer.rawTime,
+                                        initialData: _stopWatchTimer.rawTime.value,
+                                        builder: (context, snap) {
+                                          if (snap.hasData) {
+                                            final value = snap.data;
+                                            displayTime =
+                                                StopWatchTimer.getDisplayTime(value, hours: true, milliSecond: false);
 
-                                          return Text(
-                                            displayTime,
-                                            style: TextStyle(
-                                                fontFamily: 'Roboto Medium',
-                                                fontSize: width * (16 / 420),
-                                                color: Colors.white,
-                                                letterSpacing: 0.3),
+                                            return Row(
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    cp.resPauseTimer();
+                                                    if (_stopWatchTimer.isRunning) {
+                                                      _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
+                                                      // commingSoonDialog(context);
+                                                      showPausePopup();
+                                                    } else {
+                                                      _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+                                                    }
+                                                  },
+                                                  child: Icon(
+                                                    cp.timerValue ? Icons.play_arrow : Icons.pause,
+                                                    size: width * (24 / 420),
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                SizedBox(width: 7),
+                                                Text(
+                                                  displayTime,
+                                                  style: TextStyle(
+                                                      fontFamily: 'Roboto Medium',
+                                                      fontSize: width * (16 / 420),
+                                                      color: Colors.white,
+                                                      letterSpacing: 0.3),
+                                                ),
+                                              ],
+                                            );
+                                          }
+
+                                          return Center(
+                                            child: CircularProgressIndicator(),
                                           );
-                                        }
-
-                                        return Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }),
-                                ],
+                                        }),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          }),
                           // showLoader
                           //     ? Container(
                           //         child: CircularProgressIndicator(
@@ -964,5 +989,74 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
               ),
       ),
     );
+  }
+
+  void showPausePopup() {
+    showDialog(
+        context: context,
+        // barrierDismissible: false,
+        builder: (context) => AlertDialog(
+              elevation: 20,
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+              title: Column(
+                children: [
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.end,
+                  //   children: [
+                  //     InkWell(
+                  //         onTap: () {
+                  //           Navigator.pop(context);
+                  //         },
+                  //         child: Icon(Icons.cancel)),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 15),
+                  Text("Test is currently paused \n Press the button to continue with the test.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Roboto Medium',
+                        fontWeight: FontWeight.w200,
+                        color: Colors.black,
+                      )),
+                ],
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: InkWell(
+                      onTap: () {
+                        CourseProvider cp = Provider.of(context, listen: false);
+                        _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+                        Navigator.pop(context);
+                        cp.resPauseTimer();
+                      },
+                      child: Container(
+                          height: 35,
+                          constraints: BoxConstraints(minWidth: 100),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              gradient: LinearGradient(
+                                  colors: [
+                                    _colorfromhex("#3A47AD"),
+                                    _colorfromhex("#5163F3"),
+                                  ],
+                                  begin: const FractionalOffset(0.0, 0.0),
+                                  end: const FractionalOffset(1.0, 0.0),
+                                  stops: [0.0, 1.0],
+                                  tileMode: TileMode.clamp)),
+                          child: Center(
+                            child: Text(
+                              "Resume Test",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ))),
+                )
+              ],
+            ));
   }
 }
