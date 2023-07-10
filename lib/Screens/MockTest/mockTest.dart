@@ -215,6 +215,8 @@ class _MockTestState extends State<MockTest> {
                                                 print("${storedTestData[index].premium}");
                                                 return InkWell(
                                                   onTap: () async {
+
+                                                    courseProvider.setSelectedTestName(storedTestData[index].test_name);
                                                     await courseProvider.getTestDetails(storedTestData[index].id);
                                                     PracticeTextProvider pracTestProvi =
                                                         Provider.of(context, listen: false);

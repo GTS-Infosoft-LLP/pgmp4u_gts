@@ -37,9 +37,12 @@ class _MockTestResultState extends State<MockTestResult> {
   final activeTimeNew;
 
   _MockTestResultState({this.results, this.mocktestIdNew, this.attemptId, this.activeTimeNew});
-
+  int mokCont;
   @override
   void initState() {
+    CourseProvider cp = Provider.of(context, listen: false);
+    print("cp.selectedMokAtmptCnt===========${cp.selectedMokAtmptCnt}");
+    mokCont = cp.selectedMokAtmptCnt + 1;
     super.initState();
     print(activeTimeNew);
   }
@@ -143,49 +146,92 @@ class _MockTestResultState extends State<MockTestResult> {
                                 color: Colors.white,
                                 margin: EdgeInsets.only(bottom: 10, top: 10),
                                 padding: EdgeInsets.only(top: height * (21 / 800), bottom: height * (25 / 800)),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      (percentage >= 0) && (percentage <= 25) ? 'assets/cross.png' : 'assets/right.png',
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 3),
-                                      child: Text(
-                                        (percentage <= 25)
-                                            ? 'Better Luck Next Time'
-                                            : (percentage <= 70)
-                                                ? 'Needs Improvement'
-                                                : 'Your are Awesome!',
-                                        style: TextStyle(
-                                          fontFamily: 'Roboto Bold',
-                                          fontSize: width * (19 / 420),
-                                          color: (percentage >= 0) && (percentage <= 25)
-                                              ? Colors.red
-                                              : _colorfromhex("#04AE0B"),
-                                          letterSpacing: 0.3,
+                                child: Consumer<CourseProvider>(builder: (context, cp, child) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 12.0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          cp.selectedCourseName,
+                                          style: TextStyle(
+                                            // fontFamily: 'Roboto Medium',
+                                            fontSize: width * (20 / 420),
+                                            color: _colorfromhex("#171726"),
+                                            letterSpacing: 0.3,
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: width / 1.6,
-                                      margin: EdgeInsets.only(top: 3),
-                                      child: Text(
-                                        (percentage <= 25)
-                                            ? "Practice more! You got ${results["correct"]} out of ${results["total"]} Answers Correctly"
-                                            : 'Congratulations for getting ${results["correct"]} out of ${results["total"]} Answers Correctly',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: 'Roboto Medium',
-                                          fontSize: width * (16 / 420),
-                                          color: _colorfromhex("#ABAFD1"),
-                                          letterSpacing: 0.3,
+                                        Text(
+                                          cp.selectedTestName,
+                                          style: TextStyle(
+                                            // fontFamily: 'Roboto Medium',
+                                            fontSize: width * (20 / 420),
+                                            color: _colorfromhex("#171726"),
+                                            letterSpacing: 0.3,
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                        Text(
+                                          "Attempt: ${mokCont.toString()}",
+                                          style: TextStyle(
+                                            // fontFamily: 'Roboto Medium',
+                                            fontSize: width * (20 / 420),
+                                            color: _colorfromhex("#171726"),
+                                            letterSpacing: 0.3,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                        Center(
+                                          child: Image.asset(
+                                            (percentage >= 0) && (percentage <= 25)
+                                                ? 'assets/cross.png'
+                                                : 'assets/right.png',
+                                          ),
+                                        ),
+                                        Center(
+                                          child: Container(
+                                            margin: EdgeInsets.only(top: 3),
+                                            child: Text(
+                                              (percentage <= 25)
+                                                  ? 'Better Luck Next Time'
+                                                  : (percentage <= 70)
+                                                      ? 'Needs Improvement'
+                                                      : 'Your are Awesome!',
+                                              style: TextStyle(
+                                                fontFamily: 'Roboto Bold',
+                                                fontSize: width * (19 / 420),
+                                                color: (percentage >= 0) && (percentage <= 25)
+                                                    ? Colors.red
+                                                    : _colorfromhex("#04AE0B"),
+                                                letterSpacing: 0.3,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Center(
+                                          child: Container(
+                                            width: width / 1.6,
+                                            margin: EdgeInsets.only(top: 3),
+                                            child: Text(
+                                              (percentage <= 25)
+                                                  ? "Practice more! You got ${results["correct"]} out of ${results["total"]} Answers Correctly"
+                                                  : 'Congratulations for getting ${results["correct"]} out of ${results["total"]} Answers Correctly',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: 'Roboto Medium',
+                                                fontSize: width * (16 / 420),
+                                                color: _colorfromhex("#ABAFD1"),
+                                                letterSpacing: 0.3,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }),
                               ),
                               Container(
                                 width: double.infinity,

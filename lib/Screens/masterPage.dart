@@ -143,7 +143,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                 shrinkWrap: true,
                                                 itemCount: storedMaster.length,
                                                 itemBuilder: (context, index) {
-                                                  print("storedMaster[index].label=====${storedMaster[index].label}");
+                                                  print("storedMaster[index].label=====${storedMaster[index].name}");
                                                   if (storedMaster[index].type == "Videos") {
                                                     icon1 = FontAwesomeIcons.video;
                                                   } else if (storedMaster[index].label == "Revise") {

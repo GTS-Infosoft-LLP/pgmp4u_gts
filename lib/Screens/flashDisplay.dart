@@ -199,10 +199,10 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                         Padding(
                                                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
                                                           child: Text(
-                                                            storedFlash[index].title,
+                                                            storedFlash[index].title ,
                                                             textAlign: TextAlign.left,
-                                                            maxLines: 2,
-                                                            overflow: TextOverflow.ellipsis,
+                                                            // maxLines: 2,
+                                                            // overflow: TextOverflow.ellipsis,
                                                             style: TextStyle(
                                                                 fontSize: 30,
                                                                 fontFamily: "Roboto",

@@ -1,8 +1,10 @@
 import 'package:hive/hive.dart';
+
+import '../../dropdown.dart';
   part 'courseModel.g.dart';
 
 @HiveType(typeId: 13)
-class CourseDetails {
+class CourseDetails implements DropDownModel{
   @HiveField(0)
   int id;
   @HiveField(1)
@@ -31,5 +33,11 @@ class CourseDetails {
     skip_content_progress = json["skip_content_progress"];
     status = json["status"];
     deleteStatus = json["deleteStatus"];
+  }
+
+    @override
+  String getOptionName() {
+
+    return course;
   }
 }

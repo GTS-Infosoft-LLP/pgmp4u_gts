@@ -51,6 +51,12 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
+    CourseProvider cp = Provider.of(context, listen: false);
+
+    if (cp.course.isNotEmpty) {
+      cp.setSelectedCourseName(cp.course[0].course);
+    }
+
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -274,7 +280,7 @@ class _ProfileState extends State<Profile> {
                         //           borderRadius: BorderRadius.circular(80),
                         //         ),
                         //       )
-                        //     : Container( 
+                        //     : Container(
                         //         width: width * (80 / 420),
                         //         height: width * (80 / 420),
                         //         decoration: BoxDecoration(
@@ -391,366 +397,299 @@ class _ProfileState extends State<Profile> {
                       //     )
                       //   ],
                       // ),
-                      Container(
-                        margin: EdgeInsets.only(top: width * (50 / 800)),
-                        child: Column(
-                          children: [
-                            /// Question of the day
-                            // GestureDetector(
-                            //   onTap: () => {},
-                            //   child: Container(
-                            //     margin: EdgeInsets.only(bottom: 6),
-                            //     padding: EdgeInsets.only(
-                            //         top: 13,
-                            //         bottom: 13,
-                            //         left: width * (18 / 420),
-                            //         right: width * (18 / 420)),
-                            //     color: Colors.white,
-                            //     child: Row(
-                            //       mainAxisAlignment:
-                            //           MainAxisAlignment.spaceBetween,
-                            //       children: [
-                            //         Row(
-                            //           children: [
-                            //             Icon(
-                            //               Icons.home,
-                            //               size: width * (26 / 420),
-                            //               color: _colorfromhex("#ABAFD1"),
-                            //             ),
-                            //             Text(
-                            //               '   Question of the day',
-                            //               style: TextStyle(
-                            //                 fontFamily: 'Roboto Medium',
-                            //                 fontSize: width * (18 / 420),
-                            //                 color: Colors.black,
-                            //               ),
-                            //             ),
-                            //           ],
-                            //         ),
-                            //         Icon(
-                            //           Icons.arrow_forward_ios,
-                            //           size: 20,
-                            //           color: _colorfromhex("#ABAFD1"),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
+                      Consumer<CourseProvider>(builder: (context, cp, child) {
+                        return Container(
+                          // color: Colors.amber,
+                          margin: EdgeInsets.only(top: width * (50 / 800)),
+                          child: Column(
+                            children: [
+                              // Container(
+                              //   width: MediaQuery.of(context).size.width * .5,
+                              //   child: CustomDropDown<CourseDetails>(
+                              //       selectText: cp.selectedCourseName ?? "Select",
+                              //       itemList: cp.course ?? [],
+                              //       isEnable: true,
+                              //       title: "",
+                              //       value: null,
+                              //       onChange: (val) {
+                              //         print("val.course=========>${val.course}");
+                              //         cp.setSelectedCourseName(val.course);
+                              //       }),
+                              // ),
 
-                            /// Buy mock
-                            // GestureDetector(
-                            //   // onTap: () => openCheckout(data["razorpay_key"]),
-                            //   child: Container(
-                            //     margin: EdgeInsets.only(bottom: 6),
-                            //     padding: EdgeInsets.only(
-                            //         top: 13,
-                            //         bottom: 13,
-                            //         left: width * (18 / 420),
-                            //         right: width * (18 / 420)),
-                            //     color: Colors.white,
-                            //     child: Row(
-                            //       mainAxisAlignment:
-                            //           MainAxisAlignment.spaceBetween,
-                            //       children: [
-                            //         Row(
-                            //           children: [
-                            //             Icon(
-                            //               Icons.settings,
-                            //               size: width * (26 / 420),
-                            //               color: _colorfromhex("#ABAFD1"),
-                            //             ),
-                            //             Text(
-                            //               '   Buy mock test',
-                            //               style: TextStyle(
-                            //                 fontFamily: 'Roboto Medium',
-                            //                 fontSize: width * (18 / 420),
-                            //                 color: Colors.black,
-                            //               ),
-                            //             ),
-                            //           ],
-                            //         ),
-                            //         Icon(
-                            //           Icons.arrow_forward_ios,
-                            //           size: 20,
-                            //           color: _colorfromhex("#ABAFD1"),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-
-                            GestureDetector(
-                              onTap: () {
-                                //Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsScreen("","")));
-                                //Navigator.of(context)
-                                //   .pushNamed('/settings');
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 6),
-                                padding: EdgeInsets.only(
-                                    top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                                color: Colors.white,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.settings,
-                                          size: width * (26 / 420),
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                        Text(
-                                          '   Settings',
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto Medium',
-                                            fontSize: width * (18 / 420),
-                                            color: Colors.black,
+                              GestureDetector(
+                                onTap: () {
+                                  //Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsScreen("","")));
+                                  //Navigator.of(context)
+                                  //   .pushNamed('/settings');
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(bottom: 6),
+                                  padding: EdgeInsets.only(
+                                      top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                  color: Colors.white,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.settings,
+                                            size: width * (26 / 420),
+                                            color: _colorfromhex("#ABAFD1"),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                      color: _colorfromhex("#ABAFD1"),
-                                    ),
-                                  ],
+                                          Text(
+                                            '   Settings',
+                                            style: TextStyle(
+                                              fontFamily: 'Roboto Medium',
+                                              fontSize: width * (18 / 420),
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 20,
+                                        color: _colorfromhex("#ABAFD1"),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                await prefs.clear();
-                                Navigator.of(context)
-                                    .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 6),
-                                padding: EdgeInsets.only(
-                                    top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                                color: Colors.white,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.logout,
-                                          size: width * (26 / 420),
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                        Text(
-                                          '   Log Out',
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto Medium',
-                                            fontSize: width * (18 / 420),
-                                            color: Colors.black,
+                              GestureDetector(
+                                onTap: () async {
+                                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  await prefs.clear();
+                                  Navigator.of(context)
+                                      .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(bottom: 6),
+                                  padding: EdgeInsets.only(
+                                      top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                  color: Colors.white,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.logout,
+                                            size: width * (26 / 420),
+                                            color: _colorfromhex("#ABAFD1"),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                      color: _colorfromhex("#ABAFD1"),
-                                    ),
-                                  ],
+                                          Text(
+                                            '   Log Out',
+                                            style: TextStyle(
+                                              fontFamily: 'Roboto Medium',
+                                              fontSize: width * (18 / 420),
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 20,
+                                        color: _colorfromhex("#ABAFD1"),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
 
-                            // GestureDetector(
-                            //   onTap: () {
-                            //     Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage()));
-                            //   },
-                            //   child: Container(
-                            //     margin: EdgeInsets.only(bottom: 6),
-                            //     padding: EdgeInsets.only(
-                            //         top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                            //     color: Colors.white,
-                            //     child: Row(
-                            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //       children: [
-                            //         Row(
-                            //           children: [
-                            //             Icon(
-                            //               Icons.person,
-                            //               size: width * (26 / 420),
-                            //               color: _colorfromhex("#ABAFD1"),
-                            //             ),
-                            //             Text(
-                            //               '   Chat with Admin',
-                            //               style: TextStyle(
-                            //                 fontFamily: 'Roboto Medium',
-                            //                 fontSize: width * (18 / 420),
-                            //                 color: Colors.black,
-                            //               ),
-                            //             ),
-                            //           ],
-                            //         ),
-                            //         Icon(
-                            //           Icons.arrow_forward_ios,
-                            //           size: 20,
-                            //           color: _colorfromhex("#ABAFD1"),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
+                              // GestureDetector(
+                              //   onTap: () {
+                              //     Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage()));
+                              //   },
+                              //   child: Container(
+                              //     margin: EdgeInsets.only(bottom: 6),
+                              //     padding: EdgeInsets.only(
+                              //         top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                              //     color: Colors.white,
+                              //     child: Row(
+                              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //       children: [
+                              //         Row(
+                              //           children: [
+                              //             Icon(
+                              //               Icons.person,
+                              //               size: width * (26 / 420),
+                              //               color: _colorfromhex("#ABAFD1"),
+                              //             ),
+                              //             Text(
+                              //               '   Chat with Admin',
+                              //               style: TextStyle(
+                              //                 fontFamily: 'Roboto Medium',
+                              //                 fontSize: width * (18 / 420),
+                              //                 color: Colors.black,
+                              //               ),
+                              //             ),
+                              //           ],
+                              //         ),
+                              //         Icon(
+                              //           Icons.arrow_forward_ios,
+                              //           size: 20,
+                              //           color: _colorfromhex("#ABAFD1"),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
 
-                            GestureDetector(
-                              onTap: () {
-                                // ProfileProvider profileProvider = Provider.of(context, listen: false);
-                                // profileProvider.getQuesDay(1);  //QuesListCourse
+                              GestureDetector(
+                                onTap: () {
+                                  // ProfileProvider profileProvider = Provider.of(context, listen: false);
+                                  // profileProvider.getQuesDay(1);  //QuesListCourse
 
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => QuesListCourse()));
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 6),
-                                padding: EdgeInsets.only(
-                                    top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                                color: Colors.white,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.question_mark_outlined,
-                                          size: width * (26 / 420),
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                        Text(
-                                          '   Question of the day',
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto Medium',
-                                            fontSize: width * (18 / 420),
-                                            color: Colors.black,
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => QuesListCourse()));
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(bottom: 6),
+                                  padding: EdgeInsets.only(
+                                      top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                  color: Colors.white,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.question_mark_outlined,
+                                            size: width * (26 / 420),
+                                            color: _colorfromhex("#ABAFD1"),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                      color: _colorfromhex("#ABAFD1"),
-                                    ),
-                                  ],
+                                          Text(
+                                            '   Question of the day',
+                                            style: TextStyle(
+                                              fontFamily: 'Roboto Medium',
+                                              fontSize: width * (18 / 420),
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 20,
+                                        color: _colorfromhex("#ABAFD1"),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
 
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 6),
-                                padding: EdgeInsets.only(
-                                    top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                                color: Colors.white,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.notifications,
-                                          size: width * (26 / 420),
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                        Text(
-                                          '   Notifications',
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto Medium',
-                                            fontSize: width * (18 / 420),
-                                            color: Colors.black,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(bottom: 6),
+                                  padding: EdgeInsets.only(
+                                      top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                  color: Colors.white,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.notifications,
+                                            size: width * (26 / 420),
+                                            color: _colorfromhex("#ABAFD1"),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                      color: _colorfromhex("#ABAFD1"),
-                                    ),
-                                  ],
+                                          Text(
+                                            '   Notifications',
+                                            style: TextStyle(
+                                              fontFamily: 'Roboto Medium',
+                                              fontSize: width * (18 / 420),
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 20,
+                                        color: _colorfromhex("#ABAFD1"),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
 
-                            GestureDetector(
-                              onTap: context.watch<ProfileProvider>().subscriptionApiCalling
-                                  ? null
-                                  : () async {
-                                      bool isSub = context.read<ProfileProvider>().isChatSubscribed;
+                              GestureDetector(
+                                onTap: context.watch<ProfileProvider>().subscriptionApiCalling
+                                    ? null
+                                    : () async {
+                                        bool isSub = context.read<ProfileProvider>().isChatSubscribed;
 
-                                      print("isChatSubscribed ======= $isSub");
+                                        print("isChatSubscribed ======= $isSub");
 
-                                      if (isSub == null) {
-                                        GFToast.showToast(
-                                          "Something went wrong,please try again",
-                                          context,
-                                          toastPosition: GFToastPosition.BOTTOM,
-                                        );
-                                      }
-
-                                      if (!isSub) {
-                                        Navigator.push(
+                                        if (isSub == null) {
+                                          GFToast.showToast(
+                                            "Something went wrong,please try again",
                                             context,
-                                            MaterialPageRoute(
-                                                builder: (context) => RandomPage(
-                                                      index: 4,
-                                                      price: context.read<ProfileProvider>().subsPrice.toString(),
-                                                      categoryType: context.read<CourseProvider>().selectedMasterType,
-                                                      categoryId: 0,
-                                                    )));
-                                      } else {
-                                        Navigator.push(
-                                            context, MaterialPageRoute(builder: (context) => GroupListPage()));
-                                      }
-                                    },
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 6),
-                                padding: EdgeInsets.only(
-                                    top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                                color: Colors.white,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.chat,
-                                          size: width * (26 / 420),
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                        Text(
-                                          '   Chat',
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto Medium',
-                                            fontSize: width * (18 / 420),
-                                            color: context.watch<ProfileProvider>().subscriptionApiCalling
-                                                ? Colors.black54
-                                                : Colors.black,
+                                            toastPosition: GFToastPosition.BOTTOM,
+                                          );
+                                        }
+
+                                        if (!isSub) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => RandomPage(
+                                                        index: 4,
+                                                        price: context.read<ProfileProvider>().subsPrice.toString(),
+                                                        categoryType: context.read<CourseProvider>().selectedMasterType,
+                                                        categoryId: 0,
+                                                      )));
+                                        } else {
+                                          Navigator.push(
+                                              context, MaterialPageRoute(builder: (context) => GroupListPage()));
+                                        }
+                                      },
+                                child: Container(
+                                  margin: EdgeInsets.only(bottom: 6),
+                                  padding: EdgeInsets.only(
+                                      top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                  color: Colors.white,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.chat,
+                                            size: width * (26 / 420),
+                                            color: _colorfromhex("#ABAFD1"),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                      color: _colorfromhex("#ABAFD1"),
-                                    ),
-                                  ],
+                                          Text(
+                                            '   Chat',
+                                            style: TextStyle(
+                                              fontFamily: 'Roboto Medium',
+                                              fontSize: width * (18 / 420),
+                                              color: context.watch<ProfileProvider>().subscriptionApiCalling
+                                                  ? Colors.black54
+                                                  : Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 20,
+                                        color: _colorfromhex("#ABAFD1"),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )
+                            ],
+                          ),
+                        );
+                      })
                     ],
                   ),
                 ),

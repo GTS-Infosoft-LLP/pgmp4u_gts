@@ -764,4 +764,11 @@ class CourseProvider extends ChangeNotifier {
     print("selectedAtemptListLength====$selectedAtemptListLength");
     notifyListeners();
   }
+var selectedTestName;
+  void setSelectedTestName(String test_name) {
+    selectedTestName=test_name;
+    notifyListeners();
+
+
+  }
 }
