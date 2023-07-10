@@ -9,6 +9,7 @@ import 'package:pgmp4u/Screens/chat/model/userProfileModel.dart';
 import 'package:pgmp4u/Screens/chat/widgets/chatTextField.dart';
 import 'package:pgmp4u/Screens/chat/widgets/reciverCard.dart';
 import 'package:pgmp4u/Screens/chat/widgets/senderCard.dart';
+import 'package:pgmp4u/utils/extensions.dart';
 import 'package:provider/provider.dart';
 
 class DisscussionChatPage extends StatefulWidget {
@@ -41,53 +42,64 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
       appBar: AppBar(
         elevation: 2,
         toolbarHeight: 80,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.group.title ?? '',
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                //  fontSize: width * (18 / 420),
-                fontFamily: 'Roboto Medium',
-                color: Colors.black,
+        title: InkWell(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => CustomDialog(
+                group: widget.group,
+                timeAgo: timeToShow,
               ),
-            ),
-            SizedBox(
-              height: 6,
-            ),
-            Row(
-              children: [
-                Text(
-                  'Posted: ',
-                  style: TextStyle(
-                    //  fontSize: width * (18 / 420),
-                    fontSize: 14,
-                    fontFamily: 'Roboto Medium',
-                    color: Color(0xff63697B),
-                  ),
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.group.title ?? '',
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  //  fontSize: width * (18 / 420),
+                  fontFamily: 'Roboto Medium',
+                  color: Colors.black,
                 ),
-                Text(
-                  "${widget.group.createdBy}   " ?? '',
-                  style: TextStyle(
-                    //  fontSize: width * (18 / 420),
-                    fontSize: 14,
-                    fontFamily: 'Roboto Medium',
-                    color: Colors.black,
+              ),
+              SizedBox(
+                height: 6,
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Posted: ',
+                    style: TextStyle(
+                      //  fontSize: width * (18 / 420),
+                      fontSize: 14,
+                      fontFamily: 'Roboto Medium',
+                      color: Color(0xff63697B),
+                    ),
                   ),
-                ),
-                Text(
-                  timeToShow ?? '',
-                  style: TextStyle(
-                    //  fontSize: width * (18 / 420),
-                    fontSize: 14,
-                    fontFamily: 'Roboto Medium',
-                    color: Colors.black,
+                  Text(
+                    "${widget.group.createdBy}   " ?? '',
+                    style: TextStyle(
+                      //  fontSize: width * (18 / 420),
+                      fontSize: 14,
+                      fontFamily: 'Roboto Medium',
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  Text(
+                    timeToShow ?? '',
+                    style: TextStyle(
+                      //  fontSize: width * (18 / 420),
+                      fontSize: 14,
+                      fontFamily: 'Roboto Medium',
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         leading: InkWell(
           onTap: () {
@@ -114,36 +126,41 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
         },
       ),
       resizeToAvoidBottomInset: true,
-      body: Container(
-        padding: EdgeInsets.only(bottom: size.height * 0.1),
-        child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseChatHandler.getAllDiscussionGroupMessage(groupId: widget.group.groupId),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                    physics: ClampingScrollPhysics(),
-                    reverse: true,
-                    itemCount: snapshot.data?.docs?.length ?? 0,
-                    itemBuilder: (context, indexMain) {
-                      var data = snapshot.data.docs[indexMain].data();
+      body: GestureDetector(
+        onTap: () {
+          context.read<ChatProvider>().removeOverlay();
+        },
+        child: Container(
+          padding: EdgeInsets.only(bottom: size.height * 0.1),
+          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: FirebaseChatHandler.getAllDiscussionGroupMessage(groupId: widget.group.groupId),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                      physics: ClampingScrollPhysics(),
+                      reverse: true,
+                      itemCount: snapshot.data?.docs?.length ?? 0,
+                      itemBuilder: (context, indexMain) {
+                        var data = snapshot.data.docs[indexMain].data();
 
-                      ChatModel chatModel = ChatModel.fromJson(data);
+                        ChatModel chatModel = ChatModel.fromJson(data);
 
-                      if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
-                        return SenderMessageCard(
-                          chatModel: chatModel,
-                        );
-                      } else {
-                        return RecivedMessageCard(
-                          chatModel: chatModel,
-                        );
-                      }
-                    });
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            }),
+                        if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
+                          return SenderMessageCard(
+                            chatModel: chatModel,
+                          );
+                        } else {
+                          return RecivedMessageCard(
+                            chatModel: chatModel,
+                          );
+                        }
+                      });
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              }),
+        ),
       ),
     );
   }
@@ -180,5 +197,79 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
     userProfileList.forEach((element) {
       if (element.profilePic.isNotEmpty && element.uid.isNotEmpty) {}
     });
+  }
+}
+
+class CustomDialog extends StatelessWidget {
+  DisscussionGropModel group;
+  String timeAgo;
+  CustomDialog({this.group, this.timeAgo});
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> options = [];
+
+    for (int i = 0; i < group.ops.length; i++) {
+      String initial = '';
+      try {
+        initial = i.toAlphabet();
+        options.add("\n\n$initial.  ${group.ops[i]} \n");
+      } on Exception catch (e) {
+        print('Exception Occured: ${e.toString()}');
+      }
+    }
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Posted By: ${group.createdBy}"),
+              SizedBox(height: 6),
+              Text(timeAgo),
+              SizedBox(height: 16),
+              Text(
+                group.title ?? '',
+                style: TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(height: 10.0),
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: options.length,
+                  itemBuilder: (context, index) {
+                    return Text(
+                      options[index],
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 16.0),
+
+              // ElevatedButton(
+              //   style: ElevatedButton.styleFrom(),
+              //   onPressed: () {
+              //     Navigator.of(context).pop();
+              //   },
+              //   child: Text('Close'),
+              // ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

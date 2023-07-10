@@ -128,7 +128,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   Future sendDisscussionGroupMessage({String message, String groupId}) async {
-    print('>>>>>>>>>>>>  g ${getUser().photoURL}');
+    // print('This is the message sent : ${getUser().photoURL}');
     ChatModel chatModel = ChatModel(
       messageId: '',
       messageType: 0,
@@ -137,6 +137,7 @@ class ChatProvider extends ChangeNotifier {
       text: message,
       senderName: getUser().displayName,
       profileUrl: getUser().photoURL,
+      reactions: [],
     );
     await FirebaseChatHandler.sendDiscussionGroupMessage(chat: chatModel, gropuId: groupId);
   }
@@ -226,5 +227,19 @@ class ChatProvider extends ChangeNotifier {
       return false;
     }
     return isChatSubscribed;
+  }
+
+  OverlayState reactionOverlayState;
+  OverlayEntry reactionOverlayEntry;
+
+  void removeOverlay() {
+    if (reactionOverlayEntry != null && reactionOverlayEntry.mounted) {
+      reactionOverlayEntry.remove();
+    }
+  }
+
+  void setReaction(ChatModel message, Reaction reaction) {
+    // message.reaction = reaction;
+    notifyListeners();
   }
 }

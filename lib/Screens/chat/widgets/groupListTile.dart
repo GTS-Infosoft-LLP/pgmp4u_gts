@@ -32,9 +32,9 @@ class GroupListTile extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTapOfGroup(context),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.17,
+        // height: MediaQuery.of(context).size.height * 0.17,
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        padding: EdgeInsets.only(top: 2, bottom: 2, left: 16, right: 14),
+        padding: EdgeInsets.only(top: 20, bottom: 20, left: 16, right: 14),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.white,
@@ -75,9 +75,9 @@ class GroupListTile extends StatelessWidget {
                 Expanded(
                     child: Text(
                   group.title ?? '',
-                  maxLines: 2,
+                  maxLines: 6,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 20, fontFamily: 'Roboto Medium'),
+                  style: TextStyle(fontSize: 18, fontFamily: 'Roboto Medium'),
                 )),
                 SizedBox(
                   width: 10,
@@ -91,6 +91,7 @@ class GroupListTile extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 18),
             // name | post time  | show | comments
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -117,7 +118,7 @@ class GroupListTile extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 6,
+                  width: 10,
                 ),
                 Text(
                   timeToShow,

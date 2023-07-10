@@ -58,7 +58,9 @@ class CourseProvider extends ChangeNotifier {
 
   setSelectedCourseName(String val) {
     selectedCourseName = val;
-    notifyListeners();
+    Future.delayed(Duration.zero, () {
+      notifyListeners();
+    });
   }
 
   setSelectedFlashCategory(int val) {
