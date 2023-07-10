@@ -112,7 +112,7 @@ class CourseProvider extends ChangeNotifier {
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
-    
+
       if (response.statusCode == 400) {
         updateMasterDataApiCall(false);
         print("statussssssss");
@@ -164,8 +164,6 @@ class CourseProvider extends ChangeNotifier {
           //   HiveHandler.addMasterData(tempListMaster, keyName: id.toString());
           // }
         }
-
-       
       }
       print("respponse=== ${response.body}");
     } on Exception {
@@ -173,13 +171,14 @@ class CourseProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-List<Queans>mockDomainList=[];
+
+  List<Queans> mockDomainList = [];
   Future<void> getReviewTestDomain(int id, int atmptCount, String domainName) async {
     String stringValue = prefs.getString('token');
 
     print("token valued===$stringValue");
     var request = {"id": id, "attempt": atmptCount, "domain": domainName};
-    try{
+    try {
       var response = await http.post(
         Uri.parse(REVIEW_MOCK_DOMAIN),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
@@ -189,36 +188,30 @@ List<Queans>mockDomainList=[];
       print("response.statusCode===${response.body}");
       print("response.statusCode===${response.statusCode}");
 
-       if (response.statusCode == 400) {
-     
+      if (response.statusCode == 400) {
         print("statussssssss");
-        mockDomainList=[];
+        mockDomainList = [];
         notifyListeners();
         return;
       }
 
-      if(response.statusCode == 200){
-mockDomainList.clear();
-   Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        mockDomainList.clear();
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse====${mapResponse['status']}");
         if (mapResponse['status'] == 400) {
-            mockDomainList=[];
+          mockDomainList = [];
           return;
         }
- if (mapResponse["status"] == 200){
-    List temp1 = mapResponse["data"];
+        if (mapResponse["status"] == 200) {
+          List temp1 = mapResponse["data"];
           print("temp list===$temp1");
-           mockDomainList = temp1.map((e) => Queans.fromjss(e)).toList();
+          mockDomainList = temp1.map((e) => Queans.fromjss(e)).toList();
           print("master list=========$mockDomainList");
- }
-
-
+        }
       }
-
-    }on Exception{
-
-    }
-      notifyListeners();
+    } on Exception {}
+    notifyListeners();
   }
 
   List<FlashCateDetails> flashCateTempList = [];
@@ -475,6 +468,13 @@ mockDomainList.clear();
 
         List temp1 = mapResponse["data"];
         int stsVal = mapResponse["status"];
+        print("stsVal=======$stsVal");
+        var sucesssvalue = mapResponse['success'];
+        print("sucesssvalue======$sucesssvalue");
+        if (sucesssvalue == false) {
+          successValueFlash = false;
+          return;
+        }
         print("temp list===$temp1");
         FlashCards = temp1.map((e) => FlashCardDetails.fromjson(e)).toList();
 
