@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
+import 'ReviewMockTest.dart';
+
 class MockTestDetails extends StatefulWidget {
   final int selectedId;
   int atmptCount;
@@ -32,9 +34,10 @@ class _MockTestDetailsState extends State<MockTestDetails> {
   _MockTestDetailsState({this.selectedIdNew, this.attemptNew});
   List dataList = [];
   IconData icon1;
+  Color color1;
   @override
   void initState() {
-    print("atmptCountatmptCountatmptCo==========${widget.atmptCount}");
+    print("atmptCountatmptCountatmptCo==========${widget.attempt}");
     super.initState();
     apiCall();
   }
@@ -46,12 +49,13 @@ class _MockTestDetailsState extends State<MockTestDetails> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
-    print(MOCK_TEST_DETAILS + '/' + selectedIdNew.toString() + '/' + attemptNew.toString());
+    print(MOCK_TEST_DETAILS + '/' + selectedIdNew.toString() + '/' + widget.attempt.toString());
     response = await http.get(
-        Uri.parse(MOCK_TEST_DETAILS + '/' + selectedIdNew.toString() + '/' + attemptNew.toString()),
+        Uri.parse(MOCK_TEST_DETAILS + '/' + selectedIdNew.toString() + '/' + widget.attempt.toString()),
         headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
     print("authorization $stringValue");
     Map getit;
+    print("response.statusCode========${response.statusCode}");
     if (response.statusCode == 200) {
       print(convert.jsonDecode(response.body));
       getit = convert.jsonDecode(response.body);
@@ -133,7 +137,7 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                     letterSpacing: 0.3),
                               ),
                               Text(
-                                "Attempt Number : ${widget.atmptCount}",
+                                "Attempt Number : ${widget.attempt}",
                                 style: TextStyle(
                                     fontFamily: 'Roboto Bold',
                                     fontSize: width * (20 / 420),
@@ -150,184 +154,221 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                               ),
                               Column(
                                 children: listResponse.map<Widget>((title) {
+                                  print("title[id]=========${title["id"]}");
                                   String category = "";
                                   if (title["category"] != null) {
                                     category = title["category"];
                                     print("category=======>>>>????+++$category");
                                   }
-                                  if (title['id'] % 5 == 0) {
-                                    icon1 = FontAwesomeIcons.book;
-                                  } else if (title['id'] % 4 == 0) {
-                                    icon1 = FontAwesomeIcons.cloud;
-                                  } else if (title['id'] % 3 == 0) {
-                                    icon1 = FontAwesomeIcons.coins;
-                                  } else if (title['id'] % 2 == 0) {
-                                    icon1 = FontAwesomeIcons.deezer;
+                                  if (title['id'] == null) {
+                                    icon1 = FontAwesomeIcons.renren;
+                                    color1 = AppColor.purpule;
                                   } else {
-                                    icon1 = FontAwesomeIcons.airbnb;
+                                    if (title['id'] % 5 == 0) {
+                                      icon1 = FontAwesomeIcons.book;
+                                    } else if (title['id'] % 4 == 0) {
+                                      icon1 = FontAwesomeIcons.cloud;
+                                    } else if (title['id'] % 3 == 0) {
+                                      icon1 = FontAwesomeIcons.coins;
+                                    } else if (title['id'] % 2 == 0) {
+                                      icon1 = FontAwesomeIcons.deezer;
+                                    } else {
+                                      icon1 = FontAwesomeIcons.airbnb;
+                                    }
+                                  }
+                                  if (title['id'] != null) {
+                                    if (title['id'] % 2 == 0) {
+                                      color1 = _colorfromhex("#72A258");
+                                    } else {
+                                      color1 = AppColor.purpule;
+                                    }
                                   }
 
-                                  return Container(
-                                    margin: EdgeInsets.only(top: 20),
-                                    decoration:
-                                        BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-                                    padding: EdgeInsets.only(top: 15, bottom: 15, left: 14),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: Container(
-                                              margin: EdgeInsets.only(
-                                                right: width * (15 / 420),
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: (title["id"]) % 2 == 0
-                                                    ? _colorfromhex("#72A258")
-                                                    : AppColor.purpule,
-                                                // color: _colorfromhex("#72A258"),
-                                                borderRadius: BorderRadius.circular(10),
-                                              ),
-                                              padding: EdgeInsets.all(16),
-                                              child: Icon(
-                                                icon1,
+                                  return InkWell(
+                                    onTap: () {
+                                      print("category=======$category");
+                                      print("mock test count===${widget.attempt}");
+                                      print("mock id=====${widget.selectedId}");
 
-                                                // index % 2 == 0
-                                                //     ? FontAwesomeIcons.book
-                                                //     : FontAwesomeIcons.airbnb,
-                                                color: Colors.white,
-                                              )
+                                      CourseProvider cp = Provider.of(context, listen: false);
 
-                                              //  Image.asset('assets/detailicon.png'),
-                                              ),
-                                        ),
-                                        Expanded(
-                                          flex: 8,
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ReviewMockTest(
+                                                    AttemptCount: widget.attempt,
+                                                    domainName: category,
+                                                    fromDetails: 1,
+                                                    selectedId: widget.selectedId,
+                                                  )));
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: 20),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          // color: Colors.amberAccent,
+                                          borderRadius: BorderRadius.circular(10)),
+                                      padding: EdgeInsets.only(top: 15, bottom: 15, left: 14),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Container(
                                                 margin: EdgeInsets.only(
-                                                  bottom: height * (15 / 800),
+                                                  right: width * (15 / 420),
                                                 ),
-                                                child: Text(
-                                                  category,
-                                                  style: TextStyle(
-                                                      fontFamily: 'Roboto Medium',
-                                                      fontSize: width * (18 / 420),
-                                                      color: Colors.black,
-                                                      letterSpacing: 0.3),
+                                                decoration: BoxDecoration(
+                                                  color: color1,
+                                                  //  AppColor.purpule,
+                                                  // (
+                                                  // title["id"]) % 2 == 0
+                                                  //   ? _colorfromhex("#72A258")
+                                                  //   : AppColor.purpule,
+                                                  // color: _colorfromhex("#72A258"),
+                                                  borderRadius: BorderRadius.circular(10),
                                                 ),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                      right: width * (15 / 420),
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        Text(
-                                                          '${title["Tot_Ans"]}',
-                                                          style: TextStyle(
-                                                              fontFamily: 'Roboto Bold',
-                                                              fontSize: width * (20 / 420),
-                                                              color: Colors.black,
-                                                              letterSpacing: 0.3),
-                                                        ),
-                                                        Text(
-                                                          'Total',
-                                                          style: TextStyle(
-                                                              fontFamily: 'Roboto Regular',
-                                                              fontSize: width * (18 / 420),
-                                                              color: _colorfromhex("#ABAFD1"),
-                                                              letterSpacing: 0.3),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                padding: EdgeInsets.all(16),
+                                                child: Icon(
+                                                  icon1,
+
+                                                  // index % 2 == 0
+                                                  //     ? FontAwesomeIcons.book
+                                                  //     : FontAwesomeIcons.airbnb,
+                                                  color: Colors.white,
+                                                )
+
+                                                //  Image.asset('assets/detailicon.png'),
+                                                ),
+                                          ),
+                                          Expanded(
+                                            flex: 8,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                    bottom: height * (15 / 800),
                                                   ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                      right: width * (15 / 420),
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        Text(
-                                                          '${title["Correct_Ans"]}',
-                                                          style: TextStyle(
-                                                              fontFamily: 'Roboto Bold',
-                                                              fontSize: width * (20 / 420),
-                                                              color: Colors.black,
-                                                              letterSpacing: 0.3),
-                                                        ),
-                                                        Text(
-                                                          'Right',
-                                                          style: TextStyle(
-                                                              fontFamily: 'Roboto Regular',
-                                                              fontSize: width * (18 / 420),
-                                                              color: _colorfromhex("#ABAFD1"),
-                                                              letterSpacing: 0.3),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                  child: Text(
+                                                    category,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Roboto Medium',
+                                                        fontSize: width * (18 / 420),
+                                                        color: Colors.black,
+                                                        letterSpacing: 0.3),
                                                   ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                      right: width * (15 / 420),
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        Text(
-                                                          '${title["Wrong_Ans"]}',
-                                                          style: TextStyle(
-                                                              fontFamily: 'Roboto Bold',
-                                                              fontSize: width * (20 / 420),
-                                                              color: Colors.black,
-                                                              letterSpacing: 0.3),
-                                                        ),
-                                                        Text(
-                                                          'Wrong',
-                                                          style: TextStyle(
-                                                              fontFamily: 'Roboto Regular',
-                                                              fontSize: width * (18 / 420),
-                                                              color: _colorfromhex("#ABAFD1"),
-                                                              letterSpacing: 0.3),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Column(
-                                                      children: [
-                                                        Text(
-                                                          '${title["Skip_Ans"]}',
-                                                          style: TextStyle(
-                                                              fontFamily: 'Roboto Bold',
-                                                              fontSize: width * (20 / 420),
-                                                              color: Colors.black,
-                                                              letterSpacing: 0.3),
-                                                        ),
-                                                        Padding(
-                                                          padding: const EdgeInsets.only(right: 14.0),
-                                                          child: Text(
-                                                            'Skipped',
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                        right: width * (15 / 420),
+                                                      ),
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                            '${title["Tot_Ans"]}',
+                                                            style: TextStyle(
+                                                                fontFamily: 'Roboto Bold',
+                                                                fontSize: width * (20 / 420),
+                                                                color: Colors.black,
+                                                                letterSpacing: 0.3),
+                                                          ),
+                                                          Text(
+                                                            'Total',
                                                             style: TextStyle(
                                                                 fontFamily: 'Roboto Regular',
                                                                 fontSize: width * (18 / 420),
                                                                 color: _colorfromhex("#ABAFD1"),
                                                                 letterSpacing: 0.3),
                                                           ),
-                                                        ),
-                                                      ],
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                        right: width * (15 / 420),
+                                                      ),
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                            '${title["Correct_Ans"]}',
+                                                            style: TextStyle(
+                                                                fontFamily: 'Roboto Bold',
+                                                                fontSize: width * (20 / 420),
+                                                                color: Colors.black,
+                                                                letterSpacing: 0.3),
+                                                          ),
+                                                          Text(
+                                                            'Right',
+                                                            style: TextStyle(
+                                                                fontFamily: 'Roboto Regular',
+                                                                fontSize: width * (18 / 420),
+                                                                color: _colorfromhex("#ABAFD1"),
+                                                                letterSpacing: 0.3),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                        right: width * (15 / 420),
+                                                      ),
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                            '${title["Wrong_Ans"]}',
+                                                            style: TextStyle(
+                                                                fontFamily: 'Roboto Bold',
+                                                                fontSize: width * (20 / 420),
+                                                                color: Colors.black,
+                                                                letterSpacing: 0.3),
+                                                          ),
+                                                          Text(
+                                                            'Wrong',
+                                                            style: TextStyle(
+                                                                fontFamily: 'Roboto Regular',
+                                                                fontSize: width * (18 / 420),
+                                                                color: _colorfromhex("#ABAFD1"),
+                                                                letterSpacing: 0.3),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                            '${title["Skip_Ans"]}',
+                                                            style: TextStyle(
+                                                                fontFamily: 'Roboto Bold',
+                                                                fontSize: width * (20 / 420),
+                                                                color: Colors.black,
+                                                                letterSpacing: 0.3),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(right: 14.0),
+                                                            child: Text(
+                                                              'Skipped',
+                                                              style: TextStyle(
+                                                                  fontFamily: 'Roboto Regular',
+                                                                  fontSize: width * (18 / 420),
+                                                                  color: _colorfromhex("#ABAFD1"),
+                                                                  letterSpacing: 0.3),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   );
                                 }).toList(),

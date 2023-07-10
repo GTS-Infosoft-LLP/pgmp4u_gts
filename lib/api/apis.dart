@@ -61,6 +61,8 @@ const sendChatUserNotification = _BASE_URL + "sendChatUsersNotification";
 const UPDATE_DEVICE_TOKEN = _BASE_URL + "updateDeviceToken";
 const GET_SUBSCRIPTION_STATUS = _BASE_URL + "getsubscriptionStatus";
 
+const REVIEW_MOCK_DOMAIN= _BASE_URL + "ReviewsMockTestDomain";
+
 // couses
 const GET_COURSES = _BASE_URL + "getCourse";
 
