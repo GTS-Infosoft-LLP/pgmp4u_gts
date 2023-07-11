@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return stringValue;
   }
 
-  initializeSharedPref() {
+  initializeSharedPref(BuildContext context) {
     context.read<CourseProvider>().initSharePreferecne();
     context.read<PdfProvider>().initSharePreferecne();
     context.read<ChatProvider>().initSharePreferecne();
@@ -66,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     print(double.infinity);
-    initializeSharedPref();
+    initializeSharedPref(context);
     localDataUpdate();
 
     navigateToScreen();
