@@ -51,6 +51,10 @@ class CustomDropDown<T> extends StatelessWidget {
           width: width,
           child: Center(
             child: DropdownButton<T>(
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: Colors.white,
+              ),
               focusColor: Colors.blueAccent,
               value: value,
               //elevation: 5,

@@ -210,15 +210,22 @@ class _ProfileState extends State<Profile> {
               width: 55,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                      colors: [
-                        _colorfromhex("#3A47AD"),
-                        _colorfromhex("#5163F3"),
-                      ],
-                      begin: const FractionalOffset(0.0, 0.0),
-                      end: const FractionalOffset(1.0, 0.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp)),
+                  gradient: context.watch<ProfileProvider>().subscriptionApiCalling
+                      ? LinearGradient(
+                          colors: [Color.fromARGB(255, 171, 172, 182), Color.fromARGB(255, 133, 134, 141)],
+                          begin: const FractionalOffset(0.0, 0.0),
+                          end: const FractionalOffset(1.0, 0.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp)
+                      : LinearGradient(
+                          colors: [
+                            _colorfromhex("#3A47AD"),
+                            _colorfromhex("#5163F3"),
+                          ],
+                          begin: const FractionalOffset(0.0, 0.0),
+                          end: const FractionalOffset(1.0, 0.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp)),
               child: Icon(
                 Icons.chat,
                 color: Colors.white,

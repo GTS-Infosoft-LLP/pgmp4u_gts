@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:pgmp4u/Screens/Dashboard/DashboardScreen.dart';
 import 'package:pgmp4u/Screens/Profile/profile.dart';
-import 'package:pgmp4u/Screens/Tests/testsScreen.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../Tests/local_handler/hive_handler.dart';
 import '../home_view/home.dart';
@@ -19,15 +14,11 @@ class Dashboard extends StatefulWidget {
   });
 
   @override
-  _DashboardState createState() =>
-      _DashboardState(selectedIdNew: this.selectedId);
+  _DashboardState createState() => _DashboardState(selectedIdNew: this.selectedId);
 }
 
 class _DashboardState extends State<Dashboard> {
-
-
-
-@override
+  @override
   void initState() {
     updateDeviceToken();
     super.initState();
@@ -96,9 +87,7 @@ class _DashboardState extends State<Dashboard> {
               icon: new Icon(
                 Icons.home,
                 size: width * (26 / 420),
-                color: _currentIndex == 0
-                    ? _colorfromhex("#3846A9")
-                    : _colorfromhex("#ABAFD1"),
+                color: _currentIndex == 0 ? _colorfromhex("#3846A9") : _colorfromhex("#ABAFD1"),
               ),
               label: 'Home'
 
@@ -138,9 +127,7 @@ class _DashboardState extends State<Dashboard> {
             icon: new Icon(
               Icons.person,
               size: width * (26 / 420),
-              color: _currentIndex == 2
-                  ? _colorfromhex("#3846A9")
-                  : _colorfromhex("#ABAFD1"),
+              color: _currentIndex == 1 ? _colorfromhex("#3846A9") : _colorfromhex("#ABAFD1"),
             ),
             label: 'Profile',
             // Text(
@@ -159,18 +146,13 @@ class _DashboardState extends State<Dashboard> {
       body: _children[_currentIndex],
     );
   }
-  
-  Future<void> updateDeviceToken() async {
 
-    CourseProvider courseProvider=Provider.of(context,listen: false);
-      String token=await HiveHandler.getDeviceToken();
-      print("get device token after set ${token}");
+  Future<void> updateDeviceToken() async {
+    CourseProvider courseProvider = Provider.of(context, listen: false);
+    String token = await HiveHandler.getDeviceToken();
+    print("get device token after set $token");
     courseProvider.updateDeviceToken(token);
 
     //  deviceToken
-
-
-
-
   }
 }
