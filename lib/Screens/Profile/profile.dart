@@ -496,7 +496,8 @@ class _ProfileState extends State<Profile> {
                                         height: 120,
                                         width: MediaQuery.of(context).size.width * .35,
                                         decoration: BoxDecoration(
-                                          color: AppColor.green,
+                                          // color: AppColor.green,
+                                          gradient: AppColor.greenGradient,
                                           borderRadius: BorderRadius.all(Radius.circular(20)),
                                         ),
                                         child: Column(
@@ -574,7 +575,7 @@ class _ProfileState extends State<Profile> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                        GestureDetector(
+                                GestureDetector(
                                   onTap: () {
                                     Navigator.push(context, MaterialPageRoute(builder: (context) => PdfList()));
                                     //Navigator.of(context)
@@ -614,7 +615,6 @@ class _ProfileState extends State<Profile> {
                                     ),
                                   ),
                                 ),
-
 
                                 GestureDetector(
                                   onTap: () {
