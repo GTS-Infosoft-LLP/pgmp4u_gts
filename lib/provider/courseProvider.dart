@@ -42,8 +42,8 @@ class CourseProvider extends ChangeNotifier {
   //  mokRestartList.add();
 
   addToRestartList() {
-    print("selectedMockId======${selectedMockId}");
-    print("selectedMockId======${selectedAttemptNumer}");
+    print("selectedMockId======$selectedMockId");
+    print("selectedMockId======$selectedAttemptNumer");
     mokRestartList.add(restartMockModel(MokId: selectedMockId, attempptNum: selectedAttemptNumer));
   }
 
@@ -95,9 +95,11 @@ class CourseProvider extends ChangeNotifier {
   }
 
   setSelectedCourseId(int val) {
-    selectedCourseId = val;
-    print("selectedCourseId========>>>>>>>$selectedCourseId");
-    notifyListeners();
+    Future.delayed(Duration.zero, () async {
+      selectedCourseId = val;
+      print("selectedCourseId========>>>>>>>$selectedCourseId");
+      notifyListeners();
+    });
   }
 
   List<MasterDetails> tempListMaster = [];

@@ -70,6 +70,7 @@ dependencies:
   flutter_html: ^2.2.1
   # flutter_html: ^3.0.0-alpha.6
   pausable_timer: ^1.0.0+7
+  flutter_datetime_picker: ^1.5.1
   
   
 

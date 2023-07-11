@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -51,13 +51,19 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  String examDate;
+  String studyTime;
+
   @override
   void initState() {
     super.initState();
     CourseProvider cp = Provider.of(context, listen: false);
-
+    ProfileProvider pp = Provider.of(context, listen: false);
     if (cp.course.isNotEmpty) {
+      print("cp.course[0].id===========${cp.course[0].id}");
+      cp.setSelectedCourseId(cp.course[0].id);
       cp.setSelectedCourseName(cp.course[0].course);
+      pp.getReminder(cp.course[0].id);
     }
 
     _razorpay = Razorpay();
@@ -472,6 +478,8 @@ class _ProfileState extends State<Profile> {
                                         print("val.course=========>${val.course}");
                                         cp.setSelectedCourseName(val.course);
                                         cp.setSelectedCourseId(val.id);
+                                        ProfileProvider pp = Provider.of(context, listen: false);
+                                        pp.getReminder(val.id);
                                       }),
                                 ),
 
@@ -479,78 +487,145 @@ class _ProfileState extends State<Profile> {
                                   height: 15,
                                 ),
 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 120,
-                                      width: MediaQuery.of(context).size.width * .35,
-                                      decoration: BoxDecoration(
-                                        color: AppColor.green,
-                                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text(
-                                            "Mock Test",
-                                            style: TextStyle(
-                                                fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
-                                          ),
-                                          Text(
-                                            "00.00",
-                                            style: TextStyle(
-                                                fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 25),
-                                          ),
-                                          Text(
-                                            "Average Score",
-                                            style: TextStyle(
-                                                fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: (){
-                                        
-                                      },
-                                      child: Container(
+                                Consumer<ProfileProvider>(builder: (context, pp, child) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
                                         height: 120,
                                         width: MediaQuery.of(context).size.width * .35,
                                         decoration: BoxDecoration(
-                                          color: AppColor.purpule,
+                                          color: AppColor.green,
                                           borderRadius: BorderRadius.all(Radius.circular(20)),
                                         ),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Text(
-                                              "Exam Date",
+                                              "Mock Test",
                                               style: TextStyle(
                                                   fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
                                             ),
                                             Text(
-                                              "0",
+                                              pp.dayDiff == "NaN" ? "0.0" : pp.dayDiff,
                                               style: TextStyle(
                                                   fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 25),
                                             ),
                                             Text(
-                                              "Days Left",
+                                              "Average Score",
                                               style: TextStyle(
                                                   fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          DatePicker.showDatePicker(context, minTime: DateTime.now())
+                                              .then((value) async {
+                                            print("valueee====$value");
+                                            print("djjhdsjfh====${value.toString().split(" ")[0]}");
+                                            examDate = value.toString().split(" ")[0];
+
+                                            if (examDate.isNotEmpty) {
+                                              ProfileProvider pp = Provider.of(context, listen: false);
+                                              await pp.setReminder("", examDate, cp.selectedCourseId, 2);
+                                              pp.getReminder(cp.selectedCourseId);
+                                            }
+                                          });
+                                        },
+                                        child: Container(
+                                          height: 120,
+                                          width: MediaQuery.of(context).size.width * .35,
+                                          decoration: BoxDecoration(
+                                            color: AppColor.purpule,
+                                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                "Exam Date",
+                                                style: TextStyle(
+                                                    fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
+                                              ),
+                                              Text(
+                                                pp.avgScore.toString(),
+                                                style: TextStyle(
+                                                    fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 25),
+                                              ),
+                                              Text(
+                                                "Days Left",
+                                                style: TextStyle(
+                                                    fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                }),
 
                                 SizedBox(
                                   height: 10,
+                                ),
+
+                                GestureDetector(
+                                  onTap: () {
+                                    DatePicker.showTimePicker(
+                                      context,
+                                      currentTime: DateTime.now(),
+                                    ).then((value) {
+                                      print("value=====>$value");
+                                      ProfileProvider pp = Provider.of(context, listen: false);
+                                      List lst = value.toString().split(".");
+                                      print("lst======$lst");
+                                      var v1 = lst[0];
+
+                                      print("list=======$v1");
+
+                                      studyTime = v1;
+                                      pp.setReminder(studyTime, "", cp.selectedCourseId, 1);
+                                    });
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(bottom: 6),
+                                    padding: EdgeInsets.only(
+                                        top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                    color: Colors.white,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.lock_clock,
+                                              size: width * (26 / 420),
+                                              color: _colorfromhex("#ABAFD1"),
+                                            ),
+                                            Text(
+                                              '   Set Study Time',
+                                              style: TextStyle(
+                                                fontFamily: 'Roboto Medium',
+                                                fontSize: width * (18 / 420),
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 20,
+                                          color: _colorfromhex("#ABAFD1"),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
 
                                 GestureDetector(

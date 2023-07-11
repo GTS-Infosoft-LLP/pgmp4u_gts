@@ -99,3 +99,7 @@ const GET_FLASH_CARDS = _BASE_URL + "getFlashCards";
 const GET_QUES_OF_DAY = _BASE_URL + "getQuestionOfTheDay";
 const MOCK_TEST_QUES = _BASE_URL + "MockTestQuestions";
 const REVIEW_MOCK_TEST = _BASE_URL + "ReviewsMockTest";
+
+const SET_REMINDER = _BASE_URL + "setReminders";
+const GET_REMINDER = _BASE_URL + "getReminders";
+

@@ -134,6 +134,83 @@ class ProfileProvider extends ChangeNotifier {
     });
   }
 
+  var avgScore = "";
+  var dayDiff = "";
+
+  Future<void> getReminder(int couseId) async {
+    print("*--**********getReminder ********************");
+
+    print("couseId=======>>$couseId");
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+
+    print("token valued  get reminderrrr===$stringValue");
+    var request = {
+      "courseId": couseId,
+    };
+
+    try {
+      var response = await http.post(
+        Uri.parse(GET_REMINDER),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
+      avgScore = "";
+      dayDiff = "";
+
+      // print("response.statusCode===${response.body}");
+      print("response.statusCode===${response.statusCode}");
+
+      var resDDo = json.decode(response.body);
+
+      print("respponse=== $resDDo");
+
+      print("resDDo=====${resDDo['data']['daysDiff']}");
+      print("resDDo=====${resDDo['data']['averageScore']}");
+
+      avgScore = resDDo['data']['daysDiff'].toString();
+      dayDiff = resDDo['data']['averageScore'].toString();
+      notifyListeners();
+    } catch (e) {
+      // TODO
+      print("---- EXCEPTION OCCURED WHILE CHECKING FOR CHATSUBSCRIPTION ----");
+      print(e.toString());
+    }
+  }
+
+  Future<void> setReminder(String studyReminder, String examDate, int couseId, int type) async {
+    print("studyReminder=======>>$studyReminder");
+    print("examDate=======>>$examDate");
+    print("couseId=======>>$couseId");
+    print("type=======>>$type");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+
+    print("token valued===$stringValue");
+    var request = {"courseId": couseId, "type": type, "studyReminder": studyReminder, "examDate": examDate};
+
+    try {
+      var response = await http.post(
+        Uri.parse(SET_REMINDER),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
+
+      // print("response.statusCode===${response.body}");
+      print("response.statusCode===${response.statusCode}");
+
+      var resDDo = json.decode(response.body);
+      var resStatus = (resDDo["status"]);
+
+      print("respponse=== ${response.body}");
+    } catch (e) {
+      // TODO
+      print("---- EXCEPTION OCCURED WHILE CHECKING FOR CHATSUBSCRIPTION ----");
+      print(e.toString());
+    }
+  }
+
   Future<void> subscriptionStatus(String type) async {
     updateSubApi(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -210,7 +287,7 @@ class ProfileProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
-    var createOrder = CREATE_ORDER+"/";
+    var createOrder = CREATE_ORDER + "/";
     response = await http.get(Uri.parse("$createOrder$selectedId/$categoryType"),
         headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
 
