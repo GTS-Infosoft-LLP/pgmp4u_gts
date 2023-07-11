@@ -5,15 +5,39 @@ import 'package:pgmp4u/Screens/chat/widgets/senderCard.dart';
 import 'package:pgmp4u/utils/extensions.dart';
 
 class RecivedMessageCard extends StatefulWidget {
-  RecivedMessageCard({key, this.chatModel});
+  RecivedMessageCard({key, this.chatModel, this.animationController});
   ChatModel chatModel;
+  AnimationController animationController;
 
   @override
   State<RecivedMessageCard> createState() => _RecivedMessageCardState();
 }
 
-class _RecivedMessageCardState extends State<RecivedMessageCard> {
+class _RecivedMessageCardState extends State<RecivedMessageCard> with SingleTickerProviderStateMixin {
   final layerLink = LayerLink();
+
+  // Animation<double> _animation;
+  @override
+  void initState() {
+    super.initState();
+
+    // widget.animationController = AnimationController(
+    //   duration: Duration(seconds: 1),
+    //   vsync: this,
+    // );
+
+    // _animation = CurvedAnimation(
+    //   parent: widget.animationController,
+    //   curve: Curves.easeInOut,
+    // );
+  }
+
+  @override
+  void dispose() {
+    // widget.animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
@@ -23,7 +47,11 @@ class _RecivedMessageCardState extends State<RecivedMessageCard> {
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: GestureDetector(
-              onLongPress: () => showOverLay(context, widget.chatModel, layerLink),
+              onLongPress: () => showOverLay(
+                context,
+                widget.chatModel,
+                layerLink,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

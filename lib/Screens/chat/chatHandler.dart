@@ -186,6 +186,9 @@ class FirebaseChatHandler {
     });
   }
 
+  // update emoji on message
+  static sendEmoji({ChatModel chatModel, Reaction reaction, String senderId}) {}
+
   ///// extra   ////
 
   static Future<bool> checkIfDocExistsInColl({String docId, CollectionReference collection}) async {

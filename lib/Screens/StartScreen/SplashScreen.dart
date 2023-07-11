@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pgmp4u/Screens/Pdf/controller/pdf_controller.dart';
 import 'package:pgmp4u/Screens/Profile/notifications.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
@@ -24,15 +25,19 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   String tokenData;
-  ChatProvider chatProvider;
+
   getValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    chatProvider = Provider.of(context, listen: false);
-    chatProvider.initSharePreferecne();
-    context.read<CourseProvider>().initSharePreferecne();
+
     //Return String
     String stringValue = prefs.getString('token');
     return stringValue;
+  }
+
+  initializeSharedPref() {
+    context.read<CourseProvider>().initSharePreferecne();
+    context.read<PdfProvider>().initSharePreferecne();
+    context.read<ChatProvider>().initSharePreferecne();
   }
 
   navigateToScreen() async {
@@ -61,6 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     print(double.infinity);
+    initializeSharedPref();
     localDataUpdate();
 
     navigateToScreen();

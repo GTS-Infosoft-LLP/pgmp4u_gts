@@ -224,28 +224,46 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                                   child: Html(
                                                                     data: storedFlash[index].description,
                                                                     style: {
-                                                                      "body": Style(
-                                                                        // padding: HtmlPaddings(top: HtmlPadding(5)),
+                                                                      //   "body": Style(
+                                                                      //     // padding: HtmlPaddings(top: HtmlPadding(5)),
 
-                                                                        padding: EdgeInsets.only(top: 5),
-                                                                        margin: EdgeInsets.zero,
-                                                                        color: Color(0xff000000),
-                                                                        textAlign: TextAlign.left,
-                                                                        // maxLines: 7,
-                                                                        // textOverflow: TextOverflow.ellipsis,
-                                                                        fontSize: FontSize(22),
-                                                                      ),
-                                                                      "ol": Style(
-                                                                        alignment: Alignment.center,
-                                                                        fontSize: FontSize(22),
-                                                                      ),
-                                                                      "ul": Style(
-                                                                        fontSize: FontSize(22),
-                                                                      ),
-                                                                      "li": Style(
-                                                                        // markerContent: Icon(Icons.circle),
-                                                                        fontSize: FontSize(22),
-                                                                      )
+                                                                      //     padding: EdgeInsets.only(top: 5),
+                                                                      //     margin: EdgeInsets.zero,
+                                                                      //     color: Color(0xff000000),
+                                                                      //     textAlign: TextAlign.left,
+                                                                      //     // maxLines: 7,
+                                                                      //     // textOverflow: TextOverflow.ellipsis,
+                                                                      //     fontSize: FontSize(22),
+                                                                      //   ),
+                                                                      // "ol": Style(
+                                                                      //   alignment: Alignment.center,
+                                                                      //   padding: EdgeInsets.only(top: 0, bottom: 0),
+                                                                      //   fontSize: FontSize(22),
+
+                                                                      //   ),
+                                                                      // "ul": Style(
+                                                                      //     // fontSize: FontSize(22),
+                                                                      //     // padding: EdgeInsets.only(top: 6, bottom: 10),
+                                                                      //     // listStyleType: ListStyleType.DISC,
+                                                                      //     // display: Display.BLOCK,
+                                                                      //     // padding: EdgeInsets.only(left: 40),
+
+                                                                      //     // listStyleType: ListStyleType.fromWidget(Padding(
+                                                                      //     //   padding: const EdgeInsets.only(
+                                                                      //     //       left: 2, right: 2, top: 0),
+                                                                      //     //   child: CircleAvatar(
+                                                                      //     //     radius: 6,
+                                                                      //     //     backgroundColor: Colors.grey,
+                                                                      //     //   ),
+                                                                      //     // )),
+                                                                      //     ),
+                                                                      // "li": Style(
+                                                                      //   direction: TextDirection.ltr,
+                                                                      //   // padding: EdgeInsets.only(
+                                                                      //   //     top: 10, left: 4, bottom: 4, right: 4),
+                                                                      //   wordSpacing: 4,
+                                                                      //   fontSize: FontSize(20),
+                                                                      // )
                                                                     },
                                                                   ),
                                                                 ),

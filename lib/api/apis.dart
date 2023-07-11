@@ -61,7 +61,7 @@ const sendChatUserNotification = _BASE_URL + "sendChatUsersNotification";
 const UPDATE_DEVICE_TOKEN = _BASE_URL + "updateDeviceToken";
 const GET_SUBSCRIPTION_STATUS = _BASE_URL + "getsubscriptionStatus";
 
-const REVIEW_MOCK_DOMAIN= _BASE_URL + "ReviewsMockTestDomain";
+const REVIEW_MOCK_DOMAIN = _BASE_URL + "ReviewsMockTestDomain";
 
 // couses
 const GET_COURSES = _BASE_URL + "getCourse";
@@ -99,3 +99,7 @@ const GET_FLASH_CARDS = _BASE_URL + "getFlashCards";
 const GET_QUES_OF_DAY = _BASE_URL + "getQuestionOfTheDay";
 const MOCK_TEST_QUES = _BASE_URL + "MockTestQuestions";
 const REVIEW_MOCK_TEST = _BASE_URL + "ReviewsMockTest";
+
+// pdf
+const GET_PPTS = _BASE_URL + "getPPts";
+const GET_PPTS_DETAILS = _BASE_URL + "getPPtsDetails";

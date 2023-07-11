@@ -233,8 +233,16 @@ class ChatProvider extends ChangeNotifier {
   OverlayEntry reactionOverlayEntry;
 
   void removeOverlay() {
+    print("-- remove overlay method called--");
+    // if (controller != null) {
+    //   print("-- remove overlay >  controller.reset();--");
+    //   controller.reset();
+    // }
     if (reactionOverlayEntry != null && reactionOverlayEntry.mounted) {
+      print("-- removing overlay --");
+
       reactionOverlayEntry.remove();
+      reactionOverlayEntry = null;
     }
   }
 
