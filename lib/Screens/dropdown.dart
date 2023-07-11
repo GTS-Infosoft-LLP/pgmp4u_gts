@@ -39,13 +39,16 @@ class CustomDropDown<T> extends StatelessWidget {
           margin: const EdgeInsets.only(top: 16),
           decoration: BoxDecoration(
               boxShadow: const [BoxShadow(color: Colors.black26, offset: Offset(0, 0))],
-              // color: Colors.white54,
-              gradient: LinearGradient(
-                  colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
-                  begin: const FractionalOffset(0.0, 0.0),
-                  end: const FractionalOffset(1.0, 0.0),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp),
+              color: Colors.white,
+              // border: Border.all(
+              //   color: Colors.red,
+              // ),
+              // gradient: LinearGradient(
+              //     colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
+              //     begin: const FractionalOffset(0.0, 0.0),
+              //     end: const FractionalOffset(1.0, 0.0),
+              //     stops: [0.0, 1.0],
+              //     tileMode: TileMode.clamp),
               borderRadius: BorderRadius.circular(28)),
           height: 56,
           width: width,
@@ -89,7 +92,7 @@ class CustomDropDown<T> extends StatelessWidget {
               hint: Text(
                 selectText,
                 style: TextStyle(
-                    color: isGrey ? Colors.white : Colors.black,
+                    color: isGrey ? Colors.black : Colors.black,
                     fontSize: 15,
                     fontFamily: fontfamily,
                     fontWeight: FontWeight.bold),
