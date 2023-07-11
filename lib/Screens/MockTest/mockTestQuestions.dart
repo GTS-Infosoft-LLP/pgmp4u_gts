@@ -248,7 +248,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                     submitMockTest("back", displayTime);
                   } else {
                     CourseProvider cp = Provider.of(context, listen: false);
-                    cp.addToRestartList();
+           
                     HiveHandler.addToRestartBox(cp.selectedMockId.toString(),cp.selectedAttemptNumer );
                     Navigator.pop(context);
                     Navigator.pop(context);

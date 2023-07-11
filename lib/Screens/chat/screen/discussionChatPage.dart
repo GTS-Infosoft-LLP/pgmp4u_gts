@@ -27,10 +27,25 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
 
   List<UserProfileModel> userProfileList = [];
 
+  // AnimationController _animationController;
+
   @override
   void initState() {
     // TODO: implement initState
+    // _animationController = AnimationController(
+    //   duration: Duration(seconds: 1),
+    //   vsync: this,
+    // );
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    // _animationController.removeListener(() {});
+    // _animationController.dispose();
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -149,10 +164,12 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
                         if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
                           return SenderMessageCard(
                             chatModel: chatModel,
+                            
                           );
                         } else {
                           return RecivedMessageCard(
                             chatModel: chatModel,
+                            
                           );
                         }
                       });

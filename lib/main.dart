@@ -5,6 +5,7 @@ import 'package:pgmp4u/Screens/MockTest/MockTestAttempts.dart';
 import 'package:pgmp4u/Screens/MockTest/ReviewMockTest.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTest.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTestQuestions.dart';
+import 'package:pgmp4u/Screens/Pdf/controller/pdf_controller.dart';
 import 'package:pgmp4u/Screens/PracticeTests/practiceTextProvider.dart';
 import 'package:pgmp4u/Screens/Profile/PaymentStatus.dart';
 import 'package:pgmp4u/Screens/Profile/paymentScreen.dart';
@@ -20,6 +21,7 @@ import 'package:pgmp4u/provider/player_provider.dart';
 import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:pgmp4u/provider/response_provider.dart';
+
 import './Screens/Dashboard/dashboard.dart';
 import './Screens/Auth/login.dart';
 import 'package:provider/provider.dart';
@@ -60,6 +62,7 @@ void main() async {
   };
 
   WidgetsFlutterBinding.ensureInitialized();
+
   await HiveHandler.hiveRegisterAdapter().then((value) {
     print("**************** hive register initialization *************");
   });
@@ -114,6 +117,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<PracticeTextProvider>(create: (_) => PracticeTextProvider()),
         ChangeNotifierProvider<CategoryProvider>(create: (_) => CategoryProvider()),
         ChangeNotifierProvider<ChatProvider>(create: (_) => ChatProvider()),
+        ChangeNotifierProvider<PdfProvider>(create: (_) => PdfProvider()),
       ],
       child: MaterialApp(
         navigatorKey: GlobalVariable.navState,
@@ -133,7 +137,7 @@ class MyApp extends StatelessWidget {
           '/settings': (ctx) => SettingsScreen(),
           '/payment': (ctx) => PaymentScreen(),
           '/payment-status': (ctx) => PaymentStatus(),
-          '/attempt-mock':(ctx)=>MockTestAttempts(),
+          '/attempt-mock': (ctx) => MockTestAttempts(),
         },
       ),
     );

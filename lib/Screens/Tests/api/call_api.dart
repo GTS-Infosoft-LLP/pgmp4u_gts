@@ -1,12 +1,10 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Models/category.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../api/apis.dart';
-
 
 class ApiController {
   Future<String> getToken() async {
@@ -39,7 +37,7 @@ class ApiController {
   Future<Resources> getSubCategory({int id, String type}) async {
     Map<String, dynamic> body = {"id": id, "type": type};
     Resources categoryResponse;
-    print("body ${body}");
+    print("body $body");
 
     var response = await http
         .post(Uri.parse(getCourseSubCategory),
@@ -68,7 +66,7 @@ class ApiController {
     Resources categoryResponse;
     Map<String, dynamic> body = {"id": id, "type": type};
 
-    print("body value ${body}");
+    print("body value $body");
 
     var response = await http
         .post(Uri.parse(getSubCategoryDetails),

@@ -24,12 +24,13 @@
 
 import 'package:flutter/material.dart';
 
-enum Reaction { favorite, thumbsDown, thumbsUp }
+enum Reaction { favorite, laugh, thumbsDown, thumbsUp }
 
-final reactionIcons = {
-  Reaction.favorite: Icons.favorite,
-  Reaction.thumbsDown: Icons.thumb_down,
-  Reaction.thumbsUp: Icons.thumb_up,
+final Map<Reaction, String> reactionIcons = {
+  Reaction.favorite: "assets/emoji_heart.png",
+  Reaction.laugh: "assets/emoji_laugh.png",
+  Reaction.thumbsDown: "assets/emoji_thumbs_down.png",
+  Reaction.thumbsUp: "assets/emoji_thumbs_up.png",
 };
 
 class ChatModel {
