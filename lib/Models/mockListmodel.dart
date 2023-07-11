@@ -61,8 +61,10 @@ class AvailableAttempts {
   int wrong;
   int answered;
   int notanswered;
+  
   String attempted_date;
   String start_date;
+  int tobeAttempted;
   AvailableAttempts.fromjsons(Map<String, dynamic> jsn) {
     attempt = jsn["attempt"];
     percentage = double.parse(jsn["percentage"].toString());
@@ -77,5 +79,7 @@ class AvailableAttempts {
     } else {
       jsn["attempted_date"] = "";
     }
+
+    tobeAttempted = jsn["tobeAttempted"];
   }
 }

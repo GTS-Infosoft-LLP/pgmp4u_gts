@@ -74,6 +74,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   void initState() {
     CourseProvider cp = Provider.of(context, listen: false);
     cp.timerValue = false;
+
     print("***********************************************");
 
     print("selectedId======${widget.selectedId}");
@@ -154,6 +155,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       print("response.statusCode===========${response.statusCode}");
       CourseProvider cp = Provider.of(context, listen: false);
       if (response.statusCode == 200) {
+        HiveHandler.removeFromRestartBox(cp.selectedMockId.toString());
         Map responseData = json.decode(response.body);
         if (data == "back") {
           Navigator.push(
@@ -213,7 +215,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
           context: context,
           builder: (context) => new AlertDialog(
             title: new Text(
-              'Please submit the test',
+              _stopWatchTimer.isRunning ? 'Please submit the test' : 'Leave test',
               style: TextStyle(fontSize: 20, fontFamily: 'Roboto Bold', color: Colors.black),
             ),
             content: new Text(''),
@@ -224,22 +226,33 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
               ),
               TextButton(
                 onPressed: () {
-                  if (isContinue == 1) {
-                    Navigator.pop(context);
-                    updateIsContinue(0);
-                    GFToast.showToast(
-                      'Check Your Internet Connection',
-                      context,
-                      toastPosition: GFToastPosition.BOTTOM,
-                    );
-                    setState(() {
-                      loader = false;
-                    });
-                    Navigator.pop(context);
-                    return;
-                  }
+                  if (_stopWatchTimer.isRunning) {
+                    CourseProvider cp = Provider.of(context, listen: false);
+                    cp.restartList.remove(cp.selectedAttemptNumer);
+                    if (isContinue == 1) {
+                      Navigator.pop(context);
+                      updateIsContinue(0);
+                      GFToast.showToast(
+                        'Check Your Internet Connection',
+                        context,
+                        toastPosition: GFToastPosition.BOTTOM,
+                      );
+                      setState(() {
+                        loader = false;
+                      });
+                      Navigator.pop(context);
 
-                  submitMockTest("back", displayTime);
+                      return;
+                    }
+
+                    submitMockTest("back", displayTime);
+                  } else {
+                    CourseProvider cp = Provider.of(context, listen: false);
+                    cp.addToRestartList();
+                    HiveHandler.addToRestartBox(cp.selectedMockId.toString(),cp.selectedAttemptNumer );
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  }
                 },
                 child: new Text('Yes'),
               ),
@@ -417,51 +430,74 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                         ),
                                       ],
                                     ),
-                                    StreamBuilder<int>(
-                                        stream: _stopWatchTimer.rawTime,
-                                        initialData: _stopWatchTimer.rawTime.value,
-                                        builder: (context, snap) {
-                                          if (snap.hasData) {
-                                            final value = snap.data;
-                                            displayTime =
-                                                StopWatchTimer.getDisplayTime(value, hours: true, milliSecond: false);
+                                    Column(
+                                      children: [
+                                        StreamBuilder<int>(
+                                            stream: _stopWatchTimer.rawTime,
+                                            initialData: _stopWatchTimer.rawTime.value,
+                                            builder: (context, snap) {
+                                              if (snap.hasData) {
+                                                final value = snap.data;
+                                                displayTime = StopWatchTimer.getDisplayTime(value,
+                                                    hours: true, milliSecond: false);
 
-                                            return Row(
-                                              children: [
-                                                InkWell(
-                                                  onTap: () {
-                                                    cp.resPauseTimer();
-                                                    if (_stopWatchTimer.isRunning) {
-                                                      _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
-                                                      // commingSoonDialog(context);
-                                                      showPausePopup();
-                                                    } else {
-                                                      _stopWatchTimer.onExecute.add(StopWatchExecute.start);
-                                                    }
-                                                  },
-                                                  child: Icon(
-                                                    cp.timerValue ? Icons.play_arrow : Icons.pause,
-                                                    size: width * (24 / 420),
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                SizedBox(width: 7),
-                                                Text(
-                                                  displayTime,
-                                                  style: TextStyle(
-                                                      fontFamily: 'Roboto Medium',
-                                                      fontSize: width * (16 / 420),
-                                                      color: Colors.white,
-                                                      letterSpacing: 0.3),
-                                                ),
-                                              ],
-                                            );
-                                          }
+                                                return Row(
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: () {
+                                                            cp.resPauseTimer();
+                                                            if (_stopWatchTimer.isRunning) {
+                                                              _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
+                                                              // commingSoonDialog(context);
+                                                              // showPausePopup();
+                                                            } else {
+                                                              _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+                                                            }
+                                                          },
+                                                          child: Icon(
+                                                            cp.timerValue ? Icons.play_arrow : Icons.pause,
+                                                            size: width * (24 / 420),
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                        // Text(
+                                                        //   "Pause Test",
+                                                        //   style: TextStyle(color: Colors.white),
+                                                        // )
+                                                      ],
+                                                    ),
+                                                    SizedBox(width: 7),
+                                                    Column(
+                                                      children: [
+                                                        Text(
+                                                          displayTime,
+                                                          style: TextStyle(
+                                                              fontFamily: 'Roboto Medium',
+                                                              fontSize: width * (16 / 420),
+                                                              color: Colors.white,
+                                                              letterSpacing: 0.3),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                );
+                                              }
 
-                                          return Center(
-                                            child: CircularProgressIndicator(),
-                                          );
-                                        }),
+                                              return Center(
+                                                child: CircularProgressIndicator(),
+                                              );
+                                            }),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        Text(
+                                          _stopWatchTimer.isRunning ? " Pause " : '   Restart ',
+                                          style: TextStyle(color: Colors.white, fontSize: 17),
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
@@ -961,7 +997,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                 begin: const FractionalOffset(0.0, 0.0),
                 end: const FractionalOffset(1.0, 0.0),
                 stops: [0.0, 1.0],
-                tileMode: TileMode.clamp)),
+                tileMode: TileMode.clamp)
+                ),
         child: questionLoader || context.watch<ProfileProvider>().subscriptionApiCalling
             ? Center(child: SizedBox(width: 20, height: 20, child: Center(child: CircularProgressIndicator.adaptive())))
             : Padding(

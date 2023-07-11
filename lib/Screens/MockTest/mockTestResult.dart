@@ -466,11 +466,17 @@ class _MockTestResultState extends State<MockTestResult> {
                         GestureDetector(
                           onTap: () => {
                             print("attemptId======$attemptId"),
+                            print("mocktestIdNew======$mocktestIdNew"),
+                            print("attemptId======$attemptId"),
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      ReviewMockTest(selectedId: mocktestIdNew, attemptData: attemptId)),
+                                  builder: (context) => ReviewMockTest(
+                                        selectedId: mocktestIdNew,
+                                        attemptData: attemptId,
+                                        domainName: "",
+                                        fromDetails: 0,
+                                      )),
                             ),
 
                             print("mocktestIdNew===$mocktestIdNew")

@@ -5,6 +5,7 @@ class AppColor {
   static const Color green = Color(0xff72a258);
   static const Color darkText = Color(0xff424b53);
   static const Color lightText = Color(0xff989d9e);
+  
 
   static LinearGradient appGradient = LinearGradient(colors: [
     Color(0xff4B5BE2),
