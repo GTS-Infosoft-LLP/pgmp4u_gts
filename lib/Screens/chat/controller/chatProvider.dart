@@ -248,6 +248,8 @@ class ChatProvider extends ChangeNotifier {
 
   void setReaction(ChatModel message, Reaction reaction) {
     // message.reaction = reaction;
+    FirebaseChatHandler.sendEmoji(
+        chatModel: message, groupId: "kpba3by8SqRI17Hx77t2", reaction: reaction, senderId: getUser().uid);
     notifyListeners();
   }
 }

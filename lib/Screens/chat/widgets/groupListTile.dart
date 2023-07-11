@@ -12,6 +12,7 @@ class GroupListTile extends StatelessWidget {
   DisscussionGropModel group;
 
   onTapOfGroup(BuildContext context) {
+    print("groupId: ${group.groupId}");
     // create messaging in user_chat
     Navigator.push(
         context,
