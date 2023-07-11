@@ -3,6 +3,7 @@ import 'package:pgmp4u/Screens/Pdf/controller/pdf_controller.dart';
 import 'package:pgmp4u/Screens/Pdf/model/pdf_list_model.dart';
 
 import 'package:pgmp4u/Screens/Pdf/screens/pdfViewer.dart';
+import 'package:pgmp4u/utils/app_color.dart';
 import 'package:provider/provider.dart';
 
 class PdfList extends StatefulWidget {
@@ -13,8 +14,6 @@ class PdfList extends StatefulWidget {
 }
 
 class _PdfListState extends State<PdfList> {
-
-
   @override
   void initState() {
     super.initState();
@@ -39,14 +38,14 @@ class _PdfListState extends State<PdfList> {
                       itemCount: pdfList.length,
                       separatorBuilder: (context, index) => Divider(),
                       itemBuilder: (context, index) {
-                        return _pdfListTile(pdfList[index]);
+                        return _pdfListTile(pdfList[index], index);
                       }),
         ],
       ),
     );
   }
 
-  Widget _pdfListTile(PdfModel pdfModel) {
+  Widget _pdfListTile(PdfModel pdfModel, int index) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
       child: InkWell(
@@ -67,8 +66,26 @@ class _PdfListState extends State<PdfList> {
               children: [
                 Container(
                   height: 60,
-                  width: 40,
-                  child: Image.asset('assets/pdf_icon.png'),
+                  width: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    // color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                    gradient: index % 2 == 0 ? AppColor.purpleGradient : AppColor.greenGradient,
+                    // gradient: LinearGradient(
+                    //     begin: Alignment.topLeft,
+                    //     end: Alignment.bottomRight,
+                    //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                  ),
+                  child: Center(
+                    child: CircleAvatar(
+                      radius: 14,
+                      backgroundColor: Colors.white,
+                      child: Text(
+                        "${index + 1}",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(
                   width: 10,

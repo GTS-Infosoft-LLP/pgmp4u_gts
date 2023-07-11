@@ -515,9 +515,7 @@ class _ProfileState extends State<Profile> {
                                       width: 10,
                                     ),
                                     InkWell(
-                                      onTap: (){
-                                        
-                                      },
+                                      onTap: () {},
                                       child: Container(
                                         height: 120,
                                         width: MediaQuery.of(context).size.width * .35,
@@ -552,6 +550,47 @@ class _ProfileState extends State<Profile> {
 
                                 SizedBox(
                                   height: 10,
+                                ),
+
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => PdfList()));
+                                    //Navigator.of(context)
+                                    //   .pushNamed('/settings');
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(bottom: 6),
+                                    padding: EdgeInsets.only(
+                                        top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                    color: Colors.white,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.picture_as_pdf,
+                                              size: width * (26 / 420),
+                                              color: _colorfromhex("#ABAFD1"),
+                                            ),
+                                            Text(
+                                              '   Pdf',
+                                              style: TextStyle(
+                                                fontFamily: 'Roboto Medium',
+                                                fontSize: width * (18 / 420),
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 20,
+                                          color: _colorfromhex("#ABAFD1"),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
 
                                 GestureDetector(

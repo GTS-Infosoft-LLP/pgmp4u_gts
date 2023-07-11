@@ -38,7 +38,7 @@ class HiveHandler {
   static const String MasterDataBox = "masterDataBox";
   static const String MasterDataKey = "masterDataKey";
 
-  static const String MockRestartBox = "mockRestartBox";
+  static const String MockRestartBoxKey = "mockRestartBox";
 
   static const String CourseBox = "courseBox";
   static const String CourseKey = "courseKey";
@@ -104,6 +104,8 @@ class HiveHandler {
     TestPMListBox = await Hive.openBox<String>(TestDataBox);
 
     mockAttempList = await Hive.openBox<String>(MockAttemptsBox);
+
+    mockRestartBox = await Hive.openBox<int>(MockRestartBoxKey);
 
     await Hive.openBox("deviceTokenBox");
 
@@ -360,7 +362,7 @@ class HiveHandler {
 
   static addToRestartBox(String mockId, int atemNum) {
     mockRestartBox.put(mockId, atemNum);
-    
+
     if (mockRestartBox.isNotEmpty) {
       print("===========added to box=========");
       print("mockRestartBox.get for key: $mockId = ${mockRestartBox.get(mockId)}");
@@ -368,26 +370,21 @@ class HiveHandler {
       print("===========box is empty=========");
     }
   }
+
   static removeFromRestartBox(String mockId) {
     // mockRestartBox.put(mockId, atemNum);
 
-    
     if (mockRestartBox.isNotEmpty) {
-
-      if(mockRestartBox.containsKey(mockId)){
+      if (mockRestartBox.containsKey(mockId)) {
         mockRestartBox.delete(mockId);
       }
-     
     } else {
       print("===========box is empty=========");
     }
   }
 
-
-
-
   static ValueListenable<Box<int>> getMockRestartListener() {
-    return Hive.box<int>(MockRestartBox).listenable() ?? '';
+    return Hive.box<int>(MockRestartBoxKey).listenable() ?? 0;
   }
 
   static addMasterData(String masterListResponse, {String keyName}) async {
