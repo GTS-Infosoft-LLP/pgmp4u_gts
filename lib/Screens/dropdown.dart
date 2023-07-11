@@ -39,7 +39,13 @@ class CustomDropDown<T> extends StatelessWidget {
           margin: const EdgeInsets.only(top: 16),
           decoration: BoxDecoration(
               boxShadow: const [BoxShadow(color: Colors.black26, offset: Offset(0, 0))],
-              color: Colors.white38,
+              // color: Colors.white54,
+              gradient: LinearGradient(
+                  colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
+                  begin: const FractionalOffset(0.0, 0.0),
+                  end: const FractionalOffset(1.0, 0.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp),
               borderRadius: BorderRadius.circular(28)),
           height: 56,
           width: width,
@@ -65,7 +71,7 @@ class CustomDropDown<T> extends StatelessWidget {
                             child: Text(
                               (value as DropDownModel).getOptionName(),
                               textAlign: TextAlign.left,
-                              style: TextStyle(color: Colors.blueAccent, fontSize: 15, fontWeight: FontWeight.bold),
+                              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
                             ),
                             decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black87))),
                             width: double.maxFinite,
@@ -79,7 +85,7 @@ class CustomDropDown<T> extends StatelessWidget {
               hint: Text(
                 selectText,
                 style: TextStyle(
-                    color: isGrey ? Colors.blueAccent : Colors.black,
+                    color: isGrey ? Colors.white : Colors.black,
                     fontSize: 15,
                     fontFamily: fontfamily,
                     fontWeight: FontWeight.bold),
@@ -100,6 +106,11 @@ class CustomDropDown<T> extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  _colorfromhex(String s) {
+    final hexCode = s.replaceAll('#', '');
+    return Color(int.parse('FF$hexCode', radix: 16));
   }
 }
 

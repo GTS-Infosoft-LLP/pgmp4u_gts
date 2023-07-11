@@ -10,6 +10,7 @@ import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
+import 'package:pgmp4u/utils/app_color.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'dart:convert' as convert;
@@ -18,6 +19,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../provider/profileProvider.dart';
 import '../../utils/user_object.dart';
+import '../MockTest/model/courseModel.dart';
+import '../dropdown.dart';
 import '../quesDayList.dart';
 import 'notifications.dart';
 
@@ -164,6 +167,58 @@ class _ProfileState extends State<Profile> {
     print("user name is : ${_user.name}");
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 18.0),
+        child: InkWell(
+          onTap: context.watch<ProfileProvider>().subscriptionApiCalling
+              ? null
+              : () async {
+                  bool isSub = context.read<ProfileProvider>().isChatSubscribed;
+
+                  print("isChatSubscribed ======= $isSub");
+
+                  if (isSub == null) {
+                    GFToast.showToast(
+                      "Something went wrong,please try again",
+                      context,
+                      toastPosition: GFToastPosition.BOTTOM,
+                    );
+                  }
+
+                  if (!isSub) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RandomPage(
+                                  index: 4,
+                                  price: context.read<ProfileProvider>().subsPrice.toString(),
+                                  categoryType: context.read<CourseProvider>().selectedMasterType,
+                                  categoryId: 0,
+                                )));
+                  } else {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => GroupListPage()));
+                  }
+                },
+          child: Container(
+              height: 55,
+              width: 55,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                      colors: [
+                        _colorfromhex("#3A47AD"),
+                        _colorfromhex("#5163F3"),
+                      ],
+                      begin: const FractionalOffset(0.0, 0.0),
+                      end: const FractionalOffset(1.0, 0.0),
+                      stops: [0.0, 1.0],
+                      tileMode: TileMode.clamp)),
+              child: Icon(
+                Icons.chat,
+                color: Colors.white,
+              )),
+        ),
+      ),
       body: Sizer(builder: (context, orientation, deviceType) {
         return Container(
           color: _colorfromhex("#FCFCFF"),
@@ -406,19 +461,98 @@ class _ProfileState extends State<Profile> {
                             margin: EdgeInsets.only(top: width * (50 / 800)),
                             child: Column(
                               children: [
-                                // Container(
-                                //   width: MediaQuery.of(context).size.width * .5,
-                                //   child: CustomDropDown<CourseDetails>(
-                                //       selectText: cp.selectedCourseName ?? "Select",
-                                //       itemList: cp.course ?? [],
-                                //       isEnable: true,
-                                //       title: "",
-                                //       value: null,
-                                //       onChange: (val) {
-                                //         print("val.course=========>${val.course}");
-                                //         cp.setSelectedCourseName(val.course);
-                                //       }),
-                                // ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width * .73,
+                                  child: CustomDropDown<CourseDetails>(
+                                      selectText: cp.selectedCourseName ?? "Select",
+                                      itemList: cp.course ?? [],
+                                      isEnable: true,
+                                      title: "",
+                                      value: null,
+                                      onChange: (val) {
+                                        print("val.course=========>${val.course}");
+                                        cp.setSelectedCourseName(val.course);
+                                        cp.setSelectedCourseId(val.id);
+                                      }),
+                                ),
+
+                                SizedBox(
+                                  height: 15,
+                                ),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 120,
+                                      width: MediaQuery.of(context).size.width * .35,
+                                      decoration: BoxDecoration(
+                                        color: AppColor.green,
+                                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            "Mock Test",
+                                            style: TextStyle(
+                                                fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
+                                          ),
+                                          Text(
+                                            "00.00",
+                                            style: TextStyle(
+                                                fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 25),
+                                          ),
+                                          Text(
+                                            "Average Score",
+                                            style: TextStyle(
+                                                fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: (){
+                                        
+                                      },
+                                      child: Container(
+                                        height: 120,
+                                        width: MediaQuery.of(context).size.width * .35,
+                                        decoration: BoxDecoration(
+                                          color: AppColor.purpule,
+                                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              "Exam Date",
+                                              style: TextStyle(
+                                                  fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
+                                            ),
+                                            Text(
+                                              "0",
+                                              style: TextStyle(
+                                                  fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 25),
+                                            ),
+                                            Text(
+                                              "Days Left",
+                                              style: TextStyle(
+                                                  fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+
+                                SizedBox(
+                                  height: 10,
+                                ),
 
                                 GestureDetector(
                                   onTap: () {
@@ -443,47 +577,6 @@ class _ProfileState extends State<Profile> {
                                             ),
                                             Text(
                                               '   Settings',
-                                              style: TextStyle(
-                                                fontFamily: 'Roboto Medium',
-                                                fontSize: width * (18 / 420),
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Icon(
-                                          Icons.arrow_forward_ios,
-                                          size: 20,
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                                    await prefs.clear();
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(bottom: 6),
-                                    padding: EdgeInsets.only(
-                                        top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                                    color: Colors.white,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.logout,
-                                              size: width * (26 / 420),
-                                              color: _colorfromhex("#ABAFD1"),
-                                            ),
-                                            Text(
-                                              '   Log Out',
                                               style: TextStyle(
                                                 fontFamily: 'Roboto Medium',
                                                 fontSize: width * (18 / 420),
@@ -603,7 +696,7 @@ class _ProfileState extends State<Profile> {
                                               color: _colorfromhex("#ABAFD1"),
                                             ),
                                             Text(
-                                              '   Notifications',
+                                              '   Announcements',
                                               style: TextStyle(
                                                 fontFamily: 'Roboto Medium',
                                                 fontSize: width * (18 / 420),
@@ -623,37 +716,12 @@ class _ProfileState extends State<Profile> {
                                 ),
 
                                 GestureDetector(
-                                  onTap: context.watch<ProfileProvider>().subscriptionApiCalling
-                                      ? null
-                                      : () async {
-                                          bool isSub = context.read<ProfileProvider>().isChatSubscribed;
-
-                                          print("isChatSubscribed ======= $isSub");
-
-                                          if (isSub == null) {
-                                            GFToast.showToast(
-                                              "Something went wrong,please try again",
-                                              context,
-                                              toastPosition: GFToastPosition.BOTTOM,
-                                            );
-                                          }
-
-                                          if (!isSub) {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => RandomPage(
-                                                          index: 4,
-                                                          price: context.read<ProfileProvider>().subsPrice.toString(),
-                                                          categoryType:
-                                                              context.read<CourseProvider>().selectedMasterType,
-                                                          categoryId: 0,
-                                                        )));
-                                          } else {
-                                            Navigator.push(
-                                                context, MaterialPageRoute(builder: (context) => GroupListPage()));
-                                          }
-                                        },
+                                  onTap: () async {
+                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    await prefs.clear();
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+                                  },
                                   child: Container(
                                     margin: EdgeInsets.only(bottom: 6),
                                     padding: EdgeInsets.only(
@@ -665,18 +733,16 @@ class _ProfileState extends State<Profile> {
                                         Row(
                                           children: [
                                             Icon(
-                                              Icons.chat,
+                                              Icons.logout,
                                               size: width * (26 / 420),
                                               color: _colorfromhex("#ABAFD1"),
                                             ),
                                             Text(
-                                              '   Chat',
+                                              '   Log Out',
                                               style: TextStyle(
                                                 fontFamily: 'Roboto Medium',
                                                 fontSize: width * (18 / 420),
-                                                color: context.watch<ProfileProvider>().subscriptionApiCalling
-                                                    ? Colors.black54
-                                                    : Colors.black,
+                                                color: Colors.black,
                                               ),
                                             ),
                                           ],
@@ -690,6 +756,75 @@ class _ProfileState extends State<Profile> {
                                     ),
                                   ),
                                 ),
+
+                                // GestureDetector(
+                                //   onTap: context.watch<ProfileProvider>().subscriptionApiCalling
+                                //       ? null
+                                //       : () async {
+                                //           bool isSub = context.read<ProfileProvider>().isChatSubscribed;
+
+                                //           print("isChatSubscribed ======= $isSub");
+
+                                //           if (isSub == null) {
+                                //             GFToast.showToast(
+                                //               "Something went wrong,please try again",
+                                //               context,
+                                //               toastPosition: GFToastPosition.BOTTOM,
+                                //             );
+                                //           }
+
+                                //           if (!isSub) {
+                                //             Navigator.push(
+                                //                 context,
+                                //                 MaterialPageRoute(
+                                //                     builder: (context) => RandomPage(
+                                //                           index: 4,
+                                //                           price: context.read<ProfileProvider>().subsPrice.toString(),
+                                //                           categoryType:
+                                //                               context.read<CourseProvider>().selectedMasterType,
+                                //                           categoryId: 0,
+                                //                         )));
+                                //           } else {
+                                //             Navigator.push(
+                                //                 context, MaterialPageRoute(builder: (context) => GroupListPage()));
+                                //           }
+                                //         },
+                                //   child: Container(
+                                //     margin: EdgeInsets.only(bottom: 6),
+                                //     padding: EdgeInsets.only(
+                                //         top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                //     color: Colors.white,
+                                //     child: Row(
+                                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                //       children: [
+                                //         Row(
+                                //           children: [
+                                //             Icon(
+                                //               Icons.chat,
+                                //               size: width * (26 / 420),
+                                //               color: _colorfromhex("#ABAFD1"),
+                                //             ),
+                                //             Text(
+                                //               '   Chat',
+                                //               style: TextStyle(
+                                //                 fontFamily: 'Roboto Medium',
+                                //                 fontSize: width * (18 / 420),
+                                //                 color: context.watch<ProfileProvider>().subscriptionApiCalling
+                                //                     ? Colors.black54
+                                //                     : Colors.black,
+                                //               ),
+                                //             ),
+                                //           ],
+                                //         ),
+                                //         Icon(
+                                //           Icons.arrow_forward_ios,
+                                //           size: 20,
+                                //           color: _colorfromhex("#ABAFD1"),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                           );

@@ -161,8 +161,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
               ),
               apiLoader
                   ? Center(child: CircularProgressIndicator.adaptive())
-                  : Consumer<CourseProvider>(builder: (context, cp, child) {
-                      return ValueListenableBuilder<Box<String>>(
+                  : Consumer<CourseProvider>(builder: (context, cp, child) {     
+                          return ValueListenableBuilder<Box<String>>(
                           valueListenable: HiveHandler.getMockTestAttemptListener(),
                           builder: (context, value, child) {
                             Map mockAttempt = {};
@@ -218,7 +218,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              detailsofMockAttempt.test_name,
+                                              detailsofMockAttempt.test_name + " Attempt Summary",
 
                                               // mockData.detailsofMock.test_name ?? "",
                                               //responseData["test_name"],
@@ -241,8 +241,14 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                   print("cp.aviAttempts=========${cp.aviAttempts[index].percentage}");
                                                   return InkWell(
                                                     onTap: () {
+
+                                                        cp.setSelectedAttemptNumer(cp.aviAttempts[index].attempt);
+
                                                       {
-                                                        if (title.attempted_date == null) {
+                                                        print(
+                                                            "cp.aviAttempts[index]=======${cp.aviAttempts[index].attempt}");
+                                                        if (cp.aviAttempts[index].attempted_date == null &&
+                                                            cp.aviAttempts[index].tobeAttempted == 1) {
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
@@ -253,6 +259,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                     //     "test_name"],
                                                                     attempt: cp.selectedMokAtmptCnt),
                                                               ));
+                                                        } else if (cp.aviAttempts[index].attempted_date == null &&
+                                                            cp.aviAttempts[index].tobeAttempted == 0) {
                                                         } else {
                                                           Navigator.push(
                                                               context,
@@ -260,7 +268,6 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                 builder: (context) => MockTestDetails(
                                                                   selectedId: selectedIdNew,
                                                                   attempt: index + 1,
-                                                                  atmptCount: index + 1,
                                                                 ),
                                                               ));
                                                         }
@@ -308,8 +315,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                         children: [
                                                                           Text(
                                                                             cp.aviAttempts[index].attempted_date == null
-                                                                                ? 'Attempt ${cp.selectedMokAtmptCnt + 1}'
-                                                                                : "Attemped",
+                                                                                ? 'Attempt ${index + 1}'
+                                                                                : "Attempted",
                                                                             style: TextStyle(
                                                                                 fontFamily: 'Roboto Medium',
                                                                                 fontSize: width * (18 / 420),
@@ -334,93 +341,124 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                     ),
                                                                   ],
                                                                 ),
-                                                                Column(
-                                                                  children: [
-                                                                    Container(
-                                                                      height: 40,
-                                                                      decoration: BoxDecoration(
-                                                                          color: _colorfromhex("#3A47AD"),
-                                                                          borderRadius: BorderRadius.circular(30.0)),
-                                                                      child: OutlinedButton(
-                                                                        onPressed: null,
-                                                                        style: ButtonStyle(
-                                                                          shape: MaterialStateProperty.all(
-                                                                              RoundedRectangleBorder(
-                                                                                  borderRadius:
-                                                                                      BorderRadius.circular(30.0))),
-                                                                        ),
-                                                                        child: GestureDetector(
-                                                                          onTap: () => {
-                                                                            {
-                                                                              print(
-                                                                                  "===== cp.selectedMokAtmptCnt: ${cp.selectedMokAtmptCnt}: widget.attemptLength ${widget.attemptLength}"),
-                                                                              if (cp.selectedMokAtmptCnt <
-                                                                                  widget.attemptLength)
+                                                                ValueListenableBuilder(
+                                                                 valueListenable: HiveHandler.getMockRestartListener(),
+                                                                  builder: (context,value,child) {
+                                                                    return Column(
+                                                                      children: [
+                                                                        Container(
+                                                                          height: 40,
+                                                                          decoration: BoxDecoration(
+                                                                              color:
+                                                                                  // cp.aviAttempts[index].attempted_date == null &&
+                                                                                  cp.aviAttempts[index].tobeAttempted == 1
+                                                                                      ? _colorfromhex("#3A47AD")
+                                                                                      : cp.aviAttempts[index]
+                                                                                                  .attempted_date !=
+                                                                                              null
+                                                                                          ? Color(0xff3F9FC9)
+                                                                                          : Colors.grey,
+                                                                              borderRadius: BorderRadius.circular(30.0)),
+                                                                          child: OutlinedButton(
+                                                                            onPressed: null,
+                                                                            style: ButtonStyle(
+                                                                              shape: MaterialStateProperty.all(
+                                                                                  RoundedRectangleBorder(
+                                                                                      borderRadius:
+                                                                                          BorderRadius.circular(30.0))),
+                                                                            ),
+                                                                            child: GestureDetector(
+                                                                              onTap: () {
+                                                                                print(
+                                                                                    "cp.aviAttempts[index]======${cp.aviAttempts[index].attempted_date}");
+                                                                                print(
+                                                                                    "cp.aviAttempts[index]======${cp.aviAttempts[index].tobeAttempted}");
                                                                                 {
-                                                                                  Navigator.push(
-                                                                                      context,
-                                                                                      MaterialPageRoute(
-                                                                                        builder: (context) =>
-                                                                                            MockTestQuestions(
-                                                                                                selectedId:
-                                                                                                    selectedIdNew,
-                                                                                                mockName:
-                                                                                                    detailsofMockAttempt
-                                                                                                        .test_name,
-                                                                                                // responseData[
-                                                                                                //     "test_name"],
-                                                                                                attempt: cp
-                                                                                                    .selectedMokAtmptCnt),
-                                                                                      )),
+                                                                                  print(
+                                                                                      "===== cp.selectedMokAtmptCnt: ${cp.selectedMokAtmptCnt}: widget.attemptLength ${widget.attemptLength}");
+                                                                                  // if (cp.selectedMokAtmptCnt <
+                                                                                  //     widget.attemptLength)
+                                                                                  if (cp.aviAttempts[index]
+                                                                                              .attempted_date ==
+                                                                                          null &&
+                                                                                      cp.aviAttempts[index].tobeAttempted ==
+                                                                                          1) {
+                                                                                    Navigator.push(
+                                                                                        context,
+                                                                                        MaterialPageRoute(
+                                                                                          builder: (context) =>
+                                                                                              MockTestQuestions(
+                                                                                                  selectedId: selectedIdNew,
+                                                                                                  mockName:
+                                                                                                      detailsofMockAttempt
+                                                                                                          .test_name,
+                                                                                                  // responseData[
+                                                                                                  //     "test_name"],
+                                                                                                  attempt: cp
+                                                                                                      .selectedMokAtmptCnt),
+                                                                                        ));
+                                                                                  } else if (cp.aviAttempts[index]
+                                                                                              .attempted_date ==
+                                                                                          null &&
+                                                                                      cp.aviAttempts[index].tobeAttempted ==
+                                                                                          0) {
+                                                                                  } else {
+                                                                                    Navigator.push(
+                                                                                        context,
+                                                                                        MaterialPageRoute(
+                                                                                          builder: (context) =>
+                                                                                              MockTestDetails(
+                                                                                            selectedId: selectedIdNew,
+                                                                                            attempt: index + 1,
+                                                                                          ),
+                                                                                        ));
+                                                                                  }
                                                                                 }
-                                                                              else
-                                                                                {
-                                                                                  Navigator.push(
-                                                                                      context,
-                                                                                      MaterialPageRoute(
-                                                                                        builder: (context) =>
-                                                                                            MockTestDetails(
-                                                                                          selectedId: selectedIdNew,
-                                                                                          attempt: index + 1,
-                                                                                        ),
-                                                                                      )),
-                                                                                }
-                                                                            }
-                                                                          },
-                                                                          child: Text(
-                                                                            // title.attempted_date  == null
-                                                                            cp.aviAttempts[index].attempted_date == null
-                                                                                // widget.attemptCnt < 5
-
-                                                                                ? '     Start     '
-                                                                                : "More Details",
-                                                                            style: TextStyle(
-                                                                                fontFamily: 'Roboto Regular',
-                                                                                fontSize: 13,
-                                                                                color: Colors.white,
-                                                                                letterSpacing: 0.3),
+                                                                              },
+                                                                              child: Text(
+                                                                            //  cp.mokRestartList.contains(cp.selectedMockId )?
+                                                                                cp.aviAttempts[index].attempted_date ==
+                                                                                            null &&
+                                                                                        cp.aviAttempts[index]
+                                                                                                .tobeAttempted ==
+                                                                                            1 &&
+                                                                                        cp.restartList.contains(
+                                                                                            cp.aviAttempts[index].attempt)
+                                                                                    ? 'Restart'
+                                                                                    : cp.aviAttempts[index]
+                                                                                                .attempted_date !=
+                                                                                            null
+                                                                                        ? "More Details"
+                                                                                        : 'Start',
+                                                                                style: TextStyle(
+                                                                                    fontFamily: 'Roboto Regular',
+                                                                                    fontSize: 13,
+                                                                                    color: Colors.white,
+                                                                                    letterSpacing: 0.3),
+                                                                              ),
+                                                                            ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: 5,
-                                                                    ),
-                                                                    InkWell(
-                                                                      onTap: () {
-                                                                        Navigator.push(
-                                                                            context,
-                                                                            MaterialPageRoute(
-                                                                                builder: (context) => RandomPage(
-                                                                                      index: 3,
-                                                                                      price: detailsofMockAttempt.price
-                                                                                          .toString(),
-                                                                                    )));
-                                                                      },
-                                                                      child: Text(
-                                                                          detailsofMockAttempt.premium == 1 ? "" : ""),
-                                                                    )
-                                                                  ],
+                                                                        SizedBox(
+                                                                          height: 5,
+                                                                        ),
+                                                                        InkWell(
+                                                                          onTap: () {
+                                                                            Navigator.push(
+                                                                                context,
+                                                                                MaterialPageRoute(
+                                                                                    builder: (context) => RandomPage(
+                                                                                          index: 3,
+                                                                                          price: detailsofMockAttempt.price
+                                                                                              .toString(),
+                                                                                        )));
+                                                                          },
+                                                                          child: Text(
+                                                                              detailsofMockAttempt.premium == 1 ? "" : ""),
+                                                                        )
+                                                                      ],
+                                                                    );
+                                                                  }
                                                                 )
                                                               ],
                                                             ),

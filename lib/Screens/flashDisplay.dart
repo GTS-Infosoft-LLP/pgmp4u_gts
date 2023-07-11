@@ -223,6 +223,8 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                                 child: SingleChildScrollView(
                                                                   child: Html(
                                                                     data: storedFlash[index].description,
+                                                                    
+                                                                    
                                                                     style: {
                                                                       //   "body": Style(
                                                                       //     // padding: HtmlPaddings(top: HtmlPadding(5)),

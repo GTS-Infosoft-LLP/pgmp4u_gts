@@ -220,6 +220,7 @@ class _MockTestState extends State<MockTest> {
                                                     await courseProvider.getTestDetails(storedTestData[index].id);
                                                     PracticeTextProvider pracTestProvi =
                                                         Provider.of(context, listen: false);
+                                                        
 
                                                     pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
                                                     if (widget.testType == "Practice Test") {
@@ -241,6 +242,7 @@ class _MockTestState extends State<MockTest> {
                                                       });
                                                     } else {
                                                       CourseProvider cp = Provider.of(context, listen: false);
+                                                      cp.setSelectedMockId(storedTestData[index].id);
                                                       sucval = await cp.valOfSuccess;
                                                       print("sucvalsakdka=======$sucval");
                                                       if (sucval == false) {

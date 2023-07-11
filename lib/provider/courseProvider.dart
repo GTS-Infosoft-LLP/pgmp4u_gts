@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../Models/mockListmodel.dart';
 import '../Models/mockquestionanswermodel.dart';
+import '../Models/restartTestModel.dart';
 import '../Screens/MockTest/model/courseModel.dart';
 import '../Screens/MockTest/model/flashCardModel.dart';
 import '../Screens/MockTest/model/flashCateModel.dart';
@@ -36,8 +37,24 @@ class CourseProvider extends ChangeNotifier {
   List<TestDataDetails> testData = [];
 
   List<AvailableAttempts> aviAttempts = [];
+  List<restartMockModel> mokRestartList = [restartMockModel(MokId: 6, attempptNum: 3)];
 
-  ///
+  //  mokRestartList.add();
+
+  addToRestartList() {
+    print("selectedMockId======${selectedMockId}");
+    print("selectedMockId======${selectedAttemptNumer}");
+    mokRestartList.add(restartMockModel(MokId: selectedMockId, attempptNum: selectedAttemptNumer));
+  }
+
+  removeFromRestartList() {
+    for (int i = 0; i < mokRestartList.length; i++) {
+      if (mokRestartList[i].MokId == selectedMockId && mokRestartList[i].attempptNum == selectedAttemptNumer) {
+        mokRestartList.removeAt(i);
+      }
+      print("mokRestartList======$mokRestartList");
+    }
+  }
 
   int firstCourse = 0;
   int firstMaster = 0;
@@ -55,6 +72,8 @@ class CourseProvider extends ChangeNotifier {
   String selectedCourseName;
 
   int checkInternet = 0;
+
+  List<Map> restartList = [];
 
   setSelectedCourseName(String val) {
     selectedCourseName = val;
@@ -821,6 +840,18 @@ class CourseProvider extends ChangeNotifier {
 
   resPauseTimer() {
     timerValue = !timerValue;
+    notifyListeners();
+  }
+
+  int selectedAttemptNumer;
+  void setSelectedAttemptNumer(int attempt) {
+    selectedAttemptNumer = attempt;
+    notifyListeners();
+  }
+
+  int selectedMockId;
+  void setSelectedMockId(int id) {
+    selectedMockId = id;
     notifyListeners();
   }
 }

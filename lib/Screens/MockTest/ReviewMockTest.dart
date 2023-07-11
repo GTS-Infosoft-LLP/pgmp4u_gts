@@ -39,6 +39,9 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
   String stringResponse;
   List<Data> listResponse;
   ReviewMokeText mapResponse;
+
+  List<int> yourAnswer;
+  List<int> correctAnswer;
   @override
   var currentIndex;
 
@@ -151,6 +154,18 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
     List<int> _currentAnserIndex = [];
     int _currentYourAnserIndex = 0;
     final arguments = ModalRoute.of(context).settings.arguments as Map;
+    if (listResponse != null) {
+      if (listResponse.isNotEmpty) {
+        yourAnswer = (listResponse[_quetionNo].youranswer);
+
+        correctAnswer = mapResponse.data[_quetionNo].question.rightAnswer;
+        print("yourAnswer>>><<<<>>>>><<<<<<<<<$yourAnswer");
+        print("correctAnswer>>><<<<>>>>><<<<<<<<<$correctAnswer");
+
+        CheckAllAnsers(yourAnswer, correctAnswer);
+      }
+    }
+
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -186,13 +201,17 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                     color: Colors.white,
                                   ),
                                 ),
-                                Text(
-                                  '  Review',
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto Medium',
-                                      fontSize: width * (18 / 420),
-                                      color: Colors.white,
-                                      letterSpacing: 0.3),
+                                Container(
+                                  width: MediaQuery.of(context).size.width * .82,
+                                  // color: Colors.amber,
+                                  child: Text(
+                                    widget.fromDetails == 1 ? widget.domainName : '  Review',
+                                    style: TextStyle(
+                                        fontFamily: 'Roboto Medium',
+                                        fontSize: width * (18 / 420),
+                                        color: Colors.white,
+                                        letterSpacing: 0.3),
+                                  ),
                                 ),
                               ],
                             ),
@@ -263,6 +282,8 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
 
                                                               realAnswer =
                                                                   mapResponse.data[_quetionNo].question.rightAnswer;
+                                                              // print("selectedAnswer======${selectedAnswer}");
+                                                              // print("");
 
                                                               //  mapResponse[
                                                               //                 "data"]
@@ -396,39 +417,49 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                   return GestureDetector(
                                                     onTap: () => {
                                                       setState(() {
-                                                        selectedAnswer.add(title.id);
-                                                        realAnswer = listResponse[_quetionNo].question.rightAnswer;
+                                                        // selectedAnswer.add(title.id);
+                                                        // realAnswer = listResponse[_quetionNo].question.rightAnswer;
                                                         //     ["Question"]
                                                         // ["right_answer"];
                                                       })
                                                     },
                                                     child: Container(
-                                                      color: selectedAnswer.contains(title.id) &&
-                                                              listResponse[_quetionNo]
-                                                                  .question
-                                                                  .rightAnswer
-                                                                  .contains(selectedAnswer)
+                                                      color: correctAnswer.contains(title.id) &&
+                                                              yourAnswer.contains(title.id)
                                                           ? _colorfromhex("#E6F7E8")
-                                                          : selectedAnswer.contains(title.id) &&
-                                                                  !listResponse[_quetionNo]
-                                                                      .question
-                                                                      .rightAnswer
-                                                                      .contains(selectedAnswer)
-                                                              //     ["Question"][
-                                                              // "right_answer"] !=
-
+                                                          : yourAnswer.contains(title.id) &&
+                                                                  !correctAnswer.contains(title.id)
                                                               ? _colorfromhex("#FFF6F6")
-                                                              : selectedAnswer != null &&
-                                                                      !listResponse[_quetionNo]
-                                                                          .question
-                                                                          .rightAnswer
-                                                                          .contains(selectedAnswer) &&
-                                                                      listResponse[_quetionNo]
-                                                                          .question
-                                                                          .rightAnswer
-                                                                          .contains(title.id)
-                                                                  ? _colorfromhex("#E6F7E7")
+                                                              : correctAnswer.contains(title.id) &&
+                                                                      !yourAnswer.contains(title.id)
+                                                                  ? _colorfromhex("#E6F7E8")
                                                                   : Colors.white,
+                                                      // color: selectedAnswer.contains(title.id) &&
+                                                      //         listResponse[_quetionNo]
+                                                      //             .question
+                                                      //             .rightAnswer
+                                                      //             .contains(selectedAnswer)
+                                                      //     ? _colorfromhex("#E6F7E8")
+                                                      //     : selectedAnswer.contains(title.id) &&
+                                                      //             !listResponse[_quetionNo]
+                                                      //                 .question
+                                                      //                 .rightAnswer
+                                                      //                 .contains(selectedAnswer)
+                                                      //         //     ["Question"][
+                                                      //         // "right_answer"] !=
+
+                                                      //         ? _colorfromhex("#FFF6F6")
+                                                      //         : selectedAnswer != null &&
+                                                      //                 !listResponse[_quetionNo]
+                                                      //                     .question
+                                                      //                     .rightAnswer
+                                                      //                     .contains(selectedAnswer) &&
+                                                      //                 listResponse[_quetionNo]
+                                                      //                     .question
+                                                      //                     .rightAnswer
+                                                      //                     .contains(title.id)
+                                                      //             ? _colorfromhex("#E6F7E7")
+                                                      //             : Colors.white,
                                                       margin: EdgeInsets.only(top: height * (21 / 800)),
                                                       padding: EdgeInsets.only(
                                                           top: 13,
@@ -441,34 +472,45 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                             width: width * (25 / 420),
                                                             height: width * 25 / 420,
                                                             decoration: BoxDecoration(
-                                                                borderRadius: BorderRadius.circular(
-                                                                  width * (25 / 420),
-                                                                ),
-                                                                color: selectedAnswer.contains(title.id) &&
-                                                                        listResponse[_quetionNo]
-                                                                            .question
-                                                                            .rightAnswer
-                                                                            .contains(selectedAnswer)
-                                                                    ? _colorfromhex("#04AE0B")
-                                                                    : selectedAnswer.contains(title.id) &&
-                                                                            !listResponse[_quetionNo]
-                                                                                .question
-                                                                                .rightAnswer
-                                                                                .contains(selectedAnswer)
-                                                                        // ["Question"]["right_answer"] !=
+                                                              borderRadius: BorderRadius.circular(
+                                                                width * (25 / 420),
+                                                              ),
+                                                              color: correctAnswer.contains(title.id) &&
+                                                                      yourAnswer.contains(title.id)
+                                                                  ? _colorfromhex("#04AE0B")
+                                                                  : yourAnswer.contains(title.id) &&
+                                                                          !correctAnswer.contains(title.id)
+                                                                      ? _colorfromhex("#FF0000")
+                                                                      : correctAnswer.contains(title.id) &&
+                                                                              !yourAnswer.contains(title.id)
+                                                                          ? _colorfromhex("#04AE0B")
+                                                                          : Colors.white,
+                                                              // selectedAnswer.contains(title.id) &&
+                                                              //         listResponse[_quetionNo]
+                                                              //             .question
+                                                              //             .rightAnswer
+                                                              //             .contains(selectedAnswer)
+                                                              //     ? _colorfromhex("#04AE0B")
+                                                              //     : selectedAnswer.contains(title.id) &&
+                                                              //             !listResponse[_quetionNo]
+                                                              //                 .question
+                                                              //                 .rightAnswer
+                                                              //                 .contains(selectedAnswer)
+                                                              //         // ["Question"]["right_answer"] !=
 
-                                                                        ? _colorfromhex("#FF0000")
-                                                                        : selectedAnswer != null &&
-                                                                                !listResponse[_quetionNo]
-                                                                                    .question
-                                                                                    .rightAnswer
-                                                                                    .contains(selectedAnswer) &&
-                                                                                listResponse[_quetionNo]
-                                                                                    .question
-                                                                                    .rightAnswer
-                                                                                    .contains(title.id)
-                                                                            ? _colorfromhex("#04AE0B")
-                                                                            : Colors.white),
+                                                              //         ? _colorfromhex("#FF0000")
+                                                              //         : selectedAnswer != null &&
+                                                              //                 !listResponse[_quetionNo]
+                                                              //                     .question
+                                                              //                     .rightAnswer
+                                                              //                     .contains(selectedAnswer) &&
+                                                              //                 listResponse[_quetionNo]
+                                                              //                     .question
+                                                              //                     .rightAnswer
+                                                              //                     .contains(title.id)
+                                                              //             ? _colorfromhex("#04AE0B")
+                                                              //             : Colors.white
+                                                            ),
                                                             child: Center(
                                                               child: Text(
                                                                 index == 0
@@ -638,15 +680,26 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                   ],
                 ),
               ),
-              Positioned(
-                top: 100,
-                left: width / 2.5,
-                child: selectedAnswer == null
-                    ? Text('')
-                    : realAnswer == selectedAnswer
-                        ? Text('data')
-                        : Image.asset('assets/smiley-sad1.png'),
-              )
+              isListSame == 1
+                  ? Positioned(
+                      top: 80,
+                      left: width / 2.9,
+                      child: Container(
+                        width: 110,
+                        height: 110,
+                        child: Image.asset('assets/smile.png'),
+                      ))
+                  : isListSame == 0
+                      ? Positioned(
+                          top: 100,
+                          left: width / 2.5,
+                          child: selectedAnswer == null
+                              ? Text('')
+                              : realAnswer == selectedAnswer
+                                  ? Text('data')
+                                  : Image.asset('assets/smiley-sad1.png'),
+                        )
+                      : SizedBox()
             ],
           ),
         ),
@@ -795,5 +848,27 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
       returnWidget = SizedBox();
     }
     return returnWidget;
+  }
+
+  // bool isListSame = true;
+  int isListSame = 2;
+  void CheckAllAnsers(List<int> yourAnswer, List<int> correctAnswer) {
+    isListSame = 1;
+    yourAnswer.sort();
+    correctAnswer.sort();
+    if (yourAnswer.length == correctAnswer.length) {
+      for (int i = 0; i < yourAnswer.length; i++) {
+        if (yourAnswer[i] == (correctAnswer[i])) {
+        } else {
+          isListSame = 0;
+          break;
+        }
+      }
+      if (isListSame == 1) {
+        print("same are both the lkstssss");
+      } else {
+        print("  list are not same are both the lkstssss");
+      }
+    }
   }
 }
