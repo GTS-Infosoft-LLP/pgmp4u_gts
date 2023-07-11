@@ -509,7 +509,7 @@ class _ProfileState extends State<Profile> {
                                                   fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
                                             ),
                                             Text(
-                                              pp.dayDiff == "NaN" ? "0.0" : pp.dayDiff,
+                                              pp.dayDiff == "NaN" ? "0.0%" : pp.dayDiff + "%",
                                               style: TextStyle(
                                                   fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 25),
                                             ),
@@ -526,18 +526,23 @@ class _ProfileState extends State<Profile> {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          DatePicker.showDatePicker(context, minTime: DateTime.now())
-                                              .then((value) async {
-                                            print("valueee====$value");
-                                            print("djjhdsjfh====${value.toString().split(" ")[0]}");
-                                            examDate = value.toString().split(" ")[0];
+                                          ProfileProvider pp = Provider.of(context, listen: false);
+                                          print("pp.dayDiff========${pp.dayDiff}");
+                                          if (pp.dayDiff != '0') {
+                                          } else {
+                                            DatePicker.showDatePicker(context, minTime: DateTime.now())
+                                                .then((value) async {
+                                              print("valueee====$value");
+                                              print("djjhdsjfh====${value.toString().split(" ")[0]}");
+                                              examDate = value.toString().split(" ")[0];
 
-                                            if (examDate.isNotEmpty) {
-                                              ProfileProvider pp = Provider.of(context, listen: false);
-                                              await pp.setReminder("", examDate, cp.selectedCourseId, 2);
-                                              pp.getReminder(cp.selectedCourseId);
-                                            }
-                                          });
+                                              if (examDate.isNotEmpty) {
+                                                ProfileProvider pp = Provider.of(context, listen: false);
+                                                await pp.setReminder("", examDate, cp.selectedCourseId, 2);
+                                                pp.getReminder(cp.selectedCourseId);
+                                              }
+                                            });
+                                          }
                                         },
                                         child: Container(
                                           height: 120,
