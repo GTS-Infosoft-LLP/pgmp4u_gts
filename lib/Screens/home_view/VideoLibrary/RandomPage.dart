@@ -130,7 +130,19 @@ class _RandomPageState extends State<RandomPage> {
                                                     color: _colorfromhex("#3D4AB4"),
                                                     letterSpacing: 0.3),
                                               )
-                                            : Text(
+                                            :
+                                            
+                                            widget.index == 5
+                                            ? Text(
+                                                'Get 1 year Access to PTT',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontFamily: 'Roboto Bold',
+                                                    fontSize: width * (30 / 420),
+                                                    color: _colorfromhex("#3D4AB4"),
+                                                    letterSpacing: 0.3),
+                                              ) :
+                                             Text(
                                                 'Get 1 year Access to Pgmp Question of the day',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(

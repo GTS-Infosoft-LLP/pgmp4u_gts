@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import '../Models/mockListmodel.dart';
 import '../Models/mockquestionanswermodel.dart';
 import '../Models/pptCateModel.dart';
+import '../Models/pptDetailsModel.dart';
 import '../Screens/MockTest/model/courseModel.dart';
 import '../Screens/MockTest/model/flashCardModel.dart';
 import '../Screens/MockTest/model/flashCateModel.dart';
@@ -39,6 +40,7 @@ class CourseProvider extends ChangeNotifier {
   List<AvailableAttempts> aviAttempts = [];
 
   List<PPTCateDetails> pptCategoryList = [];
+  List<PPTDataDetails> pptDataList = [];
 
   int firstCourse = 0;
   int firstMaster = 0;
@@ -100,6 +102,12 @@ class CourseProvider extends ChangeNotifier {
   bool masterDataApiCall = false;
   bool flashCateDataApiCall = false;
   bool videoListApiCall = false;
+  bool pptDataListApiCall = false;
+
+  updatePPTDataListApiCall(bool val) {
+    pptDataListApiCall = val;
+    notifyListeners();
+  }
 
   updatevideoListApiCall(bool val) {
     videoListApiCall = val;
@@ -113,6 +121,69 @@ class CourseProvider extends ChangeNotifier {
 
   updateFlashCateDataApiCall(bool val) {
     flashCateDataApiCall = val;
+    notifyListeners();
+  }
+
+  //pptDataList
+
+  var successValuePPT;
+  Future<void> getPpt(int id) async {
+    successValuePPT = true;
+    updatePPTDataListApiCall(true);
+    print("callinggg this function");
+    pptDataList = [];
+    String stringValue = prefs.getString('token');
+
+    print("token valued===$stringValue");
+    var request = {"id": id};
+    try {
+      var response = await http.post(
+        Uri.parse(GET_PPT),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
+      print("response.statusCode===${response.body}");
+      print("response.statusCode===${response.statusCode}");
+
+      var resDDo = json.decode(response.body);
+      var resStatus = (resDDo["status"]);
+      if (response.statusCode == 400) {
+        updatePPTDataListApiCall(false);
+        print("statussssssss");
+        pptDataList = [];
+        notifyListeners();
+        return;
+      }
+      if (response.statusCode == 200) {
+        updatePPTDataListApiCall(false);
+        pptDataList.clear();
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+        print("mapResponse['success']=====${mapResponse['success']}");
+
+        successValuePPT = mapResponse['success'];
+        print("sucesssvalue======$successValuePPT");
+        if (successValuePPT == false) {
+          print("value is falseeee");
+          successValuePPT = false;
+          notifyListeners();
+          return;
+        }
+
+        if (mapResponse['status'] == 400) {
+          pptDataList = [];
+          return;
+        }
+
+        if (mapResponse["status"] == 200) {
+          List temp1 = mapResponse["data"];
+          print("temp list===$temp1");
+          pptDataList = temp1.map((e) => PPTDataDetails.fromjson(e)).toList();
+          print("pptDataList=========$pptDataList");
+        }
+      }
+    } on Exception {
+      updatePPTDataListApiCall(false);
+    }
     notifyListeners();
   }
 

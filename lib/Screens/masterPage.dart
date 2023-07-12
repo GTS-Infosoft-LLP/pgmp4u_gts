@@ -125,13 +125,13 @@ class _MasterListPageState extends State<MasterListPage> {
 
                                   if (value.containsKey(courseId)) {
                                     List masterDataList = jsonDecode(value.get(courseId));
-                                    print(">>> masterDataList :  $masterDataList");
+                                    // print(">>> masterDataList :  $masterDataList");
                                     storedMaster = masterDataList.map((e) => MasterDetails.fromjson(e)).toList();
                                   } else {
                                     storedMaster = [];
                                   }
 
-                                  print("storedMaster========================$storedMaster");
+                                  // print("storedMaster========================$storedMaster");
 
                                   if (storedMaster == null) {
                                     storedMaster = [];
@@ -146,7 +146,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                 shrinkWrap: true,
                                                 itemCount: storedMaster.length,
                                                 itemBuilder: (context, index) {
-                                                  print("storedMaster[index].label=====${storedMaster[index].name}");
+                                                  // print("storedMaster[index].label=====${storedMaster[index].name}");
                                                   if (storedMaster[index].type == "Videos") {
                                                     icon1 = FontAwesomeIcons.video;
                                                   } else if (storedMaster[index].label == "Revise") {
@@ -210,8 +210,6 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                                 title: storedMaster[index].name)));
                                                                   });
                                                                 }
-
-                                                               
 
                                                                 if (page == "Videos") {
                                                                   courseProvider.getVideoCate(storedMaster[index].id);

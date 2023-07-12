@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pgmp4u/Screens/Pdf/controller/pdf_controller.dart';
 import 'package:pgmp4u/Screens/Pdf/model/pdf_list_model.dart';
 
-import 'package:pgmp4u/Screens/Pdf/screens/pdfViewer.dart';
 import 'package:pgmp4u/utils/app_color.dart';
 import 'package:provider/provider.dart';
 
@@ -50,11 +49,11 @@ class _PdfListState extends State<PdfList> {
       padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
       child: InkWell(
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PdfViewer(pdfModel: pdfModel),
-                ));
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => PdfViewer(pdfModel: pdfModel),
+            //     ));
           },
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),

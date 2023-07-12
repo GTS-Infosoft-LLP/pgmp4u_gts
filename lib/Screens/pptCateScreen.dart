@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/Screens/pptData.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:provider/provider.dart';
 
 import '../tool/ShapeClipper.dart';
 import '../utils/app_color.dart';
+import 'home_view/VideoLibrary/RandomPage.dart';
 
 class PPTCardItem extends StatefulWidget {
   String title;
@@ -96,72 +98,99 @@ class _PPTCardItemState extends State<PPTCardItem> {
                 child: ListView.builder(
                     itemCount: cp.pptCategoryList.length,
                     itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
-                        child: Container(
-                          decoration:
-                              const BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
-                          height: 70,
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 0,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 4.0),
-                                child: Container(
-                                    height: 60,
-                                    width: 60,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                      return InkWell(
+                        onTap: () async {
+                          print("cp.pptCategoryList===========${cp.pptCategoryList[index].id}");
 
-                                      //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(17.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(80),
-                                        ),
-                                        child: Center(
-                                          child: Text('${index + 1}'),
-                                        ),
+                          await cp.getPpt(cp.pptCategoryList[index].id);
+
+                          var pptPayStat = await cp.successValuePPT;
+                          print("pptPayStat======$pptPayStat");
+                          if (pptPayStat == false) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RandomPage(
+                                          categoryId: cp.pptCategoryList[index].id,
+                                          price: cp.pptCategoryList[index].price,
+                                          index: 5,
+                                        )));
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PPTData(
+                                          title: cp.pptCategoryList[index].name,
+                                        )));
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
+                          child: Container(
+                            decoration:
+                                const BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
+                            height: 70,
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 0,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 4.0),
+                                  child: Container(
+                                      height: 60,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
+
+                                        //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
                                       ),
-                                    )),
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "PPT",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 0,
-                                  ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width * .65,
-                                    child: Text(
-                                      cp.pptCategoryList[index].name,
-                                      maxLines: 2,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(17.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(80),
+                                          ),
+                                          child: Center(
+                                            child: Text('${index + 1}'),
+                                          ),
+                                        ),
+                                      )),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "PPT",
                                       style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black,
+                                        fontSize: 14,
+                                        color: Colors.grey,
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    SizedBox(
+                                      height: 0,
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * .65,
+                                      child: Text(
+                                        cp.pptCategoryList[index].name,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
