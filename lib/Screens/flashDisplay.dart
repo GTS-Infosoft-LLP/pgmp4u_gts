@@ -141,6 +141,7 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                     // color: Colors.amber,
                                     height: MediaQuery.of(context).size.height * .8,
                                     child: PageView.builder(
+                                        physics: BouncingScrollPhysics(),
                                         itemCount: storedFlash.length,
                                         itemBuilder: (context, index) {
                                           if (index % 4 == 0) {
@@ -215,16 +216,17 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                         ),
                                                         Expanded(
                                                           child: SingleChildScrollView(
+                                                            physics: BouncingScrollPhysics(),
                                                             child: Container(
                                                               height: MediaQuery.of(context).size.height * .6,
                                                               // color: Colors.blue,
                                                               child: Padding(
-                                                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                                                padding: const EdgeInsets.only(
+                                                                    left: 12.0, right: 12.0, bottom: 10),
                                                                 child: SingleChildScrollView(
+                                                                  physics: BouncingScrollPhysics(),
                                                                   child: Html(
                                                                     data: storedFlash[index].description,
-                                                                    
-                                                                    
                                                                     style: {
                                                                       //   "body": Style(
                                                                       //     // padding: HtmlPaddings(top: HtmlPadding(5)),

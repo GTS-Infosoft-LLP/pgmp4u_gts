@@ -26,6 +26,34 @@ import 'package:flutter/material.dart';
 
 enum Reaction { favorite, laugh, thumbsDown, thumbsUp }
 
+Reaction getReaction(String reactionString) {
+  Reaction reaction =
+      Reaction.values.firstWhere((r) => r.toString().split('.').last == reactionString, orElse: () => null);
+
+  switch (reaction) {
+    case Reaction.favorite:
+      print("The reaction is favorite");
+      return Reaction.favorite;
+      break;
+    case Reaction.laugh:
+      print("The reaction is laugh");
+      return Reaction.laugh;
+      break;
+    case Reaction.thumbsDown:
+      print("The reaction is thumbsDown");
+      return Reaction.thumbsDown;
+      break;
+    case Reaction.thumbsUp:
+      print("The reaction is thumbsUp");
+      return Reaction.thumbsUp;
+      break;
+
+    default:
+      print("invalid reaction");
+      return Reaction.thumbsUp;
+  }
+}
+
 final Map<Reaction, String> reactionIcons = {
   Reaction.favorite: "assets/emoji_heart.png",
   Reaction.laugh: "assets/emoji_laugh.png",

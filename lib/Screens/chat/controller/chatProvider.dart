@@ -233,23 +233,28 @@ class ChatProvider extends ChangeNotifier {
   OverlayEntry reactionOverlayEntry;
 
   void removeOverlay() {
-    print("-- remove overlay method called--");
+    // print("-- remove overlay method called--");
     // if (controller != null) {
     //   print("-- remove overlay >  controller.reset();--");
     //   controller.reset();
     // }
     if (reactionOverlayEntry != null && reactionOverlayEntry.mounted) {
-      print("-- removing overlay --");
+      // print("-- removing overlay --");
 
       reactionOverlayEntry.remove();
       reactionOverlayEntry = null;
     }
   }
 
-  void setReaction(ChatModel message, Reaction reaction) {
-    // message.reaction = reaction;
-    FirebaseChatHandler.sendEmoji(
-        chatModel: message, groupId: "kpba3by8SqRI17Hx77t2", reaction: reaction, senderId: getUser().uid);
+  String currentGroupId;
+  setGroupId(String groupId) {
+    currentGroupId = groupId;
     notifyListeners();
+  }
+
+  void setReaction(ChatModel message, Reaction reaction) {
+    FirebaseChatHandler.sendEmoji(
+        chatModel: message, groupId: currentGroupId, newReaction: reaction, senderId: getUser().uid);
+    // notifyListeners();
   }
 }
