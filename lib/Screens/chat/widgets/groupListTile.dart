@@ -16,6 +16,7 @@ class GroupListTile extends StatelessWidget {
   onTapOfGroup(BuildContext context) {
     print("groupId: ${group.groupId}");
     context.read<ChatProvider>().setGroupId(group.groupId);
+    
     // create messaging in user_chat
     Navigator.push(
         context,

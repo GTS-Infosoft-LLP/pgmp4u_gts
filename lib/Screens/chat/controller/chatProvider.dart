@@ -53,6 +53,7 @@ class ChatProvider extends ChangeNotifier {
       text: message,
       senderName: getUser().displayName,
       profileUrl: getUser().photoURL,
+      reactions: [],
     );
 
     FirebaseChatHandler.sendGroupMessage(
@@ -164,6 +165,9 @@ class ChatProvider extends ChangeNotifier {
   String reciverUserId = '';
   setChatRoomId(String roomId) {
     singleChatRoomId = roomId;
+
+    // to set for emoji
+    setGroupId(roomId);
     notifyListeners();
   }
 
@@ -246,6 +250,7 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
+  // to set the current group id
   String currentGroupId;
   setGroupId(String groupId) {
     currentGroupId = groupId;
@@ -253,8 +258,33 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void setReaction(ChatModel message, Reaction reaction) {
+    updateisShowDeleteIcon(false);
     FirebaseChatHandler.sendEmoji(
         chatModel: message, groupId: currentGroupId, newReaction: reaction, senderId: getUser().uid);
     // notifyListeners();
+  }
+
+  // to handle delete icon
+  bool isShowDeleteIcon = false;
+  updateisShowDeleteIcon(bool value) {
+    isShowDeleteIcon = value;
+    notifyListeners();
+  }
+
+  // selected Message
+  ChatModel selectedChat;
+  updateSelectedMessage(ChatModel chatModel) {
+    selectedChat = chatModel;
+    notifyListeners();
+  }
+
+  void deleteGroupMessage() {
+    print("-- deleteGroupMessage -- ");
+    FirebaseChatHandler.deleteMessageInDiscussion(currentGroupId, selectedChat);
+  }
+
+  void deleteSingleMessage() {
+    print("-- deleteSingleMessage -- ");
+    FirebaseChatHandler.deleteMessageInSingleChat(singleChatRoomId, selectedChat);
   }
 }

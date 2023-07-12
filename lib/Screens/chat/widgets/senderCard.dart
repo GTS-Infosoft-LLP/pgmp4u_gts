@@ -133,12 +133,16 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
             padding: const EdgeInsets.only(bottom: 16.0),
             child: GestureDetector(
               onTap: () {},
-              onLongPress: () => showOverLay(
-                context,
-                widget.chatModel,
-                layerLink,
-                true,
-              ),
+              onLongPress: () {
+                showOverLay(
+                  context,
+                  widget.chatModel,
+                  layerLink,
+                  true,
+                );
+                context.read<ChatProvider>().updateisShowDeleteIcon(true);
+                context.read<ChatProvider>().updateSelectedMessage(widget.chatModel);
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,

@@ -119,10 +119,11 @@ class _UsersListState extends State<UsersList> {
     return InkWell(
       onTap: () async {
         // create a admin-user chat group
-        // context.read<ChatProvider>().generateRoomId(reciverId: user.userId.toString());
         bool isRoomCreated = await context
             .read<ChatProvider>()
             .initiatePersonalChat(reciver: MyUserInfo(id: user.uuid, name: user.name, isAdmin: user.isChatAdmin));
+
+         
 
         String name = '';
         name = user.name;

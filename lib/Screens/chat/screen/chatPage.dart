@@ -52,6 +52,29 @@ class _ChatPageState extends State<ChatPage> {
                 tileMode: TileMode.clamp),
           ),
         ),
+        actions: [
+          context.read<ChatProvider>().isShowDeleteIcon
+              ? GestureDetector(
+                  onTap: () {
+                    // context.read<ChatProvider>().updateIsFromDiscussion(true);
+                    context.read<ChatProvider>().deleteSingleMessage();
+                    context.read<ChatProvider>().removeOverlay();
+                    context.read<ChatProvider>().updateisShowDeleteIcon(false);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 4),
+                    width: 24,
+                    height: 24,
+                    child: Center(
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.redAccent,
+                      ),
+                    ),
+                  ),
+                )
+              : SizedBox(),
+        ],
       ),
       bottomSheet: ChatTextField(
         size: size,
@@ -66,35 +89,41 @@ class _ChatPageState extends State<ChatPage> {
         },
       ),
       resizeToAvoidBottomInset: true,
-      body: Container(
-        padding: EdgeInsets.only(bottom: size.height * 0.10),
-        child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseChatHandler.getAllGroupMessage(chatRoomId),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                    physics: ClampingScrollPhysics(),
-                    reverse: true,
-                    itemCount: snapshot.data?.docs.length ?? 0,
-                    itemBuilder: (context, indexMain) {
-                      var data = snapshot.data.docs[indexMain].data();
-                      ChatModel chatModel = ChatModel.fromJson(data);
+      body: GestureDetector(
+        onTap: () {
+          context.read<ChatProvider>().removeOverlay();
+          context.read<ChatProvider>().updateisShowDeleteIcon(false);
+        },
+        child: Padding(
+          padding: EdgeInsets.only(bottom: size.height * 0.10),
+          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: FirebaseChatHandler.getAllGroupMessage(chatRoomId),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                      physics: BouncingScrollPhysics(),
+                      reverse: true,
+                      itemCount: snapshot.data?.docs.length ?? 0,
+                      itemBuilder: (context, indexMain) {
+                        var data = snapshot.data.docs[indexMain].data();
+                        ChatModel chatModel = ChatModel.fromJson(data);
 
-                      if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
-                        return SenderMessageCard(
-                          chatModel: chatModel,
-                        );
-                      } else {
-                        return RecivedMessageCard(
-                          chatModel: chatModel,
-                        );
-                      }
-                    });
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            }),
+                        if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
+                          return SenderMessageCard(
+                            chatModel: chatModel,
+                          );
+                        } else {
+                          return RecivedMessageCard(
+                            chatModel: chatModel,
+                          );
+                        }
+                      });
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              }),
+        ),
       ),
     );
   }

@@ -33,6 +33,13 @@ class _NotificationsState extends State<Notifications> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    scrollcontrol.removeListener(() {});
+    scrollcontrol.dispose();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
