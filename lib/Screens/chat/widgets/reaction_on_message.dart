@@ -31,26 +31,41 @@ class _ReactionsOnMessageState extends State<ReactionsOnMessage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 0,
-                blurRadius: 2,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.all(1.0),
-          child: ClipOval(
-            child: Container(
+        padding: const EdgeInsets.all(2.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: reaction.senderid.length == 1 ? BoxShape.circle : BoxShape.rectangle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 0,
+              blurRadius: 2,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
               height: 18,
               width: 18,
               child: Image.asset(reactionIcons[getReaction(reaction.reactionType)]),
             ),
-          )),
+            reaction.senderid.length == 1
+                ? SizedBox()
+                : Container(
+                    height: 18,
+                    width: 18,
+                    alignment: Alignment.center,
+                    child: Text(
+                      reaction.senderid.length.toString(),
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+          ],
+        ),
+      ),
     );
   }
 }

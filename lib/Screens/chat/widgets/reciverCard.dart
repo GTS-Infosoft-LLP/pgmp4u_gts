@@ -52,6 +52,7 @@ class _RecivedMessageCardState extends State<RecivedMessageCard> with SingleTick
                 context,
                 widget.chatModel,
                 layerLink,
+                false,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,

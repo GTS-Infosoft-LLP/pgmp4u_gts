@@ -190,23 +190,21 @@ class FirebaseChatHandler {
   static sendEmoji({String groupId, ChatModel chatModel, Reaction newReaction, String senderId}) async {
     List<ReactionModel> oldReactions = chatModel.reactions;
 
+    // remove my id from old reaction
     try {
-      // remove my id from old reaction
       oldReactions.firstWhere((reaction) => reaction.senderid.contains(senderId)).senderid.remove(senderId);
     } catch (e) {}
 
     // add a new reaction type if not exists
     try {
+      // if already exists
       ReactionModel existingReaction = oldReactions.firstWhere((reaction) => reaction.reactionType == newReaction.name);
-      // increase count
-      // existingReaction.count++;
       // add my id
       existingReaction.senderid.add(senderId);
     } catch (e) {
+      // if reaction does not exists
       oldReactions.add(ReactionModel(count: 0, reactionType: newReaction.name, senderid: [senderId]));
     }
-
-
 
     List<dynamic> jsonReactions = List<dynamic>.from(oldReactions.map((reactionModel) => reactionModel.toJson()));
 
@@ -220,6 +218,12 @@ class FirebaseChatHandler {
       print("errror occured $newReaction ");
     });
   }
+
+  /// delete message in discussion board
+  static deleteMessageInDiscussion(String groupId, ChatModel chatModel) {}
+
+  /// delete message in singel chat
+  static deleteMessageInSingleChat(String groupId, ChatModel chatModel) {}
 
   ///// extra   ////
 

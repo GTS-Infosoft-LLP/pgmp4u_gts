@@ -26,7 +26,7 @@ class ChatProvider extends ChangeNotifier {
     final User user = _auth.currentUser;
     if (user != null) {
       final uid = user.uid;
-      print('User UID: $uid');
+      // print('User UID: $uid');
       return uid;
     }
   }
@@ -35,7 +35,7 @@ class ChatProvider extends ChangeNotifier {
     final User user = _auth.currentUser;
     if (user != null) {
       final uid = user.uid;
-      print('User UID: $uid');
+      // print('User UID: $uid');
       return user;
     }
   }

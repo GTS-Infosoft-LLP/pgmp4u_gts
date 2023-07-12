@@ -133,7 +133,12 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
             padding: const EdgeInsets.only(bottom: 16.0),
             child: GestureDetector(
               onTap: () {},
-              onLongPress: () => showOverLay(context, widget.chatModel, layerLink),
+              onLongPress: () => showOverLay(
+                context,
+                widget.chatModel,
+                layerLink,
+                true,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -194,14 +199,8 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
   }
 }
 
-
-
-void showOverLay(
-  BuildContext context,
-  ChatModel message,
-  LayerLink layerLink,
-) {
-  double overlayWidth = 190;
+void showOverLay(BuildContext context, ChatModel message, LayerLink layerLink, bool isSentMessage) {
+  double overlayWidth = 200;
   context.read<ChatProvider>().reactionOverlayState = Overlay.of(context);
 
   final renderBox = context.findRenderObject() as RenderBox;
@@ -218,7 +217,7 @@ void showOverLay(
         child: CompositedTransformFollower(
           link: layerLink,
           showWhenUnlinked: false,
-          offset: const Offset(50, -20),
+          offset: Offset(isSentMessage ? 50 : 140, -20),
           child: ReactionOverlay(
             context: context,
             message: message,
