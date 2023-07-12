@@ -153,7 +153,7 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
                 if (snapshot.hasData) {
                   return ListView.builder(
                       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                      physics: ClampingScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       reverse: true,
                       itemCount: snapshot.data?.docs?.length ?? 0,
                       itemBuilder: (context, indexMain) {
@@ -164,12 +164,10 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
                         if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
                           return SenderMessageCard(
                             chatModel: chatModel,
-                            
                           );
                         } else {
                           return RecivedMessageCard(
                             chatModel: chatModel,
-                            
                           );
                         }
                       });

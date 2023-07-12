@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/chatModel.dart';
 import 'package:pgmp4u/Screens/chat/widgets/profileUrl.dart';
+import 'package:pgmp4u/Screens/chat/widgets/reaction_on_message.dart';
 import 'package:pgmp4u/Screens/chat/widgets/reaction_overlay.dart';
 import 'package:pgmp4u/utils/app_color.dart';
 import 'package:pgmp4u/utils/extensions.dart';
@@ -22,7 +23,7 @@ class SenderMessageCard extends StatefulWidget {
 class _SenderMessageCardState extends State<SenderMessageCard> with SingleTickerProviderStateMixin {
   final LayerLink layerLink = LayerLink();
 
-  List animations = [];
+  // List animations = [];
 
   @override
   void initState() {
@@ -129,7 +130,7 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
       child: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: const EdgeInsets.only(bottom: 16.0),
             child: GestureDetector(
               onTap: () {},
               onLongPress: () => showOverLay(context, widget.chatModel, layerLink),
@@ -183,12 +184,9 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
             ),
           ),
           Positioned(
-            bottom: 0,
-            right: 50,
-            // child: widget.chatModel.reaction != null ? Icon(_getReactionIcon(widget.message.reaction!)) : const SizedBox(),
-            child: Container(
-              color: Colors.amber,
-            ),
+            bottom: 2,
+            right: 46,
+            child: ReactionsOnMessage(chatModel: widget.chatModel),
           ),
         ],
       ),
@@ -196,12 +194,14 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
   }
 }
 
+
+
 void showOverLay(
   BuildContext context,
   ChatModel message,
   LayerLink layerLink,
 ) {
-  double overlayWidth = 210;
+  double overlayWidth = 190;
   context.read<ChatProvider>().reactionOverlayState = Overlay.of(context);
 
   final renderBox = context.findRenderObject() as RenderBox;

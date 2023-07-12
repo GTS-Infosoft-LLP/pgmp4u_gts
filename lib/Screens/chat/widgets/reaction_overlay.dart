@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/chatModel.dart';
+import 'package:pgmp4u/Screens/chat/widgets/reaction_pop_up_emote.dart';
 import 'package:provider/provider.dart';
 
 class ReactionOverlay extends StatefulWidget {
@@ -59,8 +60,7 @@ class _ReactionOverlayState extends State<ReactionOverlay> {
   Widget build(BuildContext context) {
     return GestureDetector(
         child: Container(
-      width: widget.overlayWidth,
-      height: 56,
+      height: 50,
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(34),
@@ -79,76 +79,27 @@ class _ReactionOverlayState extends State<ReactionOverlay> {
         children: [
           ReactionPopUp(
             reaction: Reaction.favorite,
-            onPressed: () {
-              context.read<ChatProvider>().setReaction(widget.message, Reaction.favorite);
-              context.read<ChatProvider>().removeOverlay();
-            },
+            onPressed: () => onTapOfReaction(Reaction.favorite),
           ),
           ReactionPopUp(
             reaction: Reaction.laugh,
-            onPressed: () {
-              context.read<ChatProvider>().setReaction(widget.message, Reaction.laugh);
-              context.read<ChatProvider>().removeOverlay();
-            },
+            onPressed: () => onTapOfReaction(Reaction.laugh),
           ),
           ReactionPopUp(
             reaction: Reaction.thumbsDown,
-            onPressed: () {
-              context.read<ChatProvider>().setReaction(widget.message, Reaction.thumbsDown);
-
-              context.read<ChatProvider>().removeOverlay();
-            },
+            onPressed: () => onTapOfReaction(Reaction.thumbsDown),
           ),
           ReactionPopUp(
             reaction: Reaction.thumbsUp,
-            onPressed: () {
-              context.read<ChatProvider>().setReaction(widget.message, Reaction.thumbsUp);
-
-              context.read<ChatProvider>().removeOverlay();
-            },
+            onPressed: () => onTapOfReaction(Reaction.thumbsUp),
           ),
         ],
       ),
     ));
   }
-}
 
-class ReactionPopUp extends StatelessWidget {
-  final Reaction reaction;
-  final VoidCallback onPressed;
-
-  const ReactionPopUp({@required this.reaction, @required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 0,
-                blurRadius: 2,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.all(8.0),
-          // child: Icon(
-          // reactionIcons[reaction],
-          //   size: 26.0,
-          //   color: Colors.black,
-          // ),
-          child: ClipOval(
-            child: Container(
-              height: 24,
-              width: 24,
-              child: Image.asset(reactionIcons[reaction]),
-            ),
-          )),
-    );
+  onTapOfReaction(Reaction raction) {
+    context.read<ChatProvider>().setReaction(widget.message, raction);
+    context.read<ChatProvider>().removeOverlay();
   }
 }

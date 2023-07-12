@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pgmp4u/Screens/chat/model/chatModel.dart';
 import 'package:pgmp4u/Screens/chat/widgets/profileUrl.dart';
+import 'package:pgmp4u/Screens/chat/widgets/reaction_on_message.dart';
 import 'package:pgmp4u/Screens/chat/widgets/senderCard.dart';
 import 'package:pgmp4u/utils/extensions.dart';
 
@@ -45,7 +46,7 @@ class _RecivedMessageCardState extends State<RecivedMessageCard> with SingleTick
       child: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: const EdgeInsets.only(bottom: 16.0),
             child: GestureDetector(
               onLongPress: () => showOverLay(
                 context,
@@ -105,12 +106,9 @@ class _RecivedMessageCardState extends State<RecivedMessageCard> with SingleTick
             ),
           ),
           Positioned(
-            bottom: 0,
-            right: 50,
-            // child: widget.chatModel.reaction != null ? Icon(_getReactionIcon(widget.message.reaction!)) : const SizedBox(),
-            child: Container(
-              color: Colors.amber,
-            ),
+            bottom: 2,
+            left: 50,
+            child: ReactionsOnMessage(chatModel: widget.chatModel),
           ),
         ],
       ),

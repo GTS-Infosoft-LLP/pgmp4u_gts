@@ -1,4 +1,4 @@
-class NotifiModel{
+class NotifiModel {
   int id;
   String title;
   String message;
@@ -9,16 +9,15 @@ class NotifiModel{
   int deleteStatus;
   String createdAt;
 
-NotifiModel.fromjson(Map<String,dynamic>json){
+  NotifiModel.fromjson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     message = json['message'];
     type = json['type'];
-    questionId = json['questionId'];
+    questionId = json['questionId'] ?? -1;
     userId = json['userId'];
     isAdmin = json['isAdmin'];
     deleteStatus = json['deleteStatus'];
     createdAt = json['createdAt'];
-}
-
+  }
 }

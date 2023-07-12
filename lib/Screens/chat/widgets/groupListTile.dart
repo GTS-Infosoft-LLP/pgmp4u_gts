@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 
 import 'package:pgmp4u/Screens/chat/model/discussionGroupModel.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionChatPage.dart';
 import 'package:pgmp4u/utils/extensions.dart';
+import 'package:provider/provider.dart';
 
 class GroupListTile extends StatelessWidget {
   GroupListTile({Key key, this.index, this.color, this.group});
@@ -13,6 +15,7 @@ class GroupListTile extends StatelessWidget {
 
   onTapOfGroup(BuildContext context) {
     print("groupId: ${group.groupId}");
+    context.read<ChatProvider>().setGroupId(group.groupId);
     // create messaging in user_chat
     Navigator.push(
         context,

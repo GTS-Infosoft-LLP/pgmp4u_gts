@@ -187,19 +187,37 @@ class FirebaseChatHandler {
   }
 
   // update emoji on message
-  static sendEmoji({String groupId, ChatModel chatModel, Reaction reaction, String senderId}) async {
-    Map<String, dynamic> reactionMap = {
-      "reactionType": reaction.name,
-      "count": 0,
-      "senderid": [senderId]
-    };
+  static sendEmoji({String groupId, ChatModel chatModel, Reaction newReaction, String senderId}) async {
+    List<ReactionModel> oldReactions = chatModel.reactions;
 
-    await userChatCollectionRef.doc(groupId).collection(FirebaseConstant.messages).doc(chatModel.messageId).update({
-      'reactions': FieldValue.arrayUnion([reactionMap])
-    }).then((value) {
-      print("reaction $reaction added");
+    try {
+      // remove my id from old reaction
+      oldReactions.firstWhere((reaction) => reaction.senderid.contains(senderId)).senderid.remove(senderId);
+    } catch (e) {}
+
+    // add a new reaction type if not exists
+    try {
+      ReactionModel existingReaction = oldReactions.firstWhere((reaction) => reaction.reactionType == newReaction.name);
+      // increase count
+      // existingReaction.count++;
+      // add my id
+      existingReaction.senderid.add(senderId);
+    } catch (e) {
+      oldReactions.add(ReactionModel(count: 0, reactionType: newReaction.name, senderid: [senderId]));
+    }
+
+
+
+    List<dynamic> jsonReactions = List<dynamic>.from(oldReactions.map((reactionModel) => reactionModel.toJson()));
+
+    await userChatCollectionRef
+        .doc(groupId)
+        .collection(FirebaseConstant.messages)
+        .doc(chatModel.messageId)
+        .update({'reactions': jsonReactions}).then((value) {
+      print("reaction $newReaction added");
     }).onError((error, stackTrace) {
-      print("errror occured $reaction added");
+      print("errror occured $newReaction ");
     });
   }
 
