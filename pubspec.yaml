@@ -75,6 +75,7 @@ dependencies:
  
   permission_handler: ^10.4.2
   path_provider: ^2.0.15
+  url_launcher: ^6.1.11
   
   
 

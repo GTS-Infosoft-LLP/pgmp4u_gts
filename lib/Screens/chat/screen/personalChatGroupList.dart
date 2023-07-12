@@ -53,6 +53,7 @@ class _PersonalChatsState extends State<PersonalChats> {
 
     return InkWell(
       onTap: () {
+        
         context.read<ChatProvider>().setChatRoomId(personal.groupId);
         // create a admin-user chat group
         Navigator.push(

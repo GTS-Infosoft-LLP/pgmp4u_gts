@@ -220,10 +220,43 @@ class FirebaseChatHandler {
   }
 
   /// delete message in discussion board
-  static deleteMessageInDiscussion(String groupId, ChatModel chatModel) {}
+  static deleteMessageInDiscussion(String groupId, ChatModel chatModel) async {
+    bool isDone = await userChatCollectionRef
+        .doc(groupId)
+        .collection(FirebaseConstant.messages)
+        .doc(chatModel.messageId)
+        .delete()
+        .then((value) {
+      print("--- delete succesfull");
+      return true;
+    }).onError((error, stackTrace) {
+      print("--- error occured --");
+      return false;
+    });
+
+    if (isDone) {
+      // decrease the count
+      await discussionCollectionRef.doc(groupId).update({"commentsCount": FieldValue.increment(-1)});
+    }
+  }
 
   /// delete message in singel chat
-  static deleteMessageInSingleChat(String groupId, ChatModel chatModel) {}
+  static deleteMessageInSingleChat(String groupId, ChatModel chatModel) async {
+     bool isDone = await userChatCollectionRef
+        .doc(groupId)
+        .collection(FirebaseConstant.messages)
+        .doc(chatModel.messageId)
+        .delete()
+        .then((value) {
+      print("--- delete succesfull");
+      return true;
+    }).onError((error, stackTrace) {
+      print("--- error occured --");
+      return false;
+    });
+
+    
+  }
 
   ///// extra   ////
 

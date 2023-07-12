@@ -8,6 +8,7 @@ class NotifiModel {
   int isAdmin;
   int deleteStatus;
   String createdAt;
+  String announcementDetails;
 
   NotifiModel.fromjson(Map<String, dynamic> json) {
     id = json['id'];
@@ -19,5 +20,6 @@ class NotifiModel {
     isAdmin = json['isAdmin'];
     deleteStatus = json['deleteStatus'];
     createdAt = json['createdAt'];
+    announcementDetails = json['announcementDetails'];
   }
 }

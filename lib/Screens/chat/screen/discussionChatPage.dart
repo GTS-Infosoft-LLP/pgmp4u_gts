@@ -127,6 +127,28 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
         ),
         leadingWidth: 36,
         backgroundColor: Colors.white,
+        actions: [
+          context.watch<ChatProvider>().isShowDeleteIcon && context.read<ChatProvider>().isChatAdmin()
+              ? GestureDetector(
+                  onTap: () {
+                    context.read<ChatProvider>().deleteGroupMessage();
+                    context.read<ChatProvider>().removeOverlay();
+                    context.read<ChatProvider>().updateisShowDeleteIcon(false);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 4),
+                    width: 24,
+                    height: 24,
+                    child: Center(
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.redAccent,
+                      ),
+                    ),
+                  ),
+                )
+              : SizedBox()
+        ],
       ),
       bottomSheet: ChatTextField(
         size: size,
@@ -144,6 +166,7 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
       body: GestureDetector(
         onTap: () {
           context.read<ChatProvider>().removeOverlay();
+          context.read<ChatProvider>().updateisShowDeleteIcon(false);
         },
         child: Container(
           padding: EdgeInsets.only(bottom: size.height * 0.1),

@@ -31,10 +31,21 @@ class ProfileProvider extends ChangeNotifier {
   }
 
 //QuestionDetail
+  bool notificationLoader = false;
+
+  updateNotificationLoader(bool value) {
+    notificationLoader = value;
+    notifyListeners();
+  }
 
   Future showNotification({bool isFirstTime = false}) async {
+    if (isFirstTime) {
+      updateNotificationLoader(true);
+    }
+
     if (!isFirstTime) {
       if (NotificationData.length >= _totalRec) {
+        updateNotificationLoader(false);
         return;
       }
     } else {
@@ -48,35 +59,42 @@ class ProfileProvider extends ChangeNotifier {
     String stringValue = prefs.getString('token');
     print("page index============$_pageIndex");
     var request = {"page": _pageIndex};
-    var res = await http.post(
-      Uri.parse(NOTIFICATION_LIST),
-      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
-      body: json.encode(request),
-    );
-    print("response===$res");
-    // print("${res.body.}");
 
-    if (res.statusCode == 200) {
-      Map<String, dynamic> mapResponse = convert.jsonDecode(res.body);
-      List temp1 = mapResponse["data"];
+    try {
+      var res = await http.post(
+        Uri.parse(NOTIFICATION_LIST),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
+      print("response===$res");
+      // print("${res.body.}");
 
-      _totalRec = mapResponse["count"];
-      print("total rs=======$_totalRec");
-      print("temp 1 list before set to main list===$temp1");
+      if (res.statusCode == 200) {
+        Map<String, dynamic> mapResponse = convert.jsonDecode(res.body);
+        List temp1 = mapResponse["data"];
 
-      var respList = temp1.map((e) => NotifiModel.fromjson(e)).toList();
-      print("notifiaction response list========>$respList");
-      NotificationData = NotificationData + respList;
+        _totalRec = mapResponse["count"];
+        print("total rs=======$_totalRec");
+        print("temp 1 list before set to main list===$temp1");
 
-      // print("notifiaction list========>$NotificationData");
-      // print("notifiaction list========>${NotificationData.length}");
+        var respList = temp1.map((e) => NotifiModel.fromjson(e)).toList();
+        print("notifiaction response list========>$respList");
+        NotificationData = NotificationData + respList;
 
-      for (int i = 0; i < NotificationData.length; i++) {
-        // print("************************************************************");
-        print("notifiaction list qId========>${NotificationData[i].questionId}");
+        // print("notifiaction list========>$NotificationData");
+        // print("notifiaction list========>${NotificationData.length}");
+
+        for (int i = 0; i < NotificationData.length; i++) {
+          // print("************************************************************");
+          print("notifiaction list qId========>${NotificationData[i].questionId}");
+        }
       }
-      notifyListeners();
+    } on Exception {
+      // TODO
+      updateNotificationLoader(false);
     }
+
+    updateNotificationLoader(false);
   }
 
   Future<void> submitQuesDay(int ques, int typ, String ans) async {

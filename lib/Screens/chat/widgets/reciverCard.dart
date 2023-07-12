@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/chatModel.dart';
 import 'package:pgmp4u/Screens/chat/widgets/profileUrl.dart';
 import 'package:pgmp4u/Screens/chat/widgets/reaction_on_message.dart';
 import 'package:pgmp4u/Screens/chat/widgets/senderCard.dart';
 import 'package:pgmp4u/utils/extensions.dart';
+import 'package:provider/provider.dart';
 
 class RecivedMessageCard extends StatefulWidget {
   RecivedMessageCard({key, this.chatModel, this.animationController});
@@ -48,12 +50,16 @@ class _RecivedMessageCardState extends State<RecivedMessageCard> with SingleTick
           Padding(
             padding: const EdgeInsets.only(bottom: 16.0),
             child: GestureDetector(
-              onLongPress: () => showOverLay(
-                context,
-                widget.chatModel,
-                layerLink,
-                false,
-              ),
+              onLongPress: () {
+                showOverLay(
+                  context,
+                  widget.chatModel,
+                  layerLink,
+                  false,
+                );
+                context.read<ChatProvider>().updateisShowDeleteIcon(true);
+                context.read<ChatProvider>().updateSelectedMessage(widget.chatModel);
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -92,20 +92,7 @@ class _ReactionOverlayState extends State<ReactionOverlay> {
             reaction: Reaction.thumbsUp,
             onPressed: () => onTapOfReaction(Reaction.thumbsUp),
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              margin: EdgeInsets.only(right: 4),
-              width: 24,
-              height: 24,
-              child: Center(
-                child: Icon(
-                  Icons.delete,
-                  color: Colors.redAccent,
-                ),
-              ),
-            ),
-          ),
+          
         ],
       ),
     );
