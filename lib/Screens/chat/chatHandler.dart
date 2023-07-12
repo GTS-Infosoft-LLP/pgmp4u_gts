@@ -187,7 +187,21 @@ class FirebaseChatHandler {
   }
 
   // update emoji on message
-  static sendEmoji({ChatModel chatModel, Reaction reaction, String senderId}) {}
+  static sendEmoji({String groupId, ChatModel chatModel, Reaction reaction, String senderId}) async {
+    Map<String, dynamic> reactionMap = {
+      "reactionType": reaction.name,
+      "count": 0,
+      "senderid": [senderId]
+    };
+
+    await userChatCollectionRef.doc(groupId).collection(FirebaseConstant.messages).doc(chatModel.messageId).update({
+      'reactions': FieldValue.arrayUnion([reactionMap])
+    }).then((value) {
+      print("reaction $reaction added");
+    }).onError((error, stackTrace) {
+      print("errror occured $reaction added");
+    });
+  }
 
   ///// extra   ////
 
