@@ -10,8 +10,15 @@ import 'package:pgmp4u/Screens/Profile/PaymentStatus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+
+///  1> flash
+///   2> video
+///   3> mock
+///   4> chat
+///   5> PPT
 class RandomPage extends StatefulWidget {
-  int index;
+  int index;                                           
   String price;
   int categoryId;
   String categoryType;
