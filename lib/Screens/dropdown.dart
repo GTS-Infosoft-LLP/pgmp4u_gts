@@ -40,15 +40,9 @@ class CustomDropDown<T> extends StatelessWidget {
           decoration: BoxDecoration(
               boxShadow: const [BoxShadow(color: Colors.black26, offset: Offset(0, 0))],
               color: Colors.white,
-              // border: Border.all(
-              //   color: Colors.red,
-              // ),
-              // gradient: LinearGradient(
-              //     colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
-              //     begin: const FractionalOffset(0.0, 0.0),
-              //     end: const FractionalOffset(1.0, 0.0),
-              //     stops: [0.0, 1.0],
-              //     tileMode: TileMode.clamp),
+              border: Border.all(
+                color: Colors.grey,
+              ),
               borderRadius: BorderRadius.circular(28)),
           height: 56,
           width: width,
@@ -56,7 +50,7 @@ class CustomDropDown<T> extends StatelessWidget {
             child: DropdownButton<T>(
               icon: Icon(
                 Icons.arrow_drop_down,
-                color: Colors.white,
+                color: Colors.black,
               ),
               focusColor: Colors.blueAccent,
               value: value,

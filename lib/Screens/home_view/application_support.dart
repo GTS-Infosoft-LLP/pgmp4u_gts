@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
+import 'package:provider/provider.dart';
 import 'dart:async';
 
 import '../../tool/ShapeClipper.dart';
@@ -12,7 +14,7 @@ class ApplicationSupportPage extends StatefulWidget {
 class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
   String text1 =
       "Please contact application support request to below email address. We strongly recommend to share full details of what you need. The support team will get back to you in 1-3 business days.";
-      //'''Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Epsum factorial non deposit quid pro quo hic escorol. ''';
+  //'''Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Epsum factorial non deposit quid pro quo hic escorol. ''';
   // String text2 =
   //     '''Olypian quarrels et gorilla congolium sic ad nauseum. Souvlaki ignitus carborundum e pluribus unum. Defacto lingo est igpay atinlay. Marquee selectus non provisio incongruous feline nolo contendre. ''';
   // String text3 =
@@ -22,6 +24,13 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
 
   Color _darkText = Color(0xff424b53);
   Color _lightText = Color(0xff424b53);
+
+  @override
+  void initState() {
+    CourseProvider cp = Provider.of(context, listen: false);
+    cp.changeonTap(0);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +62,10 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.transparent,
-                              border:
-                                  Border.all(color: Colors.white, width: 1)),
+                              border: Border.all(color: Colors.white, width: 1)),
                           child: Center(
                               child: IconButton(
-                                  icon: Icon(Icons.arrow_back,
-                                      color: Colors.white),
+                                  icon: Icon(Icons.arrow_back, color: Colors.white),
                                   onPressed: () {
                                     Navigator.pop(context);
                                   }))),
@@ -83,11 +90,8 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                 child: Center(
                     child: Text(
                   "Application Service Comes With",
-                  style: TextStyle(
-                      color: _darkText,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "NunitoSans",
-                      fontSize: 20),
+                  style:
+                      TextStyle(color: _darkText, fontWeight: FontWeight.bold, fontFamily: "NunitoSans", fontSize: 20),
                 ))),
             SizedBox(height: 10),
             Padding(
@@ -117,25 +121,25 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Container(
                   height: 50,
-                  width: MediaQuery.of(context).size.width*.7,
+                  width: MediaQuery.of(context).size.width * .7,
                   child: ElevatedButton(
-                    style: ButtonStyle(
-              elevation: MaterialStateProperty.all<double>( 4.0),
-              side: MaterialStateProperty.all(BorderSide(
-                    width: 2,
-                    color: Colors.indigo.shade500)),
-              // padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.zero),
-              shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(27))),
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.indigo.shade500),
-              //shadowColor: MaterialStateProperty.all(Colors.indigo),
-          ),
-                    onPressed: () async {
-                     await send(context);
-                      //showDialog(context: context, builder: (context)=>AlertDialog());
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all<double>(4.0),
+                        side: MaterialStateProperty.all(BorderSide(width: 2, color: Colors.indigo.shade500)),
+                        // padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.zero),
+                        shape:
+                            MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(27))),
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.indigo.shade500),
+                        //shadowColor: MaterialStateProperty.all(Colors.indigo),
+                      ),
+                      onPressed: () async {
+                        await send(context);
+                        //showDialog(context: context, builder: (context)=>AlertDialog());
 
 //                   final Email email = Email(
 //   body: 'Email body',
@@ -147,7 +151,11 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
 //   isHTML: false,
 // );
 // await FlutterEmailSender.send(email);
-                    }, child: Text("Contact For Support",style:TextStyle(color: Colors.white,fontSize: 16),)),
+                      },
+                      child: Text(
+                        "Contact For Support",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      )),
                 )
                 // Padding(
                 //   padding: const EdgeInsets.fromLTRB(5, 22, 22, 22),
@@ -221,7 +229,6 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                 //     ],
                 //   ),
                 // )
-           
               ]),
             )
           ]),
@@ -230,10 +237,9 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
     );
   }
 }
+
 Future<void> send(BuildContext context) async {
-    final Email email = Email(
-
-
+  final Email email = Email(
 //  final Email email = Email(
 //       body: _bodyController.text,
 //       subject: _subjectController.text,
@@ -242,32 +248,29 @@ Future<void> send(BuildContext context) async {
 //       isHTML: isHTML,
 //     );
 
-      
-      body: "",
-      subject: "For Support",
-      recipients: ["dharam@vcareprojectmanagement.com"],
-      attachmentPaths: [],
-      isHTML: false,
-    );
+    body: "",
+    subject: "For Support",
+    recipients: ["dharam@vcareprojectmanagement.com"],
+    attachmentPaths: [],
+    isHTML: false,
+  );
 
-    String platformResponse;
+  String platformResponse;
 
-    try {
-      print("sendeddddd");
-      await FlutterEmailSender.send(email);
-      platformResponse = 'success';
-    } catch (error) {
-      print(error);
-      platformResponse = error.toString();
-    }
-
-    // if (!mounted) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-
-      SnackBar(
-
-        content: Text(platformResponse),
-      ),
-    );
+  try {
+    print("sendeddddd");
+    await FlutterEmailSender.send(email);
+    platformResponse = 'success';
+  } catch (error) {
+    print(error);
+    platformResponse = error.toString();
   }
+
+  // if (!mounted) return;
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(platformResponse),
+    ),
+  );
+}

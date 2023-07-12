@@ -496,91 +496,136 @@ class _ProfileState extends State<Profile> {
                                 ),
 
                                 Consumer<ProfileProvider>(builder: (context, pp, child) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 120,
-                                        width: MediaQuery.of(context).size.width * .35,
-                                        decoration: BoxDecoration(
-                                          // color: AppColor.green,
-                                          gradient: AppColor.greenGradient,
-                                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Text(
-                                              "Mock Test",
-                                              style: TextStyle(
-                                                  fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
-                                            ),
-                                            Text(
-                                              pp.dayDiff == "NaN" ? "0.0%" : pp.dayDiff + "%",
-                                              style: TextStyle(
-                                                  fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 25),
-                                            ),
-                                            Text(
-                                              "Average Score",
-                                              style: TextStyle(
-                                                  fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          ProfileProvider pp = Provider.of(context, listen: false);
-                                          print("pp.dayDiff========${pp.dayDiff}");
-                                          if (pp.dayDiff != '0') {
-                                          } else {
-                                            DatePicker.showDatePicker(context, minTime: DateTime.now())
-                                                .then((value) async {
-                                              print("valueee====$value");
-                                              print("djjhdsjfh====${value.toString().split(" ")[0]}");
-                                              examDate = value.toString().split(" ")[0];
-
-                                              if (examDate.isNotEmpty) {
-                                                ProfileProvider pp = Provider.of(context, listen: false);
-                                                await pp.setReminder("", examDate, cp.selectedCourseId, 2);
-                                                pp.getReminder(cp.selectedCourseId);
-                                              }
-                                            });
-                                          }
-                                        },
-                                        child: Container(
-                                          height: 120,
-                                          width: MediaQuery.of(context).size.width * .35,
-                                          decoration: BoxDecoration(
-                                            color: AppColor.purpule,
-                                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 33.0),
+                                    child: Card(
+                                      elevation: 2,
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 10,
                                           ),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text(
-                                                "Exam Date",
-                                                style: TextStyle(
-                                                    fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
+                                              Container(
+                                                height: 120,
+                                                width: MediaQuery.of(context).size.width * .35,
+                                                decoration: BoxDecoration(
+                                                  // color: AppColor.green,
+                                                  gradient: AppColor.greenGradient,
+                                                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                                                ),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  children: [
+                                                    Text(
+                                                      "Mock Test",
+                                                      style: TextStyle(
+                                                          fontFamily: 'Roboto Medium',
+                                                          color: Colors.white,
+                                                          fontSize: 18),
+                                                    ),
+                                                    Text(
+                                                      pp.dayDiff == "NaN" ? "0.0%" : pp.dayDiff + "%",
+                                                      style: TextStyle(
+                                                          fontFamily: 'Roboto Medium',
+                                                          color: Colors.white,
+                                                          fontSize: 25),
+                                                    ),
+                                                    Text(
+                                                      "Average Score",
+                                                      style: TextStyle(
+                                                          fontFamily: 'Roboto Medium',
+                                                          color: Colors.white,
+                                                          fontSize: 18),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                              Text(
-                                                pp.avgScore.toString(),
-                                                style: TextStyle(
-                                                    fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 25),
+                                              SizedBox(
+                                                width: 10,
                                               ),
-                                              Text(
-                                                "Days Left",
-                                                style: TextStyle(
-                                                    fontFamily: 'Roboto Medium', color: Colors.white, fontSize: 18),
-                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  ProfileProvider pp = Provider.of(context, listen: false);
+                                                  print("pp.dayDiff========${pp.dayDiff}");
+                                                  if (pp.dayDiff != '0') {
+                                                  } else {
+                                                    DatePicker.showDatePicker(context, minTime: DateTime.now())
+                                                        .then((value) async {
+                                                      print("valueee====$value");
+                                                      print("djjhdsjfh====${value.toString().split(" ")[0]}");
+                                                      examDate = value.toString().split(" ")[0];
+
+                                                      if (examDate.isNotEmpty) {
+                                                        ProfileProvider pp = Provider.of(context, listen: false);
+                                                        await pp.setReminder("", examDate, cp.selectedCourseId, 2);
+                                                        pp.getReminder(cp.selectedCourseId);
+                                                      }
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                  height: 120,
+                                                  width: MediaQuery.of(context).size.width * .35,
+                                                  decoration: BoxDecoration(
+                                                    color: AppColor.purpule,
+                                                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                                                  ),
+                                                  child: pp.avgScore == '0'
+                                                      ? Padding(
+                                                          padding: const EdgeInsets.all(8.0),
+                                                          child: Center(
+                                                            child: Text(
+                                                              pp.avgScore == '0'
+                                                                  ? "Tap to select exam date"
+                                                                  : "Exam Date",
+                                                              textAlign: TextAlign.center,
+                                                              style: TextStyle(
+                                                                  fontFamily: 'Roboto Medium',
+                                                                  color: Colors.white,
+                                                                  fontSize: 18),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : Column(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            Text(
+                                                              "Exam Date",
+                                                              textAlign: TextAlign.center,
+                                                              style: TextStyle(
+                                                                  fontFamily: 'Roboto Medium',
+                                                                  color: Colors.white,
+                                                                  fontSize: 18),
+                                                            ),
+                                                            Text(
+                                                              pp.avgScore.toString(),
+                                                              style: TextStyle(
+                                                                  fontFamily: 'Roboto Medium',
+                                                                  color: Colors.white,
+                                                                  fontSize: 25),
+                                                            ),
+                                                            Text(
+                                                              "Days Left",
+                                                              style: TextStyle(
+                                                                  fontFamily: 'Roboto Medium',
+                                                                  color: Colors.white,
+                                                                  fontSize: 18),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                ),
+                                              )
                                             ],
                                           ),
-                                        ),
-                                      )
-                                    ],
+                                          SizedBox(
+                                            height: 10,
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   );
                                 }),
 
