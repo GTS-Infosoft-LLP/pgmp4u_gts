@@ -24,6 +24,7 @@ class _NotificationsState extends State<Notifications> {
     _dshbrdProvider.showNotification(isFirstTime: true);
 
     scrollcontrol.addListener(() {
+      print("controller is listeningggggg......");
       if (scrollcontrol.position.pixels == scrollcontrol.position.maxScrollExtent) {
         print("call again api");
         _dshbrdProvider.showNotification();
@@ -46,6 +47,7 @@ class _NotificationsState extends State<Notifications> {
       child: Container(
         color: Color(0xfff7f7f7),
         child: SingleChildScrollView(
+          // controller: scrollcontrol,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -107,7 +109,7 @@ class _NotificationsState extends State<Notifications> {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 18.0),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
                           child: InkWell(
                             onTap: () {
                               // setState(() {
@@ -119,51 +121,33 @@ class _NotificationsState extends State<Notifications> {
                               var quesId = profileProvider.NotificationData[index].questionId;
                               profileProvider.setNotifiId(profileProvider.NotificationData[index].id);
 
-                              // Future.delayed(Duration(milliseconds: 600), () {
-                              //   Navigator.push(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //           builder: (context) => QuesOfDay(
-                              //                 seltedId: quesId,
-                              //               )));
-                              // });
-
-                              // setState(() {
-                              //   _isShow = !_isShow;
-                              // });
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => NotiShowDialog(
+                                        notiDesc: profileProvider.NotificationData[index].message,
+                                        notiTitle: profileProvider.NotificationData[index].title,
+                                      ));
                             },
                             child: Container(
                                 width: MediaQuery.of(context).size.width * .7,
                                 decoration: BoxDecoration(
-                                    // color: Colors.blue,
                                     border: Border(
                                   // top: BorderSide(width: 16.0, color: Colors.lightBlue.shade600),
                                   bottom: BorderSide(color: Colors.grey[300]),
                                 )),
                                 child: Row(
                                   children: [
-                                    SizedBox(
-                                      width: 15,
-                                    ),
                                     Container(
-                                        height: 45,
-                                        width: 45,
+                                        height: 52,
+                                        width: 52,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(8),
                                           color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                          // gradient: LinearGradient(
-                                          //     begin: Alignment.topLeft,
-                                          //     end: Alignment.bottomRight,
-                                          //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
                                         ),
-
-                                        // color: Colors.black,
                                         child: Icon(
-                                          Icons.notifications_active,
+                                          Icons.notifications,
                                           color: Colors.white,
-                                        )
-                                        // Icons.edit,color: Colors.white),
-                                        ),
+                                        )),
                                     SizedBox(
                                       width: 15,
                                     ),
@@ -175,62 +159,37 @@ class _NotificationsState extends State<Notifications> {
                                           width: MediaQuery.of(context).size.width * .7,
                                           child: Container(
                                             width: MediaQuery.of(context).size.width * .5,
-                                            // color: Colors.amber,
-                                            child: Text(
-                                              profileProvider.NotificationData[index].title ?? '',
-                                              maxLines: 5,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(color: Colors.black, fontSize: 18),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: MediaQuery.of(context).size.width * .63,
+                                                  child: Text(
+                                                    profileProvider.NotificationData[index].title ?? '',
+                                                    maxLines: 5,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Roboto Medium', color: Colors.black, fontSize: 16),
+                                                  ),
+                                                ),
+                                                Icon(
+                                                  Icons.expand_more,
+                                                )
+                                              ],
                                             ),
                                           ),
                                         ),
                                         SizedBox(
                                           height: 5,
                                         ),
-                                        // _isShow?
-
-                                        // profileProvider.NotificationData[index].id ==
-                                        //         profileProvider.selectedNotifiId
-                                        //     ?
                                         Container(
                                           width: MediaQuery.of(context).size.width * .7,
                                           child: Text(
                                             profileProvider.NotificationData[index].message ?? '',
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(color: Colors.black, fontSize: 14),
+                                            style: TextStyle(color: Colors.black87, fontSize: 14),
                                           ),
                                         ),
-                                        // : Container(
-                                        //     width: MediaQuery.of(context).size.width * .7,
-                                        //     child: Text(
-                                        //       profileProvider.NotificationData[index].message ?? "",
-                                        //       maxLines: 2,
-                                        //       overflow: TextOverflow.ellipsis,
-                                        //       style: TextStyle(color: Colors.black, fontSize: 14),
-                                        //     ),
-                                        //   ),
-
-                                        _isShow
-                                            ? Container(
-                                                width: MediaQuery.of(context).size.width * .7,
-                                                child: Text(
-                                                  profileProvider.NotificationData[index].message ?? "",
-                                                  // maxLines: 2,
-                                                  // overflow: TextOverflow.ellipsis,
-                                                  style: TextStyle(color: Colors.black, fontSize: 14),
-                                                ),
-                                              )
-                                            : Container(),
-
-                                        // : Container(
-                                        //     width: MediaQuery.of(context).size.width * .7,
-                                        //     child: Text(
-                                        //       profileProvider.NotificationData[index].message,
-                                        //       style: TextStyle(color: Colors.black, fontSize: 14),
-                                        //     ),
-                                        //   ),
-
                                         SizedBox(
                                           height: 10,
                                         ),
@@ -248,5 +207,45 @@ class _NotificationsState extends State<Notifications> {
         ),
       ),
     ));
+  }
+}
+
+// class notiShowDialog {
+
+// }
+class NotiShowDialog extends StatelessWidget {
+  String notiDesc;
+  String notiTitle;
+  NotiShowDialog({Key key, this.notiDesc, this.notiTitle});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                notiTitle,
+                style: TextStyle(fontFamily: 'Roboto MediumItalic', color: Colors.black, fontSize: 16),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                notiDesc,
+                style: TextStyle(color: Colors.black, fontSize: 14),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

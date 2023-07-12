@@ -190,7 +190,7 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
                           );
                         } else {
                           return RecivedMessageCard(
-                            chatModel: chatModel,
+                            chatModel: chatModel, 
                           );
                         }
                       });
