@@ -107,3 +107,7 @@ const GET_PPTS_DETAILS = _BASE_URL + "getPPtsDetails";
 const SET_REMINDER = _BASE_URL + "setReminders";
 const GET_REMINDER = _BASE_URL + "getReminders";
 
+
+const GET_PPT_CATEGORIES = _BASE_URL + "getPPTCategories";
+
+//getPPTCategories

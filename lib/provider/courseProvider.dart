@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../Models/mockListmodel.dart';
 import '../Models/mockquestionanswermodel.dart';
-import '../Models/restartTestModel.dart';
+import '../Models/pptCateModel.dart';
 import '../Screens/MockTest/model/courseModel.dart';
 import '../Screens/MockTest/model/flashCardModel.dart';
 import '../Screens/MockTest/model/flashCateModel.dart';
@@ -37,24 +37,8 @@ class CourseProvider extends ChangeNotifier {
   List<TestDataDetails> testData = [];
 
   List<AvailableAttempts> aviAttempts = [];
-  List<restartMockModel> mokRestartList = [restartMockModel(MokId: 6, attempptNum: 3)];
 
-  //  mokRestartList.add();
-
-  addToRestartList() {
-    print("selectedMockId======$selectedMockId");
-    print("selectedMockId======$selectedAttemptNumer");
-    mokRestartList.add(restartMockModel(MokId: selectedMockId, attempptNum: selectedAttemptNumer));
-  }
-
-  removeFromRestartList() {
-    for (int i = 0; i < mokRestartList.length; i++) {
-      if (mokRestartList[i].MokId == selectedMockId && mokRestartList[i].attempptNum == selectedAttemptNumer) {
-        mokRestartList.removeAt(i);
-      }
-      print("mokRestartList======$mokRestartList");
-    }
-  }
+  List<PPTCateDetails> pptCategoryList = [];
 
   int firstCourse = 0;
   int firstMaster = 0;
@@ -132,6 +116,49 @@ class CourseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getPptCategory(int id) async {
+    pptCategoryList = [];
+    String stringValue = prefs.getString('token');
+
+    print("token valued===$stringValue");
+    var request = {"id": id};
+    try {
+      var response = await http.post(
+        Uri.parse(GET_PPT_CATEGORIES),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
+      print("response.statusCode===${response.body}");
+      print("response.statusCode===${response.statusCode}");
+
+      var resDDo = json.decode(response.body);
+      var resStatus = (resDDo["status"]);
+      if (response.statusCode == 400) {
+        print("statussssssss");
+        pptCategoryList = [];
+        notifyListeners();
+        return;
+      }
+      if (response.statusCode == 200) {
+        pptCategoryList.clear();
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+
+        if (mapResponse['status'] == 400) {
+          pptCategoryList = [];
+          return;
+        }
+
+        if (mapResponse["status"] == 200) {
+          List temp1 = mapResponse["data"];
+          print("temp list===$temp1");
+          pptCategoryList = temp1.map((e) => PPTCateDetails.fromjson(e)).toList();
+          print("master list=========$pptCategoryList");
+        }
+      }
+    } on Exception {}
+    notifyListeners();
+  }
+
   Future<void> getMasterData(int id) async {
     updateMasterDataApiCall(true);
     tempListMaster = [];
@@ -187,24 +214,9 @@ class CourseProvider extends ChangeNotifier {
           try {
             print("id.toString===== ${id.toString}");
             HiveHandler.addMasterData(jsonEncode(mapResponse["data"]), keyName: id.toString());
-
-            // Future.delayed(Duration(microseconds: 800), () {
-            //   List<MasterDetails> tempList = HiveHandler.getMasterDataList(key: id.toString()) ?? [];
-
-            //   masterTemp = HiveHandler.getMasterDataList(key: id.toString()) ?? [];
-            //   print("*************************************************");
-            //   print("tempList==========$tempList");
-            // });
           } catch (e) {
             print("errorr===========>>>>>> $e");
           }
-
-          // if (masterList.isNotEmpty) {
-
-          // } else {
-          //   tempListMaster = [];
-          //   HiveHandler.addMasterData(tempListMaster, keyName: id.toString());
-          // }
         }
       }
       print("respponse=== ${response.body}");
