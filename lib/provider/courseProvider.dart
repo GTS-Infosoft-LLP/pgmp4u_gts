@@ -75,6 +75,14 @@ class CourseProvider extends ChangeNotifier {
 
   List<Map> restartList = [];
 
+  int tapOnce = 0;
+  changeonTap(int val) {
+    Future.delayed(Duration.zero, () async {
+      tapOnce = val;
+      notifyListeners();
+    });
+  }
+
   setSelectedCourseName(String val) {
     selectedCourseName = val;
     Future.delayed(Duration.zero, () {
@@ -106,10 +114,21 @@ class CourseProvider extends ChangeNotifier {
   List<MasterDetails> masterTemp = [];
 
   bool masterDataApiCall = false;
-  updateMasterDataApiCall(bool val) {
-    // val = !val;
-    masterDataApiCall = val;
+  bool flashCateDataApiCall = false;
+  bool videoListApiCall = false;
 
+  updatevideoListApiCall(bool val) {
+    videoListApiCall = val;
+    notifyListeners();
+  }
+
+  updateMasterDataApiCall(bool val) {
+    masterDataApiCall = val;
+    notifyListeners();
+  }
+
+  updateFlashCateDataApiCall(bool val) {
+    flashCateDataApiCall = val;
     notifyListeners();
   }
 
@@ -239,6 +258,7 @@ class CourseProvider extends ChangeNotifier {
 
   List<FlashCateDetails> flashCateTempList = [];
   Future<void> getFlashCate(int id) async {
+    updateFlashCateDataApiCall(true);
     checkInternet = 0;
     print("flash category iddd=====$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -271,6 +291,7 @@ class CourseProvider extends ChangeNotifier {
 
     print("response.statusCode===${response.statusCode}");
     if (response.statusCode == 200) {
+      updateFlashCateDataApiCall(false);
       flashCate.clear();
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
       print("mapResponse=========$mapResponse");
@@ -303,6 +324,7 @@ class CourseProvider extends ChangeNotifier {
           print("flashCate name 0=== ${flashCate[0].name}");
         }
       } else {
+        updateFlashCateDataApiCall(false);
         print("status 400");
         flashCate = [];
         // HiveHandler.addFlashCateData(flashCate, id.toString());
@@ -313,11 +335,14 @@ class CourseProvider extends ChangeNotifier {
 
       // if (mapResponse["status"] == 400) {
       // } else {}
-    } else {}
+    } else {
+      updateFlashCateDataApiCall(false);
+    }
     print("respponse=== ${response.body}");
   }
 
   Future<void> getVideoCate(int id) async {
+    updatevideoListApiCall(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -338,6 +363,7 @@ class CourseProvider extends ChangeNotifier {
     var resStatus = (resDDo["status"]);
     videoPresent = 1;
     if (resStatus == 400) {
+      updatevideoListApiCall(false);
       videoPresent = 0;
 
       notifyListeners();
@@ -346,6 +372,7 @@ class CourseProvider extends ChangeNotifier {
 
     print("response.statusCode===${response.statusCode}");
     if (response.statusCode == 200) {
+      updatevideoListApiCall(false);
       videoCate.clear();
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
 
@@ -358,7 +385,10 @@ class CourseProvider extends ChangeNotifier {
       if (videoCate.isNotEmpty) {
         print("videoCate 0=== ${videoCate[0].name}");
       }
+    } else {
+      updatevideoListApiCall(false);
     }
+
     print("respponse=== ${response.body}");
   }
 

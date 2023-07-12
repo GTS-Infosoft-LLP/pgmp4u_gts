@@ -39,6 +39,11 @@ class _PracticeNewState extends State<PracticeNew> {
     return Color(int.parse('FF$hexCode', radix: 16));
   }
 
+  String getRightAnser(List value, opL) {
+    String correct = "";
+    if (value.length == 1) {}
+  }
+
   bool _show = true;
   int _isattempt = 0;
   int _quetionNo = 0;
@@ -406,24 +411,23 @@ class _PracticeNewState extends State<PracticeNew> {
                                                           ),
                                                           Container(
                                                             margin: EdgeInsets.only(top: height * (15 / 800)),
-                                                            child: 
+                                                            child: Html(
+                                                              data: PTList != null
+                                                                  ? PTList[_quetionNo].ques.question
+                                                                  : '',
+                                                              style: {
+                                                                "body": Style(
+                                                                  padding: EdgeInsets.only(top: 5),
+                                                                  margin: EdgeInsets.zero,
+                                                                  color: Color(0xff000000),
+                                                                  textAlign: TextAlign.left,
+                                                                  // maxLines: 7,
+                                                                  // textOverflow: TextOverflow.ellipsis,
+                                                                  fontSize: FontSize(18),
+                                                                )
+                                                              },
+                                                            ),
 
-
-                                                             Html(
-                                                                    data:  PTList != null ? PTList[_quetionNo].ques.question : '',
-                                                                    style: {
-                                                                      "body": Style(
-                                                                        padding: EdgeInsets.only(top: 5),
-                                                                        margin: EdgeInsets.zero,
-                                                                        color: Color(0xff000000),
-                                                                        textAlign: TextAlign.left,
-                                                                        // maxLines: 7,
-                                                                        // textOverflow: TextOverflow.ellipsis,
-                                                                        fontSize: FontSize(18),
-                                                                      )
-                                                                    },
-                                                                  ),
-                                                            
                                                             // Text(
                                                             //   PTList != null ? PTList[_quetionNo].ques.question : '',
                                                             //   style: TextStyle(
@@ -433,9 +437,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                             //     height: 1.7,
                                                             //   ),
                                                             // ),
-
-
-
                                                           ),
 
                                                           SizedBox(
@@ -763,28 +764,21 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                       height: 8,
                                                                                     ),
 
-                                                                                     Html(
-                                                                    data:    op[index].questionOption,
-                                                                    style: {
-                                                                      "body": Style(
-                                                                        padding: EdgeInsets.only(top: 5),
-                                                                        margin: EdgeInsets.zero,
-                                                                        color: Color(0xff000000),
-                                                                        textAlign: TextAlign.left,
-                                                                        // maxLines: 7,
-                                                                        // textOverflow: TextOverflow.ellipsis,
-                                                                        fontSize: FontSize(18),
-                                                                      )
-                                                                    },
-                                                                  ),
-
-
-
-
-
-
-
-
+                                                                                    Html(
+                                                                                      data: op[index].questionOption,
+                                                                                      style: {
+                                                                                        "body": Style(
+                                                                                          padding:
+                                                                                              EdgeInsets.only(top: 5),
+                                                                                          margin: EdgeInsets.zero,
+                                                                                          color: Color(0xff000000),
+                                                                                          textAlign: TextAlign.left,
+                                                                                          // maxLines: 7,
+                                                                                          // textOverflow: TextOverflow.ellipsis,
+                                                                                          fontSize: FontSize(18),
+                                                                                        )
+                                                                                      },
+                                                                                    ),
 
                                                                                     // Text(
                                                                                     //   op[index].questionOption,
@@ -947,10 +941,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                           margin:
                                                                               EdgeInsets.only(top: height * (9 / 800)),
                                                                           child: Text(
-                                                                            // PTList[_quetionNo].ques.rightAnswer
-                                                                            //  ==
-                                                                            //         op[0].id.toString()
-
                                                                             // correctAns.contains(op[0].id) &&
                                                                             //         correctAns.contains(op[1].id)
                                                                             //     ? 'Answer A and B are the correct one'
@@ -990,20 +980,9 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                 //         op[1].id.toString()
                                                                                 correctAns.contains(op[1].id)
                                                                                     ? 'Answer B is the correct one'
-                                                                                    :
-                                                                                    // PTList[_quetionNo]
-                                                                                    //             .ques
-                                                                                    //             .rightAnswer ==
-                                                                                    //         op[2].id.toString()
-
-                                                                                    correctAns.contains(op[2].id)
+                                                                                    : correctAns.contains(op[2].id)
                                                                                         ? 'Answer c is the correct one'
-                                                                                        :
-                                                                                        // PTList[_quetionNo]
-                                                                                        //             .ques
-                                                                                        //             .rightAnswer ==
-                                                                                        //         op[3].id.toString()
-                                                                                        correctAns.contains(op[3].id)
+                                                                                        : correctAns.contains(op[3].id)
                                                                                             ? 'Answer D is the correct one'
                                                                                             : 'Answer E is the correct one',
                                                                             style: TextStyle(

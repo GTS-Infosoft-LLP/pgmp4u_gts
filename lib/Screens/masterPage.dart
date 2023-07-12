@@ -28,10 +28,12 @@ class _MasterListPageState extends State<MasterListPage> {
   List<MasterDetails> storedMaster = [];
 
   // List<MasterDetails> Mastertemplist = [];
+
   void initState() {
+    print("init cakllinggggg.....");
     CourseProvider courseProvider = Provider.of(context, listen: false);
     print("master list===${courseProvider.masterList}");
-
+    courseProvider.changeonTap(0);
     // if (Mastertemplist.isEmpty) {
     //   Mastertemplist = HiveHandler.getMasterDataList(key: courseProvider.selectedCourseId.toString());
     //   print("*************************************************");
@@ -180,82 +182,87 @@ class _MasterListPageState extends State<MasterListPage> {
                                                               )),
                                                           // Border.all(color: Colors.black, width: 1)),
                                                           child: InkWell(
-                                                            onTap: () {
-                                                              courseProvider
-                                                                  .setSelectedMasterId(storedMaster[index].id);
+                                                            onTap: () async {
+                                                              courseProvider.changeonTap(0);
+                                                              if (courseProvider.tapOnce == 0) {
+                                                                courseProvider.changeonTap(1);
+                                                                courseProvider
+                                                                    .setSelectedMasterId(storedMaster[index].id);
 
-                                                              print(
-                                                                  "id of the master list===${storedMaster[index].id}");
-                                                              String page = storedMaster[index].type;
+                                                                print(
+                                                                    "id of the master list===${storedMaster[index].id}");
+                                                                String page = storedMaster[index].type;
 
-                                                              courseProvider
-                                                                  .setMasterListType(storedMaster[index].type);
+                                                                courseProvider
+                                                                    .setMasterListType(storedMaster[index].type);
 
-                                                              print("page=====$page");
+                                                                print("page=====$page");
 
-                                                              if (page == "Videos") {
-                                                                courseProvider.getVideoCate(storedMaster[index].id);
+                                                                if (page == "Videos") {
+                                                                  courseProvider.getVideoCate(storedMaster[index].id);
 
-                                                                Future.delayed(Duration(milliseconds: 400), () {
+                                                                  Future.delayed(Duration(milliseconds: 4), () {
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) => VideoLibraryPage(
+                                                                                title: storedMaster[index].name)));
+                                                                  });
+                                                                }
+
+                                                                if (page == "Support") {
                                                                   Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(
-                                                                          builder: (context) => VideoLibraryPage(
-                                                                              title: storedMaster[index].name)));
-                                                                });
+                                                                          builder: (context) =>
+                                                                              ApplicationSupportPage()));
+                                                                }
+
+                                                                if (page == "Flash Cards") {
+                                                                  courseProvider.getFlashCate(storedMaster[index].id);
+
+                                                                  Future.delayed(Duration(milliseconds: 4), () {
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) => FlashCardItem(
+                                                                                  title: storedMaster[index].name,
+                                                                                )));
+                                                                  });
+                                                                }
+
+                                                                if (page == "Mock Test") {
+                                                                  courseProvider.getTest(
+                                                                      storedMaster[index].id, "Mock Test");
+
+                                                                  Future.delayed(Duration(milliseconds: 700), () {
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) => MockTest(
+                                                                                  testName: storedMaster[index].name,
+                                                                                  testType: storedMaster[index].type,
+                                                                                )));
+                                                                  });
+                                                                }
+
+                                                                if (page == "Practice Test") {
+                                                                  courseProvider.getTest(
+                                                                      storedMaster[index].id, "Practice Test");
+
+                                                                  Future.delayed(const Duration(milliseconds: 7),
+                                                                      () async {
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) => MockTest(
+                                                                                  testName: storedMaster[index].name,
+                                                                                  testType: storedMaster[index].type,
+                                                                                )));
+                                                                  });
+                                                                }
                                                               }
-
-                                                              if (page == "Support") {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) =>
-                                                                            ApplicationSupportPage()));
-                                                              }
-
-                                                              if (page == "Flash Cards") {
-                                                                courseProvider.getFlashCate(storedMaster[index].id);
-
-                                                                Future.delayed(Duration(milliseconds: 400), () {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => FlashCardItem(
-                                                                                title: storedMaster[index].name,
-                                                                              )));
-                                                                });
-                                                              }
-
-                                                              if (page == "Mock Test") {
-                                                                courseProvider.getTest(
-                                                                    storedMaster[index].id, "Mock Test");
-
-                                                                Future.delayed(Duration(milliseconds: 700), () {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => MockTest(
-                                                                                testName: storedMaster[index].name,
-                                                                                testType: storedMaster[index].type,
-                                                                              )));
-                                                                });
-                                                              }
-
-                                                              if (page == "Practice Test") {
-                                                                courseProvider.getTest(
-                                                                    storedMaster[index].id, "Practice Test");
-
-                                                                Future.delayed(const Duration(milliseconds: 700),
-                                                                    () async {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => MockTest(
-                                                                                testName: storedMaster[index].name,
-                                                                                testType: storedMaster[index].type,
-                                                                              )));
-                                                                });
-                                                              }
+                                                              // courseProvider.tapOnce=1
                                                             },
                                                             child: Row(
                                                               children: [

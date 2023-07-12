@@ -39,6 +39,7 @@ class HiveHandler {
   static const String MasterDataKey = "masterDataKey";
 
   static const String MockRestartBoxKey = "mockRestartBox";
+  static const String SubmitMockBoxKey = "mockSubmitBox";
 
   static const String CourseBox = "courseBox";
   static const String CourseKey = "courseKey";
@@ -62,6 +63,9 @@ class HiveHandler {
   static Box<List<FlashCardDetails>> flashListBox;
   static Box<String> masterListBox;
   static Box<int> mockRestartBox;
+  static Box<String> submitDataBox;
+
+
 
   static Box<List<MockTestListApiModel>> MockListBox;
   static Box<List<QuestionAnswerModel>> MockTextBox;
@@ -96,8 +100,10 @@ class HiveHandler {
     // flashListBox = await Hive.openBox<List<FlashCardDetails>>(FlashCardBox);
 
     masterListBox = await Hive.openBox<String>(MasterDataBox);
+    submitDataBox=await Hive.openBox<String>(SubmitMockBoxKey);
 
     // MockListBox = await Hive.openBox<List<MockTestListApiModel>>(MockTestBox);
+
     MockQuestionBox = await Hive.openBox<String>(MockQuestionBoxKey);
     PracTestBox = await Hive.openBox<List<PracListModel>>(PracticeTestBox);
 
@@ -106,6 +112,7 @@ class HiveHandler {
     mockAttempList = await Hive.openBox<String>(MockAttemptsBox);
 
     mockRestartBox = await Hive.openBox<int>(MockRestartBoxKey);
+
 
     await Hive.openBox("deviceTokenBox");
 
@@ -214,11 +221,7 @@ class HiveHandler {
     } else {
       print("===========box is empty=========");
     }
-    // try {
-    //   print("get boxxxxx=======${box.get(key, defaultValue: "")}");
-    // } catch (e) {
-    //   print("errororor====$e");
-    // }
+ 
   }
 
 // ///////////////
@@ -359,6 +362,30 @@ class HiveHandler {
   ///// cousers data end
 
   ////// master data start
+  ///
+  ///
+  ///
+  static setSubmitMockData(String mockId, String data){
+  submitDataBox.put(mockId, data);
+  print("datata====>${data}");
+   if (submitDataBox.isNotEmpty) {
+      print("===========added to box=========");
+      print("submitDataBox.get for key: $mockId = ${submitDataBox.get(mockId)}");
+    } else {
+      print("===========box is empty=========");
+    }
+  }
+    static removeFromSubmitMockBox(String mockId) {
+    // mockRestartBox.put(mockId, atemNum);
+
+    if (submitDataBox.isNotEmpty) {
+      if (submitDataBox.containsKey(mockId)) {
+        submitDataBox.delete(mockId);
+      }
+    } else {
+      print("===========box is empty=========");
+    }
+  }
 
   static addToRestartBox(String mockId, int atemNum) {
     mockRestartBox.put(mockId, atemNum);

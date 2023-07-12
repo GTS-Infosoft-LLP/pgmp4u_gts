@@ -46,6 +46,7 @@ class _MockTestState extends State<MockTest> {
     print("testtyesppppp=====${widget.testType}");
     categoryProvider = Provider.of(context, listen: false);
     CourseProvider cp = Provider.of(context, listen: false);
+    cp.changeonTap(0);
 
     if (tempList.isEmpty) {
       tempList = HiveHandler.getTestDataList(key: cp.selectedMasterId.toString());
@@ -193,7 +194,6 @@ class _MockTestState extends State<MockTest> {
                                   storedTestData = [];
                                 }
 
-
                                 return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
                                   return storedTestData.isEmpty
                                       ? Container(
@@ -215,12 +215,10 @@ class _MockTestState extends State<MockTest> {
                                                 print("${storedTestData[index].premium}");
                                                 return InkWell(
                                                   onTap: () async {
-
                                                     courseProvider.setSelectedTestName(storedTestData[index].test_name);
                                                     await courseProvider.getTestDetails(storedTestData[index].id);
                                                     PracticeTextProvider pracTestProvi =
                                                         Provider.of(context, listen: false);
-                                                        
 
                                                     pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
                                                     if (widget.testType == "Practice Test") {
@@ -229,7 +227,7 @@ class _MockTestState extends State<MockTest> {
 
                                                       // pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
 
-                                                      Future.delayed(const Duration(milliseconds: 400), () {
+                                                      Future.delayed(const Duration(milliseconds: 0), () {
                                                         Navigator.push(
                                                             context,
                                                             MaterialPageRoute(

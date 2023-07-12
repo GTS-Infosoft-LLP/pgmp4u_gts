@@ -42,6 +42,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
   IconData icon1;
   void initState() {
     cp = Provider.of(context, listen: false);
+        cp.changeonTap(0);
     print("cp.flashCate.length==========${cp.flashCate.length}");
     // if (flashCateTempList.isEmpty) {
     //   flashCateTempList = HiveHandler.getFlashCateDataList(key: cp.selectedMasterId.toString());
@@ -146,239 +147,244 @@ class _FlashCardItemState extends State<FlashCardItem> {
                         }
 
                         return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
-                          return storedFlashCate.length == 0
-                              ? Container(
-                                  height: MediaQuery.of(context).size.height * .5,
-                                  child: Center(
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "No Data Found...",
-                                          style: TextStyle(color: Colors.black, fontSize: 18),
-                                        ),
-                                        courseProvider.checkInternet == 1
-                                            ? Text(
-                                                "Check your internet connection",
-                                                style: TextStyle(color: Colors.black, fontSize: 18),
-                                              )
-                                            : Text(""),
-                                      ],
-                                    ),
-                                  ),
+                          return courseProvider.flashCateDataApiCall
+                              ? Center(
+                                  child: CircularProgressIndicator.adaptive(),
                                 )
-                              : Container(
-                                  height: MediaQuery.of(context).size.height * .70,
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: storedFlashCate.length,
-                                      itemBuilder: (context, index) {
-                                        if (index % 5 == 0) {
-                                          icon1 = FontAwesomeIcons.book;
-                                        } else if (index % 4 == 0) {
-                                          icon1 = FontAwesomeIcons.cloud;
-                                        } else if (index % 3 == 0) {
-                                          icon1 = FontAwesomeIcons.coins;
-                                        } else if (index % 2 == 0) {
-                                          icon1 = FontAwesomeIcons.deezer;
-                                        } else {
-                                          icon1 = FontAwesomeIcons.airbnb;
-                                        }
-                                        return InkWell(
-                                          onTap: () async {
-                                            print("flash card category id===>>${storedFlashCate[index].id}");
-
-                                            courseProvider.setSelectedFlashCategory(storedFlashCate[index].id);
-                                            courseProvider.FlashCards = [];
-
-                                            await courseProvider.getFlashCards(
-                                                storedFlashCate[index].id, storedFlashCate[index].price);
-                                            var flashPayStat = await cp.successValueFlash;
-                                            print("flashPayStat=======$flashPayStat");
-                                            if (flashPayStat == false) {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => RandomPage(
-                                                            categoryId: storedFlashCate[index].id,
-                                                            price: storedFlashCate[index].price,
-                                                            index: 1,
-                                                          )));
+                              : storedFlashCate.length == 0
+                                  ? Container(
+                                      height: MediaQuery.of(context).size.height * .5,
+                                      child: Center(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "No Data Found...",
+                                              style: TextStyle(color: Colors.black, fontSize: 18),
+                                            ),
+                                            courseProvider.checkInternet == 1
+                                                ? Text(
+                                                    "Check your internet connection",
+                                                    style: TextStyle(color: Colors.black, fontSize: 18),
+                                                  )
+                                                : Text(""),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      height: MediaQuery.of(context).size.height * .70,
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: storedFlashCate.length,
+                                          itemBuilder: (context, index) {
+                                            if (index % 5 == 0) {
+                                              icon1 = FontAwesomeIcons.book;
+                                            } else if (index % 4 == 0) {
+                                              icon1 = FontAwesomeIcons.cloud;
+                                            } else if (index % 3 == 0) {
+                                              icon1 = FontAwesomeIcons.coins;
+                                            } else if (index % 2 == 0) {
+                                              icon1 = FontAwesomeIcons.deezer;
                                             } else {
-                                              Future.delayed(const Duration(milliseconds: 400), () async {
-                                                {
+                                              icon1 = FontAwesomeIcons.airbnb;
+                                            }
+                                            return InkWell(
+                                              onTap: () async {
+                                                print("flash card category id===>>${storedFlashCate[index].id}");
+
+                                                courseProvider.setSelectedFlashCategory(storedFlashCate[index].id);
+                                                courseProvider.FlashCards = [];
+
+                                                await courseProvider.getFlashCards(
+                                                    storedFlashCate[index].id, storedFlashCate[index].price);
+                                                var flashPayStat = await cp.successValueFlash;
+                                                print("flashPayStat=======$flashPayStat");
+                                                if (flashPayStat == false) {
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                          builder: (context) => FlashDisplay(
-                                                                heding: storedFlashCate[index].name,
+                                                          builder: (context) => RandomPage(
+                                                                categoryId: storedFlashCate[index].id,
+                                                                price: storedFlashCate[index].price,
+                                                                index: 1,
                                                               )));
-                                                  //FlashDisplay
+                                                } else {
+                                                  Future.delayed(const Duration(milliseconds: 10), () async {
+                                                    {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) => FlashDisplay(
+                                                                    heding: storedFlashCate[index].name,
+                                                                  )));
+                                                      //FlashDisplay
+                                                    }
+                                                  });
+                                                  // }
                                                 }
-                                              });
-                                              // }
-                                            }
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                                            child: Container(
-                                                decoration: BoxDecoration(
-                                                    border:
-                                                        Border(bottom: BorderSide(width: 1.5, color: Colors.grey[300])),
-                                                    color: Colors.transparent),
-                                                child: Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(bottom: 6.0, top: 6),
-                                                      child: Container(
-                                                          height: 60,
-                                                          width: 60,
-                                                          decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(8),
-                                                            color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                                          ),
-                                                          child: Icon(
-                                                            icon1,
-
-                                                            // index % 2 == 0
-                                                            //     ? FontAwesomeIcons.book
-                                                            //     : FontAwesomeIcons.airbnb,
-                                                            color: Colors.white,
-                                                          )),
-                                                    ),
-
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-
-                                                    Column(
-                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                        border: Border(
+                                                            bottom: BorderSide(width: 1.5, color: Colors.grey[300])),
+                                                        color: Colors.transparent),
+                                                    child: Row(
                                                       children: [
-                                                        Container(
-                                                          width: MediaQuery.of(context).size.width * .7,
-                                                          // color: Colors.amber,
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: [
-                                                              Container(
-                                                                // width: MediaQuery.of(context).size.width * .7,
-                                                                child: Text(
-                                                                  storedFlashCate[index].flashcards.toString() +
-                                                                      " ${widget.title} available",
-                                                                  style: TextStyle(
-                                                                      fontSize: 14,
-                                                                      fontFamily: 'Roboto Medium',
-                                                                      // fontWeight: FontWeight.w600,
-                                                                      color: Colors.grey),
-                                                                  maxLines: 2,
-                                                                  overflow: TextOverflow.ellipsis,
-                                                                ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(bottom: 6.0, top: 6),
+                                                          child: Container(
+                                                              height: 60,
+                                                              width: 60,
+                                                              decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.circular(8),
+                                                                color:
+                                                                    index % 2 == 0 ? AppColor.purpule : AppColor.green,
                                                               ),
-                                                              storedFlashCate[index].payment_status == 1
-                                                                  ? Text(
-                                                                      "Premium",
+                                                              child: Icon(
+                                                                icon1,
+
+                                                                // index % 2 == 0
+                                                                //     ? FontAwesomeIcons.book
+                                                                //     : FontAwesomeIcons.airbnb,
+                                                                color: Colors.white,
+                                                              )),
+                                                        ),
+
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+
+                                                        Column(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width * .7,
+                                                              // color: Colors.amber,
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
+                                                                  Container(
+                                                                    // width: MediaQuery.of(context).size.width * .7,
+                                                                    child: Text(
+                                                                      storedFlashCate[index].flashcards.toString() +
+                                                                          " ${widget.title} available",
                                                                       style: TextStyle(
-                                                                        fontSize: 14,
-                                                                        fontFamily: 'Roboto Medium',
-                                                                        fontWeight: FontWeight.w600,
-                                                                      ),
+                                                                          fontSize: 14,
+                                                                          fontFamily: 'Roboto Medium',
+                                                                          // fontWeight: FontWeight.w600,
+                                                                          color: Colors.grey),
                                                                       maxLines: 2,
                                                                       overflow: TextOverflow.ellipsis,
-                                                                    )
-                                                                  : Text(""),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        SizedBox(height: 2),
-                                                        Container(
-                                                          width: MediaQuery.of(context).size.width * .7,
-                                                          child: Text(
-                                                            storedFlashCate[index].name,
-                                                            style: TextStyle(
-                                                              fontSize: 16,
-                                                              fontFamily: 'Roboto Medium',
-                                                              fontWeight: FontWeight.w600,
+                                                                    ),
+                                                                  ),
+                                                                  storedFlashCate[index].payment_status == 1
+                                                                      ? Text(
+                                                                          "Premium",
+                                                                          style: TextStyle(
+                                                                            fontSize: 14,
+                                                                            fontFamily: 'Roboto Medium',
+                                                                            fontWeight: FontWeight.w600,
+                                                                          ),
+                                                                          maxLines: 2,
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                        )
+                                                                      : Text(""),
+                                                                ],
+                                                              ),
                                                             ),
-                                                            maxLines: 2,
-                                                            overflow: TextOverflow.ellipsis,
-                                                          ),
+                                                            SizedBox(height: 2),
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width * .7,
+                                                              child: Text(
+                                                                storedFlashCate[index].name,
+                                                                style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontFamily: 'Roboto Medium',
+                                                                  fontWeight: FontWeight.w600,
+                                                                ),
+                                                                maxLines: 2,
+                                                                overflow: TextOverflow.ellipsis,
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
+
+                                                        // Container(
+                                                        //   child: Row(
+                                                        //     mainAxisAlignment: MainAxisAlignment.end,
+                                                        //     children: [
+                                                        //       Text(
+                                                        //         "Premium",
+                                                        //         style: TextStyle(
+                                                        //           fontSize: 16,
+                                                        //           fontFamily: 'Roboto Medium',
+                                                        //           fontWeight: FontWeight.w600,
+                                                        //         ),
+                                                        //         maxLines: 2,
+                                                        //         overflow: TextOverflow.ellipsis,
+                                                        //       ),
+                                                        //     ],
+                                                        //   ),
+                                                        // ),
+
+                                                        // )
                                                       ],
-                                                    ),
+                                                    )
 
-                                                    // Container(
-                                                    //   child: Row(
-                                                    //     mainAxisAlignment: MainAxisAlignment.end,
-                                                    //     children: [
-                                                    //       Text(
-                                                    //         "Premium",
-                                                    //         style: TextStyle(
-                                                    //           fontSize: 16,
-                                                    //           fontFamily: 'Roboto Medium',
-                                                    //           fontWeight: FontWeight.w600,
+                                                    // ListTile(
+                                                    //     leading: Container(
+                                                    //         height: 60,
+                                                    //         width: 60,
+                                                    //         decoration: BoxDecoration(
+                                                    //           borderRadius: BorderRadius.circular(8),
+                                                    //           color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
                                                     //         ),
-                                                    //         maxLines: 2,
-                                                    //         overflow: TextOverflow.ellipsis,
-                                                    //       ),
-                                                    //     ],
-                                                    //   ),
-                                                    // ),
+                                                    //         child: Icon(
+                                                    //           index % 2 == 0
+                                                    //               ? FontAwesomeIcons.book
+                                                    //               : FontAwesomeIcons.airbnb,
+                                                    //           color: Colors.white,
+                                                    //         )
 
-                                                    // )
-                                                  ],
-                                                )
+                                                    //         ),
+                                                    //     // title: Row(
+                                                    //     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    //     //   children: [
+                                                    //     //     // Text(
+                                                    //     //     //   "",
+                                                    //     //     //   style: TextStyle(fontSize: 12),
+                                                    //     //     // ),
+                                                    //     //     storedFlashCate[index].payment_status == 1
+                                                    //     //         ? InkWell(
+                                                    //     //             onTap: () {
+                                                    //     //               Navigator.push(
+                                                    //     //                   context,
+                                                    //     //                   MaterialPageRoute(
+                                                    //     //                       builder: (context) => RandomPage(index: 1)));
+                                                    //     //             },
+                                                    //     //             child: Text(
+                                                    //     //               "Premium",
+                                                    //     //               style: TextStyle(fontSize: 12),
+                                                    //     //             ),
+                                                    //     //           )
+                                                    //     //         : SizedBox(),
+                                                    //     //   ],
+                                                    //     // ),
+                                                    //     title: Text(
+                                                    //       storedFlashCate[index].name,
+                                                    //       maxLines: 2,
+                                                    //       overflow:  TextOverflow.ellipsis,
+                                                    //     ))
 
-                                                // ListTile(
-                                                //     leading: Container(
-                                                //         height: 60,
-                                                //         width: 60,
-                                                //         decoration: BoxDecoration(
-                                                //           borderRadius: BorderRadius.circular(8),
-                                                //           color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                                //         ),
-                                                //         child: Icon(
-                                                //           index % 2 == 0
-                                                //               ? FontAwesomeIcons.book
-                                                //               : FontAwesomeIcons.airbnb,
-                                                //           color: Colors.white,
-                                                //         )
-
-                                                //         ),
-                                                //     // title: Row(
-                                                //     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                //     //   children: [
-                                                //     //     // Text(
-                                                //     //     //   "",
-                                                //     //     //   style: TextStyle(fontSize: 12),
-                                                //     //     // ),
-                                                //     //     storedFlashCate[index].payment_status == 1
-                                                //     //         ? InkWell(
-                                                //     //             onTap: () {
-                                                //     //               Navigator.push(
-                                                //     //                   context,
-                                                //     //                   MaterialPageRoute(
-                                                //     //                       builder: (context) => RandomPage(index: 1)));
-                                                //     //             },
-                                                //     //             child: Text(
-                                                //     //               "Premium",
-                                                //     //               style: TextStyle(fontSize: 12),
-                                                //     //             ),
-                                                //     //           )
-                                                //     //         : SizedBox(),
-                                                //     //   ],
-                                                //     // ),
-                                                //     title: Text(
-                                                //       storedFlashCate[index].name,
-                                                //       maxLines: 2,
-                                                //       overflow:  TextOverflow.ellipsis,
-                                                //     ))
-
-                                                ),
-                                          ),
-                                        );
-                                        // );
-                                      }),
-                                );
+                                                    ),
+                                              ),
+                                            );
+                                            // );
+                                          }),
+                                    );
                         });
                       }),
                 )
