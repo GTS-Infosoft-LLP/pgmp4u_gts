@@ -479,7 +479,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                   displayTime = StopWatchTimer.getDisplayTime(value,
                                                       hours: true, milliSecond: false);
 
-                                                  return Text(
+                                                  return Text( 
                                                     displayTime,
                                                     style: TextStyle(
                                                         fontFamily: 'Roboto Medium',
