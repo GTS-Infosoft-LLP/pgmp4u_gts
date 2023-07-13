@@ -163,11 +163,13 @@ class ChatProvider extends ChangeNotifier {
 
   String singleChatRoomId = '';
   String reciverUserId = '';
+
+  // this method only calls from signle group
   setChatRoomId(String roomId) {
     singleChatRoomId = roomId;
 
     // to set for emoji
-    setGroupId(roomId);
+    setGroupId(roomId, GroupType.singleChat);
     notifyListeners();
   }
 
@@ -251,9 +253,13 @@ class ChatProvider extends ChangeNotifier {
   }
 
   // to set the current group id
+  // set the current groupt type
+  //
   String currentGroupId;
-  setGroupId(String groupId) {
+  GroupType currentGroupType;
+  setGroupId(String groupId, GroupType type) {
     currentGroupId = groupId;
+    currentGroupType = type;
     notifyListeners();
   }
 
@@ -287,4 +293,15 @@ class ChatProvider extends ChangeNotifier {
     print("-- deleteSingleMessage -- ");
     FirebaseChatHandler.deleteMessageInSingleChat(singleChatRoomId, selectedChat);
   }
+
+  void deleteMessage() {
+    print("-- Current Group type : $currentGroupType, id: $currentGroupId -- ");
+    if (currentGroupType == GroupType.groupChat) {
+      deleteGroupMessage();
+    } else {
+      deleteSingleMessage();
+    }
+  }
 }
+
+enum GroupType { singleChat, groupChat }

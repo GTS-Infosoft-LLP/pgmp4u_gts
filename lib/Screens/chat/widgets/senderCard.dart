@@ -140,7 +140,7 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
                   layerLink,
                   true,
                 );
-                context.read<ChatProvider>().updateisShowDeleteIcon(true);
+
                 context.read<ChatProvider>().updateSelectedMessage(widget.chatModel);
               },
               child: Row(
@@ -204,7 +204,10 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
 }
 
 void showOverLay(BuildContext context, ChatModel message, LayerLink layerLink, bool isSentMessage) {
-  double overlayWidth = 200;
+  double overlayWidth = context.read<ChatProvider>().currentGroupType == GroupType.groupChat &&
+          !context.read<ChatProvider>().isChatAdmin()
+      ? 170
+      : 230;
   context.read<ChatProvider>().reactionOverlayState = Overlay.of(context);
 
   final renderBox = context.findRenderObject() as RenderBox;

@@ -92,7 +92,42 @@ class _ReactionOverlayState extends State<ReactionOverlay> {
             reaction: Reaction.thumbsUp,
             onPressed: () => onTapOfReaction(Reaction.thumbsUp),
           ),
-          
+
+          // in discussion show only to admin user
+          // in single chat to both user
+          context.read<ChatProvider>().currentGroupType == GroupType.groupChat &&
+                  !context.read<ChatProvider>().isChatAdmin()
+              ? SizedBox()
+              : GestureDetector(
+                  onTap: () {
+                    context.read<ChatProvider>().deleteMessage();
+                    context.read<ChatProvider>().removeOverlay();
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 0,
+                            blurRadius: 2,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(4.0),
+                      child: ClipOval(
+                        child: Container(
+                          height: 24,
+                          width: 24,
+                          child: Icon(
+                            Icons.delete,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      )),
+                ),
         ],
       ),
     );
