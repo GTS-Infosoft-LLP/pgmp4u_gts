@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 import 'package:getwidget/getwidget.dart';
+import 'package:pgmp4u/Models/restartModel.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTestResult.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
@@ -25,7 +26,9 @@ class MockTestQuestions extends StatefulWidget {
   final int selectedId;
   final String mockName;
   final attempt;
-  MockTestQuestions({this.selectedId, this.mockName, this.attempt});
+  RestartModel restartModel;
+
+  MockTestQuestions({this.selectedId, this.mockName, this.attempt, this.restartModel});
 
   @override
   _MockTestQuestionsState createState() =>
@@ -96,18 +99,19 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       timecheck = cp.totalTime;
     }
 
-    if (timecheck != 0) {
-      print("cp.toPage======${cp.toPage}");
-      _stopWatchTimer.setPresetTime(mSec: cp.totalTime);
-      // try {
-      //   print("inside thatttsss");
-      //   if (pageController.hasClients) pageController.jumpToPage(3);
+    print("cp.toPage======${cp.toPage}");
+    int time1 = int.tryParse(widget.restartModel.displayTime) ?? 0;
+    print("tryyy parseee=====${int.tryParse(widget.restartModel.displayTime)}");
+    _stopWatchTimer.setPresetTime(mSec: time1);
+    // try {
+    //   print("inside thatttsss");
+    //   if (pageController.hasClients) pageController.jumpToPage(3);
 
-      //   // pageController = PageController(initialPage: 3);
-      // } catch (e) {
-      //   print("errorororr=====$e");
-      // }
-    }
+    //   // pageController = PageController(initialPage: 3);
+    // } catch (e) {
+    //   print("errorororr=====$e");
+    // }
+
     beforeCallApi();
     context.read<CourseProvider>().setMasterListType("Chat");
     context.read<ProfileProvider>().subscriptionStatus("Chat");
@@ -116,15 +120,14 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
   beforeCallApi() async {
     await apiCall();
-    CourseProvider cp = Provider.of(context, listen: false);
-    print("available pages: ${mockQuestion.length}");
-    print("cp.toPagecp.toPage========${cp.toPage}");
-    print("cp.toPagecp._quetionNo========$_quetionNo");
-    setState(() {
-      _quetionNo = cp.toPage - 1;
-    });
-    // pageController.animateToPage(cp.toPage, duration: Duration(milliseconds: 200), curve: Curves.bounceIn);
-    pageController.jumpToPage(cp.toPage);
+
+    if (widget.restartModel != null) {
+      setState(() {
+        _quetionNo = widget.restartModel.quesNum - 1;
+      });
+
+      pageController.jumpToPage(widget.restartModel.quesNum);
+    }
   }
 
   @override
@@ -246,7 +249,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     // print("time eeee===>>>${_yi}");
     print("submitData==========${submitData.toString()}");
     CourseProvider cp = Provider.of(context, listen: false);
-    HiveHandler.addToRestartBox(cp.selectedMockId.toString(), cp.selectedAttemptNumer);
+    HiveHandler.addToRestartBox(
+        cp.selectedMockId.toString(),
+        RestartModel(
+            displayTime: cp.totalTime.toString(),
+            quesNum: cp.toPage,
+            restartAttempNum: cp.selectedAttemptNumer)); /////////////
     cp.setToRestartList(displayTime, cp.selectedAttemptNumer, cp.toPage);
     HiveHandler.setSubmitMockData(cp.selectedMockId.toString(), submitData.toString());
     Navigator.pop(context);
@@ -292,7 +300,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                   } else {
                     CourseProvider cp = Provider.of(context, listen: false);
 
-                    HiveHandler.addToRestartBox(cp.selectedMockId.toString(), cp.selectedAttemptNumer);
+                    // HiveHandler.addToRestartBox(cp.selectedMockId.toString(), cp.selectedAttemptNumer);
+                    HiveHandler.addToRestartBox(
+                        cp.selectedMockId.toString(),
+                        RestartModel(
+                            displayTime: displayTime, quesNum: cp.toPage, restartAttempNum: cp.selectedAttemptNumer));
+
                     Navigator.pop(context);
                     Navigator.pop(context);
                   }

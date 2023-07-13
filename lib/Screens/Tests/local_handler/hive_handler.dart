@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pgmp4u/Models/restartModel.dart';
 
 import '../../../Models/mockListmodel.dart';
 import '../../../Models/mockquestionanswermodel.dart';
@@ -62,10 +63,8 @@ class HiveHandler {
   static Box<List<CategoryListModel>> categoryListBox;
   static Box<List<FlashCardDetails>> flashListBox;
   static Box<String> masterListBox;
-  static Box<int> mockRestartBox;
+  static Box<RestartModel> mockRestartBox;
   static Box<String> submitDataBox;
-
-
 
   static Box<List<MockTestListApiModel>> MockListBox;
   static Box<List<QuestionAnswerModel>> MockTextBox;
@@ -92,6 +91,7 @@ class HiveHandler {
 
     Hive.registerAdapter(TestDataDetailsAdapter());
     Hive.registerAdapter(MockDataDetailsAdapter());
+    Hive.registerAdapter(RestartModelAdapter());
 
     courseListBox = await Hive.openBox<String>(CourseBox);
     displayFlashBox = await Hive.openBox<String>(FlashCardBox);
@@ -100,7 +100,7 @@ class HiveHandler {
     // flashListBox = await Hive.openBox<List<FlashCardDetails>>(FlashCardBox);
 
     masterListBox = await Hive.openBox<String>(MasterDataBox);
-    submitDataBox=await Hive.openBox<String>(SubmitMockBoxKey);
+    submitDataBox = await Hive.openBox<String>(SubmitMockBoxKey);
 
     // MockListBox = await Hive.openBox<List<MockTestListApiModel>>(MockTestBox);
 
@@ -111,8 +111,7 @@ class HiveHandler {
 
     mockAttempList = await Hive.openBox<String>(MockAttemptsBox);
 
-    mockRestartBox = await Hive.openBox<int>(MockRestartBoxKey);
-
+    mockRestartBox = await Hive.openBox<RestartModel>(MockRestartBoxKey);
 
     await Hive.openBox("deviceTokenBox");
 
@@ -221,7 +220,6 @@ class HiveHandler {
     } else {
       print("===========box is empty=========");
     }
- 
   }
 
 // ///////////////
@@ -365,17 +363,18 @@ class HiveHandler {
   ///
   ///
   ///
-  static setSubmitMockData(String mockId, String data){
-  submitDataBox.put(mockId, data);
-  print("datata====>${data}");
-   if (submitDataBox.isNotEmpty) {
+  static setSubmitMockData(String mockId, String data) {
+    submitDataBox.put(mockId, data);
+    print("datata====>$data");
+    if (submitDataBox.isNotEmpty) {
       print("===========added to box=========");
       print("submitDataBox.get for key: $mockId = ${submitDataBox.get(mockId)}");
     } else {
       print("===========box is empty=========");
     }
   }
-    static removeFromSubmitMockBox(String mockId) {
+
+  static removeFromSubmitMockBox(String mockId) {
     // mockRestartBox.put(mockId, atemNum);
 
     if (submitDataBox.isNotEmpty) {
@@ -387,8 +386,8 @@ class HiveHandler {
     }
   }
 
-  static addToRestartBox(String mockId, int atemNum) {
-    mockRestartBox.put(mockId, atemNum);
+  static addToRestartBox(String mockId, RestartModel restartModel) {
+    mockRestartBox.put(mockId, restartModel);
 
     if (mockRestartBox.isNotEmpty) {
       print("===========added to box=========");
@@ -410,8 +409,8 @@ class HiveHandler {
     }
   }
 
-  static ValueListenable<Box<int>> getMockRestartListener() {
-    return Hive.box<int>(MockRestartBoxKey).listenable() ?? 0;
+  static ValueListenable<Box<RestartModel>> getMockRestartListener() {
+    return Hive.box<RestartModel>(MockRestartBoxKey).listenable();
   }
 
   static addMasterData(String masterListResponse, {String keyName}) async {
