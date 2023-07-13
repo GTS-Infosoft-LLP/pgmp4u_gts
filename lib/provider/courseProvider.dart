@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/Models/restartTestModel.dart';
 import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +9,7 @@ import '../Models/mockListmodel.dart';
 import '../Models/mockquestionanswermodel.dart';
 import '../Models/pptCateModel.dart';
 import '../Models/pptDetailsModel.dart';
+import '../Models/restartModel.dart';
 import '../Screens/MockTest/model/courseModel.dart';
 import '../Screens/MockTest/model/flashCardModel.dart';
 import '../Screens/MockTest/model/flashCateModel.dart';
@@ -41,6 +43,15 @@ class CourseProvider extends ChangeNotifier {
 
   List<PPTCateDetails> pptCategoryList = [];
   List<PPTDataDetails> pptDataList = [];
+
+
+  List<RestartModel> restartDataList=[];
+
+setToRestartList(String display,int attempptNum,int quesNum)
+{
+    restartDataList.add(RestartModel(displayTime: display,quesNum: quesNum,restartAttempNum: attempptNum));
+}
+
 
   int firstCourse = 0;
   int firstMaster = 0;
