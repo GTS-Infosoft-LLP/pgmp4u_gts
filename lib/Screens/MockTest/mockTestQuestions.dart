@@ -67,11 +67,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     onChangeRawMinute: (value) => {},
   );
   var currentIndex;
-  PageController pageController = PageController();
+  PageController pageController;
   List<Queans> mockQuestion = [];
   int timecheck;
   @override
   void initState() {
+    pageController = PageController();
     timecheck = 0;
     CourseProvider cp = Provider.of(context, listen: false);
     cp.timerValue = false;
@@ -116,21 +117,21 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   beforeCallApi() async {
     await apiCall();
     CourseProvider cp = Provider.of(context, listen: false);
-    try {
-      print("inside thisss");
-      print("cp.toPagecp.toPage========${cp.toPage}");
-      // if (pageController.hasClients) pageController.jumpToPage(cp.toPage);
-
-      pageController = PageController(initialPage: cp.toPage);
-    } catch (e) {
-      print("errorororr=====$e");
-    }
+    print("available pages: ${mockQuestion.length}");
+    print("cp.toPagecp.toPage========${cp.toPage}");
+    print("cp.toPagecp._quetionNo========$_quetionNo");
+    setState(() {
+      _quetionNo = cp.toPage - 1;
+    });
+    // pageController.animateToPage(cp.toPage, duration: Duration(milliseconds: 200), curve: Curves.bounceIn);
+    pageController.jumpToPage(cp.toPage);
   }
 
   @override
-  void dispose() async {
+  void dispose() {
     super.dispose();
-    await _stopWatchTimer.dispose();
+    pageController.dispose();
+    _stopWatchTimer.dispose();
   }
 
   // 0 -> fine
@@ -595,13 +596,14 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                               ? Consumer<CourseProvider>(builder: (context, cp, child) {
                                   return Expanded(
                                     child: PageView.builder(
+                                        controller: pageController,
                                         physics: cp.allowScroll == 1
                                             ? BouncingScrollPhysics()
                                             : NeverScrollableScrollPhysics(),
-                                        controller: pageController,
                                         onPageChanged: (index) {
-                                          print("index====>>$index");
-                                          print("currentIndex ====>>$currentIndex");
+                                          print("index in onPageChagen ====>>$index");
+                                          print("currentIndex in onPageChagen ====>>$currentIndex");
+
                                           if (currentIndex < index) {
                                             if (mockQuestion.length - 1 > _quetionNo) {
                                               setState(() {
@@ -626,6 +628,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               if (!loader) submitMockTest('', displayTime);
                                             }
                                           } else {
+                                            print("tis is not $_quetionNo");
                                             if (_quetionNo != 0) {
                                               setState(() {
                                                 _quetionNo--;
@@ -635,14 +638,16 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               });
                                             }
                                           }
+
                                           setState(() {
                                             currentIndex = index;
 
-                                            print("final index===$currentIndex");
+                                            // print("final index===$currentIndex");
                                           });
                                         },
                                         itemCount: mockQuestion.length,
                                         itemBuilder: (context, index) {
+                                          print("current Indedx: $index ");
                                           return SingleChildScrollView(
                                             child: Column(
                                               children: [
