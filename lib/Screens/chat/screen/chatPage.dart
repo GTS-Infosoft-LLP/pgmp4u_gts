@@ -36,6 +36,16 @@ class _ChatPageState extends State<ChatPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: InkWell(
+            onTap: () {
+              context.read<ChatProvider>().updateisShowDeleteIcon(false);
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.white,
+            ),
+          ),
           title: Text(
             widget.v1 ?? 'Discussion',
             style: TextStyle(
