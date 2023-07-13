@@ -170,12 +170,12 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                             if (value.containsKey(selectedIdNew.toString())) {
                               mockAttempt = jsonDecode(value.get(selectedIdNew.toString()));
                               mockData = MockData.fromjd(jsonDecode(value.get(selectedIdNew.toString())));
-                              print(">>> mockAttempt :  $mockAttempt");
+                              // print(">>> mockAttempt :  $mockAttempt");
                               detailsofMockAttempt = MockDataDetails.fromjson(mockAttempt["mocktest"]);
-                              print(" details of MockAttempt======== $detailsofMockAttempt");
+                              // print(" details of MockAttempt======== $detailsofMockAttempt");
 
                               List attempts = mockAttempt["attempts"].toList();
-                              print(" details of attempts======== ${attempts.length}");
+                              // print(" details of attempts======== ${attempts.length}");
 
                               cp.aviAttempts = attempts.map((e) => AvailableAttempts.fromjsons(e)).toList() ?? [];
                             } else {
@@ -238,14 +238,14 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: cp.aviAttempts.map<Widget>((title) {
                                                   var index = cp.aviAttempts.indexOf(title);
-                                                  print("cp.aviAttempts=========${cp.aviAttempts[index].percentage}");
+                                                  // print("cp.aviAttempts=========${cp.aviAttempts[index].percentage}");
                                                   return InkWell(
                                                     onTap: () {
                                                       cp.setSelectedAttemptNumer(cp.aviAttempts[index].attempt);
 
                                                       {
-                                                        print(
-                                                            "cp.aviAttempts[index]=======${cp.aviAttempts[index].attempt}");
+                                                        // print(
+                                                        //     "cp.aviAttempts[index]=======${cp.aviAttempts[index].attempt}");
                                                         if (cp.aviAttempts[index].attempted_date == null &&
                                                             cp.aviAttempts[index].tobeAttempted == 1) {
                                                           Navigator.push(

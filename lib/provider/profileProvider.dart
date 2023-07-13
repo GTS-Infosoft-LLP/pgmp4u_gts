@@ -34,8 +34,10 @@ class ProfileProvider extends ChangeNotifier {
   bool notificationLoader = false;
 
   updateNotificationLoader(bool value) {
-    notificationLoader = value;
-    notifyListeners();
+    Future.delayed(Duration.zero, () async {
+      notificationLoader = value;
+      notifyListeners();
+    });
   }
 
   Future showNotification({bool isFirstTime = false}) async {
@@ -176,17 +178,12 @@ class ProfileProvider extends ChangeNotifier {
       );
       avgScore = "";
       dayDiff = "";
-
       // print("response.statusCode===${response.body}");
       print("response.statusCode===${response.statusCode}");
-
       var resDDo = json.decode(response.body);
-
       print("respponse=== $resDDo");
-
       print("resDDo=====${resDDo['data']['daysDiff']}");
       print("resDDo=====${resDDo['data']['averageScore']}");
-
       avgScore = resDDo['data']['daysDiff'].toString();
       dayDiff = resDDo['data']['averageScore'].toString();
       notifyListeners();

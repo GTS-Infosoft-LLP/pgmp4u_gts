@@ -88,12 +88,17 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                           Navigator.pop(context);
                                         }))),
                             SizedBox(width: 20),
-                            Center(
-                                child: Text(
-                              widget.heding,
-                              style: TextStyle(
-                                  fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
-                            )),
+                            Container(
+                              width: MediaQuery.of(context).size.width * .7,
+                              child: Text(
+                                widget.heding,
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    color: Colors.white,
+                                    fontFamily: "Roboto",
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -205,7 +210,7 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                             // maxLines: 2,
                                                             // overflow: TextOverflow.ellipsis,
                                                             style: TextStyle(
-                                                                fontSize: 30,
+                                                                fontSize: 20,
                                                                 fontFamily: "Roboto",
                                                                 fontWeight: FontWeight.bold,
                                                                 color: Colors.black),

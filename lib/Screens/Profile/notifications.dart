@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:pgmp4u/Screens/QuesOfDay.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -90,7 +91,7 @@ class _NotificationsState extends State<Notifications> {
                         Center(
                             child: Text(
                           // "Video Library",
-                          "Notifications",
+                          "Announcments",
                           style: TextStyle(
                               fontSize: 28, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
                         )),
@@ -130,6 +131,15 @@ class _NotificationsState extends State<Notifications> {
                                   var quesId = profileProvider.NotificationData[index].questionId;
                                   profileProvider.setNotifiId(profileProvider.NotificationData[index].id);
 
+                                  if (profileProvider.NotificationData[index].type == 2) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => QuesOfDay(
+                                                  seltedId: profileProvider.NotificationData[index].questionId,
+                                                )));
+                                  }
+
                                   if (profileProvider.NotificationData[index].type == 1)
                                     showDialog(
                                         context: context,
@@ -155,7 +165,7 @@ class _NotificationsState extends State<Notifications> {
                                               color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
                                             ),
                                             child: Icon(
-                                              Icons.notifications,
+                                              Icons.notification_important_rounded,
                                               color: Colors.white,
                                             )),
                                         SizedBox(
@@ -192,6 +202,20 @@ class _NotificationsState extends State<Notifications> {
                                                 ),
                                               ),
                                             ),
+                                            profileProvider.NotificationData[index].type == 2
+                                                ? Container(
+                                                    width: MediaQuery.of(context).size.width * .7,
+                                                    child: Text(
+                                                      profileProvider.NotificationData[index].courseName ?? '',
+                                                      maxLines: 5,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          fontFamily: 'Roboto Medium',
+                                                          color: Colors.black54,
+                                                          fontSize: 16),
+                                                    ),
+                                                  )
+                                                : SizedBox(),
                                             SizedBox(
                                               height: 5,
                                             ),

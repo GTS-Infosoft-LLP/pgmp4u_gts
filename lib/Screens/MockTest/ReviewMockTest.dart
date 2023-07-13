@@ -347,7 +347,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                               Column(
                                                 children:
                                                     listResponse[_quetionNo].question.options.map<Widget>((title) {
-                                                  print("question option====== ${title.questionOption}");
+                                                  // print("question option====== ${title.questionOption}");
                                                   var index = listResponse[_quetionNo].question.options.indexOf(title);
                                                   // print("index >>>>>> $index");
 
@@ -409,10 +409,10 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
 
                                                   // print(
                                                   //     "your answer inde ${_currentYourAnserIndex}");
-                                                  print("selectedAnswer answer $selectedAnswer");
-                                                  print("selectedAnswer title.id is >>> ${title.id}");
-                                                  print(
-                                                      "selectedAnswer answer right ${listResponse[_quetionNo].question.rightAnswer}");
+                                                  // print("selectedAnswer answer $selectedAnswer");
+                                                  // print("selectedAnswer title.id is >>> ${title.id}");
+                                                  // print(
+                                                  //     "selectedAnswer answer right ${listResponse[_quetionNo].question.rightAnswer}");
 
                                                   return GestureDetector(
                                                     onTap: () => {
@@ -837,8 +837,8 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
   // }
 
   Widget getTextSelecd(List rightIndex, List wrongIndex, currentIndex) {
-    print("rightIndex is >>> $rightIndex");
-    print("current index >> $wrongIndex");
+    // print("rightIndex is >>> $rightIndex");
+    // print("current index >> $wrongIndex");
     Widget returnWidget = SizedBox();
     if (rightIndex.contains(currentIndex)) {
       returnWidget = Text("Right Answer");
@@ -856,6 +856,8 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
     isListSame = 1;
     yourAnswer.sort();
     correctAnswer.sort();
+    print("yourAnswer====$yourAnswer");
+    print("correctAnswer===$correctAnswer");
     if (yourAnswer.length == correctAnswer.length) {
       for (int i = 0; i < yourAnswer.length; i++) {
         if (yourAnswer[i] == (correctAnswer[i])) {
@@ -864,11 +866,15 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
           break;
         }
       }
+
       if (isListSame == 1) {
         print("same are both the lkstssss");
       } else {
         print("  list are not same are both the lkstssss");
       }
+    } else {
+      isListSame = 0;
     }
+    print("isListSame====$isListSame");
   }
 }

@@ -179,7 +179,9 @@ class _MasterListPageState extends State<MasterListPage> {
                                                               // shape: BoxShape.circle,
                                                               color: Colors.transparent,
                                                               border: Border(
-                                                                bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
+                                                                bottom: BorderSide(
+                                                                    width: 1.5,
+                                                                    color: Color.fromARGB(255, 219, 211, 211)),
                                                               )),
                                                           // Border.all(color: Colors.black, width: 1)),
                                                           child: InkWell(

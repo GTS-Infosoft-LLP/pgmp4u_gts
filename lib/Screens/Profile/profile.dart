@@ -62,7 +62,7 @@ class _ProfileState extends State<Profile> {
     if (cp.course.isNotEmpty) {
       print("cp.course[0].id===========${cp.course[0].id}");
       cp.setSelectedCourseId(cp.course[0].id);
-      cp.setSelectedCourseName(cp.course[0].course);
+      cp.setSelectedCourseName(cp.course[0].lable);
       pp.getReminder(cp.course[0].id);
     }
 
@@ -367,7 +367,9 @@ class _ProfileState extends State<Profile> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Container(
-                    padding: EdgeInsets.only(top: height * (28 / 800)),
+                    padding: EdgeInsets.only(
+                        // top: height * (28 / 800)
+                        ),
                     margin: EdgeInsets.only(bottom: 10),
                     // height: height - 180 - 25 - 110,
                     width: width,
@@ -470,7 +472,7 @@ class _ProfileState extends State<Profile> {
                         Consumer<CourseProvider>(builder: (context, cp, child) {
                           return Container(
                             // color: Colors.amber,
-                            margin: EdgeInsets.only(top: width * (50 / 800)),
+                            // margin: EdgeInsets.only(top: width * (50 / 800)),
                             child: Column(
                               children: [
                                 Container(
@@ -483,7 +485,7 @@ class _ProfileState extends State<Profile> {
                                       value: null,
                                       onChange: (val) {
                                         print("val.course=========>${val.course}");
-                                        cp.setSelectedCourseName(val.course);
+                                        cp.setSelectedCourseName(val.lable);
                                         cp.setSelectedCourseId(val.id);
                                         ProfileProvider pp = Provider.of(context, listen: false);
                                         pp.getReminder(val.id);
@@ -548,9 +550,10 @@ class _ProfileState extends State<Profile> {
                                               InkWell(
                                                 onTap: () {
                                                   ProfileProvider pp = Provider.of(context, listen: false);
-                                                  print("pp.dayDiff========${pp.dayDiff}");
-                                                  if (pp.dayDiff != '0') {
-                                                  } else {
+                                                  print("pp.dayDiff========${pp.avgScore}");
+                                                  // if (pp.avgScore != '0') {
+                                                  // } else
+                                                  {
                                                     DatePicker.showDatePicker(context, minTime: DateTime.now())
                                                         .then((value) async {
                                                       print("valueee====$value");
