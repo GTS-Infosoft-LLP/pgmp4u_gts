@@ -216,10 +216,10 @@ class ChatProvider extends ChangeNotifier {
       print("Exception occured while geting isChatAdmin");
     }
 
-    print("isChatAdmin : $isChatAdmin");
     if (isChatAdmin == null) {
       return false;
     }
+    print("isChatAdmin : $isChatAdmin");
     return isChatAdmin;
   }
 

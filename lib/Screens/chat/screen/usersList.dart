@@ -22,14 +22,21 @@ class _UsersListState extends State<UsersList> {
   bool isLoading = false;
   UpadateLocationResponseModel userListResponse;
   int currentPageIndex = 1;
-  ScrollController _scrollController = ScrollController();
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
 
     getUser();
-    _scrollController.addListener(_scrollListener);
+    // _scrollController.addListener(() => _scrollListener);
+    scrollController.addListener(() {
+      print("controller is listeningggggg......");
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        print("call again api");
+        // _dshbrdProvider.showNotification();
+      }
+    });
   }
 
   getUser() async {
@@ -65,6 +72,8 @@ class _UsersListState extends State<UsersList> {
         userListResponse.data.removeWhere((user) => user.uuid == context.read<ChatProvider>().getUser().uid);
 
         // only shows admin if i'm normal user
+        print(
+            " context.read<ChatProvider>().isChatAdmin() in userList: ${context.read<ChatProvider>().isChatAdmin()} ");
         context.read<ChatProvider>().isChatAdmin()
             ? null
             : userListResponse.data.removeWhere((user) => user.isChatAdmin == 0);
@@ -87,7 +96,8 @@ class _UsersListState extends State<UsersList> {
   }
 
   void _scrollListener() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+    print("controller is listeningggggg......");
+    if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
       print('_listener called');
       getUser();
     }
@@ -105,7 +115,7 @@ class _UsersListState extends State<UsersList> {
                   ? Expanded(child: Center(child: Text('No User Found')))
                   : ListView.builder(
                       shrinkWrap: true,
-                      controller: _scrollController,
+                      controller: scrollController,
                       itemCount: userListResponse.data.length,
                       itemBuilder: (context, index) {
                         return _userListTile(userListResponse.data[index]);
@@ -122,8 +132,6 @@ class _UsersListState extends State<UsersList> {
         bool isRoomCreated = await context
             .read<ChatProvider>()
             .initiatePersonalChat(reciver: MyUserInfo(id: user.uuid, name: user.name, isAdmin: user.isChatAdmin));
-
-         
 
         String name = '';
         name = user.name;

@@ -28,16 +28,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   getValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    await initializeSharedPref(context);
     //Return String
     String stringValue = prefs.getString('token');
     return stringValue;
   }
 
-  initializeSharedPref(BuildContext context) {
-    context.read<CourseProvider>().initSharePreferecne();
-    context.read<PdfProvider>().initSharePreferecne();
-    context.read<ChatProvider>().initSharePreferecne();
+  initializeSharedPref(BuildContext context) async {
+    await context.read<CourseProvider>().initSharePreferecne();
+    await context.read<PdfProvider>().initSharePreferecne();
+    await context.read<ChatProvider>().initSharePreferecne();
   }
 
   navigateToScreen() async {
@@ -66,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     print(double.infinity);
-    initializeSharedPref(context);
+
     localDataUpdate();
 
     navigateToScreen();

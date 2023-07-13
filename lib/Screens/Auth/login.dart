@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: request,
     );
 
-    // print("Response => ${response.body}");
+    print("Response => ${response.body}");
 
     if (response.statusCode == 200) {
       Map responseData = json.decode(response.body);
@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString('name', user.displayName);
       prefs.setString('email', responseData['data'][0]['email']);
       prefs.setString('id', responseData['data'][0]['id'].toString());
-      prefs.setBool('isChatAdmin', responseData['data'][0]['isChatAdmin'] == 1 ? true : false);
+      await prefs.setBool('isChatAdmin', responseData['data'][0]['isChatAdmin'] == 1 ? true : false);
       prefs.setBool('isChatSubscribed', responseData['data'][0]['isChatSubscribed'] == 1 ? true : false);
       GFToast.showToast(
         'LoggedIn successfully',
@@ -127,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         body: request,
       );
-      print("response is >> $response");
+
       print("Response => ${response.body}");
 
       if (response.statusCode == 200) {
@@ -170,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           loading = false;
         });
-
+        print('Already Registerd: response is: $responseData');
         if (responseData["alreadyExist"] != null && responseData["alreadyExist"] == 1) {
           print("Do login flow");
           GFToast.showToast(
@@ -233,6 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (signInBool) {
           loginHandler(googleUser, "google", uuid: userCredential.user.uid);
         } else {
+          // always hit this api
           registerHandler(googleUser, fromProvider: "google", uuid: userCredential.user.uid);
         }
 

@@ -53,151 +53,157 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
     DateTime time = DateTime.fromMillisecondsSinceEpoch(int.tryParse(widget.group.createdAt));
     String timeToShow = Jiffy(time).fromNow();
 
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 2,
-        toolbarHeight: 80,
-        title: InkWell(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => CustomDialog(
-                group: widget.group,
-                timeAgo: timeToShow,
-              ),
-            );
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.group.title ?? '',
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  //  fontSize: width * (18 / 420),
-                  fontFamily: 'Roboto Medium',
-                  color: Colors.black,
+    return WillPopScope(
+      onWillPop: () {
+        context.read<ChatProvider>().updateisShowDeleteIcon(false);
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 2,
+          toolbarHeight: 80,
+          title: InkWell(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => CustomDialog(
+                  group: widget.group,
+                  timeAgo: timeToShow,
                 ),
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Posted: ',
-                    style: TextStyle(
-                      //  fontSize: width * (18 / 420),
-                      fontSize: 14,
-                      fontFamily: 'Roboto Medium',
-                      color: Color(0xff63697B),
-                    ),
+              );
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.group.title ?? '',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    //  fontSize: width * (18 / 420),
+                    fontFamily: 'Roboto Medium',
+                    color: Colors.black,
                   ),
-                  Text(
-                    "${widget.group.createdBy}   " ?? '',
-                    style: TextStyle(
-                      //  fontSize: width * (18 / 420),
-                      fontSize: 14,
-                      fontFamily: 'Roboto Medium',
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    timeToShow ?? '',
-                    style: TextStyle(
-                      //  fontSize: width * (18 / 420),
-                      fontSize: 14,
-                      fontFamily: 'Roboto Medium',
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.black,
-          ),
-        ),
-        leadingWidth: 36,
-        backgroundColor: Colors.white,
-        actions: [
-          context.watch<ChatProvider>().isShowDeleteIcon && context.read<ChatProvider>().isChatAdmin()
-              ? GestureDetector(
-                  onTap: () {
-                    context.read<ChatProvider>().deleteGroupMessage();
-                    context.read<ChatProvider>().removeOverlay();
-                    context.read<ChatProvider>().updateisShowDeleteIcon(false);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: 4),
-                    width: 24,
-                    height: 24,
-                    child: Center(
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.redAccent,
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Posted: ',
+                      style: TextStyle(
+                        //  fontSize: width * (18 / 420),
+                        fontSize: 14,
+                        fontFamily: 'Roboto Medium',
+                        color: Color(0xff63697B),
                       ),
                     ),
-                  ),
-                )
-              : SizedBox()
-        ],
-      ),
-      bottomSheet: ChatTextField(
-        size: size,
-        chatController: chatController,
-        sendMessage: () async {
-          if (chatController.text.trim() == '') return;
-          String message = chatController.text.trim();
-          chatController.clear();
-          await context
-              .read<ChatProvider>()
-              .sendDisscussionGroupMessage(message: message, groupId: widget.group.groupId);
-        },
-      ),
-      resizeToAvoidBottomInset: true,
-      body: GestureDetector(
-        onTap: () {
-          context.read<ChatProvider>().removeOverlay();
-          context.read<ChatProvider>().updateisShowDeleteIcon(false);
-        },
-        child: Container(
-          padding: EdgeInsets.only(bottom: size.height * 0.1),
-          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: FirebaseChatHandler.getAllDiscussionGroupMessage(groupId: widget.group.groupId),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                      physics: BouncingScrollPhysics(),
-                      reverse: true,
-                      itemCount: snapshot.data?.docs?.length ?? 0,
-                      itemBuilder: (context, indexMain) {
-                        var data = snapshot.data.docs[indexMain].data();
+                    Text(
+                      "${widget.group.createdBy}   " ?? '',
+                      style: TextStyle(
+                        //  fontSize: width * (18 / 420),
+                        fontSize: 14,
+                        fontFamily: 'Roboto Medium',
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      timeToShow ?? '',
+                      style: TextStyle(
+                        //  fontSize: width * (18 / 420),
+                        fontSize: 14,
+                        fontFamily: 'Roboto Medium',
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.black,
+            ),
+          ),
+          leadingWidth: 36,
+          backgroundColor: Colors.white,
+          actions: [
+            context.watch<ChatProvider>().isShowDeleteIcon && context.read<ChatProvider>().isChatAdmin()
+                ? GestureDetector(
+                    onTap: () {
+                      context.read<ChatProvider>().deleteGroupMessage();
+                      context.read<ChatProvider>().removeOverlay();
+                      context.read<ChatProvider>().updateisShowDeleteIcon(false);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(right: 4),
+                      width: 24,
+                      height: 24,
+                      child: Center(
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.redAccent,
+                        ),
+                      ),
+                    ),
+                  )
+                : SizedBox()
+          ],
+        ),
+        bottomSheet: ChatTextField(
+          size: size,
+          chatController: chatController,
+          sendMessage: () async {
+            if (chatController.text.trim() == '') return;
+            String message = chatController.text.trim();
+            chatController.clear();
+            await context
+                .read<ChatProvider>()
+                .sendDisscussionGroupMessage(message: message, groupId: widget.group.groupId);
+          },
+        ),
+        resizeToAvoidBottomInset: true,
+        body: GestureDetector(
+          onTap: () {
+            context.read<ChatProvider>().removeOverlay();
+            context.read<ChatProvider>().updateisShowDeleteIcon(false);
+          },
+          child: Container(
+            padding: EdgeInsets.only(bottom: size.height * 0.1),
+            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: FirebaseChatHandler.getAllDiscussionGroupMessage(groupId: widget.group.groupId),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                        physics: BouncingScrollPhysics(),
+                        reverse: true,
+                        itemCount: snapshot.data?.docs?.length ?? 0,
+                        itemBuilder: (context, indexMain) {
+                          var data = snapshot.data.docs[indexMain].data();
 
-                        ChatModel chatModel = ChatModel.fromJson(data);
+                          ChatModel chatModel = ChatModel.fromJson(data);
 
-                        if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
-                          return SenderMessageCard(
-                            chatModel: chatModel,
-                          );
-                        } else {
-                          return RecivedMessageCard(
-                            chatModel: chatModel, 
-                          );
-                        }
-                      });
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              }),
+                          if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
+                            return SenderMessageCard(
+                              chatModel: chatModel,
+                            );
+                          } else {
+                            return RecivedMessageCard(
+                              chatModel: chatModel,
+                            );
+                          }
+                        });
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }),
+          ),
         ),
       ),
     );
