@@ -165,7 +165,7 @@ class _NotificationsState extends State<Notifications> {
                                               color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
                                             ),
                                             child: Icon(
-                                              Icons.notification_important_rounded,
+                                              Icons.notifications,
                                               color: Colors.white,
                                             )),
                                         SizedBox(
