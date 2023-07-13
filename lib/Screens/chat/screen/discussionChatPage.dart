@@ -123,6 +123,7 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
           ),
           leading: InkWell(
             onTap: () {
+              context.read<ChatProvider>().updateisShowDeleteIcon(false);
               Navigator.pop(context);
             },
             child: Icon(
