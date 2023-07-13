@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
-
+ part 'practice_test_response_model.g.dart';
 @HiveType(typeId: 5)
 class PracitceTextResponseModelList {
   int statusCode;

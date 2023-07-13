@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
-
+part 'testDetails.g.dart';
 @HiveType(typeId: 16)
 class MockPercentModel {
   List<TestDetails> list = [];

@@ -110,7 +110,6 @@ class _TextPreDetailState extends State<TextPreDetail> {
                       ValueListenableBuilder(
                           valueListenable: HiveHandler.getMockPercentListener(),
                           builder: (context, value, child) {
-                            
                             CourseProvider courseProv = Provider.of(context, listen: false);
                             var v1 = value.get(courseProv.selectedMockPercentId.toString());
                             print("value of v1111======>>>>>>>>>$v1");
@@ -136,13 +135,14 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                         itemCount: testPercent.length,
                                         itemBuilder: (context, index) {
                                           return InkWell(
-                                            onTap: () async {  
+                                            onTap: () async {
                                               print("attempt count length====>>>${testPercent[index].numAttemptes}");
 
-                                    CourseProvider courseProvider = Provider.of(context, listen: false);
-                                    courseProvider.setSelectedMokAtemptCnt(testPercent[index].noOfattempts);  
-                                       courseProvider.setSelectedAttemptListLenght(testPercent[index].attempts.length);  
-                                              var startval;  
+                                              CourseProvider courseProvider = Provider.of(context, listen: false);
+                                              courseProvider.setSelectedMokAtemptCnt(testPercent[index].noOfattempts);
+                                              courseProvider
+                                                  .setSelectedAttemptListLenght(testPercent[index].attempts.length);
+                                              var startval;
 
                                               if (testPercent[index].numAttemptes ==
                                                   testPercent[index].attempts.length) {
@@ -151,18 +151,16 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                 startval = 1;
                                               }
 
-                                             
                                               // print("selectedIdNew======>> $selectedIdNew");
                                               await Hive.openBox("MockAttemptsBox");
                                               courseProvider.apiCall(testPercent[index].id);
-
 
                                               Future.delayed(const Duration(milliseconds: 400), () {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) => MockTestAttempts(
-                                                          attemptLength: testPercent[index].attempts.length,
+                                                            attemptLength: testPercent[index].attempts.length,
                                                             selectedId: testPercent[index].id,
                                                             startAgn: startval,
                                                             attemptCnt: courseProvider.selectedMokAtmptCnt)));
@@ -179,7 +177,9 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                 ),
                                                 decoration: const BoxDecoration(
                                                     // color: Colors.amber,
-                                                    border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
+                                                    border: Border(
+                                                        bottom: BorderSide(
+                                                            width: 1, color: Color.fromARGB(255, 219, 211, 211)))),
                                                 child: Column(
                                                   children: [
                                                     Row(
@@ -229,7 +229,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                                   width: MediaQuery.of(context).size.width * .5,
                                                                   height: 25,
                                                                   child: ListView.builder(
-                                                                      shrinkWrap: false,  
+                                                                      shrinkWrap: false,
                                                                       itemCount: testPercent[index].attempts.length,
                                                                       scrollDirection: Axis.horizontal,
                                                                       itemBuilder: (context, inx) {

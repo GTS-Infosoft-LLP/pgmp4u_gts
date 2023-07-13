@@ -476,7 +476,7 @@ class _ProfileState extends State<Profile> {
                             child: Column(
                               children: [
                                 Container(
-                                  width: MediaQuery.of(context).size.width * .73,
+                                  width: MediaQuery.of(context).size.width * .53,
                                   child: CustomDropDown<CourseDetails>(
                                       selectText: cp.selectedCourseName ?? "Select",
                                       itemList: cp.course ?? [],
@@ -615,6 +615,13 @@ class _ProfileState extends State<Profile> {
                                                                   fontFamily: 'Roboto Medium',
                                                                   color: Colors.white,
                                                                   fontSize: 18),
+                                                            ),
+                                                            Text(
+                                                              "(Tap to Change)",
+                                                              style: TextStyle(
+                                                                  fontFamily: 'Roboto Medium',
+                                                                  color: Colors.white,
+                                                                  fontSize: 10),
                                                             ),
                                                           ],
                                                         ),

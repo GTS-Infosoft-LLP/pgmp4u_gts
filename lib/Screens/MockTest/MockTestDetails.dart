@@ -197,8 +197,8 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                               Expanded(
                                                 flex: 2,
                                                 child: Container(
-                                                  width: 58,
-                                                  height: 58,
+                                                  width: 60,
+                                                  height: 60,
                                                   margin: EdgeInsets.only(
                                                     right: width * (15 / 420),
                                                   ),
@@ -206,14 +206,17 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                                     color: index % 2 == 0 ? AppColor.green : AppColor.purpule,
                                                     borderRadius: BorderRadius.circular(10),
                                                   ),
-                                                  padding: EdgeInsets.all(17),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius: BorderRadius.circular(110),
-                                                    ),
-                                                    child: Center(
-                                                      child: Text('${index + 1}'),
+                                                  padding: EdgeInsets.all(16),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius: BorderRadius.circular(120),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text('${index + 1}'),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
