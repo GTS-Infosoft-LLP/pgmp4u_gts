@@ -67,13 +67,15 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     onChangeRawMinute: (value) => {},
   );
   var currentIndex;
-
+  PageController pageController = PageController();
   List<Queans> mockQuestion = [];
-
+  int timecheck;
   @override
   void initState() {
+    timecheck = 0;
     CourseProvider cp = Provider.of(context, listen: false);
     cp.timerValue = false;
+    cp.allowScroll = 1;
     // _stopWatchTimer.setPresetMinuteTime(5);
 
     print("***********************************************");
@@ -88,7 +90,23 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     _stopWatchTimer.minuteTime.listen((value) => {});
     _stopWatchTimer.secondTime.listen((value) => {});
     _stopWatchTimer.records.listen((value) => {});
+    print("cp.totalTime=====${cp.totalTime}");
+    if (cp.totalTime != null) {
+      timecheck = cp.totalTime;
+    }
 
+    if (timecheck != 0) {
+      print("cp.toPage======${cp.toPage}");
+      _stopWatchTimer.setPresetTime(mSec: cp.totalTime);
+      // try {
+      //   print("inside thatttsss");
+      //   if (pageController.hasClients) pageController.jumpToPage(3);
+
+      //   // pageController = PageController(initialPage: 3);
+      // } catch (e) {
+      //   print("errorororr=====$e");
+      // }
+    }
     beforeCallApi();
     context.read<CourseProvider>().setMasterListType("Chat");
     context.read<ProfileProvider>().subscriptionStatus("Chat");
@@ -97,6 +115,16 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
   beforeCallApi() async {
     await apiCall();
+    CourseProvider cp = Provider.of(context, listen: false);
+    try {
+      print("inside thisss");
+      print("cp.toPagecp.toPage========${cp.toPage}");
+      // if (pageController.hasClients) pageController.jumpToPage(cp.toPage);
+
+      pageController = PageController(initialPage: cp.toPage);
+    } catch (e) {
+      print("errorororr=====$e");
+    }
   }
 
   @override
@@ -156,6 +184,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       print("response.statusCode===========${response.statusCode}");
       CourseProvider cp = Provider.of(context, listen: false);
       if (response.statusCode == 200) {
+        cp.totalTime = 0;
         HiveHandler.removeFromRestartBox(cp.selectedMockId.toString());
         Map responseData = json.decode(response.body);
         if (data == "back") {
@@ -369,7 +398,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
   @override
   Widget build(BuildContext context) {
-    PageController pageController = PageController();
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     List<Queans> _quizList = [];
@@ -386,7 +414,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
               builder: (context, value, child) {
                 print("selecteed id:: ${selectedIdNew.toString()}");
                 if (value.containsKey(selectedIdNew.toString())) {
-                  print("value:>> ${value.get(selectedIdNew.toString())} ");
+                  // print("value:>> ${value.get(selectedIdNew.toString())} ");
                   String data = value.get(selectedIdNew.toString());
                   List resList = jsonDecode(data);
 
@@ -395,7 +423,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                   print("errror  v1111==========");
                 }
 
-                print("mockQuestion==============>>   $mockQuestion");
+                // print("mockQuestion==============>>   $mockQuestion");
 
                 return Container(
                   color: _colorfromhex("#FCFCFF"),
@@ -461,10 +489,14 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                       onTap: () {
                                         cp.resPauseTimer();
                                         if (_stopWatchTimer.isRunning) {
+                                          cp.setScroll(0, _quetionNo);
+                                          cp.setPauseTime(displayTime);
                                           _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
                                           // commingSoonDialog(context);
                                           // showPausePopup();
                                         } else {
+                                          cp.setScroll(1, _quetionNo);
+                                          cp.totalTime = 0;
                                           _stopWatchTimer.onExecute.add(StopWatchExecute.start);
                                         }
                                       },
@@ -479,7 +511,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                   displayTime = StopWatchTimer.getDisplayTime(value,
                                                       hours: true, milliSecond: false);
 
-                                                  return Text( 
+                                                  return Text(
                                                     displayTime,
                                                     style: TextStyle(
                                                         fontFamily: 'Roboto Medium',
@@ -500,10 +532,17 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                             onTap: () {
                                               cp.resPauseTimer();
                                               if (_stopWatchTimer.isRunning) {
+                                                print("display timeee====$displayTime");
+                                                print("stop timerrrrr");
+                                                cp.setScroll(0, _quetionNo);
+                                                cp.setPauseTime(displayTime);
                                                 _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
                                                 // commingSoonDialog(context);
                                                 // showPausePopup();
                                               } else {
+                                                print("startttt timerrrrr");
+                                                cp.totalTime = 0;
+                                                cp.setScroll(1, _quetionNo);
                                                 _stopWatchTimer.onExecute.add(StopWatchExecute.start);
                                               }
                                             },
@@ -513,10 +552,15 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                   onTap: () {
                                                     cp.resPauseTimer();
                                                     if (_stopWatchTimer.isRunning) {
+                                                      cp.setScroll(0, _quetionNo);
+                                                      cp.setPauseTime(displayTime);
+
                                                       _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
                                                       // commingSoonDialog(context);
                                                       // showPausePopup();
                                                     } else {
+                                                      cp.setScroll(1, _quetionNo);
+                                                      cp.totalTime = 0;
                                                       _stopWatchTimer.onExecute.add(StopWatchExecute.start);
                                                     }
                                                   },
@@ -548,322 +592,321 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                           //     :
                           mockQuestion != null && mockQuestion.isNotEmpty
                               //questionAnswersList != null
-                              ? Expanded(
-                                  child: PageView.builder(
-                                      controller: pageController,
-                                      onPageChanged: (index) {
-                                        print("index====>>$index");
-                                        print("currentIndex ====>>$currentIndex");
-                                        if (currentIndex < index) {
-                                          if (mockQuestion.length - 1 > _quetionNo) {
-                                            setState(() {
-                                              if (_quetionNo < mockQuestion.length) {
-                                                _quetionNo = _quetionNo + 1;
-                                              }
+                              ? Consumer<CourseProvider>(builder: (context, cp, child) {
+                                  return Expanded(
+                                    child: PageView.builder(
+                                        physics: cp.allowScroll == 1
+                                            ? BouncingScrollPhysics()
+                                            : NeverScrollableScrollPhysics(),
+                                        controller: pageController,
+                                        onPageChanged: (index) {
+                                          print("index====>>$index");
+                                          print("currentIndex ====>>$currentIndex");
+                                          if (currentIndex < index) {
+                                            if (mockQuestion.length - 1 > _quetionNo) {
+                                              setState(() {
+                                                if (_quetionNo < mockQuestion.length) {
+                                                  _quetionNo = _quetionNo + 1;
+                                                }
 
-                                              if (currentData != null) {
-                                                submitData.add({
-                                                  "question": currentData["question"],
-                                                  "answer": currentData["answer"],
-                                                  "correct": 0,
-                                                  "category": currentData["category"],
-                                                  "type": selectedAnswer.length > 2 ? 2 : 1
-                                                });
-                                                currentData = null;
-                                              }
-                                              selectedAnswer = [];
-                                              ids = [];
-                                            });
+                                                if (currentData != null) {
+                                                  submitData.add({
+                                                    "question": currentData["question"],
+                                                    "answer": currentData["answer"],
+                                                    "correct": 0,
+                                                    "category": currentData["category"],
+                                                    "type": selectedAnswer.length > 2 ? 2 : 1
+                                                  });
+                                                  currentData = null;
+                                                }
+                                                selectedAnswer = [];
+                                                ids = [];
+                                              });
+                                            } else {
+                                              if (!loader) submitMockTest('', displayTime);
+                                            }
                                           } else {
-                                            if (!loader) submitMockTest('', displayTime);
+                                            if (_quetionNo != 0) {
+                                              setState(() {
+                                                _quetionNo--;
+                                                selectedAnswer = [];
+                                                ids = [];
+                                                currentData = null;
+                                              });
+                                            }
                                           }
-                                        } else {
-                                          if (_quetionNo != 0) {
-                                            setState(() {
-                                              _quetionNo--;
-                                              selectedAnswer = [];
-                                              ids = [];
-                                              currentData = null;
-                                            });
-                                          }
-                                        }
-                                        setState(() {
-                                          currentIndex = index;
+                                          setState(() {
+                                            currentIndex = index;
 
-                                          print("final index===$currentIndex");
-                                        });
-                                      },
-                                      itemCount: mockQuestion.length,
-                                      itemBuilder: (context, index) {
-                                        return SingleChildScrollView(
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                padding: EdgeInsets.only(
-                                                    left: width * (29 / 420),
-                                                    right: width * (29 / 420),
-                                                    top: height * (23 / 800),
-                                                    bottom: height * (23 / 800)),
-                                                margin: EdgeInsets.only(bottom: 40),
-                                                color: Colors.white,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                        // _quetionNo != 0
-                                                        //     ? GestureDetector(
-                                                        //         onTap: () => {
-                                                        //           setState(() {
-                                                        //             _quetionNo--;
+                                            print("final index===$currentIndex");
+                                          });
+                                        },
+                                        itemCount: mockQuestion.length,
+                                        itemBuilder: (context, index) {
+                                          return SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.only(
+                                                      left: width * (29 / 420),
+                                                      right: width * (29 / 420),
+                                                      top: height * (23 / 800),
+                                                      bottom: height * (23 / 800)),
+                                                  margin: EdgeInsets.only(bottom: 40),
+                                                  color: Colors.white,
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        children: [
+                                                          // _quetionNo != 0
+                                                          //     ? GestureDetector(
+                                                          //         onTap: () => {
+                                                          //           setState(() {
+                                                          //             _quetionNo--;
 
-                                                        //             selectedAnswer = null;
-                                                        //           })
-                                                        //         },
-                                                        //         child: Icon(
-                                                        //           Icons.arrow_back,
-                                                        //           size: width * (24 / 420),
-                                                        //           color: _colorfromhex(
-                                                        //               "#ABAFD1"),
-                                                        //         ),
-                                                        //       )
-                                                        //     : Container(),
-                                                        Text(
-                                                          'QUESTION ${_quetionNo + 1}',
-                                                          style: TextStyle(
-                                                            fontFamily: 'Roboto Regular',
-                                                            fontSize: width * (16 / 420),
-                                                            color: _colorfromhex("#ABAFD1"),
+                                                          //             selectedAnswer = null;
+                                                          //           })
+                                                          //         },
+                                                          //         child: Icon(
+                                                          //           Icons.arrow_back,
+                                                          //           size: width * (24 / 420),
+                                                          //           color: _colorfromhex(
+                                                          //               "#ABAFD1"),
+                                                          //         ),
+                                                          //       )
+                                                          //     : Container(),
+                                                          Text(
+                                                            'QUESTION ${_quetionNo + 1}',
+                                                            style: TextStyle(
+                                                              fontFamily: 'Roboto Regular',
+                                                              fontSize: width * (16 / 420),
+                                                              color: _colorfromhex("#ABAFD1"),
+                                                            ),
                                                           ),
+
+                                                          putOnDiscussionButton(context),
+
+                                                          // listResponse.length - 1 > _quetionNo
+                                                          //     ? GestureDetector(
+                                                          //         onTap: () => {
+                                                          //           setState(() {
+                                                          //             if (_quetionNo <
+                                                          //                 listResponse
+                                                          //                     .length) {
+                                                          //               _quetionNo =
+                                                          //                   _quetionNo + 1;
+                                                          //             }
+                                                          //             selectedAnswer = null;
+                                                          //           }),
+                                                          //           print(_quetionNo)
+                                                          //         },
+                                                          //         child: Icon(
+                                                          //           Icons.arrow_forward,
+                                                          //           size: width * (24 / 420),
+                                                          //           color: _colorfromhex(
+                                                          //               "#ABAFD1"),
+                                                          //         ),
+                                                          //       )
+                                                          //     : Container(),
+                                                        ],
+                                                      ),
+                                                      // Question
+                                                      Container(
+                                                        margin: EdgeInsets.only(top: height * (15 / 800)),
+                                                        child: Html(
+                                                          data: mockQuestion[_quetionNo].questionDetail.questiondata,
+                                                          style: {
+                                                            "body": Style(
+                                                              padding: EdgeInsets.only(top: 5),
+                                                              margin: EdgeInsets.zero,
+                                                              color: Color(0xff000000),
+                                                              textAlign: TextAlign.left,
+                                                              // maxLines: 7,
+                                                              // textOverflow: TextOverflow.ellipsis,
+                                                              fontSize: FontSize(18),
+                                                            )
+                                                          },
                                                         ),
 
-                                                        putOnDiscussionButton(context),
-
-                                                        // listResponse.length - 1 > _quetionNo
-                                                        //     ? GestureDetector(
-                                                        //         onTap: () => {
-                                                        //           setState(() {
-                                                        //             if (_quetionNo <
-                                                        //                 listResponse
-                                                        //                     .length) {
-                                                        //               _quetionNo =
-                                                        //                   _quetionNo + 1;
-                                                        //             }
-                                                        //             selectedAnswer = null;
-                                                        //           }),
-                                                        //           print(_quetionNo)
-                                                        //         },
-                                                        //         child: Icon(
-                                                        //           Icons.arrow_forward,
-                                                        //           size: width * (24 / 420),
-                                                        //           color: _colorfromhex(
-                                                        //               "#ABAFD1"),
-                                                        //         ),
-                                                        //       )
-                                                        //     : Container(),
-                                                      ],
-                                                    ),
-                                                    // Question
-                                                    Container(
-                                                      margin: EdgeInsets.only(top: height * (15 / 800)),
-                                                      child: Html(
-                                                        data: mockQuestion[_quetionNo].questionDetail.questiondata,
-                                                        style: {
-                                                          "body": Style(
-                                                            padding: EdgeInsets.only(top: 5),
-                                                            margin: EdgeInsets.zero,
-                                                            color: Color(0xff000000),
-                                                            textAlign: TextAlign.left,
-                                                            // maxLines: 7,
-                                                            // textOverflow: TextOverflow.ellipsis,
-                                                            fontSize: FontSize(18),
-                                                          )
-                                                        },
+                                                        // Text(
+                                                        //   mockQuestion[_quetionNo].questionDetail.questiondata,
+                                                        //   // _quizList.isNotEmpty
+                                                        //   //     //questionAnswersList != null
+                                                        //   //     ? _quizList[_quetionNo].questionDetail.questiondata
+                                                        //   //     //listResponse[_quetionNo]
+                                                        //   //     //      ["Question"]
+                                                        //   //     //["question"]
+                                                        //   //     : '',
+                                                        //   style: TextStyle(
+                                                        //     fontFamily: 'Roboto Regular',
+                                                        //     fontSize: width * (15 / 420),
+                                                        //     color: Colors.black,
+                                                        //     height: 1.7,
+                                                        //   ),
+                                                        // ),
                                                       ),
-
-                                                      // Text(
-                                                      //   mockQuestion[_quetionNo].questionDetail.questiondata,
-                                                      //   // _quizList.isNotEmpty
-                                                      //   //     //questionAnswersList != null
-                                                      //   //     ? _quizList[_quetionNo].questionDetail.questiondata
-                                                      //   //     //listResponse[_quetionNo]
-                                                      //   //     //      ["Question"]
-                                                      //   //     //["question"]
-                                                      //   //     : '',
-                                                      //   style: TextStyle(
-                                                      //     fontFamily: 'Roboto Regular',
-                                                      //     fontSize: width * (15 / 420),
-                                                      //     color: Colors.black,
-                                                      //     height: 1.7,
-                                                      //   ),
-                                                      // ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text(
-                                                      "Max Selectable Option : ${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}",
-                                                      style: TextStyle(
-                                                        fontFamily: 'Roboto Regular',
-                                                        fontSize: width * (15 / 420),
-                                                        fontWeight: FontWeight.bold,
-                                                        color: Colors.black,
-                                                        height: 1.7,
+                                                      SizedBox(
+                                                        height: 10,
                                                       ),
-                                                    ),
-                                                    Column(
-                                                      children: mockQuestion[_quetionNo]
-                                                          .questionDetail
-                                                          .Options
-                                                          .map<Widget>((title) {
-                                                        // print("title is >>> ${title.question_option}");
-                                                        var index = mockQuestion[_quetionNo]
+                                                      Text(
+                                                        "Max Selectable Option : ${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}",
+                                                        style: TextStyle(
+                                                          fontFamily: 'Roboto Regular',
+                                                          fontSize: width * (15 / 420),
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Colors.black,
+                                                          height: 1.7,
+                                                        ),
+                                                      ),
+                                                      Column(
+                                                        children: mockQuestion[_quetionNo]
                                                             .questionDetail
                                                             .Options
-                                                            .indexOf(title);
+                                                            .map<Widget>((title) {
+                                                          // print("title is >>> ${title.question_option}");
+                                                          var index = mockQuestion[_quetionNo]
+                                                              .questionDetail
+                                                              .Options
+                                                              .indexOf(title);
 
-                                                        // if (title.question_option.isEmpty) {
-                                                        //   // title.question_option = "None of these";
-                                                        //   mockQuestion[_quetionNo]
-                                                        //       .questionDetail
-                                                        //       .Options
-                                                        //       .removeAt(index);
-                                                        // }
-                                                        int rightAnswerLength =
-                                                            mockQuestion[_quetionNo].questionDetail.rightAnswer.length;
+                                                          // if (title.question_option.isEmpty) {
+                                                          //   // title.question_option = "None of these";
+                                                          //   mockQuestion[_quetionNo]
+                                                          //       .questionDetail
+                                                          //       .Options
+                                                          //       .removeAt(index);
+                                                          // }
+                                                          int rightAnswerLength = mockQuestion[_quetionNo]
+                                                              .questionDetail
+                                                              .rightAnswer
+                                                              .length;
 
-                                                        // return mockQuestion[_quetionNo] .questionDetail.Options.where((element)=>element.question_option.isNotEmpty).toList();
-                                                        return title.question_option != null
-                                                            ? GestureDetector(
-                                                                onTap: () => {
-                                                                  if (selectedAnswer.length != rightAnswerLength)
-                                                                    {
-                                                                      setState(() {
-                                                                        selectedAnswer.add(index);
+                                                          // return mockQuestion[_quetionNo] .questionDetail.Options.where((element)=>element.question_option.isNotEmpty).toList();
+                                                          return title.question_option != null
+                                                              ? GestureDetector(
+                                                                  onTap: () => {
+                                                                    if (cp.allowScroll == 0)
+                                                                      {showPausePopup()}
+                                                                    else if (cp.allowScroll == 1)
+                                                                      {
+                                                                        if (selectedAnswer.length != rightAnswerLength)
+                                                                          {
+                                                                            setState(() {
+                                                                              selectedAnswer.add(index);
 
-                                                                        ids.add(mockQuestion[_quetionNo]
-                                                                            .questionDetail
-                                                                            .Options[index]
-                                                                            .id);
-                                                                        String finalString = ids.join(', ');
+                                                                              ids.add(mockQuestion[_quetionNo]
+                                                                                  .questionDetail
+                                                                                  .Options[index]
+                                                                                  .id);
+                                                                              String finalString = ids.join(', ');
 
-                                                                        currentData = {
-                                                                          "question": mockQuestion[_quetionNo]
-                                                                              .questionDetail
-                                                                              .queID,
-                                                                          // listResponse[
-                                                                          //         _quetionNo][
-                                                                          //     "Question"]["id"],
-
-                                                                          "answer": finalString,
-                                                                          // listResponse[
-                                                                          //                 _quetionNo]
-                                                                          //             [
-                                                                          //             "Question"]
-                                                                          //         ["Options"]
-                                                                          //     [index]["id"],
-                                                                          "correct": 1,
-                                                                          "category": mockQuestion[_quetionNo]
-                                                                              .questionDetail
-                                                                              .category,
-                                                                          "type": selectedAnswer.length > 2 ? 2 : 1
-                                                                          //  listResponse[
-                                                                          //             _quetionNo]
-                                                                          //         ["Question"]
-                                                                          //     ["category"]
-                                                                        };
-                                                                        print("currentData  $currentData");
-                                                                      })
-                                                                    }
-                                                                },
-                                                                child: Container(
-                                                                  margin: EdgeInsets.only(top: height * (21 / 800)),
-                                                                  padding: EdgeInsets.only(
-                                                                    top: 13,
-                                                                    bottom: 13,
-                                                                    left: width * (13 / 420),
-                                                                    right: width * (11 / 420),
-                                                                  ),
-                                                                  decoration: BoxDecoration(
-                                                                      borderRadius: BorderRadius.circular(8),
-                                                                      color: selectedAnswer.contains(index)
-                                                                          ? _colorfromhex("#F2F2FF")
-                                                                          : Colors.white),
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Container(
-                                                                        width: width * (25 / 420),
-                                                                        height: width * 25 / 420,
-                                                                        decoration: BoxDecoration(
-                                                                          border: Border.all(
-                                                                              color: selectedAnswer.contains(index)
-                                                                                  ? _colorfromhex("#3846A9")
-                                                                                  : _colorfromhex("#F1F1FF")),
-                                                                          borderRadius: BorderRadius.circular(
-                                                                            width * (25 / 420),
+                                                                              currentData = {
+                                                                                "question": mockQuestion[_quetionNo]
+                                                                                    .questionDetail
+                                                                                    .queID,
+                                                                                "answer": finalString,
+                                                                                "correct": 1,
+                                                                                "category": mockQuestion[_quetionNo]
+                                                                                    .questionDetail
+                                                                                    .category,
+                                                                                "type":
+                                                                                    selectedAnswer.length > 2 ? 2 : 1
+                                                                              };
+                                                                              print("currentData  $currentData");
+                                                                            })
+                                                                          }
+                                                                      }
+                                                                  },
+                                                                  child: Container(
+                                                                    margin: EdgeInsets.only(top: height * (21 / 800)),
+                                                                    padding: EdgeInsets.only(
+                                                                      top: 13,
+                                                                      bottom: 13,
+                                                                      left: width * (13 / 420),
+                                                                      right: width * (11 / 420),
+                                                                    ),
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(8),
+                                                                        color: selectedAnswer.contains(index)
+                                                                            ? _colorfromhex("#F2F2FF")
+                                                                            : Colors.white),
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          width: width * (25 / 420),
+                                                                          height: width * 25 / 420,
+                                                                          decoration: BoxDecoration(
+                                                                            border: Border.all(
+                                                                                color: selectedAnswer.contains(index)
+                                                                                    ? _colorfromhex("#3846A9")
+                                                                                    : _colorfromhex("#F1F1FF")),
+                                                                            borderRadius: BorderRadius.circular(
+                                                                              width * (25 / 420),
+                                                                            ),
+                                                                            color: selectedAnswer.contains(index)
+                                                                                ? _colorfromhex("#3846A9")
+                                                                                : Colors.white,
                                                                           ),
-                                                                          color: selectedAnswer.contains(index)
-                                                                              ? _colorfromhex("#3846A9")
-                                                                              : Colors.white,
-                                                                        ),
-                                                                        child: Center(
-                                                                          child: Text(
-                                                                            index == 0
-                                                                                ? 'A'
-                                                                                : index == 1
-                                                                                    ? 'B'
-                                                                                    : index == 2
-                                                                                        ? 'C'
-                                                                                        : index == 3
-                                                                                            ? 'D'
-                                                                                            : 'E',
-                                                                            style: TextStyle(
-                                                                              fontFamily: 'Roboto Regular',
-                                                                              color: selectedAnswer.contains(index)
-                                                                                  ? Colors.white
-                                                                                  : _colorfromhex("#ABAFD1"),
+                                                                          child: Center(
+                                                                            child: Text(
+                                                                              index == 0
+                                                                                  ? 'A'
+                                                                                  : index == 1
+                                                                                      ? 'B'
+                                                                                      : index == 2
+                                                                                          ? 'C'
+                                                                                          : index == 3
+                                                                                              ? 'D'
+                                                                                              : 'E',
+                                                                              style: TextStyle(
+                                                                                fontFamily: 'Roboto Regular',
+                                                                                color: selectedAnswer.contains(index)
+                                                                                    ? Colors.white
+                                                                                    : _colorfromhex("#ABAFD1"),
+                                                                              ),
                                                                             ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                      Container(
-                                                                        margin: EdgeInsets.only(left: 8),
-                                                                        width: width - (width * (25 / 420) * 5),
-                                                                        child: Html(
-                                                                          data: title.question_option,
-                                                                          style: {
-                                                                            "body": Style(
-                                                                              padding: EdgeInsets.only(top: 5),
-                                                                              margin: EdgeInsets.zero,
-                                                                              color: Color(0xff000000),
-                                                                              textAlign: TextAlign.left,
-                                                                              // maxLines: 7,
-                                                                              // textOverflow: TextOverflow.ellipsis,
-                                                                              fontSize: FontSize(18),
-                                                                            )
-                                                                          },
-                                                                        ),
+                                                                        Container(
+                                                                          margin: EdgeInsets.only(left: 8),
+                                                                          width: width - (width * (25 / 420) * 5),
+                                                                          child: Html(
+                                                                            data: title.question_option,
+                                                                            style: {
+                                                                              "body": Style(
+                                                                                padding: EdgeInsets.only(top: 5),
+                                                                                margin: EdgeInsets.zero,
+                                                                                color: Color(0xff000000),
+                                                                                textAlign: TextAlign.left,
+                                                                                // maxLines: 7,
+                                                                                // textOverflow: TextOverflow.ellipsis,
+                                                                                fontSize: FontSize(18),
+                                                                              )
+                                                                            },
+                                                                          ),
 
-                                                                        // Text(title.question_option,
-                                                                        //     style: TextStyle(
-                                                                        //         fontSize: width * 14 / 420))
-                                                                      )
-                                                                    ],
+                                                                          // Text(title.question_option,
+                                                                          //     style: TextStyle(
+                                                                          //         fontSize: width * 14 / 420))
+                                                                        )
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                              )
-                                                            : SizedBox();
-                                                      }).toList(),
-                                                    ),
-                                                  ],
+                                                                )
+                                                              : SizedBox();
+                                                        }).toList(),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      }),
-                                )
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                  );
+                                })
                               : Container(
                                   child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF")),
@@ -1068,7 +1111,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   void showPausePopup() {
     showDialog(
         context: context,
-        barrierDismissible: false,
+        // barrierDismissible: false,
         builder: (context) => AlertDialog(
               elevation: 20,
               backgroundColor: Colors.white,
@@ -1086,7 +1129,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                   //   ],
                   // ),
                   // SizedBox(height: 15),
-                  Text("Test is currently paused \n Press the button to continue with the test.",
+                  Text("Test is currently paused \n Press the Resume button to continue with the test.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
@@ -1101,10 +1144,10 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: InkWell(
                       onTap: () {
-                        CourseProvider cp = Provider.of(context, listen: false);
-                        _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+                        // CourseProvider cp = Provider.of(context, listen: false);
+                        // _stopWatchTimer.onExecute.add(StopWatchExecute.start);
                         Navigator.pop(context);
-                        cp.resPauseTimer();
+                        // cp.resPauseTimer();
                       },
                       child: Container(
                           height: 35,
@@ -1122,7 +1165,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                   tileMode: TileMode.clamp)),
                           child: Center(
                             child: Text(
-                              "Resume Test",
+                              "Dismiss",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w400,

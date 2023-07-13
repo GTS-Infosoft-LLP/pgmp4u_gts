@@ -155,13 +155,13 @@ class _HomeViewState extends State<HomeView> {
                       builder: (context, value, child) {
                         if (value.containsKey(HiveHandler.CourseKey)) {
                           List masterDataList = jsonDecode(value.get(HiveHandler.CourseKey));
-                          print(">>> masterDataList :  $masterDataList");
+                          // print(">>> masterDataList :  $masterDataList");
                           storedCourse = masterDataList.map((e) => CourseDetails.fromjson(e)).toList();
                         } else {
                           storedCourse = [];
                         }
 
-                        print("storedMaster========================$storedCourse");
+                        // print("storedMaster========================$storedCourse");
 
                         if (storedCourse == null) {
                           storedCourse = [];
@@ -204,10 +204,12 @@ class _HomeViewState extends State<HomeView> {
                                           child: InkWell(
                                             onTap: () {
                                               print("id Is======>>>${storedCourse[index].id}");
+                                              print("setSelectedCourseLable===${storedCourse[index].lable}");
 
                                               courseProvider.setSelectedCourseId(storedCourse[index].id);
 
                                               courseProvider.setSelectedCourseName(storedCourse[index].lable);
+                                              courseProvider.setSelectedCourseLable(storedCourse[index].course);
 
                                               courseProvider.getMasterData(storedCourse[index].id);
                                               Future.delayed(const Duration(milliseconds: 100), () {

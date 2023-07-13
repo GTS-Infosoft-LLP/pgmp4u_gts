@@ -56,7 +56,7 @@ class CourseProvider extends ChangeNotifier {
 
   int selectedFlashCategory;
   String selectedCourseName;
-
+  String selectedCourseLable;
   int checkInternet = 0;
 
   List<Map> restartList = [];
@@ -71,6 +71,13 @@ class CourseProvider extends ChangeNotifier {
 
   setSelectedCourseName(String val) {
     selectedCourseName = val;
+    Future.delayed(Duration.zero, () {
+      notifyListeners();
+    });
+  }
+
+  setSelectedCourseLable(String val) {
+    selectedCourseLable = val;
     Future.delayed(Duration.zero, () {
       notifyListeners();
     });
@@ -92,6 +99,58 @@ class CourseProvider extends ChangeNotifier {
     Future.delayed(Duration.zero, () async {
       selectedCourseId = val;
       print("selectedCourseId========>>>>>>>$selectedCourseId");
+      notifyListeners();
+    });
+  }
+  int toPage;
+  int allowScroll = 1;
+  setScroll(int val,int pageNum) {
+    print("pageNum======${pageNum}");
+    Future.delayed(Duration.zero, () {
+      allowScroll = val;
+      toPage=pageNum;
+      print("allowScroll==========$allowScroll");
+      notifyListeners();
+    });
+  }
+
+  var totalTime = 0;
+  var pauseTime;
+  setPauseTime(var disTime) {
+    Future.delayed(Duration.zero, () {
+      var hrs;
+      var mins;
+      var secs;
+      pauseTime = disTime;
+      var minSec = pauseTime.split(":");
+      print("minsecccc====$minSec");
+      if (int.parse(minSec[0]) != 00) {
+        print("hr vale===${minSec[0]}");
+        hrs = int.parse(minSec[0]) * 60 * 60;
+      }
+      if (int.parse(minSec[1]) != 00) {
+        print("minss vale===${minSec[1]}");
+        mins = int.parse(minSec[1]) * 60;
+      }
+      if (int.parse(minSec[2]) != 00) {
+        print("sec  vale===${minSec[2]}");
+        secs = (int.parse(minSec[2]));
+      }
+      // if(){
+
+      // }
+      print("==hrs$hrs");
+      if (hrs != null) {
+        totalTime = (hrs + mins + secs) * 1000;
+      } else if (mins != null) {
+        totalTime = (mins + secs) * 1000;
+      } else if (secs != null) {
+        totalTime = (secs) * 1000;
+      }
+
+      print("milisecondss value====$totalTime");
+
+      print("allowScroll==========$allowScroll");
       notifyListeners();
     });
   }

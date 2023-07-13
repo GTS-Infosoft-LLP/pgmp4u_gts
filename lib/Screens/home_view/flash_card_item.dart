@@ -42,7 +42,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
   IconData icon1;
   void initState() {
     cp = Provider.of(context, listen: false);
-        cp.changeonTap(0);
+    cp.changeonTap(0);
     print("cp.flashCate.length==========${cp.flashCate.length}");
     // if (flashCateTempList.isEmpty) {
     //   flashCateTempList = HiveHandler.getFlashCateDataList(key: cp.selectedMasterId.toString());
@@ -228,7 +228,8 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                 child: Container(
                                                     decoration: BoxDecoration(
                                                         border: Border(
-                                                            bottom: BorderSide(width: 1.5, color: Colors.grey[300])),
+                                                            bottom: BorderSide(
+                                                                width: 1.5, color: Color.fromARGB(255, 219, 211, 211))),
                                                         color: Colors.transparent),
                                                     child: Row(
                                                       children: [

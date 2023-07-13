@@ -182,13 +182,13 @@ class _MockTestState extends State<MockTest> {
                                 List<TestDataDetails> storedTestData = [];
                                 if (value.containsKey(selectedMasterId)) {
                                   List testDataList = jsonDecode(value.get(selectedMasterId));
-                                  print(">>> testDataList :  $testDataList");
+                                  // print(">>> testDataList :  $testDataList");
                                   storedTestData = testDataList.map((e) => TestDataDetails.fromjson(e)).toList();
                                 } else {
                                   storedTestData = [];
                                 }
 
-                                print("storedMaster========================$storedTestData");
+                                // print("storedMaster========================$storedTestData");
 
                                 if (storedTestData == null) {
                                   storedTestData = [];
@@ -210,9 +210,9 @@ class _MockTestState extends State<MockTest> {
                                               shrinkWrap: true,
                                               itemCount: storedTestData.length,
                                               itemBuilder: (context, index) {
-                                                print("storedTestData.length,=========${storedTestData.length}");
+                                                // print("storedTestData.length,=========${storedTestData.length}");
 
-                                                print("${storedTestData[index].premium}");
+                                                // print("${storedTestData[index].premium}");
                                                 return InkWell(
                                                   onTap: () async {
                                                     courseProvider.setSelectedTestName(storedTestData[index].test_name);
@@ -279,8 +279,10 @@ class _MockTestState extends State<MockTest> {
                                                         right: width * (14 / 320),
                                                       ),
                                                       decoration: const BoxDecoration(
-                                                          border:
-                                                              Border(bottom: BorderSide(width: 1, color: Colors.grey))),
+                                                          border: Border(
+                                                              bottom: BorderSide(
+                                                                  width: 1,
+                                                                  color: Color.fromARGB(255, 219, 211, 211)))),
                                                       // color: Colors.green,
 
                                                       child: Row(children: [

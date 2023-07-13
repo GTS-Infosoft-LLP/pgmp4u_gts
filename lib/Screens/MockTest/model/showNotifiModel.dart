@@ -7,6 +7,7 @@ class NotifiModel {
   int userId;
   int isAdmin;
   int deleteStatus;
+  String courseName;
   String createdAt;
   String announcementDetails;
 
@@ -20,6 +21,8 @@ class NotifiModel {
     isAdmin = json['isAdmin'];
     deleteStatus = json['deleteStatus'];
     createdAt = json['createdAt'];
+        courseName = json['courseName'];
     announcementDetails = json['announcementDetails'];
+    //courseName
   }
 }
