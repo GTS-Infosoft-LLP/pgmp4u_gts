@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:pgmp4u/Models/restartModel.dart';
 import 'package:pgmp4u/Screens/MockTest/MockTestDetails.dart';
 import 'package:pgmp4u/Screens/MockTest/mockTestQuestions.dart';
 import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
@@ -32,6 +33,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
   final selectedIdNew;
   MockData mockData;
   CourseProvider cp;
+  RestartModel restartModel;
 
   _MockTestAttemptsState({
     this.selectedIdNew,
@@ -106,6 +108,40 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
       }
     } on Exception {
       updateLoader(false);
+    }
+  }
+
+  navigateToMockTest(int index, RestartModel restartModel) {
+    cp.setSelectedAttemptNumer(cp.aviAttempts[index].attempt);
+    print("cp.aviAttempts[index]======${cp.aviAttempts[index].attempted_date}");
+    print("cp.aviAttempts[index]======${cp.aviAttempts[index].tobeAttempted}");
+    {
+      print("===== cp.selectedMokAtmptCnt: ${cp.selectedMokAtmptCnt}: widget.attemptLength ${widget.attemptLength}");
+      // if (cp.selectedMokAtmptCnt <
+      //     widget.attemptLength)
+      if (cp.aviAttempts[index].attempted_date == null && cp.aviAttempts[index].tobeAttempted == 1) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MockTestQuestions(
+                  restartModel: restartModel,
+                  selectedId: selectedIdNew,
+                  mockName: detailsofMockAttempt.test_name,
+                  // responseData[
+                  //     "test_name"],
+                  attempt: cp.selectedMokAtmptCnt),
+            ));
+      } else if (cp.aviAttempts[index].attempted_date == null && cp.aviAttempts[index].tobeAttempted == 0) {
+      } else {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MockTestDetails(
+                selectedId: selectedIdNew,
+                attempt: index + 1,
+              ),
+            ));
+      }
     }
   }
 
@@ -240,38 +276,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                   var index = cp.aviAttempts.indexOf(title);
                                                   // print("cp.aviAttempts=========${cp.aviAttempts[index].percentage}");
                                                   return InkWell(
-                                                    onTap: () {
-                                                      cp.setSelectedAttemptNumer(cp.aviAttempts[index].attempt);
-
-                                                      {
-                                                        // print(
-                                                        //     "cp.aviAttempts[index]=======${cp.aviAttempts[index].attempt}");
-                                                        if (cp.aviAttempts[index].attempted_date == null &&
-                                                            cp.aviAttempts[index].tobeAttempted == 1) {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder: (context) => MockTestQuestions(
-                                                                    selectedId: selectedIdNew,
-                                                                    mockName: detailsofMockAttempt.test_name,
-                                                                    // responseData[
-                                                                    //     "test_name"],
-                                                                    attempt: cp.selectedMokAtmptCnt),
-                                                              ));
-                                                        } else if (cp.aviAttempts[index].attempted_date == null &&
-                                                            cp.aviAttempts[index].tobeAttempted == 0) {
-                                                        } else {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder: (context) => MockTestDetails(
-                                                                  selectedId: selectedIdNew,
-                                                                  attempt: index + 1,
-                                                                ),
-                                                              ));
-                                                        }
-                                                      }
-                                                    },
+                                                    onTap: () => navigateToMockTest(index, restartModel),
                                                     child: Card(
                                                       elevation: 1,
                                                       child: Container(
@@ -340,15 +345,21 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                     ),
                                                                   ],
                                                                 ),
-                                                                ValueListenableBuilder<Box<int>>(
+                                                                ValueListenableBuilder<Box<RestartModel>>(
                                                                     valueListenable:
                                                                         HiveHandler.getMockRestartListener(),
                                                                     builder: (context, value, child) {
-                                                                      int storedId = -1;
                                                                       if (value
                                                                           .containsKey(cp.selectedMockId.toString())) {
-                                                                        storedId =
+                                                                        restartModel =
                                                                             value.get(cp.selectedMockId.toString());
+
+                                                                        print(
+                                                                            "==== got Key: ${cp.selectedMockId.toString()} restartModel:displayTime ${restartModel.displayTime},quesNum ${restartModel.quesNum},restartAttempNum ${restartModel.restartAttempNum}");
+
+                                                                        Future.delayed(Duration.zero, () {
+                                                                          setState(() {});
+                                                                        });
                                                                       }
 
                                                                       return Column(
@@ -379,61 +390,12 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                                                 30.0))),
                                                                               ),
                                                                               child: GestureDetector(
-                                                                                onTap: () {
-                                                                                  cp.setSelectedAttemptNumer(
-                                                                                      cp.aviAttempts[index].attempt);
-                                                                                  print(
-                                                                                      "cp.aviAttempts[index]======${cp.aviAttempts[index].attempted_date}");
-                                                                                  print(
-                                                                                      "cp.aviAttempts[index]======${cp.aviAttempts[index].tobeAttempted}");
-                                                                                  {
-                                                                                    print(
-                                                                                        "===== cp.selectedMokAtmptCnt: ${cp.selectedMokAtmptCnt}: widget.attemptLength ${widget.attemptLength}");
-                                                                                    // if (cp.selectedMokAtmptCnt <
-                                                                                    //     widget.attemptLength)
-                                                                                    if (cp.aviAttempts[index]
-                                                                                                .attempted_date ==
-                                                                                            null &&
-                                                                                        cp.aviAttempts[index]
-                                                                                                .tobeAttempted ==
-                                                                                            1) {
-                                                                                      Navigator.push(
-                                                                                          context,
-                                                                                          MaterialPageRoute(
-                                                                                            builder: (context) =>
-                                                                                                MockTestQuestions(
-                                                                                                    selectedId:
-                                                                                                        selectedIdNew,
-                                                                                                    mockName:
-                                                                                                        detailsofMockAttempt
-                                                                                                            .test_name,
-                                                                                                    // responseData[
-                                                                                                    //     "test_name"],
-                                                                                                    attempt: cp
-                                                                                                        .selectedMokAtmptCnt),
-                                                                                          ));
-                                                                                    } else if (cp.aviAttempts[index]
-                                                                                                .attempted_date ==
-                                                                                            null &&
-                                                                                        cp.aviAttempts[index]
-                                                                                                .tobeAttempted ==
-                                                                                            0) {
-                                                                                    } else {
-                                                                                      Navigator.push(
-                                                                                          context,
-                                                                                          MaterialPageRoute(
-                                                                                            builder: (context) =>
-                                                                                                MockTestDetails(
-                                                                                              selectedId: selectedIdNew,
-                                                                                              attempt: index + 1,
-                                                                                            ),
-                                                                                          ));
-                                                                                    }
-                                                                                  }
-                                                                                },
+                                                                                onTap: () => navigateToMockTest(
+                                                                                    index, restartModel),
                                                                                 child: Text(
-                                                                                  storedId != -1 &&
-                                                                                          storedId ==
+                                                                                  restartModel != null &&
+                                                                                          restartModel
+                                                                                                  .restartAttempNum ==
                                                                                               cp.aviAttempts[index]
                                                                                                   .attempt
                                                                                       ? "Restart"
