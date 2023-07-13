@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 import '../../../Models/pptDetailsModel.dart';
 
@@ -19,32 +21,72 @@ class _PdfViewerState extends State<PdfViewer> {
   @override
   void initState() {
     super.initState();
+    _setOrientation([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     pdfViewerController = PdfViewerController();
     // context.read<PdfProvider>().getPdfDetails(context, widget.pdfModel.id);
+  }
+
+  _setOrientation(List<DeviceOrientation> orientations) {
+    SystemChrome.setPreferredOrientations(orientations);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _setOrientation([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          _appBar(widget.pdfModel.title),
-          Expanded(
-            child: SfPdfViewer.network(
-              widget.pdfModel.filename ?? '',
-              key: _pdfViewerKey,
-              controller: pdfViewerController,
-              scrollDirection: PdfScrollDirection.horizontal,
-              onDocumentLoadFailed: (details) {
-                return GFToast.showToast(
-                  details.description,
-                  context,
-                  toastPosition: GFToastPosition.BOTTOM,
-                );
-              },
-            ),
-          ),
-        ],
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          return orientation == Orientation.landscape ? _landscape() : _potrait();
+        },
+      ),
+    );
+  }
+
+  _landscape() {
+    return _pdfView();
+  }
+
+  Widget _potrait() {
+    return Column(
+      children: [
+        _appBar(widget.pdfModel.title),
+        Expanded(
+          child: _pdfView(),
+        ),
+      ],
+    );
+  }
+
+  SfPdfViewerTheme _pdfView() {
+    return SfPdfViewerTheme(
+      data: SfPdfViewerThemeData(
+        backgroundColor: Colors.white,
+      ),
+      child: SfPdfViewer.network(
+        widget.pdfModel.filename ?? '',
+        key: _pdfViewerKey,
+        controller: pdfViewerController,
+        scrollDirection: PdfScrollDirection.horizontal,
+        onDocumentLoadFailed: (details) {
+          return GFToast.showToast(
+            details.description,
+            context,
+            toastPosition: GFToastPosition.BOTTOM,
+          );
+        },
       ),
     );
   }

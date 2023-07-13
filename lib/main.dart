@@ -74,7 +74,11 @@ void main() async {
   // Stripe.publishableKey = 'pk_live_kUCek2XygEa1X04d7xu5qTmh';
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+    [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    
+    ],
   );
   await Firebase.initializeApp();
 
