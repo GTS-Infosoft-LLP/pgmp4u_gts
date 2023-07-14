@@ -12,15 +12,26 @@ class NotificationTabs extends StatefulWidget {
   State<NotificationTabs> createState() => _NotificationTabsState();
 }
 
-class _NotificationTabsState extends State<NotificationTabs>
-// with SingleTickerProviderStateMixin
-{
+class _NotificationTabsState extends State<NotificationTabs> with TickerProviderStateMixin {
+  TabController _controller;
   // final _tabController = TabController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 1, //optional, starts from 0, select the tab by default
+      initialIndex: 0, //optional, starts from 0, select the tab by default
       length: 2,
       child: Scaffold(
           body: SingleChildScrollView(
@@ -66,7 +77,7 @@ class _NotificationTabsState extends State<NotificationTabs>
                           // color: Colors.amber,
                           width: MediaQuery.of(context).size.width * .65,
                           child: Text(
-                            pp.tabIndex == 1 ? "Announcements" : "Notifications",
+                            _controller.index == 1 ? "Announcements" : "Notifications",
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -83,7 +94,9 @@ class _NotificationTabsState extends State<NotificationTabs>
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Container(
                   child: TabBar(
+                    controller: _controller,
                     onTap: (vall) {
+                      print("_controller====${_controller.index}");
                       print("TAB INDEX $vall");
                       ProfileProvider pp = Provider.of(context, listen: false);
                       pp.setTabIndex(vall);
@@ -115,7 +128,7 @@ class _NotificationTabsState extends State<NotificationTabs>
                 child: Container(
                   height: MediaQuery.of(context).size.height * .70,
                   child: Scaffold(
-                    body: TabBarView(children: [
+                    body: TabBarView(controller: _controller, children: [
                       Notifications(type: 0),
                       Notifications(type: 1),
                       // Container(

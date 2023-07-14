@@ -23,6 +23,7 @@ class _NotificationsState extends State<Notifications> {
   @override
   void initState() {
     _isShow = false;
+    print("widget.type===========${widget.type}");
     ProfileProvider _dshbrdProvider = Provider.of(context, listen: false);
     _dshbrdProvider.showNotification(isFirstTime: true);
 

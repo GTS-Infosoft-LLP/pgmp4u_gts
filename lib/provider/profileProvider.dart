@@ -223,6 +223,8 @@ class ProfileProvider extends ChangeNotifier {
       avgScore = "";
       dayDiff = "";
       if (response.statusCode == 200) {
+        studyTime = "";
+        isStudyRemAdded = 0;
         print("response.statusCode===${response.statusCode}");
         var resDDo = json.decode(response.body);
         print("resDDo====$resDDo");

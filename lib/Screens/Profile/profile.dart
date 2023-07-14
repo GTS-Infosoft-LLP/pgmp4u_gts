@@ -3,7 +3,6 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
@@ -947,7 +946,7 @@ class _ProfileState extends State<Profile> {
                                               color: _colorfromhex("#ABAFD1"),
                                             ),
                                             Text(
-                                              '  Delete Acount',
+                                              '  Delete Account',
                                               style: TextStyle(
                                                 fontFamily: 'Roboto Medium',
                                                 fontSize: width * (18 / 420),
@@ -1151,11 +1150,10 @@ class _ProfileState extends State<Profile> {
                     ),
                     InkWell(
                       onTap: () {
-
                         ProfileProvider pp = Provider.of(context, listen: false);
-                  
+
                         pp.deleteAccount();
-                           Navigator.pop(context);
+                        Navigator.pop(context);
                       },
                       child: Container(
                         height: 35,
