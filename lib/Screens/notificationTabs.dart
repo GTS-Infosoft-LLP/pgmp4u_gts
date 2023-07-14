@@ -116,9 +116,8 @@ class _NotificationTabsState extends State<NotificationTabs>
                   height: MediaQuery.of(context).size.height * .70,
                   child: Scaffold(
                     body: TabBarView(children: [
-                      Notifications(),
-                      Notifications()
-                      // Announcements(),
+                      Notifications(type: 0),
+                      Notifications(type: 1),
                       // Container(
                       //   color: Colors.white,
                       //   height: 100,
