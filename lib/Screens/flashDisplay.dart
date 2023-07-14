@@ -138,7 +138,11 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                     child: Padding(
                                       padding: const EdgeInsets.only(top: 28.0),
                                       child: Container(
-                                        child: Text("No Data Found"),
+                                        child: Center(
+                                            child: Text(
+                                          "No Data Found",
+                                          style: TextStyle(fontSize: 14),
+                                        )),
                                       ),
                                     ),
                                   )

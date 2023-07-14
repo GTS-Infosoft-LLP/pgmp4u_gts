@@ -106,6 +106,7 @@ class _PPTCardItemState extends State<PPTCardItem> {
 
                           var pptPayStat = await cp.successValuePPT;
                           print("pptPayStat======$pptPayStat");
+                          print("cp.pptCategoryList[index]====${cp.pptCategoryList[index].price}");
                           if (pptPayStat == false) {
                             Navigator.push(
                                 context,
@@ -127,8 +128,9 @@ class _PPTCardItemState extends State<PPTCardItem> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
                           child: Container(
-                            decoration:
-                                const BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
+                            decoration: const BoxDecoration(
+                                border:
+                                    Border(bottom: BorderSide(width: 1, color: Color.fromARGB(255, 219, 211, 211)))),
                             height: 70,
                             child: Row(
                               children: [
@@ -166,11 +168,26 @@ class _PPTCardItemState extends State<PPTCardItem> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "PPT",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * .7,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "PPT",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Text(
+                                            cp.pptCategoryList[index].paymentStatus == 1 ? "Premium" : "",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     SizedBox(

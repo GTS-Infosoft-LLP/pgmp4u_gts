@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
-import 'package:pgmp4u/Models/restartTestModel.dart';
 import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -44,14 +43,11 @@ class CourseProvider extends ChangeNotifier {
   List<PPTCateDetails> pptCategoryList = [];
   List<PPTDataDetails> pptDataList = [];
 
+  List<RestartModel> restartDataList = [];
 
-  List<RestartModel> restartDataList=[];
-
-setToRestartList(String display,int attempptNum,int quesNum)
-{
-    restartDataList.add(RestartModel(displayTime: display,quesNum: quesNum,restartAttempNum: attempptNum));
-}
-
+  setToRestartList(String display, int attempptNum, int quesNum) {
+    restartDataList.add(RestartModel(displayTime: display, quesNum: quesNum, restartAttempNum: attempptNum));
+  }
 
   int firstCourse = 0;
   int firstMaster = 0;
@@ -113,13 +109,14 @@ setToRestartList(String display,int attempptNum,int quesNum)
       notifyListeners();
     });
   }
+
   int toPage;
   int allowScroll = 1;
-  setScroll(int val,int pageNum) {
-    print("pageNum======${pageNum}");
+  setScroll(int val, int pageNum) {
+    print("pageNum======$pageNum");
     Future.delayed(Duration.zero, () {
       allowScroll = val;
-      toPage=pageNum;
+      toPage = pageNum;
       print("allowScroll==========$allowScroll");
       notifyListeners();
     });
@@ -672,6 +669,7 @@ setToRestartList(String display,int attempptNum,int quesNum)
       if (response.statusCode == 200) {
         FlashCards.clear();
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+        print("mapResponse====$mapResponse");
 
         List temp1 = mapResponse["data"];
         int stsVal = mapResponse["status"];

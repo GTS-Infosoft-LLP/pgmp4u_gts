@@ -227,6 +227,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<void> subscriptionStatus(String type) async {
+    successValue=true;
     updateSubApi(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
