@@ -7,6 +7,7 @@ import 'package:getwidget/position/gf_toast_position.dart';
 import 'package:pgmp4u/Screens/chat/chatHandler.dart';
 import 'package:pgmp4u/Screens/chat/model/chatModel.dart';
 import 'package:pgmp4u/Screens/chat/model/singleGroupModel.dart';
+import 'package:pgmp4u/Screens/chat/model/userListModel.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/utils/extensions.dart';
 import 'package:pgmp4u/utils/user_object.dart';
@@ -300,6 +301,101 @@ class ChatProvider extends ChangeNotifier {
       deleteGroupMessage();
     } else {
       deleteSingleMessage();
+    }
+  }
+
+  bool getUserListApiCalling = false;
+  updateGetUserListApiCalling(bool value) {
+    getUserListApiCalling = value;
+    Future.delayed(Duration.zero, () {
+      notifyListeners();
+    });
+  }
+
+  bool isPagging = false;
+  updateIsPagging(bool value) {
+    isPagging = value;
+    Future.delayed(Duration.zero, () {
+      notifyListeners();
+    });
+  }
+
+  UserListResponseModel userListResponse;
+  int currentPageIndex = 1;
+
+  resetPagination() {
+    currentPageIndex = 1;
+  }
+
+  getUserList({@required bool isFirstTime}) async {
+    if (isFirstTime) {
+      updateGetUserListApiCalling(true);
+    } else {
+      if (isPagging) {
+        return;
+      }
+
+      print("currentPageIndex $currentPageIndex,userListResponse.pages: ${userListResponse.pages}");
+      if (currentPageIndex > userListResponse.pages) {
+        print("all pages are get");
+        return;
+      }
+
+      print(
+          "userListResponse.data.length  ${userListResponse.data.length}, userListResponse.count: ${userListResponse.count}");
+      if (userListResponse.data.length >= userListResponse.count) {
+        print("all data is get");
+        return;
+      }
+      updateIsPagging(true);
+    }
+
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    print(stringValue);
+    http.Response response;
+
+    try {
+      response = await http.post(Uri.parse(chatUserListApi),
+          headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
+          body: jsonEncode({"page": currentPageIndex}));
+
+      print("resqust: ${jsonEncode({"page": currentPageIndex})} ");
+
+      if (response.statusCode == 200) {
+        print(jsonDecode(response.body));
+        UserListResponseModel userListResponseTemp = UserListResponseModel.fromJson(jsonDecode(response.body));
+
+        if (currentPageIndex == 1) {
+          userListResponse = userListResponseTemp;
+        } else {
+          userListResponse.data.addAll(userListResponseTemp.data);
+        }
+
+        currentPageIndex++;
+
+        // filter list if user's uuid is null or empty
+        userListResponse.data.removeWhere((user) => user.uuid.isEmpty || user.uuid == null);
+
+        /// remove my self
+        userListResponse.data.removeWhere((user) => user.uuid == getUser().uid);
+
+        // only shows admin if i'm normal user
+        print("isChatAdmin() in userList: ${isChatAdmin()} ");
+        isChatAdmin() ? null : userListResponse.data.removeWhere((user) => user.isChatAdmin == 0);
+
+        updateGetUserListApiCalling(false);
+        updateIsPagging(false);
+      } else {
+        updateGetUserListApiCalling(false);
+        updateIsPagging(false);
+        print('error while calling api');
+        print(jsonDecode(response.body));
+      }
+    } on Exception {
+      updateGetUserListApiCalling(false);
+      updateIsPagging(false);
+      print('error while calling api');
     }
   }
 }

@@ -180,7 +180,7 @@ class _ProfileState extends State<Profile> {
               : () async {
                   bool isSub = context.read<ProfileProvider>().isChatSubscribed;
 
-                  print("isChatSubscribed ======= $isSub");
+                  print("isChatSubscribed in profile ======= $isSub");
 
                   if (isSub == null) {
                     GFToast.showToast(
