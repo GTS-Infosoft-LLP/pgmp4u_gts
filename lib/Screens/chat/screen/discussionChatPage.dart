@@ -125,7 +125,7 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
             color: Colors.black,
           ),
         ),
-        leadingWidth: 36,
+        leadingWidth: 40,
         backgroundColor: Colors.white,
       ),
       bottomSheet: ChatTextField(

@@ -111,7 +111,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
               }
             }
             print("listResponse after length====${listResponse.length}");
-            selectedAnswer = listResponse[0].youranswer;
+            selectedAnswer = listResponse1[0].youranswer;
           });
         }
       }
@@ -151,7 +151,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
           setState(() {
             mapResponse = ReviewMokeText.fromJson(convert.jsonDecode(response.body));
             listResponse1 = mapResponse.data;
-            selectedAnswer = listResponse[0].youranswer;
+            selectedAnswer = listResponse1[0].youranswer;
             print("listResponse1 ====${listResponse1.length}");
             for (int i = 0, j = 0; i < listResponse1.length; i++) {
               if (listResponse1[i].question.rightAnswer.length == listResponse1[i].youranswer.length) {

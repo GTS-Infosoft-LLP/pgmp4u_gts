@@ -4,19 +4,19 @@
 
 import 'dart:convert';
 
-UpadateLocationResponseModel upadateLocationResponseModelFromJson(String str) =>
-    UpadateLocationResponseModel.fromJson(json.decode(str));
+UserListResponseModel upadateLocationResponseModelFromJson(String str) =>
+    UserListResponseModel.fromJson(json.decode(str));
 
-String upadateLocationResponseModelToJson(UpadateLocationResponseModel data) => json.encode(data.toJson());
+String upadateLocationResponseModelToJson(UserListResponseModel data) => json.encode(data.toJson());
 
-class UpadateLocationResponseModel {
+class UserListResponseModel {
   final bool success;
   List<Users> data;
   final int count;
   final int pages;
   final String message;
 
-  UpadateLocationResponseModel({
+  UserListResponseModel({
     this.success,
     this.data,
     this.count,
@@ -24,7 +24,7 @@ class UpadateLocationResponseModel {
     this.message,
   });
 
-  factory UpadateLocationResponseModel.fromJson(Map<String, dynamic> json) => UpadateLocationResponseModel(
+  factory UserListResponseModel.fromJson(Map<String, dynamic> json) => UserListResponseModel(
         success: json["success"],
         data: List<Users>.from(json["data"].map((x) => Users.fromJson(x))),
         count: json["count"],

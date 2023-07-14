@@ -204,14 +204,15 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
 }
 
 void showOverLay(BuildContext context, ChatModel message, LayerLink layerLink, bool isSentMessage) {
-  double overlayWidth = context.read<ChatProvider>().currentGroupType == GroupType.groupChat &&
-          !context.read<ChatProvider>().isChatAdmin()
-      ? 170
-      : 230;
+  // in discussion show only to admin user
+  // in single chat to both user
+  bool isShowDelete = !(context.read<ChatProvider>().currentGroupType == GroupType.groupChat &&
+      !context.read<ChatProvider>().isChatAdmin());
+
+  double overlayWidth = isShowDelete ? 230: 170;
   context.read<ChatProvider>().reactionOverlayState = Overlay.of(context);
 
   final renderBox = context.findRenderObject() as RenderBox;
-
   final size = renderBox.size;
 
   context.read<ChatProvider>().removeOverlay();
@@ -229,6 +230,15 @@ void showOverLay(BuildContext context, ChatModel message, LayerLink layerLink, b
             context: context,
             message: message,
             overlayWidth: overlayWidth,
+            onReactionChaged: (reaction) {
+              context.read<ChatProvider>().setReaction(message, reaction);
+              context.read<ChatProvider>().removeOverlay();
+            },
+            isShowDelete: isShowDelete,
+            onDelete: () {
+              context.read<ChatProvider>().deleteMessage();
+              context.read<ChatProvider>().removeOverlay();
+            },
           ),
         ),
       );

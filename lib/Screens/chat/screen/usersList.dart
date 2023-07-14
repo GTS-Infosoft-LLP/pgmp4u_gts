@@ -1,15 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/chat/model/singleGroupModel.dart';
 import 'package:pgmp4u/Screens/chat/screen/chatPage.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/userListModel.dart';
-import 'package:pgmp4u/api/apis.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UsersList extends StatefulWidget {
   const UsersList({Key key}) : super(key: key);
@@ -20,110 +15,70 @@ class UsersList extends StatefulWidget {
 
 class _UsersListState extends State<UsersList> {
   bool isLoading = false;
-  UpadateLocationResponseModel userListResponse;
-  int currentPageIndex = 1;
+  ChatProvider _chatProvider;
+
   ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _chatProvider = Provider.of<ChatProvider>(context, listen: false);
 
-    getUser(isFirstTime: true);
-    // _scrollController.addListener(() => _scrollListener);
+    if (_chatProvider.userListResponse != null && _chatProvider.userListResponse.data.length > 0) {
+    } else {
+      context.read<ChatProvider>().getUserList(isFirstTime: true);
+    }
+
     scrollController.addListener(_scrollListener);
-  }
-
-  getUser({@required bool isFirstTime}) async {
-    if (isFirstTime) {
-      setState(() {
-        isLoading = true;
-      });
-    }
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('token');
-    print(stringValue);
-    http.Response response;
-
-    try {
-      response = await http.post(Uri.parse(chatUserListApi),
-          headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
-          body: jsonEncode({"page": currentPageIndex}));
-
-      print("resqust: ${jsonEncode({"page": currentPageIndex})} ");
-
-      if (response.statusCode == 200) {
-        print(jsonDecode(response.body));
-        UpadateLocationResponseModel userListResponseTemp =
-            UpadateLocationResponseModel.fromJson(jsonDecode(response.body));
-
-        if (currentPageIndex == 1) {
-          userListResponse = userListResponseTemp;
-        } else {
-          userListResponse.data.addAll(userListResponseTemp.data);
-        }
-
-        // filter list if user's uuid is null or empty
-        // userListResponse.data.removeWhere((user) => user.uuid.isEmpty || user.uuid == null);
-
-        /// remove my self
-        // userListResponse.data.removeWhere((user) => user.uuid == context.read<ChatProvider>().getUser().uid);
-
-        // only shows admin if i'm normal user
-        print(
-            " context.read<ChatProvider>().isChatAdmin() in userList: ${context.read<ChatProvider>().isChatAdmin()} ");
-        context.read<ChatProvider>().isChatAdmin()
-            ? null
-            : userListResponse.data.removeWhere((user) => user.isChatAdmin == 0);
-
-        isLoading = false;
-
-        currentPageIndex++;
-        setState(() {});
-      } else {
-        isLoading = false;
-        setState(() {});
-        print('error while calling api');
-        print(jsonDecode(response.body));
-      }
-    } on Exception {
-      isLoading = false;
-      setState(() {});
-      print('error while calling api');
-    }
   }
 
   void _scrollListener() {
     print("controller is listeningggggg......");
     if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
       print('_listener called');
-      getUser(isFirstTime: false);
+      context.read<ChatProvider>().getUserListApiCalling
+          ? null
+          : context.read<ChatProvider>().getUserList(isFirstTime: false);
     }
   }
 
   @override
+  void dispose() {
+    // _chatProvider.resetPagination();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    UserListResponseModel userListResponse = context.watch<ChatProvider>().userListResponse;
     return Scaffold(
       body: Column(
         children: [
           Expanded(flex: 2, child: _appBar()),
-          isLoading
+          context.watch<ChatProvider>().getUserListApiCalling
               ? Expanded(flex: 13, child: Center(child: CircularProgressIndicator.adaptive()))
-              : userListResponse.data.length == 0
+              : userListResponse == null || userListResponse.data.length == 0
                   ? Expanded(flex: 13, child: Center(child: Text('No User Found')))
                   : Expanded(
                       flex: 13,
                       child: ListView.builder(
                           shrinkWrap: true,
                           controller: scrollController,
-                          itemCount: userListResponse.data.length,
+                          itemCount: context.watch<ChatProvider>().isPagging
+                              ? userListResponse.data.length + 1
+                              : userListResponse.data.length,
                           itemBuilder: (context, index) {
-                            // return Container(
-                            //   height: 50,
-                            //   margin: EdgeInsets.all(8.0),
-                            //   color: Colors.amber,
-                            // );
-                            return _userListTile(userListResponse.data[index]);
+                            if (index < userListResponse.data.length) {
+                              return _userListTile(userListResponse.data[index]);
+                            } else {
+                              return Container(
+                                height: 50,
+                                margin: EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                ),
+                              );
+                            }
                           }),
                     ),
         ],
@@ -235,7 +190,9 @@ class _UsersListState extends State<UsersList> {
             ),
             Expanded(
               child: Text(
-                isLoading ? "Users... " : "Users (${userListResponse.data.length})",
+                context.watch<ChatProvider>().getUserListApiCalling
+                    ? "Users... "
+                    : "Users (${context.watch<ChatProvider>().userListResponse.data.length})",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 22, fontFamily: 'Roboto Medium', color: Colors.white),
               ),
