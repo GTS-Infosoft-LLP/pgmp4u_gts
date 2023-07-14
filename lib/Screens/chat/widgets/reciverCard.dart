@@ -57,7 +57,7 @@ class _RecivedMessageCardState extends State<RecivedMessageCard> with SingleTick
                   layerLink,
                   false,
                 );
-                context.read<ChatProvider>().updateisShowDeleteIcon(true);
+                
                 context.read<ChatProvider>().updateSelectedMessage(widget.chatModel);
               },
               child: Row(

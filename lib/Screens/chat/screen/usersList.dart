@@ -28,21 +28,17 @@ class _UsersListState extends State<UsersList> {
   void initState() {
     super.initState();
 
-    getUser();
+    getUser(isFirstTime: true);
     // _scrollController.addListener(() => _scrollListener);
-    scrollController.addListener(() {
-      print("controller is listeningggggg......");
-      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        print("call again api");
-        // _dshbrdProvider.showNotification();
-      }
-    });
+    scrollController.addListener(_scrollListener);
   }
 
-  getUser() async {
-    setState(() {
-      isLoading = true;
-    });
+  getUser({@required bool isFirstTime}) async {
+    if (isFirstTime) {
+      setState(() {
+        isLoading = true;
+      });
+    }
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -53,6 +49,8 @@ class _UsersListState extends State<UsersList> {
       response = await http.post(Uri.parse(chatUserListApi),
           headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
           body: jsonEncode({"page": currentPageIndex}));
+
+      print("resqust: ${jsonEncode({"page": currentPageIndex})} ");
 
       if (response.statusCode == 200) {
         print(jsonDecode(response.body));
@@ -66,10 +64,10 @@ class _UsersListState extends State<UsersList> {
         }
 
         // filter list if user's uuid is null or empty
-        userListResponse.data.removeWhere((user) => user.uuid.isEmpty || user.uuid == null);
+        // userListResponse.data.removeWhere((user) => user.uuid.isEmpty || user.uuid == null);
 
         /// remove my self
-        userListResponse.data.removeWhere((user) => user.uuid == context.read<ChatProvider>().getUser().uid);
+        // userListResponse.data.removeWhere((user) => user.uuid == context.read<ChatProvider>().getUser().uid);
 
         // only shows admin if i'm normal user
         print(
@@ -99,7 +97,7 @@ class _UsersListState extends State<UsersList> {
     print("controller is listeningggggg......");
     if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
       print('_listener called');
-      getUser();
+      getUser(isFirstTime: false);
     }
   }
 
@@ -108,18 +106,26 @@ class _UsersListState extends State<UsersList> {
     return Scaffold(
       body: Column(
         children: [
-          _appBar(),
+          Expanded(flex: 2, child: _appBar()),
           isLoading
-              ? Expanded(child: Center(child: CircularProgressIndicator.adaptive()))
+              ? Expanded(flex: 13, child: Center(child: CircularProgressIndicator.adaptive()))
               : userListResponse.data.length == 0
-                  ? Expanded(child: Center(child: Text('No User Found')))
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      controller: scrollController,
-                      itemCount: userListResponse.data.length,
-                      itemBuilder: (context, index) {
-                        return _userListTile(userListResponse.data[index]);
-                      }),
+                  ? Expanded(flex: 13, child: Center(child: Text('No User Found')))
+                  : Expanded(
+                      flex: 13,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          controller: scrollController,
+                          itemCount: userListResponse.data.length,
+                          itemBuilder: (context, index) {
+                            // return Container(
+                            //   height: 50,
+                            //   margin: EdgeInsets.all(8.0),
+                            //   color: Colors.amber,
+                            // );
+                            return _userListTile(userListResponse.data[index]);
+                          }),
+                    ),
         ],
       ),
     );
@@ -151,7 +157,13 @@ class _UsersListState extends State<UsersList> {
         }
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+          color: Colors.grey.shade200,
+          width: 1,
+        ))),
         child: Row(
           children: [
             CircleAvatar(
