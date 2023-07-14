@@ -74,6 +74,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   int timecheck;
   @override
   void initState() {
+    print("widget.restartModel========${widget.restartModel}");
+
     pageController = PageController();
     timecheck = 0;
     CourseProvider cp = Provider.of(context, listen: false);
@@ -99,9 +101,13 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     }
 
     print("cp.toPage======${cp.toPage}");
-    int time1 = int.tryParse(widget.restartModel.displayTime) ?? 0;
-    print("tryyy parseee=====${int.tryParse(widget.restartModel.displayTime)}");
-    _stopWatchTimer.setPresetTime(mSec: time1);
+    // print("widget.restartModel.displayTime======${widget.restartModel.displayTime}");
+    if (widget.restartModel != null) {
+      int time1 = int.tryParse(widget.restartModel.displayTime) ?? 0;
+      print("tryyy parseee=====${int.tryParse(widget.restartModel.displayTime)}");
+      _stopWatchTimer.setPresetTime(mSec: time1);
+    }
+
     // try {
     //   print("inside thatttsss");
     //   if (pageController.hasClients) pageController.jumpToPage(3);
