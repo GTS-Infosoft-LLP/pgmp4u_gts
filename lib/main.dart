@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 // import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:pgmp4u/Screens/MockTest/MockTestAttempts.dart';
 import 'package:pgmp4u/Screens/MockTest/ReviewMockTest.dart';
@@ -77,12 +78,20 @@ void main() async {
     [
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
-    
     ],
   );
   await Firebase.initializeApp();
 
   runApp(MyApp());
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow;
 }
 
 bool showLoader = true;
@@ -124,6 +133,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<PdfProvider>(create: (_) => PdfProvider()),
       ],
       child: MaterialApp(
+        builder: EasyLoading.init(),
         navigatorKey: GlobalVariable.navState,
         debugShowCheckedModeBanner: false,
         routes: {

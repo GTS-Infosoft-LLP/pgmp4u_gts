@@ -1148,17 +1148,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
               title: Column(
                 children: [
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: [
-                  //     InkWell(
-                  //         onTap: () {
-                  //           Navigator.pop(context);
-                  //         },
-                  //         child: Icon(Icons.cancel)),
-                  //   ],
-                  // ),
-                  // SizedBox(height: 15),
+          
                   Text("Test is currently paused \n Press the Resume button to continue with the test.",
                       textAlign: TextAlign.center,
                       style: TextStyle(

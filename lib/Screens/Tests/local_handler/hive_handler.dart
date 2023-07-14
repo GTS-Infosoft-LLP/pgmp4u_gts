@@ -570,4 +570,13 @@ class HiveHandler {
     var _userBox = Hive.box(deviceTokenBox);
     return _userBox.get(deviceTokenKey).toString();
   }
+
+
+  static void clearUser() {
+    var _userBox = Hive.box(userDataBox);    
+    _userBox.clear();
+  }
+
+
+
 }

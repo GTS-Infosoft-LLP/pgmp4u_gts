@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pgmp4u/Services/globalcontext.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/mockquestionanswermodel.dart';
@@ -13,7 +15,16 @@ import 'dart:convert' as convert;
 class ProfileProvider extends ChangeNotifier {
   int _pageIndex = 0;
   int _totalRec = 0;
+
+  int tabIndex = 0;
+  setTabIndex(int val) {
+    tabIndex = val;
+    notifyListeners();
+  }
+
   List<NotifiModel> NotificationData = [];
+  List<NotifiModel> Announcements = [];
+  List<NotifiModel> Notifications = [];
 
   List<Optionss> quesDayOption = [];
 
@@ -69,27 +80,37 @@ class ProfileProvider extends ChangeNotifier {
         body: json.encode(request),
       );
       print("response===$res");
-      // print("${res.body.}");
+      print("res.body====${res.body}");
+      print("${res.statusCode}");
 
       if (res.statusCode == 200) {
+        Notifications = [];
+        Announcements = [];
         Map<String, dynamic> mapResponse = convert.jsonDecode(res.body);
         List temp1 = mapResponse["data"];
 
         _totalRec = mapResponse["count"];
+
         print("total rs=======$_totalRec");
         print("temp 1 list before set to main list===$temp1");
 
         var respList = temp1.map((e) => NotifiModel.fromjson(e)).toList();
-        print("notifiaction response list========>$respList");
         NotificationData = NotificationData + respList;
-
-        // print("notifiaction list========>$NotificationData");
-        // print("notifiaction list========>${NotificationData.length}");
+        print("NotificationData=======${NotificationData.length}");
 
         for (int i = 0; i < NotificationData.length; i++) {
-          // print("************************************************************");
-          print("notifiaction list qId========>${NotificationData[i].questionId}");
+          print("NotificationData[i].typeee====${NotificationData[i].type}");
+          if (NotificationData[i].type == 1) {
+            Announcements.add(NotificationData[i]);
+          } else {
+            Notifications.add(NotificationData[i]);
+          }
         }
+        print("Notifications=======${Notifications.length}");
+        print("Announcements=======${Announcements.length}");
+      } else {
+        Notifications = [];
+        Announcements = [];
       }
     } on Exception {
       // TODO
@@ -154,10 +175,32 @@ class ProfileProvider extends ChangeNotifier {
     });
   }
 
+  loaderUpdate(bool status) {
+    if (status) {
+      EasyLoading.show(status: "Loading", maskType: EasyLoadingMaskType.clear);
+    } else {
+      print("dismiss loader");
+      EasyLoading.dismiss();
+    }
+  }
+
+  bool loader = false;
+
+  updateLoader(bool status) async {
+    loaderUpdate(status);
+
+    loader = status;
+    await Future.delayed(Duration(seconds: 0));
+    notifyListeners();
+  }
+
   var avgScore = "";
   var dayDiff = "";
+  var isStudyRemAdded;
+  var studyTime = "";
 
   Future<void> getReminder(int couseId) async {
+    updateLoader(true);
     print("*--**********getReminder ********************");
 
     print("couseId=======>>$couseId");
@@ -178,16 +221,24 @@ class ProfileProvider extends ChangeNotifier {
       );
       avgScore = "";
       dayDiff = "";
-      // print("response.statusCode===${response.body}");
-      print("response.statusCode===${response.statusCode}");
-      var resDDo = json.decode(response.body);
-      print("respponse=== $resDDo");
-      print("resDDo=====${resDDo['data']['daysDiff']}");
-      print("resDDo=====${resDDo['data']['averageScore']}");
-      avgScore = resDDo['data']['daysDiff'].toString();
-      dayDiff = resDDo['data']['averageScore'].toString();
-      notifyListeners();
+      if (response.statusCode == 200) {
+        print("response.statusCode===${response.statusCode}");
+        var resDDo = json.decode(response.body);
+        print("resDDo====$resDDo");
+        updateLoader(false);
+
+        avgScore = resDDo['data']['daysDiff'].toString();
+        dayDiff = resDDo['data']['averageScore'].toString();
+        print("study time==${resDDo['data']['studyReminder'].split(" ")[1]}");
+
+        studyTime = resDDo['data']['studyReminder'].split(" ")[1];
+        isStudyRemAdded = resDDo['data']['isStudyReminderAdded'];
+        notifyListeners();
+      } else {
+        updateLoader(false);
+      }
     } catch (e) {
+      updateLoader(false);
       // TODO
       print("---- EXCEPTION OCCURED WHILE CHECKING FOR CHATSUBSCRIPTION ----");
       print(e.toString());
@@ -195,6 +246,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<void> setReminder(String studyReminder, String examDate, int couseId, int type) async {
+    updateLoader(true);
     print("studyReminder=======>>$studyReminder");
     print("examDate=======>>$examDate");
     print("couseId=======>>$couseId");
@@ -212,14 +264,17 @@ class ProfileProvider extends ChangeNotifier {
         body: json.encode(request),
       );
 
-      // print("response.statusCode===${response.body}");
-      print("response.statusCode===${response.statusCode}");
+      if (response.statusCode == 200) {
+        print("response.statusCode===${response.statusCode}");
 
-      var resDDo = json.decode(response.body);
-      var resStatus = (resDDo["status"]);
-
-      print("respponse=== ${response.body}");
+        var resDDo = json.decode(response.body);
+        updateLoader(false);
+        var resStatus = (resDDo["status"]);
+      } else {
+        updateLoader(false);
+      }
     } catch (e) {
+      updateLoader(false);
       // TODO
       print("---- EXCEPTION OCCURED WHILE CHECKING FOR CHATSUBSCRIPTION ----");
       print(e.toString());
@@ -227,7 +282,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<void> subscriptionStatus(String type) async {
-    successValue=true;
+    successValue = true;
     updateSubApi(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -316,6 +371,35 @@ class ProfileProvider extends ChangeNotifier {
       // print(convert.jsonDecode(response.body));
 
       notifyListeners();
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    updateLoader(true);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    print("token valued===$stringValue");
+    try {
+      var response = await http.get(
+        Uri.parse(DELETE_ACCOUNT),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+      );
+
+      if (response.statusCode == 200) {
+        EasyLoading.showSuccess("Account Deleted Successfully");
+        updateLoader(false);
+        //  HiveHandler.clearUser();
+        await prefs.clear();
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      } else {
+        updateLoader(false);
+        EasyLoading.showToast("Something went wrong...");
+      
+      }
+    } catch (e) {
+      updateLoader(false);
+      print("errrorororr====$e");
     }
   }
 }

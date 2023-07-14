@@ -80,6 +80,7 @@ class _MockTestDetailsState extends State<MockTestDetails> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return SafeArea(
+      
       child: Scaffold(
           body: Container(
         color: _colorfromhex("#ABAFD1").withOpacity(0.13),
@@ -199,24 +200,21 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                                 child: Container(
                                                   width: 60,
                                                   height: 60,
+                                                  padding: EdgeInsets.all(17),
                                                   margin: EdgeInsets.only(
-                                                    right: width * (15 / 420),
+                                                    right: 10,
                                                   ),
                                                   decoration: BoxDecoration(
                                                     color: index % 2 == 0 ? AppColor.green : AppColor.purpule,
                                                     borderRadius: BorderRadius.circular(10),
                                                   ),
-                                                  padding: EdgeInsets.all(16),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.symmetric(vertical: 2.0),
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius: BorderRadius.circular(120),
-                                                      ),
-                                                      child: Center(
-                                                        child: Text('${index + 1}'),
-                                                      ),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.circular(100),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text('${index + 1}'),
                                                     ),
                                                   ),
                                                 ),

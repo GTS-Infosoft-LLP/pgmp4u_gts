@@ -110,6 +110,7 @@ const GET_REMINDER = _BASE_URL + "getReminders";
 
 const GET_PPT_CATEGORIES = _BASE_URL + "getPPTCategories";
 const GET_PPT = _BASE_URL + "getPPT";
+const DELETE_ACCOUNT = _BASE_URL + "deleteMyAccount";
 //getPPT
 
 //getPPTCategories

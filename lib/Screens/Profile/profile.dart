@@ -3,6 +3,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
@@ -20,8 +21,8 @@ import '../../provider/profileProvider.dart';
 import '../../utils/user_object.dart';
 import '../MockTest/model/courseModel.dart';
 import '../dropdown.dart';
+import '../notificationTabs.dart';
 import '../quesDayList.dart';
-import 'notifications.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key key}) : super(key: key);
@@ -682,64 +683,89 @@ class _ProfileState extends State<Profile> {
                                 //   ),
                                 // ),
 
-                                GestureDetector(
-                                  onTap: () {
-                                    DatePicker.showTimePicker(
-                                      context,
-                                      currentTime: DateTime.now(),
-                                    ).then((value) async {
-                                      print("value=====>$value");
-                                      ProfileProvider pp = Provider.of(context, listen: false);
-                                      List lst = value.toString().split(".");
-                                      print("lst======$lst");
-                                      var v1 = lst[0];
-
-                                      print("list=======$v1");
-
-                                      studyTime = v1;
-                                    await pp.setReminder(studyTime, "", cp.selectedCourseId, 1);
-                                    
-                                    });
-                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(bottom: 6),
-                                    padding: EdgeInsets.only(
-                                        top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                                    color: Colors.white,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.lock_clock,
-                                              size: width * (26 / 420),
-                                              color: _colorfromhex("#ABAFD1"),
-                                            ),
-                                            Text(
-                                              '  Set  Study Time',
-                                              style: TextStyle(
-                                                fontFamily: 'Roboto Medium',
-                                                fontSize: width * (18 / 420),
-                                                color: Colors.black,
+                                Consumer<ProfileProvider>(builder: (context, pp, child) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      print("pp.isStudyRemAdded====${pp.isStudyRemAdded}");
+                                      if (pp.isStudyRemAdded == 1) {
+                                      } else {
+                                        DatePicker.showTimePicker(
+                                          context,
+                                          currentTime: DateTime.now(),
+                                        ).then((value) async {
+                                          print("value=====>$value");
+                                          ProfileProvider pp = Provider.of(context, listen: false);
+                                          List lst = value.toString().split(".");
+                                          print("lst======$lst");
+                                          var v1 = lst[0];
+                                          studyTime = v1;
+                                          await pp.setReminder(studyTime, "", cp.selectedCourseId, 1);
+                                          pp.getReminder(cp.selectedCourseId);
+                                        });
+                                        // Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
+                                      }
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(bottom: 6),
+                                      padding: EdgeInsets.only(
+                                          top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                      color: Colors.white,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.lock_clock,
+                                                size: width * (26 / 420),
+                                                color: _colorfromhex("#ABAFD1"),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        Icon(
-                                          Icons.arrow_forward_ios,
-                                          size: 20,
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                      ],
+                                              Container(
+                                                width: MediaQuery.of(context).size.width * .8,
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      pp.isStudyRemAdded == 0
+                                                          ? '    Set Study Time'
+                                                          : '    Study timer set at: ',
+                                                      style: TextStyle(
+                                                        fontFamily: 'Roboto Medium',
+                                                        fontSize: 16,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(right: 18.0),
+                                                      child: Text(
+                                                        pp.isStudyRemAdded == 0 ? "" : pp.studyTime,
+                                                        maxLines: 2,
+                                                        style: TextStyle(
+                                                          fontFamily: 'Roboto Medium',
+                                                          fontSize: width * (18 / 420),
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 20,
+                                            color: _colorfromhex("#ABAFD1"),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                }),
 
                                 GestureDetector(
                                   onTap: () {
-                                    //Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsScreen("","")));
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationTabs()));
                                     //Navigator.of(context)
                                     //   .pushNamed('/settings');
                                   },
@@ -861,7 +887,10 @@ class _ProfileState extends State<Profile> {
 
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
+
+                                    Navigator.push(
+                                        context, MaterialPageRoute(builder: (context) => NotificationTabs()));
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(bottom: 6),
@@ -880,6 +909,45 @@ class _ProfileState extends State<Profile> {
                                             ),
                                             Text(
                                               '   Announcements',
+                                              style: TextStyle(
+                                                fontFamily: 'Roboto Medium',
+                                                fontSize: width * (18 / 420),
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 20,
+                                          color: _colorfromhex("#ABAFD1"),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                GestureDetector(
+                                  onTap: () {
+                                    showDeletePopup();
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(bottom: 6),
+                                    padding: EdgeInsets.only(
+                                        top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                    color: Colors.white,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.delete,
+                                              size: width * (26 / 420),
+                                              color: _colorfromhex("#ABAFD1"),
+                                            ),
+                                            Text(
+                                              '  Delete Acount',
                                               style: TextStyle(
                                                 fontFamily: 'Roboto Medium',
                                                 fontSize: width * (18 / 420),
@@ -1022,5 +1090,105 @@ class _ProfileState extends State<Profile> {
         );
       }),
     );
+  }
+
+  void showDeletePopup() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              elevation: 20,
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                // side: BorderSide(color: _colorfromhex("#3A47AD"), width: 0)
+              ),
+              title: Column(
+                children: [
+                  Text("Are you sure you want to delete this account?",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Roboto Medium',
+                        fontWeight: FontWeight.w200,
+                        color: Colors.black,
+                      )),
+                ],
+              ),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                            height: 35,
+                            width: MediaQuery.of(context).size.width * .15,
+                            // constraints: BoxConstraints(minWidth: 100),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      _colorfromhex("#3A47AD"),
+                                      _colorfromhex("#5163F3"),
+                                    ],
+                                    begin: const FractionalOffset(0.0, 0.0),
+                                    end: const FractionalOffset(1.0, 0.0),
+                                    stops: [0.0, 1.0],
+                                    tileMode: TileMode.clamp)),
+                            child: Center(
+                              child: Text(
+                                "No",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ))),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                      onTap: () {
+
+                        ProfileProvider pp = Provider.of(context, listen: false);
+                  
+                        pp.deleteAccount();
+                           Navigator.pop(context);
+                      },
+                      child: Container(
+                        height: 35,
+                        width: MediaQuery.of(context).size.width * .15,
+                        // constraints: BoxConstraints(minWidth: 100),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            gradient: LinearGradient(
+                                colors: [
+                                  _colorfromhex("#3A47AD"),
+                                  _colorfromhex("#5163F3"),
+                                ],
+                                begin: const FractionalOffset(0.0, 0.0),
+                                end: const FractionalOffset(1.0, 0.0),
+                                stops: [0.0, 1.0],
+                                tileMode: TileMode.clamp)),
+                        child: Center(
+                          child: Text(
+                            "Yes",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    )
+                  ],
+                ),
+              ],
+            ));
   }
 }
