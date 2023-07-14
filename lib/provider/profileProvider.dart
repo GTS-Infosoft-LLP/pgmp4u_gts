@@ -105,6 +105,7 @@ class ProfileProvider extends ChangeNotifier {
           } else {
             Notifications.add(NotificationData[i]);
           }
+          notifyListeners();
         }
         print("Notifications=======${Notifications.length}");
         print("Announcements=======${Announcements.length}");
@@ -395,7 +396,6 @@ class ProfileProvider extends ChangeNotifier {
       } else {
         updateLoader(false);
         EasyLoading.showToast("Something went wrong...");
-      
       }
     } catch (e) {
       updateLoader(false);

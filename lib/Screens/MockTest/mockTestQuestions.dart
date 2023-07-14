@@ -629,6 +629,26 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                           print("index in onPageChagen ====>>$index");
                                           print("currentIndex in onPageChagen ====>>$currentIndex");
 
+                                          if (currentData != null) {
+                                            print("selectedAnswer.length::::::::::${selectedAnswer.length}");
+                                            print(
+                                                "rightAnswer.length:::::::::::::${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}");
+                                            if (selectedAnswer.length ==
+                                                mockQuestion[_quetionNo].questionDetail.rightAnswer.length) {
+                                              print("addedd to listt");
+                                              submitData.add({
+                                                "question": currentData["question"],
+                                                "answer": currentData["answer"],
+                                                "correct": 0,
+                                                "category": currentData["category"],
+                                                "type": selectedAnswer.length > 2 ? 2 : 1
+                                              });
+                                              currentData = null;
+                                            } else {
+                                              print("not added to list******************************");
+                                            }
+                                          }
+
                                           if (currentIndex < index) {
                                             if (mockQuestion.length - 1 > _quetionNo) {
                                               setState(() {
@@ -636,19 +656,25 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                   _quetionNo = _quetionNo + 1;
                                                 }
 
-                                                if (currentData != null) {
-                                                  if (selectedAnswer.length ==
-                                                      mockQuestion[_quetionNo].questionDetail.rightAnswer.length) {
-                                                    submitData.add({
-                                                      "question": currentData["question"],
-                                                      "answer": currentData["answer"],
-                                                      "correct": 0,
-                                                      "category": currentData["category"],
-                                                      "type": selectedAnswer.length > 2 ? 2 : 1
-                                                    });
-                                                    currentData = null;
-                                                  }
-                                                }
+                                                // if (currentData != null) {
+                                                //   print("selectedAnswer.length::::::::::${selectedAnswer.length}");
+                                                //   print(
+                                                //       "rightAnswer.length:::::::::::::${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}");
+                                                //   if (selectedAnswer.length ==
+                                                //       mockQuestion[_quetionNo].questionDetail.rightAnswer.length) {
+                                                //     print("addedd to listt");
+                                                //     submitData.add({
+                                                //       "question": currentData["question"],
+                                                //       "answer": currentData["answer"],
+                                                //       "correct": 0,
+                                                //       "category": currentData["category"],
+                                                //       "type": selectedAnswer.length > 2 ? 2 : 1
+                                                //     });
+                                                //     currentData = null;
+                                                //   } else {
+                                                //     print("not added to list******************************");
+                                                //   }
+                                                // }
                                                 selectedAnswer = [];
                                                 ids = [];
                                               });
@@ -1003,15 +1029,15 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                           {
                                             setState(() {
                                               currentIndex = currentIndex + 1;
-                                            }),
-                                            setState(() {
-                                              if (_quetionNo < mockQuestion.length) {
-                                                _quetionNo = _quetionNo + 1;
-                                              }
 
                                               if (currentData != null) {
+                                                print("selectedAnswer.length::::::::::${selectedAnswer.length}");
+                                                print(
+                                                    "rightAnswer.length:::::::::::::${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}");
+
                                                 if (selectedAnswer.length ==
                                                     mockQuestion[_quetionNo].questionDetail.rightAnswer.length) {
+                                                  print("addedd to listt");
                                                   submitData.add({
                                                     "question": currentData["question"],
                                                     "answer": currentData["answer"],
@@ -1020,8 +1046,36 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                     "type": selectedAnswer.length > 2 ? 2 : 1
                                                   });
                                                   currentData = null;
+                                                } else {
+                                                  print("not added to list******************************");
                                                 }
                                               }
+                                            }),
+                                            setState(() {
+                                              if (_quetionNo < mockQuestion.length) {
+                                                _quetionNo = _quetionNo + 1;
+                                              }
+
+                                              // if (currentData != null) {
+                                              //   print("selectedAnswer.length::::::::::${selectedAnswer.length}");
+                                              //   print(
+                                              //       "rightAnswer.length:::::::::::::${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}");
+
+                                              //   if (selectedAnswer.length ==
+                                              //       mockQuestion[_quetionNo].questionDetail.rightAnswer.length) {
+                                              //     print("addedd to listt");
+                                              //     submitData.add({
+                                              //       "question": currentData["question"],
+                                              //       "answer": currentData["answer"],
+                                              //       "correct": 0,
+                                              //       "category": currentData["category"],
+                                              //       "type": selectedAnswer.length > 2 ? 2 : 1
+                                              //     });
+                                              //     currentData = null;
+                                              //   } else {
+                                              //     print("not added to list******************************");
+                                              //   }
+                                              // }
                                               selectedAnswer = [];
                                               ids = [];
                                             }),
@@ -1154,7 +1208,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
               title: Column(
                 children: [
-          
                   Text("Test is currently paused \n Press the Resume button to continue with the test.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
