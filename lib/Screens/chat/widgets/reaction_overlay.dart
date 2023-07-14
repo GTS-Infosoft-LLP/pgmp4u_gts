@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/chatModel.dart';
 import 'package:pgmp4u/Screens/chat/widgets/reaction_pop_up_emote.dart';
-import 'package:provider/provider.dart';
 
 class ReactionOverlay extends StatefulWidget {
   ReactionOverlay({
@@ -10,11 +8,17 @@ class ReactionOverlay extends StatefulWidget {
     @required this.context,
     @required this.message,
     @required this.overlayWidth,
+    @required this.onReactionChaged,
+    @required this.onDelete,
+    @required this.isShowDelete,
   }) : super(key: key);
 
   final BuildContext context;
   final ChatModel message;
   double overlayWidth;
+  ValueChanged<Reaction> onReactionChaged;
+  VoidCallback onDelete;
+  bool isShowDelete;
 
   @override
   State<ReactionOverlay> createState() => _ReactionOverlayState();
@@ -78,31 +82,26 @@ class _ReactionOverlayState extends State<ReactionOverlay> {
         children: [
           ReactionPopUp(
             reaction: Reaction.favorite,
-            onPressed: () => onTapOfReaction(Reaction.favorite),
+            onPressed: () => widget.onReactionChaged(Reaction.favorite),
           ),
           ReactionPopUp(
             reaction: Reaction.laugh,
-            onPressed: () => onTapOfReaction(Reaction.laugh),
+            onPressed: () => widget.onReactionChaged(Reaction.laugh),
           ),
           ReactionPopUp(
             reaction: Reaction.thumbsDown,
-            onPressed: () => onTapOfReaction(Reaction.thumbsDown),
+            onPressed: () => widget.onReactionChaged(Reaction.thumbsDown),
           ),
           ReactionPopUp(
             reaction: Reaction.thumbsUp,
-            onPressed: () => onTapOfReaction(Reaction.thumbsUp),
+            onPressed: () => widget.onReactionChaged(Reaction.thumbsUp),
           ),
 
-          // in discussion show only to admin user
-          // in single chat to both user
-          context.read<ChatProvider>().currentGroupType == GroupType.groupChat &&
-                  !context.read<ChatProvider>().isChatAdmin()
-              ? SizedBox()
-              : GestureDetector(
-                  onTap: () {
-                    context.read<ChatProvider>().deleteMessage();
-                    context.read<ChatProvider>().removeOverlay();
-                  },
+          // context.read<ChatProvider>().currentGroupType == GroupType.groupChat &&
+          //         !context.read<ChatProvider>().isChatAdmin()
+          widget.isShowDelete
+              ? GestureDetector(
+                  onTap: widget.onDelete,
                   child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -127,14 +126,10 @@ class _ReactionOverlayState extends State<ReactionOverlay> {
                           ),
                         ),
                       )),
-                ),
+                )
+              : SizedBox(),
         ],
       ),
     );
-  }
-
-  onTapOfReaction(Reaction raction) {
-    context.read<ChatProvider>().setReaction(widget.message, raction);
-    context.read<ChatProvider>().removeOverlay();
   }
 }

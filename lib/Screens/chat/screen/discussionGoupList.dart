@@ -112,7 +112,7 @@ class _GroupListPageState extends State<GroupListPage> {
               ),
             ),
             SizedBox(
-              width: 34,
+              width: 50,
             ),
             Spacer(),
             Text(
@@ -130,9 +130,12 @@ class _GroupListPageState extends State<GroupListPage> {
                           builder: (context) => PersonalChats(),
                         ));
                   },
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -147,7 +150,7 @@ class _GroupListPageState extends State<GroupListPage> {
                         ));
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: const EdgeInsets.only(left: 8.0, right: 10.0, top: 10.0, bottom: 8.0),
                     child: Icon(Icons.supervised_user_circle_sharp, color: Colors.white),
                   ),
                 )
