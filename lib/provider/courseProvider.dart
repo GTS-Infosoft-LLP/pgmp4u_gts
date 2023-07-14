@@ -556,7 +556,16 @@ class CourseProvider extends ChangeNotifier {
   }
 
   List<CourseDetails> tempListCourse = [];
+  bool getCourseApiCalling = false;
+  updateGetCourseApiCalling(bool val) {
+    getCourseApiCalling = val;
+    Future.delayed(Duration.zero, () {
+      notifyListeners();
+    });
+  }
+
   Future<void> getCourse() async {
+    updateGetCourseApiCalling(true);
     print("getCourse api calllllllll");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -580,7 +589,7 @@ class CourseProvider extends ChangeNotifier {
         try {
           HiveHandler.addCourseData(jsonEncode(mapResponse["data"]));
 
-          Future.delayed(Duration(microseconds: 800), () {
+          Future.delayed(Duration(microseconds: 10), () {
             // tempListCourse
             List<CourseDetails> res = HiveHandler.getCourseDataList();
 
@@ -591,8 +600,8 @@ class CourseProvider extends ChangeNotifier {
         } catch (e) {
           print("errorr===========>>>>>>$e");
         }
+        updateGetCourseApiCalling(false);
 
-        notifyListeners();
         print("course lkengrtht=====${course.length}");
         if (course.isNotEmpty) {
           print("course 0=== ${course[0].description}");
@@ -602,10 +611,12 @@ class CourseProvider extends ChangeNotifier {
         course = [];
 
         HiveHandler.addCourseData(jsonEncode(course));
+        updateGetCourseApiCalling(false);
       }
       print("respponse=== ${response.body}");
     } on Exception {
       // TODO
+      updateGetCourseApiCalling(false);
     }
   }
 

@@ -167,92 +167,82 @@ class _HomeViewState extends State<HomeView> {
                           storedCourse = [];
                         }
 
-                        // String courseData = value.get(HiveHandler.CourseKey);
-
-                        // List courselist = convert.jsonDecode(courseData);
-                        // print(" >> courseData :  $courseData");
-
-                        // try {
-                        //   storedCourse = courselist.map((e) => CourseDetails.fromjson(e)).toList();
-                        //   print(" >> couserList : $storedCourse");
-                        // } on Exception {
-                        //   // TODO
-                        // }
-                        // if (storedCourse == null || storedCourse.isEmpty) {
-                        //   storedCourse = [];
-                        // }
-
                         return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
-                          return storedCourse.isEmpty
-                              ? Center(child: Container(height: 400, child: Text("No Data Found")))
-                              : Container(
+                          return courseProvider.getCourseApiCalling && storedCourse.isEmpty
+                              ? Container(
                                   height: MediaQuery.of(context).size.height * .55,
-                                  child: ListView.builder(
-                                      itemCount: storedCourse.length,
-                                      itemBuilder: (context, index) {
-                                        if (index % 4 == 0) {
-                                          clr = Color(0xff3F9FC9);
-                                        } else if (index % 3 == 0) {
-                                          clr = Color(0xff3FC964);
-                                        } else if (index % 2 == 0) {
-                                          clr = Color(0xffDE682B);
-                                        } else {
-                                          clr = Color(0xffC93F7F);
-                                        }
-                                        return Padding(
-                                          padding: const EdgeInsets.only(bottom: 20),
-                                          child: InkWell(
-                                            onTap: () {
-                                              print("id Is======>>>${storedCourse[index].id}");
-                                              print("setSelectedCourseLable===${storedCourse[index].lable}");
+                                  child: Center(child: CircularProgressIndicator.adaptive()))
+                              : storedCourse.isEmpty
+                                  ? Center(child: Container(height: 400, child: Text("No Data Found")))
+                                  : Container(
+                                      height: MediaQuery.of(context).size.height * .55,
+                                      child: ListView.builder(
+                                          itemCount: storedCourse.length,
+                                          itemBuilder: (context, index) {
+                                            if (index % 4 == 0) {
+                                              clr = Color(0xff3F9FC9);
+                                            } else if (index % 3 == 0) {
+                                              clr = Color(0xff3FC964);
+                                            } else if (index % 2 == 0) {
+                                              clr = Color(0xffDE682B);
+                                            } else {
+                                              clr = Color(0xffC93F7F);
+                                            }
+                                            return Padding(
+                                              padding: const EdgeInsets.only(bottom: 20),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  print("id Is======>>>${storedCourse[index].id}");
+                                                  print("setSelectedCourseLable===${storedCourse[index].lable}");
 
-                                              courseProvider.setSelectedCourseId(storedCourse[index].id);
+                                                  courseProvider.setSelectedCourseId(storedCourse[index].id);
 
-                                              courseProvider.setSelectedCourseName(storedCourse[index].lable);
-                                              courseProvider.setSelectedCourseLable(storedCourse[index].course);
+                                                  courseProvider.setSelectedCourseName(storedCourse[index].lable);
+                                                  courseProvider.setSelectedCourseLable(storedCourse[index].course);
 
-                                              courseProvider.getMasterData(storedCourse[index].id);
-                                              Future.delayed(const Duration(milliseconds: 100), () {
-                                                Navigator.push(
-                                                    context, MaterialPageRoute(builder: (context) => MasterListPage()));
-                                              });
-                                            },
-                                            child: ListTile(
-                                              leading: Container(
-                                                  height: 70,
-                                                  width: 65,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(8),
-                                                    color: clr,
+                                                  courseProvider.getMasterData(storedCourse[index].id);
+                                                  Future.delayed(const Duration(milliseconds: 100), () {
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(builder: (context) => MasterListPage()));
+                                                  });
+                                                },
+                                                child: ListTile(
+                                                  leading: Container(
+                                                      height: 70,
+                                                      width: 65,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(8),
+                                                        color: clr,
+                                                      ),
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(12),
+                                                        child:
+                                                            Icon(FontAwesomeIcons.graduationCap, color: Colors.white),
+                                                      )),
+                                                  title: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        storedCourse[index].lable,
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        storedCourse[index].course,
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(12),
-                                                    child: Icon(FontAwesomeIcons.graduationCap, color: Colors.white),
-                                                  )),
-                                              title: Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    storedCourse[index].lable,
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    storedCourse[index].course,
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ],
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                        );
-                                      }));
+                                            );
+                                          }));
                         });
                       }),
                 ),

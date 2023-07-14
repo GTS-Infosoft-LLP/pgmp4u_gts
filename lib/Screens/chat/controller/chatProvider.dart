@@ -350,7 +350,6 @@ class ChatProvider extends ChangeNotifier {
       updateIsPagging(true);
     }
 
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     print(stringValue);
     http.Response response;
@@ -383,6 +382,11 @@ class ChatProvider extends ChangeNotifier {
         // only shows admin if i'm normal user
         print("isChatAdmin() in userList: ${isChatAdmin()} ");
         isChatAdmin() ? null : userListResponse.data.removeWhere((user) => user.isChatAdmin == 0);
+
+        /// if after filter data is less than 10 then call again
+        if (userListResponse.data.length < 10) {
+          getUserList(isFirstTime: false);
+        }
 
         updateGetUserListApiCalling(false);
         updateIsPagging(false);

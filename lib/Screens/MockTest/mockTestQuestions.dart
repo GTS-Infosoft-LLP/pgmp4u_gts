@@ -8,6 +8,7 @@ import 'dart:convert' as convert;
 
 import 'package:getwidget/getwidget.dart';
 import 'package:pgmp4u/Models/restartModel.dart';
+import 'package:pgmp4u/Screens/MockTest/mockTestResult.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
@@ -152,106 +153,106 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
   Future submitMockTest(data, stopTime) async {
     print("submitData====$submitData");
-    // updateIsContinue(0);
-    // print("*****************************");
-    // print("attemptNew==========$attemptNew");
-    // setState(() {
-    //   loader = true;
-    // });
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // String stringValue = prefs.getString('token');
-    // http.Response response;
+    updateIsContinue(0);
+    print("*****************************");
+    print("attemptNew==========$attemptNew");
+    setState(() {
+      loader = true;
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    http.Response response;
 
-    // // for(int i=0;i<submitData.length;i++){
-    // //   // print("submitData====${submitData[i]}");
-    // // }
-
-    // var params = json.encode({
-    //   "mock_test_id": selectedIdNew,
-    //   "attempt_type": attemptNew + 1,
-    //   "questons": submitData,
-    //   "start_date_time": stopTime
-    // });
-
-    // print("api body==========$params");
-
-    // response = await http
-    //     .post(
-    //   Uri.parse(SUBMIT_MOCK_TEST),
-    //   headers: {"Content-Type": "application/json", 'Authorization': stringValue},
-    //   body: params,
-    // )
-    //     .onError((error, stackTrace) {
-    //   print("ONERRROR: $error");
-    //   loader = false;
-    //   updateIsContinue(1);
-
-    //   return;
-    // });
-
-    // if (isContinue == 0) {
-    //   print("Url :=> $SUBMIT_MOCK_TEST");
-    //   print("request body  :=> $params");
-    //   print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
-
-    //   print("API Response => ${response.request.url}; $params; ${response.body}");
-    //   print("response.statusCode===========${response.statusCode}");
-    //   CourseProvider cp = Provider.of(context, listen: false);
-    //   if (response.statusCode == 200) {
-    //     cp.totalTime = 0;
-    //     HiveHandler.removeFromRestartBox(cp.selectedMockId.toString());
-    //     Map responseData = json.decode(response.body);
-    //     if (data == "back") {
-    //       Navigator.push(
-    //         context,
-    //         MaterialPageRoute(
-    //             builder: (context) => MockTestResult(
-    //                 resultsData: responseData["data"],
-    //                 mocktestId: selectedIdNew,
-    //                 attemptData: attemptNew,
-    //                 activeTime: stopTime,
-    //                 atmptCount: cp.selectedMokAtmptCnt)),
-    //       );
-
-    //       // Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (Route<dynamic> route) => false);
-    //     } else {
-    //       setState(() {
-    //         loader = false;
-    //       });
-
-    //       print(">>>>>>>>> review data $responseData");
-    //       print("widget.attempt==========${widget.attempt}");
-    //       Navigator.push(
-    //         context,
-    //         MaterialPageRoute(
-    //             builder: (context) => MockTestResult(
-    //                   resultsData: responseData["data"],
-    //                   mocktestId: selectedIdNew,
-    //                   attemptData: attemptNew,
-    //                   activeTime: stopTime,
-    //                   atmptCount: cp.selectedMokAtmptCnt,
-    //                 )),
-    //       );
-    //     }
-
-    //     GFToast.showToast(
-    //       'Mock test submitted successfully',
-    //       context,
-    //       toastPosition: GFToastPosition.BOTTOM,
-    //     );
-    //     print("success");
-    //   } else {
-    //     setState(() {
-    //       loader = false;
-    //     });
-    //     print(response.body);
-    //     GFToast.showToast(
-    //       "Something went wrong,please submit again",
-    //       context,
-    //       toastPosition: GFToastPosition.BOTTOM,
-    //     );
-    //   }
+    // for(int i=0;i<submitData.length;i++){
+    //   // print("submitData====${submitData[i]}");
     // }
+
+    var params = json.encode({
+      "mock_test_id": selectedIdNew,
+      "attempt_type": attemptNew + 1,
+      "questons": submitData,
+      "start_date_time": stopTime
+    });
+
+    print("api body==========$params");
+
+    response = await http
+        .post(
+      Uri.parse(SUBMIT_MOCK_TEST),
+      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+      body: params,
+    )
+        .onError((error, stackTrace) {
+      print("ONERRROR: $error");
+      loader = false;
+      updateIsContinue(1);
+
+      return;
+    });
+
+    if (isContinue == 0) {
+      print("Url :=> $SUBMIT_MOCK_TEST");
+      print("request body  :=> $params");
+      print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
+
+      print("API Response => ${response.request.url}; $params; ${response.body}");
+      print("response.statusCode===========${response.statusCode}");
+      CourseProvider cp = Provider.of(context, listen: false);
+      if (response.statusCode == 200) {
+        cp.totalTime = 0;
+        HiveHandler.removeFromRestartBox(cp.selectedMockId.toString());
+        Map responseData = json.decode(response.body);
+        if (data == "back") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MockTestResult(
+                    resultsData: responseData["data"],
+                    mocktestId: selectedIdNew,
+                    attemptData: attemptNew,
+                    activeTime: stopTime,
+                    atmptCount: cp.selectedMokAtmptCnt)),
+          );
+
+          // Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (Route<dynamic> route) => false);
+        } else {
+          setState(() {
+            loader = false;
+          });
+
+          print(">>>>>>>>> review data $responseData");
+          print("widget.attempt==========${widget.attempt}");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MockTestResult(
+                      resultsData: responseData["data"],
+                      mocktestId: selectedIdNew,
+                      attemptData: attemptNew,
+                      activeTime: stopTime,
+                      atmptCount: cp.selectedMokAtmptCnt,
+                    )),
+          );
+        }
+
+        GFToast.showToast(
+          'Mock test submitted successfully',
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+        print("success");
+      } else {
+        setState(() {
+          loader = false;
+        });
+        print(response.body);
+        GFToast.showToast(
+          "Something went wrong,please submit again",
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+      }
+    }
   }
 
   Future<bool> goBack() {
@@ -636,15 +637,17 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                 }
 
                                                 if (currentData != null) {
-                                                  // if(){}
-                                                  submitData.add({
-                                                    "question": currentData["question"],
-                                                    "answer": currentData["answer"],
-                                                    "correct": 0,
-                                                    "category": currentData["category"],
-                                                    "type": selectedAnswer.length > 2 ? 2 : 1
-                                                  });
-                                                  currentData = null;
+                                                  if (selectedAnswer.length ==
+                                                      mockQuestion[_quetionNo].questionDetail.rightAnswer.length) {
+                                                    submitData.add({
+                                                      "question": currentData["question"],
+                                                      "answer": currentData["answer"],
+                                                      "correct": 0,
+                                                      "category": currentData["category"],
+                                                      "type": selectedAnswer.length > 2 ? 2 : 1
+                                                    });
+                                                    currentData = null;
+                                                  }
                                                 }
                                                 selectedAnswer = [];
                                                 ids = [];
@@ -1007,14 +1010,17 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               }
 
                                               if (currentData != null) {
-                                                submitData.add({
-                                                  "question": currentData["question"],
-                                                  "answer": currentData["answer"],
-                                                  "correct": 0,
-                                                  "category": currentData["category"],
-                                                  "type": selectedAnswer.length > 2 ? 2 : 1
-                                                });
-                                                currentData = null;
+                                                if (selectedAnswer.length ==
+                                                    mockQuestion[_quetionNo].questionDetail.rightAnswer.length) {
+                                                  submitData.add({
+                                                    "question": currentData["question"],
+                                                    "answer": currentData["answer"],
+                                                    "correct": 0,
+                                                    "category": currentData["category"],
+                                                    "type": selectedAnswer.length > 2 ? 2 : 1
+                                                  });
+                                                  currentData = null;
+                                                }
                                               }
                                               selectedAnswer = [];
                                               ids = [];

@@ -33,7 +33,7 @@ class _UsersListState extends State<UsersList> {
   }
 
   void _scrollListener() {
-    // print("controller is listeningggggg......");
+    print("controller is listeningggggg......");
     if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
       print('_listener called');
       context.read<ChatProvider>().getUserListApiCalling
