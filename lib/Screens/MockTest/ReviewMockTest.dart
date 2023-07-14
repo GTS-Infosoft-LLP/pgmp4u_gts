@@ -38,6 +38,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
   List realAnswer;
   String stringResponse;
   List<Data> listResponse;
+  List<Data> listResponse1;
   ReviewMokeText mapResponse;
 
   List<int> yourAnswer;
@@ -82,23 +83,34 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
       print(convert.jsonDecode(response.body));
       Map res = convert.jsonDecode(response.body);
       print("res map==========>>>>>$res");
-      print(" res map=== res map data===${res["data"]}");
+      // print(" res map=== res map data===${res["data"]}");
 
       List data = res["data"];
       if (data.isEmpty) {
         setState(() {
           isData = 0;
-          print("isData=======$isData");
+          // print("isData=======$isData");
         });
       }
-      print("response.body==========${response.body.length}");
+      // print("response.body==========${response.body.length}");
       if (response.body.isEmpty) {
         listResponse = [];
       } else {
         if (data.isNotEmpty) {
+          listResponse = [];
           setState(() {
             mapResponse = ReviewMokeText.fromJson(convert.jsonDecode(response.body));
-            listResponse = mapResponse.data;
+            listResponse1 = mapResponse.data;
+            print("listResponse1 ====${listResponse1.length}");
+            for (int i = 0, j = 0; i < listResponse1.length; i++) {
+              if (listResponse1[i].question.rightAnswer.length == listResponse1[i].youranswer.length) {
+                print(" item added to list");
+                // listResponse[j] = listResponse1[i];
+                // j++;
+                listResponse.add(listResponse1[i]);
+              }
+            }
+            print("listResponse after length====${listResponse.length}");
             selectedAnswer = listResponse[0].youranswer;
           });
         }
@@ -135,10 +147,19 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
         listResponse = [];
       } else {
         if (data.isNotEmpty) {
+          listResponse = [];
           setState(() {
             mapResponse = ReviewMokeText.fromJson(convert.jsonDecode(response.body));
-            listResponse = mapResponse.data;
+            listResponse1 = mapResponse.data;
             selectedAnswer = listResponse[0].youranswer;
+            print("listResponse1 ====${listResponse1.length}");
+            for (int i = 0, j = 0; i < listResponse1.length; i++) {
+              if (listResponse1[i].question.rightAnswer.length == listResponse1[i].youranswer.length) {
+                print(" item added to list");
+                listResponse.add(listResponse1[i]);
+              }
+            }
+            print("listResponse length====${listResponse.length}");
           });
         }
       }

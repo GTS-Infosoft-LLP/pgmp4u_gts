@@ -687,7 +687,7 @@ class _ProfileState extends State<Profile> {
                                     DatePicker.showTimePicker(
                                       context,
                                       currentTime: DateTime.now(),
-                                    ).then((value) {
+                                    ).then((value) async {
                                       print("value=====>$value");
                                       ProfileProvider pp = Provider.of(context, listen: false);
                                       List lst = value.toString().split(".");
@@ -697,7 +697,8 @@ class _ProfileState extends State<Profile> {
                                       print("list=======$v1");
 
                                       studyTime = v1;
-                                      pp.setReminder(studyTime, "", cp.selectedCourseId, 1);
+                                    await pp.setReminder(studyTime, "", cp.selectedCourseId, 1);
+                                    
                                     });
                                     // Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
                                   },
@@ -717,7 +718,7 @@ class _ProfileState extends State<Profile> {
                                               color: _colorfromhex("#ABAFD1"),
                                             ),
                                             Text(
-                                              '   Set Study Time',
+                                              '  Set  Study Time',
                                               style: TextStyle(
                                                 fontFamily: 'Roboto Medium',
                                                 fontSize: width * (18 / 420),

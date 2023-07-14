@@ -189,16 +189,16 @@ class _PracticeNewState extends State<PracticeNew> {
                 pracTestProv.practiceApiLoader = false;
               }
 
-              print("=====PTList=======$PTList");
+              // print("=====PTList=======$PTList");
 
-              print("**************************************************");
+              // print("**************************************************");
               List<Options> op = [];
               if (PTList.isNotEmpty) {
                 pracTestProv.practiceApiLoader = false;
-                print("list is not emptyyyyy");
+                // print("list is not emptyyyyy");
                 op = PTList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
 
-                print("op======>>${op.length}");
+                // print("op======>>${op.length}");
               }
 
               return Consumer<PracticeTextProvider>(builder: (context, data, child) {

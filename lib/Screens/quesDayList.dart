@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/profileProvider.dart';
 import '../tool/ShapeClipper.dart';
 import 'QuesOfDay.dart';
 
@@ -101,19 +103,42 @@ class _QuesListCourseState extends State<QuesListCourse> {
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 12.0),
                               child: InkWell(
-                                onTap: () {
+                                onTap: () async {
                                   print("cousres id========>>>${courseProvider.course[index].id}");
+                                  ProfileProvider pp = Provider.of(context, listen: false);
 
                                   int courseId = courseProvider.course[index].id;
+                                  await pp.subscriptionStatus("Question");
 
-                                  Future.delayed(Duration(milliseconds: 600), () {
+                                  var chkStat = await pp.successValue;
+                                  print("chkStat====$chkStat");
+                                  if (chkStat == false) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => RandomPage(
+                                                  index: 5,
+                                                  categoryId: 0,
+                                                  price: pp.subsPrice.toString(),
+                                                  categoryType: "Question",
+                                                )));
+                                  } else {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => QuesOfDay(
                                                   seltedId: courseId,
                                                 )));
-                                  });
+                                  }
+
+                                  // Future.delayed(Duration(milliseconds: 600), () {
+                                  //   Navigator.push(
+                                  //       context,
+                                  //       MaterialPageRoute(
+                                  //           builder: (context) => QuesOfDay(
+                                  //                 seltedId: courseId,
+                                  //               )));
+                                  // });
                                   // Navigator.push(context, MaterialPageRoute(builder: (context)=>));
                                 },
                                 child: ListTile(
@@ -139,7 +164,7 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                         courseProvider.course[index].lable,
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Colors.grey,  
+                                          color: Colors.grey,
                                         ),
                                       ),
                                       Text(
