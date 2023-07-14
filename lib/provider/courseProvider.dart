@@ -254,7 +254,15 @@ class CourseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool isPPTLoading = false;
+
+  updateIsPPLoading(bool value) {
+    isPPTLoading = value;
+    notifyListeners();
+  }
+
   Future<void> getPptCategory(int id) async {
+    updateIsPPLoading(true);
     pptCategoryList = [];
     String stringValue = prefs.getString('token');
 
@@ -274,7 +282,8 @@ class CourseProvider extends ChangeNotifier {
       if (response.statusCode == 400) {
         print("statussssssss");
         pptCategoryList = [];
-        notifyListeners();
+        updateIsPPLoading(false);
+
         return;
       }
       if (response.statusCode == 200) {
@@ -292,9 +301,11 @@ class CourseProvider extends ChangeNotifier {
           pptCategoryList = temp1.map((e) => PPTCateDetails.fromjson(e)).toList();
           print("master list=========$pptCategoryList");
         }
+        updateIsPPLoading(false);
       }
-    } on Exception {}
-    notifyListeners();
+    } on Exception {
+      updateIsPPLoading(false);
+    }
   }
 
   Future<void> getMasterData(int id) async {
@@ -499,47 +510,49 @@ class CourseProvider extends ChangeNotifier {
     print("token valued===$stringValue");
     var request = {"id": id};
 
-    var response = await http.post(
-      Uri.parse(GET_VIDEO_CATEGORIES),
-      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
-      body: json.encode(request),
-    );
+    try {
+      var response = await http.post(
+        Uri.parse(GET_VIDEO_CATEGORIES),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
 
-    print(GET_VIDEO_CATEGORIES);
-    print("response====${response.body}");
-    var resp = response.body;
+      print(GET_VIDEO_CATEGORIES);
+      print("response====${response.body}");
+      var resp = response.body;
 
-    var resDDo = json.decode(response.body);
-    var resStatus = (resDDo["status"]);
-    videoPresent = 1;
-    if (resStatus == 400) {
-      updatevideoListApiCall(false);
-      videoPresent = 0;
-
-      notifyListeners();
-    }
-    print("videoPresent=======$videoPresent");
-
-    print("response.statusCode===${response.statusCode}");
-    if (response.statusCode == 200) {
-      updatevideoListApiCall(false);
-      videoCate.clear();
-      Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
-
-      List temp1 = mapResponse["data"];
-      print("temp list===$temp1");
-      videoCate = temp1.map((e) => VideoCateDetails.fromjson(e)).toList();
-
-      notifyListeners();
-
-      if (videoCate.isNotEmpty) {
-        print("videoCate 0=== ${videoCate[0].name}");
+      var resDDo = json.decode(response.body);
+      var resStatus = (resDDo["status"]);
+      videoPresent = 1;
+      if (resStatus == 400) {
+        updatevideoListApiCall(false);
+        videoPresent = 0;
       }
-    } else {
+      print("videoPresent=======$videoPresent");
+
+      print("response.statusCode===${response.statusCode}");
+      if (response.statusCode == 200) {
+        videoCate.clear();
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+
+        List temp1 = mapResponse["data"];
+        print("temp list===$temp1");
+        videoCate = temp1.map((e) => VideoCateDetails.fromjson(e)).toList();
+
+        updatevideoListApiCall(false);
+
+        if (videoCate.isNotEmpty) {
+          print("videoCate 0=== ${videoCate[0].name}");
+        }
+      } else {
+        updatevideoListApiCall(false);
+      }
+
+      print("respponse=== ${response.body}");
+    } on Exception {
+      // TODO
       updatevideoListApiCall(false);
     }
-
-    print("respponse=== ${response.body}");
   }
 
   List<CourseDetails> tempListCourse = [];
@@ -841,9 +854,16 @@ class CourseProvider extends ChangeNotifier {
   int firstTestDataMock = 0;
   int firstTestDataPractice = 0;
   List<TestDataDetails> testListTemp = [];
+  bool isMockTestLoading = false;
+
+  updateisMockTestLoading(bool value) {
+    isMockTestLoading = value;
+    notifyListeners();
+  }
 
   // for mock tests list
   Future<void> getTest(int id, String testType) async {
+    updateisMockTestLoading(true);
     print("id valueeee===========>>>>>>>>>>>$id");
 
     String stringValue = prefs.getString('token');
@@ -872,7 +892,7 @@ class CourseProvider extends ChangeNotifier {
           try {
             HiveHandler.addTestMpData(jsonEncode(mapResponse["data"]), id.toString());
 
-            Future.delayed(Duration(microseconds: 800), () {
+            Future.delayed(Duration(microseconds: 100), () {
               List<TestDataDetails> tempList = HiveHandler.getTestDataList(key: id.toString());
               testListTemp = HiveHandler.getTestDataList(key: id.toString());
               print("*************************************************");
@@ -892,8 +912,12 @@ class CourseProvider extends ChangeNotifier {
           testData = [];
           notifyListeners();
         }
-      } else {}
+        updateisMockTestLoading(false);
+      } else {
+        updateisMockTestLoading(false);
+      }
     } on Exception {
+      updateisMockTestLoading(false);
       // TODO
     }
   }

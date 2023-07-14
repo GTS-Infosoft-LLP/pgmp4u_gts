@@ -36,7 +36,7 @@ class _MockTestState extends State<MockTest> {
   Map mapResponse;
   CategoryProvider categoryProvider;
 
-  List<TestDataDetails> tempList = [];
+  // List<TestDataDetails> tempList = [];
   var sucval;
 
   @override
@@ -48,12 +48,12 @@ class _MockTestState extends State<MockTest> {
     CourseProvider cp = Provider.of(context, listen: false);
     cp.changeonTap(0);
 
-    if (tempList.isEmpty) {
-      tempList = HiveHandler.getTestDataList(key: cp.selectedMasterId.toString());
-      print("*************************************************");
+    // if (tempList.isEmpty) {
+    //   tempList = HiveHandler.getTestDataList(key: cp.selectedMasterId.toString());
+    //   print("*************************************************");
 
-      print("tempList==========$tempList");
-    }
+    //   print("tempList==========$tempList");
+    // }
 
     print("widget name====>${widget.testName}");
 
@@ -149,214 +149,226 @@ class _MockTestState extends State<MockTest> {
                   ],
                 );
               }),
+
               Consumer<CourseProvider>(builder: (context, cp, child) {
                 return Container(
                   // color: Colors.amber,
-                  child: SingleChildScrollView(
-                    child: Container(
-                      margin: EdgeInsets.only(left: width * (18 / 420), right: width * (18 / 420)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(bottom: height * (22 / 800)),
-                            child: Text(
-                              '${widget.testName}',
-                              style: TextStyle(
-                                fontFamily: 'Roboto Bold',
-                                fontSize: width * (18 / 420),
-                                color: Colors.black,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 0.3,
-                              ),
-                            ),
-                          ),
-                          ValueListenableBuilder<Box<String>>(
-                              valueListenable: HiveHandler.getTestDataListener(),
-                              builder: (context, value, child) {
-                                String selectedMasterId = context.watch<CourseProvider>().selectedMasterId.toString();
-                                List<TestDataDetails> storedTestData = [];
-                                if (value.containsKey(selectedMasterId)) {
-                                  List testDataList = jsonDecode(value.get(selectedMasterId));
-                                  // print(">>> testDataList :  $testDataList");
-                                  storedTestData = testDataList.map((e) => TestDataDetails.fromjson(e)).toList();
-                                } else {
-                                  storedTestData = [];
-                                }
 
-                                // print("storedMaster========================$storedTestData");
+                  child: cp.isMockTestLoading
+                      ? Expanded(
+                          child: Center(child: CircularProgressIndicator.adaptive()),
+                        )
+                      : SingleChildScrollView(
+                          child: Container(
+                            margin: EdgeInsets.only(left: width * (18 / 420), right: width * (18 / 420)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(bottom: height * (22 / 800)),
+                                  child: Text(
+                                    '${widget.testName}',
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto Bold',
+                                      fontSize: width * (18 / 420),
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 0.3,
+                                    ),
+                                  ),
+                                ),
+                                ValueListenableBuilder<Box<String>>(
+                                    valueListenable: HiveHandler.getTestDataListener(),
+                                    builder: (context, value, child) {
+                                      String selectedMasterId =
+                                          context.watch<CourseProvider>().selectedMasterId.toString();
+                                      List<TestDataDetails> storedTestData = [];
+                                      if (value.containsKey(selectedMasterId)) {
+                                        List testDataList = jsonDecode(value.get(selectedMasterId));
+                                        // print(">>> testDataList :  $testDataList");
+                                        storedTestData = testDataList.map((e) => TestDataDetails.fromjson(e)).toList();
+                                      } else {
+                                        storedTestData = [];
+                                      }
 
-                                if (storedTestData == null) {
-                                  storedTestData = [];
-                                }
+                                      // print("storedMaster========================$storedTestData");
 
-                                return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
-                                  return storedTestData.isEmpty
-                                      ? Container(
-                                          height: 200,
-                                          child: Center(
-                                              child: Text(
-                                            "No Data Found",
-                                            style: TextStyle(fontSize: 14),
-                                          )))
-                                      : Container(
-                                          // color: Colors.amber,
-                                          height: MediaQuery.of(context).size.height * .65,
-                                          child: ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: storedTestData.length,
-                                              itemBuilder: (context, index) {
-                                                // print("storedTestData.length,=========${storedTestData.length}");
+                                      if (storedTestData == null) {
+                                        storedTestData = [];
+                                      }
 
-                                                // print("${storedTestData[index].premium}");
-                                                return InkWell(
-                                                  onTap: () async {
-                                                    courseProvider.setSelectedTestName(storedTestData[index].test_name);
-                                                    await courseProvider.getTestDetails(storedTestData[index].id);
-                                                    PracticeTextProvider pracTestProvi =
-                                                        Provider.of(context, listen: false);
+                                      return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
+                                        return storedTestData.isEmpty
+                                            ? Container(
+                                                height: 200,
+                                                child: Center(
+                                                    child: Text(
+                                                  "No Data Found",
+                                                  style: TextStyle(fontSize: 14),
+                                                )))
+                                            : Container(
+                                                // color: Colors.amber,
+                                                height: MediaQuery.of(context).size.height * .65,
+                                                child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    itemCount: storedTestData.length,
+                                                    itemBuilder: (context, index) {
+                                                      // print("storedTestData.length,=========${storedTestData.length}");
 
-                                                    pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
-                                                    if (widget.testType == "Practice Test") {
-                                                      PracticeTextProvider pracTestProvi =
-                                                          Provider.of(context, listen: false);
+                                                      // print("${storedTestData[index].premium}");
+                                                      return InkWell(
+                                                        onTap: () async {
+                                                          courseProvider
+                                                              .setSelectedTestName(storedTestData[index].test_name);
+                                                          await courseProvider.getTestDetails(storedTestData[index].id);
+                                                          PracticeTextProvider pracTestProvi =
+                                                              Provider.of(context, listen: false);
 
-                                                      // pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
+                                                          pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
+                                                          if (widget.testType == "Practice Test") {
+                                                            PracticeTextProvider pracTestProvi =
+                                                                Provider.of(context, listen: false);
 
-                                                      Future.delayed(const Duration(milliseconds: 0), () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) => PracticeNew(
-                                                                      pracTestName: storedTestData[index].test_name,
-                                                                      selectedId: storedTestData[index].id,
-                                                                    )));
+                                                            // pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
 
-                                                        //PracticeNew
-                                                      });
-                                                    } else {
-                                                      CourseProvider cp = Provider.of(context, listen: false);
-                                                      cp.setSelectedMockId(storedTestData[index].id);
-                                                      sucval = await cp.valOfSuccess;
-                                                      print("sucvalsakdka=======$sucval");
-                                                      if (sucval == false) {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) => RandomPage(
-                                                                    index: 3,
-                                                                    categoryId: storedTestData[index].id,
-                                                                    price: storedTestData[index].price)));
-                                                      } else {
-                                                        print(
-                                                            "testData[index].id===========${storedTestData[index].id}");
-                                                        if (widget.testType == "Mock Test") {
-                                                          courseProvider.setMockTestPercentId(storedTestData[index].id);
+                                                            Future.delayed(const Duration(milliseconds: 0), () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) => PracticeNew(
+                                                                            pracTestName:
+                                                                                storedTestData[index].test_name,
+                                                                            selectedId: storedTestData[index].id,
+                                                                          )));
 
-                                                          // courseProvider.getTestDetails(storedTestData[index].id);
+                                                              //PracticeNew
+                                                            });
+                                                          } else {
+                                                            CourseProvider cp = Provider.of(context, listen: false);
+                                                            cp.setSelectedMockId(storedTestData[index].id);
+                                                            sucval = await cp.valOfSuccess;
+                                                            print("sucvalsakdka=======$sucval");
+                                                            if (sucval == false) {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) => RandomPage(
+                                                                          index: 3,
+                                                                          categoryId: storedTestData[index].id,
+                                                                          price: storedTestData[index].price)));
+                                                            } else {
+                                                              print(
+                                                                  "testData[index].id===========${storedTestData[index].id}");
+                                                              if (widget.testType == "Mock Test") {
+                                                                courseProvider
+                                                                    .setMockTestPercentId(storedTestData[index].id);
 
-                                                          Future.delayed(Duration(milliseconds: 500), () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => TextPreDetail()));
-                                                          });
-                                                        }
-                                                      }
-                                                    }
-                                                  },
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                                    child: Container(
-                                                      padding: EdgeInsets.only(
-                                                        top: 12,
-                                                        bottom: 6,
-                                                        // left: width * (14 / 320),
-                                                        right: width * (14 / 320),
-                                                      ),
-                                                      decoration: const BoxDecoration(
-                                                          border: Border(
-                                                              bottom: BorderSide(
-                                                                  width: 1,
-                                                                  color: Color.fromARGB(255, 219, 211, 211)))),
-                                                      // color: Colors.green,
+                                                                // courseProvider.getTestDetails(storedTestData[index].id);
 
-                                                      child: Row(children: [
-                                                        Container(
-                                                          width: 60,
-                                                          height: 60,
-                                                          padding: EdgeInsets.all(17),
-                                                          decoration: BoxDecoration(
-                                                              //  index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                                              color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                                              //  _colorfromhex("#72A258"),
-                                                              borderRadius: BorderRadius.circular(10)),
+                                                                Future.delayed(Duration(milliseconds: 500), () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => TextPreDetail()));
+                                                                });
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                                           child: Container(
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.white,
-                                                              borderRadius: BorderRadius.circular(100),
+                                                            padding: EdgeInsets.only(
+                                                              top: 12,
+                                                              bottom: 6,
+                                                              // left: width * (14 / 320),
+                                                              right: width * (14 / 320),
                                                             ),
-                                                            child: Center(
-                                                              child: Text('${index + 1}'),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          margin: EdgeInsets.only(left: width * (17 / 420)),
-                                                          child: Column(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
+                                                            decoration: const BoxDecoration(
+                                                                border: Border(
+                                                                    bottom: BorderSide(
+                                                                        width: 1,
+                                                                        color: Color.fromARGB(255, 219, 211, 211)))),
+                                                            // color: Colors.green,
+
+                                                            child: Row(children: [
                                                               Container(
-                                                                width: MediaQuery.of(context).size.width * .45,
-                                                                child: Text(
-                                                                  storedTestData[index].test_name,
-                                                                  style: TextStyle(
-                                                                    fontFamily: 'Roboto Medium',
-                                                                    fontWeight: FontWeight.w600,
-                                                                    fontSize: width * (17 / 420),
-                                                                    color: _colorfromhex("171726"),
-                                                                    letterSpacing: 0.3,
+                                                                width: 60,
+                                                                height: 60,
+                                                                padding: EdgeInsets.all(17),
+                                                                decoration: BoxDecoration(
+                                                                    //  index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                                                                    color: index % 2 == 0
+                                                                        ? AppColor.purpule
+                                                                        : AppColor.green,
+                                                                    //  _colorfromhex("#72A258"),
+                                                                    borderRadius: BorderRadius.circular(10)),
+                                                                child: Container(
+                                                                  decoration: BoxDecoration(
+                                                                    color: Colors.white,
+                                                                    borderRadius: BorderRadius.circular(100),
+                                                                  ),
+                                                                  child: Center(
+                                                                    child: Text('${index + 1}'),
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ],
+                                                              Container(
+                                                                margin: EdgeInsets.only(left: width * (17 / 420)),
+                                                                child: Column(
+                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  children: [
+                                                                    Container(
+                                                                      width: MediaQuery.of(context).size.width * .45,
+                                                                      child: Text(
+                                                                        storedTestData[index].test_name,
+                                                                        style: TextStyle(
+                                                                          fontFamily: 'Roboto Medium',
+                                                                          fontWeight: FontWeight.w600,
+                                                                          fontSize: width * (17 / 420),
+                                                                          color: _colorfromhex("171726"),
+                                                                          letterSpacing: 0.3,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              new Spacer(),
+                                                              Column(
+                                                                children: [
+                                                                  storedTestData[index].premium == 1
+                                                                      ? Text("Premium")
+                                                                      : Text(""),
+                                                                  Container(
+                                                                    child: Icon(
+                                                                      Icons.east,
+                                                                      size: 30,
+                                                                      color: _colorfromhex("#ABAFD1"),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              )
+                                                            ]),
                                                           ),
                                                         ),
-                                                        new Spacer(),
-                                                        Column(
-                                                          children: [
-                                                            storedTestData[index].premium == 1
-                                                                ? Text("Premium")
-                                                                : Text(""),
-                                                            Container(
-                                                              child: Icon(
-                                                                Icons.east,
-                                                                size: 30,
-                                                                color: _colorfromhex("#ABAFD1"),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        )
-                                                      ]),
-                                                    ),
-                                                  ),
-                                                );
-                                              }),
-                                        );
-                                });
-                              }),
-                          SizedBox(
-                            height: 15,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                                                      );
+                                                    }),
+                                              );
+                                      });
+                                    }),
+                                SizedBox(
+                                  height: 15,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                 );
               })
 

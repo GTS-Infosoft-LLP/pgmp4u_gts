@@ -204,7 +204,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 if (page == "PPT") {
                                                                   courseProvider.getPptCategory(storedMaster[index].id);
 
-                                                                  Future.delayed(Duration(milliseconds: 4), () {
+                                                                  Future.delayed(Duration(milliseconds: 0), () {
                                                                     Navigator.push(
                                                                         context,
                                                                         MaterialPageRoute(
@@ -216,19 +216,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 if (page == "Videos") {
                                                                   courseProvider.getVideoCate(storedMaster[index].id);
 
-                                                                  Future.delayed(Duration(milliseconds: 4), () {
-                                                                    Navigator.push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                            builder: (context) => VideoLibraryPage(
-                                                                                title: storedMaster[index].name)));
-                                                                  });
-                                                                }
-
-                                                                if (page == "Videos") {
-                                                                  courseProvider.getVideoCate(storedMaster[index].id);
-
-                                                                  Future.delayed(Duration(milliseconds: 4), () {
+                                                                  Future.delayed(Duration(milliseconds: 0), () {
                                                                     Navigator.push(
                                                                         context,
                                                                         MaterialPageRoute(
@@ -248,7 +236,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 if (page == "Flash Cards") {
                                                                   courseProvider.getFlashCate(storedMaster[index].id);
 
-                                                                  Future.delayed(Duration(milliseconds: 4), () {
+                                                                  Future.delayed(Duration(milliseconds: 0), () {
                                                                     Navigator.push(
                                                                         context,
                                                                         MaterialPageRoute(
@@ -262,7 +250,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                   courseProvider.getTest(
                                                                       storedMaster[index].id, "Mock Test");
 
-                                                                  Future.delayed(Duration(milliseconds: 700), () {
+                                                                  Future.delayed(Duration.zero, () {
                                                                     Navigator.push(
                                                                         context,
                                                                         MaterialPageRoute(
@@ -277,8 +265,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                   courseProvider.getTest(
                                                                       storedMaster[index].id, "Practice Test");
 
-                                                                  Future.delayed(const Duration(milliseconds: 7),
-                                                                      () async {
+                                                                  Future.delayed(Duration.zero, () async {
                                                                     Navigator.push(
                                                                         context,
                                                                         MaterialPageRoute(

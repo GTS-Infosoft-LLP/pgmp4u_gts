@@ -142,8 +142,11 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                         Consumer<CourseProvider>(builder: (context, courseProvider, child) {
                           return courseProvider.videoPresent == 1
                               ? courseProvider.videoListApiCall
-                                  ? Center(
-                                      child: CircularProgressIndicator.adaptive(),
+                                  ? Container(
+                                      height: MediaQuery.of(context).size.height * .60,
+                                      child: Center(
+                                        child: CircularProgressIndicator.adaptive(),
+                                      ),
                                     )
                                   : Container(
                                       height: MediaQuery.of(context).size.height * .70,

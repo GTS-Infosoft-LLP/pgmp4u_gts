@@ -61,56 +61,61 @@ class _FlashCardItemState extends State<FlashCardItem> {
               padding: const EdgeInsets.all(0),
               child: Container(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                Stack(children: <Widget>[
-                  ClipPath(
-                    clipper: ShapeClipper(),
-                    child: Container(
-                      height: 150,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                Stack(
+                  children: <Widget>[
+                    ClipPath(
+                      clipper: ShapeClipper(),
+                      child: Container(
+                        height: 150,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                        ),
                       ),
                     ),
-                  ),
-                  Consumer<CourseProvider>(builder: (context, cp, child) {
-                    return Container(
-                      padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.transparent,
-                                  border: Border.all(color: Colors.white, width: 1)),
-                              child: Center(
-                                  child: IconButton(
-                                      icon: Icon(Icons.arrow_back, color: Colors.white),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      }))),
-                          SizedBox(width: 20),
-                          Center(
-                              child: Container(
-                            // color: Colors.amber,
-                            width: MediaQuery.of(context).size.width * .65,
-                            child: Text(
-                              cp.selectedCourseName,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
-                            ),
-                          )),
-                        ],
-                      ),
-                    );
-                  }),
-                ]),
+                    Consumer<CourseProvider>(builder: (context, cp, child) {
+                      return Container(
+                        padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.transparent,
+                                    border: Border.all(color: Colors.white, width: 1)),
+                                child: Center(
+                                    child: IconButton(
+                                        icon: Icon(Icons.arrow_back, color: Colors.white),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        }))),
+                            SizedBox(width: 20),
+                            Center(
+                                child: Container(
+                              // color: Colors.amber,
+                              width: MediaQuery.of(context).size.width * .65,
+                              child: Text(
+                                cp.selectedCourseName,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    color: Colors.white,
+                                    fontFamily: "Roboto",
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )),
+                          ],
+                        ),
+                      );
+                    }),
+                  ],
+                ),
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -148,8 +153,11 @@ class _FlashCardItemState extends State<FlashCardItem> {
 
                         return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
                           return courseProvider.flashCateDataApiCall
-                              ? Center(
-                                  child: CircularProgressIndicator.adaptive(),
+                              ? Container(
+                                  height: MediaQuery.of(context).size.height * .6,
+                                  child: Center(
+                                    child: CircularProgressIndicator.adaptive(),
+                                  ),
                                 )
                               : storedFlashCate.length == 0
                                   ? Container(
