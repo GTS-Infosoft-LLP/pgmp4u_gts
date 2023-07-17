@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../provider/courseProvider.dart';
 import '../../tool/ShapeClipper.dart';
+import 'domainQuestion.dart';
 
 class TaskDetail extends StatefulWidget {
   const TaskDetail({Key key}) : super(key: key);
@@ -13,6 +14,23 @@ class TaskDetail extends StatefulWidget {
 
 class _TaskDetailState extends State<TaskDetail> {
   @override
+  var currentIndex;
+  var colorIndex;
+  PageController pageController;
+  void initState() {
+    colorIndex = 0;
+    pageController = PageController();
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
+  }
+
   Widget build(BuildContext context) {
     Color _colorfromhex(String hexColor) {
       final hexCode = hexColor.replaceAll('#', '');
@@ -20,6 +38,47 @@ class _TaskDetailState extends State<TaskDetail> {
     }
 
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DomainQuestions()));
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 15.0),
+          child: Container(
+            width: MediaQuery.of(context).size.width * .9,
+            height: 50,
+            decoration: BoxDecoration(
+              // borderRadius: BorderRadius.only(bottomRight: Radius.circular(14.0)),
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              gradient: LinearGradient(
+                  colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
+                  begin: const FractionalOffset(0.0, 0.0),
+                  end: const FractionalOffset(1.0, 0.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp),
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Next",
+                    style: TextStyle(color: Colors.white, fontFamily: 'Roboto Medium', fontSize: 18),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Icon(
+                    Icons.east,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +126,10 @@ class _TaskDetailState extends State<TaskDetail> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
+                              fontSize: 22,
+                              color: Colors.white,
+                              fontFamily: "Roboto Regular",
+                              fontWeight: FontWeight.bold),
                         ),
                       )),
                     ],
@@ -78,31 +140,143 @@ class _TaskDetailState extends State<TaskDetail> {
             SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.only(left: 18.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Details 1/10",
-                    // cp.pptCategoryList[index].name,
-                    maxLines: 2,
-                    style: TextStyle(
-                      fontFamily: 'Roboto Regular',
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Task",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
+              child: Text(
+                "Details " + "${colorIndex + 1}" + "/5",
+                // cp.pptCategoryList[index].name,
+                maxLines: 2,
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
+            Consumer<CourseProvider>(builder: (context, cp, child) {
+              return Container(
+                  height: MediaQuery.of(context).size.height * .7,
+                  // width: MediaQuery.of(context).size.width * .9,
+                  // color: Colors.blue,
+                  child: Stack(
+                    children: [
+                      PageView.builder(
+                          itemCount: 5,
+                          onPageChanged: (index) {
+                            print("index valuee====$index");
+                            setState(() {
+                              colorIndex = index;
+                            });
+                          },
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 15.0, top: 20),
+                              child: Container(
+                                height: 100,
+                                // width: 100,
+                                // color: Colors.amber,
+                                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "Task",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "Develop a Project Charater",
+                                    style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black,
+                                        fontFamily: "Roboto Regular"),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    "Discription",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 12.0),
+                                    child: Container(
+                                      height: MediaQuery.of(context).size.height * .54,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4.0, right: 7),
+                                        child: SingleChildScrollView(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(bottom: 8.0),
+                                            child: Text(
+                                              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+                                              style: TextStyle(
+                                                fontSize: 24,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ]),
+                              ),
+                            );
+                          }),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Container(
+                          // color: Colors.black12,
+
+                          child: Row(
+                              children: List.generate(5, (index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                                    gradient: index <= colorIndex
+                                        ? LinearGradient(
+                                            colors: [
+                                              _colorfromhex("#3A47AD"),
+                                              _colorfromhex("#5163F3"),
+                                            ],
+                                            begin: const FractionalOffset(0.0, 0.0),
+                                            end: const FractionalOffset(1.0, 0.0),
+                                            stops: [0.0, 1.0],
+                                            tileMode: TileMode.clamp)
+                                        : LinearGradient(
+                                            colors: [
+                                              Colors.grey,
+                                              Colors.grey,
+                                            ],
+                                          )),
+                                height: 10,
+                                width: MediaQuery.of(context).size.width * .1,
+                                // color: Colors.black,
+                              ),
+                            );
+                          })),
+                        ),
+                      )
+                    ],
+                  ));
+            }),
+            SizedBox(
+              height: 10,
+            )
           ],
         ),
       ),
