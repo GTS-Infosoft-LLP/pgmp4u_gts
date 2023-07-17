@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
+import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
-import '../../provider/courseProvider.dart';
-import '../../tool/ShapeClipper.dart';
+
 import 'domainQuestion.dart';
 
 class TaskDetail extends StatefulWidget {

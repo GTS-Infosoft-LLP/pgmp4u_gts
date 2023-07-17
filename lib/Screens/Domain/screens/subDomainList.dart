@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pgmp4u/Screens/domains/tasksList.dart';
+import 'package:pgmp4u/Screens/Domain/screens/tasksList.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
+import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
-
-import '../../provider/courseProvider.dart';
-import '../../tool/ShapeClipper.dart';
 
 class SubDomain extends StatefulWidget {
   const SubDomain({Key key}) : super(key: key);
@@ -90,7 +89,7 @@ class _SubDomainState extends State<SubDomain> {
                 // cp.pptCategoryList[index].name,
                 maxLines: 2,
                 style: TextStyle(
-                  fontFamily: 'Roboto Regular',  
+                  fontFamily: 'Roboto Regular',
                   fontSize: 18,
                   color: Colors.black,
                 ),

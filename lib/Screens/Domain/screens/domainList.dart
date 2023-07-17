@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pgmp4u/Screens/domains/subDomainList.dart';
+import 'package:pgmp4u/Screens/Domain/screens/subDomainList.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
+import 'package:pgmp4u/tool/ShapeClipper.dart';
+
 import 'package:provider/provider.dart';
 
-import '../../provider/courseProvider.dart';
-import '../../tool/ShapeClipper.dart';
+
 
 class DomainList extends StatefulWidget {
   const DomainList({Key key}) : super(key: key);

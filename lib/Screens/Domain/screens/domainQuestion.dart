@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:provider/provider.dart';
 
-import '../../provider/courseProvider.dart';
+
 
 class DomainQuestions extends StatefulWidget {
   const DomainQuestions({Key key}) : super(key: key);

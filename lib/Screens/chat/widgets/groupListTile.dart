@@ -126,6 +126,18 @@ class GroupListTile extends StatelessWidget {
         : null;
   }
 
+  getString(int value) {
+    if (value >= 10000000) {
+      return "${(value / 10000000)}" + " C";
+    } else if (value >= 100000) {
+      return "${(value / 100000)}" + " L";
+    } else if (value >= 1000) {
+      return "${(value / 1000)}" + " k";
+    } else {
+      return value.toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     DateTime time = DateTime.fromMillisecondsSinceEpoch(int.tryParse(group.createdAt));
@@ -163,15 +175,18 @@ class GroupListTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  radius: 12,
+                  radius: 14,
                   // backgroundColor: color,
                   backgroundColor: newColor,
                   child: Text(
-                    (index + 1).toString(),
+                    getString(index + 1).toString(),
+                    overflow: TextOverflow.clip,
+                    maxLines: 1,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       // color: Colors.white,
                       color: newTextColor,
+                      fontSize: 10,
                     ),
                   ),
                 ),
