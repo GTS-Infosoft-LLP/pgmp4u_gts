@@ -45,6 +45,8 @@ class _UsersListState extends State<UsersList> {
   @override
   void dispose() {
     // _chatProvider.resetPagination();
+    scrollController.removeListener(() {});
+    scrollController.dispose();
     super.dispose();
   }
 
