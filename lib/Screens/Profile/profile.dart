@@ -54,17 +54,21 @@ class _ProfileState extends State<Profile> {
 
   String examDate;
   String studyTime;
-
+  bool isSwitched = false;
+  var Switchcontroller = ValueNotifier<bool>(false);
   @override
   void initState() {
+    Switchcontroller.value = false;
+
     super.initState();
     CourseProvider cp = Provider.of(context, listen: false);
     ProfileProvider pp = Provider.of(context, listen: false);
+    checkNotificationStatus();
     if (cp.course.isNotEmpty) {
       print("cp.course[0].id===========${cp.course[0].id}");
       cp.setSelectedCourseId(cp.course[0].id);
       cp.setSelectedCourseName(cp.course[0].lable);
-      pp.getReminder(cp.course[0].id);
+      // pp.getReminder(cp.course[0].id);
     }
 
     _razorpay = Razorpay();
@@ -105,6 +109,17 @@ class _ProfileState extends State<Profile> {
       _razorpay.open(options);
     } catch (e) {
       debugPrint('Error: e');
+    }
+  }
+
+  checkNotificationStatus() async {
+    ProfileProvider pp = Provider.of(context, listen: false);
+    CourseProvider cp = Provider.of(context, listen: false);
+    await pp.getReminder(cp.course[0].id);
+    if (pp.notiValue == 0) {
+      isSwitched = false;
+    } else {
+      isSwitched = true;
     }
   }
 
@@ -644,46 +659,34 @@ class _ProfileState extends State<Profile> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                // GestureDetector(
-                                //   onTap: () {
-                                //     Navigator.push(context, MaterialPageRoute(builder: (context) => PdfList()));
-                                //     //Navigator.of(context)
-                                //     //   .pushNamed('/settings');
-                                //   },
-                                //   child: Container(
-                                //     margin: EdgeInsets.only(bottom: 6),
-                                //     padding: EdgeInsets.only(
-                                //         top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                                //     color: Colors.white,
-                                //     child: Row(
-                                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Row(
-                                //           children: [
-                                //             Icon(
-                                //               Icons.picture_as_pdf,
-                                //               size: width * (26 / 420),
-                                //               color: _colorfromhex("#ABAFD1"),
-                                //             ),
-                                //             Text(
-                                //               '   Pdf',
-                                //               style: TextStyle(
-                                //                 fontFamily: 'Roboto Medium',
-                                //                 fontSize: width * (18 / 420),
-                                //                 color: Colors.black,
-                                //               ),
-                                //             ),
-                                //           ],
-                                //         ),
-                                //         Icon(
-                                //           Icons.arrow_forward_ios,
-                                //           size: 20,
-                                //           color: _colorfromhex("#ABAFD1"),
-                                //         ),
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      'Notifications',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto Medium',
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Switch(
+                                      onChanged: (val) {
+                                        print("object val===$val");
+                                        setState(() {
+                                          isSwitched = val;
+                                          showNotifyOnOffPopup(val);
+                                        });
+                                      },
+                                      value: isSwitched,
+                                      activeColor: AppColor.green,
+                                      activeTrackColor: _colorfromhex("#3A47AD"),
+                                      inactiveThumbColor: AppColor.purpule,
+                                      inactiveTrackColor: Color.fromARGB(255, 197, 181, 181),
+                                    ),
+                                  ],
+                                ),
 
                                 Consumer<ProfileProvider>(builder: (context, pp, child) {
                                   return GestureDetector(
@@ -1093,6 +1096,137 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  void showNotifyOnOffPopup(bool val) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => AlertDialog(
+              elevation: 20,
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0)),
+              ),
+              title:
+                  Text(!val ? "Are you sure you want to disable notifications?" : "notifications enabled successfully",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Roboto Medium',
+                        fontWeight: FontWeight.w200,
+                        color: Colors.black,
+                      )),
+              actions: [
+                !val
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                                setState(() {
+                                  isSwitched = true;
+                                });
+                              },
+                              child: Container(
+                                  height: 35,
+                                  width: MediaQuery.of(context).size.width * .15,
+                                  // constraints: BoxConstraints(minWidth: 100),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                                      gradient: LinearGradient(
+                                          colors: [
+                                            _colorfromhex("#3A47AD"),
+                                            _colorfromhex("#5163F3"),
+                                          ],
+                                          begin: const FractionalOffset(0.0, 0.0),
+                                          end: const FractionalOffset(1.0, 0.0),
+                                          stops: [0.0, 1.0],
+                                          tileMode: TileMode.clamp)),
+                                  child: Center(
+                                    child: Text(
+                                      "No",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ))),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              ProfileProvider pp = Provider.of(context, listen: false);
+                              pp.updateNotification();
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              height: 35,
+                              width: MediaQuery.of(context).size.width * .15,
+                              // constraints: BoxConstraints(minWidth: 100),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                                  gradient: LinearGradient(
+                                      colors: [
+                                        _colorfromhex("#3A47AD"),
+                                        _colorfromhex("#5163F3"),
+                                      ],
+                                      begin: const FractionalOffset(0.0, 0.0),
+                                      end: const FractionalOffset(1.0, 0.0),
+                                      stops: [0.0, 1.0],
+                                      tileMode: TileMode.clamp)),
+                              child: Center(
+                                child: Text(
+                                  "Yes",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          )
+                        ],
+                      )
+                    : InkWell(
+                        onTap: () {
+                          ProfileProvider pp = Provider.of(context, listen: false);
+                          pp.updateNotification();
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          height: 35,
+                          width: MediaQuery.of(context).size.width * .75,
+                          // constraints: BoxConstraints(minWidth: 100),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              gradient: LinearGradient(
+                                  colors: [
+                                    _colorfromhex("#3A47AD"),
+                                    _colorfromhex("#5163F3"),
+                                  ],
+                                  begin: const FractionalOffset(0.0, 0.0),
+                                  end: const FractionalOffset(1.0, 0.0),
+                                  stops: [0.0, 1.0],
+                                  tileMode: TileMode.clamp)),
+                          child: Center(
+                            child: Text(
+                              "Dismiss",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+              ],
+            ));
+  }
+
   void showDeletePopup() {
     showDialog(
         context: context,
@@ -1101,7 +1235,6 @@ class _ProfileState extends State<Profile> {
               backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                // side: BorderSide(color: _colorfromhex("#3A47AD"), width: 0)
               ),
               title: Column(
                 children: [

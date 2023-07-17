@@ -16,9 +16,9 @@ const _BASE_URL = "https://apivcarestage.vcareprojectmanagement.com/api/v2/";
 // const _BASE_URL2 = "http://18.119.55.81:1011/api/";
 //const TEMP_URL = "http://18.119.55.81:3003/api/";
 
-// const TEMP_URL = _BASE_URL;
+// const TEMP_URL = _BASE_URL;    
 // const TEMP_URL = "http://3.227.35.115:1011/api/";
-
+const UPDATE_NOTIFICATION = _BASE_URL + "updateNotification";
 const IN_APP_PURCHASE = _BASE_URL + "InAppPurchasePayment";
 const GMAIL_REGISTER = _BASE_URL + "GmailRegister";
 const GMAIL_LOGIN = _BASE_URL + "GmailLogin";

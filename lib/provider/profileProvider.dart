@@ -251,6 +251,9 @@ class ProfileProvider extends ChangeNotifier {
           studyTime = resDDo['data']['studyReminder'].split(" ")[1];
         }
 
+        notiValue = resDDo['data']['notification'];
+        print("notiValue*****=====>>>$notiValue");
+
         isStudyRemAdded = resDDo['data']['isStudyReminderAdded'];
         notifyListeners();
       } else {
@@ -390,6 +393,32 @@ class ProfileProvider extends ChangeNotifier {
       // print(convert.jsonDecode(response.body));
 
       notifyListeners();
+    }
+  }
+
+  int notiValue;
+  Future<void> updateNotification() async {
+    updateLoader(true);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    print("token valued===$stringValue");
+    try {
+      var response = await http.get(
+        Uri.parse(UPDATE_NOTIFICATION),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+      );
+
+      if (response.statusCode == 200) {
+        print("response===>>${response.body}");
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+
+        updateLoader(false);
+      } else {
+        updateLoader(false);
+      }
+    } catch (e) {
+      updateLoader(false);
+      print("errrorororr====$e");
     }
   }
 
