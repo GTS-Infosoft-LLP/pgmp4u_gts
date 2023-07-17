@@ -242,7 +242,7 @@ class FirebaseChatHandler {
 
   /// delete message in singel chat
   static deleteMessageInSingleChat(String groupId, ChatModel chatModel) async {
-     bool isDone = await userChatCollectionRef
+    bool isDone = await userChatCollectionRef
         .doc(groupId)
         .collection(FirebaseConstant.messages)
         .doc(chatModel.messageId)
@@ -254,26 +254,42 @@ class FirebaseChatHandler {
       print("--- error occured --");
       return false;
     });
-
-    
   }
 
   /// delete group
   static Future<bool> deleteDiscussionGroup(String groupId) async {
-     return await discussionCollectionRef
-        .doc(groupId)        
-        .delete()
-        .then((value) {
-      print("--- delete succesfull");
+    bool isDone = await discussionCollectionRef.doc(groupId).delete().then((value) {
+      print("--- delete succesfull in discussion collection");
+
       return true;
     }).onError((error, stackTrace) {
       print("--- error occured --");
       return false;
     });
 
-    
+    if (isDone) {
+      deleteAllDocsFromMessageCol(groupId).then((value) {
+        userChatCollectionRef.doc(groupId).delete().then((value) {
+          print("--- delete succesfull in user_chat collection");
 
-    
+          // return true;
+        }).onError((error, stackTrace) {
+          print("--- error occured --");
+          // return false;
+        });
+      });
+    }
+    return isDone;
+  }
+
+  // delete all messages from message collection
+  static Future deleteAllDocsFromMessageCol(String groupId) async {
+    var collection = userChatCollectionRef.doc(groupId).collection(FirebaseConstant.messagesCollection);
+
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
   }
 
   ///// extra   ////
