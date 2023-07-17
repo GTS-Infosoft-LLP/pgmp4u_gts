@@ -19,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../provider/profileProvider.dart';
 import '../../utils/user_object.dart';
 import '../MockTest/model/courseModel.dart';
+import '../domains/domainList.dart';
 import '../dropdown.dart';
 import '../notificationTabs.dart';
 import '../quesDayList.dart';
@@ -764,7 +765,7 @@ class _ProfileState extends State<Profile> {
 
                                 GestureDetector(
                                   onTap: () {
-                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationTabs()));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DomainList()));
                                     //Navigator.of(context)
                                     //   .pushNamed('/settings');
                                   },
