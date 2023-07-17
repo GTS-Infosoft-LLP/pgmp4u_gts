@@ -5,8 +5,6 @@ import 'package:pgmp4u/tool/ShapeClipper.dart';
 
 import 'package:provider/provider.dart';
 
-
-
 class DomainList extends StatefulWidget {
   const DomainList({Key key}) : super(key: key);
 
@@ -97,14 +95,16 @@ class _DomainListState extends State<DomainList> {
               child: ListView.builder(
                   itemCount: 5,
                   itemBuilder: (context, index) {
-                    if (index % 4 == 0) {
+                    if (index % 5 == 0) {
+                      clr = Color(0xff9953C1);
+                    } else if (index % 4 == 0) {
                       clr = Color(0xff3F9FC9);
                     } else if (index % 3 == 0) {
                       clr = Color(0xff3FC964);
                     } else if (index % 2 == 0) {
-                      clr = Color(0xffDE682B);
-                    } else {
                       clr = Color(0xffC93F7F);
+                    } else {
+                      clr = Color(0xffDE682B);
                     }
 
                     return InkWell(
