@@ -16,7 +16,7 @@ class GroupListTile extends StatelessWidget {
   onTapOfGroup(BuildContext context) {
     print("groupId: ${group.groupId}");
     context.read<ChatProvider>().setGroupId(group.groupId, GroupType.groupChat);
-    
+
     // create messaging in user_chat
     Navigator.push(
         context,
@@ -24,6 +24,106 @@ class GroupListTile extends StatelessWidget {
             builder: (context) => DisscussionChatPage(
                   group: group,
                 )));
+  }
+
+  onLongPressOfGroup(BuildContext context) {
+    print("onLognPress groupId: ${group.groupId}");
+    context.read<ChatProvider>().isChatAdmin()
+        ? showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  elevation: 20,
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                    // side: BorderSide(color: _colorfromhex("#3A47AD"), width: 0)
+                  ),
+                  title: Column(
+                    children: [
+                      Text("Are you sure you want to delete this discussion?",
+                          // textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'Roboto Medium',
+                            fontWeight: FontWeight.w200,
+                            color: Colors.black,
+                          )),
+                    ],
+                  ),
+                  actions: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                                height: 35,
+                                width: MediaQuery.of(context).size.width * .15,
+                                // constraints: BoxConstraints(minWidth: 100),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                                    gradient: LinearGradient(
+                                        colors: [
+                                          Color(0xff3A47AD),
+                                          Color(0xff5163F3),
+                                        ],
+                                        begin: const FractionalOffset(0.0, 0.0),
+                                        end: const FractionalOffset(1.0, 0.0),
+                                        stops: [0.0, 1.0],
+                                        tileMode: TileMode.clamp)),
+                                child: Center(
+                                  child: Text(
+                                    "No",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ))),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            await context.read<ChatProvider>().deleteDiscussionGroup(context, group.groupId);
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            height: 35,
+                            width: MediaQuery.of(context).size.width * .15,
+                            // constraints: BoxConstraints(minWidth: 100),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xff3A47AD),
+                                      Color(0xff5163F3),
+                                    ],
+                                    begin: const FractionalOffset(0.0, 0.0),
+                                    end: const FractionalOffset(1.0, 0.0),
+                                    stops: [0.0, 1.0],
+                                    tileMode: TileMode.clamp)),
+                            child: Center(
+                              child: Text(
+                                "Yes",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        )
+                      ],
+                    ),
+                  ],
+                ))
+        : null;
   }
 
   @override
@@ -36,6 +136,7 @@ class GroupListTile extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => onTapOfGroup(context),
+      onLongPress: () => onLongPressOfGroup(context),
       child: Container(
         // height: MediaQuery.of(context).size.height * 0.17,
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
