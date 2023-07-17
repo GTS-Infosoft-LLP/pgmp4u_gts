@@ -244,13 +244,31 @@ class _PracticeNewState extends State<PracticeNew> {
                                             color: Colors.white,
                                           ),
                                         ),
-                                        Text(
-                                          arguments != null ? '  Review' : '  Practice Questions',
-                                          style: TextStyle(
-                                              fontFamily: 'Roboto Medium',
-                                              fontSize: width * (18 / 420),
-                                              color: Colors.white,
-                                              letterSpacing: 0.3),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            // Text(
+                                            //   arguments != null ? '  Review' : '',
+                                            //   style: TextStyle(
+                                            //       fontFamily: 'Roboto Medium',
+                                            //       fontSize: width * (18 / 420),
+                                            //       color: Colors.white,
+                                            //       letterSpacing: 0.3),
+                                            // ),
+                                            Container(
+                                              width: MediaQuery.of(context).size.width * .8,
+                                              child: Text(
+                                                "  " + widget.pracTestName,
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                    fontFamily: 'Roboto Medium',
+                                                    fontSize: width * (18 / 420),
+                                                    color: Colors.white,
+                                                    letterSpacing: 0.3),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
@@ -318,32 +336,12 @@ class _PracticeNewState extends State<PracticeNew> {
                                                       padding: EdgeInsets.only(
                                                           left: width * (29 / 420),
                                                           right: width * (29 / 420),
-                                                          top: height * (23 / 800),
+                                                          // top: height * (23 / 800),
+                                                          top: 10,
                                                           bottom: height * (23 / 800)),
                                                       color: Colors.white,
                                                       child: Column(
                                                         children: [
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            children: [
-                                                              Container(
-                                                                width: MediaQuery.of(context).size.width * .85,
-                                                                child: Text(
-                                                                  widget.pracTestName,
-                                                                  maxLines: 2,
-                                                                  style: TextStyle(
-                                                                    color: Colors.black,
-                                                                    fontSize: 20,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-
-                                                          SizedBox(
-                                                            height: 10,
-                                                          ),
-
                                                           putOnDiscussionButton(op, context),
 
                                                           SizedBox(

@@ -478,14 +478,15 @@ class _ProfileState extends State<Profile> {
                                 Container(
                                   width: MediaQuery.of(context).size.width * .53,
                                   child: CustomDropDown<CourseDetails>(
-                                      selectText: cp.selectedCourseName ?? "Select",
+                                      selectText: cp.selectedCourseLable ?? "Select",
                                       itemList: cp.course ?? [],
                                       isEnable: true,
                                       title: "",
                                       value: null,
                                       onChange: (val) {
                                         print("val.course=========>${val.course}");
-                                        cp.setSelectedCourseName(val.lable);
+                                        print("val.course=========>${val.lable}");
+                                        cp.setSelectedCourseLable(val.lable);
                                         cp.setSelectedCourseId(val.id);
                                         ProfileProvider pp = Provider.of(context, listen: false);
                                         pp.getReminder(val.id);
@@ -686,8 +687,7 @@ class _ProfileState extends State<Profile> {
                                   return GestureDetector(
                                     onTap: () {
                                       print("pp.isStudyRemAdded====${pp.isStudyRemAdded}");
-                                      if (pp.isStudyRemAdded == 1) {
-                                      } else {
+                                      {
                                         DatePicker.showTimePicker(
                                           context,
                                           currentTime: DateTime.now(),
