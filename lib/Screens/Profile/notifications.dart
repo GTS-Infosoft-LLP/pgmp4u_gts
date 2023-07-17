@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:getwidget/getwidget.dart';
+import 'package:getwidget/components/toast/gf_toast.dart';
+import 'package:getwidget/position/gf_toast_position.dart';
 import 'package:pgmp4u/Screens/QuesOfDay.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../provider/profileProvider.dart';
 import '../../utils/app_color.dart';
@@ -620,8 +621,8 @@ class NotiShowDialog extends StatelessWidget {
                   print("anchor url : $url");
 
                   Uri uri = Uri.parse(url);
-                  if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri);
+                  if (await canLaunchUrlString(url)) {
+                    await launchUrlString(url, mode: LaunchMode.externalApplication);
                   } else {
                     GFToast.showToast(
                       "Can not launch this url",
@@ -629,6 +630,16 @@ class NotiShowDialog extends StatelessWidget {
                       toastPosition: GFToastPosition.BOTTOM,
                     );
                   }
+
+                  // if (await canLaunchUrl(uri)) {
+                  //   await launchUrl(uri);
+                  // } else {
+                  //   GFToast.showToast(
+                  //     "Can not launch this url",
+                  //     context,
+                  //     toastPosition: GFToastPosition.BOTTOM,
+                  //   );
+                  // }
                 },
               ),
             ],
