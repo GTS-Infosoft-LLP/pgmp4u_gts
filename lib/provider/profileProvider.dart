@@ -246,9 +246,11 @@ class ProfileProvider extends ChangeNotifier {
 
         avgScore = resDDo['data']['daysDiff'].toString();
         dayDiff = resDDo['data']['averageScore'].toString();
-        print("study time==${resDDo['data']['studyReminder'].split(" ")[1]}");
+        if (resDDo['data']['studyReminder'] != null || resDDo['data']['studyReminder'] != "") {
+          print("study time==${resDDo['data']['studyReminder'].split(" ")[1]}");
+          studyTime = resDDo['data']['studyReminder'].split(" ")[1];
+        }
 
-        studyTime = resDDo['data']['studyReminder'].split(" ")[1];
         isStudyRemAdded = resDDo['data']['isStudyReminderAdded'];
         notifyListeners();
       } else {

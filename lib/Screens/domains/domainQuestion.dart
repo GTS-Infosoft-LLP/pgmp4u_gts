@@ -259,7 +259,7 @@ class _DomainQuestionsState extends State<DomainQuestions> {
                             child: Row(
                                 children: List.generate(5, (index) {
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
                                 child: Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.all(Radius.circular(20)),
