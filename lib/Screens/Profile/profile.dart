@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
+import 'package:pgmp4u/Screens/Domain/screens/domainList.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/api/apis.dart';
@@ -19,7 +20,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../provider/profileProvider.dart';
 import '../../utils/user_object.dart';
 import '../MockTest/model/courseModel.dart';
-import '../domains/domainList.dart';
 import '../dropdown.dart';
 import '../notificationTabs.dart';
 import '../quesDayList.dart';
@@ -492,7 +492,6 @@ class _ProfileState extends State<Profile> {
                                       ProfileProvider pp = Provider.of(context, listen: false);
                                       pp.getReminder(val.id);
                                     },
-                                    
                                   ),
                                 ),
 

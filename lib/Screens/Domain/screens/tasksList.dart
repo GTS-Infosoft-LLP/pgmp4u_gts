@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pgmp4u/Screens/domains/taskDetails.dart';
+import 'package:pgmp4u/Screens/Domain/screens/taskDetails.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
+import 'package:pgmp4u/tool/ShapeClipper.dart';
+
 import 'package:provider/provider.dart';
 
-import '../../provider/courseProvider.dart';
-import '../../tool/ShapeClipper.dart';
+
 
 class TaskList extends StatefulWidget {
   const TaskList({Key key}) : super(key: key);
