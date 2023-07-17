@@ -22,6 +22,10 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  resetPageIndex() {
+    _pageIndex = 0;
+  }
+
   List<NotifiModel> NotificationData = [];
   List<NotifiModel> Announcements = [];
   List<NotifiModel> Notifications = [];
@@ -57,17 +61,19 @@ class ProfileProvider extends ChangeNotifier {
     }
 
     if (!isFirstTime) {
-      // if (_totalRec == (Notifications.length + Announcements.length)) {
-      //   return;
-      // }
+      if (_totalRec == (Notifications.length + Announcements.length)) {
+        print(" -- all notification get --");
+        return;
+      }
       if (NotificationData.length >= _totalRec) {
+        print(" -- all notification get --");
         updateNotificationLoader(false);
         return;
       }
     } else {
-      _pageIndex = 0;
-      _totalRec = 0;
-      NotificationData.clear();
+      // _pageIndex = 0;
+      // _totalRec = 0;
+      // NotificationData.clear();
     }
     _pageIndex++;
 
@@ -87,8 +93,8 @@ class ProfileProvider extends ChangeNotifier {
       print("${res.statusCode}");
 
       if (res.statusCode == 200) {
-        Notifications = [];
-        Announcements = [];
+        // Notifications = [];
+        // Announcements = [];
         Map<String, dynamic> mapResponse = convert.jsonDecode(res.body);
         List temp1 = mapResponse["data"];
 
@@ -102,7 +108,7 @@ class ProfileProvider extends ChangeNotifier {
         print("NotificationData=======${NotificationData.length}");
 
         for (int i = 0; i < NotificationData.length; i++) {
-          print("NotificationData[i].typeee====${NotificationData[i].type}");
+          // print("NotificationData[i].typeee====${NotificationData[i].type}");
           if (NotificationData[i].type == 1) {
             Announcements.add(NotificationData[i]);
           } else {
@@ -110,13 +116,13 @@ class ProfileProvider extends ChangeNotifier {
           }
           notifyListeners();
         }
-        print("Notifications=======${Notifications.length}");
-        print("Announcements=======${Announcements.length}");
+        print("Notifications======= ${Notifications.length}");
+        print("Announcements======= ${Announcements.length}");
 
-        // if ((Notifications.length + Announcements.length) < 10) {
-        //   print('call again');
-        //   showNotification();
-        // }
+        if ((Notifications.length < 10) || (Announcements.length < 10)) {
+          print('----- call again ----');
+          showNotification();
+        }
       } else {
         Notifications = [];
         Announcements = [];
@@ -251,7 +257,7 @@ class ProfileProvider extends ChangeNotifier {
     } catch (e) {
       updateLoader(false);
       // TODO
-      print("---- EXCEPTION OCCURED WHILE CHECKING FOR CHATSUBSCRIPTION ----");
+      print("---- EXCEPTION OCCURED WHILE getReminder----");
       print(e.toString());
     }
   }
@@ -287,7 +293,7 @@ class ProfileProvider extends ChangeNotifier {
     } catch (e) {
       updateLoader(false);
       // TODO
-      print("---- EXCEPTION OCCURED WHILE CHECKING FOR CHATSUBSCRIPTION ----");
+      print("---- EXCEPTION OCCURED WHILE setReminder ----");
       print(e.toString());
     }
   }
