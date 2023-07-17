@@ -479,19 +479,21 @@ class _ProfileState extends State<Profile> {
                                 Container(
                                   width: MediaQuery.of(context).size.width * .53,
                                   child: CustomDropDown<CourseDetails>(
-                                      selectText: cp.selectedCourseLable ?? "Select",
-                                      itemList: cp.course ?? [],
-                                      isEnable: true,
-                                      title: "",
-                                      value: null,
-                                      onChange: (val) {
-                                        print("val.course=========>${val.course}");
-                                        print("val.course=========>${val.lable}");
-                                        cp.setSelectedCourseLable(val.lable);
-                                        cp.setSelectedCourseId(val.id);
-                                        ProfileProvider pp = Provider.of(context, listen: false);
-                                        pp.getReminder(val.id);
-                                      }),
+                                    selectText: cp.selectedCourseLable ?? "Select",
+                                    itemList: cp.course ?? [],
+                                    isEnable: true,
+                                    title: "",
+                                    value: null,
+                                    onChange: (val) {
+                                      print("val.course=========>${val.course}");
+                                      print("val.course=========>${val.lable}");
+                                      cp.setSelectedCourseLable(val.lable);
+                                      cp.setSelectedCourseId(val.id);
+                                      ProfileProvider pp = Provider.of(context, listen: false);
+                                      pp.getReminder(val.id);
+                                    },
+                                    
+                                  ),
                                 ),
 
                                 SizedBox(
