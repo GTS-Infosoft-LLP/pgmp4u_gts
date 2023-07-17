@@ -3,7 +3,6 @@ import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
-
 import 'domainQuestion.dart';
 
 class TaskDetail extends StatefulWidget {
@@ -16,11 +15,15 @@ class TaskDetail extends StatefulWidget {
 class _TaskDetailState extends State<TaskDetail> {
   @override
   var currentIndex;
-  var colorIndex;
+  int colorIndex;
+  int count;
   PageController pageController;
+  ScrollController scrollController;
   void initState() {
     colorIndex = 0;
+    count = 100;
     pageController = PageController();
+    scrollController = ScrollController();
 
     // TODO: implement initState
     super.initState();
@@ -30,14 +33,15 @@ class _TaskDetailState extends State<TaskDetail> {
   void dispose() {
     super.dispose();
     pageController.dispose();
+    scrollController.dispose();
+  }
+
+  Color _colorfromhex(String hexColor) {
+    final hexCode = hexColor.replaceAll('#', '');
+    return Color(int.parse('FF$hexCode', radix: 16));
   }
 
   Widget build(BuildContext context) {
-    Color _colorfromhex(String hexColor) {
-      final hexCode = hexColor.replaceAll('#', '');
-      return Color(int.parse('FF$hexCode', radix: 16));
-    }
-
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: InkWell(
@@ -142,7 +146,7 @@ class _TaskDetailState extends State<TaskDetail> {
             Padding(
               padding: const EdgeInsets.only(left: 18.0),
               child: Text(
-                "Details " + "${colorIndex + 1}" + "/5",
+                "Details " + "${colorIndex + 1}" + "/$count",
                 // cp.pptCategoryList[index].name,
                 maxLines: 2,
                 style: TextStyle(
@@ -163,12 +167,20 @@ class _TaskDetailState extends State<TaskDetail> {
                   child: Stack(
                     children: [
                       PageView.builder(
-                          itemCount: 5,
+                          controller: pageController,
+                          itemCount: count,
                           onPageChanged: (index) {
                             print("index valuee====$index");
                             setState(() {
                               colorIndex = index;
                             });
+
+                            if (colorIndex % 10 == 0) {
+                              double maxWidth = MediaQuery.of(context).size.width - 10;
+                              double eachTileWidth = MediaQuery.of(context).size.width * .08 + 4;
+                              scrollController.animateTo(eachTileWidth * colorIndex,
+                                  curve: Curves.easeInCubic, duration: Duration(seconds: 1));
+                            }
                           },
                           itemBuilder: (context, index) {
                             return Padding(
@@ -194,7 +206,7 @@ class _TaskDetailState extends State<TaskDetail> {
                                   Text(
                                     "Develop a Project Charater",
                                     style: TextStyle(
-                                        fontSize: 22,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black,
                                         fontFamily: "Roboto Regular"),
@@ -224,7 +236,7 @@ class _TaskDetailState extends State<TaskDetail> {
                                             child: Text(
                                               "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
                                               style: TextStyle(
-                                                fontSize: 24,
+                                                fontSize: 18,
                                               ),
                                             ),
                                           ),
@@ -236,40 +248,40 @@ class _TaskDetailState extends State<TaskDetail> {
                               ),
                             );
                           }),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Container(
-                          // color: Colors.black12,
+                      Container(
+                        margin: const EdgeInsets.only(left: 10.0),
+                        height: 12,
+                        child: ListView.builder(
+                          controller: scrollController,
+                          itemCount: count,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                                  gradient: index <= colorIndex
+                                      ? LinearGradient(
+                                          colors: [
+                                            _colorfromhex("#3A47AD"),
+                                            _colorfromhex("#5163F3"),
+                                          ],
+                                          begin: const FractionalOffset(0.0, 0.0),
+                                          end: const FractionalOffset(1.0, 0.0),
+                                          stops: [0.0, 1.0],
+                                          tileMode: TileMode.clamp)
+                                      : LinearGradient(
+                                          colors: [
+                                            Colors.grey,
+                                            Colors.grey,
+                                          ],
+                                        )),
+                              height: 10,
+                              width: MediaQuery.of(context).size.width * .08,
 
-                          child: Row(
-                              children: List.generate(5, (index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                                    gradient: index <= colorIndex
-                                        ? LinearGradient(
-                                            colors: [
-                                              _colorfromhex("#3A47AD"),
-                                              _colorfromhex("#5163F3"),
-                                            ],
-                                            begin: const FractionalOffset(0.0, 0.0),
-                                            end: const FractionalOffset(1.0, 0.0),
-                                            stops: [0.0, 1.0],
-                                            tileMode: TileMode.clamp)
-                                        : LinearGradient(
-                                            colors: [
-                                              Colors.grey,
-                                              Colors.grey,
-                                            ],
-                                          )),
-                                height: 10,
-                                width: MediaQuery.of(context).size.width * .1,
-                                // color: Colors.black,
-                              ),
-                            );
-                          })),
+                              // color: Colors.black,
+                            ),
+                          ),
                         ),
                       )
                     ],
