@@ -112,6 +112,24 @@ class ChatProvider extends ChangeNotifier {
     });
   }
 
+  Future deleteDiscussionGroup(BuildContext context, String groupId) async {
+    print("-- delete group: $groupId -- ");
+    bool isDone = await FirebaseChatHandler.deleteDiscussionGroup(groupId);
+    if (isDone) {
+      GFToast.showToast(
+        'Discussion Deleted successfully',
+        context,
+        toastPosition: GFToastPosition.BOTTOM,
+      );
+    } else {
+      GFToast.showToast(
+        'An Exception occured while deleting.',
+        context,
+        toastPosition: GFToastPosition.BOTTOM,
+      );
+    }
+  }
+
   Future<void> sendMessage(String title, List<String> opss, String testName, String value) async {
     String questionToPost = title;
     for (int i = 0; i < opss.length; i++) {

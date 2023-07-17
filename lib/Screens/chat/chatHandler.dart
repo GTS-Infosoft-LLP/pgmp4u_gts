@@ -258,6 +258,24 @@ class FirebaseChatHandler {
     
   }
 
+  /// delete group
+  static Future<bool> deleteDiscussionGroup(String groupId) async {
+     return await discussionCollectionRef
+        .doc(groupId)        
+        .delete()
+        .then((value) {
+      print("--- delete succesfull");
+      return true;
+    }).onError((error, stackTrace) {
+      print("--- error occured --");
+      return false;
+    });
+
+    
+
+    
+  }
+
   ///// extra   ////
 
   static Future<bool> checkIfDocExistsInColl({String docId, CollectionReference collection}) async {
