@@ -128,9 +128,9 @@ class GroupListTile extends StatelessWidget {
 
   getString(int value) {
     if (value >= 10000000) {
-      return "${(value / 10000000)}" + " C";
+      return "${(value / 10000000).toStringAsFixed(2)}" + " C";
     } else if (value >= 100000) {
-      return "${(value / 100000)}" + " L";
+      return "${(value / 100000).toStringAsFixed(2)}" + " L";
     } else if (value >= 1000) {
       return "${(value / 1000)}" + " k";
     } else {
@@ -247,7 +247,7 @@ class GroupListTile extends StatelessWidget {
                 ),
                 Spacer(),
                 SizedBox(width: 20),
-                _myIcons(icon: Icons.chat_rounded, count: group.commentsCount.toString()),
+                _myIcons(icon: Icons.chat_rounded, count: getString(group.commentsCount)),
               ],
             ),
           ],
