@@ -28,6 +28,7 @@ class CourseProvider extends ChangeNotifier {
 
   List<MasterDetails> masterList = [];
   List<CourseDetails> course = [];
+  List<String> crsLable = [];
   List<VideoCateDetails> videoCate = [];
   List<VideoDetails> Videos = [];
   List<FlashCateDetails> flashCate = [];
@@ -580,10 +581,15 @@ class CourseProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         course.clear();
+
+        crsLable.clear();
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         List temp1 = mapResponse["data"];
         print("temp list course === $temp1");
         course = temp1.map((e) => CourseDetails.fromjson(e)).toList();
+        for (int i = 0; i < course.length; i++) {
+          crsLable.add(course[i].lable);
+        }
         print("course=========$course");
 
         try {
@@ -634,7 +640,6 @@ class CourseProvider extends ChangeNotifier {
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
     );
-
 
     print("response.statusCode===${response.statusCode}");
     print("response.body===${response.body}");
