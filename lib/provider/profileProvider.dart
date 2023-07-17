@@ -57,6 +57,9 @@ class ProfileProvider extends ChangeNotifier {
     }
 
     if (!isFirstTime) {
+      // if (_totalRec == (Notifications.length + Announcements.length)) {
+      //   return;
+      // }
       if (NotificationData.length >= _totalRec) {
         updateNotificationLoader(false);
         return;
@@ -109,6 +112,11 @@ class ProfileProvider extends ChangeNotifier {
         }
         print("Notifications=======${Notifications.length}");
         print("Announcements=======${Announcements.length}");
+
+        // if ((Notifications.length + Announcements.length) < 10) {
+        //   print('call again');
+        //   showNotification();
+        // }
       } else {
         Notifications = [];
         Announcements = [];
