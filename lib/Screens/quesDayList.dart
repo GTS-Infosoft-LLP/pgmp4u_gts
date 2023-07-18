@@ -117,7 +117,7 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => RandomPage(
-                                                  index: 5,
+                                                  index: 7,
                                                   categoryId: 0,
                                                   price: pp.subsPrice.toString(),
                                                   categoryType: "Question",

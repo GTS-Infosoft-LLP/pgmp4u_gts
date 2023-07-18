@@ -12,11 +12,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 
-///  1> flash
+///   1> flash
 ///   2> video
 ///   3> mock
 ///   4> chat
 ///   5> PPT
+///   6> domain
 class RandomPage extends StatefulWidget {
   int index;                                           
   String price;
@@ -149,6 +150,17 @@ class _RandomPageState extends State<RandomPage> {
                                                     color: _colorfromhex("#3D4AB4"),
                                                     letterSpacing: 0.3),
                                               ) :
+                                            
+                                            widget.index == 6
+                                            ? Text(
+                                                'Get 1 year Access to Domains',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontFamily: 'Roboto Bold',
+                                                    fontSize: width * (30 / 420),
+                                                    color: _colorfromhex("#3D4AB4"),
+                                                    letterSpacing: 0.3),
+                                              ) :
                                              Text(
                                                 'Get 1 year Access to Pgmp Question of the day',
                                                 textAlign: TextAlign.center,
@@ -159,28 +171,12 @@ class _RandomPageState extends State<RandomPage> {
                                                 ),
                                               )),
                       ),
-                      // Container(
-                      //   margin: EdgeInsets.only(top: 20),
-                      //   child: Center(
-                      //     child: Text(
-                      //       buttonPress == true
-                      //           ? '${(data["mock_test_price"] - ((mapResponse["discount"] / 100) * data["mock_test_price"])).toInt()} \$'
-                      //           : '${data["mock_test_price"]} \$',
-                      //       textAlign: TextAlign.center,
-                      //       style: TextStyle(
-                      //           fontFamily: 'Roboto Bold',
-                      //           fontSize: width * (44 / 420),
-                      //           color: _colorfromhex("#3D4AB4"),
-                      //           letterSpacing: 0.3),
-                      //     ),
-                      //   ),
-                      // ),
+                 
                       Container(
                         margin: EdgeInsets.only(top: 20),
                         child: Center(
                             child:
-                                // widget.index == 1
-                                //     ?
+                              
                                 Text(
                           'Yearly Access On \n \$${widget.price}',
                           textAlign: TextAlign.center,
@@ -190,60 +186,12 @@ class _RandomPageState extends State<RandomPage> {
                               color: _colorfromhex("#3D4AB4"),
                               letterSpacing: 0.3),
                         )
-                            // : Text(
-                            //     'Lifetime Access On \n \$${widget.price}',
-                            //     textAlign: TextAlign.center,
-                            //     style: TextStyle(
-                            //         fontFamily: 'Roboto Bold',
-                            //         fontSize: 24,
-                            //         color: _colorfromhex("#3D4AB4"),
-                            //         letterSpacing: 0.3),
-                            //   ),
+                      
                             ),
                       ),
-                      // mapResponse != null && buttonPress == false
-                      //     ? Center(
-                      //         child: Container(
-                      //           margin: EdgeInsets.only(top: 20),
-                      //           padding: EdgeInsets.only(
-                      //               left: 15, right: 15),
-                      //           height: 40,
-                      //           // alignment: Alignment.center,
-                      //           decoration: BoxDecoration(
-                      //               color: _colorfromhex("#3A47AD"),
-                      //               borderRadius:
-                      //                   BorderRadius.circular(30.0)),
-                      //           child: OutlinedButton(
-                      //             onPressed: () => {
-                      //               // setState(() => {buttonPress = true}),
-                      //               print(mapResponse["discount"]),
-                      //               if (mapResponse["discount"] == 100)
-                      //                 {paymentStatus("success")}
-                      //               else
-                      //                 {
-                      //                   setState(
-                      //                       () => {buttonPress = true})
-                      //                 }
-                      //             },
-                      //             style: ButtonStyle(
-                      //               shape: MaterialStateProperty.all(
-                      //                   RoundedRectangleBorder(
-                      //                       borderRadius:
-                      //                           BorderRadius.circular(
-                      //                               30.0))),
-                      //             ),
-                      //             child: Text(
-                      //               'Apply Coupon',
-                      //               style: TextStyle(
-                      //                   fontFamily: 'Roboto Medium',
-                      //                   fontSize: 20,
-                      //                   color: Colors.white,
-                      //                   letterSpacing: 0.3),
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       )
-                      //     : Container(),
+                   
+                
+          
                       Consumer2<PurchaseProvider, CourseProvider>(
                         builder: (context, value, cp, child) {
                           var latestState = value.serverResponse.getContent();

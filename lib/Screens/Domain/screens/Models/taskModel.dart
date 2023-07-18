@@ -14,13 +14,13 @@ class TaskDetails {
 
   TaskDetails.fromjson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
-    description = json['description'];
-    Image = json['Image'];
-    domainId = json['domainId'];
-    subdomainId = json['subdomainId'];
-    Keywords = json['Keywords'];
-    Examples = json['Examples'];
+    name = json['name'] ?? "";
+    description = json['description'] ?? "";
+    Image = json['Image'] ?? "";
+    domainId = json['domainId'] ?? "";
+    subdomainId = json['subdomainId'] ?? "";
+    Keywords = json['Keywords'] ?? "";
+    Examples = json['Examples'] ?? "";
     status = json['status'];
     deleteStatus = json['deleteStatus'];
   }

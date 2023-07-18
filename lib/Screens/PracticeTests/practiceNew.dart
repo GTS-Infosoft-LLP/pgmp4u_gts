@@ -842,32 +842,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                               ),
                                                                             ),
 
-                                                                            //                 selectedAnswer != null &&
-                                                                            //                         data.questionsList[_quetionNo].rightAnswer !=
-                                                                            //                             selectedAnswer &&
-                                                                            //                         title.id ==
-                                                                            //                             data.questionsList[_quetionNo].rightAnswer
-                                                                            //                     ? Row(
-                                                                            //                         mainAxisAlignment:
-                                                                            //                             MainAxisAlignment.end,
-                                                                            //                         children: [
-                                                                            //                           Text(
-                                                                            //                             'Correct Answer',
-                                                                            //                           ),
-                                                                            //                         ],
-                                                                            //                       )
-                                                                            //                     : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
-                                                                            //                         ? Row(
-                                                                            //                             mainAxisAlignment: MainAxisAlignment.end,
-                                                                            //                             children: [
-                                                                            //                               Text(
-                                                                            //                                 'Your selection',
-                                                                            //                               ),
-                                                                            //                             ],
-                                                                            //                           )
-                                                                            //                         : Container(),
-                                                                            //               ],
-                                                                            //             )
+                                                                       
                                                                           ],
                                                                         )
                                                                       ]),
@@ -876,24 +851,12 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                 );
                                                               }),
 
-                                                          // Container(
-                                                          //   height: 50,
-                                                          //   color: Colors.amber,
-                                                          // ),
-
-                                                          // selectedAnswer != null
-                                                          // if (_isattempt <
-                                                          //     op
-                                                          //         .where((element) => element.isseleted == true)
-                                                          //         .toList()
-                                                          //         .length)
+                                             
                                                           if (selAns.length == correctAns.length &&
                                                               correctAns.length > 0)
                                                             Container(
                                                               decoration: BoxDecoration(
-                                                                  color:
-                                                                      // Colors .amber,
-                                                                      _colorfromhex("#FAFAFA"),
+                                                                  color: _colorfromhex("#FAFAFA"),
                                                                   borderRadius: BorderRadius.circular(6)),
                                                               margin: EdgeInsets.only(top: height * (38 / 800)),
                                                               padding: EdgeInsets.only(
@@ -939,50 +902,25 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                           margin:
                                                                               EdgeInsets.only(top: height * (9 / 800)),
                                                                           child: Text(
-                                                                            // correctAns.contains(op[0].id) &&
-                                                                            //         correctAns.contains(op[1].id)
-                                                                            //     ? 'Answer A and B are the correct one'
-                                                                            //     : correctAns.contains(op[0].id) &&
-                                                                            //             correctAns.contains(op[2].id)
-                                                                            //         ? 'Answer A and C are the correct one'
-                                                                            //         : correctAns.contains(op[0].id) &&
-                                                                            //                 correctAns
-                                                                            //                     .contains(op[3].id)
-                                                                            //             ? 'Answer A and D are the correct one'
-                                                                            //             : correctAns.contains(op[0].id) &&
-                                                                            //                     correctAns
-                                                                            //                         .contains(op[4].id)
-                                                                            //                 ? 'Answer A and E are the correct one'
-                                                                            //                 : correctAns.contains(
-                                                                            //                             op[1].id) &&
-                                                                            //                         correctAns.contains(
-                                                                            //                             op[2].id)
-                                                                            //                     ? 'Answer B and C are the correct one'
-                                                                            //                     : correctAns.contains(
-                                                                            //                                 op[1].id) &&
-                                                                            //                             correctAns.contains(
-                                                                            //                                 op[3].id)
-                                                                            //                         ? 'Answer B and D are the correct one'
-                                                                            //                         : correctAns.contains(
-                                                                            //                                     op[1]
-                                                                            //                                         .id) &&
-                                                                            //                                 correctAns.contains(
-                                                                            //                                     op[4].id)
-                                                                            //                             ? 'Answer B and E are the correct one'
-                                                                            //                             :
-                                                                            correctAns.contains(op[0].id)
-                                                                                ? 'Answer A is the correct one'
-                                                                                :
+                                                                            "${getTstAns(op)}",
+                                                                    
 
-                                                                                // PTList[_quetionNo].ques.rightAnswer ==
-                                                                                //         op[1].id.toString()
-                                                                                correctAns.contains(op[1].id)
-                                                                                    ? 'Answer B is the correct one'
-                                                                                    : correctAns.contains(op[2].id)
-                                                                                        ? 'Answer c is the correct one'
-                                                                                        : correctAns.contains(op[3].id)
-                                                                                            ? 'Answer D is the correct one'
-                                                                                            : 'Answer E is the correct one',
+                                                                            ///////////////////////
+                                                                            // correctAns.contains(op[0].id)
+                                                                            //     ? 'Answer A is the correct one'
+                                                                            //     :
+
+                                                                            //     // PTList[_quetionNo].ques.rightAnswer ==
+                                                                            //     //         op[1].id.toString()
+                                                                            //     correctAns.contains(op[1].id)
+                                                                            //         ? 'Answer B is the correct one'
+                                                                            //         : correctAns.contains(op[2].id)
+                                                                            //             ? 'Answer c is the correct one'
+                                                                            //             : correctAns.contains(op[3].id)
+                                                                            //                 ? 'Answer D is the correct one'
+                                                                            //                 : 'Answer E is the correct one',
+
+                                                                            ///////////////
                                                                             style: TextStyle(
                                                                               fontFamily: 'Roboto Regular',
                                                                               fontSize: width * (15 / 420),
@@ -1389,5 +1327,70 @@ class _PracticeNewState extends State<PracticeNew> {
     print("optsValueList==========$optsValueList");
 
     return optsValueList;
+  }
+
+  String getTstAns(List<Options> op) {
+
+    String correct = "";
+    print("correctanslength===${correctAns.length}");
+    if (correctAns.length == 1) {
+      if (correctAns.contains(op[0].id)) {
+        correct = 'Answer A is the correct one';
+      } else if (correctAns.contains(op[1].id)) {
+        correct = 'Answer B is the correct one';
+      } else if (correctAns.contains(op[2].id)) {
+        correct = 'Answer C is the correct one';
+      } else if (correctAns.contains(op[3].id)) {
+        correct = 'Answer D is the correct one';
+      } else {
+        correct = 'Answer E is the correct one';
+      }
+    } else if (correctAns.length == 2) {
+      if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id)) {
+        correct = "Answer A and B are the correct one";
+      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[2].id)) {
+        correct = "Answer A and C are the correct one";
+      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[3].id)) {
+        correct = "Answer A and D are the correct one";
+      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[4].id)) {
+        correct = "Answer A and E are the correct one";
+      } else if (correctAns.contains(op[1].id) && correctAns.contains(op[2].id)) {
+        correct = "Answer B and C are the correct one";
+      } else if (correctAns.contains(op[1].id) && correctAns.contains(op[3].id)) {
+        correct = "Answer B and D are the correct one";
+      } else if (correctAns.contains(op[1].id) && correctAns.contains(op[4].id)) {
+        correct = "Answer B and E are the correct one";
+      } else if (correctAns.contains(op[2].id) && correctAns.contains(op[3].id)) {
+        correct = "Answer C and D are the correct one";
+      } else if (correctAns.contains(op[2].id) && correctAns.contains(op[4].id)) {
+        correct = "Answer C and E are the correct one";
+      } else if (correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
+        correct = "Answer D and E are the correct one";
+      }
+    } else if (correctAns.length == 3) {
+      if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id) && correctAns.contains(op[2].id)) {
+        correct = "Answer A, B and C are the correct one";
+      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id) && correctAns.contains(op[3].id)) {
+        correct = "Answer A, B and D are the correct one";
+      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id) && correctAns.contains(op[4].id)) {
+        correct = "Answer A, B and E are the correct one";
+      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[2].id) && correctAns.contains(op[3].id)) {
+        correct = "Answer A, C and D are the correct one";
+      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[2].id) && correctAns.contains(op[4].id)) {
+        correct = "Answer A, C and E are the correct one";
+      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
+        correct = "Answer A, D and E are the correct one";
+      } else if (correctAns.contains(op[1].id) && correctAns.contains(op[2].id) && correctAns.contains(op[3].id)) {
+        correct = "Answer B, C and D are the correct one";
+      } else if (correctAns.contains(op[1].id) && correctAns.contains(op[2].id) && correctAns.contains(op[4].id)) {
+        correct = "Answer B, C and E are the correct one";
+      } else if (correctAns.contains(op[1].id) && correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
+        correct = "Answer B, D and E are the correct one";
+      } else if (correctAns.contains(op[2].id) && correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
+        correct = "Answer C, D and E are the correct one";
+      }
+    }
+    print("correct======$correct");
+    return correct;
   }
 }

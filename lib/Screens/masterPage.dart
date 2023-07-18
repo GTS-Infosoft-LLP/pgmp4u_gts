@@ -11,7 +11,7 @@ import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/app_color.dart';
-import 'Domain/screens/domainCategory.dart';
+import 'Domain/screens/domainList.dart';
 import 'MockTest/mockTest.dart';
 import 'MockTest/model/masterdataModel.dart';
 import 'Tests/local_handler/hive_handler.dart';
@@ -216,16 +216,15 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 }
 
                                                                 if (page == "Domain") {
-                                                                  DomainProvider dp=Provider.of(context,listen: false);
-                                                                  // dp.getDomainCateData(storedMaster[index].id);
-                                                            
-
-
+                                                                  DomainProvider dp =
+                                                                      Provider.of(context, listen: false);
+                                                                  dp.getDomainData(
+                                                                      storedMaster[index].id, cp.selectedCourseId);
 
                                                                   Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(
-                                                                          builder: (context) => DomainCategory()));
+                                                                          builder: (context) => DomainList()));
                                                                 }
 
                                                                 if (page == "Videos") {

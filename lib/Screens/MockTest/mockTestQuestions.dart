@@ -623,7 +623,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                     child: PageView.builder(
                                         controller: pageController,
                                         physics: cp.allowScroll == 1
-                                            ? BouncingScrollPhysics()
+                                            ? BouncingScrollPhysics() 
                                             : NeverScrollableScrollPhysics(),
                                         onPageChanged: (index) {
                                           print("index in onPageChagen ====>>$index");
@@ -719,23 +719,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                       Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
-                                                          // _quetionNo != 0
-                                                          //     ? GestureDetector(
-                                                          //         onTap: () => {
-                                                          //           setState(() {
-                                                          //             _quetionNo--;
-
-                                                          //             selectedAnswer = null;
-                                                          //           })
-                                                          //         },
-                                                          //         child: Icon(
-                                                          //           Icons.arrow_back,
-                                                          //           size: width * (24 / 420),
-                                                          //           color: _colorfromhex(
-                                                          //               "#ABAFD1"),
-                                                          //         ),
-                                                          //       )
-                                                          //     : Container(),
+              
+                                                     
                                                           Text(
                                                             'QUESTION ${_quetionNo + 1}',
                                                             style: TextStyle(
@@ -824,19 +809,13 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                             .questionDetail
                                                             .Options
                                                             .map<Widget>((title) {
-                                                          // print("title is >>> ${title.question_option}");
+                                                       
                                                           var index = mockQuestion[_quetionNo]
                                                               .questionDetail
                                                               .Options
                                                               .indexOf(title);
 
-                                                          // if (title.question_option.isEmpty) {
-                                                          //   // title.question_option = "None of these";
-                                                          //   mockQuestion[_quetionNo]
-                                                          //       .questionDetail
-                                                          //       .Options
-                                                          //       .removeAt(index);
-                                                          // }
+                                                    
                                                           int rightAnswerLength = mockQuestion[_quetionNo]
                                                               .questionDetail
                                                               .rightAnswer
@@ -879,7 +858,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                       }
                                                                   },
                                                                   child: Container(
-                                                                    margin: EdgeInsets.only(top: height * (21 / 800)),
+                                                                    margin: EdgeInsets.only(top: height * (21 / 800)), 
                                                                     padding: EdgeInsets.only(
                                                                       top: 13,
                                                                       bottom: 13,

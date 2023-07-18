@@ -121,7 +121,7 @@ class ChatProvider extends ChangeNotifier {
         context,
         toastPosition: GFToastPosition.BOTTOM,
       );
-    } else {
+    } else { 
       GFToast.showToast(
         'An Exception occured while deleting.',
         context,

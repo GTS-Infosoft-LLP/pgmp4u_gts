@@ -3,10 +3,8 @@ class SubDomainDetails {
   String name;
   int position;
   int domainId;
-
   int status;
   int deleteStatus;
-
   int Tasks;
 
   SubDomainDetails.fromjson(Map<String, dynamic> json) {

@@ -66,7 +66,8 @@ class _ProfileState extends State<Profile> {
     if (cp.course.isNotEmpty) {
       print("cp.course[0].id===========${cp.course[0].id}");
       cp.setSelectedCourseId(cp.course[0].id);
-      cp.setSelectedCourseName(cp.course[0].lable);
+      cp.setSelectedCourseName(cp.course[0].course);
+      cp.setSelectedCourseLable(cp.course[0].lable);
       // pp.getReminder(cp.course[0].id);
     }
 
@@ -382,108 +383,13 @@ class _ProfileState extends State<Profile> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Container(
-                    padding: EdgeInsets.only(
-                        // top: height * (28 / 800)
-                        ),
+                    padding: EdgeInsets.only(),
                     margin: EdgeInsets.only(bottom: 10),
-                    // height: height - 180 - 25 - 110,
                     width: width,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     Container(
-                        //       width: width * (150 / 420),
-                        //       height: height * (112 / 800),
-                        //       margin: EdgeInsets.only(right: width * (23 / 420)),
-                        //       decoration: BoxDecoration(
-                        //         color: _colorfromhex("#72A258"),
-                        //         borderRadius: BorderRadius.circular(10),
-                        //       ),
-                        //       child: Column(
-                        //         mainAxisAlignment: MainAxisAlignment.center,
-                        //         children: [
-                        //           Text(
-                        //             'Mock Test',
-                        //             style: TextStyle(
-                        //               fontFamily: 'Roboto Bold',
-                        //               fontSize: width * (18 / 420),
-                        //               color: Colors.white,
-                        //             ),
-                        //           ),
-                        //           Container(
-                        //             height: 5,
-                        //           ),
-                        //           Text(
-                        //             '00.00',
-                        //             style: TextStyle(
-                        //               fontFamily: 'Roboto Bold',
-                        //               fontSize: width * (20 / 420),
-                        //               color: Colors.white,
-                        //             ),
-                        //           ),
-                        //           Container(
-                        //             height: 5,
-                        //           ),
-                        //           Text(
-                        //             'Average Score',
-                        //             style: TextStyle(
-                        //               fontFamily: 'Roboto Medium',
-                        //               fontSize: width * (14 / 420),
-                        //               color: Colors.white,
-                        //             ),
-                        //           )
-                        //         ],
-                        //       ),
-                        //     ),
-                        //     Container(
-                        //       width: width * (150 / 420),
-                        //       height: height * (112 / 800),
-                        //       decoration: BoxDecoration(
-                        //         color: _colorfromhex("#463B97"),
-                        //         borderRadius: BorderRadius.circular(10),
-                        //       ),
-                        //       child: Column(
-                        //         mainAxisAlignment: MainAxisAlignment.center,
-                        //         children: [
-                        //           Text(
-                        //             'Exam Date',
-                        //             style: TextStyle(
-                        //               fontFamily: 'Roboto Bold',
-                        //               fontSize: width * (18 / 420),
-                        //               color: Colors.white,
-                        //             ),
-                        //           ),
-                        //           Container(
-                        //             height: 5,
-                        //           ),
-                        //           Text(
-                        //             '0',
-                        //             style: TextStyle(
-                        //               fontFamily: 'Roboto Bold',
-                        //               fontSize: width * (20 / 420),
-                        //               color: Colors.white,
-                        //             ),
-                        //           ),
-                        //           Container(
-                        //             height: 5,
-                        //           ),
-                        //           Text(
-                        //             'Days Left',
-                        //             style: TextStyle(
-                        //               fontFamily: 'Roboto Medium',
-                        //               fontSize: width * (14 / 420),
-                        //               color: Colors.white,
-                        //             ),
-                        //           )
-                        //         ],
-                        //       ),
-                        //     )
-                        //   ],
-                        // ),
                         Consumer<CourseProvider>(builder: (context, cp, child) {
                           return Container(
                             // color: Colors.amber,
@@ -810,45 +716,6 @@ class _ProfileState extends State<Profile> {
                                   );
                                 }),
 
-                                // GestureDetector(
-                                //   onTap: () {
-                                //     Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage()));
-                                //   },
-                                //   child: Container(
-                                //     margin: EdgeInsets.only(bottom: 6),
-                                //     padding: EdgeInsets.only(
-                                //         top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                                //     color: Colors.white,
-                                //     child: Row(
-                                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Row(
-                                //           children: [
-                                //             Icon(
-                                //               Icons.person,
-                                //               size: width * (26 / 420),
-                                //               color: _colorfromhex("#ABAFD1"),
-                                //             ),
-                                //             Text(
-                                //               '   Chat with Admin',
-                                //               style: TextStyle(
-                                //                 fontFamily: 'Roboto Medium',
-                                //                 fontSize: width * (18 / 420),
-                                //                 color: Colors.black,
-                                //               ),
-                                //             ),
-                                //           ],
-                                //         ),
-                                //         Icon(
-                                //           Icons.arrow_forward_ios,
-                                //           size: 20,
-                                //           color: _colorfromhex("#ABAFD1"),
-                                //         ),
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
-
                                 GestureDetector(
                                   onTap: () {
                                     // ProfileProvider profileProvider = Provider.of(context, listen: false);
@@ -953,7 +820,7 @@ class _ProfileState extends State<Profile> {
                                               color: _colorfromhex("#ABAFD1"),
                                             ),
                                             Text(
-                                              '  Delete Account',
+                                              '   Delete Account',
                                               style: TextStyle(
                                                 fontFamily: 'Roboto Medium',
                                                 fontSize: width * (18 / 420),

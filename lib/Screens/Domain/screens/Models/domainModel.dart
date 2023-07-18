@@ -3,7 +3,7 @@ class DomainDetails {
   String name;
   int position;
   int courseId;
-  int categoryId;
+  int masterList;
   int status;
   int deleteStatus;
   int SubDomains;
@@ -14,7 +14,7 @@ class DomainDetails {
     name = json['name'];
     position = json['position'];
     courseId = json['courseId'];
-    categoryId = json['categoryId'];
+    masterList = json['masterList'];
     status = json['status'];
     deleteStatus = json['deleteStatus'];
     SubDomains = json['SubDomains'];
