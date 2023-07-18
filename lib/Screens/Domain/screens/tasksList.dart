@@ -129,7 +129,7 @@ class _TaskListState extends State<TaskList> {
                           child: Container(
                             decoration: const BoxDecoration(
                                 border:
-                                    Border(bottom: BorderSide(width: 1, color: Color.fromARGB(255, 219, 211, 211)))),
+                                    Border(bottom: BorderSide(width: 1, color: Color.fromARGB(255, 219, 211, 211),),)),
                             height: 70,
                             child: Row(
                               children: [

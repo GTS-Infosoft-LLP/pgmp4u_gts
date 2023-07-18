@@ -492,7 +492,8 @@ class _ProfileState extends State<Profile> {
                             child: Column(
                               children: [
                                 Container(
-                                  width: MediaQuery.of(context).size.width * .53,
+                                  alignment: Alignment.centerRight,
+                                  width: MediaQuery.of(context).size.width * .35,
                                   child: CustomDropDown<CourseDetails>(
                                     selectText: cp.selectedCourseLable ?? "Select",
                                     itemList: cp.course ?? [],

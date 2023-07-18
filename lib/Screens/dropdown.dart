@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomDropDown<T> extends StatelessWidget {
+class CustomDropDown<T> extends StatefulWidget {
   CustomDropDown({
     Key key,
     this.onChange,
@@ -28,7 +28,13 @@ class CustomDropDown<T> extends StatelessWidget {
   final color;
   final selecttextcolor;
   final fontfamily;
-  final width;
+  double width;
+
+  @override
+  State<CustomDropDown<T>> createState() => _CustomDropDownState<T>();
+}
+
+class _CustomDropDownState<T> extends State<CustomDropDown<T>> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,64 +51,60 @@ class CustomDropDown<T> extends StatelessWidget {
               // ),
               borderRadius: BorderRadius.circular(28)),
           height: 56,
-          width: width,
-          child: Center(
-            child: DropdownButton<T>(
-              icon: Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
-              ),
-              focusColor: Colors.blueAccent,
-              value: value,
-              //elevation: 5,
-              style: TextStyle(color: Colors.red),
-              items: itemList.map<DropdownMenuItem<T>>((T value) {
-                return DropdownMenuItem<T>(
-                    //alignment: Alignment.bottomCenter,
+          width: widget.width,
+          child: DropdownButton<T>(
+            alignment: Alignment.centerLeft,
 
-                    value: value,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 10.0),
-                      width: double.maxFinite,
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            child: Text(
-                              (value as DropDownModel).getOptionName(),
-                              textAlign: TextAlign.left,
-                              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black87))),
-                            width: double.maxFinite,
-                          ),
-                        ],
-                      ),
-                    ));
-              }).toList(),
-              isExpanded: true,
-              underline: const SizedBox(),
-              hint: Text(
-                selectText,
-                style: TextStyle(
-                    color: isGrey ? Colors.black : Colors.black,
-                    fontSize: 15,
-                    fontFamily: fontfamily,
-                    fontWeight: FontWeight.bold),
-              ),
-
-              dropdownColor: Colors.white,
-
-              onChanged: !isEnable
-                  ? null
-                  : (T value) {
-                      // setState(() {
-                      onChange(value);
-
-                      // });
-                    },
+            icon: Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
             ),
+            focusColor: Colors.blueAccent,
+            value: widget.value,
+
+            // elevation: 10,
+            style: TextStyle(color: Colors.red),
+            items: widget.itemList.map<DropdownMenuItem<T>>((T value) {
+              return DropdownMenuItem<T>(
+                //alignment: Alignment.bottomCenter,
+
+                value: value,
+                child: Container(
+                  margin: EdgeInsets.only(top: 10.0),
+                  width: double.maxFinite,
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey),
+                    ),
+                  ),
+                  child: Text(
+                    (value as DropDownModel).getOptionName(),
+                    textAlign: TextAlign.left,
+                    style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              );
+            }).toList(),
+            isExpanded: true,
+            underline: const SizedBox(),
+            hint: Text(
+              widget.selectText,
+              style: TextStyle(
+                  color: widget.isGrey ? Colors.black : Colors.black,
+                  fontSize: 15,
+                  fontFamily: widget.fontfamily,
+                  fontWeight: FontWeight.bold),
+            ),
+            dropdownColor: Colors.white,
+            onChanged: !widget.isEnable
+                ? null
+                : (T value) {
+                    // setState(() {
+                    widget.onChange(value);
+
+                    // });
+                  },
           ),
         ),
       ],
