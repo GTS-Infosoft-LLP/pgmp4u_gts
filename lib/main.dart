@@ -125,7 +125,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<CourseProvider>(create: (_) => CourseProvider()),
         ChangeNotifierProvider<ProfileProvider>(create: (_) => ProfileProvider()),
         ChangeNotifierProvider<ResponseProvider>(
-          create: (_) => ResponseProvider(),
+          create: (_) => ResponseProvider()
         ),
         ChangeNotifierProvider<PlayerProvider>(create: (_) => PlayerProvider()),
         ChangeNotifierProvider<PracticeTextProvider>(create: (_) => PracticeTextProvider()),

@@ -72,7 +72,7 @@ class _GroupListPageState extends State<GroupListPage> {
                     );
                   });
             } else {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator.adaptive());
             }
           }),
     );
@@ -139,7 +139,7 @@ class _GroupListPageState extends State<GroupListPage> {
                   ),
                 ),
                 SizedBox(
-                  width: 6,
+                  width: 8,
                 ),
                 InkWell(
                   onTap: () {
@@ -150,8 +150,12 @@ class _GroupListPageState extends State<GroupListPage> {
                         ));
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 10.0, top: 10.0, bottom: 8.0),
-                    child: Icon(Icons.supervised_user_circle_sharp, color: Colors.white),
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Icon(
+                      Icons.groups_rounded,
+                      color: Colors.white,
+                      size: 32,
+                    ),
                   ),
                 )
                 // MyPopupMenu(),

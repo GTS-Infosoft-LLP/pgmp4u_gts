@@ -203,13 +203,17 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
   }
 }
 
+
+
 void showOverLay(BuildContext context, ChatModel message, LayerLink layerLink, bool isSentMessage) {
   // in discussion show only to admin user
   // in single chat to both user
-  bool isShowDelete = !(context.read<ChatProvider>().currentGroupType == GroupType.groupChat &&
-      !context.read<ChatProvider>().isChatAdmin());
+  // bool isShowDelete = !(context.read<ChatProvider>().currentGroupType == GroupType.groupChat &&
+  //         !context.read<ChatProvider>().isChatAdmin()) ||
+  //     message.sentBy == context.read<ChatProvider>().getUser().uid;
+  bool isShowDelete = context.read<ChatProvider>().isShowDelete( message);
 
-  double overlayWidth = isShowDelete ? 230: 170;
+  double overlayWidth = isShowDelete ? 230 : 170;
   context.read<ChatProvider>().reactionOverlayState = Overlay.of(context);
 
   final renderBox = context.findRenderObject() as RenderBox;

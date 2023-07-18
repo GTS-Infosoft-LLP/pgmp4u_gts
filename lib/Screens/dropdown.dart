@@ -28,7 +28,8 @@ class CustomDropDown<T> extends StatelessWidget {
   final color;
   final selecttextcolor;
   final fontfamily;
-  final width;
+  double width;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -47,65 +48,66 @@ class CustomDropDown<T> extends StatelessWidget {
               borderRadius: BorderRadius.circular(28)),
           height: 56,
           width: width,
-          child: Center(
-            child: DropdownButton<T>(
-              icon: Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
-              ),
-              focusColor: Colors.blueAccent,
-              value: value,
-              //elevation: 5,
-              style: TextStyle(color: Colors.red),
-              items: itemList.map<DropdownMenuItem<T>>((T value) {
-                return DropdownMenuItem<T>(
-                    //alignment: Alignment.bottomCenter,
+          child: DropdownButton<T>(
+            alignment: Alignment.centerLeft,
 
-                    value: value,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 10.0),
-                      width:
-                          // MediaQuery.of(context).size.width * .5,
-                          double.maxFinite,
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            child: Text(
-                              (value as DropDownModel).getOptionName(),
-                              textAlign: TextAlign.left,
-                              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black87))),
-                            width: double.maxFinite,
-                          ),
-                        ],
-                      ),
-                    ));
-              }).toList(),
-              isExpanded: true,
-              underline: const SizedBox(),
-              hint: Text(
-                selectText,
-                style: TextStyle(
-                    color: isGrey ? Colors.black : Colors.black,
-                    fontSize: 15,
-                    fontFamily: fontfamily,
-                    fontWeight: FontWeight.bold),
-              ),
-
-              dropdownColor: Colors.white,
-
-              onChanged: !isEnable
-                  ? null
-                  : (T value) {
-                      // setState(() {
-                      onChange(value);
-
-                      // });
-                    },
+            icon: Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
             ),
+            focusColor: Colors.blueAccent,
+            value: value,
+
+            // elevation: 10,
+            style: TextStyle(color: Colors.red),
+            items: itemList.map<DropdownMenuItem<T>>((T value) {
+              return DropdownMenuItem<T>(
+                  //alignment: Alignment.bottomCenter,
+
+                  value: value,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10.0),
+                    width:
+                        // MediaQuery.of(context).size.width * .5,
+                        double.maxFinite,
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Text(
+                            (value as DropDownModel).getOptionName(),
+                            textAlign: TextAlign.left,
+                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black87))),
+                          width: double.maxFinite,
+                        ),
+                      ],
+                    ),
+                  ));
+            }).toList(),
+            isExpanded: true,
+            underline: const SizedBox(),
+            hint: Text(
+              selectText,
+              style: TextStyle(
+                  color: isGrey ? Colors.black : Colors.black,
+                  fontSize: 15,
+                  fontFamily: fontfamily,
+                  fontWeight: FontWeight.bold),
+            ),
+
+            dropdownColor: Colors.white,
+
+            onChanged: !isEnable
+                ? null
+                : (T value) {
+                    // setState(() {
+                    onChange(value);
+
+                    // });
+                  },
           ),
         ),
       ],

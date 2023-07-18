@@ -39,7 +39,7 @@ class _PersonalChatsState extends State<PersonalChats> {
     String name = '';
     personal.members.forEach((member) {
       if (member.id != context.read<ChatProvider>().getUser().uid) {
-        print('member name: ${member.name}');
+        // print('member name: ${member.name}');
         name = member.name;
 
         if (member.isAdmin == 1) {
@@ -53,7 +53,6 @@ class _PersonalChatsState extends State<PersonalChats> {
 
     return InkWell(
       onTap: () {
-        
         context.read<ChatProvider>().setChatRoomId(personal.groupId);
         // create a admin-user chat group
         Navigator.push(
