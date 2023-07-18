@@ -303,6 +303,30 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool isShowDelete(ChatModel message) {
+    if (currentGroupType == GroupType.groupChat) {
+      // user is admin
+      if (isChatAdmin()) {
+        return true;
+      } else {
+        // if message is sent by me
+        if (message.sentBy == getUser().uid) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } else if (currentGroupType == GroupType.singleChat) {
+      if (message.sentBy == getUser().uid) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   void deleteGroupMessage() {
     print("-- deleteGroupMessage -- ");
     FirebaseChatHandler.deleteMessageInDiscussion(currentGroupId, selectedChat);
