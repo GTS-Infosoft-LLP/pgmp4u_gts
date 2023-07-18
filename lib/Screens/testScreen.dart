@@ -36,8 +36,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
       return Color(int.parse('FF$hexCode', radix: 16));
     }
 
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -53,7 +52,8 @@ class _TextPreDetailState extends State<TextPreDetail> {
                 ),
               ),
               child: Container(
-                margin: EdgeInsets.only(left: width * (20 / 420), right: width * (20 / 420), top: height * (16 / 800)),
+                margin: EdgeInsets.only(left: width * (20 / 420), right: width * (20 / 420), top: height * (20 / 800)),
+                padding: EdgeInsets.only(top: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -458,6 +458,6 @@ class _TextPreDetailState extends State<TextPreDetail> {
           ],
         ),
       ),
-    ));
+    );
   }
 }

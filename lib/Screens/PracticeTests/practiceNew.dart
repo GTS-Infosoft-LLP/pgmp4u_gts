@@ -244,31 +244,17 @@ class _PracticeNewState extends State<PracticeNew> {
                                             color: Colors.white,
                                           ),
                                         ),
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            // Text(
-                                            //   arguments != null ? '  Review' : '',
-                                            //   style: TextStyle(
-                                            //       fontFamily: 'Roboto Medium',
-                                            //       fontSize: width * (18 / 420),
-                                            //       color: Colors.white,
-                                            //       letterSpacing: 0.3),
-                                            // ),
-                                            Container(
-                                              width: MediaQuery.of(context).size.width * .8,
-                                              child: Text(
-                                                "  " + widget.pracTestName,
-                                                maxLines: 2,
-                                                style: TextStyle(
-                                                    fontFamily: 'Roboto Medium',
-                                                    fontSize: width * (18 / 420),
-                                                    color: Colors.white,
-                                                    letterSpacing: 0.3),
-                                              ),
-                                            ),
-                                          ],
+                                        Container(
+                                          width: MediaQuery.of(context).size.width * .8,
+                                          child: Text(
+                                            "  " + widget.pracTestName,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                                fontFamily: 'Roboto Medium',
+                                                fontSize: width * (18 / 420),
+                                                color: Colors.white,
+                                                letterSpacing: 0.3),
+                                          ),
                                         ),
                                       ],
                                     ),
