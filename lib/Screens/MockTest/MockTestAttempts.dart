@@ -451,7 +451,9 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                                   mockData.attemptList[index]
                                                                                       .attempted_date.isNotEmpty)
                                                                               ? 'Date of Attempt: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(mockData.attemptList[index].attempted_date))}'
-                                                                              : "",
+                                                                              : cp.aviAttempts[index].tobeAttempted == 1
+                                                                                  ? 'You can start this now! All the best'
+                                                                                  : 'On Hold Until Previous Test Concludes ',
                                                                           style: TextStyle(
                                                                               fontFamily: 'Roboto Regular',
                                                                               fontSize: width * (15 / 420),

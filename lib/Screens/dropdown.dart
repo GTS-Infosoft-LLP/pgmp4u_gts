@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomDropDown<T> extends StatefulWidget {
+class CustomDropDown<T> extends StatelessWidget {
   CustomDropDown({
     Key key,
     this.onChange,
@@ -31,11 +31,6 @@ class CustomDropDown<T> extends StatefulWidget {
   double width;
 
   @override
-  State<CustomDropDown<T>> createState() => _CustomDropDownState<T>();
-}
-
-class _CustomDropDownState<T> extends State<CustomDropDown<T>> {
-  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,12 +41,13 @@ class _CustomDropDownState<T> extends State<CustomDropDown<T>> {
           decoration: BoxDecoration(
               boxShadow: const [BoxShadow(color: Colors.black26, offset: Offset(0, 0))],
               color: Colors.white,
+
               // border: Border.all(
               //   color: Colors.grey,
               // ),
               borderRadius: BorderRadius.circular(28)),
           height: 56,
-          width: widget.width,
+          width: width,
           child: DropdownButton<T>(
             alignment: Alignment.centerLeft,
 
@@ -60,48 +56,55 @@ class _CustomDropDownState<T> extends State<CustomDropDown<T>> {
               color: Colors.black,
             ),
             focusColor: Colors.blueAccent,
-            value: widget.value,
+            value: value,
 
             // elevation: 10,
             style: TextStyle(color: Colors.red),
-            items: widget.itemList.map<DropdownMenuItem<T>>((T value) {
+            items: itemList.map<DropdownMenuItem<T>>((T value) {
               return DropdownMenuItem<T>(
-                //alignment: Alignment.bottomCenter,
+                  //alignment: Alignment.bottomCenter,
 
-                value: value,
-                child: Container(
-                  margin: EdgeInsets.only(top: 10.0),
-                  width: double.maxFinite,
-                  alignment: Alignment.centerLeft,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Colors.grey),
+                  value: value,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10.0),
+                    width:
+                        // MediaQuery.of(context).size.width * .5,
+                        double.maxFinite,
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Text(
+                            (value as DropDownModel).getOptionName(),
+                            textAlign: TextAlign.left,
+                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black87))),
+                          width: double.maxFinite,
+                        ),
+                      ],
                     ),
-                  ),
-                  child: Text(
-                    (value as DropDownModel).getOptionName(),
-                    textAlign: TextAlign.left,
-                    style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              );
+                  ));
             }).toList(),
             isExpanded: true,
             underline: const SizedBox(),
             hint: Text(
-              widget.selectText,
+              selectText,
               style: TextStyle(
-                  color: widget.isGrey ? Colors.black : Colors.black,
+                  color: isGrey ? Colors.black : Colors.black,
                   fontSize: 15,
-                  fontFamily: widget.fontfamily,
+                  fontFamily: fontfamily,
                   fontWeight: FontWeight.bold),
             ),
+
             dropdownColor: Colors.white,
-            onChanged: !widget.isEnable
+
+            onChanged: !isEnable
                 ? null
                 : (T value) {
                     // setState(() {
-                    widget.onChange(value);
+                    onChange(value);
 
                     // });
                   },
