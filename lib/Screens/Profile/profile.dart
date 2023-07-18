@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
-import 'package:pgmp4u/Screens/Domain/screens/domainList.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/api/apis.dart';
@@ -660,33 +659,76 @@ class _ProfileState extends State<Profile> {
                                   height: 10,
                                 ),
 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      'Notifications',
-                                      style: TextStyle(
-                                        fontFamily: 'Roboto Medium',
-                                        fontSize: 16,
-                                        color: Colors.black,
+                                Container(
+                                  // margin: EdgeInsets.only(bottom: 6),
+                                  padding:
+                                      EdgeInsets.only(top: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                  color: Colors.white,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.notifications_paused_sharp,
+                                            size: width * (26 / 420),
+                                            color: _colorfromhex("#ABAFD1"),
+                                          ),
+                                          Text(
+                                            '   Notifications',
+                                            style: TextStyle(
+                                              fontFamily: 'Roboto Medium',
+                                              fontSize: width * (18 / 420),
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    Switch(
-                                      onChanged: (val) {
-                                        print("object val===$val");
-                                        setState(() {
-                                          isSwitched = val;
-                                          showNotifyOnOffPopup(val);
-                                        });
-                                      },
-                                      value: isSwitched,
-                                      activeColor: AppColor.green,
-                                      activeTrackColor: _colorfromhex("#3A47AD"),
-                                      inactiveThumbColor: AppColor.purpule,
-                                      inactiveTrackColor: Color.fromARGB(255, 197, 181, 181),
-                                    ),
-                                  ],
+                                      Switch(
+                                        onChanged: (val) {
+                                          print("object val===$val");
+                                          setState(() {
+                                            isSwitched = val;
+                                            showNotifyOnOffPopup(val);
+                                          });
+                                        },
+                                        value: isSwitched,
+                                        activeColor: AppColor.green,
+                                        activeTrackColor: _colorfromhex("#3A47AD"),
+                                        inactiveThumbColor: AppColor.purpule,
+                                        inactiveTrackColor: Color.fromARGB(255, 197, 181, 181),
+                                      ),
+                                    ],
+                                  ),
                                 ),
+
+                                // Row(
+                                //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                //   children: [
+                                //     Text(
+                                //       'Notifications',
+                                //       style: TextStyle(
+                                //         fontFamily: 'Roboto Medium',
+                                //         fontSize: 16,
+                                //         color: Colors.black,
+                                //       ),
+                                //     ),
+                                //     Switch(
+                                //       onChanged: (val) {
+                                //         print("object val===$val");
+                                //         setState(() {
+                                //           isSwitched = val;
+                                //           showNotifyOnOffPopup(val);
+                                //         });
+                                //       },
+                                //       value: isSwitched,
+                                //       activeColor: AppColor.green,
+                                //       activeTrackColor: _colorfromhex("#3A47AD"),
+                                //       inactiveThumbColor: AppColor.purpule,
+                                //       inactiveTrackColor: Color.fromARGB(255, 197, 181, 181),
+                                //     ),
+                                //   ],
+                                // ),
 
                                 Consumer<ProfileProvider>(builder: (context, pp, child) {
                                   return GestureDetector(
@@ -766,47 +808,6 @@ class _ProfileState extends State<Profile> {
                                     ),
                                   );
                                 }),
-
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DomainList()));
-                                    //Navigator.of(context)
-                                    //   .pushNamed('/settings');
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(bottom: 6),
-                                    padding: EdgeInsets.only(
-                                        top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                                    color: Colors.white,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.settings,
-                                              size: width * (26 / 420),
-                                              color: _colorfromhex("#ABAFD1"),
-                                            ),
-                                            Text(
-                                              '   Settings',
-                                              style: TextStyle(
-                                                fontFamily: 'Roboto Medium',
-                                                fontSize: width * (18 / 420),
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Icon(
-                                          Icons.arrow_forward_ios,
-                                          size: 20,
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
 
                                 // GestureDetector(
                                 //   onTap: () {

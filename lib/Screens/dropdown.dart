@@ -40,6 +40,7 @@ class CustomDropDown<T> extends StatelessWidget {
           decoration: BoxDecoration(
               boxShadow: const [BoxShadow(color: Colors.black26, offset: Offset(0, 0))],
               color: Colors.white,
+
               // border: Border.all(
               //   color: Colors.grey,
               // ),
@@ -63,7 +64,9 @@ class CustomDropDown<T> extends StatelessWidget {
                     value: value,
                     child: Container(
                       margin: EdgeInsets.only(top: 10.0),
-                      width: double.maxFinite,
+                      width:
+                          // MediaQuery.of(context).size.width * .5,
+                          double.maxFinite,
                       alignment: Alignment.centerLeft,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,

@@ -222,30 +222,30 @@ class _SubDomainState extends State<SubDomain> {
                                   ],
                                 ),
                                 new Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Premium",
-                                        // "",
-                                        // cp.pptCategoryList[index].paymentStatus == 1 ? "Premium" : "",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Icon(
-                                          Icons.east,
-                                          size: 30,
-                                          color: _colorfromhex("#ABAFD1"),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(right: 8.0),
+                                //   child: Column(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: [
+                                //       Text(
+                                //         "Premium",
+                                //         // "",
+                                //         // cp.pptCategoryList[index].paymentStatus == 1 ? "Premium" : "",
+                                //         style: TextStyle(
+                                //           fontSize: 14,
+                                //           color: Colors.black,
+                                //         ),
+                                //       ),
+                                //       Container(
+                                //         child: Icon(
+                                //           Icons.east,
+                                //           size: 30,
+                                //           color: _colorfromhex("#ABAFD1"),
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
