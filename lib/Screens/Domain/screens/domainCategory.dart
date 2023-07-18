@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:pgmp4u/Screens/Domain/screens/tasksList.dart';
-import 'package:pgmp4u/provider/courseProvider.dart';
-import 'package:pgmp4u/tool/ShapeClipper.dart';
+import 'package:pgmp4u/Screens/Domain/screens/domainProvider.dart';
 import 'package:provider/provider.dart';
 
-import 'domainProvider.dart';
+import '../../../tool/ShapeClipper.dart';
+import 'domainList.dart';
 
-class SubDomain extends StatefulWidget {
-  const SubDomain({Key key}) : super(key: key);
+class DomainCategory extends StatefulWidget {
+  const DomainCategory({Key key}) : super(key: key);
 
   @override
-  State<SubDomain> createState() => _SubDomainState();
+  State<DomainCategory> createState() => _DomainCategoryState();
 }
 
-class _SubDomainState extends State<SubDomain> {
+class _DomainCategoryState extends State<DomainCategory> {
   @override
   Color clr;
   void initState() {
@@ -70,7 +69,7 @@ class _SubDomainState extends State<SubDomain> {
                         // color: Colors.amber,
                         width: MediaQuery.of(context).size.width * .65,
                         child: Text(
-                          "Sub Domains",
+                          "Domain Category",
                           // cp.selectedCourseName,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -84,19 +83,6 @@ class _SubDomainState extends State<SubDomain> {
               }),
             ]),
             SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.only(left: 18.0),
-              child: Text(
-                "Domain Name",
-                // cp.pptCategoryList[index].name,
-                maxLines: 2,
-                style: TextStyle(
-                  fontFamily: 'Roboto Regular',
-                  fontSize: 18,
-                  color: Colors.black,
-                ),
-              ),
-            ),
             Consumer<DomainProvider>(builder: (context, dp, child) {
               // return cp.isPPTLoading
               //     ? Container(
@@ -109,19 +95,21 @@ class _SubDomainState extends State<SubDomain> {
                 child: ListView.builder(
                     itemCount: 5,
                     itemBuilder: (context, index) {
-                      if (index % 4 == 0) {
+                      if (index % 5 == 0) {
+                        clr = Color(0xff9953C1);
+                      } else if (index % 4 == 0) {
                         clr = Color(0xff3F9FC9);
                       } else if (index % 3 == 0) {
                         clr = Color(0xff3FC964);
                       } else if (index % 2 == 0) {
-                        clr = Color(0xffDE682B);
-                      } else {
                         clr = Color(0xffC93F7F);
+                      } else {
+                        clr = Color(0xffDE682B);
                       }
 
                       return InkWell(
                         onTap: () async {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TaskList()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => DomainList()));
                           // print("cp.pptCategoryList===========${cp.pptCategoryList[index].id}");
 
                           // await cp.getPpt(cp.pptCategoryList[index].id);
@@ -197,7 +185,7 @@ class _SubDomainState extends State<SubDomain> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "8 Sub Domains available",
+                                            "8 Domains available",
                                             style: TextStyle(
                                               fontSize: 14,
                                               color: Colors.grey,
@@ -212,7 +200,7 @@ class _SubDomainState extends State<SubDomain> {
                                     Container(
                                       width: MediaQuery.of(context).size.width * .55,
                                       child: Text(
-                                        "Sub Domain Name",
+                                        "Domain Name",
                                         // cp.pptCategoryList[index].name,
                                         maxLines: 2,
                                         style: TextStyle(
@@ -224,30 +212,30 @@ class _SubDomainState extends State<SubDomain> {
                                   ],
                                 ),
                                 new Spacer(),
-                                // Padding(
-                                //   padding: const EdgeInsets.only(right: 8.0),
-                                //   child: Column(
-                                //     mainAxisAlignment: MainAxisAlignment.center,
-                                //     children: [
-                                //       Text(
-                                //         "Premium",
-                                //         // "",
-                                //         // cp.pptCategoryList[index].paymentStatus == 1 ? "Premium" : "",
-                                //         style: TextStyle(
-                                //           fontSize: 14,
-                                //           color: Colors.black,
-                                //         ),
-                                //       ),
-                                //       Container(
-                                //         child: Icon(
-                                //           Icons.east,
-                                //           size: 30,
-                                //           color: _colorfromhex("#ABAFD1"),
-                                //         ),
-                                //       ),
-                                //     ],
-                                //   ),
-                                // ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Premium",
+                                        // "",
+                                        // cp.pptCategoryList[index].paymentStatus == 1 ? "Premium" : "",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Icon(
+                                          Icons.east,
+                                          size: 30,
+                                          color: _colorfromhex("#ABAFD1"),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),

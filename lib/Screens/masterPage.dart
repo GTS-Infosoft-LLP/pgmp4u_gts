@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
+import 'package:pgmp4u/Screens/Domain/screens/domainProvider.dart';
 import 'package:pgmp4u/Screens/home_view/application_support.dart';
 import 'package:pgmp4u/Screens/pptCateScreen.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
@@ -10,6 +11,7 @@ import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/app_color.dart';
+import 'Domain/screens/domainCategory.dart';
 import 'MockTest/mockTest.dart';
 import 'MockTest/model/masterdataModel.dart';
 import 'Tests/local_handler/hive_handler.dart';
@@ -211,6 +213,19 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                             builder: (context) => PPTCardItem(
                                                                                 title: storedMaster[index].name)));
                                                                   });
+                                                                }
+
+                                                                if (page == "Domain") {
+                                                                  DomainProvider dp=Provider.of(context,listen: false);
+                                                                  // dp.getDomainCateData(storedMaster[index].id);
+                                                            
+
+
+
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => DomainCategory()));
                                                                 }
 
                                                                 if (page == "Videos") {

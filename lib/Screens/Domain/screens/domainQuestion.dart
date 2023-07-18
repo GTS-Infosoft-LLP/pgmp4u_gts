@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:provider/provider.dart';
 
+import 'domainProvider.dart';
+
 class DomainQuestions extends StatefulWidget {
   const DomainQuestions({Key key}) : super(key: key);
 
@@ -92,7 +94,7 @@ class _DomainQuestionsState extends State<DomainQuestions> {
             SizedBox(
               height: 10,
             ),
-            Consumer<CourseProvider>(builder: (context, cp, child) {
+            Consumer<DomainProvider>(builder: (context, dp, child) {
               return Container(
                   height: MediaQuery.of(context).size.height * .7,
                   // width: MediaQuery.of(context).size.width * .9,

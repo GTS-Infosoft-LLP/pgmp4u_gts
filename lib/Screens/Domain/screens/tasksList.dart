@@ -5,6 +5,8 @@ import 'package:pgmp4u/tool/ShapeClipper.dart';
 
 import 'package:provider/provider.dart';
 
+import 'domainProvider.dart';
+
 
 
 class TaskList extends StatefulWidget {
@@ -46,7 +48,7 @@ class _TaskListState extends State<TaskList> {
                   ),
                 ),
               ),
-              Consumer<CourseProvider>(builder: (context, cp, child) {
+              Consumer<DomainProvider>(builder: (context, dp, child) {
                 return Container(
                   padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
                   child: Row(
@@ -98,7 +100,7 @@ class _TaskListState extends State<TaskList> {
                 ),
               ),
             ),
-            Consumer<CourseProvider>(builder: (context, cp, child) {
+            Consumer<DomainProvider>(builder: (context, dp, child) {
               // return cp.isPPTLoading
               //     ? Container(
               //         height: MediaQuery.of(context).size.height * .60,
