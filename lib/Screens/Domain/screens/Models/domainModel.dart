@@ -1,6 +1,7 @@
 class DomainDetails {
   int id;
   String name;
+  String lable;
   int position;
   int courseId;
   int masterList;
@@ -12,6 +13,7 @@ class DomainDetails {
   DomainDetails.fromjson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    lable = json['lable'];
     position = json['position'];
     courseId = json['courseId'];
     masterList = json['masterList'];

@@ -135,6 +135,7 @@ class _SubDomainState extends State<SubDomain> {
                                     MaterialPageRoute(
                                         builder: (context) => TaskList(
                                               subDomainName: dp.SubDomainList[index].name,
+                                              subDomainLable: dp.SubDomainList[index].lable,
                                             )));
                               },
                               child: Padding(

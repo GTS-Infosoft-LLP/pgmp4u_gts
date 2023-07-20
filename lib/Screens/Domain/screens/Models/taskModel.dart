@@ -57,14 +57,14 @@ class TaskPracQues {
     questionNo = json['question_no'];
     course = json['course'];
     category = json['category'];
-    question = json['question'];
-    domain = json['domain'];
+    question = json['question'] ?? "";
+    domain = json['domain'] ?? "";
     questionType = json['question_type'];
-    rightAnswer = json['right_answer'];
-    explanation = json['explanation'];
-    image = json['image'];
+    rightAnswer = json['right_answer'] ?? "";
+    explanation = json['explanation'] ?? "";
+    image = json['image'] ?? "";
     isSent = json['isSent'];
-    sendDate = json['sendDate'];
+    sendDate = json['sendDate'] ?? "";
     status = json['status'];
     deleteStatus = json['deleteStatus'];
     sendDateFormat = json['sendDateFormat'];
@@ -97,7 +97,7 @@ class TaskOptions {
   TaskOptions.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     question = json['question'];
-    questionOption = json['question_option'];
+    questionOption = json['question_option'] ?? "";
     rightAnswer = json['right_answer'];
     status = json['status'];
     deleteStatus = json['deleteStatus'];

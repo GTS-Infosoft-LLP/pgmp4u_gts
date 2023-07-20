@@ -6,8 +6,6 @@ import 'package:pgmp4u/Screens/Domain/widget/taskQuestions.dart';
 import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
-import '../../../provider/courseProvider.dart';
-
 class TaskDetail extends StatefulWidget {
   String subDomainName;
   TaskDetail({Key key, this.subDomainName}) : super(key: key);
@@ -105,7 +103,7 @@ class _TaskDetailState extends State<TaskDetail> {
                     ),
                   ),
                 ),
-                Consumer<CourseProvider>(builder: (context, cp, child) {
+                Consumer<DomainProvider>(builder: (context, dp, child) {
                   return Container(
                     padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
                     child: Row(
@@ -130,7 +128,7 @@ class _TaskDetailState extends State<TaskDetail> {
                           width: MediaQuery.of(context).size.width * .65,
                           child: Text(
                             // widget.subDomainName,
-                            cp.selectedCourseName,
+                            dp.selectedDomainName,
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -154,7 +152,7 @@ class _TaskDetailState extends State<TaskDetail> {
                     : Padding(
                         padding: const EdgeInsets.only(left: 18.0),
                         child: Text(
-                          dp.selectedTaskLable + "  ${colorIndex + 1}" + "/${5}",
+                          dp.selectedTaskName + ":  ${colorIndex + 1}" + "/${5}",
                           maxLines: 2,
                           style: TextStyle(
                             fontFamily: 'Roboto',
@@ -179,6 +177,7 @@ class _TaskDetailState extends State<TaskDetail> {
                             itemCount: 5,
                             onPageChanged: (index) {
                               print("index valuee====$index");
+                              print("task question===${dp.TaskQues}");
                               setState(() {
                                 colorIndex = index;
                                 currentIndex = index;
@@ -200,7 +199,13 @@ class _TaskDetailState extends State<TaskDetail> {
                                           ? TaskExple(context, 0)
                                           : currentIndex == 3
                                               ? TaskKeywrd(context, 0)
-                                              : TaskQuestion();
+                                              : dp.TaskQues.isNotEmpty
+                                                  ? TaskQuestion()
+                                                  : Center(
+                                                      child: Text(
+                                                      "No Questions Available",
+                                                      style: TextStyle(fontSize: 18),
+                                                    ));
                             }),
                         dp.taskDetailApiCall
                             ? SizedBox()
@@ -406,7 +411,7 @@ Widget TaskDisc(BuildContext context, currentIndex) {
   DomainProvider dp = Provider.of(context, listen: false);
   return SingleChildScrollView(
     child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+      padding: const EdgeInsets.only(left: 15.0, right: 10, bottom: 40),
       child: Column(children: [
         SizedBox(
           height: 30,

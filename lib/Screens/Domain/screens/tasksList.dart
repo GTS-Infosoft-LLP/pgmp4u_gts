@@ -10,7 +10,8 @@ import 'domainProvider.dart';
 
 class TaskList extends StatefulWidget {
   String subDomainName;
-  TaskList({Key key, this.subDomainName}) : super(key: key);
+  String subDomainLable;
+  TaskList({Key key, this.subDomainName, this.subDomainLable}) : super(key: key);
 
   @override
   State<TaskList> createState() => _TaskListState();
@@ -20,6 +21,14 @@ class _TaskListState extends State<TaskList> {
   @override
   Color clr;
   void initState() {
+    print("subDomainName=====${widget.subDomainName}");
+    print("subDomainLable=====${widget.subDomainLable}");
+    if (widget.subDomainName == null || widget.subDomainName.isEmpty) {
+      widget.subDomainName = "";
+    }
+    if (widget.subDomainLable == null || widget.subDomainLable.isEmpty) {
+      widget.subDomainLable = "Task";
+    }
     // TODO: implement initState
     super.initState();
   }
@@ -74,9 +83,9 @@ class _TaskListState extends State<TaskList> {
                           // color: Colors.amber,
                           width: MediaQuery.of(context).size.width * .65,
                           child: Text(
-                            "Tasks",
+                            widget.subDomainLable ?? "" + " Tasks",
                             // cp.selectedCourseName,
-                            maxLines: 2,
+                            maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
@@ -92,7 +101,7 @@ class _TaskListState extends State<TaskList> {
             Padding(
               padding: const EdgeInsets.only(left: 18.0),
               child: Text(
-                widget.subDomainName,
+                widget.subDomainName ?? "Tasks",
                 // cp.pptCategoryList[index].name,
                 maxLines: 2,
                 style: TextStyle(

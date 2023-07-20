@@ -23,9 +23,15 @@ class DomainProvider extends ChangeNotifier {
   List<DomainDetails> DomainList = [];
   List<SubDomainDetails> SubDomainList = [];
 
-  String selectedTaskLable;
+  String selectedTaskName;
   setSelectedTaskLable(val) {
-    selectedTaskLable = val;
+    selectedTaskName = val;
+    notifyListeners();
+  }
+
+  String selectedDomainName;
+  setSelectedDomainName(val) {
+    selectedDomainName = val;
     notifyListeners();
   }
 
@@ -207,6 +213,7 @@ class DomainProvider extends ChangeNotifier {
   int taskCount;
   Future<void> getTasksData(int id, dynamic val) async {
     updateTaskApiCall(true);
+    print("tast loader lOADER====$taskApiCall");
     TaskList = [];
     print("this apiii====");
     print("idddd=========>>>>>>>>>>>>>>>$id");

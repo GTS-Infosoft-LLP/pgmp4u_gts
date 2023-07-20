@@ -133,6 +133,7 @@ class _DomainListState extends State<DomainList> {
                             onTap: () async {
                               print("dp.DomainList[index].name====${dp.DomainList[index].name}");
                               dp.setSelectedDomainId(dp.DomainList[index].id);
+                              dp.setSelectedDomainName(dp.DomainList[index].name);
 
                               if (dp.DomainList[index].SubDomains == 0) {
                                 dp.getTasksData(dp.DomainList[index].id, "");
@@ -151,9 +152,6 @@ class _DomainListState extends State<DomainList> {
                                               dmnName: dp.DomainList[index].name,
                                             )));
                               }
-
-          
-                        
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
@@ -183,7 +181,7 @@ class _DomainListState extends State<DomainList> {
                                             padding: const EdgeInsets.all(17.0),
                                             child: Container(
                                               decoration: BoxDecoration(
-                                                color: Colors.white,   
+                                                color: Colors.white,
                                                 borderRadius: BorderRadius.circular(80),
                                               ),
                                               child: Center(
@@ -210,8 +208,8 @@ class _DomainListState extends State<DomainList> {
                                                 //     ? "No Domain Available"
                                                 //     :
                                                 dp.DomainList[index].SubDomains == 1
-                                                    ? "${dp.DomainList[index].SubDomains} Task "
-                                                    : "${dp.DomainList[index].SubDomains} Tasks ",
+                                                    ? "${dp.DomainList[index].SubDomains} Task"
+                                                    : "${dp.DomainList[index].SubDomains} Tasks",
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.grey,
