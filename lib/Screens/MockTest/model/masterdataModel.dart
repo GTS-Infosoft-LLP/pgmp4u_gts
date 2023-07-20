@@ -20,6 +20,12 @@ class MasterDetails {
   int status;
   @HiveField(7)
   int deleteStatus;
+ @HiveField(8)
+  int payment_status;
+  @HiveField(9)
+  String price;
+
+
   MasterDetails();
 
   MasterDetails.fromjson(Map<String, dynamic> json) {
@@ -31,5 +37,7 @@ class MasterDetails {
     courseId = json["courseId"];
     status = json["status"];
     deleteStatus = json["deleteStatus"];
+    payment_status = json["payment_status"];
+    price = json["price"];
   }
 }

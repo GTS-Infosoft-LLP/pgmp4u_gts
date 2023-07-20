@@ -19,8 +19,15 @@ class DomainProvider extends ChangeNotifier {
 
   List<DomainCategoryDetails> DomainCateList = [];
   List<TaskDetails> TaskList = [];
+  List<TaskDetails> TaskDetailList = [];
   List<DomainDetails> DomainList = [];
   List<SubDomainDetails> SubDomainList = [];
+
+  String selectedTaskLable;
+  setSelectedTaskLable(val) {
+    selectedTaskLable = val;
+    notifyListeners();
+  }
 
   int selectedDomainId;
   int selectedSubDomainId;
@@ -38,7 +45,13 @@ class DomainProvider extends ChangeNotifier {
   bool subDomainApiCall = false;
   bool domainCateApiCall = false;
   bool taskApiCall = false;
+  bool taskDetailApiCall = false;
   bool domainApiCall = false;
+
+  updateTaskDetailApiCall(bool val) {
+    taskDetailApiCall = val;
+    notifyListeners();
+  }
 
   updateSubDomainApiCall(bool val) {
     subDomainApiCall = val;
@@ -119,7 +132,9 @@ class DomainProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool domainStatus = true;
   Future<void> getDomainData(int idMaster, int idCrs) async {
+    domainStatus = true;
     updateDomainApiCall(true);
     DomainList = [];
     print("idMaster=========>>>>>>>>>>>>>>>$idMaster");
@@ -139,10 +154,20 @@ class DomainProvider extends ChangeNotifier {
       );
 
       print("response.statusCode===${response.body}");
+
       print("response.statusCode===${response.statusCode}");
+
+      // domainStatus;
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
+
+      print("satusss====${resDDo["success"]}");
+
+      if (resDDo["success"] == false) {
+        domainStatus = false;
+        return;
+      }
 
       if (response.statusCode == 400) {
         updateDomainApiCall(false);
@@ -160,6 +185,7 @@ class DomainProvider extends ChangeNotifier {
         print("mapResponse====${mapResponse['status']}");
         if (mapResponse['status'] == 400) {
           DomainList = [];
+          print("DomainList=====$DomainList");
 
           return;
         }
@@ -179,17 +205,27 @@ class DomainProvider extends ChangeNotifier {
   }
 
   int taskCount;
-  Future<void> getTasksData(int id) async {
+  Future<void> getTasksData(int id, dynamic val) async {
     updateTaskApiCall(true);
     TaskList = [];
     print("this apiii====");
     print("idddd=========>>>>>>>>>>>>>>>$id");
-    print("idddd=========>>>>>>>>>>>>>>>$selectedDomainId");
+    print("val=========>>>>>>>>>>>>>>>$val");
+
+    dynamic subDomnId = selectedDomainId;
+    if (val == "") {
+      subDomnId = "";
+    } else {
+      subDomnId = val;
+    }
+
+    print("domnId======$subDomnId");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
     print("token valued===$stringValue");
-    var request = {"domainId": selectedDomainId, "subdomainId": id};
+    var request = {"domainId": id, "subdomainId": subDomnId};
+    print("request==============$request");
 
     try {
       var response = await http.post(
@@ -236,6 +272,75 @@ class DomainProvider extends ChangeNotifier {
     } on Exception {
       updateTaskApiCall(false);
     }
+    notifyListeners();
+  }
+
+  List<TaskPracQues> TaskQues = [];
+  Future<void> getTasksDetailData(int id) async {
+    updateTaskDetailApiCall(true);
+    TaskDetailList = [];
+    print("this apiii====");
+    print("idddd=========>>>>>>>>>>>>>>>$id");
+    print("idddd=========>>>>>>>>>>>>>>>$selectedDomainId");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+
+    print("token valued===$stringValue");
+    var request = {"id": id};
+
+    try {
+      var response = await http.post(
+        Uri.parse(GET_TASK_DETAIL),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
+
+      print("response.statusCode===${response.body}");
+      print("response.statusCode===${response.statusCode}");
+
+      var resDDo = json.decode(response.body);
+      var resStatus = (resDDo["status"]);
+
+      if (response.statusCode == 400) {
+        updateTaskDetailApiCall(false);
+        print("statussssssss");
+        TaskDetailList = [];
+
+        notifyListeners();
+        return;
+      }
+      if (response.statusCode == 200) {
+        updateTaskDetailApiCall(false);
+        TaskDetailList.clear();
+        print("");
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+        print("mapResponse====${mapResponse['status']}");
+        if (mapResponse['status'] == 400) {
+          TaskDetailList = [];
+          return;
+        }
+
+        if (mapResponse["status"] == 200) {
+          List temp1 = mapResponse["data"];
+          List temp2 = temp1[0]["practiceTest"];
+          TaskQues = temp2.map((e) => TaskPracQues.fromJson(e)).toList();
+          print("Tpq=======$TaskQues");
+          TaskDetailList = temp1.map((e) => TaskDetails.fromjson(e)).toList();
+          print("TaskDetailList=========${TaskDetailList[0].name}");
+        }
+      }
+      print("respponse=== ${response.body}");
+    } on Exception {
+      updateTaskDetailApiCall(false);
+    }
+    notifyListeners();
+  }
+
+  List<int> dpselAns = [];
+  List<int> dpansRef = [];
+  void setList(List<int> selAns, List<int> ansRef) {
+    dpselAns = selAns;
+    dpansRef = ansRef;
     notifyListeners();
   }
 }

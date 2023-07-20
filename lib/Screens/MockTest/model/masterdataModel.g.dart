@@ -24,13 +24,15 @@ class MasterDetailsAdapter extends TypeAdapter<MasterDetails> {
       ..label = fields[4] as String
       ..courseId = fields[5] as int
       ..status = fields[6] as int
-      ..deleteStatus = fields[7] as int;
+      ..deleteStatus = fields[7] as int
+      ..payment_status = fields[8] as int
+      ..price = fields[9] as String;
   }
 
   @override
   void write(BinaryWriter writer, MasterDetails obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -46,7 +48,11 @@ class MasterDetailsAdapter extends TypeAdapter<MasterDetails> {
       ..writeByte(6)
       ..write(obj.status)
       ..writeByte(7)
-      ..write(obj.deleteStatus);
+      ..write(obj.deleteStatus)
+      ..writeByte(8)
+      ..write(obj.payment_status)
+      ..writeByte(9)
+      ..write(obj.price);
   }
 
   @override

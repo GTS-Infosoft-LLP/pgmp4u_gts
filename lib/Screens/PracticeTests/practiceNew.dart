@@ -798,13 +798,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                             ],
                                                                                           )
                                                                                         :
-                                                                                        // options[index].id ==
-                                                                                        //             selectedAnswer &&
-                                                                                        //         int.parse(data
-                                                                                        //                 .pList[_quetionNo]
-                                                                                        //                 .ques
-                                                                                        //                 .rightAnswer) !=
-                                                                                        //             selectedAnswer
+                                                                                  
 
                                                                                         selAns.length ==
                                                                                                     correctAns.length &&

@@ -69,7 +69,7 @@ class _DomainCategoryState extends State<DomainCategory> {
                         // color: Colors.amber,
                         width: MediaQuery.of(context).size.width * .65,
                         child: Text(
-                          "Domain Category",
+                          "Task Detail List",
                           // cp.selectedCourseName,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,

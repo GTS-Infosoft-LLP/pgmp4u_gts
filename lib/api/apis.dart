@@ -117,6 +117,7 @@ const GET_DOMAIN_CATEGORIES = _BASE_URL+ "getDomainCategories";
 const GET_TASKS = _BASE_URL+ "getTasks";
 const GET_SUB_DOMAIN = _BASE_URL+ "getSubDomain";
 const GET_DOMAIN = _BASE_URL+ "getDomain";
+const GET_TASK_DETAIL =_BASE_URL + "getTaskDetails";
 
 
 

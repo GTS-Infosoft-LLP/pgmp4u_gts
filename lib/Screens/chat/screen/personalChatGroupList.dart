@@ -175,7 +175,7 @@ class _PersonalChatsState extends State<PersonalChats> {
             ),
             Spacer(),
             Text(
-              "Personal Chats",
+              "My Conversation",
               style: TextStyle(fontSize: 22, fontFamily: 'Roboto Medium', color: Colors.white),
             ),
             SizedBox(

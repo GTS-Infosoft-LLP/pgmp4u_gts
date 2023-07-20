@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:pgmp4u/Screens/Domain/screens/subDomainList.dart';
+import 'package:pgmp4u/Screens/Domain/screens/tasksList.dart';
 import 'package:pgmp4u/tool/ShapeClipper.dart';
 
 import 'package:provider/provider.dart';
 
+import '../../../provider/courseProvider.dart';
+import '../../../utils/app_color.dart';
 import 'domainProvider.dart';
 
 class DomainList extends StatefulWidget {
-  const DomainList({Key key}) : super(key: key);
+  String domainName;
+  DomainList({Key key, this.domainName}) : super(key: key);
 
   @override
   State<DomainList> createState() => _DomainListState();
@@ -45,7 +49,7 @@ class _DomainListState extends State<DomainList> {
                 ),
               ),
             ),
-            Consumer<DomainProvider>(builder: (context, dp, child) {
+            Consumer<CourseProvider>(builder: (context, cp, child) {
               return Container(
                 padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
                 child: Row(
@@ -70,7 +74,7 @@ class _DomainListState extends State<DomainList> {
                       // color: Colors.amber,
                       width: MediaQuery.of(context).size.width * .65,
                       child: Text(
-                        "Domains",
+                        cp.selectedCourseName,
                         // cp.selectedCourseName,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -84,6 +88,24 @@ class _DomainListState extends State<DomainList> {
             }),
           ]),
           SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.only(left: 18.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .9,
+              child: Consumer<DomainProvider>(builder: (context, dp, child) {
+                return Align(
+                  alignment: dp.DomainList.isEmpty ? Alignment.center : Alignment.topLeft,
+                  child: Text(
+                    dp.DomainList.isEmpty ? "No Data Found" : widget.domainName,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ),
           Consumer<DomainProvider>(builder: (context, dp, child) {
             return dp.domainApiCall
                 ? Container(
@@ -109,33 +131,29 @@ class _DomainListState extends State<DomainList> {
 
                           return InkWell(
                             onTap: () async {
+                              print("dp.DomainList[index].name====${dp.DomainList[index].name}");
                               dp.setSelectedDomainId(dp.DomainList[index].id);
-                              dp.getSubDomainData(dp.DomainList[index].id);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SubDomain()));
-                              // print("cp.pptCategoryList===========${cp.pptCategoryList[index].id}");
 
-                              // await cp.getPpt(cp.pptCategoryList[index].id);
+                              if (dp.DomainList[index].SubDomains == 0) {
+                                dp.getTasksData(dp.DomainList[index].id, "");
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TaskList(
+                                              subDomainName: "",
+                                            )));
+                              } else {
+                                dp.getSubDomainData(dp.DomainList[index].id);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SubDomain(
+                                              dmnName: dp.DomainList[index].name,
+                                            )));
+                              }
 
-                              // var pptPayStat = await cp.successValuePPT;
-                              // print("pptPayStat======$pptPayStat");
-                              // print("cp.pptCategoryList[index]====${cp.pptCategoryList[index].price}");
-                              // if (pptPayStat == false) {
-                              //   Navigator.push(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //           builder: (context) => RandomPage(
-                              //                 categoryId: cp.pptCategoryList[index].id,
-                              //                 price: cp.pptCategoryList[index].price,
-                              //                 index: 5,
-                              //               )));
-                              // } else {
-                              //   // Navigator.push(
-                              //   //     context,
-                              //   //     MaterialPageRoute(
-                              //   //         builder: (context) => PPTData(
-                              //   //               title: cp.pptCategoryList[index].name,
-                              //   //             )));
-                              // }
+          
+                        
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
@@ -154,21 +172,22 @@ class _DomainListState extends State<DomainList> {
                                       child: Container(
                                           height: 60,
                                           width: 60,
-                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: clr
-                                              // index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                                            // index % 2 == 0 ? AppColor.purpule : AppColor.green,
 
-                                              //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-                                              ),
+                                            //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                                          ),
                                           child: Padding(
                                             padding: const EdgeInsets.all(17.0),
                                             child: Container(
-                                              // decoration: BoxDecoration(
-                                              //   color: Colors.white,
-                                              //   borderRadius: BorderRadius.circular(80),
-                                              // ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,   
+                                                borderRadius: BorderRadius.circular(80),
+                                              ),
                                               child: Center(
-                                                child: Text('${index + 1}',
-                                                    style: TextStyle(color: Colors.white, fontSize: 18)),
+                                                child: Text('${index + 1}', style: TextStyle(color: Colors.black)),
                                               ),
                                             ),
                                           )),
@@ -187,10 +206,12 @@ class _DomainListState extends State<DomainList> {
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                dp.DomainList[index].SubDomains == 1 ||
-                                                        dp.DomainList[index].SubDomains == 0
-                                                    ? "${dp.DomainList[index].SubDomains} Domain available"
-                                                    : "${dp.DomainList[index].SubDomains} Domains available",
+                                                // dp.DomainList[index].SubDomains == 0
+                                                //     ? "No Domain Available"
+                                                //     :
+                                                dp.DomainList[index].SubDomains == 1
+                                                    ? "${dp.DomainList[index].SubDomains} Task "
+                                                    : "${dp.DomainList[index].SubDomains} Tasks ",
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.grey,

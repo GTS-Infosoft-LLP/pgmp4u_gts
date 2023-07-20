@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:pgmp4u/Screens/Domain/screens/domainProvider.dart';
+import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/Screens/home_view/application_support.dart';
 import 'package:pgmp4u/Screens/pptCateScreen.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/profileProvider.dart';
 import '../utils/app_color.dart';
 import 'Domain/screens/domainList.dart';
 import 'MockTest/mockTest.dart';
@@ -216,15 +218,34 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 }
 
                                                                 if (page == "Domain") {
+                                                                  ProfileProvider pp =
+                                                                      Provider.of(context, listen: false);
                                                                   DomainProvider dp =
                                                                       Provider.of(context, listen: false);
-                                                                  dp.getDomainData(
-                                                                      storedMaster[index].id, cp.selectedCourseId);
 
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => DomainList()));
+                                                                  pp.updateLoader(true);
+                                                                  await dp.getDomainData(
+                                                                      storedMaster[index].id, cp.selectedCourseId);
+                                                                  var checkStat = dp.domainStatus;
+                                                                  pp.updateLoader(false);
+                                                                  print("====checkStat====$checkStat");
+                                                                  if (checkStat == false) {
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) => RandomPage(
+                                                                                  categoryType: "Domain",
+                                                                                  categoryId: storedMaster[index].id,
+                                                                                  index: 6,
+                                                                                  price: storedMaster[index].price,
+                                                                                )));
+                                                                  } else {
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) => DomainList(
+                                                                                domainName: storedMaster[index].name)));
+                                                                  }
                                                                 }
 
                                                                 if (page == "Videos") {

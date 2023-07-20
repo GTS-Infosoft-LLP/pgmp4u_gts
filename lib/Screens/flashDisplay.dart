@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:getwidget/components/toast/gf_toast.dart';
+import 'package:getwidget/position/gf_toast_position.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../provider/courseProvider.dart';
 import '../provider/response_provider.dart';
@@ -236,6 +239,21 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                                   physics: BouncingScrollPhysics(),
                                                                   child: Html(
                                                                     data: storedFlash[index].description,
+                                                                    onAnchorTap: (url, ctx, attributes, element) async {
+                                                                      print("anchor url : $url");
+
+                                                                      Uri uri = Uri.parse(url);
+                                                                      if (await canLaunchUrlString(url)) {
+                                                                        await launchUrlString(url,
+                                                                            mode: LaunchMode.externalApplication);
+                                                                      } else {
+                                                                        GFToast.showToast(
+                                                                          "Can not launch this url",
+                                                                          context,
+                                                                          toastPosition: GFToastPosition.BOTTOM,
+                                                                        );
+                                                                      }
+                                                                    },
                                                                     style: {
                                                                       //   "body": Style(
                                                                       //     // padding: HtmlPaddings(top: HtmlPadding(5)),

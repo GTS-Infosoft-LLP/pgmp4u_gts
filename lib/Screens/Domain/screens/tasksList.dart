@@ -5,12 +5,12 @@ import 'package:pgmp4u/tool/ShapeClipper.dart';
 
 import 'package:provider/provider.dart';
 
+import '../../../utils/app_color.dart';
 import 'domainProvider.dart';
 
-
-
 class TaskList extends StatefulWidget {
-  const TaskList({Key key}) : super(key: key);
+  String subDomainName;
+  TaskList({Key key, this.subDomainName}) : super(key: key);
 
   @override
   State<TaskList> createState() => _TaskListState();
@@ -68,19 +68,21 @@ class _TaskListState extends State<TaskList> {
                                     Navigator.pop(context);
                                   }))),
                       SizedBox(width: 20),
-                      Center(
-                          child: Container(
-                        // color: Colors.amber,
-                        width: MediaQuery.of(context).size.width * .65,
-                        child: Text(
-                          "Tasks",
-                          // cp.selectedCourseName,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
-                        ),
-                      )),
+                      Consumer<CourseProvider>(builder: (context, cp, child) {
+                        return Center(
+                            child: Container(
+                          // color: Colors.amber,
+                          width: MediaQuery.of(context).size.width * .65,
+                          child: Text(
+                            "Tasks",
+                            // cp.selectedCourseName,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
+                          ),
+                        ));
+                      }),
                     ],
                   ),
                 );
@@ -90,7 +92,7 @@ class _TaskListState extends State<TaskList> {
             Padding(
               padding: const EdgeInsets.only(left: 18.0),
               child: Text(
-                "Sub Domain Name",
+                widget.subDomainName,
                 // cp.pptCategoryList[index].name,
                 maxLines: 2,
                 style: TextStyle(
@@ -110,7 +112,7 @@ class _TaskListState extends State<TaskList> {
                 height: MediaQuery.of(context).size.height * .78,
                 // width: MediaQuery.of(context).size.width * .95,
                 child: ListView.builder(
-                    itemCount: 5,
+                    itemCount: dp.TaskList.length,
                     itemBuilder: (context, index) {
                       if (index % 4 == 0) {
                         clr = Color(0xff3F9FC9);
@@ -122,97 +124,116 @@ class _TaskListState extends State<TaskList> {
                         clr = Color(0xffC93F7F);
                       }
 
-                      return InkWell(
-                        onTap: () async {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TaskDetail()));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                border:
-                                    Border(bottom: BorderSide(width: 1, color: Color.fromARGB(255, 219, 211, 211),),)),
-                            height: 70,
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 0,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 4.0),
-                                  child: Container(
-                                      height: 60,
-                                      width: 60,
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: clr
-                                          // index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                      return dp.taskApiCall
+                          ? Container(
+                              height: MediaQuery.of(context).size.height * .60,
+                              child: Center(child: CircularProgressIndicator.adaptive()))
+                          : InkWell(
+                              onTap: () async {
+                                print("dp.TaskList[index].id===${dp.TaskList[index].id}");
+                                print("dp.TaskList[index].id===${dp.TaskList[index].name}");
 
-                                          //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-                                          ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(17.0),
+                                dp.setSelectedTaskLable(dp.TaskList[index].lable);
+                                dp.getTasksDetailData(dp.TaskList[index].id);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TaskDetail(
+                                              subDomainName: dp.TaskList[index].name,
+                                            )));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                    bottom: BorderSide(
+                                      width: 1,
+                                      color: Color.fromARGB(255, 219, 211, 211),
+                                    ),
+                                  )),
+                                  height: 70,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 0,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(bottom: 4.0),
                                         child: Container(
-                                          // decoration: BoxDecoration(
-                                          //   color: Colors.white,
-                                          //   borderRadius: BorderRadius.circular(80),
-                                          // ),
-                                          child: Center(
-                                            child: Icon(
-                                              Icons.checklist_sharp,
-                                              // size: 30,
-                                              color: Colors.white,
-                                            ),
+                                            height: 60,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10),
+                                              color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                                              // index % 2 == 0 ? AppColor.purpule : AppColor.green,
 
-                                            // Text('${index + 1}',
-                                            //     style: TextStyle(color: Colors.white, fontSize: 18)),
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width * .45,
-                                      // color: Colors.amber,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(17.0),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(80),
+                                                ),
+                                                child: Center(
+                                                  child:
+                                                      // Icon(
+                                                      //   Icons.checklist_sharp,
+                                                      //   // size: 30,
+                                                      //   color: Colors.white,
+                                                      // ),
+
+                                                      Text('${index + 1}', style: TextStyle()),
+                                                ),
+                                              ),
+                                            )),
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            "8 Tasks available",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey,
+                                          Container(
+                                            width: MediaQuery.of(context).size.width * .45,
+                                            // color: Colors.amber,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  dp.TaskList[index].lable,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 0,
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context).size.width * .55,
+                                            child: Text(
+                                              dp.TaskList[index].name,
+                                              maxLines: 2,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 0,
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width * .55,
-                                      child: Text(
-                                        "Task Name",
-                                        // cp.pptCategoryList[index].name,
-                                        maxLines: 2,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+                              ),
+                            );
                     }),
               );
             })

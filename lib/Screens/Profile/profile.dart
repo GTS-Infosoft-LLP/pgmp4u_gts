@@ -22,6 +22,7 @@ import '../MockTest/model/courseModel.dart';
 import '../dropdown.dart';
 import '../notificationTabs.dart';
 import '../quesDayList.dart';
+import '../subscriptionScreen.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key key}) : super(key: key);
@@ -344,14 +345,19 @@ class _ProfileState extends State<Profile> {
                             ],
                           ),
 
-                          ClipOval(
-                            child: CachedNetworkImage(
-                              imageUrl: photoUrl != null ? photoUrl : '',
-                              fit: BoxFit.cover,
-                              width: width * (80 / 420),
-                              height: width * (80 / 420),
-                              placeholder: (context, url) => CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => Icon(Icons.error),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
+                            },
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl: photoUrl != null ? photoUrl : '',
+                                fit: BoxFit.cover,
+                                width: width * (80 / 420),
+                                height: width * (80 / 420),
+                                placeholder: (context, url) => CircularProgressIndicator(),
+                                errorWidget: (context, url, error) => Icon(Icons.error),
+                              ),
                             ),
                           ),
                           // photoUrl != null && photoUrl != ""

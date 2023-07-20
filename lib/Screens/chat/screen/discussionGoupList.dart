@@ -116,7 +116,7 @@ class _GroupListPageState extends State<GroupListPage> {
             ),
             Spacer(),
             Text(
-              "Discussion",
+              "Discussion Forum",
               style: TextStyle(fontSize: 22, fontFamily: 'Roboto Medium', color: Colors.white),
             ),
             Spacer(),

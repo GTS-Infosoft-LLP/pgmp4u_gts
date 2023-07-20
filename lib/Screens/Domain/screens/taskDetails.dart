@@ -2,13 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:pgmp4u/Screens/Domain/screens/domainProvider.dart';
+import 'package:pgmp4u/Screens/Domain/widget/taskQuestions.dart';
 import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
-import 'domainQuestion.dart';
+import '../../../provider/courseProvider.dart';
 
 class TaskDetail extends StatefulWidget {
-  const TaskDetail({Key key}) : super(key: key);
+  String subDomainName;
+  TaskDetail({Key key, this.subDomainName}) : super(key: key);
 
   @override
   State<TaskDetail> createState() => _TaskDetailState();
@@ -21,8 +23,10 @@ class _TaskDetailState extends State<TaskDetail> {
   int count;
   PageController pageController;
   ScrollController scrollController;
+  int isAnsCorrect = 0;
   void initState() {
     colorIndex = 0;
+    currentIndex = 0;
     count = 100;
     pageController = PageController();
     scrollController = ScrollController();
@@ -47,9 +51,7 @@ class _TaskDetailState extends State<TaskDetail> {
     return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: InkWell(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => DomainQuestions()));
-          },
+          onTap: () {},
           child: Padding(
             padding: const EdgeInsets.only(bottom: 15.0),
             child: Container(
@@ -103,7 +105,7 @@ class _TaskDetailState extends State<TaskDetail> {
                     ),
                   ),
                 ),
-                Consumer<DomainProvider>(builder: (context, dp, child) {
+                Consumer<CourseProvider>(builder: (context, cp, child) {
                   return Container(
                     padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
                     child: Row(
@@ -125,12 +127,11 @@ class _TaskDetailState extends State<TaskDetail> {
                         SizedBox(width: 20),
                         Center(
                             child: Container(
-                          // color: Colors.amber,
                           width: MediaQuery.of(context).size.width * .65,
                           child: Text(
-                            "Task Details",
-                            // cp.selectedCourseName,
-                            maxLines: 2,
+                            // widget.subDomainName,
+                            cp.selectedCourseName,
+                            maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: 22,
@@ -146,15 +147,14 @@ class _TaskDetailState extends State<TaskDetail> {
               ]),
               SizedBox(height: 20),
               Consumer<DomainProvider>(builder: (context, dp, child) {
-                return dp.taskApiCall
+                return dp.taskDetailApiCall
                     ? Container(
                         height: MediaQuery.of(context).size.height * .60,
                         child: Center(child: CircularProgressIndicator.adaptive()))
                     : Padding(
                         padding: const EdgeInsets.only(left: 18.0),
                         child: Text(
-                          "Details " + "${colorIndex + 1}" + "/${dp.TaskList.length}",
-                          // cp.pptCategoryList[index].name,
+                          dp.selectedTaskLable + "  ${colorIndex + 1}" + "/${5}",
                           maxLines: 2,
                           style: TextStyle(
                             fontFamily: 'Roboto',
@@ -176,11 +176,12 @@ class _TaskDetailState extends State<TaskDetail> {
                       children: [
                         PageView.builder(
                             controller: pageController,
-                            itemCount: dp.TaskList.length,
+                            itemCount: 5,
                             onPageChanged: (index) {
                               print("index valuee====$index");
                               setState(() {
                                 colorIndex = index;
+                                currentIndex = index;
                               });
 
                               if (colorIndex % 10 == 0) {
@@ -191,190 +192,54 @@ class _TaskDetailState extends State<TaskDetail> {
                               }
                             },
                             itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(left: 15.0, top: 20),
-                                child: Container(
-                                  height: 100,
-                                  // width: 100,
-                                  // color: Colors.amber,
-                                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "Task",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      dp.TaskList[index].name,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                          fontFamily: "Roboto Regular"),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Text(
-                                      "Discription",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    // SizedBox(
-                                    //   height: 10,
-                                    // ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 12.0),
-                                      child: Container(
-                                        height: MediaQuery.of(context).size.height * .54,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(left: 4.0, right: 18),
-                                          child: SingleChildScrollView(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(bottom: 8.0),
-                                              child: Column(
-                                                children: [
-                                                  Html(
-                                                    data: dp.TaskList != null ? dp.TaskList[index].description : '',
-                                                    style: {
-                                                      "body": Style(
-                                                        padding: EdgeInsets.only(top: 5),
-                                                        margin: EdgeInsets.zero,
-                                                        color: Color(0xff000000),
-                                                        textAlign: TextAlign.left,
-                                                        // maxLines: 7,
-                                                        // textOverflow: TextOverflow.ellipsis,
-                                                        fontSize: FontSize(18),
-                                                      )
-                                                    },
-                                                  ),
-                                                  dp.TaskList[index].Image != null
-                                                      ? Container(
-                                                          width: MediaQuery.of(context).size.width * .92,
-                                                          height: MediaQuery.of(context).size.height * .2,
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.grey[300],
-                                                            borderRadius: BorderRadius.circular(20),
-                                                          ),
-                                                          child: ClipRRect(
-                                                            borderRadius: BorderRadius.circular(10),
-                                                            child: CachedNetworkImage(
-                                                              imageUrl: dp.TaskList[index].Image != null
-                                                                  ? dp.TaskList[index].Image
-                                                                  : '',
-                                                              fit: BoxFit.cover,
-                                                              // width: MediaQuery.of(context).size.width * .92,
-                                                              // height: MediaQuery.of(context).size.height * .2,
-                                                              placeholder: (context, url) => Padding(
-                                                                padding: const EdgeInsets.symmetric(
-                                                                    horizontal: 78.0, vertical: 28),
-                                                                child: CircularProgressIndicator(
-                                                                  strokeWidth: 2,
-                                                                  color: Colors.grey[400],
-                                                                ),
-                                                              ),
-                                                              errorWidget: (context, url, error) => Icon(Icons.error),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : SizedBox(),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Html(
-                                                    data: dp.TaskList != null
-                                                        ? "Keywords: " + dp.TaskList[index].Keywords
-                                                        : '',
-                                                    style: {
-                                                      "body": Style(
-                                                        padding: EdgeInsets.only(top: 5),
-                                                        margin: EdgeInsets.zero,
-                                                        color: Color(0xff000000),
-                                                        textAlign: TextAlign.left,
-                                                        // maxLines: 7,
-                                                        // textOverflow: TextOverflow.ellipsis,
-                                                        fontSize: FontSize(18),
-                                                      )
-                                                    },
-                                                  ),
-                                                  Html(
-                                                    data: dp.TaskList != null
-                                                        ? "Examples: " + dp.TaskList[index].Examples
-                                                        : '',
-                                                    style: {
-                                                      "body": Style(
-                                                        padding: EdgeInsets.only(top: 5),
-                                                        margin: EdgeInsets.zero,
-                                                        color: Color(0xff000000),
-                                                        textAlign: TextAlign.left,
-                                                        // maxLines: 7,
-                                                        // textOverflow: TextOverflow.ellipsis,
-                                                        fontSize: FontSize(18),
-                                                      )
-                                                    },
-                                                  ),
-                                                  // Text(
-                                                  //   "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-                                                  //   style: TextStyle(
-                                                  //     fontSize: 18,
-                                                  //   ),
-                                                  // ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ]),
-                                ),
-                              );
+                              return currentIndex == 0
+                                  ? TaskDisc(context, 0)
+                                  : currentIndex == 1
+                                      ? TaskImg(context, 0)
+                                      : currentIndex == 2
+                                          ? TaskExple(context, 0)
+                                          : currentIndex == 3
+                                              ? TaskKeywrd(context, 0)
+                                              : TaskQuestion();
                             }),
-                        Container(
-                          margin: const EdgeInsets.only(left: 10.0),
-                          height: 12,
-                          child: ListView.builder(
-                            controller: scrollController,
-                            itemCount: dp.TaskList.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) => Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                                    gradient: index <= colorIndex
-                                        ? LinearGradient(
-                                            colors: [
-                                              _colorfromhex("#3A47AD"),
-                                              _colorfromhex("#5163F3"),
-                                            ],
-                                            begin: const FractionalOffset(0.0, 0.0),
-                                            end: const FractionalOffset(1.0, 0.0),
-                                            stops: [0.0, 1.0],
-                                            tileMode: TileMode.clamp)
-                                        : LinearGradient(
-                                            colors: [
-                                              Colors.grey,
-                                              Colors.grey,
-                                            ],
-                                          )),
-                                height: 10,
-                                width: MediaQuery.of(context).size.width * .08,
+                        dp.taskDetailApiCall
+                            ? SizedBox()
+                            : Container(
+                                margin: const EdgeInsets.only(left: 10.0),
+                                height: 12,
+                                child: ListView.builder(
+                                  controller: scrollController,
+                                  itemCount: 5,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) => Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                                          gradient: index <= colorIndex
+                                              ? LinearGradient(
+                                                  colors: [
+                                                    _colorfromhex("#3A47AD"),
+                                                    _colorfromhex("#5163F3"),
+                                                  ],
+                                                  begin: const FractionalOffset(0.0, 0.0),
+                                                  end: const FractionalOffset(1.0, 0.0),
+                                                  stops: [0.0, 1.0],
+                                                  tileMode: TileMode.clamp)
+                                              : LinearGradient(
+                                                  colors: [
+                                                    Colors.grey,
+                                                    Colors.grey,
+                                                  ],
+                                                )),
+                                      height: 10,
+                                      width: MediaQuery.of(context).size.width * .08,
 
-                                // color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        )
+                                      // color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              )
                       ],
                     ));
               }),
@@ -385,4 +250,256 @@ class _TaskDetailState extends State<TaskDetail> {
           ),
         ));
   }
+}
+
+Color _colorfromhex(String hexColor) {
+  final hexCode = hexColor.replaceAll('#', '');
+  return Color(int.parse('FF$hexCode', radix: 16));
+}
+
+Widget TaskKeywrd(BuildContext context, index) {
+  DomainProvider dp = Provider.of(context, listen: false);
+  return SingleChildScrollView(
+    child: Column(
+      children: [
+        SizedBox(
+          height: 30,
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "      Keywords",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontFamily: 'Roboto Regular',
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+          child: Html(
+            data: dp.TaskDetailList != null ? dp.TaskDetailList[index].Keywords : '',
+            style: {
+              "body": Style(
+                padding: EdgeInsets.only(top: 5),
+                margin: EdgeInsets.zero,
+                color: Color(0xff000000),
+                textAlign: TextAlign.left,
+                // maxLines: 7,
+                // textOverflow: TextOverflow.ellipsis,
+                fontSize: FontSize(18),
+              )
+            },
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget TaskImg(BuildContext context, index) {
+  DomainProvider dp = Provider.of(context, listen: false);
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 25,
+        ),
+        Text(
+          "  Flow Diagram",
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontFamily: 'Roboto Regular',
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 10),
+          child: Container(
+            // width: MediaQuery.of(context).size.width * .92,
+            // height: MediaQuery.of(context).size.height * .2,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: CachedNetworkImage(
+                imageUrl: dp.TaskDetailList[index].Image != null ? dp.TaskDetailList[index].Image : '',
+                fit: BoxFit.cover,
+                // width: MediaQuery.of(context).size.width * .92,
+                // height: MediaQuery.of(context).size.height * .2,
+                placeholder: (context, url) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 78.0, vertical: 28),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.grey[400],
+                  ),
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget TaskExple(BuildContext context, index) {
+  DomainProvider dp = Provider.of(context, listen: false);
+  return SingleChildScrollView(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              "Examples ",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontFamily: 'Roboto Regular',
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Html(
+            data: dp.TaskDetailList != null ? dp.TaskDetailList[index].Examples : '',
+            style: {
+              "body": Style(
+                padding: EdgeInsets.only(top: 5),
+                margin: EdgeInsets.zero,
+                color: Color(0xff000000),
+                textAlign: TextAlign.left,
+                // maxLines: 7,
+                // textOverflow: TextOverflow.ellipsis,
+                fontSize: FontSize(18),
+              )
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget TaskDisc(BuildContext context, currentIndex) {
+  DomainProvider dp = Provider.of(context, listen: false);
+  return SingleChildScrollView(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+      child: Column(children: [
+        SizedBox(
+          height: 30,
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "Task",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontFamily: 'Roboto Regular',
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
+        ),
+
+        SizedBox(
+          height: 5,
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            dp.TaskDetailList[currentIndex].name,
+            textAlign: TextAlign.left,
+            style:
+                TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black, fontFamily: "Roboto Regular"),
+          ),
+        ),
+        SizedBox(
+          height: 15,
+        ),
+
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "Description",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontFamily: 'Roboto Regular',
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
+        ),
+
+        SizedBox(
+          height: 5,
+        ),
+
+        Html(
+          data: dp.TaskDetailList != null ? dp.TaskDetailList[currentIndex].description : '',
+          style: {
+            "body": Style(
+              padding: EdgeInsets.only(top: 5),
+              margin: EdgeInsets.zero,
+              color: Color(0xff000000),
+              textAlign: TextAlign.left,
+              // maxLines: 7,
+              // textOverflow: TextOverflow.ellipsis,
+              fontSize: FontSize(18),
+            )
+          },
+        ),
+
+        // SizedBox(
+        //   height: 10,
+        // ),
+        // Padding(
+        //     padding: const EdgeInsets.only(bottom: 12.0),
+        //     child: Container(
+        //         height: MediaQuery.of(context).size.height * .54,
+        //         child: Padding(
+        //             padding: const EdgeInsets.only(left: 4.0, right: 18),
+        //             child: Padding(
+        //                 padding: const EdgeInsets.only(bottom: 8.0),
+        //                 child: Html(
+        //                   data: dp.TaskList != null ? dp.TaskList[currentIndex].description : '',
+        //                   style: {
+        //                     "body": Style(
+        //                       padding: EdgeInsets.only(top: 5),
+        //                       margin: EdgeInsets.zero,
+        //                       color: Color(0xff000000),
+        //                       textAlign: TextAlign.left,
+        //                       // maxLines: 7,
+        //                       // textOverflow: TextOverflow.ellipsis,
+        //                       fontSize: FontSize(18),
+        //                     )
+        //                   },
+        //                 )))))
+      ]),
+    ),
+  );
 }

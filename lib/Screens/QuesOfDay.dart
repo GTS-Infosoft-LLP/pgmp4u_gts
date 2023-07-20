@@ -125,8 +125,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
       if (data.qdList.isNotEmpty) {
         options = data.qdList[_quetionNo].options.where((element) => element.questionOption.isNotEmpty).toList();
       }
-      // List<Options> options =
-      //     data.pList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
+      
       return Container(
         color: _colorfromhex("#FCFCFF"),
         child: Stack(
@@ -239,31 +238,18 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                // Text("Uploaded on: "),
-                                                // Text("${data.qdList[_quetionNo].sendDate}"),
+                                               
 
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: [
-                                                    // finDate
-                                                    // finDate
-
-                                                    // data.qdList[_quetionNo].sendDate.split(" ")[0].toString() == finDate
-                                                    // ? Column(
-                                                    //     mainAxisAlignment: MainAxisAlignment.start,
-                                                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                                                    //     children: [
-                                                    //       Text("Today's Question "),
-                                                    //       // Text("${data.qdList[_quetionNo].sendDate}"),
-                                                    //     ],
-                                                    //   )
-                                                    // :
+             
                                                     Column(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Text("Uploaded on: "),
-                                                        // Text("${data.qdList[_quetionNo].sendDate}"),
+                                                      
                                                         Text(timeStamp),
                                                       ],
                                                     ),
@@ -277,7 +263,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                 ),
 
                                                 Container(
-                                                  // color: Colors.amber,
+                                         
                                                   width: MediaQuery.of(context).size.width * .95,
                                                   child: Row(
                                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -304,7 +290,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                             )
                                                           : Container(),
                                                       Container(
-                                                        // color: Colors.amber,
+                                               
                                                         width: MediaQuery.of(context).size.width * .75,
                                                         child: Row(
                                                           mainAxisAlignment: MainAxisAlignment.start,
@@ -350,30 +336,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                           ],
                                                         ),
                                                       ),
-                                                      // data.qdList.length - 1 > _quetionNo
-                                                      //     ? Padding(
-                                                      //         padding: const EdgeInsets.only(right: 18.0),
-                                                      //         child: GestureDetector(
-                                                      //           onTap: () => {
-                                                      //             selAns = [],
-                                                      //             rightAns = [],
-                                                      //             correctAns = [],
-                                                      //             setState(() {
-                                                      //               if (_quetionNo < data.qdList.length) {
-                                                      //                 _quetionNo = _quetionNo + 1;
-                                                      //               }
-                                                      //               selectedAnswer = null;
-                                                      //             }),
-                                                      //             print(_quetionNo)
-                                                      //           },
-                                                      //           child: Icon(
-                                                      //             Icons.east,
-                                                      //             size: width * (30 / 420),
-                                                      //             color: Colors.black,
-                                                      //           ),
-                                                      //         ),
-                                                      //       )
-                                                      //     : Container(),
+                                                  
                                                     ],
                                                   ),
                                                 ),
@@ -387,22 +350,13 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                         margin: EdgeInsets.zero,
                                                         color: Color(0xff000000),
                                                         textAlign: TextAlign.left,
-                                                        // maxLines: 7,
-                                                        // textOverflow: TextOverflow.ellipsis,
+                                                 
                                                         fontSize: FontSize(18),
                                                       )
                                                     },
                                                   ),
 
-                                                  //  Text(
-                                                  //   data.qdList != null ? data.qdList[_quetionNo].question : '',
-                                                  //   style: TextStyle(
-                                                  //     fontFamily: 'Roboto Regular',
-                                                  //     fontSize: width * (15 / 420),
-                                                  //     color: Colors.black,
-                                                  //     height: 1.7,
-                                                  //   ),
-                                                  // ),
+                                              
                                                 ),
 
                                                 Row(
@@ -429,12 +383,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                     physics: NeverScrollableScrollPhysics(),
                                                     itemCount: options.length,
                                                     itemBuilder: (context, index) {
-                                                      // if (data.pList[_quetionNo].ques.options[index]
-                                                      //         .questionOption ==
-                                                      //     "") {
-                                                      //   data.pList[_quetionNo].ques.options
-                                                      //       .remove(data.pList[_quetionNo].ques.options[index]);
-                                                      // }
+                                                   
                                                       return Padding(
                                                         padding: const EdgeInsets.only(bottom: 15.0, top: 10),
                                                         child: InkWell(
@@ -474,51 +423,13 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                               }
                                                               setState(() {
                                                                 options[index].isseleted = !options[index].isseleted;
-                                                                // selAns.add(options[index].id);
-                                                                // print("selAns=============$selAns");
+                                                              
                                                               });
                                                             }
                                                           },
 
-                                                          // selectedAnswer =
-                                                          //     data.pList[_quetionNo].ques.options[index].id;
-
-                                                          // // print("selectedAnswer=====================>>>>>>$selectedAnswer");
-                                                          // rightAns = data.pList[_quetionNo].ques.rightAnswer
-                                                          //     .split(',');
-
-                                                          // for (int j = 0; j < rightAns.length; j++) {
-                                                          //   correctAns.add(int.parse(rightAns[j]));
-                                                          // }
-                                                          // print(
-                                                          //     "correctAns==================****************$correctAns");
-
-                                                          // // print("==rightAns=======$rightAns");
-
-                                                          // if (!selAns.contains(
-                                                          //     data.pList[_quetionNo].ques.options[index].id)) {
-                                                          //   selAns.add(
-                                                          //       data.pList[_quetionNo].ques.options[index].id);
-                                                          //   print("selAns=======$selAns");
-                                                          // }
-                                                          // if (selAns.length == rightAns.length) {
-                                                          //   print("of same length==========");
-                                                          //   checkAllAns(selAns, rightAns);
-                                                          // }
-                                                          // if (isListSame) {
-                                                          //   print("=========list are same========");
-                                                          // }
-
-                                                          // realAnswer = int.parse(
-                                                          //     data.pList[_quetionNo].ques.rightAnswer);
-
-                                                          // //   data
-                                                          // // .pList[
-                                                          // //     _quetionNo]
-                                                          // // .ques.question;
-                                                          // print(
-                                                          //     "data.pList[ _quetionNo].ques.rightAnswer==========>>>>>>$realAnswer");
-
+                                      
+                                                       
                                                           child: Container(
                                                             decoration: BoxDecoration(
                                                               // shape: BoxShape.circle,
@@ -546,78 +457,8 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                                   ? _colorfromhex("#FFF6F6")
                                                                                   : Colors.white,
 
-                                                              // color: selAns.length != ansRef.length
-                                                              //     ? Colors.white
-                                                              //     : _isattempt <
-                                                              //             options
-                                                              //                 .where((element) =>
-                                                              //                     element.isseleted == true)
-                                                              //                 .toList()
-                                                              //                 .length
-                                                              //         ? options.any(
-                                                              //                 (element) => element.isseleted == true)
-                                                              //             ? data.qdList[_quetionNo].rightAnswer
-                                                              //                     .contains("${options[index].id}")
-                                                              //                 ? _colorfromhex("#E6F7E7")
-                                                              //                 : options[index].isseleted
-                                                              //                     ? data.qdList[_quetionNo]
-                                                              //                             .rightAnswer
-                                                              //                             .contains(
-                                                              //                                 "${options[index].id}")
-                                                              //                         ? _colorfromhex("#E6F7E7")
-                                                              //                         : _colorfromhex("#FFF6F6")
-                                                              //                     : Colors.white
-                                                              //             : options[index].isseleted
-                                                              //                 ? data.qdList[_quetionNo].rightAnswer
-                                                              //                         .contains(
-                                                              //                             "${options[index].id}")
-                                                              //                     ? _colorfromhex("#E6F7E7")
-                                                              //                     : _colorfromhex("#FFF6F6")
-                                                              //                 : Colors.white
-                                                              //         : options[index].isseleted
-                                                              //             ? data.qdList[_quetionNo].rightAnswer
-                                                              //                     .contains("${options[index].id}")
-                                                              //                 ? _colorfromhex("#E6F7E7")
-                                                              //                 : _colorfromhex("#FFF6F6")
-                                                              //             : Colors.white
-
-                                                              // correctAns.contains(data.pList[_quetionNo]
-                                                              //             .ques.options[index].id) &&
-                                                              //         selAns.contains(data.pList[_quetionNo].ques
-                                                              //             .options[index].id)
-                                                              //     ? _colorfromhex("#E6F7E7")
-                                                              //     : correctAns.contains(data.pList[_quetionNo]
-                                                              //                 .ques.options[index].id) &&
-                                                              //             !selAns.contains(data.pList[_quetionNo]
-                                                              //                 .ques.options[index].id)
-                                                              //         ? _colorfromhex("#FFF6F6")
-                                                              //         : Colors.white
-
-                                                              // color: data.pList[_quetionNo].ques.options[index].id ==
-                                                              //             selectedAnswer &&
-                                                              //         int.parse(data.pList[_quetionNo].ques.rightAnswer) ==
-                                                              //             selectedAnswer
-                                                              //     ? _colorfromhex("#E6F7E7")
-                                                              //     : data.pList[_quetionNo].ques.options[index].id ==
-                                                              //                 selectedAnswer &&
-                                                              //             int.parse(data.pList[_quetionNo].ques.rightAnswer) !=
-                                                              //                 selectedAnswer
-                                                              //         ? _colorfromhex("#FFF6F6")
-                                                              //         : selectedAnswer != null &&
-                                                              //                 int.parse(data.pList[_quetionNo].ques
-                                                              //                         .rightAnswer) !=
-                                                              //                     selectedAnswer &&
-                                                              //                 data.pList[_quetionNo].ques
-                                                              //                         .options[index].id ==
-                                                              //                     int.parse(data.pList[_quetionNo]
-                                                              //                         .ques.rightAnswer)
-                                                              //             ? _colorfromhex("#E6F7E7")
-                                                              //             : Colors.white,
-
-                                                              // border: Border(
-                                                              //   bottom: BorderSide(
-                                                              //       width: 1.5, color: Colors.grey[300]),
-                                                              // )
+                                
+                         
                                                             ),
                                                             child: Row(children: [
                                                               Padding(
@@ -654,62 +495,10 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                                           ? Colors.red
                                                                                           : Colors.white,
 
-                                                                      // color: _isattempt <
-                                                                      //         options
-                                                                      //             .where((element) =>
-                                                                      //                 element.isseleted == true)
-                                                                      //             .toList()
-                                                                      //             .length
-                                                                      //     ? options.any((element) =>
-                                                                      //             element.isseleted == true)
-                                                                      //         ? data.qdList[_quetionNo].rightAnswer
-                                                                      //                 .contains("${options[index].id}")
-                                                                      //             ? _colorfromhex("#04AE0B")
-                                                                      //             : options[index].isseleted
-                                                                      //                 ? data.qdList[_quetionNo]
-                                                                      //                         .rightAnswer
-                                                                      //                         .contains(
-                                                                      //                             "${options[index].id}")
-                                                                      //                     ? _colorfromhex("#E6F7E7")
-                                                                      //                     : _colorfromhex("#FF0000")
-                                                                      //                 : Colors.white
-                                                                      //         : options[index].isseleted
-                                                                      //             ? data.qdList[_quetionNo].rightAnswer
-                                                                      //                     .contains(
-                                                                      //                         "${options[index].id}")
-                                                                      //                 ? _colorfromhex("#E6F7E7")
-                                                                      //                 : _colorfromhex("#FFF6F6")
-                                                                      //             : Colors.white
-                                                                      //     : options[index].isseleted
-                                                                      //         ? data.qdList[_quetionNo].rightAnswer
-                                                                      //                 .contains("${options[index].id}")
-                                                                      //             ? _colorfromhex("#E6F7E7")
-                                                                      //             : _colorfromhex("#FFF6F6")
-                                                                      //         : Colors.white,
+                                                                    
+                       
 
-                                                                      // color: data.pList[_quetionNo].ques.options[index].id ==
-                                                                      //             selectedAnswer &&
-                                                                      //         int.parse(data.pList[_quetionNo].ques.rightAnswer) ==
-                                                                      //             selectedAnswer
-                                                                      //     ? _colorfromhex("#04AE0B")
-                                                                      //     : data.pList[_quetionNo].ques
-                                                                      //                     .options[index].id ==
-                                                                      //                 selectedAnswer &&
-                                                                      //             int.parse(data.pList[_quetionNo]
-                                                                      //                     .ques.rightAnswer) !=
-                                                                      //                 selectedAnswer
-                                                                      //         ? _colorfromhex("#FF0000")
-                                                                      //         : selectedAnswer != null &&
-                                                                      //                 int.parse(data.pList[_quetionNo].ques.rightAnswer) !=
-                                                                      //                     selectedAnswer &&
-                                                                      //                 data.pList[_quetionNo].ques
-                                                                      //                         .options[index].id ==
-                                                                      //                     int.parse(data.pList[_quetionNo].ques.rightAnswer)
-                                                                      //             ? _colorfromhex("#04AE0B")
-                                                                      //             : Colors.white,
-                                                                      //selectedAnswer == realAnswer ? _colorfromhex("#E6F7E7") : Colors.white,
-
-                                                                      //data.pList[_quetionNo].ques.options.
+                                                      
 
                                                                       border: Border.all(
                                                                           color: selAns.length == ansRef.length &&
@@ -773,24 +562,13 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                                 margin: EdgeInsets.zero,
                                                                                 color: Color(0xff000000),
                                                                                 textAlign: TextAlign.left,
-                                                                                // maxLines: 7,
-                                                                                // textOverflow: TextOverflow.ellipsis,
+                                                                          
                                                                                 fontSize: FontSize(18),
                                                                               )
                                                                             },
                                                                           ),
 
-                                                                          // Text(
-                                                                          //   options[index].questionOption,
-                                                                          //   style: TextStyle(fontSize: 16),
-                                                                          // ),
-                                                                          // selectedAnswer != null &&
-                                                                          //         int.parse(data.qdList[_quetionNo]
-                                                                          //                 .rightAnswer) !=
-                                                                          //             selectedAnswer &&
-                                                                          //         options[index].id ==
-                                                                          //             int.parse(data.qdList[_quetionNo]
-                                                                          //                 .rightAnswer)
+                                                                        
 
                                                                           (selAns.length == ansRef.length &&
                                                                                       selAns.length > 0 &&
@@ -808,10 +586,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                                   children: [Text("Correct Answer")],
                                                                                 )
                                                                               :
-                                                                              // options[index].id == selectedAnswer &&
-                                                                              //         int.parse(data.qdList[_quetionNo]
-                                                                              //                 .rightAnswer) !=
-                                                                              //             selectedAnswer
+                                                                            
                                                                               selAns.length == ansRef.length &&
                                                                                       selAns.length > 0 &&
                                                                                       selAns.contains(
@@ -823,7 +598,6 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                                           MainAxisAlignment.end,
                                                                                       children: [
                                                                                         Text("Your Selection")
-                                                                                        //: Text("Correct Answer")
                                                                                       ],
                                                                                     )
                                                                                   : Container()
@@ -832,32 +606,8 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                     ),
                                                                   ),
 
-                                                                  //                 selectedAnswer != null &&
-                                                                  //                         data.questionsList[_quetionNo].rightAnswer !=
-                                                                  //                             selectedAnswer &&
-                                                                  //                         title.id ==
-                                                                  //                             data.questionsList[_quetionNo].rightAnswer
-                                                                  //                     ? Row(
-                                                                  //                         mainAxisAlignment:
-                                                                  //                             MainAxisAlignment.end,
-                                                                  //                         children: [
-                                                                  //                           Text(
-                                                                  //                             'Correct Answer',
-                                                                  //                           ),
-                                                                  //                         ],
-                                                                  //                       )
-                                                                  //                     : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
-                                                                  //                         ? Row(
-                                                                  //                             mainAxisAlignment: MainAxisAlignment.end,
-                                                                  //                             children: [
-                                                                  //                               Text(
-                                                                  //                                 'Your selection',
-                                                                  //                               ),
-                                                                  //                             ],
-                                                                  //                           )
-                                                                  //                         : Container(),
-                                                                  //               ],
-                                                                  //             )
+                                                              
+                                                              
                                                                 ],
                                                               )
                                                             ]),
@@ -866,19 +616,8 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                       );
                                                     }),
 
-                                                // Container(
-                                                //   height: 50,
-                                                //   color: Colors.amber,
-                                                // ),
-
-                                                // selectedAnswer != null
-                                                if (selAns.length == ansRef.length && ansRef.length > 0
-                                                // _isattempt <
-                                                //   options
-                                                //       .where((element) => element.isseleted == true)
-                                                //       .toList()
-                                                //       .length
-                                                )
+                         
+                                                if (selAns.length == ansRef.length && ansRef.length > 0 )
                                                   Container(
                                                     decoration: BoxDecoration(
                                                         color:
@@ -964,203 +703,15 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                     ),
                                                   )
 
-                                                // Column(
-                                                //   children: data
-                                                //       .questionsList[
-                                                //           _quetionNo]
-                                                //       .optionsList
-                                                //       .map<Widget>((title) {
-                                                //     var index = data
-                                                //         .questionsList[
-                                                //             _quetionNo]
-                                                //         .optionsList
-                                                //         .indexOf(title);
-                                                //     return GestureDetector(
-                                                //       onTap: () => {
-                                                //         setState(() {
-                                                //           selectedAnswer =
-                                                //               title.id;
-                                                //           realAnswer = data
-                                                //               .questionsList[
-                                                //                   _quetionNo]
-                                                //               .rightAnswer;
-                                                //         })
-                                                //       },
-                                                //       child: Container(
-                                                //         color: title.id ==
-                                                //                     selectedAnswer &&
-                                                //                 data.questionsList[_quetionNo].rightAnswer ==
-                                                //                     selectedAnswer
-                                                //             ? _colorfromhex(
-                                                //                 "#E6F7E7")
-                                                //             : title.id ==
-                                                //                         selectedAnswer &&
-                                                //                     data.questionsList[_quetionNo].rightAnswer !=
-                                                //                         selectedAnswer
-                                                //                 ? _colorfromhex(
-                                                //                     "#FFF6F6")
-                                                //                 : selectedAnswer != null &&
-                                                //                         data.questionsList[_quetionNo].rightAnswer !=
-                                                //                             selectedAnswer &&
-                                                //                         title.id ==
-                                                //                             data.questionsList[_quetionNo].rightAnswer
-                                                //                     ? _colorfromhex("#E6F7E7")
-                                                //                     : Colors.white,
-                                                //         margin:
-                                                //             EdgeInsets.only(
-                                                //                 top: height *
-                                                //                     (21 /
-                                                //                         800)),
-                                                //         padding: EdgeInsets.only(
-                                                //             top: 13,
-                                                //             bottom: 13,
-                                                //             left: width *
-                                                //                 (13 / 420),
-                                                //             right: width *
-                                                //                 (11 / 420)),
-                                                //         child: Row(
-                                                //           children: [
-                                                //             Container(
-                                                //               width: width *
-                                                //                   (25 /
-                                                //                       420),
-                                                //               height:
-                                                //                   width *
-                                                //                       25 /
-                                                //                       420,
-                                                //               decoration: BoxDecoration(
-                                                //                   borderRadius: BorderRadius.circular(
-                                                //                     width *
-                                                //                         (25 /
-                                                //                             420),
-                                                //                   ),
-                                                //                   color: title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer == selectedAnswer
-                                                //                       ? _colorfromhex("#04AE0B")
-                                                //                       : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
-                                                //                           ? _colorfromhex("#FF0000")
-                                                //                           : selectedAnswer != null && data.questionsList[_quetionNo].rightAnswer != selectedAnswer && title.id == data.questionsList[_quetionNo].rightAnswer
-                                                //                               ? _colorfromhex("#04AE0B")
-                                                //                               : Colors.white),
-                                                //               child: Center(
-                                                //                 child: Text(
-                                                //                   index == 0
-                                                //                       ? 'A'
-                                                //                       : index == 1
-                                                //                           ? 'B'
-                                                //                           : index == 2
-                                                //                               ? 'C'
-                                                //                               : index == 3
-                                                //                                   ? 'D'
-                                                //                                   : '',
-                                                //                   style: TextStyle(
-                                                //                       fontFamily: 'Roboto Regular',
-                                                //                       fontSize: width * 14 / 420,
-                                                //                       color: title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer == selectedAnswer
-                                                //                           ? Colors.white
-                                                //                           : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
-                                                //                               ? Colors.white
-                                                //                               : selectedAnswer != null && data.questionsList[_quetionNo].rightAnswer != selectedAnswer && title.id == data.questionsList[_quetionNo].rightAnswer
-                                                //                                   ? Colors.white
-                                                //                                   : Colors.grey),
-                                                //                 ),
-                                                //               ),
-                                                //             ),
-                                                //             Column(
-                                                //               mainAxisAlignment:
-                                                //                   MainAxisAlignment
-                                                //                       .end,
-                                                //               crossAxisAlignment:
-                                                //                   CrossAxisAlignment
-                                                //                       .end,
-                                                //               children: [
-                                                //                 Container(
-                                                //                   margin: EdgeInsets.only(
-                                                //                       left:
-                                                //                           8),
-                                                //                   width: width -
-                                                //                       (width *
-                                                //                           (25 / 420) *
-                                                //                           5),
-                                                //                   child: Text(
-                                                //                       title
-                                                //                           .questionsOptions,
-                                                //                       style:
-                                                //                           TextStyle(fontSize: width * 14 / 420)),
-                                                //                 ),
-                                                //                 selectedAnswer != null &&
-                                                //                         data.questionsList[_quetionNo].rightAnswer !=
-                                                //                             selectedAnswer &&
-                                                //                         title.id ==
-                                                //                             data.questionsList[_quetionNo].rightAnswer
-                                                //                     ? Row(
-                                                //                         mainAxisAlignment:
-                                                //                             MainAxisAlignment.end,
-                                                //                         children: [
-                                                //                           Text(
-                                                //                             'Correct Answer',
-                                                //                           ),
-                                                //                         ],
-                                                //                       )
-                                                //                     : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
-                                                //                         ? Row(
-                                                //                             mainAxisAlignment: MainAxisAlignment.end,
-                                                //                             children: [
-                                                //                               Text(
-                                                //                                 'Your selection',
-                                                //                               ),
-                                                //                             ],
-                                                //                           )
-                                                //                         : Container(),
-                                                //               ],
-                                                //             )
-                                                //           ],
-                                                //         ),
-                                                //       ),
-                                                //     );
-                                                //   }).toList(),
-                                                // ),
-
-                                                // ;  Container(
-                                                //     decoration: BoxDecoration(
-                                                //         color: _colorfromhex(
-                                                //             "#FAFAFA"),
-                                                //         borderRadius:
-                                                //             BorderRadius
-                                                //                 .circular(6)),
-                                                //     margin: EdgeInsets.only(
-                                                //         top: height *
-                                                //             (38 / 800)),
-                                                //     // padding: EdgeInsets.only(
-                                                //     //     top: height *
-                                                //     //         (10 / 800),
-                                                //     //     bottom: _show
-                                                //     //         ? height *
-                                                //     //             (23 / 800)
-                                                //     //         : height *
-                                                //     //             (12 / 800),
-                                                //     //     left: width *
-                                                //     //         (18 / 420),
-                                                //     //     right: width *
-                                                //     //         (10 / 420)),
-                                                //     // child: Column(
-                                                //     //   mainAxisAlignment:
-                                                //     //       MainAxisAlignment
-                                                //     //           .start,
-                                                //     //   crossAxisAlignment:
-                                                //     //       CrossAxisAlignment
-                                                //     //           .start,
-                                                //     //   // children: [
-                                                //     //   //   GestureDetector(
-                                                //     //   //     child: Row(
-                                                //     //   //       mainAxisAlignment:
-                                                //     //   //           MainAxisAlignment
-                                                //     //   //               .spaceBetween,
-                                                //     //   //       children: [],
-                                                //     //   //     ),
-                                                //     //   //   ),
-                                                //     //   // ],
-                                                //     // ),
-                                                //   )
+                                             
+                                            
+                                            
+                                               
+                                             
+                                               
+              
+                                    
+                                        
                                               ],
                                             ),
                                           ),

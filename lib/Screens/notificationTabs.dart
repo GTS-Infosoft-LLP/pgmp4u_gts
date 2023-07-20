@@ -36,7 +36,7 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
   Widget build(BuildContext context) {
     return Scaffold(
       body: DefaultTabController(
-        initialIndex: 0, //optional, starts from 0, select the tab by default
+        initialIndex: 1, //optional, starts from 0, select the tab by default
         length: 2,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +79,7 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                         // color: Colors.amber,
                         width: MediaQuery.of(context).size.width * .65,
                         child: Text(
-                          _controller.index == 1 ? "Announcements" : "Notifications",
+                          _controller.index == 1 ? "Notifications" : "Announcements",
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -104,10 +104,10 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                 },
                 tabs: [
                   Tab(
-                    text: "Notifications",
+                    text: "Annoncements",
                   ),
                   Tab(
-                    text: "Announcements",
+                    text: "Notifications",
                   ),
                 ],
                 unselectedLabelStyle: TextStyle(fontSize: 16, color: Colors.black),
@@ -127,8 +127,8 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: TabBarView(controller: _controller, children: [
-                  Notifications(type: 0),
                   Notifications(type: 1),
+                  Notifications(type: 0),
                 ]),
               ),
             )

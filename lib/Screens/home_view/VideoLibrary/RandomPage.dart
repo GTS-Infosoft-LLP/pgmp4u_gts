@@ -10,8 +10,6 @@ import 'package:pgmp4u/Screens/Profile/PaymentStatus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 ///   1> flash
 ///   2> video
 ///   3> mock
@@ -19,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///   5> PPT
 ///   6> domain
 class RandomPage extends StatefulWidget {
-  int index;                                           
+  int index;
   String price;
   int categoryId;
   String categoryType;
@@ -138,46 +136,40 @@ class _RandomPageState extends State<RandomPage> {
                                                     color: _colorfromhex("#3D4AB4"),
                                                     letterSpacing: 0.3),
                                               )
-                                            :
-                                            
-                                            widget.index == 5
-                                            ? Text(
-                                                'Get 1 year Access to PTT',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontFamily: 'Roboto Bold',
-                                                    fontSize: width * (30 / 420),
-                                                    color: _colorfromhex("#3D4AB4"),
-                                                    letterSpacing: 0.3),
-                                              ) :
-                                            
-                                            widget.index == 6
-                                            ? Text(
-                                                'Get 1 year Access to Domains',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontFamily: 'Roboto Bold',
-                                                    fontSize: width * (30 / 420),
-                                                    color: _colorfromhex("#3D4AB4"),
-                                                    letterSpacing: 0.3),
-                                              ) :
-                                             Text(
-                                                'Get 1 year Access to Pgmp Question of the day',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontFamily: 'Roboto Bold',
-                                                  fontSize: width * (30 / 420),
-                                                  color: _colorfromhex("#3D4AB4"),
-                                                ),
-                                              )),
+                                            : widget.index == 5
+                                                ? Text(
+                                                    'Get 1 year Access to PTT',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Roboto Bold',
+                                                        fontSize: width * (30 / 420),
+                                                        color: _colorfromhex("#3D4AB4"),
+                                                        letterSpacing: 0.3),
+                                                  )
+                                                : widget.index == 6
+                                                    ? Text(
+                                                        'Get 1 year Access to Domains',
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(
+                                                            fontFamily: 'Roboto Bold',
+                                                            fontSize: width * (30 / 420),
+                                                            color: _colorfromhex("#3D4AB4"),
+                                                            letterSpacing: 0.3),
+                                                      )
+                                                    : Text(
+                                                        'Get 1 year Access to Pgmp Question of the day',
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(
+                                                          fontFamily: 'Roboto Bold',
+                                                          fontSize: width * (30 / 420),
+                                                          color: _colorfromhex("#3D4AB4"),
+                                                        ),
+                                                      )),
                       ),
-                 
                       Container(
                         margin: EdgeInsets.only(top: 20),
                         child: Center(
-                            child:
-                              
-                                Text(
+                            child: Text(
                           'Yearly Access On \n \$${widget.price}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -185,13 +177,8 @@ class _RandomPageState extends State<RandomPage> {
                               fontSize: 24,
                               color: _colorfromhex("#3D4AB4"),
                               letterSpacing: 0.3),
-                        )
-                      
-                            ),
+                        )),
                       ),
-                   
-                
-          
                       Consumer2<PurchaseProvider, CourseProvider>(
                         builder: (context, value, cp, child) {
                           var latestState = value.serverResponse.getContent();
@@ -210,9 +197,11 @@ class _RandomPageState extends State<RandomPage> {
                               Navigator.pop(context, true);
                             });
                           }
-                          return BuyButton2(context, value, widget.index, cp.selectedMasterType, widget.categoryId,widget.index);
+                          return BuyButton2(
+                              context, value, widget.index, cp.selectedMasterType, widget.categoryId, widget.index);
                         },
-                      )
+                      ),
+                      // ButtonRow2()
                     ],
                   ),
                 ),
@@ -221,6 +210,42 @@ class _RandomPageState extends State<RandomPage> {
           ],
         ),
       )),
+    );
+  }
+
+  Widget ButtonRow2() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 20),
+          height: 40,
+          decoration: BoxDecoration(color: Colors.indigo.shade600, borderRadius: BorderRadius.circular(30.0)),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                "Buy Monthly Plan",
+                style: TextStyle(fontFamily: 'Roboto Medium', fontSize: 16, color: Colors.white, letterSpacing: 0.3),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 20),
+          height: 40,
+          decoration: BoxDecoration(color: Colors.indigo.shade600, borderRadius: BorderRadius.circular(30.0)),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                "Buy Yearly Plan",
+                style: TextStyle(fontFamily: 'Roboto Medium', fontSize: 16, color: Colors.white, letterSpacing: 0.3),
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }
@@ -252,8 +277,8 @@ Future<void> _handlePaymentError2(BuildContext context) async {
       ));
 }
 
-Widget BuyButton2(
-    BuildContext context, PurchaseProvider purchaseProvider, int index1forFlash2forvideoLib, String type, int IdValue,int indexVal ) {
+Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int index1forFlash2forvideoLib, String type,
+    int IdValue, int indexVal) {
   //index1forFlash2forvideoLib   1  for flash card and  2 for video Library
   print("type============$type");
   print("IdValue=============$IdValue");
@@ -292,7 +317,7 @@ Widget BuyButton2(
                 await profProvi.callCreateOrder(IdValue, type);
                 type = type.replaceAll(" ", "");
 
-                String urll = CREATE_ORDER+"/$IdValue/$type";
+                String urll = CREATE_ORDER + "/$IdValue/$type";
 
                 /// Payment implement with stripe
                 bool status = await Navigator.push(

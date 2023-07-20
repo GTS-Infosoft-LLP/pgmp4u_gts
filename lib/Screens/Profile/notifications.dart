@@ -631,15 +631,7 @@ class NotiShowDialog extends StatelessWidget {
                     );
                   }
 
-                  // if (await canLaunchUrl(uri)) {
-                  //   await launchUrl(uri);
-                  // } else {
-                  //   GFToast.showToast(
-                  //     "Can not launch this url",
-                  //     context,
-                  //     toastPosition: GFToastPosition.BOTTOM,
-                  //   );
-                  // }
+          
                 },
               ),
             ],
