@@ -109,7 +109,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                             width: MediaQuery.of(context).size.width * .70,
                             // color: Colors.amberAccent,
                             child: Text(
-                              courseProvider.selectedCourseName,
+                              courseProvider.selectedCourseLable,
                               maxLines: 2,
                               // "Master Data",
                               style: TextStyle(

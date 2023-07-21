@@ -74,7 +74,7 @@ class _DomainListState extends State<DomainList> {
                       // color: Colors.amber,
                       width: MediaQuery.of(context).size.width * .65,
                       child: Text(
-                        cp.selectedCourseName,
+                        cp.selectedCourseLable,
                         // cp.selectedCourseName,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,

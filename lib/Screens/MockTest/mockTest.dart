@@ -135,13 +135,15 @@ class _MockTestState extends State<MockTest> {
                         SizedBox(
                           width: 20,
                         ),
-                        Center(
-                            child: Text(
-                          // "Video Library",
-                          cp.selectedCourseName,
-                          style: TextStyle(
-                              fontSize: 28, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
-                        )),
+                        Container(
+                          width: MediaQuery.of(context).size.width * .75,
+                          child: Text(
+                            // "Video Library",
+                            cp.selectedCourseLable,
+                            style: TextStyle(
+                                fontSize: 22, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ]),
                     ),
                   )

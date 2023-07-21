@@ -154,7 +154,7 @@ class _MockTestResultState extends State<MockTestResult> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          cp.selectedCourseName,
+                                          cp.selectedCourseLable,
                                           style: TextStyle(
                                             // fontFamily: 'Roboto Medium',
                                             fontSize: width * (20 / 420),

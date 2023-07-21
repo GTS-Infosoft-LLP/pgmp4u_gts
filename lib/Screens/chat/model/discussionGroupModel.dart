@@ -5,6 +5,7 @@ class DisscussionGropModel {
   String createdBy;
   int commentsCount;
   String ownerId;
+  String courseName;
   List<String> ops;
 
   DisscussionGropModel({
@@ -14,6 +15,7 @@ class DisscussionGropModel {
     this.ownerId,
     this.groupId,
     this.commentsCount,
+    this.courseName,
     this.ops,
   });
 
@@ -22,7 +24,7 @@ class DisscussionGropModel {
     createdAt = json['createdAt'] ?? "0";
     createdBy = json['createdBy'] ?? "";
     groupId = json['groupId'] ?? "";
-
+    courseName = json['courseName'] ?? "";
     commentsCount = json['commentsCount'] ?? 0;
     ownerId = json['ownerId'] ?? "";
     List<dynamic> olist = json['options'] ?? [];
@@ -36,6 +38,7 @@ class DisscussionGropModel {
         "createdBy": createdBy,
         "groupId": groupId,
         "commentsCount": commentsCount,
-        "ownerId": ownerId
+        "ownerId": ownerId,
+        "courseName":courseName
       };
 }

@@ -372,6 +372,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
   bool questionLoader = false;
   onTapOfPutOnDisscussion(String question, List<Optionss> list01) async {
+    CourseProvider cp = Provider.of(context, listen: false);
     if (!context.read<ProfileProvider>().isChatSubscribed) {
       setState(() => questionLoader = false);
 
@@ -411,7 +412,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
     await context
         .read<ChatProvider>()
-        .createDiscussionGroup(question, mckOptions, context, testName: 'From Mock Test: ' + mockNameNew)
+        .createDiscussionGroup(question, mckOptions, context,
+            testName: 'From Mock Test: ' + mockNameNew, crsName: cp.selectedCourseLable)
         .whenComplete(() {
       setState(() => questionLoader = false);
       Navigator.push(
@@ -443,7 +445,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                   // print("value:>> ${value.get(selectedIdNew.toString())} ");
                   String data = value.get(selectedIdNew.toString());
                   List resList = jsonDecode(data);
-
                   mockQuestion = resList.map((e) => Queans.fromjss(e)).toList();
                 } else {
                   print("errror  v1111==========");
@@ -623,7 +624,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                     child: PageView.builder(
                                         controller: pageController,
                                         physics: cp.allowScroll == 1
-                                            ? BouncingScrollPhysics() 
+                                            ? BouncingScrollPhysics()
                                             : NeverScrollableScrollPhysics(),
                                         onPageChanged: (index) {
                                           print("index in onPageChagen ====>>$index");
@@ -719,8 +720,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                       Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
-              
-                                                     
                                                           Text(
                                                             'QUESTION ${_quetionNo + 1}',
                                                             style: TextStyle(
@@ -809,13 +808,11 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                             .questionDetail
                                                             .Options
                                                             .map<Widget>((title) {
-                                                       
                                                           var index = mockQuestion[_quetionNo]
                                                               .questionDetail
                                                               .Options
                                                               .indexOf(title);
 
-                                                    
                                                           int rightAnswerLength = mockQuestion[_quetionNo]
                                                               .questionDetail
                                                               .rightAnswer
@@ -858,7 +855,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                       }
                                                                   },
                                                                   child: Container(
-                                                                    margin: EdgeInsets.only(top: height * (21 / 800)), 
+                                                                    margin: EdgeInsets.only(top: height * (21 / 800)),
                                                                     padding: EdgeInsets.only(
                                                                       top: 13,
                                                                       bottom: 13,

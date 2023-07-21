@@ -7,6 +7,7 @@ class QuesDayModel {
   String questionType;
   String rightAnswer;
   String explanation;
+  String lable;
   Null image;
   int sendDate;
   String sendDateFormat;
@@ -23,6 +24,7 @@ class QuesDayModel {
     questionType = json['question_type'];
     rightAnswer = json['right_answer'];
     explanation = json['explanation'];
+    lable = json['lable'];
     image = json['image'];
     sendDate = json['sendDate'];
     sendDateFormat = json['sendDateFormat'];

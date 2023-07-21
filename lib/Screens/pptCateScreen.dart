@@ -71,7 +71,7 @@ class _PPTCardItemState extends State<PPTCardItem> {
                       // color: Colors.amber,
                       width: MediaQuery.of(context).size.width * .65,
                       child: Text(
-                        cp.selectedCourseName,
+                        cp.selectedCourseLable,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

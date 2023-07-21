@@ -151,8 +151,10 @@ class FirebaseChatHandler {
   }
 
   // list of disscussion groups
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllDiscussionGroups() {
-    return discussionCollectionRef.orderBy('createdAt', descending: true).snapshots();
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllDiscussionGroups(String courseType) {
+    // return discussionCollectionRef.where("courseName", isEqualTo: courseType).orderBy('createdAt', descending: true).snapshots();
+    Query query = discussionCollectionRef.where('courseName', isEqualTo: courseType).orderBy('createdAt', descending: true);
+    return query.snapshots();
   }
 
   // discussion group message

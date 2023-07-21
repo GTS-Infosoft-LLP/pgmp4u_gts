@@ -127,6 +127,7 @@ class _PracticeNewState extends State<PracticeNew> {
   // }
   bool questionLoader = false;
   onTapOfPutOnDisscussion(String question, List<String> optionQues) async {
+    CourseProvider cp = Provider.of(context, listen: false);
     if (!context.read<ProfileProvider>().isChatSubscribed) {
       setState(() => questionLoader = false);
 
@@ -155,7 +156,8 @@ class _PracticeNewState extends State<PracticeNew> {
 
     await context
         .read<ChatProvider>()
-        .createDiscussionGroup(question, optionQues, context, testName: 'From Practice Test: ' + widget.pracTestName)
+        .createDiscussionGroup(question, optionQues, context,
+            testName: 'From Practice Test: ' + widget.pracTestName, crsName: cp.selectedCourseLable)
         .whenComplete(() {
       setState(() => questionLoader = false);
       Navigator.push(
@@ -340,7 +342,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                               _quetionNo != 0
                                                                   ? GestureDetector(
                                                                       onTap: () => {
-
                                                                         // pageController.
                                                                         enableTap = 0,
                                                                         isAnsCorrect = 0,
@@ -799,10 +800,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                               Text("Correct Answer")
                                                                                             ],
                                                                                           )
-                                                                                        :
-                                                                                  
-
-                                                                                        selAns.length ==
+                                                                                        : selAns.length ==
                                                                                                     correctAns.length &&
                                                                                                 selAns.length > 0 &&
                                                                                                 selAns.contains(
@@ -823,8 +821,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                 ),
                                                                               ),
                                                                             ),
-
-                                                                       
                                                                           ],
                                                                         )
                                                                       ]),
@@ -833,7 +829,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                 );
                                                               }),
 
-                                             
                                                           if (selAns.length == correctAns.length &&
                                                               correctAns.length > 0)
                                                             Container(
@@ -885,7 +880,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                               EdgeInsets.only(top: height * (9 / 800)),
                                                                           child: Text(
                                                                             "${getTstAns(op)}",
-                                                                    
 
                                                                             ///////////////////////
                                                                             // correctAns.contains(op[0].id)
@@ -1312,7 +1306,6 @@ class _PracticeNewState extends State<PracticeNew> {
   }
 
   String getTstAns(List<Options> op) {
-
     String correct = "";
     print("correctanslength===${correctAns.length}");
     if (correctAns.length == 1) {

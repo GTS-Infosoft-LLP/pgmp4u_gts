@@ -9,6 +9,10 @@ import 'package:pgmp4u/Screens/chat/widgets/groupListTile.dart';
 import 'package:pgmp4u/utils/app_color.dart';
 import 'package:provider/provider.dart';
 
+import '../../../provider/courseProvider.dart';
+import '../../MockTest/model/courseModel.dart';
+import '../../dropdown.dart';
+
 class GroupListPage extends StatefulWidget {
   const GroupListPage({Key key}) : super(key: key);
 
@@ -24,6 +28,12 @@ class _GroupListPageState extends State<GroupListPage> {
     Color(0xff42D865),
     Color(0xff9D6B53),
   ];
+
+  @override
+  void initState() {
+    CourseProvider cp = Provider.of(context, listen: false);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,18 +55,46 @@ class _GroupListPageState extends State<GroupListPage> {
           ),
           onPressed: () => addDiscussion(context),
         ),
-        body: Column(
-          children: [
-            _appBar(),
-            _groups(),
-          ],
-        ));
+        body: Consumer<CourseProvider>(builder: (context, cp, child) {
+          return Column(
+            children: [
+              _appBar(),
+              Container(
+                alignment: Alignment.centerRight,
+                width: MediaQuery.of(context).size.width * .35,
+                child: CustomDropDown<CourseDetails>(
+                  selectText: cp.selectedCourseLable ?? "Select",
+                  itemList: cp.course ?? [],
+                  isEnable: true,
+                  title: "",
+                  value: null,
+                  onChange: (val) {
+                    print("val.course=========>${val.course}");
+                    print("val.course=========>${val.lable}");
+                    cp.setSelectedCourseLable(val.lable);
+                    cp.setSelectedCourseId(val.id);
+                    setState(() {});
+                  },
+                ),
+              ),
+              _groups(),
+            ],
+          );
+        }));
   }
 
   Expanded _groups() {
+    print("this is clledddd");
+    print("dhfjdf====${context.read<CourseProvider>().selectedCourseLable.toLowerCase()}");
+    if ("pmp®" == context.read<CourseProvider>().selectedCourseLable.toLowerCase()) {
+      print("they are equalll");
+    } else {
+      print("this is  print(this is clleddddclledddd");
+    }
     return Expanded(
       child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: FirebaseChatHandler.getAllDiscussionGroups(),
+          stream: FirebaseChatHandler.getAllDiscussionGroups(
+              context.read<CourseProvider>().selectedCourseLable.toLowerCase()),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(

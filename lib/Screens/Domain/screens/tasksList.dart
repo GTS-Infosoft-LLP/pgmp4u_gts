@@ -192,9 +192,7 @@ class _TaskListState extends State<TaskList> {
                                                 decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(10),
                                                   color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                                  // index % 2 == 0 ? AppColor.purpule : AppColor.green,
-
-                                                  //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                                        
                                                 ),
                                                 child: Padding(
                                                   padding: const EdgeInsets.all(17.0),
@@ -205,12 +203,6 @@ class _TaskListState extends State<TaskList> {
                                                     ),
                                                     child: Center(
                                                       child:
-                                                          // Icon(
-                                                          //   Icons.checklist_sharp,
-                                                          //   // size: 30,
-                                                          //   color: Colors.white,
-                                                          // ),
-
                                                           Text('${index + 1}', style: TextStyle()),
                                                     ),
                                                   ),

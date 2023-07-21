@@ -197,8 +197,8 @@ class _HomeViewState extends State<HomeView> {
 
                                                   courseProvider.setSelectedCourseId(storedCourse[index].id);
 
-                                                  courseProvider.setSelectedCourseName(storedCourse[index].lable);
-                                                  courseProvider.setSelectedCourseLable(storedCourse[index].course);
+                                                  courseProvider.setSelectedCourseName(storedCourse[index].course);
+                                                  courseProvider.setSelectedCourseLable(storedCourse[index].lable);
 
                                                   courseProvider.getMasterData(storedCourse[index].id);
                                                   Future.delayed(const Duration(milliseconds: 100), () {

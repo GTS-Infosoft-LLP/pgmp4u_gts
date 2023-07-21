@@ -95,7 +95,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                 child: Container(
                               width: MediaQuery.of(context).size.width * .72,
                               child: Text(
-                                cp.selectedCourseName
+                                cp.selectedCourseLable
                                 // widget.title
                                 // "Video Library",
                                 ,

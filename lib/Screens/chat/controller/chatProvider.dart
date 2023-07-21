@@ -70,7 +70,8 @@ class ChatProvider extends ChangeNotifier {
   }
 
   Future createDiscussionGroup(String title, List<String> opss, BuildContext context,
-      {String testName = '', bool isFromBottomSheet = false}) async {
+      {String testName = '', bool isFromBottomSheet = false, String crsName}) async {
+    print("crsName============$crsName");
     updateDiscussionGroupLoader(true);
     var body = {
       "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
@@ -78,8 +79,11 @@ class ChatProvider extends ChangeNotifier {
       "ownerId": getUser().uid,
       "title": title,
       "groupId": '',
-      "options": opss
+      "options": opss,
+      "courseName": crsName.toLowerCase()
     };
+
+    print("body====$body");
 
     // don't post same question again
     // check with id and question
@@ -121,7 +125,7 @@ class ChatProvider extends ChangeNotifier {
         context,
         toastPosition: GFToastPosition.BOTTOM,
       );
-    } else { 
+    } else {
       GFToast.showToast(
         'An Exception occured while deleting.',
         context,

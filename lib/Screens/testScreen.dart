@@ -71,8 +71,9 @@ class _TextPreDetailState extends State<TextPreDetail> {
                               color: Colors.white,
                             ),
                           ),
+                          SizedBox(width: 5,),
                           Text(
-                            cp.selectedCourseName,
+                            cp.selectedCourseLable, 
                             style: TextStyle(
                                 fontFamily: 'Roboto Medium',
                                 fontSize: width * (20 / 420),

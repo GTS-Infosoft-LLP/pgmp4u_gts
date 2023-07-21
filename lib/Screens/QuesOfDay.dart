@@ -65,7 +65,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
   }
 
   bool questionLoader = false;
-  onTapOfPutOnDisscussion(String question, List<OptionsDay> li) async {
+  onTapOfPutOnDisscussion(String question, List<OptionsDay> li,String crsNameLable) async {
     if (!context.read<ProfileProvider>().isChatSubscribed) {
       setState(() => questionLoader = false);
 
@@ -105,7 +105,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
 
     await context
         .read<ChatProvider>()
-        .createDiscussionGroup(question, optsName, context, testName: 'Question of the day')
+        .createDiscussionGroup(question, optsName, context, testName: 'Question of the day',crsName: crsNameLable)
         .whenComplete(() {
       setState(() => questionLoader = false);
       Navigator.push(
@@ -779,20 +779,18 @@ class _QuesOfDayState extends State<QuesOfDay> {
     }));
   }
 
-  Widget putOnDiscussionWidget(BuildContext context, PracticeTextProvider data) {
+  Widget putOnDiscussionWidget(BuildContext context, PracticeTextProvider data,) {
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: InkWell(
         onTap: () async {
           // subscriptionStatus
-          print(
-              'questionLoader : $questionLoader, context.read<ProfileProvider>().subscriptionApiCalling: ${context.read<ProfileProvider>().subscriptionApiCalling}');
+          print('questionLoader : $questionLoader, context.read<ProfileProvider>().subscriptionApiCalling: ${context.read<ProfileProvider>().subscriptionApiCalling}');
           questionLoader
               ? null
               : context.read<ProfileProvider>().subscriptionApiCalling
                   ? null
-                  : onTapOfPutOnDisscussion(
-                      data.pList != null ? data.qdList[_quetionNo].question : '', data.qdList[_quetionNo].options);
+                  : onTapOfPutOnDisscussion( data.pList != null ? data.qdList[_quetionNo].question : '', data.qdList[_quetionNo].options,  data.qdList[_quetionNo].lable  );
         },
         child: Container(
           height: 35,
