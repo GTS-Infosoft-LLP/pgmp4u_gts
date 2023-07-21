@@ -6,6 +6,8 @@ import 'package:pgmp4u/Screens/Domain/widget/taskQuestions.dart';
 import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
+import '../disImage.dart';
+
 class TaskDetail extends StatefulWidget {
   String subDomainName;
   TaskDetail({Key key, this.subDomainName}) : super(key: key);
@@ -19,13 +21,17 @@ class _TaskDetailState extends State<TaskDetail> {
   var currentIndex;
   int colorIndex;
   int count;
+  int isChange;
   PageController pageController;
   ScrollController scrollController;
   int isAnsCorrect = 0;
+  var indexPg;
   void initState() {
+    isChange = 0;
     colorIndex = 0;
     currentIndex = 0;
     count = 100;
+    indexPg = 0;
     pageController = PageController();
     scrollController = ScrollController();
 
@@ -48,44 +54,58 @@ class _TaskDetailState extends State<TaskDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        floatingActionButton: InkWell(
-          onTap: () {},
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 15.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .9,
-              height: 50,
-              decoration: BoxDecoration(
-                // borderRadius: BorderRadius.only(bottomRight: Radius.circular(14.0)),
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                gradient: LinearGradient(
-                    colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
-                    begin: const FractionalOffset(0.0, 0.0),
-                    end: const FractionalOffset(1.0, 0.0),
-                    stops: [0.0, 1.0],
-                    tileMode: TileMode.clamp),
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Next",
-                      style: TextStyle(color: Colors.white, fontFamily: 'Roboto Medium', fontSize: 18),
+        floatingActionButton: currentIndex == 4
+            ? SizedBox()
+            : InkWell(
+                onTap: () {
+                  print("currentIndex====$currentIndex");
+                  var plusIndex = ++currentIndex;
+                  print("plusIndex=====$plusIndex");
+
+                  pageController.animateToPage(plusIndex,
+                      duration: Duration(milliseconds: 500), curve: Curves.easeInCirc);
+
+                  colorIndex++;
+
+                  print("current index====$currentIndex");
+                  setState(() {});
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * .9,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      // borderRadius: BorderRadius.only(bottomRight: Radius.circular(14.0)),
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      gradient: LinearGradient(
+                          colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
+                          begin: const FractionalOffset(0.0, 0.0),
+                          end: const FractionalOffset(1.0, 0.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp),
                     ),
-                    SizedBox(
-                      width: 5,
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Next",
+                            style: TextStyle(color: Colors.white, fontFamily: 'Roboto Medium', fontSize: 18),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(
+                            Icons.east,
+                            color: Colors.white,
+                          )
+                        ],
+                      ),
                     ),
-                    Icon(
-                      Icons.east,
-                      color: Colors.white,
-                    )
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,7 +172,7 @@ class _TaskDetailState extends State<TaskDetail> {
                     : Padding(
                         padding: const EdgeInsets.only(left: 18.0),
                         child: Text(
-                          dp.selectedTaskName + ":  ${colorIndex + 1}" + "/${5}",
+                          dp.selectedTaskName,
                           maxLines: 2,
                           style: TextStyle(
                             fontFamily: 'Roboto',
@@ -177,7 +197,7 @@ class _TaskDetailState extends State<TaskDetail> {
                             itemCount: 5,
                             onPageChanged: (index) {
                               print("index valuee====$index");
-                              print("task question===${dp.TaskQues}");
+                              // print("task question===${dp.TaskQues}");
                               setState(() {
                                 colorIndex = index;
                                 currentIndex = index;
@@ -191,21 +211,23 @@ class _TaskDetailState extends State<TaskDetail> {
                               }
                             },
                             itemBuilder: (context, index) {
-                              return currentIndex == 0
-                                  ? TaskDisc(context, 0)
-                                  : currentIndex == 1
-                                      ? TaskImg(context, 0)
-                                      : currentIndex == 2
-                                          ? TaskExple(context, 0)
-                                          : currentIndex == 3
-                                              ? TaskKeywrd(context, 0)
-                                              : dp.TaskQues.isNotEmpty
-                                                  ? TaskQuestion()
-                                                  : Center(
-                                                      child: Text(
-                                                      "No Questions Available",
-                                                      style: TextStyle(fontSize: 18),
-                                                    ));
+                              return dp.TaskList.isEmpty
+                                  ? Center(child: Text("No Data Found"))
+                                  : currentIndex == 0
+                                      ? TaskDisc(context, 0)
+                                      : currentIndex == 1
+                                          ? TaskImg(context, 0)
+                                          : currentIndex == 2
+                                              ? TaskExple(context, 0)
+                                              : currentIndex == 3
+                                                  ? TaskKeywrd(context, 0)
+                                                  : dp.TaskQues.isNotEmpty
+                                                      ? TaskQuestion()
+                                                      : Center(
+                                                          child: Text(
+                                                          "No Questions Available",
+                                                          style: TextStyle(fontSize: 18),
+                                                        ));
                             }),
                         dp.taskDetailApiCall
                             ? SizedBox()
@@ -273,7 +295,7 @@ Widget TaskKeywrd(BuildContext context, index) {
         Align(
           alignment: Alignment.topLeft,
           child: Text(
-            "      Keywords",
+            "    Keywords",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontFamily: 'Roboto Regular',
@@ -284,10 +306,10 @@ Widget TaskKeywrd(BuildContext context, index) {
           ),
         ),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+          padding: const EdgeInsets.only(bottom: 20.0, left: 15),
           child: Html(
             data: dp.TaskDetailList != null ? dp.TaskDetailList[index].Keywords : '',
             style: {
@@ -310,6 +332,7 @@ Widget TaskKeywrd(BuildContext context, index) {
 
 Widget TaskImg(BuildContext context, index) {
   DomainProvider dp = Provider.of(context, listen: false);
+  print("dddd ${dp.TaskDetailList[index].Image}");
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8.0),
     child: Column(
@@ -330,28 +353,34 @@ Widget TaskImg(BuildContext context, index) {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 10),
-          child: Container(
-            // width: MediaQuery.of(context).size.width * .92,
-            // height: MediaQuery.of(context).size.height * .2,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: CachedNetworkImage(
-                imageUrl: dp.TaskDetailList[index].Image != null ? dp.TaskDetailList[index].Image : '',
-                fit: BoxFit.cover,
-                // width: MediaQuery.of(context).size.width * .92,
-                // height: MediaQuery.of(context).size.height * .2,
-                placeholder: (context, url) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 78.0, vertical: 28),
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.grey[400],
+          child: InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDispalyScreen()));
+            },
+            child: Container(
+              // width: MediaQuery.of(context).size.width * .92,
+              // height: MediaQuery.of(context).size.height * .2,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
+                  imageUrl: dp.TaskDetailList[index].Image != null ? dp.TaskDetailList[index].Image : '',
+                  fit: BoxFit.cover,
+                  // width: MediaQuery.of(context).size.width * .92,
+                  // height: MediaQuery.of(context).size.height * .2,
+                  placeholder: (context, url) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 78.0, vertical: 28),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.grey[400],
+                    ),
                   ),
+                  errorWidget: (context, url, error) => Container(
+                      height: MediaQuery.of(context).size.width * .4, child: Center(child: Icon(Icons.error))),
                 ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
           ),
@@ -361,11 +390,49 @@ Widget TaskImg(BuildContext context, index) {
   );
 }
 
+void showImage(context, imageee) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          scrollable: true,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * .7,
+                  width: MediaQuery.of(context).size.width * .98,
+                  child: CachedNetworkImage(
+                    imageUrl: imageee ?? "",
+                    fit: BoxFit.fill,
+                    placeholder: (context, url) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 78.0, vertical: 28),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                        height: MediaQuery.of(context).size.width * .4, child: Center(child: Icon(Icons.error))),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      });
+}
+
 Widget TaskExple(BuildContext context, index) {
   DomainProvider dp = Provider.of(context, listen: false);
   return SingleChildScrollView(
     child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 18),
       child: Column(
         children: [
           SizedBox(
@@ -391,7 +458,7 @@ Widget TaskExple(BuildContext context, index) {
             data: dp.TaskDetailList != null ? dp.TaskDetailList[index].Examples : '',
             style: {
               "body": Style(
-                padding: EdgeInsets.only(top: 5),
+                padding: EdgeInsets.only(top: 5, bottom: 10),
                 margin: EdgeInsets.zero,
                 color: Color(0xff000000),
                 textAlign: TextAlign.left,
@@ -429,23 +496,37 @@ Widget TaskDisc(BuildContext context, currentIndex) {
             ),
           ),
         ),
-
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         Align(
           alignment: Alignment.topLeft,
-          child: Text(
-            dp.TaskDetailList[currentIndex].name,
-            textAlign: TextAlign.left,
-            style:
-                TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black, fontFamily: "Roboto Regular"),
+          child: Html(
+            data: dp.TaskDetailList != null || dp.TaskDetailList.isNotEmpty ? dp.TaskDetailList[currentIndex].name : '',
+            style: {
+              "body": Style(
+                padding: EdgeInsets.only(top: 5),
+                margin: EdgeInsets.zero,
+                color: Colors.black,
+                // Color.fromARGB(255, 110, 68, 68),
+                textAlign: TextAlign.left,
+                // maxLines: 7,
+                // textOverflow: TextOverflow.ellipsis,
+                fontSize: FontSize(18),
+              )
+            },
           ),
+
+          //  Text(
+          //   dp.TaskDetailList.isNotEmpty ? dp.TaskDetailList[currentIndex].name : "",
+          //   textAlign: TextAlign.left,
+          //   style:
+          //       TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black, fontFamily: "Roboto Regular"),
+          // ),
         ),
         SizedBox(
           height: 15,
         ),
-
         Align(
           alignment: Alignment.topLeft,
           child: Text(
@@ -459,13 +540,13 @@ Widget TaskDisc(BuildContext context, currentIndex) {
             ),
           ),
         ),
-
         SizedBox(
           height: 5,
         ),
-
         Html(
-          data: dp.TaskDetailList != null ? dp.TaskDetailList[currentIndex].description : '',
+          data: dp.TaskDetailList != null || dp.TaskDetailList.isNotEmpty
+              ? dp.TaskDetailList[currentIndex].description
+              : '',
           style: {
             "body": Style(
               padding: EdgeInsets.only(top: 5),
@@ -478,32 +559,6 @@ Widget TaskDisc(BuildContext context, currentIndex) {
             )
           },
         ),
-
-        // SizedBox(
-        //   height: 10,
-        // ),
-        // Padding(
-        //     padding: const EdgeInsets.only(bottom: 12.0),
-        //     child: Container(
-        //         height: MediaQuery.of(context).size.height * .54,
-        //         child: Padding(
-        //             padding: const EdgeInsets.only(left: 4.0, right: 18),
-        //             child: Padding(
-        //                 padding: const EdgeInsets.only(bottom: 8.0),
-        //                 child: Html(
-        //                   data: dp.TaskList != null ? dp.TaskList[currentIndex].description : '',
-        //                   style: {
-        //                     "body": Style(
-        //                       padding: EdgeInsets.only(top: 5),
-        //                       margin: EdgeInsets.zero,
-        //                       color: Color(0xff000000),
-        //                       textAlign: TextAlign.left,
-        //                       // maxLines: 7,
-        //                       // textOverflow: TextOverflow.ellipsis,
-        //                       fontSize: FontSize(18),
-        //                     )
-        //                   },
-        //                 )))))
       ]),
     ),
   );

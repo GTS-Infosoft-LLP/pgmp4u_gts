@@ -80,7 +80,6 @@ class _MockTestDetailsState extends State<MockTestDetails> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return SafeArea(
-      
       child: Scaffold(
           body: Container(
         color: _colorfromhex("#ABAFD1").withOpacity(0.13),
@@ -230,7 +229,7 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                                         bottom: height * (15 / 800),
                                                       ),
                                                       child: Text(
-                                                        domainList[index].category,
+                                                        domainList[index].category ?? "",
                                                         style: TextStyle(
                                                             fontFamily: 'Roboto Medium',
                                                             fontSize: width * (18 / 420),

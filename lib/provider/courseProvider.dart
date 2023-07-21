@@ -419,9 +419,10 @@ class CourseProvider extends ChangeNotifier {
   }
 
   List<FlashCateDetails> flashCateTempList = [];
+
   Future<void> getFlashCate(int id) async {
     updateFlashCateDataApiCall(true);
-    checkInternet = 0;
+    // checkInternet = 0;
     print("flash category iddd=====$id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -429,78 +430,61 @@ class CourseProvider extends ChangeNotifier {
     print("token valued===$stringValue");
     var request = {"id": id};
 
-    var response = await http
-        .post(
-      Uri.parse(GET_FLASH_CATEGORIES),
-      headers: {"Content-Type": "application/json", 'Authorization': stringValue},
-      body: json.encode(request),
-    )
-        .onError((error, stackTrace) {
-      print("error========>>$error");
-      if (error.toString() == "Connection failed") {
-        print("Connection failed *** Connection failed *** Connection failed");
-        checkInternet = 1;
-      }
-      flashCate = [];
-      checkInternet = 1;
-      flashCate = HiveHandler.getFlashCateDataList(key: id.toString()) ?? [];
-      if (flashCate.isEmpty) {
-        flashCate = [];
-        // HiveHandler.addFlashCateData(flashCate, id.toString());
-      }
-      return;
-    });
+    try {
+      var response = await http.post(
+        Uri.parse(GET_FLASH_CATEGORIES),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
 
-    print("response.statusCode===${response.statusCode}");
-    if (response.statusCode == 200) {
-      updateFlashCateDataApiCall(false);
-      flashCate.clear();
-      Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
-      print("mapResponse=========$mapResponse");
+      print("response.statusCode===${response.statusCode}");
+      print("response.statusCode===${response.body}");
 
-      if (mapResponse["status"] == 200) {
-        List temp1 = mapResponse["data"];
-        print("temp list===$temp1");
-        flashCate = temp1.map((e) => FlashCateDetails.fromjson(e)).toList();
+      if (response.statusCode == 200) {
+        updateFlashCateDataApiCall(false);
+        flashCate.clear();
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+        print("mapResponse=========$mapResponse");
 
-        print("flashCate================${flashCate.length}");
-        if (flashCate == null || flashCate.isEmpty) {
+        if (mapResponse["status"] == 200) {
+          List temp1 = mapResponse["data"];
+          print("temp list===$temp1");
+          flashCate = temp1.map((e) => FlashCateDetails.fromjson(e)).toList();
+
+          print("flashCate================${flashCate.length}");
+          if (flashCate == null || flashCate.isEmpty) {
+            flashCate = [];
+          }
+          try {
+            HiveHandler.addFlashCateData(jsonEncode(mapResponse["data"]), id.toString());
+          } catch (e) {
+            print("errorr===========>>>>>>$e");
+          }
+
+          notifyListeners();
+
+          if (flashCate.isNotEmpty) {
+            print("flashCate name 0=== ${flashCate[0].name}");
+          }
+        } else {
+          updateFlashCateDataApiCall(false);
+          print("status 400");
           flashCate = [];
-        }
-        try {
-          HiveHandler.addFlashCateData(jsonEncode(mapResponse["data"]), id.toString());
+          // HiveHandler.addFlashCateData(flashCate, id.toString());
 
-          // Future.delayed(Duration(microseconds: 800), () {
-          //   List<FlashCateDetails> tempList = HiveHandler.getFlashCateDataList(key: id.toString()) ?? [];
-          //   flashCateTempList = HiveHandler.getFlashCateDataList(key: id.toString()) ?? [];
-          //   print("*************************************************");
-          //   print("tempList==========$flashCateTempList");
-          // });
-        } catch (e) {
-          print("errorr===========>>>>>>$e");
+          notifyListeners();
+          return;
         }
 
-        notifyListeners();
-
-        if (flashCate.isNotEmpty) {
-          print("flashCate name 0=== ${flashCate[0].name}");
-        }
+        // if (mapResponse["status"] == 400) {
+        // } else {}
       } else {
         updateFlashCateDataApiCall(false);
-        print("status 400");
-        flashCate = [];
-        // HiveHandler.addFlashCateData(flashCate, id.toString());
-
-        notifyListeners();
-        return;
       }
-
-      // if (mapResponse["status"] == 400) {
-      // } else {}
-    } else {
+    } on Exception {
       updateFlashCateDataApiCall(false);
     }
-    print("respponse=== ${response.body}");
+    notifyListeners();
   }
 
   Future<void> getVideoCate(int id) async {

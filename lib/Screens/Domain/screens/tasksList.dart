@@ -98,153 +98,170 @@ class _TaskListState extends State<TaskList> {
               }),
             ]),
             SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.only(left: 18.0),
-              child: Text(
-                widget.subDomainName ?? "Tasks",
-                // cp.pptCategoryList[index].name,
-                maxLines: 2,
-                style: TextStyle(
-                  fontFamily: 'Roboto Regular',
-                  fontSize: 18,
-                  color: Colors.black,
-                ),
-              ),
-            ),
             Consumer<DomainProvider>(builder: (context, dp, child) {
-              // return cp.isPPTLoading
-              //     ? Container(
-              //         height: MediaQuery.of(context).size.height * .60,
-              //         child: Center(child: CircularProgressIndicator.adaptive()))
-              //     :
-              return Container(
-                height: MediaQuery.of(context).size.height * .78,
-                // width: MediaQuery.of(context).size.width * .95,
-                child: ListView.builder(
-                    itemCount: dp.TaskList.length,
-                    itemBuilder: (context, index) {
-                      if (index % 4 == 0) {
-                        clr = Color(0xff3F9FC9);
-                      } else if (index % 3 == 0) {
-                        clr = Color(0xff3FC964);
-                      } else if (index % 2 == 0) {
-                        clr = Color(0xffDE682B);
-                      } else {
-                        clr = Color(0xffC93F7F);
-                      }
+              return Padding(
+                padding: const EdgeInsets.only(left: 18.0),
+                child: dp.TaskList.isEmpty
+                    ? SizedBox()
+                    : Container(
+                        width: MediaQuery.of(context).size.width * .93,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .67,
+                          child: Text(
+                            dp.selectedSubDomainName == ""
+                                ? dp.selectedDomainName
+                                : dp.TaskList.isEmpty
+                                    ? ""
+                                    : dp.selectedDomainName + "  --> " + dp.selectedSubDomainName,
 
-                      return dp.taskApiCall
-                          ? Container(
-                              height: MediaQuery.of(context).size.height * .60,
-                              child: Center(child: CircularProgressIndicator.adaptive()))
-                          : InkWell(
-                              onTap: () async {
-                                print("dp.TaskList[index].id===${dp.TaskList[index].id}");
-                                print("dp.TaskList[index].id===${dp.TaskList[index].name}");
+                            // cp.pptCategoryList[index].name,
+                            maxLines: 3,
+                            style: TextStyle(
+                              fontFamily: 'Roboto Regular',
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+              );
+            }),
+            Consumer<DomainProvider>(builder: (context, dp, child) {
+              return dp.taskApiCall
+                  ? Container(
+                      height: MediaQuery.of(context).size.height * .60,
+                      child: Center(child: CircularProgressIndicator.adaptive()))
+                  : dp.TaskList.isEmpty
+                      ? Center(
+                          child: Text(
+                          "No Data Found",
+                          style: TextStyle(fontSize: 18),
+                        ))
+                      : Container(
+                          height: MediaQuery.of(context).size.height * .75,
 
-                                dp.setSelectedTaskLable(dp.TaskList[index].lable);
-                                dp.getTasksDetailData(dp.TaskList[index].id);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => TaskDetail(
-                                              subDomainName: dp.TaskList[index].name,
-                                            )));
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                    bottom: BorderSide(
-                                      width: 1,
-                                      color: Color.fromARGB(255, 219, 211, 211),
-                                    ),
-                                  )),
-                                  height: 70,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 0,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(bottom: 4.0),
-                                        child: Container(
-                                            height: 60,
-                                            width: 60,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
-                                              color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                              // index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                          // width: MediaQuery.of(context).size.width * .95,
+                          child: ListView.builder(
+                              itemCount: dp.TaskList.length,
+                              itemBuilder: (context, index) {
+                                if (index % 4 == 0) {
+                                  clr = Color(0xff3F9FC9);
+                                } else if (index % 3 == 0) {
+                                  clr = Color(0xff3FC964);
+                                } else if (index % 2 == 0) {
+                                  clr = Color(0xffDE682B);
+                                } else {
+                                  clr = Color(0xffC93F7F);
+                                }
 
-                                              //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(17.0),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(80),
-                                                ),
-                                                child: Center(
-                                                  child:
-                                                      // Icon(
-                                                      //   Icons.checklist_sharp,
-                                                      //   // size: 30,
-                                                      //   color: Colors.white,
-                                                      // ),
+                                return InkWell(
+                                  onTap: () async {
+                                    print("dp.TaskList[index].id===${dp.TaskList[index].id}");
+                                    print("dp.TaskList[index].id===${dp.TaskList[index].name}");
 
-                                                      Text('${index + 1}', style: TextStyle()),
-                                                ),
-                                              ),
-                                            )),
-                                      ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                    dp.setSelectedTaskLable(dp.TaskList[index].lable);
+                                    dp.getTasksDetailData(dp.TaskList[index].id);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => TaskDetail(
+                                                  subDomainName: dp.TaskList[index].name,
+                                                )));
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                          border: Border(
+                                        bottom: BorderSide(
+                                          width: 1,
+                                          color: Color.fromARGB(255, 219, 211, 211),
+                                        ),
+                                      )),
+                                      height: 70,
+                                      child: Row(
                                         children: [
-                                          Container(
-                                            width: MediaQuery.of(context).size.width * .45,
-                                            // color: Colors.amber,
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text(
-                                                  dp.TaskList[index].lable,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.grey,
-                                                  ),
+                                          SizedBox(
+                                            width: 0,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(bottom: 4.0),
+                                            child: Container(
+                                                height: 60,
+                                                width: 60,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                                                  // index % 2 == 0 ? AppColor.purpule : AppColor.green,
+
+                                                  //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
                                                 ),
-                                              ],
-                                            ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(17.0),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.circular(80),
+                                                    ),
+                                                    child: Center(
+                                                      child:
+                                                          // Icon(
+                                                          //   Icons.checklist_sharp,
+                                                          //   // size: 30,
+                                                          //   color: Colors.white,
+                                                          // ),
+
+                                                          Text('${index + 1}', style: TextStyle()),
+                                                    ),
+                                                  ),
+                                                )),
                                           ),
                                           SizedBox(
-                                            height: 0,
+                                            width: 15,
                                           ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width * .55,
-                                            child: Text(
-                                              dp.TaskList[index].name,
-                                              maxLines: 2,
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.black,
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context).size.width * .45,
+                                                // color: Colors.amber,
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      dp.TaskList[index].lable,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
+                                              SizedBox(
+                                                height: 0,
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context).size.width * .55,
+                                                child: Text(
+                                                  dp.TaskList[index].name,
+                                                  maxLines: 2,
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                            );
-                    }),
-              );
+                                );
+                              }),
+                        );
             })
           ],
         ),

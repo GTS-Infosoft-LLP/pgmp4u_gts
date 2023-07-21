@@ -22,7 +22,6 @@ import '../MockTest/model/courseModel.dart';
 import '../dropdown.dart';
 import '../notificationTabs.dart';
 import '../quesDayList.dart';
-import '../subscriptionScreen.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key key}) : super(key: key);
@@ -347,7 +346,7 @@ class _ProfileState extends State<Profile> {
 
                           InkWell(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => RandomPage()));
                             },
                             child: ClipOval(
                               child: CachedNetworkImage(
@@ -470,6 +469,13 @@ class _ProfileState extends State<Profile> {
                                                           fontFamily: 'Roboto Medium',
                                                           color: Colors.white,
                                                           fontSize: 18),
+                                                    ),
+                                                    Text(
+                                                      "",
+                                                      style: TextStyle(
+                                                          fontFamily: 'Roboto Medium',
+                                                          color: Colors.white,
+                                                          fontSize: 10),
                                                     ),
                                                   ],
                                                 ),

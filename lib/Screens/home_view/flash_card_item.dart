@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
+import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:pgmp4u/provider/response_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -203,9 +204,17 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                 courseProvider.setSelectedFlashCategory(storedFlashCate[index].id);
                                                 courseProvider.FlashCards = [];
 
-                                                await courseProvider.getFlashCards(
-                                                    storedFlashCate[index].id, storedFlashCate[index].price);
+                                                ProfileProvider pp = Provider.of(context, listen: false);
+                                                pp.updateLoader(true);
+
+                                                await courseProvider
+                                                    .getFlashCards(
+                                                        storedFlashCate[index].id, storedFlashCate[index].price)
+                                                    .onError((error, stackTrace) {
+                                                  pp.updateLoader(false);
+                                                });
                                                 var flashPayStat = await cp.successValueFlash;
+                                                pp.updateLoader(false);
                                                 print("flashPayStat=======$flashPayStat");
                                                 if (flashPayStat == false) {
                                                   Navigator.push(
@@ -217,7 +226,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                                 index: 1,
                                                               )));
                                                 } else {
-                                                  Future.delayed(const Duration(milliseconds: 10), () async {
+                                                  Future.delayed(const Duration(milliseconds: 0), () async {
                                                     {
                                                       Navigator.push(
                                                           context,
@@ -260,11 +269,9 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                                 color: Colors.white,
                                                               )),
                                                         ),
-
                                                         SizedBox(
                                                           width: 10,
                                                         ),
-
                                                         Column(
                                                           mainAxisAlignment: MainAxisAlignment.start,
                                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,75 +327,8 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                             ),
                                                           ],
                                                         ),
-
-                                                        // Container(
-                                                        //   child: Row(
-                                                        //     mainAxisAlignment: MainAxisAlignment.end,
-                                                        //     children: [
-                                                        //       Text(
-                                                        //         "Premium",
-                                                        //         style: TextStyle(
-                                                        //           fontSize: 16,
-                                                        //           fontFamily: 'Roboto Medium',
-                                                        //           fontWeight: FontWeight.w600,
-                                                        //         ),
-                                                        //         maxLines: 2,
-                                                        //         overflow: TextOverflow.ellipsis,
-                                                        //       ),
-                                                        //     ],
-                                                        //   ),
-                                                        // ),
-
-                                                        // )
                                                       ],
-                                                    )
-
-                                                    // ListTile(
-                                                    //     leading: Container(
-                                                    //         height: 60,
-                                                    //         width: 60,
-                                                    //         decoration: BoxDecoration(
-                                                    //           borderRadius: BorderRadius.circular(8),
-                                                    //           color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                                    //         ),
-                                                    //         child: Icon(
-                                                    //           index % 2 == 0
-                                                    //               ? FontAwesomeIcons.book
-                                                    //               : FontAwesomeIcons.airbnb,
-                                                    //           color: Colors.white,
-                                                    //         )
-
-                                                    //         ),
-                                                    //     // title: Row(
-                                                    //     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    //     //   children: [
-                                                    //     //     // Text(
-                                                    //     //     //   "",
-                                                    //     //     //   style: TextStyle(fontSize: 12),
-                                                    //     //     // ),
-                                                    //     //     storedFlashCate[index].payment_status == 1
-                                                    //     //         ? InkWell(
-                                                    //     //             onTap: () {
-                                                    //     //               Navigator.push(
-                                                    //     //                   context,
-                                                    //     //                   MaterialPageRoute(
-                                                    //     //                       builder: (context) => RandomPage(index: 1)));
-                                                    //     //             },
-                                                    //     //             child: Text(
-                                                    //     //               "Premium",
-                                                    //     //               style: TextStyle(fontSize: 12),
-                                                    //     //             ),
-                                                    //     //           )
-                                                    //     //         : SizedBox(),
-                                                    //     //   ],
-                                                    //     // ),
-                                                    //     title: Text(
-                                                    //       storedFlashCate[index].name,
-                                                    //       maxLines: 2,
-                                                    //       overflow:  TextOverflow.ellipsis,
-                                                    //     ))
-
-                                                    ),
+                                                    )),
                                               ),
                                             );
                                             // );
@@ -397,89 +337,6 @@ class _FlashCardItemState extends State<FlashCardItem> {
                         });
                       }),
                 )
-
-                // Consumer<ResponseProvider>(
-                //   builder: ((context, responseProvider, child) {
-                //     return Container(
-                //         child: responseProvider.apiStatus
-                //             ? Center(
-                //                 child: CircularProgressIndicator.adaptive(),
-                //               )
-                //             : responseProvider.categoryList != null
-                //                 ? ListView.builder(
-                //                     physics: NeverScrollableScrollPhysics(),
-                //                     shrinkWrap: true,
-                //                     itemCount: responseProvider
-                //                         .categoryList.categoryList.length,
-                //                     itemBuilder: (context, index) {
-                //                       var itemscategoryList =
-                //                           responseProvider
-                //                               .categoryList.categoryList;
-
-                //                       var item = itemscategoryList[index];
-                //                       return InkWell(
-                //                         onTap: () async {
-                //                           print(" tap on card");
-                //                           await responseProvider
-                //                               .setCategoryid(item.id);
-                //                           Navigator.push(
-                //                               context,
-                //                               MaterialPageRoute(
-                //                                   builder: (context) =>
-                //                                       FlashCardsPage()));
-                //                         },
-                //                         child: Card(
-                //                           margin: EdgeInsets.symmetric(
-                //                             vertical: 0.5,
-                //                           ),
-                //                           child: Container(
-                //                               decoration: BoxDecoration(
-                //                                   color: Colors.white),
-                //                               child: ListTile(
-                //                                   leading: Container(
-                //                                       decoration:
-                //                                           BoxDecoration(
-                //                                         borderRadius:
-                //                                             BorderRadius
-                //                                                 .circular(
-                //                                                     8),
-                //                                         color:
-                //                                             index % 2 == 0
-                //                                                 ? AppColor
-                //                                                     .purpule
-                //                                                 : AppColor
-                //                                                     .green,
-                //                                       ),
-                //                                       child: Image.network(
-                //                                         "${item.thumbnail}",width: 80,errorBuilder: (context, error, stackTrace) {
-                //                                           return Image.asset(AppImage.picture_placeholder);
-                //                                         },
-                //                                         fit: BoxFit.fill,
-                //                                       )),
-                //                                   title: Text(
-                //                                     "Flash Card",
-                //                                     style: TextStyle(
-                //                                         fontSize: 12),
-                //                                   ),
-                //                                   subtitle: Text(
-                //                                     item.title,
-                //                                     maxLines: 2,
-                //                                     overflow: TextOverflow
-                //                                         .ellipsis,
-                //                                     style: AppTextStyle
-                //                                         .titleTile,
-                //                                   ))),
-                //                         ),
-                //                       );
-                //                     })
-                //                 : Center(
-                //                     child: Padding(
-                //                     padding:
-                //                         const EdgeInsets.only(top: 100),
-                //                     child: Text("No data found"),
-                //                   )));
-                //   }),
-                // )
               ])))),
     );
   }

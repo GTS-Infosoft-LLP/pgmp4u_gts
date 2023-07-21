@@ -66,49 +66,39 @@ class _RandomPageState extends State<RandomPage> {
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
-                  color: Colors.white,
-                  width: width,
-                  // height: height,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 20, top: 15),
-                        child: GestureDetector(
-                          onTap: () => {Navigator.of(context).pop()},
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            size: 27,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    color: Colors.white,
+                    width: width,
+                    // height: height,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 30, bottom: 25),
-                            child: Image.asset('assets/premium.png'),
+                            margin: EdgeInsets.only(left: 20, top: 15),
+                            child: GestureDetector(
+                              onTap: () => {Navigator.of(context).pop()},
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                size: 27,
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        child: Center(
-                            child: widget.index == 1
-                                ? Text(
-                                    'Get 1 year Access to Flash Card',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontFamily: 'Roboto Bold',
-                                        fontSize: width * (30 / 420),
-                                        color: _colorfromhex("#3D4AB4"),
-                                        letterSpacing: 0.3),
-                                  )
-                                : widget.index == 2
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 30, bottom: 25),
+                                child: Image.asset('assets/premium.png'),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20, right: 20),
+                            child: Center(
+                                child: widget.index == 1
                                     ? Text(
-                                        'Get 1 year Access to Video Library',
+                                        'Get 1 year Access to Flash Card',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontFamily: 'Roboto Bold',
@@ -116,9 +106,9 @@ class _RandomPageState extends State<RandomPage> {
                                             color: _colorfromhex("#3D4AB4"),
                                             letterSpacing: 0.3),
                                       )
-                                    : widget.index == 3
+                                    : widget.index == 2
                                         ? Text(
-                                            'Get 1 year Access to Mock Tests',
+                                            'Get 1 year Access to Video Library',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontFamily: 'Roboto Bold',
@@ -126,9 +116,9 @@ class _RandomPageState extends State<RandomPage> {
                                                 color: _colorfromhex("#3D4AB4"),
                                                 letterSpacing: 0.3),
                                           )
-                                        : widget.index == 4
+                                        : widget.index == 3
                                             ? Text(
-                                                'Get 1 year Access to Chats',
+                                                'Get 1 year Access to Mock Tests',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontFamily: 'Roboto Bold',
@@ -136,9 +126,9 @@ class _RandomPageState extends State<RandomPage> {
                                                     color: _colorfromhex("#3D4AB4"),
                                                     letterSpacing: 0.3),
                                               )
-                                            : widget.index == 5
+                                            : widget.index == 4
                                                 ? Text(
-                                                    'Get 1 year Access to PTT',
+                                                    'Get 1 year Access to Chats',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontFamily: 'Roboto Bold',
@@ -146,9 +136,9 @@ class _RandomPageState extends State<RandomPage> {
                                                         color: _colorfromhex("#3D4AB4"),
                                                         letterSpacing: 0.3),
                                                   )
-                                                : widget.index == 6
+                                                : widget.index == 5
                                                     ? Text(
-                                                        'Get 1 year Access to Domains',
+                                                        'Get 1 year Access to PTT',
                                                         textAlign: TextAlign.center,
                                                         style: TextStyle(
                                                             fontFamily: 'Roboto Bold',
@@ -156,57 +146,188 @@ class _RandomPageState extends State<RandomPage> {
                                                             color: _colorfromhex("#3D4AB4"),
                                                             letterSpacing: 0.3),
                                                       )
-                                                    : Text(
-                                                        'Get 1 year Access to Pgmp Question of the day',
-                                                        textAlign: TextAlign.center,
-                                                        style: TextStyle(
-                                                          fontFamily: 'Roboto Bold',
-                                                          fontSize: width * (30 / 420),
-                                                          color: _colorfromhex("#3D4AB4"),
-                                                        ),
-                                                      )),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 20),
-                        child: Center(
-                            child: Text(
-                          'Yearly Access On \n \$${widget.price}',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontFamily: 'Roboto Bold',
-                              fontSize: 24,
-                              color: _colorfromhex("#3D4AB4"),
-                              letterSpacing: 0.3),
-                        )),
-                      ),
-                      Consumer2<PurchaseProvider, CourseProvider>(
-                        builder: (context, value, cp, child) {
-                          var latestState = value.serverResponse.getContent();
-                          if (latestState is Loading) {
-                            return Center(child: CircularProgressIndicator());
-                          }
+                                                    : widget.index == 6
+                                                        ? Text(
+                                                            'Get 1 year Access to Domains',
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                                fontFamily: 'Roboto Bold',
+                                                                fontSize: width * (30 / 420),
+                                                                color: _colorfromhex("#3D4AB4"),
+                                                                letterSpacing: 0.3),
+                                                          )
+                                                        : Text(
+                                                            'Get 1 year Access to Pgmp Question of the day',
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                              fontFamily: 'Roboto Bold',
+                                                              fontSize: width * (30 / 420),
+                                                              color: _colorfromhex("#3D4AB4"),
+                                                            ),
+                                                          )),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20),
+                            child: Center(
+                                child: Text(
+                              'Yearly Access On \n \$${widget.price}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontFamily: 'Roboto Bold',
+                                  fontSize: 24,
+                                  color: _colorfromhex("#3D4AB4"),
+                                  letterSpacing: 0.3),
+                            )),
+                          ),
+                          Consumer2<PurchaseProvider, CourseProvider>(
+                            builder: (context, value, cp, child) {
+                              var latestState = value.serverResponse.getContent();
+                              if (latestState is Loading) {
+                                return Center(child: CircularProgressIndicator());
+                              }
 
-                          if (latestState is Default) {
-                            value.showToast(context, latestState.message);
-                          }
+                              if (latestState is Default) {
+                                value.showToast(context, latestState.message);
+                              }
 
-                          print("value.serverResponse = ${latestState is Success}");
-                          if (latestState is Success) {
-                            print("Pop called");
-                            Future.delayed(Duration.zero, () async {
-                              Navigator.pop(context, true);
-                            });
-                          }
-                          return BuyButton2(
-                              context, value, widget.index, cp.selectedMasterType, widget.categoryId, widget.index);
-                        },
-                      ),
-                      // ButtonRow2()
-                    ],
-                  ),
-                ),
+                              print("value.serverResponse = ${latestState is Success}");
+                              if (latestState is Success) {
+                                print("Pop called");
+                                Future.delayed(Duration.zero, () async {
+                                  Navigator.pop(context, true);
+                                });
+                              }
+                              return BuyButton2(
+                                  context, value, widget.index, cp.selectedMasterType, widget.categoryId, widget.index);
+                            },
+                          ),
+                          // Center(
+                          //     child: Text("OR",
+                          //         style: TextStyle(
+                          //             fontFamily: 'Roboto Bold',
+                          //             fontSize: 24,
+                          //             color: Colors.black,
+                          //             letterSpacing: 0.3))),
+                          // Consumer<CourseProvider>(builder: (context, cp, child) {
+                          //   return Center(
+                          //       child: Text("Get Full ${cp.selectedCourseLable} Course Access with below Learning Plan",
+                          //           textAlign: TextAlign.center,
+                          //           style: TextStyle(
+                          //               fontFamily: 'Roboto Medium',
+                          //               fontSize: 18,
+                          //               color: Colors.black,
+                          //               letterSpacing: 0.3)));
+                          // }),
+                          // SizedBox(
+                          //   height: 10,
+                          // ),
+                          // Consumer<ProfileProvider>(builder: (context, pp, child) {
+                          //   return Padding(
+                          //     padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 20),
+                          //     child: Column(
+                          //       children: [
+                          //         Row(
+                          //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //             mainAxisSize: MainAxisSize.min,
+                          //             children: List.generate(permiumbutton.length, (i) {
+                          //               return Expanded(
+                          //                   child: Padding(
+                          //                 padding: const EdgeInsets.symmetric(horizontal: 8),
+                          //                 child: InkWell(
+                          //                   onTap: () {
+                          //                     print("index val===$i");
+
+                          //                     pp.setSelectedContainer(i);
+                          //                   },
+                          //                   child: Container(
+                          //                     height: 175,
+                          //                     width: MediaQuery.of(context).size.width * .40,
+                          //                     decoration: BoxDecoration(
+                          //                       border: Border.all(
+                          //                         color: Color.fromARGB(255, 108, 120, 225),
+                          //                         width: 4,
+                          //                       ),
+                          //                       color: pp.selectedSubsBox == i
+                          //                           ? Color.fromARGB(255, 108, 120, 225)
+                          //                           : Colors.white,
+                          //                       borderRadius: BorderRadius.all(Radius.circular(10)),
+                          //                     ),
+                          //                     child: Column(
+                          //                       children: [
+                          //                         SizedBox(
+                          //                           height: 10,
+                          //                         ),
+                          //                         Text(
+                          //                           permiumbutton[i].name,
+                          //                           textAlign: TextAlign.center,
+                          //                           style: TextStyle(
+                          //                               fontFamily: 'Roboto Bold',
+                          //                               fontSize: 22,
+                          //                               color: pp.selectedSubsBox == i
+                          //                                   ? Colors.white
+                          //                                   : Color.fromARGB(255, 87, 101, 222),
+                          //                               letterSpacing: 0.3),
+                          //                         ),
+                          //                         SizedBox(
+                          //                           height: 5,
+                          //                         ),
+                          //                         Text(
+                          //                           '5 books',
+                          //                           textAlign: TextAlign.center,
+                          //                           style: TextStyle(
+                          //                               fontFamily: 'Roboto Bold',
+                          //                               fontSize: 18,
+                          //                               color: pp.selectedSubsBox == i
+                          //                                   ? Colors.white
+                          //                                   : Color.fromARGB(255, 87, 101, 222),
+                          //                               letterSpacing: 0.3),
+                          //                         ),
+                          //                         new Spacer(),
+                          //                         Text(
+                          //                           permiumbutton[i].amount,
+                          //                           textAlign: TextAlign.center,
+                          //                           style: TextStyle(
+                          //                               fontFamily: 'Roboto Bold',
+                          //                               fontSize: 18,
+                          //                               color: pp.selectedSubsBox == i
+                          //                                   ? Colors.white
+                          //                                   : Color.fromARGB(255, 87, 101, 222),
+                          //                               letterSpacing: 0.3),
+                          //                         ),
+                          //                         SizedBox(
+                          //                           height: 15,
+                          //                         )
+                          //                       ],
+                          //                     ),
+                          //                   ),
+                          //                 ),
+                          //               ));
+                          //             })
+
+                          //             ),
+                          //         Padding(
+                          //           padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          //           child: Container(
+                          //             width: MediaQuery.of(context).size.width * .9,
+                          //             height: 50,
+                          //             decoration: BoxDecoration(
+                          //               color: Color.fromARGB(255, 87, 101, 222),
+                          //               borderRadius: BorderRadius.all(Radius.circular(8)),
+                          //             ),
+                          //             child: Center(
+                          //                 child: Text(
+                          //               "Subscribe Now",
+                          //               style: TextStyle(color: Colors.white, fontFamily: 'Roboto Bold', fontSize: 20),
+                          //             )),
+                          //           ),
+                          //         )
+                          //       ],
+                          //     ),
+                          //   );
+                          // }),
+                        ])),
               ),
-            ),
+            )
           ],
         ),
       )),
@@ -371,8 +492,8 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
       //                                         ),
 
       SizedBox(
-        height: 32,
-      ),
+          // height: 32,
+          ),
       context.watch<PurchaseProvider>().loaderStatus ? CircularProgressIndicator() : SizedBox(),
       Platform.isIOS
           ? Center(

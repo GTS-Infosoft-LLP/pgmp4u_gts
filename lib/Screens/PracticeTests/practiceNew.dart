@@ -340,6 +340,8 @@ class _PracticeNewState extends State<PracticeNew> {
                                                               _quetionNo != 0
                                                                   ? GestureDetector(
                                                                       onTap: () => {
+
+                                                                        // pageController.
                                                                         enableTap = 0,
                                                                         isAnsCorrect = 0,
                                                                         selAns = [],

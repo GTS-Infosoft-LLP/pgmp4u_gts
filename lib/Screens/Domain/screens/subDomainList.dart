@@ -126,6 +126,7 @@ class _SubDomainState extends State<SubDomain> {
                             return InkWell(
                               onTap: () async {
                                 dp.setSelectedSubDomainId(dp.SubDomainList[index].id);
+                                dp.setSelectedSubDomainName(dp.SubDomainList[index].name);
                                 print("selected doadfdfmin id====${dp.SubDomainList[index].id}");
                                 print("selected doamin id====${dp.selectedDomainId}");
 

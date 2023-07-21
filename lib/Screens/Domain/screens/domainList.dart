@@ -134,6 +134,7 @@ class _DomainListState extends State<DomainList> {
                               print("dp.DomainList[index].name====${dp.DomainList[index].name}");
                               dp.setSelectedDomainId(dp.DomainList[index].id);
                               dp.setSelectedDomainName(dp.DomainList[index].name);
+                              dp.setSelectedSubDomainName("");
 
                               if (dp.DomainList[index].SubDomains == 0) {
                                 dp.getTasksData(dp.DomainList[index].id, "");
@@ -208,8 +209,8 @@ class _DomainListState extends State<DomainList> {
                                                 //     ? "No Domain Available"
                                                 //     :
                                                 dp.DomainList[index].SubDomains == 1
-                                                    ? "${dp.DomainList[index].SubDomains} Task"
-                                                    : "${dp.DomainList[index].SubDomains} Tasks",
+                                                    ? "${dp.DomainList[index].Tasks} Task"
+                                                    : "${dp.DomainList[index].Tasks} Tasks",
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.grey,

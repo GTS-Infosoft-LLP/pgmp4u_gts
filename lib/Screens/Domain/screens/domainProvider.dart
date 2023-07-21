@@ -38,6 +38,13 @@ class DomainProvider extends ChangeNotifier {
   int selectedDomainId;
   int selectedSubDomainId;
 
+
+  String selectedSubDomainName;
+   setSelectedSubDomainName( val) {
+    selectedSubDomainName = val;
+    notifyListeners();
+  }
+
   setSelectedSubDomainId(int val) {
     selectedSubDomainId = val;
     notifyListeners();
@@ -263,6 +270,7 @@ class DomainProvider extends ChangeNotifier {
         print("mapResponse====${mapResponse['status']}");
         if (mapResponse['status'] == 400) {
           TaskList = [];
+          print("TaskList====$TaskList");
           return;
         }
 

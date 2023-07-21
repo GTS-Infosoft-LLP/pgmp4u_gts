@@ -26,6 +26,19 @@ class ProfileProvider extends ChangeNotifier {
     _pageIndex = 0;
   }
 
+
+
+int selectedSubsBox=3;
+setSelectedContainer(int val){
+selectedSubsBox=val;
+notifyListeners();
+
+}
+
+
+
+
+
   List<NotifiModel> NotificationData = [];
   List<NotifiModel> Announcements = [];
   List<NotifiModel> Notifications = [];

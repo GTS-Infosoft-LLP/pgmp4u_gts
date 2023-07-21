@@ -218,26 +218,6 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                               cp.aviAttempts = [];
                             }
 
-                            // if (v1 != null) {
-                            //   var temp = jsonDecode(v1);
-
-                            //   print("temp listtt=====$temp");
-                            //   List temp2 = temp["attempts"].toList();
-                            //   print("temp2==============$temp2");
-                            //   cp.aviAttempts = temp2.map((e) => AvailableAttempts.fromjsons(e)).toList() ?? [];
-
-                            //   detailsofMockAttempt = MockDataDetails.fromjson(temp["mocktest"]);
-                            //   print("detailsofMockAttempt========$detailsofMockAttempt");
-
-                            //   print("aviAttempts==========${cp.aviAttempts}");
-                            //   if (cp.aviAttempts == null) {
-                            //     cp.aviAttempts = [];
-                            //   }
-                            // } else {
-                            //   cp.aviAttempts = [];
-                            // }
-                            // print("cp.aviAttempts=========>>>>>>${cp.aviAttempts}");
-
                             return cp.aviAttempts.isEmpty
                                 ? Container(width: width, child: Center(child: Text("No Data Found..")))
                                 : Expanded(
@@ -256,8 +236,6 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                             Text(
                                               detailsofMockAttempt.test_name + " Attempt Summary",
 
-                                              // mockData.detailsofMock.test_name ?? "",
-                                              //responseData["test_name"],
                                               style: TextStyle(
                                                   fontFamily: 'Roboto Bold',
                                                   fontSize: width * (20 / 420),
@@ -282,10 +260,10 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                       child: Container(
                                                           decoration: BoxDecoration(
                                                               color: Colors.white,
-                                                              // color: Colors.amber,
+                          
                                                               borderRadius: BorderRadius.circular(15)),
                                                           margin: EdgeInsets.only(top: 10),
-                                                          // color: Colors.white,
+                                                       
                                                           padding:
                                                               EdgeInsets.only(left: 14, right: 8, top: 15, bottom: 15),
                                                           child: Column(children: [
