@@ -222,7 +222,7 @@ class DomainProvider extends ChangeNotifier {
     updateTaskApiCall(true);
     print("tast loader lOADER====$taskApiCall");
     TaskList = [];
-    print("this apiii====");
+
     print("idddd=========>>>>>>>>>>>>>>>$id");
     print("val=========>>>>>>>>>>>>>>>$val");
 

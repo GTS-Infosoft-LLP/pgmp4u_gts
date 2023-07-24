@@ -10,6 +10,7 @@ import 'package:pgmp4u/utils/app_color.dart';
 import 'package:provider/provider.dart';
 
 import '../../../provider/courseProvider.dart';
+import '../../../provider/profileProvider.dart';
 import '../../MockTest/model/courseModel.dart';
 import '../../dropdown.dart';
 
@@ -32,6 +33,9 @@ class _GroupListPageState extends State<GroupListPage> {
   @override
   void initState() {
     CourseProvider cp = Provider.of(context, listen: false);
+    if (cp.course.isNotEmpty) {
+      cp.setSelectedCourseLable(cp.course[0].lable);
+    }
     super.initState();
   }
 
@@ -59,24 +63,26 @@ class _GroupListPageState extends State<GroupListPage> {
           return Column(
             children: [
               _appBar(),
-              Container(
-                alignment: Alignment.centerRight,
-                width: MediaQuery.of(context).size.width * .35,
-                child: CustomDropDown<CourseDetails>(
-                  selectText: cp.selectedCourseLable ?? "Select",
-                  itemList: cp.course ?? [],
-                  isEnable: true,
-                  title: "",
-                  value: null,
-                  onChange: (val) {
-                    print("val.course=========>${val.course}");
-                    print("val.course=========>${val.lable}");
-                    cp.setSelectedCourseLable(val.lable);
-                    cp.setSelectedCourseId(val.id);
-                    setState(() {});
-                  },
-                ),
-              ),
+              cp.course.length > 1
+                  ? Container(
+                      alignment: Alignment.centerRight,
+                      width: MediaQuery.of(context).size.width * .35,
+                      child: CustomDropDown<CourseDetails>(
+                        selectText: cp.selectedCourseLable ?? "Select",
+                        itemList: cp.course ?? [],
+                        isEnable: true,
+                        title: "",
+                        value: null,
+                        onChange: (val) {
+                          print("val.course=========>${val.course}");
+                          print("val.course=========>${val.lable}");
+                          cp.setSelectedCourseLable(val.lable);
+                          cp.setSelectedCourseId(val.id);
+                          setState(() {});
+                        },
+                      ),
+                    )
+                  : SizedBox(),
               _groups(),
             ],
           );
@@ -84,7 +90,6 @@ class _GroupListPageState extends State<GroupListPage> {
   }
 
   Expanded _groups() {
-    print("this is clledddd");
     print("dhfjdf====${context.read<CourseProvider>().selectedCourseLable.toLowerCase()}");
     if ("pmp®" == context.read<CourseProvider>().selectedCourseLable.toLowerCase()) {
       print("they are equalll");
@@ -265,6 +270,7 @@ class AddDiscussionBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CourseProvider cp = Provider.of(context, listen: false);
     return Card(
       margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Column(
@@ -305,6 +311,53 @@ class AddDiscussionBottomSheet extends StatelessWidget {
               ),
             ),
           ),
+          // Divider(
+          //   thickness: 2,
+          //   endIndent: 15,
+          //   indent: 15,
+          // ),
+          cp.course.length > 1
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'Select Course',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
+                      ),
+                      Spacer(),
+                      Consumer<CourseProvider>(builder: (context, cp, child) {
+                        return Container(
+                          alignment: Alignment.centerRight,
+                          width: MediaQuery.of(context).size.width * .35,
+                          child: CustomDropDown<CourseDetails>(
+                            selectText: cp.selectedCourseLable ?? "Select",
+                            itemList: cp.course ?? [],
+                            isEnable: true,
+                            title: "",
+                            value: null,
+                            onChange: (val) {
+                              print("val.course=========>${val.course}");
+                              print("val.course lable=========>${val.lable}");
+                              cp.setSelectedCourseLable(val.lable);
+                              cp.setSelectedCourseId(val.id);
+                              ProfileProvider pp = Provider.of(context, listen: false);
+                              pp.getReminder(val.id);
+                            },
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                )
+              : SizedBox(),
+          // Divider(
+          //   thickness: 2,
+          // ),
           _publishButton(context),
         ],
       ),
@@ -341,12 +394,14 @@ class AddDiscussionBottomSheet extends StatelessWidget {
 
   onTapOfPublish(BuildContext context) async {
     // print('title: ${titleController.text}');
+    CourseProvider cp = Provider.of(context, listen: false);
 
     List<String> mtyList = [];
     if (titleController.text.trim().isNotEmpty) {
       await context
           .read<ChatProvider>()
-          .createDiscussionGroup(titleController.text.trim(), mtyList, context, isFromBottomSheet: true)
+          .createDiscussionGroup(titleController.text.trim(), mtyList, context,
+              isFromBottomSheet: true, crsName: cp.selectedCourseLable)
           .whenComplete(() {
         titleController.clear();
 

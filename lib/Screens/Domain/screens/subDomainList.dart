@@ -209,7 +209,7 @@ class _SubDomainState extends State<SubDomain> {
                                             width: MediaQuery.of(context).size.width * .55,
                                             child: Text(
                                               dp.SubDomainList[index].name,
-                                              // cp.pptCategoryList[index].name,
+                                       
                                               maxLines: 2,
                                               style: TextStyle(
                                                 fontSize: 18,
@@ -219,31 +219,8 @@ class _SubDomainState extends State<SubDomain> {
                                           ),
                                         ],
                                       ),
-                                      new Spacer(),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(right: 8.0),
-                                      //   child: Column(
-                                      //     mainAxisAlignment: MainAxisAlignment.center,
-                                      //     children: [
-                                      //       Text(
-                                      //         "Premium",
-                                      //         // "",
-                                      //         // cp.pptCategoryList[index].paymentStatus == 1 ? "Premium" : "",
-                                      //         style: TextStyle(
-                                      //           fontSize: 14,
-                                      //           color: Colors.black,
-                                      //         ),
-                                      //       ),
-                                      //       Container(
-                                      //         child: Icon(
-                                      //           Icons.east,
-                                      //           size: 30,
-                                      //           color: _colorfromhex("#ABAFD1"),
-                                      //         ),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      // ),
+                                      // new Spacer(),
+                                  
                                     ],
                                   ),
                                 ),

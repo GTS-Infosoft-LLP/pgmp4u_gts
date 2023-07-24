@@ -94,7 +94,7 @@ notifyListeners();
     String stringValue = prefs.getString('token');
     print("page index============$_pageIndex");
     var request = {"page": _pageIndex};
-
+      
     try {
       var res = await http.post(
         Uri.parse(NOTIFICATION_LIST),

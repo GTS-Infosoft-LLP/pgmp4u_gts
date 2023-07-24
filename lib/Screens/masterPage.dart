@@ -155,6 +155,10 @@ class _MasterListPageState extends State<MasterListPage> {
                                                     icon1 = FontAwesomeIcons.video;
                                                   } else if (storedMaster[index].label == "Revise") {
                                                     icon1 = Icons.numbers_outlined;
+                                                  } else if (storedMaster[index].type == "PPT") {
+                                                    icon1 = FontAwesomeIcons.laptopFile;
+                                                  } else if (storedMaster[index].type == "Domain") {
+                                                    icon1 = FontAwesomeIcons.bahai;
                                                   } else if (storedMaster[index].label == "Remember") {
                                                     icon1 = FontAwesomeIcons.lightbulb;
                                                   } else if (storedMaster[index].name == "Tips4U") {

@@ -22,6 +22,8 @@ class QuesOfDay extends StatefulWidget {
 
 class _QuesOfDayState extends State<QuesOfDay> {
   @override
+  var subQues;
+  var plusQues;
   bool _show = true;
   int _isattempt = 0;
   int _quetionNo = 0;
@@ -65,7 +67,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
   }
 
   bool questionLoader = false;
-  onTapOfPutOnDisscussion(String question, List<OptionsDay> li,String crsNameLable) async {
+  onTapOfPutOnDisscussion(String question, List<OptionsDay> li, String crsNameLable) async {
     if (!context.read<ProfileProvider>().isChatSubscribed) {
       setState(() => questionLoader = false);
 
@@ -105,7 +107,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
 
     await context
         .read<ChatProvider>()
-        .createDiscussionGroup(question, optsName, context, testName: 'Question of the day',crsName: crsNameLable)
+        .createDiscussionGroup(question, optsName, context, testName: 'Question of the day', crsName: crsNameLable)
         .whenComplete(() {
       setState(() => questionLoader = false);
       Navigator.push(
@@ -125,7 +127,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
       if (data.qdList.isNotEmpty) {
         options = data.qdList[_quetionNo].options.where((element) => element.questionOption.isNotEmpty).toList();
       }
-      
+
       return Container(
         color: _colorfromhex("#FCFCFF"),
         child: Stack(
@@ -238,18 +240,14 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                               
-
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: [
-             
                                                     Column(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Text("Uploaded on: "),
-                                                      
                                                         Text(timeStamp),
                                                       ],
                                                     ),
@@ -257,13 +255,10 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                     putOnDiscussionWidget(context, data),
                                                   ],
                                                 ),
-
                                                 SizedBox(
                                                   height: 10,
                                                 ),
-
                                                 Container(
-                                         
                                                   width: MediaQuery.of(context).size.width * .95,
                                                   child: Row(
                                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -276,8 +271,12 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                 selAns = [],
                                                                 rightAns = [],
                                                                 correctAns = [],
+                                                                subQues = _quetionNo,
+                                                                pageController.animateToPage(--subQues,
+                                                                    duration: Duration(milliseconds: 500),
+                                                                    curve: Curves.easeInCirc),
                                                                 setState(() {
-                                                                  _quetionNo--;
+                                                                  // _quetionNo--;
 
                                                                   selectedAnswer = null;
                                                                 })
@@ -290,7 +289,6 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                             )
                                                           : Container(),
                                                       Container(
-                                               
                                                         width: MediaQuery.of(context).size.width * .75,
                                                         child: Row(
                                                           mainAxisAlignment: MainAxisAlignment.start,
@@ -314,10 +312,14 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                         selAns = [],
                                                                         rightAns = [],
                                                                         correctAns = [],
+                                                                        plusQues = _quetionNo,
+                                                                        pageController.animateToPage(++plusQues,
+                                                                            duration: Duration(milliseconds: 500),
+                                                                            curve: Curves.easeInCirc),
                                                                         setState(() {
-                                                                          if (_quetionNo < data.qdList.length) {
-                                                                            _quetionNo = _quetionNo + 1;
-                                                                          }
+                                                                          // if (_quetionNo < data.qdList.length) {
+                                                                          //   _quetionNo = _quetionNo + 1;
+                                                                          // }
                                                                           selectedAnswer = null;
                                                                         }),
                                                                         print(_quetionNo)
@@ -336,7 +338,6 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                           ],
                                                         ),
                                                       ),
-                                                  
                                                     ],
                                                   ),
                                                 ),
@@ -350,15 +351,11 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                         margin: EdgeInsets.zero,
                                                         color: Color(0xff000000),
                                                         textAlign: TextAlign.left,
-                                                 
                                                         fontSize: FontSize(18),
                                                       )
                                                     },
                                                   ),
-
-                                              
                                                 ),
-
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: [
@@ -373,17 +370,14 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                     ),
                                                   ],
                                                 ),
-
                                                 SizedBox(
                                                   height: 10,
                                                 ),
-
                                                 ListView.builder(
                                                     shrinkWrap: true,
                                                     physics: NeverScrollableScrollPhysics(),
                                                     itemCount: options.length,
                                                     itemBuilder: (context, index) {
-                                                   
                                                       return Padding(
                                                         padding: const EdgeInsets.only(bottom: 15.0, top: 10),
                                                         child: InkWell(
@@ -423,13 +417,9 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                               }
                                                               setState(() {
                                                                 options[index].isseleted = !options[index].isseleted;
-                                                              
                                                               });
                                                             }
                                                           },
-
-                                      
-                                                       
                                                           child: Container(
                                                             decoration: BoxDecoration(
                                                               // shape: BoxShape.circle,
@@ -456,9 +446,6 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                                           .contains(options[index].id)
                                                                                   ? _colorfromhex("#FFF6F6")
                                                                                   : Colors.white,
-
-                                
-                         
                                                             ),
                                                             child: Row(children: [
                                                               Padding(
@@ -494,12 +481,6 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                                                   options[index].id)
                                                                                           ? Colors.red
                                                                                           : Colors.white,
-
-                                                                    
-                       
-
-                                                      
-
                                                                       border: Border.all(
                                                                           color: selAns.length == ansRef.length &&
                                                                                   selAns.length > 0
@@ -553,7 +534,6 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                           SizedBox(
                                                                             height: 8,
                                                                           ),
-
                                                                           Html(
                                                                             data: options[index].questionOption,
                                                                             style: {
@@ -562,14 +542,10 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                                 margin: EdgeInsets.zero,
                                                                                 color: Color(0xff000000),
                                                                                 textAlign: TextAlign.left,
-                                                                          
                                                                                 fontSize: FontSize(18),
                                                                               )
                                                                             },
                                                                           ),
-
-                                                                        
-
                                                                           (selAns.length == ansRef.length &&
                                                                                       selAns.length > 0 &&
                                                                                       selAns.contains(
@@ -585,9 +561,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                                       MainAxisAlignment.end,
                                                                                   children: [Text("Correct Answer")],
                                                                                 )
-                                                                              :
-                                                                            
-                                                                              selAns.length == ansRef.length &&
+                                                                              : selAns.length == ansRef.length &&
                                                                                       selAns.length > 0 &&
                                                                                       selAns.contains(
                                                                                           options[index].id) &&
@@ -605,9 +579,6 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                       ),
                                                                     ),
                                                                   ),
-
-                                                              
-                                                              
                                                                 ],
                                                               )
                                                             ]),
@@ -615,9 +586,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                         ),
                                                       );
                                                     }),
-
-                         
-                                                if (selAns.length == ansRef.length && ansRef.length > 0 )
+                                                if (selAns.length == ansRef.length && ansRef.length > 0)
                                                   Container(
                                                     decoration: BoxDecoration(
                                                         color:
@@ -702,16 +671,6 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                       ],
                                                     ),
                                                   )
-
-                                             
-                                            
-                                            
-                                               
-                                             
-                                               
-              
-                                    
-                                        
                                               ],
                                             ),
                                           ),
@@ -779,18 +738,23 @@ class _QuesOfDayState extends State<QuesOfDay> {
     }));
   }
 
-  Widget putOnDiscussionWidget(BuildContext context, PracticeTextProvider data,) {
+  Widget putOnDiscussionWidget(
+    BuildContext context,
+    PracticeTextProvider data,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: InkWell(
         onTap: () async {
           // subscriptionStatus
-          print('questionLoader : $questionLoader, context.read<ProfileProvider>().subscriptionApiCalling: ${context.read<ProfileProvider>().subscriptionApiCalling}');
+          print(
+              'questionLoader : $questionLoader, context.read<ProfileProvider>().subscriptionApiCalling: ${context.read<ProfileProvider>().subscriptionApiCalling}');
           questionLoader
               ? null
               : context.read<ProfileProvider>().subscriptionApiCalling
                   ? null
-                  : onTapOfPutOnDisscussion( data.pList != null ? data.qdList[_quetionNo].question : '', data.qdList[_quetionNo].options,  data.qdList[_quetionNo].lable  );
+                  : onTapOfPutOnDisscussion(data.pList != null ? data.qdList[_quetionNo].question : '',
+                      data.qdList[_quetionNo].options, data.qdList[_quetionNo].lable);
         },
         child: Container(
           height: 35,

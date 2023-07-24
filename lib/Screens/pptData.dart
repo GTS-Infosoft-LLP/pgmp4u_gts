@@ -102,7 +102,12 @@ class _PPTDataState extends State<PPTData> {
                                   : InkWell(
                                       onTap: () async {
                                         print("cp.pptCategoryList===========${cp.pptDataList[index].filename}");
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>PdfViewer( pdfModel: cp.pptDataList[index],)));
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => PdfViewer(
+                                                      pdfModel: cp.pptDataList[index],
+                                                    )));
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
@@ -146,16 +151,16 @@ class _PPTDataState extends State<PPTData> {
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    "PPT",
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 0,
-                                                  ),
+                                                  // Text(
+                                                  //   "PPT",
+                                                  //   style: TextStyle(
+                                                  //     fontSize: 14,
+                                                  //     color: Colors.grey,
+                                                  //   ),
+                                                  // ),
+                                                  // SizedBox(
+                                                  //   height: 0,
+                                                  // ),
                                                   Container(
                                                     width: MediaQuery.of(context).size.width * .65,
                                                     child: Text(

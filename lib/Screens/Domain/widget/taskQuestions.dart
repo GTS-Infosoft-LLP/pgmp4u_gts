@@ -176,7 +176,7 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                               ansRef = [];
 
                                               rightAns = dp.TaskQues[indexxx].rightAnswer.split(',');
-                                              print("rightAns========>>>$rightAns");
+                                              // print("rightAns========>>>$rightAns");
 
                                               for (int i = 0; i < rightAns.length; i++) {
                                                 ansRef.add(int.parse(rightAns[i]));

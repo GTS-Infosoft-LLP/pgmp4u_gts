@@ -153,7 +153,9 @@ class FirebaseChatHandler {
   // list of disscussion groups
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllDiscussionGroups(String courseType) {
     // return discussionCollectionRef.where("courseName", isEqualTo: courseType).orderBy('createdAt', descending: true).snapshots();
-    Query query = discussionCollectionRef.where('courseName', isEqualTo: courseType).orderBy('createdAt', descending: true);
+    Query query =
+        discussionCollectionRef.where('courseName', isEqualTo: courseType).orderBy('createdAt', descending: true);
+
     return query.snapshots();
   }
 
@@ -237,7 +239,7 @@ class FirebaseChatHandler {
     });
 
     if (isDone) {
-      // decrease the count
+      // decrease the count  
       await discussionCollectionRef.doc(groupId).update({"commentsCount": FieldValue.increment(-1)});
     }
   }
@@ -246,7 +248,7 @@ class FirebaseChatHandler {
   static deleteMessageInSingleChat(String groupId, ChatModel chatModel) async {
     bool isDone = await userChatCollectionRef
         .doc(groupId)
-        .collection(FirebaseConstant.messages)
+        .collection(FirebaseConstant.messages) 
         .doc(chatModel.messageId)
         .delete()
         .then((value) {

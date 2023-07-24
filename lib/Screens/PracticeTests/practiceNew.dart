@@ -28,6 +28,8 @@ class PracticeNew extends StatefulWidget {
 
 class _PracticeNewState extends State<PracticeNew> {
   final selectedIdNew;
+  var plusQues;
+  var subQues;
   PracticeTextProvider practiceProvider;
   CategoryProvider categoryProvider;
   _PracticeNewState({
@@ -348,8 +350,13 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                         selAns = [],
                                                                         rightAns = [],
                                                                         correctAns = [],
+                                                                        subQues = _quetionNo,
+                                                                        pageController.animateToPage(--subQues,
+                                                                            duration: Duration(milliseconds: 500),
+                                                                            curve: Curves.easeInCirc),
+
                                                                         setState(() {
-                                                                          _quetionNo--;
+                                                                          // _quetionNo--;
 
                                                                           selectedAnswer = null;
                                                                           realAnswer = null;
@@ -378,10 +385,14 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                         selAns = [],
                                                                         rightAns = [],
                                                                         correctAns = [],
+                                                                        plusQues = _quetionNo,
+                                                                        pageController.animateToPage(++plusQues,
+                                                                            duration: Duration(milliseconds: 500),
+                                                                            curve: Curves.easeInCirc),
                                                                         setState(() {
-                                                                          if (_quetionNo < PTList.length) {
-                                                                            _quetionNo = _quetionNo + 1;
-                                                                          }
+                                                                          // if (_quetionNo < PTList.length) {
+                                                                          //   _quetionNo = _quetionNo + 1;
+                                                                          // }
                                                                           selectedAnswer = null;
                                                                           realAnswer = null;
                                                                         }),

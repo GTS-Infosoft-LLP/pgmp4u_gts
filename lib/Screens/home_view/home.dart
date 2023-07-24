@@ -239,6 +239,14 @@ class _HomeViewState extends State<HomeView> {
                                                       ),
                                                     ],
                                                   ),
+                                                  // trailing: Chip(
+                                                  //     label: Text(
+                                                  //       "Join",
+                                                  //       style:
+                                                  //           TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                                                  //     ),
+                                                  //     backgroundColor: Color(0xff3F9FC9)
+                                                  //     ),
                                                 ),
                                               ),
                                             );

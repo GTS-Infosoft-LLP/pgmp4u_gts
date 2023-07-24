@@ -54,8 +54,8 @@ class _ImageDispalyScreenState extends State<ImageDispalyScreen> {
                   ? MediaQuery.of(context).size.height * .9
                   : MediaQuery.of(context).size.height * .8,
               decoration: BoxDecoration(
-                // color: Colors.grey[300],
-                color: Colors.black38,
+                color: Colors.grey[300],    
+                // color: Colors.black38,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: ClipRRect(
@@ -85,8 +85,10 @@ class _ImageDispalyScreenState extends State<ImageDispalyScreen> {
 
   AppBar _appBar() {
     return AppBar(
+      backgroundColor: Colors.transparent,
       flexibleSpace: Container(
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(bottomRight: Radius.circular(16.0), bottomLeft: Radius.circular(16.0)),
           gradient: LinearGradient(
               colors: [
                 Color(0xff4B5BE2),

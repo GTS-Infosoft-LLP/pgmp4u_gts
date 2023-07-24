@@ -174,9 +174,7 @@ class _DomainListState extends State<DomainList> {
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(10),
                                             color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                            // index % 2 == 0 ? AppColor.purpule : AppColor.green,
-
-                                            //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                                      
                                           ),
                                           child: Padding(
                                             padding: const EdgeInsets.all(17.0),
@@ -205,9 +203,7 @@ class _DomainListState extends State<DomainList> {
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                // dp.DomainList[index].SubDomains == 0
-                                                //     ? "No Domain Available"
-                                                //     :
+                                      
                                                 dp.DomainList[index].SubDomains == 1
                                                     ? "${dp.DomainList[index].Tasks} Task"
                                                     : "${dp.DomainList[index].Tasks} Tasks",
@@ -226,7 +222,7 @@ class _DomainListState extends State<DomainList> {
                                           width: MediaQuery.of(context).size.width * .55,
                                           child: Text(
                                             dp.DomainList[index].name,
-                                            // cp.pptCategoryList[index].name,
+                                     
                                             maxLines: 2,
                                             style: TextStyle(
                                               fontSize: 18,
@@ -242,15 +238,7 @@ class _DomainListState extends State<DomainList> {
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          // Text(
-                                          //   "Premium",
-                                          //   // "",
-                                          //   // cp.pptCategoryList[index].paymentStatus == 1 ? "Premium" : "",
-                                          //   style: TextStyle(
-                                          //     fontSize: 14,
-                                          //     color: Colors.black,
-                                          //   ),
-                                          // ),
+                                        
                                           Container(
                                             child: Icon(
                                               Icons.east,

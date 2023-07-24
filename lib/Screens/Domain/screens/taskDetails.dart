@@ -48,7 +48,7 @@ class _TaskDetailState extends State<TaskDetail> {
 
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
-    return Color(int.parse('FF$hexCode', radix: 16));
+    return Color(int.parse('FF$hexCode', radix: 16)); 
   }
 
   Widget build(BuildContext context) {
@@ -246,7 +246,7 @@ class _TaskDetailState extends State<TaskDetail> {
                                           gradient: index <= colorIndex
                                               ? LinearGradient(
                                                   colors: [
-                                                    _colorfromhex("#3A47AD"),
+                                                    _colorfromhex("#3A47AD"),  
                                                     _colorfromhex("#5163F3"),
                                                   ],
                                                   begin: const FractionalOffset(0.0, 0.0),

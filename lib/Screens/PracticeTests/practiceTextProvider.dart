@@ -68,7 +68,7 @@ class PracticeTextProvider extends ChangeNotifier {
     // response = await http.post(Uri.parse(getSubCategoryDetails),
     try {
       var response = await http.get(
-        Uri.parse(MOCK_TEST_QUES+"/${id}"),
+        Uri.parse(MOCK_TEST_QUES + "/$id"),
 
         headers: {'Content-Type': 'application/json', 'Authorization': stringValue},
         // body: convert.jsonEncode(body)
@@ -97,8 +97,6 @@ class PracticeTextProvider extends ChangeNotifier {
 
         List<PracListModel> pltm = [];
         plm.myList = pList.toString();
-
- 
 
         practiceApiLoader = false;
         print("pList=============$pList");
@@ -166,6 +164,7 @@ class PracticeTextProvider extends ChangeNotifier {
       qdList = temp.map((e) => QuesDayModel.fromJson(e)).toList();
       practiceApiLoader = false;
       if (qdList.isNotEmpty) {
+        print("data.qdList=======${qdList.length}");
         print("qdList[0]============${qdList[0].question}");
       }
       updateLoader(false);

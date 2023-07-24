@@ -177,7 +177,7 @@ class _PPTCardItemState extends State<PPTCardItem> {
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                "PPT",
+                                                cp.pptCategoryList[index].label,
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.grey,

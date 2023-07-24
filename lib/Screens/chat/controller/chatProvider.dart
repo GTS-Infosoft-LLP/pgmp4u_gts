@@ -9,8 +9,10 @@ import 'package:pgmp4u/Screens/chat/model/chatModel.dart';
 import 'package:pgmp4u/Screens/chat/model/singleGroupModel.dart';
 import 'package:pgmp4u/Screens/chat/model/userListModel.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/utils/extensions.dart';
 import 'package:pgmp4u/utils/user_object.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -71,6 +73,10 @@ class ChatProvider extends ChangeNotifier {
 
   Future createDiscussionGroup(String title, List<String> opss, BuildContext context,
       {String testName = '', bool isFromBottomSheet = false, String crsName}) async {
+    CourseProvider cp = Provider.of(context, listen: false);
+    if (cp.course.length == 1) {
+      crsName = cp.course[0].lable;
+    }
     print("crsName============$crsName");
     updateDiscussionGroupLoader(true);
     var body = {
@@ -90,6 +96,7 @@ class ChatProvider extends ChangeNotifier {
     bool isQuesExists = await FirebaseChatHandler.isQuestionAlreadyPostedByMe(body);
 
     if (isQuesExists) {
+      
       updateDiscussionGroupLoader(false);
       GFToast.showToast(
         'You have already posted this question.',

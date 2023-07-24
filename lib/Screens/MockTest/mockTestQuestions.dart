@@ -42,6 +42,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     return Color(int.parse('FF$hexCode', radix: 16));
   }
 
+  var subQues;
+  var plusQues;
   final selectedIdNew;
   final mockNameNew;
   final attemptNew;
@@ -657,25 +659,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                   _quetionNo = _quetionNo + 1;
                                                 }
 
-                                                // if (currentData != null) {
-                                                //   print("selectedAnswer.length::::::::::${selectedAnswer.length}");
-                                                //   print(
-                                                //       "rightAnswer.length:::::::::::::${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}");
-                                                //   if (selectedAnswer.length ==
-                                                //       mockQuestion[_quetionNo].questionDetail.rightAnswer.length) {
-                                                //     print("addedd to listt");
-                                                //     submitData.add({
-                                                //       "question": currentData["question"],
-                                                //       "answer": currentData["answer"],
-                                                //       "correct": 0,
-                                                //       "category": currentData["category"],
-                                                //       "type": selectedAnswer.length > 2 ? 2 : 1
-                                                //     });
-                                                //     currentData = null;
-                                                //   } else {
-                                                //     print("not added to list******************************");
-                                                //   }
-                                                // }
                                                 selectedAnswer = [];
                                                 ids = [];
                                               });
@@ -755,7 +738,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                           //     : Container(),
                                                         ],
                                                       ),
-                                                      // Question
                                                       Container(
                                                         margin: EdgeInsets.only(top: height * (15 / 800)),
                                                         child: Html(
@@ -818,7 +800,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                               .rightAnswer
                                                               .length;
 
-                                                          // return mockQuestion[_quetionNo] .questionDetail.Options.where((element)=>element.question_option.isNotEmpty).toList();
                                                           return title.question_option != null
                                                               ? GestureDetector(
                                                                   onTap: () => {
@@ -921,10 +902,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                               )
                                                                             },
                                                                           ),
-
-                                                                          // Text(title.question_option,
-                                                                          //     style: TextStyle(
-                                                                          //         fontSize: width * 14 / 420))
                                                                         )
                                                                       ],
                                                                     ),
@@ -962,16 +939,19 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                     _quetionNo != 0
                                         ? GestureDetector(
                                             onTap: () => {
-                                              setState(() {
-                                                currentIndex--;
-                                                print("currentIndex: $currentIndex");
-                                              }),
-                                              setState(() {
-                                                _quetionNo--;
-                                                selectedAnswer = [];
-                                                ids = [];
-                                                currentData = null;
-                                              })
+                                              subQues = _quetionNo,
+                                              pageController.animateToPage(--subQues,
+                                              duration: Duration(milliseconds: 500), curve: Curves.easeInCirc),
+                                              // setState(() {
+                                              //   currentIndex--;
+                                              //   print("currentIndex: $currentIndex");
+                                              // }),
+                                              // setState(() {
+                                              //   _quetionNo--;
+                                              //   selectedAnswer = [];
+                                              //   ids = [];
+                                              //   currentData = null;
+                                              // })
                                             },
                                             child: Container(
                                               width: width / 2,
@@ -1003,8 +983,11 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                       onTap: () => {
                                         if (mockQuestion.length - 1 > _quetionNo)
                                           {
+                                            plusQues = _quetionNo,
+                                            pageController.animateToPage(++plusQues,
+                                                duration: Duration(milliseconds: 500), curve: Curves.easeInCirc),
                                             setState(() {
-                                              currentIndex = currentIndex + 1;
+                                              // currentIndex = currentIndex + 1;
 
                                               if (currentData != null) {
                                                 print("selectedAnswer.length::::::::::${selectedAnswer.length}");
@@ -1028,30 +1011,10 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               }
                                             }),
                                             setState(() {
-                                              if (_quetionNo < mockQuestion.length) {
-                                                _quetionNo = _quetionNo + 1;
-                                              }
-
-                                              // if (currentData != null) {
-                                              //   print("selectedAnswer.length::::::::::${selectedAnswer.length}");
-                                              //   print(
-                                              //       "rightAnswer.length:::::::::::::${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}");
-
-                                              //   if (selectedAnswer.length ==
-                                              //       mockQuestion[_quetionNo].questionDetail.rightAnswer.length) {
-                                              //     print("addedd to listt");
-                                              //     submitData.add({
-                                              //       "question": currentData["question"],
-                                              //       "answer": currentData["answer"],
-                                              //       "correct": 0,
-                                              //       "category": currentData["category"],
-                                              //       "type": selectedAnswer.length > 2 ? 2 : 1
-                                              //     });
-                                              //     currentData = null;
-                                              //   } else {
-                                              //     print("not added to list******************************");
-                                              //   }
+                                              // if (_quetionNo < mockQuestion.length) {
+                                              //   _quetionNo = _quetionNo + 1;
                                               // }
+
                                               selectedAnswer = [];
                                               ids = [];
                                             }),
