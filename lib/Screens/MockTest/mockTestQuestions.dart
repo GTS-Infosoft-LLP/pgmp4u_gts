@@ -991,8 +991,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
                                               if (currentData != null) {
                                                 print("selectedAnswer.length::::::::::${selectedAnswer.length}");
-                                                print(
-                                                    "rightAnswer.length:::::::::::::${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}");
+                                                // print("rightAnswer.length:::::::::::::${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}");
 
                                                 if (selectedAnswer.length ==
                                                     mockQuestion[_quetionNo].questionDetail.rightAnswer.length) {
@@ -1006,7 +1005,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                   });
                                                   currentData = null;
                                                 } else {
-                                                  print("not added to list******************************");
+                                                  // print("not added to list******************************");
                                                 }
                                               }
                                             }),

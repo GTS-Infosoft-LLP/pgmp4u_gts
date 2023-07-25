@@ -54,7 +54,7 @@ class _ImageDispalyScreenState extends State<ImageDispalyScreen> {
                   ? MediaQuery.of(context).size.height * .9
                   : MediaQuery.of(context).size.height * .8,
               decoration: BoxDecoration(
-                color: Colors.grey[300],    
+                color: Colors.grey[300],
                 // color: Colors.black38,
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -72,7 +72,9 @@ class _ImageDispalyScreenState extends State<ImageDispalyScreen> {
                       ),
                     ),
                     errorWidget: (context, url, error) => Container(
-                        height: MediaQuery.of(context).size.width * .4, child: Center(child: Icon(Icons.error))),
+                        height: MediaQuery.of(context).size.width * .4, 
+                        child: Center(child: Icon(Icons.error))
+                        ),
                   ),
                 ),
               ),
@@ -100,6 +102,11 @@ class _ImageDispalyScreenState extends State<ImageDispalyScreen> {
               tileMode: TileMode.clamp),
         ),
       ),
+      title: Center(
+          child: Text(
+        'Flow Diagram      ',
+        style: TextStyle(color: Colors.white),
+      )),
     );
   }
 }

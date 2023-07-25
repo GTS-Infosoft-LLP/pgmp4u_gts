@@ -417,8 +417,8 @@ class HiveHandler {
     masterListBox.put(keyName, masterListResponse);
 
     if (masterListBox.isNotEmpty) {
-      print("===========added to box=========");
-      print("masterListBox.get for key: $keyName = ${masterListBox.get(keyName)}");
+      // print("===========added to box=========");
+      // print("masterListBox.get for key: $keyName = ${masterListBox.get(keyName)}");
     } else {
       print("===========box is empty=========");
     }

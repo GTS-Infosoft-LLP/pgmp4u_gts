@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pgmp4u/Screens/MockTest/model/courseModel.dart';
+import 'package:pgmp4u/Screens/subscriptionScreen.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:provider/provider.dart';
 import '../../Models/hideshowmodal.dart';
 import '../../Models/options_model.dart';
+import '../../provider/Subscription/subscriptionProvider.dart';
 import '../../provider/courseProvider.dart';
 import '../../tool/ShapeClipper2.dart';
 import '../../utils/user_object.dart';
@@ -175,7 +177,7 @@ class _HomeViewState extends State<HomeView> {
                               : storedCourse.isEmpty
                                   ? Center(child: Container(height: 400, child: Text("No Data Found")))
                                   : Container(
-                                      height: MediaQuery.of(context).size.height * .55,
+                                      height: MediaQuery.of(context).size.height * .58,
                                       child: ListView.builder(
                                           itemCount: storedCourse.length,
                                           itemBuilder: (context, index) {
@@ -194,17 +196,23 @@ class _HomeViewState extends State<HomeView> {
                                                 onTap: () {
                                                   print("id Is======>>>${storedCourse[index].id}");
                                                   print("setSelectedCourseLable===${storedCourse[index].lable}");
-
                                                   courseProvider.setSelectedCourseId(storedCourse[index].id);
 
                                                   courseProvider.setSelectedCourseName(storedCourse[index].course);
                                                   courseProvider.setSelectedCourseLable(storedCourse[index].lable);
 
-                                                  courseProvider.getMasterData(storedCourse[index].id);
-                                                  Future.delayed(const Duration(milliseconds: 100), () {
+                                                  if (storedCourse[index].isSubscribed == 0) {
+                                                    SubscriptionProvider sp = Provider.of(context, listen: false);
+                                                    sp.getSubscritionData(storedCourse[index].id);
                                                     Navigator.push(context,
-                                                        MaterialPageRoute(builder: (context) => MasterListPage()));
-                                                  });
+                                                        MaterialPageRoute(builder: (context) => SubscriptionPage()));
+                                                  } else {
+                                                    courseProvider.getMasterData(storedCourse[index].id);
+                                                    Future.delayed(const Duration(milliseconds: 100), () {
+                                                      Navigator.push(context,
+                                                          MaterialPageRoute(builder: (context) => MasterListPage()));
+                                                    });
+                                                  }
                                                 },
                                                 child: ListTile(
                                                   leading: Container(
@@ -239,14 +247,29 @@ class _HomeViewState extends State<HomeView> {
                                                       ),
                                                     ],
                                                   ),
-                                                  // trailing: Chip(
-                                                  //     label: Text(
-                                                  //       "Join",
-                                                  //       style:
-                                                  //           TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-                                                  //     ),
-                                                  //     backgroundColor: Color(0xff3F9FC9)
-                                                  //     ),
+                                                  trailing: storedCourse[index].isSubscribed == 0
+                                                      ? InkWell(
+                                                          onTap: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => SubscriptionPage()));
+                                                          },
+                                                          child: Chip(
+                                                              label: Text(
+                                                                "Join",
+                                                                style: TextStyle(
+                                                                    color: Colors.white, fontWeight: FontWeight.w600),
+                                                              ),
+                                                              backgroundColor: Color(0xff3F9FC9)),
+                                                        )
+                                                      : Chip(
+                                                          label: Text(
+                                                            "Enrolled",
+                                                            style: TextStyle(
+                                                                color: Colors.white, fontWeight: FontWeight.w600),
+                                                          ),
+                                                          backgroundColor: Color(0xff3F9FC9)),
                                                 ),
                                               ),
                                             );

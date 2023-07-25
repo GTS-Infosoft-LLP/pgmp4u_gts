@@ -75,36 +75,38 @@ class _MasterListPageState extends State<MasterListPage> {
                     ),
                   ),
                 ),
-                Container(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 50, 0, 0),
-                    child: Row(children: [
-                      Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.transparent,
-                              border: Border.all(color: Colors.white, width: 1)),
-                          child: Center(
-                              child: IconButton(
-                                  icon: Icon(Icons.arrow_back, color: Colors.white),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  }))),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Center(
-                          child: Text(
-                        // "Video Library",
-                        "Master Content",
-                        style: TextStyle(
-                            fontSize: 28, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
-                      )),
-                    ]),
-                  ),
-                )
+                Consumer<CourseProvider>(builder: (context, cp, child) {
+                  return Container(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(20, 50, 0, 0),
+                      child: Row(children: [
+                        Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.transparent,
+                                border: Border.all(color: Colors.white, width: 1)),
+                            child: Center(
+                                child: IconButton(
+                                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    }))),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Center(
+                            child: Text(
+                          // "Video Library",
+                          cp.selectedCourseLable,
+                          style: TextStyle(
+                              fontSize: 28, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
+                        )),
+                      ]),
+                    ),
+                  );
+                })
               ],
             ),
 
@@ -129,28 +131,21 @@ class _MasterListPageState extends State<MasterListPage> {
 
                                   if (value.containsKey(courseId)) {
                                     List masterDataList = jsonDecode(value.get(courseId));
-                                    // print(">>> masterDataList :  $masterDataList");
                                     storedMaster = masterDataList.map((e) => MasterDetails.fromjson(e)).toList();
                                   } else {
                                     storedMaster = [];
                                   }
-
-                                  // print("storedMaster========================$storedMaster");
-
                                   if (storedMaster == null) {
                                     storedMaster = [];
                                   }
-
                                   return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
                                     return storedMaster.isNotEmpty
                                         ? Container(
-                                            // color: Colors.amber,
                                             height: MediaQuery.of(context).size.height * .75,
                                             child: ListView.builder(
                                                 shrinkWrap: true,
                                                 itemCount: storedMaster.length,
                                                 itemBuilder: (context, index) {
-                                                  // print("storedMaster[index].label=====${storedMaster[index].name}");
                                                   if (storedMaster[index].type == "Videos") {
                                                     icon1 = FontAwesomeIcons.video;
                                                   } else if (storedMaster[index].label == "Revise") {
@@ -182,16 +177,13 @@ class _MasterListPageState extends State<MasterListPage> {
                                                       padding: const EdgeInsets.only(top: 8.0),
                                                       child: Container(
                                                           height: 70,
-                                                          //  color: Colors.amber,
                                                           decoration: BoxDecoration(
-                                                              // shape: BoxShape.circle,
                                                               color: Colors.transparent,
                                                               border: Border(
                                                                 bottom: BorderSide(
                                                                     width: 1.5,
                                                                     color: Color.fromARGB(255, 219, 211, 211)),
                                                               )),
-                                                          // Border.all(color: Colors.black, width: 1)),
                                                           child: InkWell(
                                                             onTap: () async {
                                                               courseProvider.changeonTap(0);
@@ -332,19 +324,13 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                         color: index % 2 == 0
                                                                             ? AppColor.purpule
                                                                             : AppColor.green,
-                                                                        // gradient: LinearGradient(
-                                                                        //     begin: Alignment.topLeft,
-                                                                        //     end: Alignment.bottomRight,
-                                                                        //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
                                                                       ),
-
-                                                                      // color: Colors.black,
-                                                                      child: Icon(
-                                                                        icon1,
-                                                                        color: Colors.white,
-                                                                      )
-                                                                      // Icons.edit,color: Colors.white),
-                                                                      ),
+                                                                      child: Center(
+                                                                        child: Icon(
+                                                                          icon1,
+                                                                          color: Colors.white,
+                                                                        ),
+                                                                      )),
                                                                 ),
                                                                 SizedBox(
                                                                   width: 15,
@@ -381,7 +367,6 @@ class _MasterListPageState extends State<MasterListPage> {
                                                           )),
                                                     ),
                                                   );
-                                                  // Center(child: Text("No Data Found",style: TextStyle(color: Colors.black,fontSize: 18)),);
                                                 }),
                                           )
                                         : Container(

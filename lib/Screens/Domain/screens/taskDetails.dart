@@ -379,7 +379,8 @@ Widget TaskImg(BuildContext context, index) {
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(
-                      height: MediaQuery.of(context).size.width * .4, child: Center(child: Icon(Icons.error))),
+                      height: MediaQuery.of(context).size.width * .4,
+                       child: Center(child: Icon(Icons.error))),
                 ),
               ),
             ),

@@ -225,16 +225,31 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Container(
-                                                      margin: EdgeInsets.only(
-                                                        bottom: height * (15 / 800),
-                                                      ),
-                                                      child: Text(
-                                                        domainList[index].category ?? "",
-                                                        style: TextStyle(
-                                                            fontFamily: 'Roboto Medium',
-                                                            fontSize: width * (18 / 420),
-                                                            color: Colors.black,
-                                                            letterSpacing: 0.3),
+                                                      width: MediaQuery.of(context).size.width * .8,
+                                                      // color: Colors.blue,
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            width: MediaQuery.of(context).size.width * .6,
+                                                            margin: EdgeInsets.only(
+                                                              bottom: height * (15 / 800),
+                                                            ),
+                                                            child: Text(
+                                                              domainList[index].category ?? "",
+                                                              maxLines: 3,
+                                                              style: TextStyle(
+                                                                  fontFamily: 'Roboto Medium',
+                                                                  fontSize: width * (18 / 420),
+                                                                  color: Colors.black,
+                                                                  letterSpacing: 0.3),
+                                                            ),
+                                                          ),
+                                                          Spacer(),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(right: 5, bottom: 15),
+                                                            child: Icon(Icons.east),
+                                                          )
+                                                        ],
                                                       ),
                                                     ),
                                                     Row(
@@ -341,9 +356,13 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                                               ),
                                                             ),
                                                           ]),
-                                                        )
+                                                        ),
                                                       ],
-                                                    )
+                                                    ),
+                                                    // Row(
+                                                    //   // mainAxisAlignment: MainAxisAlignment.end,
+                                                    //   children: [Text("More Details")],
+                                                    // )
                                                   ],
                                                 ),
                                               )

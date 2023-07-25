@@ -266,10 +266,7 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                                       //     // textOverflow: TextOverflow.ellipsis,
                                                                       //     fontSize: FontSize(22),
                                                                       //   ),
-                                                                      // "ol": Style(
-                                                                      //   alignment: Alignment.center,
-                                                                      //   padding: EdgeInsets.only(top: 0, bottom: 0),
-                                                                      //   fontSize: FontSize(22),
+                                                                 
 
                                                                       //   ),
                                                                       // "ul": Style(
@@ -288,13 +285,7 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                                       //     //   ),
                                                                       //     // )),
                                                                       //     ),
-                                                                      // "li": Style(
-                                                                      //   direction: TextDirection.ltr,
-                                                                      //   // padding: EdgeInsets.only(
-                                                                      //   //     top: 10, left: 4, bottom: 4, right: 4),
-                                                                      //   wordSpacing: 4,
-                                                                      //   fontSize: FontSize(20),
-                                                                      // )
+                                                                   
                                                                     },
                                                                   ),
                                                                 ),

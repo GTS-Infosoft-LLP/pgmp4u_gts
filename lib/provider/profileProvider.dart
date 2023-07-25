@@ -26,18 +26,13 @@ class ProfileProvider extends ChangeNotifier {
     _pageIndex = 0;
   }
 
-
-
-int selectedSubsBox=3;
-setSelectedContainer(int val){
-selectedSubsBox=val;
-notifyListeners();
-
-}
-
-
-
-
+  int selectedSubsBox = 3;
+  setSelectedContainer(int val) {
+    Future.delayed(Duration.zero, () async {
+      selectedSubsBox = val;
+      notifyListeners();
+    });
+  }
 
   List<NotifiModel> NotificationData = [];
   List<NotifiModel> Announcements = [];
@@ -94,7 +89,7 @@ notifyListeners();
     String stringValue = prefs.getString('token');
     print("page index============$_pageIndex");
     var request = {"page": _pageIndex};
-      
+
     try {
       var res = await http.post(
         Uri.parse(NOTIFICATION_LIST),

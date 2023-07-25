@@ -21,6 +21,8 @@ class CourseDetails implements DropDownModel {
   int status;
   @HiveField(7)
   int deleteStatus;
+  @HiveField(8)
+  int isSubscribed;
 
   CourseDetails();
 
@@ -33,10 +35,12 @@ class CourseDetails implements DropDownModel {
     skip_content_progress = json["skip_content_progress"];
     status = json["status"];
     deleteStatus = json["deleteStatus"];
+    isSubscribed = json["isSubscribed"];
   }
 
   @override
   String getOptionName() {
+
     return lable;
   }
 }

@@ -56,14 +56,12 @@ class CustomDropDown<T> extends StatelessWidget {
               color: Colors.black,
             ),
             focusColor: Colors.blueAccent,
-            value: value,
+            value: value,          
 
             // elevation: 10,
             style: TextStyle(color: Colors.red),
             items: itemList.map<DropdownMenuItem<T>>((T value) {
               return DropdownMenuItem<T>(
-                  //alignment: Alignment.bottomCenter,
-
                   value: value,
                   child: Container(
                     margin: EdgeInsets.only(top: 10.0),
@@ -137,6 +135,7 @@ class CourseTypeModl implements DropDownModel {
 
   @override
   String getOptionName() {
+    
     return title;
   }
 }

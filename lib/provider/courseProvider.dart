@@ -280,7 +280,8 @@ class CourseProvider extends ChangeNotifier {
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
-      if (response.statusCode == 400) {
+      print("resStatus====$resStatus");
+      if (resStatus == 400) {
         print("statussssssss");
         pptCategoryList = [];
         updateIsPPLoading(false);
@@ -326,8 +327,8 @@ class CourseProvider extends ChangeNotifier {
         body: json.encode(request),
       );
 
-      print("response.statusCode===${response.body}");
-      print("response.statusCode===${response.statusCode}");
+      // print("response.statusCode===${response.body}");
+      // print("response.statusCode===${response.statusCode}");
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
@@ -341,14 +342,14 @@ class CourseProvider extends ChangeNotifier {
         return;
       }
 
-      print("val of vid present===$videoPresent");
+      // print("val of vid present===$videoPresent");
 
       if (response.statusCode == 200) {
         updateMasterDataApiCall(false);
         masterList.clear();
         print("");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
-        print("mapResponse====${mapResponse['status']}");
+        // print("mapResponse====${mapResponse['status']}");
         if (mapResponse['status'] == 400) {
           tempListMaster = [];
           // HiveHandler.addMasterData(tempListMaster, keyName: id.toString());
@@ -357,19 +358,19 @@ class CourseProvider extends ChangeNotifier {
 
         if (mapResponse["status"] == 200) {
           List temp1 = mapResponse["data"];
-          print("temp list===$temp1");
+          // print("temp list===$temp1");
           masterList = temp1.map((e) => MasterDetails.fromjson(e)).toList();
-          print("master list=========$masterList");
+          // print("master list=========$masterList");
 
           try {
-            print("id.toString===== ${id.toString}");
+            // print("id.toString===== ${id.toString}");
             HiveHandler.addMasterData(jsonEncode(mapResponse["data"]), keyName: id.toString());
           } catch (e) {
             print("errorr===========>>>>>> $e");
           }
         }
       }
-      print("respponse=== ${response.body}");
+      // print("respponse=== ${response.body}");
     } on Exception {
       updateMasterDataApiCall(false);
     }

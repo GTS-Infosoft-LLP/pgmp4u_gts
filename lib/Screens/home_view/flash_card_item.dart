@@ -165,17 +165,19 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                       height: MediaQuery.of(context).size.height * .5,
                                       child: Center(
                                         child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Text(
                                               "No Data Found...",
                                               style: TextStyle(color: Colors.black, fontSize: 18),
                                             ),
-                                            courseProvider.checkInternet == 1
-                                                ? Text(
-                                                    "Check your internet connection",
-                                                    style: TextStyle(color: Colors.black, fontSize: 18),
-                                                  )
-                                                : Text(""),
+
+                                            // courseProvider.checkInternet == 1
+                                            //     ? Text(
+                                            //         "Check your internet connection",
+                                            //         style: TextStyle(color: Colors.black, fontSize: 18),
+                                            //       )
+                                            //     : Text(""),
                                           ],
                                         ),
                                       ),
@@ -262,10 +264,6 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                               ),
                                                               child: Icon(
                                                                 icon1,
-
-                                                                // index % 2 == 0
-                                                                //     ? FontAwesomeIcons.book
-                                                                //     : FontAwesomeIcons.airbnb,
                                                                 color: Colors.white,
                                                               )),
                                                         ),

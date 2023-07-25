@@ -119,6 +119,9 @@ const GET_SUB_DOMAIN = _BASE_URL+ "getSubDomain";
 const GET_DOMAIN = _BASE_URL+ "getDomain";
 const GET_TASK_DETAIL =_BASE_URL + "getTaskDetails";
 
+const GET_SUBSCRIPTION_PACK= _BASE_URL + "getsubscriptionPacks";
+const CREATE_SUBSCRIPTION_ORDER= _BASE_URL + "createSubscriptionOrder";
+
 
 
 

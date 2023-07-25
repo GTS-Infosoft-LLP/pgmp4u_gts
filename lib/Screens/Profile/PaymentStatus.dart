@@ -187,7 +187,7 @@ class _PaymentStatusState2 extends State<PaymentStatus2> {
               height: 2,
             ),
             Text(
-              statusNew == "success" ? 'You have unlocked 1 year access of this feature.' : "Something went wrong!",
+              statusNew == "success" ? 'You have unlocked access of this feature.' : "Something went wrong!",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Roboto Regular',

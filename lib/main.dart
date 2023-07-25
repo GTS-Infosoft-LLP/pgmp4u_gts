@@ -22,6 +22,7 @@ import 'package:pgmp4u/provider/player_provider.dart';
 import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:pgmp4u/provider/response_provider.dart';
+import 'package:pgmp4u/provider/Subscription/subscriptionProvider.dart';
 
 import './Screens/Dashboard/dashboard.dart';
 import './Screens/Auth/login.dart';
@@ -133,6 +134,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ChatProvider>(create: (_) => ChatProvider()),
         ChangeNotifierProvider<PdfProvider>(create: (_) => PdfProvider()),
         ChangeNotifierProvider<DomainProvider>(create: (_) => DomainProvider()),
+        ChangeNotifierProvider<SubscriptionProvider>(create: (_) => SubscriptionProvider()),
+
       ],
       child: MaterialApp(
         builder: EasyLoading.init(),

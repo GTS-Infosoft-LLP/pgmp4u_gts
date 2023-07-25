@@ -7,7 +7,6 @@ import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
-import 'package:pgmp4u/Screens/subscriptionScreen.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/utils/app_color.dart';
@@ -347,7 +346,7 @@ class _ProfileState extends State<Profile> {
 
                           InkWell(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
+                              // Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
                             },
                             child: ClipOval(
                               child: CachedNetworkImage(
