@@ -63,11 +63,11 @@ class _ProfileState extends State<Profile> {
     CourseProvider cp = Provider.of(context, listen: false);
     ProfileProvider pp = Provider.of(context, listen: false);
     checkNotificationStatus();
-    if (cp.course.isNotEmpty) {
-      print("cp.course[0].id===========${cp.course[0].id}");
-      cp.setSelectedCourseId(cp.course[0].id);
-      cp.setSelectedCourseName(cp.course[0].course);
-      cp.setSelectedCourseLable(cp.course[0].lable);
+    if (cp.crsDropList.isNotEmpty) {
+      print("cp.course[0].id===========${cp.crsDropList[0].id}");
+      cp.setSelectedCourseId(cp.crsDropList[0].id);
+      cp.setSelectedCourseName(cp.crsDropList[0].course);
+      cp.setSelectedCourseLable(cp.crsDropList[0].lable);
       // pp.getReminder(cp.course[0].id);
     }
 
@@ -115,11 +115,13 @@ class _ProfileState extends State<Profile> {
   checkNotificationStatus() async {
     ProfileProvider pp = Provider.of(context, listen: false);
     CourseProvider cp = Provider.of(context, listen: false);
-    await pp.getReminder(cp.course[0].id);
-    if (pp.notiValue == 0) {
-      isSwitched = false;
-    } else {
-      isSwitched = true;
+    if (cp.course.isNotEmpty) {
+      await pp.getReminder(cp.course[0].id);
+      if (pp.notiValue == 0) {
+        isSwitched = false;
+      } else {
+        isSwitched = true;
+      }
     }
   }
 
@@ -406,7 +408,7 @@ class _ProfileState extends State<Profile> {
                                   width: MediaQuery.of(context).size.width * .35,
                                   child: CustomDropDown<CourseDetails>(
                                     selectText: cp.selectedCourseLable ?? "Select",
-                                    itemList: cp.course ?? [],
+                                    itemList: cp.crsDropList ?? [],
                                     isEnable: true,
                                     title: "",
                                     value: null,

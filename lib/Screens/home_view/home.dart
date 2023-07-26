@@ -75,37 +75,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final user = UserObject().getUser;
-    final List<OptionsItem> options = [
-      OptionsItem(
-          isShow: true,
-          iconImage: FontAwesomeIcons.userGraduate,
-          name: "Application Support",
-          title: "Get",
-          screen: homeOption.application,
-          btntxt: ""),
-      OptionsItem(
-        isShow: hideShowRes?.is_videoplan == 1 ? true : false,
-        iconImage: FontAwesomeIcons.video,
-        name: "Video Library",
-        title: "Watch",
-        screen: homeOption.videoLab,
-        btntxt: "",
-      ),
-      OptionsItem(
-          isShow: hideShowRes?.is_flashcard == 1 ? true : false,
-          iconImage: FontAwesomeIcons.tableColumns,
-          name: "Flash Cards",
-          title: "Read",
-          screen: homeOption.flashCard,
-          btntxt: "US19"),
-      OptionsItem(
-          isShow: hideShowRes?.is_challangequiz == 1 ? true : false,
-          iconImage: FontAwesomeIcons.book,
-          name: "Challenger",
-          title: "Test4U",
-          screen: homeOption.challengers,
-          btntxt: ""),
-    ];
+  
     final double topHeight = 150;
 
     return Stack(

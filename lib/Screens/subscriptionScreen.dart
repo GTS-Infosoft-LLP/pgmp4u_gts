@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
+import 'package:pgmp4u/Screens/masterPage.dart';
 import 'package:pgmp4u/provider/Subscription/subscriptionProvider.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:provider/provider.dart';
@@ -34,55 +35,77 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15),
-          child: InkWell(
-            onTap: () async {
-              SubscriptionProvider sp = Provider.of(context, listen: false);
-              sp.createSubscritionOrder(sp.selectedSubsId);
-              var token = await getTokenn();
-              ProfileProvider pp = Provider.of(context, listen: false);
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height * .13,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12.0, left: 15, right: 15),
+                child: InkWell(
+                  onTap: () async {
+                    SubscriptionProvider sp = Provider.of(context, listen: false);
+                    sp.createSubscritionOrder(sp.selectedSubsId);
+                    var token = await getTokenn();
+                    ProfileProvider pp = Provider.of(context, listen: false);
 
-              print(" selectedSubsBox ====${sp.selectedSubsId}");
-              if (sp.selectedSubsId > permiumbutton.length) {
-                GFToast.showToast(
-                  'Please select Plan',
-                  context,
-                  toastPosition: GFToastPosition.BOTTOM,
-                );
-              } else {
-                bool status = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          PaymentAndroid(token: token, statusFlash1videoLibrary2: 1, urlll: sp.finUrl),
-                    ));
-                print("statueeess====>>>$status");
+                    print(" selectedSubsBox ====${sp.selectedSubsId}");
+                    if (sp.selectedSubsId > permiumbutton.length) {
+                      GFToast.showToast(
+                        'Please select Plan',
+                        context,
+                        toastPosition: GFToastPosition.BOTTOM,
+                      );
+                    } else {
+                      bool status = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                PaymentAndroid(token: token, statusFlash1videoLibrary2: 1, urlll: sp.finUrl),
+                          ));
+                      print("statueeess====>>>$status");
 
-                if (status) {
-                  Navigator.pop(context);
-                  _handlePaymentSuccess2(context);
-                } else {
-                  _handlePaymentError2(context);
-                }
-              }
-            },
-            child: Container(
-              width: MediaQuery.of(context).size.width * .9,
-              height: 50,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+                      if (status) {
+                        Navigator.pop(context);
+                        _handlePaymentSuccess2(context);
+                      } else {
+                        _handlePaymentError2(context);
+                      }
+                    }
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * .9,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color.fromARGB(255, 87, 101, 222), Color.fromARGB(255, 87, 101, 222)]),
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
+                    child: Center(
+                        child: Text(
+                      "Subscribe Now",
+                      style: TextStyle(color: Colors.white, fontFamily: 'Roboto Bold', fontSize: 20),
+                    )),
+                  ),
+                ),
               ),
-              child: Center(
-                  child: Text(
-                "Subscribe Now",
-                style: TextStyle(color: Colors.white, fontFamily: 'Roboto Bold', fontSize: 20),
-              )),
-            ),
+              InkWell(
+                onTap: () {
+                  CourseProvider cp = Provider.of(context, listen: false);
+                  cp.getMasterData(cp.selectedCourseId);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MasterListPage()));
+                },
+                child: Text(
+                  "OR Skip to Freemium",
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              )
+            ],
           ),
         ),
         body: SingleChildScrollView(
@@ -148,11 +171,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           ),
           Center(
               child: Text(
-            "Select a plan",
-            style: TextStyle(
-              fontFamily: 'Roboto Bold',
-              fontSize: 22,
-            ),
+            "Select a Reading Plan",
+            style: TextStyle(fontFamily: 'Roboto Bold', fontSize: 22, color: Color(0xff3643a3)),
           )),
           SizedBox(
             height: 25,
@@ -170,13 +190,13 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                             children: List.generate(permiumbutton.length, (i) {
                               if (i == 0) {
                                 mntVal = "1";
-                                mnth = "Month";
+                                mnth = "Monthly";
                               } else if (i == 1) {
                                 mntVal = "3";
-                                mnth = "Months";
+                                mnth = "Quarterly";
                               } else {
                                 mntVal = "12";
-                                mnth = "Months";
+                                mnth = "Yearly";
                               }
 
                               return Expanded(
@@ -191,14 +211,14 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                     pp.setSelectedContainer(i);
                                   },
                                   child: Container(
-                                    height: 185,
+                                    height: 175,
                                     // width: MediaQuery.of(context).size.width * .40,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: pp.selectedSubsBox == i ? Color(0xff3643a3) : Colors.grey[300],
-                                        width: pp.selectedSubsBox == i ? 4 : 2,
+                                        color: Color.fromARGB(255, 108, 120, 225),
+                                        width: 2,
                                       ),
-                                      color: Colors.white,
+                                      color: pp.selectedSubsBox == i ? Color.fromARGB(255, 87, 101, 222) : Colors.white,
                                       borderRadius: BorderRadius.all(Radius.circular(10)),
                                     ),
 
@@ -210,46 +230,44 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                           color: Color(0xff3643a3),
                                         ),
                                         SizedBox(
-                                          height: 10,
+                                          height: 15,
                                         ),
-                                        Text(
-                                          mntVal,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontFamily: 'Roboto Bold',
-                                              fontSize: 42,
-                                              color: Color(0xff3643a3),
-                                              // pp.selectedSubsBox == i
-                                              //     ? Colors.white
-                                              //     : Color.fromARGB(255, 87, 101, 222),
-                                              letterSpacing: 0.3),
-                                        ),
+                                        // Text(
+                                        //   mntVal,
+                                        //   textAlign: TextAlign.center,
+                                        //   style: TextStyle(
+                                        //       fontFamily: 'Roboto Bold',
+                                        //       fontSize: 22,
+                                        //       color: pp.selectedSubsBox == i
+                                        //           ? Colors.white
+                                        //           : Color.fromARGB(255, 87, 101, 222),
+                                        //       letterSpacing: 0.3),
+                                        // ),
                                         Text(
                                           mnth,
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              // fontFamily: 'Roboto Bold',
+                                              fontFamily: 'Roboto Bold',
                                               fontSize: 22,
-                                              color: Color(0xff3643a3),
-                                              // pp.selectedSubsBox == i
-                                              //     ? Colors.white
-                                              //     : Color.fromARGB(255, 87, 101, 222),
+                                              color: pp.selectedSubsBox == i
+                                                  ? Colors.white
+                                                  : Color.fromARGB(255, 87, 101, 222),
                                               letterSpacing: 0.3),
                                         ),
                                         SizedBox(
                                           height: 5,
                                         ),
-                                        Text(
-                                          permiumbutton[i].name,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.fade,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              // fontFamily: 'Roboto Bold',
-                                              fontSize: 18,
-                                              color: Colors.grey,
-                                              letterSpacing: 0.3),
-                                        ),
+                                        // Text(
+                                        //   permiumbutton[i].name,
+                                        //   maxLines: 2,
+                                        //   overflow: TextOverflow.fade,
+                                        //   textAlign: TextAlign.center,
+                                        //   style: TextStyle(
+                                        //       // fontFamily: 'Roboto Bold',
+                                        //       fontSize: 18,
+                                        //       color: Colors.grey,
+                                        //       letterSpacing: 0.3),
+                                        // ),
                                         new Spacer(),
                                         Text(
                                           "\$" + permiumbutton[i].amount,
@@ -257,10 +275,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                           style: TextStyle(
                                               fontFamily: 'Roboto Bold',
                                               fontSize: 18,
-                                              color: Color(0xff3643a3),
-                                              // color: pp.selectedSubsBox == i
-                                              //     ? Colors.white
-                                              //     : Color.fromARGB(255, 87, 101, 222),
+                                              // color: Color(0xff3643a3),
+                                              color: pp.selectedSubsBox == i
+                                                  ? Colors.white
+                                                  : Color.fromARGB(255, 87, 101, 222),
                                               letterSpacing: 0.3),
                                         ),
                                         SizedBox(
@@ -277,7 +295,17 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           }),
           SizedBox(
             height: 10,
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Text(
+                "In each of the plan you will be have complete Access to Mock Tests, PathFinders, Video Library, Domains and Flash Cards to Duration selected in Reading plan",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.black)),
+          ),
+          SizedBox(
+            height: 20,
+          ),
         ])));
   }
 

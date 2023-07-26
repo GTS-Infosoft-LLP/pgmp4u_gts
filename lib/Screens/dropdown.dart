@@ -56,11 +56,13 @@ class CustomDropDown<T> extends StatelessWidget {
               color: Colors.black,
             ),
             focusColor: Colors.blueAccent,
-            value: value,          
+            value: value,
 
             // elevation: 10,
             style: TextStyle(color: Colors.red),
             items: itemList.map<DropdownMenuItem<T>>((T value) {
+              var txt = (value as DropDownModel).getOptionName();
+
               return DropdownMenuItem<T>(
                   value: value,
                   child: Container(
@@ -79,6 +81,7 @@ class CustomDropDown<T> extends StatelessWidget {
                             style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           decoration: BoxDecoration(
+                              // color: Colors.amber,
                               // border: Border(bottom: BorderSide(color: Colors.black87))
                               ),
                           width: double.maxFinite,
@@ -135,7 +138,6 @@ class CourseTypeModl implements DropDownModel {
 
   @override
   String getOptionName() {
-    
     return title;
   }
 }

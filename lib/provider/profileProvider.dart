@@ -251,12 +251,16 @@ class ProfileProvider extends ChangeNotifier {
         var resDDo = json.decode(response.body);
         print("resDDo====$resDDo");
         updateLoader(false);
-
+        var remTime = resDDo['data']['studyReminder'];
         avgScore = resDDo['data']['daysDiff'].toString();
         dayDiff = resDDo['data']['averageScore'].toString();
-        if (resDDo['data']['studyReminder'] != null || resDDo['data']['studyReminder'] != "") {
-          print("study time==${resDDo['data']['studyReminder'].split(" ")[1]}");
-          studyTime = resDDo['data']['studyReminder'].split(" ")[1];
+        if (resDDo['data']['studyReminder'] == null) {
+          remTime = "";
+        }
+        print("remTime======$remTime");
+        if (remTime.isNotEmpty) {
+          print("study time==${remTime.split(" ")[1]}");
+          studyTime = remTime.split(" ")[1];
         }
 
         notiValue = resDDo['data']['notification'];
