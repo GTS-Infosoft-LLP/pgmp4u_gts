@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
 import 'package:pgmp4u/Screens/masterPage.dart';
@@ -24,13 +25,15 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   String mntVal;
   String mnth;
   String mnths = "Months";
+  var hw;
 
   @override
   void initState() {
     ProfileProvider pp = Provider.of(context, listen: false);
     SubscriptionProvider sp = Provider.of(context, listen: false);
-    pp.setSelectedContainer(13);
-    sp.selectedSubsId = 13;
+    // hw = MediaQuery.of(context).size;
+    pp.setSelectedContainer(2);
+    sp.selectedSubsId = 3;
     // TODO: implement initState
     super.initState();
   }
@@ -51,8 +54,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     var token = await getTokenn();
                     ProfileProvider pp = Provider.of(context, listen: false);
 
-                    print(" selectedSubsBox ====${sp.selectedSubsId}");
-                    if (sp.selectedSubsId > permiumbutton.length) {
+                    print(" selectedSubsType ====${sp.selectedSubsType}");
+                    print("permiumbutton.length===${permiumbutton.length}");
+                    if (sp.selectedSubsType > permiumbutton.length) {
                       GFToast.showToast(
                         'Please select Plan',
                         context,
@@ -112,64 +116,199 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
         ),
         body: SingleChildScrollView(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Container(
-            height: MediaQuery.of(context).size.height * .45,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-              borderRadius: BorderRadius.all(Radius.circular(28)),
-            ),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 50,
+          Stack(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * .45,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                  borderRadius: BorderRadius.all(Radius.circular(28)),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Icon(
-                          Icons.west,
-                          color: Colors.white,
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 18.0),
+                            child: Icon(
+                              Icons.west,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
+                        Center(
+                          child: Text(
+                            "Membership",
+                            style: TextStyle(color: Colors.white, fontFamily: 'Roboto Bold', fontSize: 20),
+                          ),
+                        ),
+                        Text(
+                          "      ",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 25,
                     ),
                     Center(
-                      child: Text(
-                        "Membership",
-                        style: TextStyle(color: Colors.white, fontFamily: 'Roboto Bold', fontSize: 20),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * .26,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/subsImage.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                    ),
-                    Text(
-                      "      ",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
+                    )
                   ],
                 ),
-                SizedBox(
-                  height: 25,
-                ),
-                Center(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * .26,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("assets/subsImage.png"),
-                        fit: BoxFit.cover,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 238.0),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 42.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        // color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
                       ),
+                      width: MediaQuery.of(context).size.width * 45,
+                      height: 250,
+                      child: Column(children: [
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.tableColumns,
+                              color: Colors.red,
+                            ),
+                            Text("Domain Specific Flash Cards"),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.database,
+                              color: Colors.red,
+                            ),
+                            Text("Curated ECO Based Content")
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.question,
+                              color: Colors.red,
+                            ),
+                            Text("Endless Question of the Day"),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            // SizedBox(
+                            //   width: 1,
+                            // ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Icon(
+                                  Icons.chat,
+                                  color: Colors.red,
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "Access to Course Chat Groups",
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(
+                              Icons.book,
+                              color: Colors.red,
+                            ),
+                            Text("Inspiring Success Stories"),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 38.0),
+                              child: Icon(
+                                Icons.numbers_outlined,
+                                color: Colors.red,
+                              ),
+                            ),
+                            Text("Tips and Formulas"),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.bookOpenReader,
+                              color: Colors.red,
+                            ),
+                            Text("Practice and Mock Tests"),
+                          ],
+                        ),
+                      ]),
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+            ],
           ),
           SizedBox(
             height: 20,
+          ),
+          SizedBox(
+            height: 15,
           ),
           Center(
               child: Text(
@@ -206,8 +345,11 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                 padding: const EdgeInsets.symmetric(horizontal: 4),
                                 child: InkWell(
                                   onTap: () {
-                                    print("permiumbutton tye===${permiumbutton[i].id}");
+                                    print("permiumbutton iddd===${permiumbutton[i].id}");
+                                    print("permiumbutton tye===${permiumbutton[i].type}");
+
                                     sp.setSelectedSubsId(permiumbutton[i].id);
+                                    sp.setSelectedSubsType(permiumbutton[i].type);
 
                                     print("index val===$i");
                                     pp.setSelectedContainer(i);
@@ -245,16 +387,19 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                         //           : Color.fromARGB(255, 87, 101, 222),
                                         //       letterSpacing: 0.3),
                                         // ),
-                                        Text(
-                                          permiumbutton[i].name,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontFamily: 'Roboto Bold',
-                                              fontSize: 22,
-                                              color: pp.selectedSubsBox == i
-                                                  ? Colors.white
-                                                  : Color.fromARGB(255, 87, 101, 222),
-                                              letterSpacing: 0.3),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                                          child: Text(
+                                            permiumbutton[i].name,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontFamily: 'Roboto Bold',
+                                                fontSize: 22,
+                                                color: pp.selectedSubsBox == i
+                                                    ? Colors.white
+                                                    : Color.fromARGB(255, 87, 101, 222),
+                                                letterSpacing: 0.3),
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 5,

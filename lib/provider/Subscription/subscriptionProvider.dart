@@ -35,21 +35,12 @@ class SubscriptionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool getSubsPackApiCall = false;
 
-
-
-
-
- bool getSubsPackApiCall = false;
-
- updateSubsPackApiCall(bool val) {
+  updateSubsPackApiCall(bool val) {
     getSubsPackApiCall = val;
     notifyListeners();
   }
-
-
-
-
 
   List<SubscriptionDetails> SubscritionPackList = [];
 
@@ -118,7 +109,8 @@ class SubscriptionProvider extends ChangeNotifier {
             permiumbutton.add(newButton(
                 amount: SubscritionPackList[i].price,
                 name: SubscritionPackList[i].title,
-                id: SubscritionPackList[i].id));
+                id: SubscritionPackList[i].id,
+                type: SubscritionPackList[i].type));
           }
           print("permiumbutton=====$permiumbutton");
         }
@@ -199,9 +191,63 @@ class SubscriptionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  var selectedSubsType;
+  void setSelectedSubsType(int id) {
+    selectedSubsType = id;
+    notifyListeners();
+  }
+
   var selectedSubsId;
   void setSelectedSubsId(int id) {
     selectedSubsId = id;
+    notifyListeners();
+  }
+
+  Future<void> getTasksData(
+    int id,
+  ) async {
+    print("idddd=========>>>>>>>>>>>>>>>$id");
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+
+    print("token valued===$stringValue");
+    var request = {"courseId": id};
+    print("request==============$request");
+
+    try {
+      var response = await http.post(
+        Uri.parse(JOIN_NOTIFICATION),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
+
+      print("response.statusCode===${response.body}");
+      print("response.statusCode===${response.statusCode}");
+
+      var resDDo = json.decode(response.body);
+      var resStatus = (resDDo["status"]);
+
+      if (response.statusCode == 400) {
+        print("statussssssss");
+
+        notifyListeners();
+        return;
+      }
+      if (response.statusCode == 200) {
+        print("");
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+        print("mapResponse====${mapResponse['status']}");
+        if (mapResponse['status'] == 400) {
+          return;
+        }
+
+        if (mapResponse["status"] == 200) {
+          print("respponse=== ${response.body}");
+        }
+      }
+      print("respponse=== ${response.body}");
+    } on Exception {}
     notifyListeners();
   }
 }

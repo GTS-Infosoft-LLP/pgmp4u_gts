@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/profileProvider.dart';
 import '../tool/ShapeClipper.dart';
+import 'MockTest/model/courseModel.dart';
 import 'Profile/notifications.dart';
+import 'dropdown.dart';
 
 class NotificationTabs extends StatefulWidget {
   const NotificationTabs({Key key}) : super(key: key);
@@ -18,6 +21,9 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
   // final _tabController = TabController();
   @override
   void initState() {
+    CourseProvider cp = Provider.of(context, listen: false);
+    cp.setSelectedNotiCrsLable(null);
+
     // TODO: implement initState
     super.initState();
     _dshbrdProvider = Provider.of(context, listen: false);
@@ -92,6 +98,32 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
               }),
             ]),
             SizedBox(height: 20),
+            Center(
+              child: Consumer<CourseProvider>(builder: (context, cp, child) {
+                return Container(
+                  alignment: Alignment.centerRight,
+                  width: MediaQuery.of(context).size.width * .35,
+                  child: CustomDropDown<CourseDetails>(
+                    selectText: cp.notiSelectCrsLable ?? "Select",
+                    itemList: cp.crsDropList ?? [],
+                    isEnable: true,
+                    title: "",
+                    value: null,
+                    onChange: (val) {
+                      print("val.course=========>${val.course}");
+                      print("val.course=========>${val.lable}");
+                      cp.setSelectedNotiCrsLable(val.lable);
+                      cp.setSelectedCourseLable(val.lable);
+                      cp.setSelectedCourseId(val.id);
+                      ProfileProvider pp = Provider.of(context, listen: false);
+                      pp.showNotification(crsId: cp.selectedCourseId);
+                      
+                    },
+                  ),
+                );
+              }),
+            ),
+            SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: TabBar(
@@ -131,7 +163,7 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                   Notifications(type: 0),
                 ]),
               ),
-            )
+            ),
           ],
         ),
       ),

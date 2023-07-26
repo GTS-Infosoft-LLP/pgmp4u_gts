@@ -26,6 +26,9 @@ class CourseDetails implements DropDownModel {
   @HiveField(9)
   int isChatSubscribed;
 
+@HiveField(10)
+  int isJoinNotification;
+
   CourseDetails();
 
   CourseDetails.fromjson(Map<String, dynamic> json) {
@@ -39,6 +42,7 @@ class CourseDetails implements DropDownModel {
     deleteStatus = json["deleteStatus"];
     isSubscribed = json["isSubscribed"];
     isChatSubscribed = json["isChatSubscribed"];
+    isJoinNotification=json["isJoinNotification"];
   }
 
   @override

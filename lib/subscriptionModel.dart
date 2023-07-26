@@ -8,6 +8,6 @@ class newButton {
   String name;
   int id;
   String amount;
-  bool buttonisSelected;
-  newButton({this.name, this.buttonisSelected = false, this.id = 0, this.amount = "£25.5"});
+  int type;
+  newButton({this.name, this.type = 0, this.id = 0, this.amount = "£25.5"});
 }

@@ -50,9 +50,10 @@ class _ImageDispalyScreenState extends State<ImageDispalyScreen> {
               height: DeviceOrientation == Orientation.landscape
                   ? MediaQuery.of(context).size.height * .7
                   : MediaQuery.of(context).size.height * .7,
-              width: DeviceOrientation == Orientation.landscape
-                  ? MediaQuery.of(context).size.height * .9
-                  : MediaQuery.of(context).size.height * .8,
+              width: MediaQuery.of(context).size.width * .9,
+              // width: DeviceOrientation == Orientation.landscape
+              //     ? MediaQuery.of(context).size.height * .9
+              //     : MediaQuery.of(context).size.height * .8,
               decoration: BoxDecoration(
                 color: Colors.grey[300],
                 // color: Colors.black38,
@@ -72,9 +73,7 @@ class _ImageDispalyScreenState extends State<ImageDispalyScreen> {
                       ),
                     ),
                     errorWidget: (context, url, error) => Container(
-                        height: MediaQuery.of(context).size.width * .4, 
-                        child: Center(child: Icon(Icons.error))
-                        ),
+                        height: MediaQuery.of(context).size.width * .4, child: Center(child: Icon(Icons.error))),
                   ),
                 ),
               ),

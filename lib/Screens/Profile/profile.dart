@@ -68,6 +68,8 @@ class _ProfileState extends State<Profile> {
       cp.setSelectedCourseId(cp.crsDropList[0].id);
       cp.setSelectedCourseName(cp.crsDropList[0].course);
       cp.setSelectedCourseLable(cp.crsDropList[0].lable);
+      print("cp.course[0].lable===========${cp.crsDropList[0].lable}");
+
       // pp.getReminder(cp.course[0].id);
     }
 

@@ -1,16 +1,20 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Services/globalcontext.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/mockquestionanswermodel.dart';
 import '../Screens/MockTest/model/pracTestModel.dart';
 import '../Screens/MockTest/model/showNotifiModel.dart';
 import 'dart:convert' as convert;
+
+import 'courseProvider.dart';
 
 class ProfileProvider extends ChangeNotifier {
   int _pageIndex = 0;
@@ -63,22 +67,37 @@ class ProfileProvider extends ChangeNotifier {
     });
   }
 
-  Future showNotification({bool isFirstTime = false}) async {
+  Future showNotification({bool isFirstTime = false, dynamic crsId}) async {
+    crsId.toString();
+    print("crsId=====$crsId");
+    if (crsId == null) {
+      crsId = "";
+    }
+    if (crsId != null && crsId.toString().isNotEmpty) {
+      _totalRec = 1;
+      NotificationData = [];
+    }
+    CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
     if (isFirstTime) {
       updateNotificationLoader(true);
     }
 
     if (!isFirstTime) {
+      // crsId = cp.selectedCourseId;
+      print("Notifications.length + Announcements.length====${Notifications.length + Announcements.length}");
+      print("_totalRec=======$_totalRec");
+      print("NotificationData.length ======${NotificationData.length}");
       if (_totalRec == (Notifications.length + Announcements.length)) {
-        print(" -- all notification get --");
+        print(" -- all notification get1 --");
         return;
       }
       if (NotificationData.length >= _totalRec) {
-        print(" -- all notification get --");
+        print(" -- all notification get2 --");
         updateNotificationLoader(false);
         return;
       }
     } else {
+      crsId = "";
       // _pageIndex = 0;
       // _totalRec = 0;
       // NotificationData.clear();
@@ -87,9 +106,12 @@ class ProfileProvider extends ChangeNotifier {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
-    print("page index============$_pageIndex");
-    var request = {"page": _pageIndex};
 
+    print("page index============$_pageIndex");
+
+    // var request = {"page": _pageIndex};
+    var request = {"page": _pageIndex, "courseId": crsId};
+    print("Notification requesttttt======$request");
     try {
       var res = await http.post(
         Uri.parse(NOTIFICATION_LIST),

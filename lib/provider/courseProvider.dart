@@ -67,6 +67,16 @@ class CourseProvider extends ChangeNotifier {
   int selectedFlashCategory;
   String selectedCourseName;
   String selectedCourseLable;
+
+  String notiSelectCrsLable;
+
+  setSelectedNotiCrsLable(String val) {
+    Future.delayed(Duration.zero, () {
+      notiSelectCrsLable = val;
+      notifyListeners();
+    });
+  }
+
   int checkInternet = 0;
 
   List<Map> restartList = [];

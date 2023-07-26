@@ -96,43 +96,121 @@ class _HomeViewState extends State<HomeView> {
                 SizedBox(
                   height: topHeight - topHeight / 1.4,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Container(
-                    child: Center(
-                      child: Column(mainAxisSize: MainAxisSize.min, children: [
-                        CircularCachedNetworkImage(
-                          imageUrl: user.image,
-                          size: (topHeight / 2) * 2,
-                          borderColor: Colors.white,
+
+                Container(
+                  height: MediaQuery.of(context).size.height * .32,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(40.0)),
+                    gradient: LinearGradient(
+                        colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
+                        begin: const FractionalOffset(0.0, 0.0),
+                        end: const FractionalOffset(1.0, 0.0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp),
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            "Hey, " + "${user.name}",
+                            style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                          CircularCachedNetworkImage(
+                            imageUrl: user.image,
+                            size: (topHeight / 4) * 2,
+                            borderColor: Colors.white,
+                            borderWidth: 0,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 32.0, right: 20),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Over 95% of app users reported High Scores \n",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Roboto Bold',
+                                color: Colors.white,
+                                // fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                            Text(
+                              "Be one of them ! Get Started NOW to boost your Knowledge!",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: 'Roboto Regular',
+                                color: Colors.white,
+                                // fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "Hey, " + "${user.name}",
-                          style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ]),
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Text(
-                    "Over 90% of Students who use this app reported High Scores \nYou can be one of them NOW !\nGet Started NOW to boost your Knowledge !",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Roboto Medium',
-                      // color: Color(0xff9953C1),
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(20),
+                //   child: Container(
+                //     child: Center(
+                //       child: Column(mainAxisSize: MainAxisSize.min, children: [
+                //         CircularCachedNetworkImage(
+                //           imageUrl: user.image,
+                //           size: (topHeight / 2) * 2,
+                //           borderColor: Colors.white,
+                //         ),
+                //         SizedBox(
+                //           height: 5,
+                //         ),
+                //         Text(
+                //           "Hey, " + "${user.name}",
+                //           style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),
+                //         ),
+                //         SizedBox(
+                //           height: 10,
+                //         ),
+                //       ]),
+                //     ),
+                //   ),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.all(Radius.circular(45)),
+                //       gradient: LinearGradient(
+                //           begin: Alignment.topLeft,
+                //           end: Alignment.bottomRight,
+                //           colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                //     ),
+                //     child: Padding(
+                //       padding: const EdgeInsets.symmetric(vertical: 8.0),
+                //       child: Text(
+                //         "Over 90% of Students who use this app reported High Scores \nYou can be one of them NOW !\nGet Started NOW to boost your Knowledge !",
+                //         textAlign: TextAlign.center,
+                //         style: TextStyle(
+                //           fontSize: 18,
+                //           fontFamily: 'Roboto Bold',
+                //           color: Colors.white,
+                //           // fontStyle: FontStyle.italic,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Container(
                   child: ValueListenableBuilder<Box<String>>(
                       valueListenable: HiveHandler.getCourseListener(),
@@ -157,7 +235,10 @@ class _HomeViewState extends State<HomeView> {
                                   height: MediaQuery.of(context).size.height * .55,
                                   child: Center(child: CircularProgressIndicator.adaptive()))
                               : storedCourse.isEmpty
-                                  ? Center(child: Container(height: 400, child: Text("No Data Found")))
+                                  ? Center(
+                                      child: Container(
+                                          height: MediaQuery.of(context).size.height * .35,
+                                          child: Center(child: Text("No Data Found"))))
                                   : Container(
                                       height: MediaQuery.of(context).size.height * .58,
                                       child: ListView.builder(

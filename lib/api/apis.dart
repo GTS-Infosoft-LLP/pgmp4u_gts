@@ -121,6 +121,7 @@ const GET_TASK_DETAIL =_BASE_URL + "getTaskDetails";
 
 const GET_SUBSCRIPTION_PACK= _BASE_URL + "getsubscriptionPacks";
 const CREATE_SUBSCRIPTION_ORDER= _BASE_URL + "createSubscriptionOrder";
+const JOIN_NOTIFICATION= _BASE_URL + "joinNotification";
 
 
 

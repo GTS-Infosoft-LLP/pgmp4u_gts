@@ -6,6 +6,7 @@ import 'package:pgmp4u/Screens/QuesOfDay.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../provider/courseProvider.dart';
 import '../../provider/profileProvider.dart';
 import '../../utils/app_color.dart';
 
@@ -25,6 +26,11 @@ class _NotificationsState extends State<Notifications> {
   void initState() {
     _isShow = false;
     print("widget.type===========${widget.type}");
+    CourseProvider cp = Provider.of(context, listen: false);
+    if (cp.crsDropList.isNotEmpty) {
+      cp.setSelectedCourseId(cp.crsDropList[0].id);
+    }
+
     ProfileProvider _dshbrdProvider = Provider.of(context, listen: false);
 
     scrollcontrol.addListener(() {
@@ -630,8 +636,6 @@ class NotiShowDialog extends StatelessWidget {
                       toastPosition: GFToastPosition.BOTTOM,
                     );
                   }
-
-          
                 },
               ),
             ],
