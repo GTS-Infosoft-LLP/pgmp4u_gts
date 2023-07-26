@@ -150,7 +150,7 @@ class _HomeViewState extends State<HomeView> {
                               "Be one of them ! Get Started NOW to boost your Knowledge!",
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 17,
                                 fontFamily: 'Roboto Regular',
                                 color: Colors.white,
                                 // fontStyle: FontStyle.italic,
