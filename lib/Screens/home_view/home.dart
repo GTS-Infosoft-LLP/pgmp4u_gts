@@ -12,7 +12,6 @@ import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:provider/provider.dart';
 import '../../Models/hideshowmodal.dart';
-import '../../Models/options_model.dart';
 import '../../provider/Subscription/subscriptionProvider.dart';
 import '../../provider/courseProvider.dart';
 import '../../tool/ShapeClipper2.dart';
@@ -75,7 +74,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final user = UserObject().getUser;
-  
+
     final double topHeight = 150;
 
     return Stack(
@@ -111,13 +110,26 @@ class _HomeViewState extends State<HomeView> {
                           height: 5,
                         ),
                         Text(
-                          "${user.name}",
+                          "Hey, " + "${user.name}",
                           style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
                           height: 10,
                         ),
                       ]),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Text(
+                    "Over 90% of Students who use this app reported High Scores \nYou can be one of them NOW !\nGet Started NOW to boost your Knowledge !",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Roboto Medium',
+                      // color: Color(0xff9953C1),
+                      fontStyle: FontStyle.italic,
                     ),
                   ),
                 ),

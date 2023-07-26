@@ -1,7 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:pgmp4u/Services/globalcontext.dart';
-import 'package:pgmp4u/provider/courseProvider.dart';
-import 'package:provider/provider.dart';
 
 import '../../dropdown.dart';
 part 'courseModel.g.dart';
@@ -26,7 +23,9 @@ class CourseDetails implements DropDownModel {
   int deleteStatus;
   @HiveField(8)
   int isSubscribed;
-  String lable2 = "";
+  @HiveField(9)
+  int isChatSubscribed;
+
   CourseDetails();
 
   CourseDetails.fromjson(Map<String, dynamic> json) {
@@ -39,19 +38,11 @@ class CourseDetails implements DropDownModel {
     status = json["status"];
     deleteStatus = json["deleteStatus"];
     isSubscribed = json["isSubscribed"];
-    if (isSubscribed == 1) {
-      if (lable.isNotEmpty) {
-        lable2 = lable;
-      }
-    }
+    isChatSubscribed = json["isChatSubscribed"];
   }
 
   @override
   String getOptionName() {
- 
-  
-
-  
-    return lable2;
+    return lable;
   }
 }

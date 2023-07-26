@@ -29,7 +29,7 @@ class CourseProvider extends ChangeNotifier {
   List<MasterDetails> masterList = [];
   List<CourseDetails> course = [];
   List<CourseDetails> crsDropList = [];
-    List<CourseDetails> chatCrsDropList = [];
+  List<CourseDetails> chatCrsDropList = [];
   List<String> crsLable = [];
   List<VideoCateDetails> videoCate = [];
   List<VideoDetails> Videos = [];
@@ -554,7 +554,6 @@ class CourseProvider extends ChangeNotifier {
 
   List<int> enrolledId = [];
   Future<void> getCourse() async {
-    enrolledId = [];
     updateGetCourseApiCalling(true);
     print("getCourse api calllllllll");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -572,18 +571,17 @@ class CourseProvider extends ChangeNotifier {
         course.clear();
         crsDropList.clear();
         chatCrsDropList.clear();
-    
+
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         List temp1 = mapResponse["data"];
         print("temp list course === $temp1");
         course = temp1.map((e) => CourseDetails.fromjson(e)).toList();
         for (int i = 0; i < course.length; i++) {
-          // crsLable.add(course[i].lable);
-
           if (course[i].isSubscribed == 1) {
             crsDropList.add(course[i]);
-
-            // enrolledId.add(course[i].id);
+          }
+          if (course[i].isChatSubscribed == 1 || course[i].isSubscribed == 1) {
+            chatCrsDropList.add(course[i]);
           }
           print("crsDropList=======$crsDropList");
         }
@@ -612,6 +610,8 @@ class CourseProvider extends ChangeNotifier {
       } else {
         print("status codeee====>>>>${response.statusCode}");
         course = [];
+        crsDropList = [];
+        chatCrsDropList = [];
 
         HiveHandler.addCourseData(jsonEncode(course));
         updateGetCourseApiCalling(false);

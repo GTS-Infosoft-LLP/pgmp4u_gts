@@ -25,13 +25,14 @@ class CourseDetailsAdapter extends TypeAdapter<CourseDetails> {
       ..skip_content_progress = fields[5] as int
       ..status = fields[6] as int
       ..deleteStatus = fields[7] as int
-      ..isSubscribed = fields[8] as int;
+      ..isSubscribed = fields[8] as int
+      ..isChatSubscribed = fields[9] as int;
   }
 
   @override
   void write(BinaryWriter writer, CourseDetails obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -49,7 +50,9 @@ class CourseDetailsAdapter extends TypeAdapter<CourseDetails> {
       ..writeByte(7)
       ..write(obj.deleteStatus)
       ..writeByte(8)
-      ..write(obj.isSubscribed);
+      ..write(obj.isSubscribed)
+      ..writeByte(9)
+      ..write(obj.isChatSubscribed);
   }
 
   @override

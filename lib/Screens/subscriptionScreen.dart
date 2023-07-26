@@ -28,7 +28,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   @override
   void initState() {
     ProfileProvider pp = Provider.of(context, listen: false);
+    SubscriptionProvider sp = Provider.of(context, listen: false);
     pp.setSelectedContainer(13);
+    sp.selectedSubsId = 13;
     // TODO: implement initState
     super.initState();
   }
@@ -54,7 +56,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                       GFToast.showToast(
                         'Please select Plan',
                         context,
-                        toastPosition: GFToastPosition.BOTTOM,
+                        toastPosition: GFToastPosition.CENTER,
                       );
                     } else {
                       bool status = await Navigator.push(
@@ -244,7 +246,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                         //       letterSpacing: 0.3),
                                         // ),
                                         Text(
-                                          mnth,
+                                          permiumbutton[i].name,
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontFamily: 'Roboto Bold',
