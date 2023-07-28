@@ -450,7 +450,9 @@ class _RandomPageState extends State<RandomPage> {
               return sp.getSubsPackApiCall
                   ? Center(child: CircularProgressIndicator.adaptive())
                   : Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 20),
+                      padding: permiumbutton.length == 1
+                          ? const EdgeInsets.only(left: 58.0, right: 58, bottom: 20)
+                          : const EdgeInsets.only(left: 8.0, right: 8, bottom: 20),
                       child: Column(
                         children: [
                           Row(

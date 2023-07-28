@@ -63,6 +63,8 @@ class _ProfileState extends State<Profile> {
     super.initState();
     CourseProvider cp = Provider.of(context, listen: false);
     ProfileProvider pp = Provider.of(context, listen: false);
+    cp.getCourse();
+
     checkNotificationStatus();
     print("cp.crsDropList.=====${cp.crsDropList.length}");
     if (cp.crsDropList.isNotEmpty) {
@@ -1332,27 +1334,29 @@ class cancelSubsBottomSheet extends StatelessWidget {
                   ),
                 ),
 
-       cp.crsDropList.length > 1? Consumer<CourseProvider>(builder: (context, cp, child) {
-            return Container(
-              alignment: Alignment.centerRight,
-              width: MediaQuery.of(context).size.width * .35,
-              child: CustomDropDown<CourseDetails>(
-                selectText: cp.selectedCancelSubsLable ?? "Select",
-                itemList: cp.crsDropList ?? [],
-                isEnable: true,
-                title: "",
-                value: null,
-                onChange: (val) {
-                  print("val.course=========>${val.id}");
-                  print("val.course lable=========>${val.lable}");
-                  cp.setSelectedCancelSubsCrsLable(val.lable);
-                  cp.setSelectedCancelSubsId(val.id);
+          cp.crsDropList.length > 1
+              ? Consumer<CourseProvider>(builder: (context, cp, child) {
+                  return Container(
+                    alignment: Alignment.centerRight,
+                    width: MediaQuery.of(context).size.width * .35,
+                    child: CustomDropDown<CourseDetails>(
+                      selectText: cp.selectedCancelSubsLable ?? "Select",
+                      itemList: cp.crsDropList ?? [],
+                      isEnable: true,
+                      title: "",
+                      value: null,
+                      onChange: (val) {
+                        print("val.course=========>${val.id}");
+                        print("val.course lable=========>${val.lable}");
+                        cp.setSelectedCancelSubsCrsLable(val.lable);
+                        cp.setSelectedCancelSubsId(val.id);
 
-                  // cp.setSelectedCourseId(val.id);
-                },
-              ),
-            );
-          }):SizedBox(),
+                        // cp.setSelectedCourseId(val.id);
+                      },
+                    ),
+                  );
+                })
+              : SizedBox(),
 
           SizedBox(
             height: 20,
@@ -1406,7 +1410,7 @@ class cancelSubsBottomSheet extends StatelessWidget {
       ),
     );
   }
-  
+
   void showCancelSubsPopup(BuildContext context) {
     showDialog(
         context: context,
@@ -1504,6 +1508,7 @@ class cancelSubsBottomSheet extends StatelessWidget {
               ],
             ));
   }
+
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
