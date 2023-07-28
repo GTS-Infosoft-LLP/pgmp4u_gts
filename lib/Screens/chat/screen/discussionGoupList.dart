@@ -292,30 +292,14 @@ class AddDiscussionBottomSheet extends StatelessWidget {
                     child: Icon(
                       Icons.close,
                       color: Color.fromRGBO(165, 156, 180, 1),
-                    )),
+                    )
+                    ),
               ],
             ),
           ),
           Divider(
             thickness: 2,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: TextFormField(
-              maxLines: 5,
-              controller: titleController,
-              decoration: InputDecoration(
-                hintText: "Enter Discussion Title Here",
-                hintStyle: TextStyle(fontSize: 18, color: Color.fromRGBO(148, 148, 148, 1)),
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-          // Divider(
-          //   thickness: 2,
-          //   endIndent: 15,
-          //   indent: 15,
-          // ),
           cp.course.length > 1
               ? Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -355,9 +339,18 @@ class AddDiscussionBottomSheet extends StatelessWidget {
                   ),
                 )
               : SizedBox(),
-          // Divider(
-          //   thickness: 2,
-          // ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextFormField(
+              maxLines: 5,
+              controller: titleController,
+              decoration: InputDecoration(
+                hintText: "Enter Discussion Title Here",
+                hintStyle: TextStyle(fontSize: 18, color: Color.fromRGBO(148, 148, 148, 1)),
+                border: InputBorder.none,
+              ),
+            ),
+          ),
           _publishButton(context),
         ],
       ),

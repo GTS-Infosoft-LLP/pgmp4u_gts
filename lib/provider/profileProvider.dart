@@ -345,6 +345,7 @@ class ProfileProvider extends ChangeNotifier {
 
     print("token valued===$stringValue");
     var request = {"type": type};
+    print("request::::::$request");
 
     try {
       var response = await http

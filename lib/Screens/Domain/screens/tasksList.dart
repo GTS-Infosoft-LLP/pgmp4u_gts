@@ -192,7 +192,6 @@ class _TaskListState extends State<TaskList> {
                                                 decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(10),
                                                   color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                        
                                                 ),
                                                 child: Padding(
                                                   padding: const EdgeInsets.all(17.0),
@@ -202,8 +201,7 @@ class _TaskListState extends State<TaskList> {
                                                       borderRadius: BorderRadius.circular(80),
                                                     ),
                                                     child: Center(
-                                                      child:
-                                                          Text('${index + 1}', style: TextStyle()),
+                                                      child: Text('${index + 1}', style: TextStyle()),
                                                     ),
                                                   ),
                                                 )),
@@ -247,6 +245,11 @@ class _TaskListState extends State<TaskList> {
                                               ),
                                             ],
                                           ),
+                                          Spacer(),
+                                          Icon(
+                                            Icons.east,
+                                            color: Colors.grey,
+                                          )
                                         ],
                                       ),
                                     ),

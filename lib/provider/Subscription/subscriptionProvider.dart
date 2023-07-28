@@ -193,8 +193,10 @@ class SubscriptionProvider extends ChangeNotifier {
 
   var selectedSubsType;
   void setSelectedSubsType(int id) {
-    selectedSubsType = id;
-    notifyListeners();
+    Future.delayed(Duration.zero, () async {
+      selectedSubsType = id;
+      notifyListeners();
+    });
   }
 
   var selectedSubsId;
@@ -203,7 +205,7 @@ class SubscriptionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getTasksData(
+  Future<void> cancelSubscription(
     int id,
   ) async {
     print("idddd=========>>>>>>>>>>>>>>>$id");
@@ -214,10 +216,10 @@ class SubscriptionProvider extends ChangeNotifier {
     print("token valued===$stringValue");
     var request = {"courseId": id};
     print("request==============$request");
-
+    updateLoader(true);
     try {
       var response = await http.post(
-        Uri.parse(JOIN_NOTIFICATION),
+        Uri.parse(CANCEL_SUBSCRIPTION),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );
@@ -229,25 +231,34 @@ class SubscriptionProvider extends ChangeNotifier {
       var resStatus = (resDDo["status"]);
 
       if (response.statusCode == 400) {
+           updateLoader(false);
         print("statussssssss");
 
         notifyListeners();
         return;
       }
       if (response.statusCode == 200) {
+           updateLoader(false);
         print("");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
-        print("mapResponse====${mapResponse['status']}");
-        if (mapResponse['status'] == 400) {
+        print("mapResponse====$mapResponse");
+
+        // EasyLoading.showSuccess("Your Subscription Pack will be Expired at the end the Period.");
+
+        if (mapResponse['success'] == true) {
+          updateLoader(false);
+          EasyLoading.showSuccess("Your Subscription Pack will be Expired at the end the Period.");
           return;
         }
 
-        if (mapResponse["status"] == 200) {
-          print("respponse=== ${response.body}");
-        }
+        // if (mapResponse["status"] == 200) {
+        //   print("respponse=== ${response.body}");
+        // }
       }
       print("respponse=== ${response.body}");
-    } on Exception {}
+    } on Exception {
+      updateLoader(false);
+    }
     notifyListeners();
   }
 }

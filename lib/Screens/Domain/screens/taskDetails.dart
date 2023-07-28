@@ -6,6 +6,7 @@ import 'package:pgmp4u/Screens/Domain/widget/taskQuestions.dart';
 import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
+import '../../../provider/courseProvider.dart';
 import '../disImage.dart';
 
 class TaskDetail extends StatefulWidget {
@@ -27,6 +28,8 @@ class _TaskDetailState extends State<TaskDetail> {
   int isAnsCorrect = 0;
   var indexPg;
   void initState() {
+    CourseProvider cp = Provider.of(context, listen: false);
+    print("lableeee=====${cp.selectedCourseLable}");
     isChange = 0;
     colorIndex = 0;
     currentIndex = 0;
@@ -48,7 +51,7 @@ class _TaskDetailState extends State<TaskDetail> {
 
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
-    return Color(int.parse('FF$hexCode', radix: 16)); 
+    return Color(int.parse('FF$hexCode', radix: 16));
   }
 
   Widget build(BuildContext context) {
@@ -246,7 +249,7 @@ class _TaskDetailState extends State<TaskDetail> {
                                           gradient: index <= colorIndex
                                               ? LinearGradient(
                                                   colors: [
-                                                    _colorfromhex("#3A47AD"),  
+                                                    _colorfromhex("#3A47AD"),
                                                     _colorfromhex("#5163F3"),
                                                   ],
                                                   begin: const FractionalOffset(0.0, 0.0),
@@ -379,8 +382,7 @@ Widget TaskImg(BuildContext context, index) {
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(
-                      height: MediaQuery.of(context).size.width * .4,
-                       child: Center(child: Icon(Icons.error))),
+                      height: MediaQuery.of(context).size.width * .4, child: Center(child: Icon(Icons.error))),
                 ),
               ),
             ),
@@ -528,19 +530,21 @@ Widget TaskDisc(BuildContext context, currentIndex) {
         SizedBox(
           height: 15,
         ),
-        Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            "Description",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontFamily: 'Roboto Regular',
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
+        Consumer<CourseProvider>(builder: (context, cp, child) {
+          return Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              cp.selectedCourseLable == "PMP®" ? "Enablers" : "Description",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontFamily: 'Roboto Regular',
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
             ),
-          ),
-        ),
+          );
+        }),
         SizedBox(
           height: 5,
         ),

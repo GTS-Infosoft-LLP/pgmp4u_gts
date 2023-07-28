@@ -3,8 +3,10 @@ import 'package:pgmp4u/Screens/pptData.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/profileProvider.dart';
 import '../tool/ShapeClipper.dart';
 import '../utils/app_color.dart';
+import 'Pdf/screens/pdfViewer.dart';
 import 'home_view/VideoLibrary/RandomPage.dart';
 
 class PPTCardItem extends StatefulWidget {
@@ -112,14 +114,20 @@ class _PPTCardItemState extends State<PPTCardItem> {
                             itemBuilder: (context, index) {
                               return InkWell(
                                 onTap: () async {
+                                  ProfileProvider pp = Provider.of(context, listen: false);
+                                  pp.updateLoader(true);
                                   print("cp.pptCategoryList===========${cp.pptCategoryList[index].id}");
 
                                   await cp.getPpt(cp.pptCategoryList[index].id);
+                                  var lngth = cp.pptDataList.length;
+
+                                  print("pptDataList length====$lngth");
 
                                   var pptPayStat = await cp.successValuePPT;
                                   print("pptPayStat======$pptPayStat");
                                   print("cp.pptCategoryList[index]====${cp.pptCategoryList[index].price}");
                                   if (pptPayStat == false) {
+                                    pp.updateLoader(false);
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -129,13 +137,28 @@ class _PPTCardItemState extends State<PPTCardItem> {
                                                   index: 5,
                                                 )));
                                   } else {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => PPTData(
-                                                  title: cp.pptCategoryList[index].name,
-                                                )));
+                                    if (lngth == 1) {
+                                      var urlPpt = cp.pptDataList[0].filename;
+                                      print("urlPpt====$urlPpt");
+                                      pp.updateLoader(false);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => PdfViewer(
+                                                    pdfModel: cp.pptDataList[0],
+                                                  )));
+                                    } else {
+                                      pp.updateLoader(false);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => PPTData(
+                                                    title: cp.pptCategoryList[index].name,
+                                                  )));
+                                    }
+                                    pp.updateLoader(false);
                                   }
+                                  pp.updateLoader(false);
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),

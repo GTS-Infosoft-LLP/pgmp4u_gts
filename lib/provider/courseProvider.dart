@@ -70,6 +70,29 @@ class CourseProvider extends ChangeNotifier {
 
   String notiSelectCrsLable;
 
+
+
+    String selectedCancelSubsLable;
+
+  setSelectedCancelSubsCrsLable(String val) {
+    Future.delayed(Duration.zero, () {
+      selectedCancelSubsLable = val;
+      notifyListeners();
+    });
+  }
+
+    int selectedCancelSubsId;
+  setSelectedCancelSubsId(int id){
+   Future.delayed(Duration.zero, () {
+      selectedCancelSubsId = id;
+      notifyListeners();
+    });
+  }
+
+
+
+
+
   setSelectedNotiCrsLable(String val) {
     Future.delayed(Duration.zero, () {
       notiSelectCrsLable = val;
@@ -258,7 +281,7 @@ class CourseProvider extends ChangeNotifier {
           List temp1 = mapResponse["data"];
           print("temp list===$temp1");
           pptDataList = temp1.map((e) => PPTDataDetails.fromjson(e)).toList();
-          print("pptDataList=========$pptDataList");
+          print("pptDataList=========${pptDataList.length}");
         }
       }
     } on Exception {

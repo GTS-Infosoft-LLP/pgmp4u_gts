@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/provider/Subscription/subscriptionProvider.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/utils/app_color.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,7 @@ class _ProfileState extends State<Profile> {
     CourseProvider cp = Provider.of(context, listen: false);
     ProfileProvider pp = Provider.of(context, listen: false);
     checkNotificationStatus();
+    print("cp.crsDropList.=====${cp.crsDropList.length}");
     if (cp.crsDropList.isNotEmpty) {
       print("cp.course[0].id===========${cp.crsDropList[0].id}");
       cp.setSelectedCourseId(cp.crsDropList[0].id);
@@ -117,8 +119,9 @@ class _ProfileState extends State<Profile> {
   checkNotificationStatus() async {
     ProfileProvider pp = Provider.of(context, listen: false);
     CourseProvider cp = Provider.of(context, listen: false);
-    if (cp.course.isNotEmpty) {
-      await pp.getReminder(cp.course[0].id);
+    if (cp.crsDropList.isNotEmpty) {
+      print("cp.crsDropList[0].id==:::${cp.crsDropList[0].id}");
+      await pp.getReminder(cp.crsDropList[0].id);
       if (pp.notiValue == 0) {
         isSwitched = false;
       } else {
@@ -350,7 +353,7 @@ class _ProfileState extends State<Profile> {
 
                           InkWell(
                             onTap: () {
-                              // Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
+                              // Navigator.push(context, MaterialPageRoute(builder: (context) => Subscriptionpg()));
                             },
                             child: ClipOval(
                               child: CachedNetworkImage(
@@ -690,7 +693,7 @@ class _ProfileState extends State<Profile> {
                                                 color: _colorfromhex("#ABAFD1"),
                                               ),
                                               Container(
-                                                width: MediaQuery.of(context).size.width * .8,
+                                                width: MediaQuery.of(context).size.width * .78,
                                                 child: Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
@@ -776,8 +779,6 @@ class _ProfileState extends State<Profile> {
 
                                 GestureDetector(
                                   onTap: () {
-                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
-
                                     Navigator.push(
                                         context, MaterialPageRoute(builder: (context) => NotificationTabs()));
                                   },
@@ -837,6 +838,64 @@ class _ProfileState extends State<Profile> {
                                             ),
                                             Text(
                                               '   Delete Account',
+                                              style: TextStyle(
+                                                fontFamily: 'Roboto Medium',
+                                                fontSize: width * (18 / 420),
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 20,
+                                          color: _colorfromhex("#ABAFD1"),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                GestureDetector(
+                                  onTap: () {
+                                    cp.setSelectedCancelSubsCrsLable(null);
+                                    // cp.selectedCancelSubsLable = null;
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(20),
+                                        ),
+                                      ),
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+
+                                      // barrierColor: Colors.amber,
+                                      builder: (context) {
+                                        return cancelSubsBottomSheet();
+                                      },
+                                    );
+                                    // Navigator.push(
+                                    // context, MaterialPageRoute(builder: (context) => NotificationTabs()));
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(bottom: 6),
+                                    padding: EdgeInsets.only(
+                                        top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
+                                    color: Colors.white,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.diamond,
+                                              size: width * (26 / 420),
+                                              color: _colorfromhex("#ABAFD1"),
+                                            ),
+                                            Text(
+                                              '   Cancel Subscription',
                                               style: TextStyle(
                                                 fontFamily: 'Roboto Medium',
                                                 fontSize: width * (18 / 420),
@@ -1208,5 +1267,245 @@ class _ProfileState extends State<Profile> {
                 ),
               ],
             ));
+  }
+}
+
+class cancelSubsBottomSheet extends StatelessWidget {
+  TextEditingController titleController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    CourseProvider cp = Provider.of(context, listen: false);
+    return Card(
+      margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Row(
+              children: [
+                Text(
+                  'Cancel Subscription',
+                  style: TextStyle(fontSize: 18, fontFamily: 'Roboto Medium', color: Colors.black),
+                ),
+                Spacer(),
+                InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.close,
+                      color: Color.fromRGBO(165, 156, 180, 1),
+                    )),
+              ],
+            ),
+          ),
+          Divider(
+            thickness: 2,
+          ),
+          cp.crsDropList.length > 1
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      child: Text(
+                        'Select Course for which you want to cancel the Subscription pack',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      child: Text(
+                        'No course is purchased yet',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ),
+
+       cp.crsDropList.length > 1? Consumer<CourseProvider>(builder: (context, cp, child) {
+            return Container(
+              alignment: Alignment.centerRight,
+              width: MediaQuery.of(context).size.width * .35,
+              child: CustomDropDown<CourseDetails>(
+                selectText: cp.selectedCancelSubsLable ?? "Select",
+                itemList: cp.crsDropList ?? [],
+                isEnable: true,
+                title: "",
+                value: null,
+                onChange: (val) {
+                  print("val.course=========>${val.id}");
+                  print("val.course lable=========>${val.lable}");
+                  cp.setSelectedCancelSubsCrsLable(val.lable);
+                  cp.setSelectedCancelSubsId(val.id);
+
+                  // cp.setSelectedCourseId(val.id);
+                },
+              ),
+            );
+          }):SizedBox(),
+
+          SizedBox(
+            height: 20,
+          ),
+
+          InkWell(
+            onTap: () {
+              CourseProvider cp = Provider.of(context, listen: false);
+              print("cp sele lable===${cp.selectedCancelSubsLable}");
+              if (cp.selectedCancelSubsLable == null) {
+                GFToast.showToast(
+                  'Please select Plan for which you want to cancel the subscription',
+                  context,
+                  toastPosition: GFToastPosition.CENTER,
+                );
+              } else {
+                Navigator.pop(context);
+                showCancelSubsPopup(context);
+                SubscriptionProvider sp = Provider.of(context, listen: false);
+                sp.cancelSubscription(cp.selectedCancelSubsId);
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0),
+              child: Container(
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  gradient: AppColor.appGradient,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  'CANCEL NOW',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontFamily: 'Roboto Medium',
+                    color: Colors.white,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          SizedBox(
+            height: 20,
+          )
+
+          // _publishButton(context),
+        ],
+      ),
+    );
+  }
+  
+  void showCancelSubsPopup(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              elevation: 20,
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0)),
+              ),
+              title: Column(
+                children: [
+                  Text("Are you sure you want to cancel the subscription for this course?",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Roboto Medium',
+                        fontWeight: FontWeight.w200,
+                        color: Colors.black,
+                      )),
+                ],
+              ),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                            height: 35,
+                            width: MediaQuery.of(context).size.width * .15,
+                            // constraints: BoxConstraints(minWidth: 100),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      _colorfromhex("#3A47AD"),
+                                      _colorfromhex("#5163F3"),
+                                    ],
+                                    begin: const FractionalOffset(0.0, 0.0),
+                                    end: const FractionalOffset(1.0, 0.0),
+                                    stops: [0.0, 1.0],
+                                    tileMode: TileMode.clamp)),
+                            child: Center(
+                              child: Text(
+                                "No",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ))),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        ProfileProvider pp = Provider.of(context, listen: false);
+
+                        pp.deleteAccount();
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        height: 35,
+                        width: MediaQuery.of(context).size.width * .15,
+                        // constraints: BoxConstraints(minWidth: 100),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            gradient: LinearGradient(
+                                colors: [
+                                  _colorfromhex("#3A47AD"),
+                                  _colorfromhex("#5163F3"),
+                                ],
+                                begin: const FractionalOffset(0.0, 0.0),
+                                end: const FractionalOffset(1.0, 0.0),
+                                stops: [0.0, 1.0],
+                                tileMode: TileMode.clamp)),
+                        child: Center(
+                          child: Text(
+                            "Yes",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    )
+                  ],
+                ),
+              ],
+            ));
+  }
+  Color _colorfromhex(String hexColor) {
+    final hexCode = hexColor.replaceAll('#', '');
+    return Color(int.parse('FF$hexCode', radix: 16));
   }
 }

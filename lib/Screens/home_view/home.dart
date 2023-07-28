@@ -4,14 +4,15 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pgmp4u/Screens/MockTest/model/courseModel.dart';
-import 'package:pgmp4u/Screens/subscriptionScreen.dart';
 import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:provider/provider.dart';
 import '../../Models/hideshowmodal.dart';
+import '../../components/homeListTile.dart';
+import '../../provider/Subscription/subscriptionPage.dart';
 import '../../provider/Subscription/subscriptionProvider.dart';
 import '../../provider/courseProvider.dart';
 import '../../tool/ShapeClipper2.dart';
@@ -100,7 +101,10 @@ class _HomeViewState extends State<HomeView> {
                 Container(
                   height: MediaQuery.of(context).size.height * .32,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(40.0)),
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(40.0),
+                      // bottomLeft: Radius.circular(40.0)
+                    ),
                     gradient: LinearGradient(
                         colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
                         begin: const FractionalOffset(0.0, 0.0),
@@ -256,84 +260,33 @@ class _HomeViewState extends State<HomeView> {
                                             return Padding(
                                               padding: const EdgeInsets.only(bottom: 20),
                                               child: InkWell(
-                                                onTap: () {
-                                                  print("id Is======>>>${storedCourse[index].id}");
-                                                  print("setSelectedCourseLable===${storedCourse[index].lable}");
+                                                onTap: () async {
+                                                  ProfileProvider pp = Provider.of(context, listen: false);
+                                                  pp.updateLoader(true);
+
                                                   courseProvider.setSelectedCourseId(storedCourse[index].id);
 
                                                   courseProvider.setSelectedCourseName(storedCourse[index].course);
                                                   courseProvider.setSelectedCourseLable(storedCourse[index].lable);
 
                                                   if (storedCourse[index].isSubscribed == 0) {
+                                                    pp.updateLoader(false);
                                                     SubscriptionProvider sp = Provider.of(context, listen: false);
-                                                    sp.getSubscritionData(storedCourse[index].id);
+                                                    await sp.getSubscritionData(storedCourse[index].id);
+                                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
                                                     Navigator.push(context,
-                                                        MaterialPageRoute(builder: (context) => SubscriptionPage()));
+                                                        MaterialPageRoute(builder: (context) => Subscriptionpg()));
                                                   } else {
+                                                    pp.updateLoader(false);
                                                     courseProvider.getMasterData(storedCourse[index].id);
                                                     Future.delayed(const Duration(milliseconds: 100), () {
                                                       Navigator.push(context,
                                                           MaterialPageRoute(builder: (context) => MasterListPage()));
                                                     });
                                                   }
+                                                  pp.updateLoader(false);
                                                 },
-                                                child: ListTile(
-                                                  leading: Container(
-                                                      height: 70,
-                                                      width: 65,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(8),
-                                                        color: clr,
-                                                      ),
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(12),
-                                                        child:
-                                                            Icon(FontAwesomeIcons.graduationCap, color: Colors.white),
-                                                      )),
-                                                  title: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                        storedCourse[index].lable,
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.grey,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        storedCourse[index].course,
-                                                        style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  trailing: storedCourse[index].isSubscribed == 0
-                                                      ? InkWell(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => SubscriptionPage()));
-                                                          },
-                                                          child: Chip(
-                                                              label: Text(
-                                                                "Join",
-                                                                style: TextStyle(
-                                                                    color: Colors.white, fontWeight: FontWeight.w600),
-                                                              ),
-                                                              backgroundColor: Color(0xff3F9FC9)),
-                                                        )
-                                                      : Chip(
-                                                          label: Text(
-                                                            "Enrolled",
-                                                            style: TextStyle(
-                                                                color: Colors.white, fontWeight: FontWeight.w600),
-                                                          ),
-                                                          backgroundColor: Color(0xff3F9FC9)),
-                                                ),
+                                                child: HomeListTile(clr, context, storedCourse[index]),
                                               ),
                                             );
                                           }));

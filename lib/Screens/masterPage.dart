@@ -220,8 +220,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                       Provider.of(context, listen: false);
 
                                                                   pp.updateLoader(true);
-                                                                  await dp.getDomainData(
-                                                                      storedMaster[index].id, cp.selectedCourseId);
+                                                                  await dp.getDomainData(storedMaster[index].id, cp.selectedCourseId);
                                                                   var checkStat = dp.domainStatus;
                                                                   pp.updateLoader(false);
                                                                   print("====checkStat====$checkStat");
