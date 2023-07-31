@@ -8,22 +8,25 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          // SizedBox(
+          //   width: 10,
+          // ),
+
+          // Container(
+          //   height: 23,
+          //   child: Image.asset("assets/CheckIcon.png"),
+          // ),
+
           SizedBox(
             width: 10,
           ),
-
-          Container(
-            height: 25,
-            child: Image.asset("assets/CheckIcon.png"),
+          Icon(
+            icn,
+            color: Color.fromARGB(136, 8, 6, 6),
           ),
-
           SizedBox(
             width: 20,
           ),
-          // Icon(
-          //   icn,
-          //   color: Colors.red,
-          // ),
           Container(
             width: MediaQuery.of(context).size.width * .53,
             child: RichText(

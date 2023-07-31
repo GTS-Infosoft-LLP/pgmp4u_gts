@@ -104,7 +104,8 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                       ? SizedBox()
                                       : InkWell(
                                           onTap: () {
-                                            pageController.animateToPage(--curIndex, duration: Duration(milliseconds: 500), curve: Curves.easeInCirc);
+                                            pageController.animateToPage(--curIndex,
+                                                duration: Duration(milliseconds: 500), curve: Curves.easeInCirc);
                                           },
                                           child: Icon(
                                             Icons.west,
@@ -274,48 +275,54 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                 SizedBox(
                                                   width: 10,
                                                 ),
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Container(
-                                                        width: MediaQuery.of(context).size.width * .70,
-                                                        child: Text(
-                                                          Taskop[index].questionOption,
-                                                          maxLines: 5,
-                                                        )),
-                                                    (selAns.length == ansRef.length &&
-                                                                selAns.length > 0 &&
-                                                                selAns.contains(Taskop[index].id) &&
-                                                                ansRef.contains(Taskop[index].id)) ||
-                                                            (selAns.length == ansRef.length &&
-                                                                selAns.length > 0 &&
-                                                                ansRef.contains(Taskop[index].id))
-                                                        ? Container(
-                                                            width: MediaQuery.of(context).size.width * .72,
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.end,
-                                                              children: [Text("Correct Answer")],
+                                                Container(
+                                                  // color: Colors.amber,
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      SizedBox(
+                                                          // height: 20,
+                                                          ),
+                                                      Container(
+                                                          width: MediaQuery.of(context).size.width * .70,
+                                                          child: Center(
+                                                            child: Text(
+                                                              Taskop[index].questionOption,
+                                                                 maxLines: 5,
                                                             ),
-                                                          )
-                                                        : selAns.length == ansRef.length &&
-                                                                selAns.length > 0 &&
-                                                                selAns.contains(Taskop[index].id) &&
-                                                                !ansRef.contains(Taskop[index].id)
-                                                            ? Container(
-                                                                width: MediaQuery.of(context).size.width * .72,
-                                                                child: Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                                  children: [Text("Your Selection")],
-                                                                ),
-                                                              )
-                                                            : Container(),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    )
-                                                  ],
+                                                          )),
+                                                      (selAns.length == ansRef.length &&
+                                                                  selAns.length > 0 &&
+                                                                  selAns.contains(Taskop[index].id) &&
+                                                                  ansRef.contains(Taskop[index].id)) ||
+                                                              (selAns.length == ansRef.length &&
+                                                                  selAns.length > 0 &&
+                                                                  ansRef.contains(Taskop[index].id))
+                                                          ? Container(
+                                                              width: MediaQuery.of(context).size.width * .72,
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                                children: [Text("Correct Answer")],
+                                                              ),
+                                                            )
+                                                          : selAns.length == ansRef.length &&
+                                                                  selAns.length > 0 &&
+                                                                  selAns.contains(Taskop[index].id) &&
+                                                                  !ansRef.contains(Taskop[index].id)
+                                                              ? Container(
+                                                                  width: MediaQuery.of(context).size.width * .72,
+                                                                  child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                                    children: [Text("Your Selection")],
+                                                                  ),
+                                                                )
+                                                              : Container(),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),

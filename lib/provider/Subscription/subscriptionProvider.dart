@@ -38,8 +38,10 @@ class SubscriptionProvider extends ChangeNotifier {
   bool getSubsPackApiCall = false;
 
   updateSubsPackApiCall(bool val) {
-    getSubsPackApiCall = val;
-    notifyListeners();
+    Future.delayed(Duration.zero, () async {
+      getSubsPackApiCall = val;
+      notifyListeners();
+    });
   }
 
   List<SubscriptionDetails> SubscritionPackList = [];
@@ -51,6 +53,8 @@ class SubscriptionProvider extends ChangeNotifier {
     SubscritionPackList = [];
     print("idCrs=========>>>>>>>>>>>>>>>$idCrs");
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    print("issyue in this api....");
 
     String stringValue = prefs.getString('token');
 
@@ -72,10 +76,14 @@ class SubscriptionProvider extends ChangeNotifier {
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
+      // (resDDo["data"]);
+      print("check data=====${resDDo["data"]}");
 
       print("satusss====${resDDo["success"]}");
 
       if (resDDo["success"] == false) {
+        updateSubsPackApiCall(false);
+        SubscritionPackList = [];
         return;
       }
 
@@ -83,7 +91,6 @@ class SubscriptionProvider extends ChangeNotifier {
         updateSubsPackApiCall(false);
         print("statussssssss");
         SubscritionPackList = [];
-
         notifyListeners();
         return;
       }
@@ -231,14 +238,19 @@ class SubscriptionProvider extends ChangeNotifier {
       var resStatus = (resDDo["status"]);
 
       if (response.statusCode == 400) {
-           updateLoader(false);
-        print("statussssssss");
-
-        notifyListeners();
-        return;
+        updateLoader(false);
+    
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+        if (mapResponse['success'] == false) {
+          updateLoader(false);
+          // EasyLoading.showSuccess("Plan for this course is already cancelled");
+          EasyLoading.showInfo("Plan for this course is already cancelled");
+          notifyListeners();
+          return;
+        }
       }
       if (response.statusCode == 200) {
-           updateLoader(false);
+        updateLoader(false);
         print("");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse====$mapResponse");
@@ -248,6 +260,10 @@ class SubscriptionProvider extends ChangeNotifier {
         if (mapResponse['success'] == true) {
           updateLoader(false);
           EasyLoading.showSuccess("Your Subscription Pack will be Expired at the end the Period.");
+          return;
+        } else if (mapResponse['success'] == false) {
+          updateLoader(false);
+          EasyLoading.showSuccess("Plan for this course is already cancelled");
           return;
         }
 

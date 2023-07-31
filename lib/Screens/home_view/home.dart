@@ -280,8 +280,7 @@ class _HomeViewState extends State<HomeView> {
                                                     pp.updateLoader(false);
                                                     courseProvider.getMasterData(storedCourse[index].id);
                                                     Future.delayed(const Duration(milliseconds: 100), () {
-                                                      Navigator.push(context,
-                                                          MaterialPageRoute(builder: (context) => MasterListPage()));
+                                                      Navigator.push(context,MaterialPageRoute(builder: (context) => MasterListPage()));
                                                     });
                                                   }
                                                   pp.updateLoader(false);

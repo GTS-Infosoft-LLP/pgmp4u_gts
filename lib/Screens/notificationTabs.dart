@@ -105,7 +105,7 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                   width: MediaQuery.of(context).size.width * .35,
                   child: CustomDropDown<CourseDetails>(
                     selectText: cp.notiSelectCrsLable ?? "Select",
-                    itemList: cp.crsDropList ?? [],
+                    itemList: cp.course ?? [],
                     isEnable: true,
                     title: "",
                     value: null,
@@ -117,7 +117,6 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                       cp.setSelectedCourseId(val.id);
                       ProfileProvider pp = Provider.of(context, listen: false);
                       pp.showNotification(crsId: cp.selectedCourseId);
-                      
                     },
                   ),
                 );

@@ -75,6 +75,8 @@ class _ProfileState extends State<Profile> {
       print("cp.course[0].lable===========${cp.crsDropList[0].lable}");
 
       // pp.getReminder(cp.course[0].id);
+    } else {
+      cp.setSelectedCourseLable(null);
     }
 
     _razorpay = Razorpay();
@@ -410,23 +412,36 @@ class _ProfileState extends State<Profile> {
                             // margin: EdgeInsets.only(top: width * (50 / 800)),
                             child: Column(
                               children: [
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  width: MediaQuery.of(context).size.width * .35,
-                                  child: CustomDropDown<CourseDetails>(
-                                    selectText: cp.selectedCourseLable ?? "Select",
-                                    itemList: cp.crsDropList ?? [],
-                                    isEnable: true,
-                                    title: "",
-                                    value: null,
-                                    onChange: (val) {
-                                      print("val.course=========>${val.course}");
-                                      print("val.course=========>${val.lable}");
-                                      cp.setSelectedCourseLable(val.lable);
-                                      cp.setSelectedCourseId(val.id);
-                                      ProfileProvider pp = Provider.of(context, listen: false);
-                                      pp.getReminder(val.id);
-                                    },
+                                InkWell(
+                                  onTap: () {
+                                    if (cp.crsDropList.isEmpty) {
+                                      print("list is empty show popup");
+
+                                      GFToast.showToast(
+                                        'No Course is purchased yet...',
+                                        context,
+                                        toastPosition: GFToastPosition.CENTER,
+                                      );
+                                    }
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.centerRight,
+                                    width: MediaQuery.of(context).size.width * .35,
+                                    child: CustomDropDown<CourseDetails>(
+                                      selectText: cp.selectedCourseLable ?? "Select",
+                                      itemList: cp.crsDropList ?? [],
+                                      isEnable: true,
+                                      title: "",
+                                      value: null,
+                                      onChange: (val) {
+                                        print("val.course=========>${val.course}");
+                                        print("val.course=========>${val.lable}");
+                                        cp.setSelectedCourseLable(val.lable);
+                                        cp.setSelectedCourseId(val.id);
+                                        ProfileProvider pp = Provider.of(context, listen: false);
+                                        pp.getReminder(val.id);
+                                      },
+                                    ),
                                   ),
                                 ),
 
@@ -701,8 +716,8 @@ class _ProfileState extends State<Profile> {
                                                   children: [
                                                     Text(
                                                       pp.isStudyRemAdded == 0
-                                                          ? '    Set Study Time'
-                                                          : '    Study timer set at: ',
+                                                          ? '   Set Study Time'
+                                                          : '   Study timer set at: ',
                                                       style: TextStyle(
                                                         fontFamily: 'Roboto Medium',
                                                         fontSize: 16,
@@ -1306,7 +1321,7 @@ class cancelSubsBottomSheet extends StatelessWidget {
           Divider(
             thickness: 2,
           ),
-          cp.crsDropList.length > 1
+          cp.crsDropList.length > 0
               ? Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Align(
@@ -1334,7 +1349,7 @@ class cancelSubsBottomSheet extends StatelessWidget {
                   ),
                 ),
 
-          cp.crsDropList.length > 1
+          cp.crsDropList.length > 0
               ? Consumer<CourseProvider>(builder: (context, cp, child) {
                   return Container(
                     alignment: Alignment.centerRight,
@@ -1374,7 +1389,7 @@ class cancelSubsBottomSheet extends StatelessWidget {
                 );
               } else {
                 Navigator.pop(context);
-                showCancelSubsPopup(context);
+                // showCancelSubsPopup(context);
                 SubscriptionProvider sp = Provider.of(context, listen: false);
                 sp.cancelSubscription(cp.selectedCancelSubsId);
               }

@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/user_object.dart';
 import '../Tests/local_handler/hive_handler.dart';
+import '../notificationTabs.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key key}) : super(key: key);
@@ -138,11 +139,11 @@ class _SplashScreenState extends State<SplashScreen> {
         switch (message.data["notificationType"].toString()) {
           case "1":
             Navigator.push(
-                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
             break;
           case "2":
             Navigator.push(
-                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
             break;
           case "3":
             //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
@@ -153,16 +154,12 @@ class _SplashScreenState extends State<SplashScreen> {
             break;
           case "4":
             Navigator.push(
-                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
             break;
           default:
             Navigator.push(
-                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
         }
-      } else {
-        // print("this is in the else condition ");
-        // Navigator.push(
-        //     GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
       }
     });
 
@@ -199,11 +196,11 @@ class _SplashScreenState extends State<SplashScreen> {
       switch (['Notificationtype'].toString()) {
         case "1":
           Navigator.push(
-              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
           break;
         case "2":
           Navigator.push(
-              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
           break;
         case "3":
           Navigator.push(
@@ -211,7 +208,7 @@ class _SplashScreenState extends State<SplashScreen> {
           break;
         case "4":
           Navigator.push(
-              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
           break;
       }
 
@@ -267,11 +264,11 @@ class LocalNotifications {
     switch (json["notificationType"].toString()) {
       case "1":
         Navigator.push(
-            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
         break;
       case "2":
         Navigator.push(
-            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
         break;
       case "3":
         //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
@@ -281,11 +278,11 @@ class LocalNotifications {
         break;
       case "4":
         Navigator.push(
-            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
         break;
       default:
         Navigator.push(
-            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => Notifications()));
+            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
     }
     // if(){}
     // if (pay == "one") {

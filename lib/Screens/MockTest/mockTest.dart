@@ -208,8 +208,8 @@ class _MockTestState extends State<MockTest> {
                                               height: 200,
                                               child: Center(
                                                   child: Text(
-                                                "No Data Found",
-                                                style: TextStyle(fontSize: 14),
+                                                "No Data Found..",
+                                                style: TextStyle(fontSize: 16),
                                               )))
                                           : Container(
                                               // color: Colors.amber,
@@ -226,8 +226,7 @@ class _MockTestState extends State<MockTest> {
                                                         courseProvider
                                                             .setSelectedTestName(storedTestData[index].test_name);
                                                         await courseProvider.getTestDetails(storedTestData[index].id);
-                                                        PracticeTextProvider pracTestProvi =
-                                                            Provider.of(context, listen: false);
+                                                        PracticeTextProvider pracTestProvi = Provider.of(context, listen: false);
 
                                                         pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
                                                         if (widget.testType == "Practice Test") {

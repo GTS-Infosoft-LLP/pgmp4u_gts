@@ -33,8 +33,8 @@ class _GroupListPageState extends State<GroupListPage> {
   @override
   void initState() {
     CourseProvider cp = Provider.of(context, listen: false);
-    if (cp.chatCrsDropList.isNotEmpty) {
-      cp.setSelectedCourseLable(cp.chatCrsDropList[0].lable);
+    if (cp.crsDropList.isNotEmpty) {
+      cp.setSelectedCourseLable(cp.crsDropList[0].lable);
     }
     super.initState();
   }
@@ -69,7 +69,7 @@ class _GroupListPageState extends State<GroupListPage> {
                       width: MediaQuery.of(context).size.width * .35,
                       child: CustomDropDown<CourseDetails>(
                         selectText: cp.selectedCourseLable ?? "Select",
-                        itemList: cp.chatCrsDropList ?? [],
+                        itemList: cp.crsDropList ?? [],
                         isEnable: true,
                         title: "",
                         value: null,
@@ -292,8 +292,7 @@ class AddDiscussionBottomSheet extends StatelessWidget {
                     child: Icon(
                       Icons.close,
                       color: Color.fromRGBO(165, 156, 180, 1),
-                    )
-                    ),
+                    )),
               ],
             ),
           ),
@@ -320,7 +319,7 @@ class AddDiscussionBottomSheet extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * .35,
                           child: CustomDropDown<CourseDetails>(
                             selectText: cp.selectedCourseLable ?? "Select",
-                            itemList: cp.chatCrsDropList ?? [],
+                            itemList: cp.crsDropList ?? [],
                             isEnable: true,
                             title: "",
                             value: null,

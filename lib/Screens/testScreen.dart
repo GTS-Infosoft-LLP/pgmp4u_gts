@@ -156,14 +156,14 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                               await Hive.openBox("MockAttemptsBox");
                                               courseProvider.apiCall(testPercent[index].id);
 
-                                              Future.delayed(const Duration(milliseconds: 400), () {
+                                              Future.delayed(const Duration(milliseconds: 4), () {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) => MockTestAttempts(
                                                             attemptLength: testPercent[index].attempts.length,
                                                             selectedId: testPercent[index].id,
-                                                            startAgn: startval,
+                                                            startAgn: startval,  
                                                             attemptCnt: courseProvider.selectedMokAtmptCnt)));
                                               });
                                             },

@@ -12,6 +12,9 @@ import 'package:pgmp4u/Screens/chat/widgets/senderCard.dart';
 import 'package:pgmp4u/utils/extensions.dart';
 import 'package:provider/provider.dart';
 
+import '../../../components/blurView.dart';
+import '../../../utils/app_color.dart';
+
 class DisscussionChatPage extends StatefulWidget {
   DisscussionChatPage({Key key, this.group}) : super(key: key);
 
@@ -28,7 +31,7 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
   List<UserProfileModel> userProfileList = [];
 
   // AnimationController _animationController;
-
+  int a;
   @override
   void initState() {
     // TODO: implement initState
@@ -128,55 +131,59 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
         leadingWidth: 40,
         backgroundColor: Colors.white,
       ),
-      bottomSheet: ChatTextField(
-        size: size,
-        chatController: chatController,
-        sendMessage: () async {
-          if (chatController.text.trim() == '') return;
-          String message = chatController.text.trim();
-          chatController.clear();
-          await context
-              .read<ChatProvider>()
-              .sendDisscussionGroupMessage(message: message, groupId: widget.group.groupId);
-        },
-      ),
+      bottomSheet: a == 1
+          ? SizedBox()
+          : ChatTextField(
+              size: size,
+              chatController: chatController,
+              sendMessage: () async {
+                if (chatController.text.trim() == '') return;
+                String message = chatController.text.trim();
+                chatController.clear();
+                await context
+                    .read<ChatProvider>()
+                    .sendDisscussionGroupMessage(message: message, groupId: widget.group.groupId);
+              },
+            ),
       resizeToAvoidBottomInset: true,
-      body: GestureDetector(
-        onTap: () {
-          context.read<ChatProvider>().removeOverlay();
-        },
-        child: Container(
-          padding: EdgeInsets.only(bottom: size.height * 0.1),
-          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: FirebaseChatHandler.getAllDiscussionGroupMessage(groupId: widget.group.groupId),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                      physics: BouncingScrollPhysics(),
-                      reverse: true,
-                      itemCount: snapshot.data?.docs?.length ?? 0,
-                      itemBuilder: (context, indexMain) {
-                        var data = snapshot.data.docs[indexMain].data();
+      body: a == 1
+          ? blurChat(context, widget.group)
+          : GestureDetector(
+              onTap: () {
+                context.read<ChatProvider>().removeOverlay();
+              },
+              child: Container(
+                padding: EdgeInsets.only(bottom: size.height * 0.1),
+                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: FirebaseChatHandler.getAllDiscussionGroupMessage(groupId: widget.group.groupId),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                            physics: BouncingScrollPhysics(),
+                            reverse: true,
+                            itemCount: snapshot.data?.docs?.length ?? 0,
+                            itemBuilder: (context, indexMain) {
+                              var data = snapshot.data.docs[indexMain].data();
 
-                        ChatModel chatModel = ChatModel.fromJson(data);
+                              ChatModel chatModel = ChatModel.fromJson(data);
 
-                        if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
-                          return SenderMessageCard(
-                            chatModel: chatModel,
-                          );
-                        } else {
-                          return RecivedMessageCard(
-                            chatModel: chatModel,
-                          );
-                        }
-                      });
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              }),
-        ),
-      ),
+                              if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
+                                return SenderMessageCard(
+                                  chatModel: chatModel,
+                                );
+                              } else {
+                                return RecivedMessageCard(
+                                  chatModel: chatModel,
+                                );
+                              }
+                            });
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    }),
+              ),
+            ),
     );
   }
 
@@ -233,58 +240,173 @@ class CustomDialog extends StatelessWidget {
         print('Exception Occured: ${e.toString()}');
       }
     }
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Container(
-        padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Posted By: ${group.createdBy}"),
-              SizedBox(height: 6),
-              Text(timeAgo),
-              SizedBox(height: 16),
-              Text(
-                group.title ?? '',
-                style: TextStyle(
-                  fontSize: 17.0,
-                  fontWeight: FontWeight.w500,
+    return blurView(
+      child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Posted By: ${group.createdBy}"),
+                SizedBox(height: 6),
+                Text(timeAgo),
+                SizedBox(height: 16),
+                Text(
+                  group.title ?? '',
+                  style: TextStyle(
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              SizedBox(height: 10.0),
-              Flexible(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: options.length,
-                  itemBuilder: (context, index) {
-                    return Text(
-                      options[index],
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    );
-                  },
+                SizedBox(height: 10.0),
+                Flexible(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: options.length,
+                    itemBuilder: (context, index) {
+                      return Text(
+                        options[index],
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(height: 16.0),
+                SizedBox(height: 16.0),
 
-              // ElevatedButton(
-              //   style: ElevatedButton.styleFrom(),
-              //   onPressed: () {
-              //     Navigator.of(context).pop();
-              //   },
-              //   child: Text('Close'),
-              // ),
-            ],
+                // ElevatedButton(
+                //   style: ElevatedButton.styleFrom(),
+                //   onPressed: () {
+                //     Navigator.of(context).pop();
+                //   },
+                //   child: Text('Close'),
+                // ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+class BuyChat extends StatelessWidget {
+  const BuyChat({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return blurView(
+      child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Container(
+          child: Text("Subscribe the chat to continue.."),
+        ),
+      ),
+    );
+  }
+}
+
+Widget blurChat(BuildContext context, DisscussionGropModel group) {
+  final Size size = MediaQuery.of(context).size;
+  return Stack(
+    children: [
+      Container(
+        padding: EdgeInsets.only(bottom: size.height * 0.1),
+        child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: FirebaseChatHandler.getAllDiscussionGroupMessage(groupId: group.groupId),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    physics: BouncingScrollPhysics(),
+                    reverse: true,
+                    itemCount: snapshot.data?.docs?.length ?? 0,
+                    itemBuilder: (context, indexMain) {
+                      var data = snapshot.data.docs[indexMain].data();
+
+                      ChatModel chatModel = ChatModel.fromJson(data);
+
+                      if (chatModel.sentBy == context.read<ChatProvider>().getUserUID()) {
+                        return SenderMessageCard(
+                          chatModel: chatModel,
+                        );
+                      } else {
+                        return RecivedMessageCard(
+                          chatModel: chatModel,
+                        );
+                      }
+                    });
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            }),
+      ),
+      blurView(
+          child: AlertDialog(
+        elevation: 20,
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0)),
+        ),
+        title: Column(
+          children: [
+            Text("You are not succribed to chat ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontFamily: 'Roboto Medium',
+                  fontWeight: FontWeight.w200,
+                  color: Colors.black,
+                )),
+          ],
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: AppColor.appGradient,
+              ),
+              child: Center(
+                  child: Text(
+                "Buy to Access",
+                style: TextStyle(color: Colors.white),
+              )),
+            ),
+          )
+        ],
+      )
+          // child: Padding(
+          //   padding: const EdgeInsets.symmetric(vertical: 300.0),
+          //   child: Dialog(
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(8.0),
+          //     ),
+          //     child: Container(
+          //         decoration: BoxDecoration(
+          //           borderRadius: BorderRadius.circular(10),
+          //           gradient: AppColor.appGradient,
+          //         ),
+          //         child: Center(
+          //             child: Text(
+          //           "Buy to Access Chat",
+          //           style: TextStyle(color: Colors.white),
+          //         ))),
+          //   ),
+          // ),
+          ),
+    ],
+  );
 }

@@ -41,14 +41,28 @@ class _RandomPageState extends State<RandomPage> {
   String mntVal;
   String mnth;
   String mnths = "Months";
+  Color clr;
+  LinearGradient liGrdint;
+
   @override
   void initState() {
     ProfileProvider pp = Provider.of(context, listen: false);
+    CourseProvider cp = Provider.of(context, listen: false);
+    SubscriptionProvider sp = Provider.of(context, listen: false);
+
+    if (cp.crsDropList.isEmpty) {
+      sp.getSubscritionData(cp.course[0].id);
+    } else {
+      sp.getSubscritionData(cp.selectedCourseId);
+    }
+
+    print("widget category typeee====${widget.categoryType}");
+
     print("perice value is===>> ${widget.price}");
     print("category idddd======${widget.categoryId}");
     print("categoryyy typeee======${widget.categoryType}");
     pp.setSelectedContainer(13);
-    CourseProvider cp = Provider.of(context, listen: false);
+    // CourseProvider cp = Provider.of(context, listen: false);
     print("cp.selectedMasterType==============${cp.selectedMasterType}");
 
     if (widget.price == null) {
@@ -446,15 +460,22 @@ class _RandomPageState extends State<RandomPage> {
             SizedBox(
               height: 25,
             ),
+
             Consumer2<ProfileProvider, SubscriptionProvider>(builder: (context, pp, sp, child) {
               return sp.getSubsPackApiCall
                   ? Center(child: CircularProgressIndicator.adaptive())
                   : Padding(
-                      padding: permiumbutton.length == 1
-                          ? const EdgeInsets.only(left: 58.0, right: 58, bottom: 20)
-                          : const EdgeInsets.only(left: 8.0, right: 8, bottom: 20),
+                      padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 15),
                       child: Column(
                         children: [
+                          Center(
+                              child: Text(
+                            "Select a Reading Plan",
+                            style: TextStyle(fontFamily: 'Roboto Bold', fontSize: 22, color: Color(0xff3643a3)),
+                          )),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               mainAxisSize: MainAxisSize.min,
@@ -462,110 +483,320 @@ class _RandomPageState extends State<RandomPage> {
                                 if (i == 0) {
                                   mntVal = "1";
                                   mnth = "Month";
+                                  clr = Colors.green[400];
+                                  liGrdint = LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [Color(0xff099773), Color(0xff43B692)]);
                                 } else if (i == 1) {
                                   mntVal = "3";
                                   mnth = "Months";
+                                  clr = Colors.red[400];
+                                  liGrdint = LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [Color(0xffEF709B), Color(0xffF68080)]);
                                 } else {
                                   mntVal = "12";
                                   mnth = "Months";
+                                  clr = Colors.amber[400];
+                                  liGrdint = LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [Color(0xffF28E54), Color(0xffDFB668)]);
                                 }
 
                                 return Expanded(
                                     child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                                  padding: permiumbutton.length == 1
+                                      ? EdgeInsets.symmetric(horizontal: 114)
+                                      : EdgeInsets.symmetric(horizontal: 4),
                                   child: InkWell(
                                     onTap: () {
-                                      print("permiumbutton tye===${permiumbutton[i].id}");
+                                      print("permiumbutton iddd===${permiumbutton[i].id}");
+                                      print("permiumbutton tye===${permiumbutton[i].type}");
+
                                       sp.setSelectedSubsId(permiumbutton[i].id);
+                                      sp.setSelectedSubsType(permiumbutton[i].type);
 
                                       print("index val===$i");
                                       pp.setSelectedContainer(i);
                                     },
                                     child: Container(
-                                      height: 185,
-                                      // width: MediaQuery.of(context).size.width * .40,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: pp.selectedSubsBox == i ? Color(0xff3643a3) : Colors.grey[300],
-                                          width: pp.selectedSubsBox == i ? 4 : 2,
+                                      height: 160,
+                                      // color: Colors.amber,
+                                      // padding: EdgeInsets.only(top: 0),
+                                      child: Center(
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(top: 15, bottom: 10),
+                                              // height: 120,
+                                              height: pp.selectedSubsBox == i ? 148 : 138,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: pp.selectedSubsBox == i ? Colors.black : Color(0xff3643a3),
+                                                  width: pp.selectedSubsBox == i ? 2.5 : 0,
+                                                ),
+                                                gradient: liGrdint,
+                                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                              ),
+                                              child: Stack(
+                                                children: [
+                                                  Container(
+                                                    child: Center(child: Image.asset("assets/diamond.png")),
+                                                  ),
+                                                  Column(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      RichText(
+                                                        text: TextSpan(children: <TextSpan>[
+                                                          TextSpan(
+                                                            text: mntVal + " " + mnth,
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 20.0,
+                                                                fontWeight: FontWeight.w600),
+                                                          )
+                                                        ]),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                                                        child: Container(
+                                                          // color: Colors.amber,
+                                                          width: MediaQuery.of(context).size.width * .5,
+                                                          child: RichText(
+                                                            textAlign: TextAlign.center,
+                                                            text: TextSpan(children: <TextSpan>[
+                                                              TextSpan(
+                                                                text: "Subscription",
+                                                                style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontSize: 15.0,
+                                                                    fontWeight: FontWeight.w600),
+                                                              )
+                                                            ]),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      new Spacer(),
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          border: Border.all(color: Colors.transparent),
+                                                          borderRadius: BorderRadius.only(
+                                                            bottomRight: Radius.circular(9.5),
+                                                            bottomLeft: Radius.circular(9.5),
+                                                          ),
+                                                          color: Colors.white,
+                                                        ),
+                                                        height: 40,
+                                                        child: Center(
+                                                          child: RichText(
+                                                            text: TextSpan(children: <TextSpan>[
+                                                              TextSpan(
+                                                                text: "\$" + permiumbutton[i].amount,
+                                                                style: TextStyle(
+                                                                    color: Color(0xff3643a3),
+                                                                    fontSize: 18.0,
+                                                                    fontWeight: FontWeight.w600),
+                                                              )
+                                                            ]),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            i == 2
+                                                ? Positioned(
+                                                    top: 0,
+                                                    right: 10,
+                                                    left: 10,
+                                                    // bottom: 100,
+                                                    child: Container(
+                                                      height: 28,
+                                                      decoration: BoxDecoration(
+                                                        gradient: LinearGradient(
+                                                            colors: [
+                                                              _colorfromhex('#3846A9'),
+                                                              _colorfromhex('#5265F8')
+                                                            ],
+                                                            begin: const FractionalOffset(0.0, 0.0),
+                                                            end: const FractionalOffset(1.0, 0.0),
+                                                            stops: [0.0, 1.0],
+                                                            tileMode: TileMode.clamp),
+                                                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          "20% OFF",
+                                                          style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 15,
+                                                              fontWeight: FontWeight.w400),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : SizedBox()
+                                          ],
                                         ),
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                                      ),
-
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            height: 0,
-                                            color: Color(0xff3643a3),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text(
-                                            mntVal,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontFamily: 'Roboto Bold',
-                                                fontSize: 42,
-                                                color: Color(0xff3643a3),
-                                                // pp.selectedSubsBox == i
-                                                //     ? Colors.white
-                                                //     : Color.fromARGB(255, 87, 101, 222),
-                                                letterSpacing: 0.3),
-                                          ),
-                                          Text(
-                                            mnth,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                // fontFamily: 'Roboto Bold',
-                                                fontSize: 22,
-                                                color: Color(0xff3643a3),
-                                                // pp.selectedSubsBox == i
-                                                //     ? Colors.white
-                                                //     : Color.fromARGB(255, 87, 101, 222),
-                                                letterSpacing: 0.3),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            permiumbutton[i].name,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.fade,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                // fontFamily: 'Roboto Bold',
-                                                fontSize: 18,
-                                                color: Colors.grey,
-                                                letterSpacing: 0.3),
-                                          ),
-                                          new Spacer(),
-                                          Text(
-                                            "\$" + permiumbutton[i].amount,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontFamily: 'Roboto Bold',
-                                                fontSize: 18,
-                                                color: Color(0xff3643a3),
-                                                // color: pp.selectedSubsBox == i
-                                                //     ? Colors.white
-                                                //     : Color.fromARGB(255, 87, 101, 222),
-                                                letterSpacing: 0.3),
-                                          ),
-                                          SizedBox(
-                                            height: 15,
-                                          ),
-                                        ],
                                       ),
                                     ),
                                   ),
                                 ));
                               })),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                  text:
+                                      "In each of the plan you will be have complete Access to Mock Tests, PathFinders, Video Library, Domains and Flash Cards to Duration selected in Reading plan",
+                                  style: TextStyle(color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w400),
+                                )
+                              ]),
+                            ),
+                          ),
                         ],
                       ));
             }),
+
+            // Consumer2<ProfileProvider, SubscriptionProvider>(builder: (context, pp, sp, child) {
+            //   return sp.getSubsPackApiCall
+            //       ? Center(child: CircularProgressIndicator.adaptive())
+            //       : Padding(
+            //           padding: permiumbutton.length == 1
+            //               ? const EdgeInsets.only(left: 58.0, right: 58, bottom: 20)
+            //               : const EdgeInsets.only(left: 8.0, right: 8, bottom: 20),
+            //           child: Column(
+            //             children: [
+            //               Row(
+            //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //                   mainAxisSize: MainAxisSize.min,
+            //                   children: List.generate(permiumbutton.length, (i) {
+            //                     if (i == 0) {
+            //                       mntVal = "1";
+            //                       mnth = "Month";
+            //                     } else if (i == 1) {
+            //                       mntVal = "3";
+            //                       mnth = "Months";
+            //                     } else {
+            //                       mntVal = "12";
+            //                       mnth = "Months";
+            //                     }
+
+            //                     return Expanded(
+            //                         child: Padding(
+            //                       padding: const EdgeInsets.symmetric(horizontal: 4),
+            //                       child: InkWell(
+            //                         onTap: () {
+            //                           print("permiumbutton tye===${permiumbutton[i].id}");
+            //                           sp.setSelectedSubsId(permiumbutton[i].id);
+
+            //                           print("index val===$i");
+            //                           pp.setSelectedContainer(i);
+            //                         },
+            //                         child: Container(
+            //                           height: 185,
+            //                           // width: MediaQuery.of(context).size.width * .40,
+            //                           decoration: BoxDecoration(
+            //                             border: Border.all(
+            //                               color: pp.selectedSubsBox == i ? Color(0xff3643a3) : Colors.grey[300],
+            //                               width: pp.selectedSubsBox == i ? 4 : 2,
+            //                             ),
+            //                             color: Colors.white,
+            //                             borderRadius: BorderRadius.all(Radius.circular(10)),
+            //                           ),
+
+            //                           child: Column(
+            //                             mainAxisAlignment: MainAxisAlignment.start,
+            //                             children: [
+            //                               Container(
+            //                                 height: 0,
+            //                                 color: Color(0xff3643a3),
+            //                               ),
+            //                               SizedBox(
+            //                                 height: 10,
+            //                               ),
+            //                               Text(
+            //                                 mntVal,
+            //                                 textAlign: TextAlign.center,
+            //                                 style: TextStyle(
+            //                                     fontFamily: 'Roboto Bold',
+            //                                     fontSize: 42,
+            //                                     color: Color(0xff3643a3),
+            //                                     // pp.selectedSubsBox == i
+            //                                     //     ? Colors.white
+            //                                     //     : Color.fromARGB(255, 87, 101, 222),
+            //                                     letterSpacing: 0.3),
+            //                               ),
+            //                               Text(
+            //                                 mnth,
+            //                                 textAlign: TextAlign.center,
+            //                                 style: TextStyle(
+            //                                     // fontFamily: 'Roboto Bold',
+            //                                     fontSize: 22,
+            //                                     color: Color(0xff3643a3),
+            //                                     // pp.selectedSubsBox == i
+            //                                     //     ? Colors.white
+            //                                     //     : Color.fromARGB(255, 87, 101, 222),
+            //                                     letterSpacing: 0.3),
+            //                               ),
+            //                               SizedBox(
+            //                                 height: 5,
+            //                               ),
+            //                               Text(
+            //                                 permiumbutton[i].name,
+            //                                 maxLines: 2,
+            //                                 overflow: TextOverflow.fade,
+            //                                 textAlign: TextAlign.center,
+            //                                 style: TextStyle(
+            //                                     // fontFamily: 'Roboto Bold',
+            //                                     fontSize: 18,
+            //                                     color: Colors.grey,
+            //                                     letterSpacing: 0.3),
+            //                               ),
+            //                               new Spacer(),
+            //                               Text(
+            //                                 "\$" + permiumbutton[i].amount,
+            //                                 textAlign: TextAlign.center,
+            //                                 style: TextStyle(
+            //                                     fontFamily: 'Roboto Bold',
+            //                                     fontSize: 18,
+            //                                     color: Color(0xff3643a3),
+            //                                     // color: pp.selectedSubsBox == i
+            //                                     //     ? Colors.white
+            //                                     //     : Color.fromARGB(255, 87, 101, 222),
+            //                                     letterSpacing: 0.3),
+            //                               ),
+            //                               SizedBox(
+            //                                 height: 15,
+            //                               ),
+            //                             ],
+            //                           ),
+            //                         ),
+            //                       ),
+            //                     ));
+            //                   })),
+            //             ],
+            //           ));
+            // }),
           ],
         ),
       ),

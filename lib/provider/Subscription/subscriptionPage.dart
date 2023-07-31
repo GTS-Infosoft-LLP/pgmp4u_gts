@@ -161,6 +161,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                   InkWell(
                                     onTap: () {
                                       Navigator.pop(context);
+                                      CourseProvider courseProvider = Provider.of(context, listen: false);
+                                      courseProvider.getCourse();
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 18.0),
@@ -413,10 +415,10 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                         SizedBox(
                           height: 19,
                         ),
-                        customGreyRedRow(Icons.check, "Domain Specific Flash Cards", context),
-                        customGreyRedRow(FontAwesomeIcons.check, "Curated ECO Based Content", context),
-                        customGreyRedRow(FontAwesomeIcons.marker, "Endless Question of the Day", context),
-                        customGreyRedRow(FontAwesomeIcons.triangleExclamation, "Access to Course Chat Groups", context),
+                        customGreyRedRow(FontAwesomeIcons.tableColumns, "Domain Specific Flash Cards", context),
+                        customGreyRedRow(Icons.text_fields_sharp, "Curated ECO Based Content", context),
+                        customGreyRedRow(FontAwesomeIcons.question, "Endless Question of the Day", context),
+                        customGreyRedRow(Icons.chat, "Access to Course Chat Groups", context),
                         customGreyRedRow(Icons.book, "Inspiring Success Stories", context),
                         customGreyRedRow(Icons.numbers_outlined, "Tips and Formulas", context),
                         customGreyRedRow(FontAwesomeIcons.bookOpenReader, "Practice and Mock Tests", context),

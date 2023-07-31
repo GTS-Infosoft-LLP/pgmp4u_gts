@@ -216,8 +216,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 if (page == "Domain") {
                                                                   ProfileProvider pp =
                                                                       Provider.of(context, listen: false);
-                                                                  DomainProvider dp =
-                                                                      Provider.of(context, listen: false);
+                                                                  DomainProvider dp = Provider.of(context, listen: false);
 
                                                                   pp.updateLoader(true);
                                                                   await dp.getDomainData(storedMaster[index].id, cp.selectedCourseId);
