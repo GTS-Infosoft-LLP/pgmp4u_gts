@@ -7,27 +7,46 @@ import 'package:pgmp4u/Screens/chat/screen/discussionChatPage.dart';
 import 'package:pgmp4u/utils/extensions.dart';
 import 'package:provider/provider.dart';
 
-class GroupListTile extends StatelessWidget {
+import '../../../provider/profileProvider.dart';
+
+class GroupListTile extends StatefulWidget {
   GroupListTile({Key key, this.index, this.color, this.group});
   int index;
   Color color;
   DisscussionGropModel group;
 
+  @override
+  State<GroupListTile> createState() => _GroupListTileState();
+}
+
+class _GroupListTileState extends State<GroupListTile> {
   onTapOfGroup(BuildContext context) {
-    print("groupId: ${group.groupId}");
-    context.read<ChatProvider>().setGroupId(group.groupId, GroupType.groupChat);
+    print("groupId: ${widget.group.groupId}");
+    var chatPay;
+    ProfileProvider pp = Provider.of(context, listen: false);
+    bool a = pp.isChatSubscribed;
+    print("value of a=====$a");
+    if (a == false) {
+      //show blur
+      chatPay = 1;
+    } else if (a == true) {
+      chatPay = 0;
+      // chatPay = 1;
+    }
+    context.read<ChatProvider>().setGroupId(widget.group.groupId, GroupType.groupChat);
 
     // create messaging in user_chat
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => DisscussionChatPage(
-                  group: group,
+                  group: widget.group,
+                  chatPayment: chatPay,
                 )));
   }
 
   onLongPressOfGroup(BuildContext context) {
-    print("onLognPress groupId: ${group.groupId}");
+    print("onLognPress groupId: ${widget.group.groupId}");
     context.read<ChatProvider>().isChatAdmin()
         ? showDialog(
             context: context,
@@ -87,7 +106,7 @@ class GroupListTile extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () async {
-                            await context.read<ChatProvider>().deleteDiscussionGroup(context, group.groupId);
+                            await context.read<ChatProvider>().deleteDiscussionGroup(context, widget.group.groupId);
                             Navigator.pop(context);
                           },
                           child: Container(
@@ -139,8 +158,17 @@ class GroupListTile extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    // context.read<CourseProvider>().setMasterListType("Chat");
+    // context.read<ProfileProvider>().subscriptionApiCalling
+    //     ? null
+    //     : context.read<ProfileProvider>().subscriptionStatus("Chat");
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    DateTime time = DateTime.fromMillisecondsSinceEpoch(int.tryParse(group.createdAt));
+    DateTime time = DateTime.fromMillisecondsSinceEpoch(int.tryParse(widget.group.createdAt));
     String timeToShow = Jiffy(time).fromNow();
     // FieldValue.serverTimestamp();
     Color newColor = Colors.grey.withOpacity(0.4);
@@ -156,7 +184,7 @@ class GroupListTile extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.white,
-          gradient: new LinearGradient(stops: [0.015, 0.015], colors: [color, Colors.white]),
+          gradient: new LinearGradient(stops: [0.015, 0.015], colors: [widget.color, Colors.white]),
           boxShadow: [
             BoxShadow(
               color: Color.fromRGBO(0, 0, 0, 0.05),
@@ -179,7 +207,7 @@ class GroupListTile extends StatelessWidget {
                   // backgroundColor: color,
                   backgroundColor: newColor,
                   child: Text(
-                    getString(index + 1).toString(),
+                    getString(widget.index + 1).toString(),
                     overflow: TextOverflow.clip,
                     maxLines: 1,
                     style: TextStyle(
@@ -195,7 +223,7 @@ class GroupListTile extends StatelessWidget {
                 ),
                 Expanded(
                     child: Text(
-                  group.title ?? '',
+                  widget.group.title ?? '',
                   maxLines: 6,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 18, fontFamily: 'Roboto Medium'),
@@ -228,7 +256,7 @@ class GroupListTile extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(group.createdBy.capitalizeFirstLetter() ?? '',
+                      Text(widget.group.createdBy.capitalizeFirstLetter() ?? '',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: newTextColor,
@@ -247,7 +275,7 @@ class GroupListTile extends StatelessWidget {
                 ),
                 Spacer(),
                 SizedBox(width: 20),
-                _myIcons(icon: Icons.chat_rounded, count: getString(group.commentsCount)),
+                _myIcons(icon: Icons.chat_rounded, count: getString(widget.group.commentsCount)),
               ],
             ),
           ],

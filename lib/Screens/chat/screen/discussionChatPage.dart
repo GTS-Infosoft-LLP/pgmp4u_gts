@@ -13,12 +13,16 @@ import 'package:pgmp4u/utils/extensions.dart';
 import 'package:provider/provider.dart';
 
 import '../../../components/blurView.dart';
+import '../../../provider/courseProvider.dart';
+import '../../../provider/profileProvider.dart';
 import '../../../utils/app_color.dart';
+import '../../home_view/VideoLibrary/RandomPage.dart';
 
 class DisscussionChatPage extends StatefulWidget {
-  DisscussionChatPage({Key key, this.group}) : super(key: key);
+  DisscussionChatPage({Key key, this.group, this.chatPayment}) : super(key: key);
 
   DisscussionGropModel group;
+  int chatPayment;
 
   @override
   State<DisscussionChatPage> createState() => _DisscussionChatPageState();
@@ -31,9 +35,10 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
   List<UserProfileModel> userProfileList = [];
 
   // AnimationController _animationController;
-  int a;
+  int a = 1;
   @override
   void initState() {
+    print("chat pay widget value======${widget.chatPayment}");
     // TODO: implement initState
     // _animationController = AnimationController(
     //   duration: Duration(seconds: 1),
@@ -131,7 +136,7 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
         leadingWidth: 40,
         backgroundColor: Colors.white,
       ),
-      bottomSheet: a == 1
+      bottomSheet: widget.chatPayment == 1
           ? SizedBox()
           : ChatTextField(
               size: size,
@@ -146,7 +151,7 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
               },
             ),
       resizeToAvoidBottomInset: true,
-      body: a == 1
+      body: widget.chatPayment == 1
           ? blurChat(context, widget.group)
           : GestureDetector(
               onTap: () {
@@ -372,18 +377,31 @@ Widget blurChat(BuildContext context, DisscussionGropModel group) {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                gradient: AppColor.appGradient,
+            padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RandomPage(
+                              index: 4,
+                              price: context.read<ProfileProvider>().subsPrice.toString(),
+                              categoryType: context.read<CourseProvider>().selectedMasterType,
+                              categoryId: 0,
+                            )));
+              },
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  gradient: AppColor.appGradient,
+                ),
+                child: Center(
+                    child: Text(
+                  "Buy to Access",
+                  style: TextStyle(color: Colors.white),
+                )),
               ),
-              child: Center(
-                  child: Text(
-                "Buy to Access",
-                style: TextStyle(color: Colors.white),
-              )),
             ),
           )
         ],

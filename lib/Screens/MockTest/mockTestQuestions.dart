@@ -130,6 +130,10 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     await apiCall();
 
     if (widget.restartModel != null) {
+      if (widget.restartModel.quesNum < 0) {
+        widget.restartModel.quesNum = 2;
+      }
+      print("widget.restartModel.quesNum=====${widget.restartModel.quesNum}");
       setState(() {
         _quetionNo = widget.restartModel.quesNum - 1;
       });
@@ -262,6 +266,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     // print("time eeee===>>>${_yi}");
     print("submitData==========${submitData.toString()}");
     CourseProvider cp = Provider.of(context, listen: false);
+    print("cp.toPage${cp.toPage}");
     HiveHandler.addToRestartBox(
         cp.selectedMockId.toString(),
         RestartModel(
@@ -312,6 +317,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                     submitMockTest("back", displayTime);
                   } else {
                     CourseProvider cp = Provider.of(context, listen: false);
+                    print("cp.toPage,cp.toPage,===${cp.toPage}");
 
                     // HiveHandler.addToRestartBox(cp.selectedMockId.toString(), cp.selectedAttemptNumer);
                     HiveHandler.addToRestartBox(
@@ -375,6 +381,9 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   bool questionLoader = false;
   onTapOfPutOnDisscussion(String question, List<Optionss> list01) async {
     CourseProvider cp = Provider.of(context, listen: false);
+
+    await context.read<ProfileProvider>().subscriptionStatus("Chat");
+    print("context.read<ProfileProvider>().isChatSubscribed${context.read<ProfileProvider>().isChatSubscribed}");
     if (!context.read<ProfileProvider>().isChatSubscribed) {
       setState(() => questionLoader = false);
 
@@ -941,7 +950,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                             onTap: () => {
                                               subQues = _quetionNo,
                                               pageController.animateToPage(--subQues,
-                                              duration: Duration(milliseconds: 500), curve: Curves.easeInCirc),
+                                                  duration: Duration(milliseconds: 500), curve: Curves.easeInCirc),
                                               // setState(() {
                                               //   currentIndex--;
                                               //   print("currentIndex: $currentIndex");

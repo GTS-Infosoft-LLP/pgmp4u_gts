@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:getwidget/components/toast/gf_toast.dart';
+import 'package:getwidget/position/gf_toast_position.dart';
 import 'package:pgmp4u/Screens/chat/chatHandler.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/discussionGroupModel.dart';
@@ -33,9 +36,17 @@ class _GroupListPageState extends State<GroupListPage> {
   @override
   void initState() {
     CourseProvider cp = Provider.of(context, listen: false);
-    if (cp.crsDropList.isNotEmpty) {
-      cp.setSelectedCourseLable(cp.crsDropList[0].lable);
+    if (cp.course.isNotEmpty) {
+      cp.setSelectedCourseLable(cp.course[0].lable);
+    } else {
+      cp.setSelectedCourseLable(null);
     }
+
+    context.read<CourseProvider>().setMasterListType("Chat");
+    context.read<ProfileProvider>().subscriptionApiCalling
+        ? null
+        : context.read<ProfileProvider>().subscriptionStatus("Chat");
+
     super.initState();
   }
 
@@ -45,20 +56,32 @@ class _GroupListPageState extends State<GroupListPage> {
         // resizeToAvoidBottomInset: true,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
-          child: Container(
-            width: 60,
-            height: 60,
-            child: Icon(
-              Icons.add_rounded,
-              size: 40,
+            child: Container(
+              width: 60,
+              height: 60,
+              child: Icon(
+                Icons.add_rounded,
+                size: 40,
+              ),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: AppColor.appGradient,
+              ),
             ),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: AppColor.appGradient,
-            ),
-          ),
-          onPressed: () => addDiscussion(context),
-        ),
+            onPressed: () {
+              ProfileProvider pp = Provider.of(context, listen: false);
+              bool a = pp.isChatSubscribed;
+              if (a) {
+                addDiscussion(context);
+              } else {
+                EasyLoading.showToast('Purchase to Post');
+                // GFToast.showToast(
+                //   'Purchase to Post',
+                //   context,
+                //   toastPosition: GFToastPosition.CENTER,
+                // );
+              }
+            }),
         body: Consumer<CourseProvider>(builder: (context, cp, child) {
           return Column(
             children: [
@@ -69,7 +92,7 @@ class _GroupListPageState extends State<GroupListPage> {
                       width: MediaQuery.of(context).size.width * .35,
                       child: CustomDropDown<CourseDetails>(
                         selectText: cp.selectedCourseLable ?? "Select",
-                        itemList: cp.crsDropList ?? [],
+                        itemList: cp.course ?? [],
                         isEnable: true,
                         title: "",
                         value: null,
@@ -90,12 +113,13 @@ class _GroupListPageState extends State<GroupListPage> {
   }
 
   Expanded _groups() {
-    print("dhfjdf====${context.read<CourseProvider>().selectedCourseLable.toLowerCase()}");
-    if ("pmp®" == context.read<CourseProvider>().selectedCourseLable.toLowerCase()) {
-      print("they are equalll");
-    } else {
-      print("this is  print(this is clleddddclledddd");
+    CourseProvider cp = Provider.of(context, listen: false);
+
+    if (cp.selectedCourseLable == null || cp.selectedCourseLable.isEmpty) {
+      cp.setSelectedCourseLable(cp.course[0].lable);
     }
+    print("dhfjdf====${context.read<CourseProvider>().selectedCourseLable.toLowerCase()}");
+
     return Expanded(
       child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: FirebaseChatHandler.getAllDiscussionGroups(
@@ -229,6 +253,47 @@ class _GroupListPageState extends State<GroupListPage> {
         return AddDiscussionBottomSheet();
       },
     );
+  }
+}
+
+class PurchaseToPost extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GFToast.showToast(
+      'Purchase to Post',
+      context,
+      toastPosition: GFToastPosition.CENTER,
+    );
+    // Card(
+    //   child: Column(
+    //     mainAxisSize: MainAxisSize.min,
+    //     children: [
+    //       Padding(
+    //         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
+    //         child: Row(
+    //           children: [
+    //             Text(
+    //               'Purchase to Post',
+    //               style: TextStyle(fontSize: 18, fontFamily: 'Roboto Medium', color: Colors.black),
+    //             ),
+    //             Spacer(),
+    //             InkWell(
+    //                 onTap: () {
+    //                   Navigator.pop(context);
+    //                 },
+    //                 child: Icon(
+    //                   Icons.close,
+    //                   color: Color.fromRGBO(165, 156, 180, 1),
+    //                 )),
+    //           ],
+    //         ),
+    //       ),
+    //       Divider(
+    //         thickness: 2,
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 }
 

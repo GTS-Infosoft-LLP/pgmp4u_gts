@@ -257,7 +257,7 @@ class _RandomPageState extends State<RandomPage> {
                                       margin: EdgeInsets.only(top: 20),
                                       child: Center(
                                           child: Text(
-                                        'Yearly Access On \n ${widget.price}',
+                                        ' On \n \$ ${widget.price}',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontFamily: 'Roboto Bold',

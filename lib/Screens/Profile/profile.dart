@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
-import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/Subscription/subscriptionProvider.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
@@ -73,10 +72,9 @@ class _ProfileState extends State<Profile> {
       cp.setSelectedCourseName(cp.crsDropList[0].course);
       cp.setSelectedCourseLable(cp.crsDropList[0].lable);
       print("cp.course[0].lable===========${cp.crsDropList[0].lable}");
-
-      // pp.getReminder(cp.course[0].id);
     } else {
       cp.setSelectedCourseLable(null);
+      print("seletced course lableee====${cp.selectedCourseLable}");
     }
 
     _razorpay = Razorpay();
@@ -216,17 +214,13 @@ class _ProfileState extends State<Profile> {
                       toastPosition: GFToastPosition.BOTTOM,
                     );
                   }
-
-                  if (!isSub) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RandomPage(
-                                  index: 4,
-                                  price: context.read<ProfileProvider>().subsPrice.toString(),
-                                  categoryType: context.read<CourseProvider>().selectedMasterType,
-                                  categoryId: 0,
-                                )));
+                  CourseProvider cp = Provider.of(context, listen: false);
+                  if (cp.course.isEmpty) {
+                    GFToast.showToast(
+                      'No Course Available',
+                      context,
+                      toastPosition: GFToastPosition.CENTER,
+                    );
                   } else {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GroupListPage()));
                   }
