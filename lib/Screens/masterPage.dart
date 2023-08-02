@@ -328,7 +328,8 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                           icon1,
                                                                           color: Colors.white,
                                                                         ),
-                                                                      )),
+                                                                      )
+                                                                      ),
                                                                 ),
                                                                 SizedBox(
                                                                   width: 15,

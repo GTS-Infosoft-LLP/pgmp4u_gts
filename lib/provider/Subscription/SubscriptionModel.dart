@@ -6,6 +6,7 @@ class SubscriptionDetails {
   String planId;
   String priceId;
   int type;
+  String description;
   int status;
   int deleteStatus;
 
@@ -16,7 +17,7 @@ class SubscriptionDetails {
 
     courseId = json['courseId'];
     planId = json['planId'];
-
+    description = json['description'];
     priceId = json['priceId'];
     type = json['type'];
     status = json['status'];

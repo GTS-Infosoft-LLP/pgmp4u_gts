@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
 import 'package:pgmp4u/provider/Subscription/subscriptionProvider.dart';
@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Screens/Profile/PaymentStatus.dart';
 import '../../Screens/Profile/paymentstripe2.dart';
 import '../../Screens/masterPage.dart';
-import '../../components/subscriptionGreyBox.dart';
 import '../../subscriptionModel.dart';
 import '../courseProvider.dart';
 import '../profileProvider.dart';
@@ -33,6 +32,9 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
   void initState() {
     ProfileProvider pp = Provider.of(context, listen: false);
     SubscriptionProvider sp = Provider.of(context, listen: false);
+    sp.setSelectedIval(2);
+    print("sp.SubscritionPackList[2].description======${sp.SubscritionPackList[2].description}");
+
     print("selevted sub type===${sp.selectedSubsType}");
     // hw = MediaQuery.of(context).size;
     if (permiumbutton.length == 3) {
@@ -210,223 +212,73 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                   Expanded(child: SizedBox()),
                   Expanded(
                     flex: 4,
-                    child: Container(),
-                    // child:
-                    // Consumer2<ProfileProvider, SubscriptionProvider>(builder: (context, pp, sp, child) {
-                    //   return sp.getSubsPackApiCall
-                    //       ? Center(child: CircularProgressIndicator.adaptive())
-                    //       : Padding(
-                    //           padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 15),
-                    //           child: Column(
-                    //             children: [
-                    //               Center(
-                    //                   child: Text(
-                    //                 "Select a Reading Plan",
-                    //                 style: TextStyle(fontFamily: 'Roboto Bold', fontSize: 22, color: Color(0xff3643a3)),
-                    //               )),
-                    //               SizedBox(
-                    //                 height: 10,
-                    //               ),
-                    //               Row(
-                    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //                   mainAxisSize: MainAxisSize.min,
-                    //                   children: List.generate(permiumbutton.length, (i) {
-                    //                     if (i == 0) {
-                    //                       mntVal = "1";
-                    //                       mnth = "Month";
-                    //                       clr = Colors.blue[400];
-                    //                     } else if (i == 1) {
-                    //                       mntVal = "3";
-                    //                       mnth = "Months";
-                    //                       clr = Colors.red[400];
-                    //                     } else {
-                    //                       mntVal = "1";
-                    //                       mnth = "Year";
-                    //                       clr = Colors.amber[400];
-                    //                     }
-
-                    //                     return Expanded(
-                    //                         child: Padding(
-                    //                       padding: permiumbutton.length == 1
-                    //                           ? EdgeInsets.symmetric(horizontal: 114)
-                    //                           : EdgeInsets.symmetric(horizontal: 4),
-                    //                       child: InkWell(
-                    //                         onTap: () {
-                    //                           print("permiumbutton iddd===${permiumbutton[i].id}");
-                    //                           print("permiumbutton tye===${permiumbutton[i].type}");
-
-                    //                           sp.setSelectedSubsId(permiumbutton[i].id);
-                    //                           sp.setSelectedSubsType(permiumbutton[i].type);
-
-                    //                           print("index val===$i");
-                    //                           pp.setSelectedContainer(i);
-                    //                         },
-                    //                         child: Container(
-                    //                           height: pp.selectedSubsBox == i ? 158 : 148,
-                    //                           // width: MediaQuery.of(context).size.width * .40,
-                    //                           decoration: BoxDecoration(
-                    //                             border: Border.all(
-                    //                               color: pp.selectedSubsBox == i ? Colors.black : Color(0xff3643a3),
-                    //                               width: pp.selectedSubsBox == i ? 2.5 : 0,
-                    //                             ),
-                    //                             // color: pp.selectedSubsBox == i
-                    //                             //     ? Color.fromARGB(255, 87, 101, 222)
-                    //                             //     : Colors.white,
-
-                    //                             color: clr,
-                    //                             borderRadius: BorderRadius.all(Radius.circular(10)),
-                    //                           ),
-
-                    //                           child: Column(
-                    //                             mainAxisAlignment: MainAxisAlignment.start,
-                    //                             children: [
-                    //                               // Container(
-                    //                               //   height: 0,
-                    //                               //   color: Color(0xff3643a3),
-                    //                               // ),
-                    //                               SizedBox(
-                    //                                 height: 15,
-                    //                               ),
-
-                    //                               RichText(
-                    //                                 text: TextSpan(children: <TextSpan>[
-                    //                                   TextSpan(
-                    //                                     text: mntVal + " " + mnth,
-                    //                                     style: TextStyle(
-                    //                                         color: Colors.white,
-                    //                                         fontSize: 20.0,
-                    //                                         fontWeight: FontWeight.w600),
-                    //                                   )
-                    //                                 ]),
-                    //                               ),
-
-                    //                               SizedBox(
-                    //                                 height: 5,
-                    //                               ),
-                    //                               Padding(
-                    //                                 padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                    //                                 child: Container(
-                    //                                   // color: Colors.amber,
-                    //                                   width: MediaQuery.of(context).size.width * .5,
-                    //                                   child: RichText(
-                    //                                     textAlign: TextAlign.center,
-                    //                                     text: TextSpan(children: <TextSpan>[
-                    //                                       TextSpan(
-                    //                                         text: "Subscription",
-                    //                                         style: TextStyle(
-                    //                                             color: Colors.white,
-                    //                                             fontSize: 15.0,
-                    //                                             fontWeight: FontWeight.w600),
-                    //                                       )
-                    //                                     ]),
-                    //                                   ),
-                    //                                 ),
-
-                    //                                 // Text(
-                    //                                 //   // permiumbutton[i].name,
-                    //                                 //   "Subscription",
-
-                    //                                 //   textAlign: TextAlign.center,
-                    //                                 //   style: TextStyle(
-                    //                                 //       fontFamily: 'Roboto Bold',
-                    //                                 //       fontSize: 16,
-                    //                                 //       // color: pp.selectedSubsBox == i
-                    //                                 //       //     ? Colors.white
-                    //                                 //       //     : Color.fromARGB(255, 87, 101, 222),
-                    //                                 //       color: Colors.white,
-                    //                                 //       letterSpacing: 0.3),
-                    //                                 // ),
-                    //                               ),
-                    //                               SizedBox(
-                    //                                 height: 5,
-                    //                               ),
-
-                    //                               new Spacer(),
-
-                    //                               Container(
-                    //                                 decoration: BoxDecoration(
-                    //                                   border: Border.all(color: Colors.transparent
-                    //                                       // width: pp.selectedSubsBox == i ? 1 : 0.5,
-                    //                                       ),
-                    //                                   borderRadius: BorderRadius.only(
-                    //                                     bottomRight: Radius.circular(9.5),
-                    //                                     bottomLeft: Radius.circular(9.5),
-                    //                                   ),
-                    //                                   color: Colors.white,
-                    //                                 ),
-                    //                                 height: 40,
-                    //                                 child: Center(
-                    //                                   child: RichText(
-                    //                                     text: TextSpan(children: <TextSpan>[
-                    //                                       TextSpan(
-                    //                                         text: "\$" + permiumbutton[i].amount,
-                    //                                         style: TextStyle(
-                    //                                             color: Color(0xff3643a3),
-                    //                                             fontSize: 18.0,
-                    //                                             fontWeight: FontWeight.w600),
-                    //                                       )
-                    //                                     ]),
-                    //                                   ),
-                    //                                 ),
-                    //                               ),
-                    //                             ],
-                    //                           ),
-                    //                         ),
-                    //                       ),
-                    //                     ));
-                    //                   })),
-                    //               SizedBox(
-                    //                 height: 10,
-                    //               ),
-                    //               Padding(
-                    //                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    //                 child: RichText(
-                    //                   textAlign: TextAlign.center,
-                    //                   text: TextSpan(children: <TextSpan>[
-                    //                     TextSpan(
-                    //                       text:
-                    //                           "In each of the plan you will be have complete Access to Mock Tests, PathFinders, Video Library, Domains and Flash Cards to Duration selected in Reading plan",
-                    //                       style: TextStyle(
-                    //                           color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w400),
-                    //                     )
-                    //                   ]),
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ));
-                    // }),
+                    child: Container(
+                        // color: Colors.amber,
+                        ),
                   ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 180.0),
+              padding: const EdgeInsets.only(top: 210.0),
               child: Center(
                 child: Column(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                      ),
-                      width: MediaQuery.of(context).size.width * 0.90,
-                      // height: 235,
-                      child: Column(children: [
-                        SizedBox(
-                          height: 19,
+                    Consumer<SubscriptionProvider>(builder: (context, sp, child) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          // color: Colors.amber,
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
                         ),
-                        customGreyRedRow(FontAwesomeIcons.tableColumns, "Domain Specific Flash Cards", context),
-                        customGreyRedRow(Icons.text_fields_sharp, "Curated ECO Based Content", context),
-                        customGreyRedRow(FontAwesomeIcons.question, "Endless Question of the Day", context),
-                        customGreyRedRow(Icons.chat, "Access to Course Chat Groups", context),
-                        customGreyRedRow(Icons.book, "Inspiring Success Stories", context),
-                        customGreyRedRow(Icons.numbers_outlined, "Tips and Formulas", context),
-                        customGreyRedRow(FontAwesomeIcons.bookOpenReader, "Practice and Mock Tests", context),
-                        SizedBox(
-                          height: 19,
-                        ),
-                      ]),
-                    ),
+                        width: MediaQuery.of(context).size.width * 0.80,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: Column(
+                            // crossAxisAlignment: CrossAxisAlignment.,
+                            children: [
+                              SizedBox(
+                                height: 15,
+                              ),
+
+                              Container(
+                                // color: Colors.amber,
+                                height: MediaQuery.of(context).size.height * 0.25,
+                                child: SingleChildScrollView(
+                                  physics: BouncingScrollPhysics(),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                                    child: Center(
+                                      child: Html(
+                                        data: sp.SubscritionPackList[sp.selectedIval].description ?? "",
+                                        style: {
+                                          "body": Style(
+                                            // maxLines: 1,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(top: 5),
+                                            margin: EdgeInsets.zero,
+                                            color: Color(0xff000000),
+                                            textAlign: TextAlign.left,
+                                            fontSize: FontSize(18),
+                                          )
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              // customGreyRedRow(FontAwesomeIcons.tableColumns, "Domain Specific Flash Cards", context),
+                              // customGreyRedRow(Icons.text_fields_sharp, "Curated ECO Based Content", context),
+                              // customGreyRedRow(FontAwesomeIcons.question, "Endless Question of the Day", context),
+                              // customGreyRedRow(Icons.chat, "Access to Course Chat Groups", context),
+                              // customGreyRedRow(Icons.book, "Inspiring Success Stories", context),
+                              // customGreyRedRow(Icons.numbers_outlined, "Tips and Formulas", context),
+                              // customGreyRedRow(FontAwesomeIcons.bookOpenReader, "Practice and Mock Tests", context),
+                              SizedBox(
+                                height: 19,
+                              ),
+                            ]),
+                      );
+                    }),
                     SizedBox(height: 15),
                     Consumer2<ProfileProvider, SubscriptionProvider>(builder: (context, pp, sp, child) {
                       return sp.getSubsPackApiCall
@@ -480,6 +332,9 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                               : EdgeInsets.symmetric(horizontal: 4),
                                           child: InkWell(
                                             onTap: () {
+                                              //selectedI
+
+                                              sp.setSelectedIval(i);
                                               print("permiumbutton iddd===${permiumbutton[i].id}");
                                               print("permiumbutton tye===${permiumbutton[i].type}");
 

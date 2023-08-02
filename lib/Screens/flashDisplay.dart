@@ -255,36 +255,13 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                                       }
                                                                     },
                                                                     style: {
-                                                                      //   "body": Style(
-                                                                      //     // padding: HtmlPaddings(top: HtmlPadding(5)),
-
-                                                                      //     padding: EdgeInsets.only(top: 5),
-                                                                      //     margin: EdgeInsets.zero,
-                                                                      //     color: Color(0xff000000),
-                                                                      //     textAlign: TextAlign.left,
-                                                                      //     // maxLines: 7,
-                                                                      //     // textOverflow: TextOverflow.ellipsis,
-                                                                      //     fontSize: FontSize(22),
-                                                                      //   ),
+                 
+       
                                                                  
 
-                                                                      //   ),
-                                                                      // "ul": Style(
-                                                                      //     // fontSize: FontSize(22),
-                                                                      //     // padding: EdgeInsets.only(top: 6, bottom: 10),
-                                                                      //     // listStyleType: ListStyleType.DISC,
-                                                                      //     // display: Display.BLOCK,
-                                                                      //     // padding: EdgeInsets.only(left: 40),
+                                                                     
 
-                                                                      //     // listStyleType: ListStyleType.fromWidget(Padding(
-                                                                      //     //   padding: const EdgeInsets.only(
-                                                                      //     //       left: 2, right: 2, top: 0),
-                                                                      //     //   child: CircleAvatar(
-                                                                      //     //     radius: 6,
-                                                                      //     //     backgroundColor: Colors.grey,
-                                                                      //     //   ),
-                                                                      //     // )),
-                                                                      //     ),
+                                                                
                                                                    
                                                                     },
                                                                   ),

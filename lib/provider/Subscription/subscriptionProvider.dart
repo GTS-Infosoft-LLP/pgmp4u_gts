@@ -35,6 +35,16 @@ class SubscriptionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  int selectedIval;
+  setSelectedIval(int val) {
+    print("new value of I====$val");
+    print("PackList[$val].description====  ${SubscritionPackList[val].description}");
+    Future.delayed(Duration.zero, () async {
+      selectedIval = val;
+      notifyListeners();
+    });
+  }
+
   bool getSubsPackApiCall = false;
 
   updateSubsPackApiCall(bool val) {
@@ -239,7 +249,7 @@ class SubscriptionProvider extends ChangeNotifier {
 
       if (response.statusCode == 400) {
         updateLoader(false);
-    
+
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         if (mapResponse['success'] == false) {
           updateLoader(false);
