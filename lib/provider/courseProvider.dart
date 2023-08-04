@@ -70,9 +70,17 @@ class CourseProvider extends ChangeNotifier {
 
   String notiSelectCrsLable;
 
+  String selectedCancelSubsLable;
 
+  String selectedTimeSubs;
+  void setSelectedSubsTime(String val) {
+    Future.delayed(Duration.zero, () {
+      selectedTimeSubs = val;
+      notifyListeners();
+    });
+  }
 
-    String selectedCancelSubsLable;
+  List<String> subsTime = ["1 Month", "3 Months", "6 Months", "1 Year"];
 
   setSelectedCancelSubsCrsLable(String val) {
     Future.delayed(Duration.zero, () {
@@ -81,17 +89,13 @@ class CourseProvider extends ChangeNotifier {
     });
   }
 
-    int selectedCancelSubsId;
-  setSelectedCancelSubsId(int id){
-   Future.delayed(Duration.zero, () {
+  int selectedCancelSubsId;
+  setSelectedCancelSubsId(int id) {
+    Future.delayed(Duration.zero, () {
       selectedCancelSubsId = id;
       notifyListeners();
     });
   }
-
-
-
-
 
   setSelectedNotiCrsLable(String val) {
     Future.delayed(Duration.zero, () {

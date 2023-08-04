@@ -493,7 +493,8 @@ class _ProfileState extends State<Profile> {
                                                       style: TextStyle(
                                                           fontFamily: 'Roboto Medium',
                                                           color: Colors.white,
-                                                          fontSize: 10),
+                                                          fontSize: 10
+                                                          ),
                                                     ),
                                                   ],
                                                 ),
@@ -541,7 +542,8 @@ class _ProfileState extends State<Profile> {
                                                               style: TextStyle(
                                                                   fontFamily: 'Roboto Medium',
                                                                   color: Colors.white,
-                                                                  fontSize: 18),
+                                                                  fontSize: 18
+                                                                  ),
                                                             ),
                                                           ),
                                                         )

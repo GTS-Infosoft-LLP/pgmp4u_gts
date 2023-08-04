@@ -189,11 +189,9 @@ class _MasterListPageState extends State<MasterListPage> {
                                                               courseProvider.changeonTap(0);
                                                               if (courseProvider.tapOnce == 0) {
                                                                 courseProvider.changeonTap(1);
-                                                                courseProvider
-                                                                    .setSelectedMasterId(storedMaster[index].id);
+                                                                courseProvider.setSelectedMasterId(storedMaster[index].id);
 
-                                                                print(
-                                                                    "id of the master list===${storedMaster[index].id}");
+                                                                print("id of the master list===${storedMaster[index].id}");
                                                                 String page = storedMaster[index].type;
 
                                                                 courseProvider
@@ -264,7 +262,6 @@ class _MasterListPageState extends State<MasterListPage> {
 
                                                                 if (page == "Flash Cards") {
                                                                   courseProvider.getFlashCate(storedMaster[index].id);
-
                                                                   Future.delayed(Duration(milliseconds: 0), () {
                                                                     Navigator.push(
                                                                         context,

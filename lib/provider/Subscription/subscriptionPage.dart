@@ -353,8 +353,9 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                                     text: mntVal + " " + mnth,
                                                                     style: TextStyle(
                                                                         color: Colors.white,
-                                                                        fontSize: 20.0,
-                                                                        fontWeight: FontWeight.w600),
+                                                                        fontSize: 20.0,     
+                                                                        fontWeight: FontWeight.w600
+                                                                        ),
                                                                   )
                                                                 ]),
                                                               ),
@@ -403,7 +404,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                                         style: TextStyle(
                                                                             color: Color(0xff3643a3),
                                                                             fontSize: 18.0,
-                                                                            fontWeight: FontWeight.w600),
+                                                                            fontWeight: FontWeight.w600
+                                                                            ),
                                                                       )
                                                                     ]),
                                                                   ),
@@ -457,6 +459,65 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                   SizedBox(
                                     height: 10,
                                   ),
+
+
+                                  // Radio(
+                                  //   value: value, 
+                                  //   groupValue: groupValue,
+                                  //   onChanged: (val){
+                                  //   print("valuee val===${val}");
+                                    
+                                  //   }
+                                  //   ),
+                              
+                             
+
+                            
+
+                                  // Consumer<CourseProvider>(builder: (context, cp, child) {
+                                  //   return Container(
+                                  //     height: 40,
+                                  //     // width: MediaQuery.of(context).size.width * .25,
+                                  //     decoration: BoxDecoration(
+                                  //         border: Border.all(color: Colors.black, width: 2),
+                                  //         boxShadow: const [BoxShadow(color: Colors.black26, offset: Offset(0, 0))],
+                                  //         color: Colors.lightBlue[100],
+                                  //         borderRadius: BorderRadius.circular(28)),
+                                  //     child: DropdownButton(
+                                  //       value: cp.selectedTimeSubs,
+                                  //       items: cp.subsTime.map((String items) {
+                                  //         return DropdownMenuItem(
+                                  //           value: items,
+                                  //           child: Container(
+                                  //               margin: EdgeInsets.only(top: 8.0),
+                                  //               // width: double.maxFinite,
+                                  //               child: Padding(
+                                  //                 padding: const EdgeInsets.only(bottom: 9.0, left: 8, right: 8),
+                                  //                 child: Text(
+                                  //                   items,
+                                  //                   textAlign: TextAlign.left,
+                                  //                   style: TextStyle(
+                                  //                       // color: Colors.orange,
+                                  //                       fontSize: 15,
+                                  //                       fontWeight: FontWeight.bold),
+                                  //                 ),
+                                  //               )),
+                                  //         );
+                                  //       }).toList(),
+                                  //       underline: const SizedBox(),
+                                  //       onChanged: (val) {
+                                  //         print("val==-=-=-=-=-  $val");
+                                  //         cp.setSelectedSubsTime(val);
+                                  //       },
+                                  //       dropdownColor: Colors.white,
+                                  //     ),
+                                  //   );
+                                  // }),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                                     child: RichText(
@@ -517,5 +578,9 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
+  }
+
+  void showContainer() {
+// return Container(child: ,);
   }
 }
