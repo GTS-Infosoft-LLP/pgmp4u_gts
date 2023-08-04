@@ -312,7 +312,7 @@ Widget TaskKeywrd(BuildContext context, index) {
           height: 10,
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 20.0, left: 15),
+          padding: const EdgeInsets.only(bottom: 80.0, left: 15),
           child: Html(
             data: dp.TaskDetailList != null ? dp.TaskDetailList[index].Keywords : '',
             style: {
@@ -435,7 +435,7 @@ Widget TaskExple(BuildContext context, index) {
   DomainProvider dp = Provider.of(context, listen: false);
   return SingleChildScrollView(
     child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 18),
+      padding: const EdgeInsets.only(left: 15.0, right: 15, top: 18, bottom: 38),
       child: Column(
         children: [
           SizedBox(

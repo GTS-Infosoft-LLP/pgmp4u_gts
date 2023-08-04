@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
 import 'package:pgmp4u/provider/Subscription/subscriptionProvider.dart';
@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Screens/Profile/PaymentStatus.dart';
 import '../../Screens/Profile/paymentstripe2.dart';
 import '../../Screens/masterPage.dart';
+import '../../components/subscriptionGreyBox.dart';
 import '../../subscriptionModel.dart';
 import '../courseProvider.dart';
 import '../profileProvider.dart';
@@ -33,6 +34,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     ProfileProvider pp = Provider.of(context, listen: false);
     SubscriptionProvider sp = Provider.of(context, listen: false);
     sp.setSelectedIval(2);
+    print("sp.selectedIval====${sp.selectedIval}");
     print("sp.SubscritionPackList[2].description======${sp.SubscritionPackList[2].description}");
 
     print("selevted sub type===${sp.selectedSubsType}");
@@ -140,7 +142,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                     child: Stack(
                       children: [
                         Container(
-                          height: MediaQuery.of(context).size.height * .4,
+                          height: MediaQuery.of(context).size.height * .40,
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                                 begin: Alignment.topLeft,
@@ -191,11 +193,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                     height: MediaQuery.of(context).size.height * .30,
                                     child: Icon(
                                       Icons.diamond,
-                                      // fill: ,
                                       color: Colors.transparent,
-                                    )
-                                    //  Image.asset("assets/subsImage.png"),
-                                    ),
+                                    )),
                               ),
                             ],
                           ),
@@ -212,15 +211,13 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                   Expanded(child: SizedBox()),
                   Expanded(
                     flex: 4,
-                    child: Container(
-                        // color: Colors.amber,
-                        ),
+                    child: Container(),
                   ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 210.0),
+              padding: const EdgeInsets.only(top: 175.0),
               child: Center(
                 child: Column(
                   children: [
@@ -233,50 +230,24 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                         ),
                         width: MediaQuery.of(context).size.width * 0.80,
                         height: MediaQuery.of(context).size.height * 0.3,
-                        child: Column(
-                            // crossAxisAlignment: CrossAxisAlignment.,
-                            children: [
-                              SizedBox(
-                                height: 15,
-                              ),
-
-                              Container(
-                                // color: Colors.amber,
-                                height: MediaQuery.of(context).size.height * 0.25,
-                                child: SingleChildScrollView(
-                                  physics: BouncingScrollPhysics(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                                    child: Center(
-                                      child: Html(
-                                        data: sp.SubscritionPackList[sp.selectedIval].description ?? "",
-                                        style: {
-                                          "body": Style(
-                                            // maxLines: 1,
-                                            alignment: Alignment.center,
-                                            padding: EdgeInsets.only(top: 5),
-                                            margin: EdgeInsets.zero,
-                                            color: Color(0xff000000),
-                                            textAlign: TextAlign.left,
-                                            fontSize: FontSize(18),
-                                          )
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              // customGreyRedRow(FontAwesomeIcons.tableColumns, "Domain Specific Flash Cards", context),
-                              // customGreyRedRow(Icons.text_fields_sharp, "Curated ECO Based Content", context),
-                              // customGreyRedRow(FontAwesomeIcons.question, "Endless Question of the Day", context),
-                              // customGreyRedRow(Icons.chat, "Access to Course Chat Groups", context),
-                              // customGreyRedRow(Icons.book, "Inspiring Success Stories", context),
-                              // customGreyRedRow(Icons.numbers_outlined, "Tips and Formulas", context),
-                              // customGreyRedRow(FontAwesomeIcons.bookOpenReader, "Practice and Mock Tests", context),
-                              SizedBox(
-                                height: 19,
-                              ),
-                            ]),
+                        child: Column(children: [
+                          Container(
+                            // color: Colors.amber,
+                            height: MediaQuery.of(context).size.height * 0.3,
+                            child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                                child: ListView.builder(
+                                    physics: BouncingScrollPhysics(),
+                                    itemCount: 7,
+                                    itemBuilder: (context, index) {
+                                      return customGreyRedRow(
+                                          FontAwesomeIcons.tableColumns,
+                                          sp.SubscritionPackList[sp.selectedIval].description[index] ?? "",
+                                          context,
+                                          index);
+                                    })),
+                          ),
+                        ]),
                       );
                     }),
                     SizedBox(height: 15),
@@ -403,7 +374,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                                         style: TextStyle(
                                                                             color: Colors.white,
                                                                             fontSize: 15.0,
-                                                                            fontWeight: FontWeight.w600),
+                                                                            fontWeight: FontWeight.w600
+                                                                            ),
                                                                       )
                                                                     ]),
                                                                   ),
@@ -468,7 +440,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                                   style: TextStyle(
                                                                       color: Colors.white,
                                                                       fontSize: 15,
-                                                                      fontWeight: FontWeight.w400),
+                                                                      fontWeight: FontWeight.w400
+                                                                      ),
                                                                 ),
                                                               ),
                                                             ),

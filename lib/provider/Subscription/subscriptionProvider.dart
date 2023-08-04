@@ -55,8 +55,9 @@ class SubscriptionProvider extends ChangeNotifier {
   }
 
   List<SubscriptionDetails> SubscritionPackList = [];
-
+  List<String> description = [];
   Future<void> getSubscritionData(int idCrs) async {
+    description = [];
     print(">>>>>>>>>>>>>>getSubscritionData>>>>>>>>>>>>>>");
     // domainStatus = true;
     updateSubsPackApiCall(true);
@@ -111,6 +112,8 @@ class SubscriptionProvider extends ChangeNotifier {
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponsemapResponse=====$mapResponse");
         print("mapResponse====${mapResponse['status']}");
+        // description = mapResponse['description'];
+        print("description====$description");
         if (mapResponse['status'] == 400) {
           SubscritionPackList = [];
           print("SubscritionPackList=====$SubscritionPackList");
@@ -120,15 +123,19 @@ class SubscriptionProvider extends ChangeNotifier {
           List temp1 = mapResponse["data"];
           print("temp list===$temp1");
           SubscritionPackList = temp1.map((e) => SubscriptionDetails.fromjson(e)).toList();
+          // description = mapResponse["data"]["description"];
           print("SubscritionPackList=========$SubscritionPackList");
           permiumbutton.clear();
           for (int i = 0; i < SubscritionPackList.length; i++) {
+            // description.add(SubscritionPackList[i].description.toString());
+
             permiumbutton.add(newButton(
                 amount: SubscritionPackList[i].price,
                 name: SubscritionPackList[i].title,
                 id: SubscritionPackList[i].id,
                 type: SubscritionPackList[i].type));
           }
+          print("description====$description");
           print("permiumbutton=====$permiumbutton");
         }
       }

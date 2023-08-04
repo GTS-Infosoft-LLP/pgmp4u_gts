@@ -6,7 +6,7 @@ class SubscriptionDetails {
   String planId;
   String priceId;
   int type;
-  String description;
+  List description;
   int status;
   int deleteStatus;
 
@@ -17,7 +17,13 @@ class SubscriptionDetails {
 
     courseId = json['courseId'];
     planId = json['planId'];
-    description = json['description'];
+
+    if (json['description'] != null) {
+      description = json['description'];
+      // .toString().split(",");
+      print("descriptiondescription:::;$description");
+    }
+
     priceId = json['priceId'];
     type = json['type'];
     status = json['status'];
