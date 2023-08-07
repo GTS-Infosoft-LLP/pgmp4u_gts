@@ -199,8 +199,6 @@ class _TaskDetailState extends State<TaskDetail> {
                             controller: pageController,
                             itemCount: 5,
                             onPageChanged: (index) {
-                              print("index valuee====$index");
-                              // print("task question===${dp.TaskQues}");
                               setState(() {
                                 colorIndex = index;
                                 currentIndex = index;
@@ -264,8 +262,6 @@ class _TaskDetailState extends State<TaskDetail> {
                                                 )),
                                       height: 10,
                                       width: MediaQuery.of(context).size.width * .08,
-
-                                      // color: Colors.black,
                                     ),
                                   ),
                                 ),

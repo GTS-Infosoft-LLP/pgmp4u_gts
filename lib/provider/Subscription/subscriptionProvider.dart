@@ -35,6 +35,24 @@ class SubscriptionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<String> sliverList = [
+    "Access To Glossary",
+    "Access To Formulas",
+    "Access To Flash Cards",
+    "Access to Mock and Practice Exam",
+    "Access to Application Support(Except Expert View)"
+  ];
+  List<String> GoldList = ["Silver", "Chat", "Application Support(Assisted by Expert)+ CRG"];
+  List<String> platinumList = ["Gold", "Access to Recording", "Exam Strategy Session with Mentor PDUs/Contact hours"];
+
+  int radioSelected;
+  setSelectedRadioVal(int val) {
+    Future.delayed(Duration.zero, () async {
+      radioSelected = val;
+      notifyListeners();
+    });
+  }
+
   int selectedIval;
   setSelectedIval(int val) {
     print("new value of I====$val");

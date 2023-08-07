@@ -263,9 +263,7 @@ class _HomeViewState extends State<HomeView> {
                                                 onTap: () async {
                                                   ProfileProvider pp = Provider.of(context, listen: false);
                                                   pp.updateLoader(true);
-
                                                   courseProvider.setSelectedCourseId(storedCourse[index].id);
-
                                                   courseProvider.setSelectedCourseName(storedCourse[index].course);
                                                   courseProvider.setSelectedCourseLable(storedCourse[index].lable);
 
@@ -274,8 +272,7 @@ class _HomeViewState extends State<HomeView> {
                                                     SubscriptionProvider sp = Provider.of(context, listen: false);
                                                     await sp.getSubscritionData(storedCourse[index].id);
                                                     // Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(builder: (context) => Subscriptionpg()));
+                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => Subscriptionpg()));
                                                   } else {
                                                     pp.updateLoader(false);
                                                     courseProvider.getMasterData(storedCourse[index].id);

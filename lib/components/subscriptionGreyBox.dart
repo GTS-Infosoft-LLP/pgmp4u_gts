@@ -4,7 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 Widget customGreyRedRow(IconData icn, String txt, BuildContext context, int index) {
   IconData icnn;
   if (index == 0) {
-    icnn = FontAwesomeIcons.tableColumns;
+    // icnn = FontAwesomeIcons.tableColumns;
+    // icnn = FontAwesomeIcons.medal;
+    // icnn = FontAwesomeIcons.tick;
   } else if (index == 1) {
     icnn = Icons.text_fields_sharp;
   } else if (index == 2) {
@@ -31,20 +33,24 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context, int inde
           //   width: 10,
           // ),
 
-          // Container(
-          //   height: 23,
-          //   child: Image.asset("assets/CheckIcon.png"),
-          // ),
+          Container(
+            height: 18,
+            child: Image.asset(
+              "assets/CheckIcon.png",
+              // color: Color.fromARGB(136, 8, 6, 6),
+            ),
+          ),
 
           SizedBox(
-            width: 10,
-          ),
-          Icon(
-            icnn,
-            color: Color.fromARGB(136, 8, 6, 6),
-          ),
+              // width: 10,
+              ),
+          // Icon(
+          //   icnn,
+          //   color: Color.fromARGB(136, 8, 6, 6),
+          //   // color: Colors.grey[400]
+          // ),
           SizedBox(
-            width: 20,
+            width: 15,
           ),
           Container(
             width: MediaQuery.of(context).size.width * .53,
