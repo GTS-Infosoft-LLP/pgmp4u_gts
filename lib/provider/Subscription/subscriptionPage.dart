@@ -195,7 +195,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 ),
                                 Center(
                                   child: Container(
-                                      height: MediaQuery.of(context).size.height * .30,
+                                      height: MediaQuery.of(context).size.height * .20,
                                       child: Icon(
                                         Icons.diamond,
                                         color: Colors.transparent,
@@ -207,6 +207,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                           Padding(
                             padding: const EdgeInsets.only(top: 40.0),
                             child: Container(
+                              height: MediaQuery.of(context).size.height * .37,
+                              // width: MediaQuery.of(context).size.width * .35,
                               child: Center(child: Image.asset("assets/diamond.png")),
                             ),
                           )
@@ -253,7 +255,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                           TextStyle(fontFamily: 'Roboto Bold', fontSize: 22, color: Color(0xff3643a3)),
                                     )),
                                     SizedBox(
-                                      height: 10,
+                                      height: 6,
                                     ),
                                     Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -337,8 +339,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                                 RichText(
                                                                   text: TextSpan(children: <TextSpan>[
                                                                     TextSpan(
-                                                                      text: mntVal + " " + mnth,
-                                                                      // text: subsPack,
+                                                                      // text: mntVal + " " + mnth,
+                                                                      text: subsPack,
                                                                       style: TextStyle(
                                                                           color: Colors.white,
                                                                           fontSize: 20.0,
