@@ -315,6 +315,7 @@ class _RandomPageState extends State<RandomPage> {
                           "OR",
                           style: TextStyle(
                             fontSize: 18,
+                            color: Colors.black,
                             fontFamily: 'Roboto Bold',
                           ),
                         )),
@@ -488,6 +489,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                         style: TextStyle(
                                                                             color: Color(0xff3643a3),
                                                                             fontSize: 18.0,
+                                                                            
                                                                             fontWeight: FontWeight.w600),
                                                                       )
                                                                     ]),

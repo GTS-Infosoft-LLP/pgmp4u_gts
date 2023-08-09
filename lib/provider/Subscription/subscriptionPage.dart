@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
 import 'package:pgmp4u/provider/Subscription/subscriptionProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../Screens/Profile/PaymentStatus.dart';
 import '../../Screens/Profile/paymentstripe2.dart';
@@ -27,9 +29,11 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
   String subsPack;
   String subsTime;
   String mnths = "Months";
+
+  String subTimeDur;
+
   int _value = -1;
-  var hw;
-  Color clr;
+
   LinearGradient liGrdint;
   @override
   void initState() {
@@ -38,8 +42,12 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     sp.setSelectedIval(2);
     sp.radioSelected = -1;
     sp.selectedIval = 2;
+    if (sp.durationPackData.isNotEmpty) {
+      sp.setSelectedRadioVal(0);
+    }
+
     print("sp.selectedIval====${sp.selectedIval}");
-    print("sp.SubscritionPackList[2].description======${sp.SubscritionPackList[2].description}");
+    // print("sp.SubscritionPackList[2].description======${sp.SubscritionPackList[0].description}");
 
     print("selevted sub type===${sp.selectedSubsType}");
     // hw = MediaQuery.of(context).size;
@@ -230,11 +238,11 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                     children: [
                       Consumer<SubscriptionProvider>(builder: (context, sp, child) {
                         if (sp.selectedIval == 0) {
-                          return planDescBox(context, "Silver Plan", 5);
+                          return planDescBox(context, "Silver Plan", sp.ftchList, sp.ftchList.length);
                         } else if (sp.selectedIval == 1) {
-                          return planDescBox(context, "Gold Plan", 3);
+                          return planDescBox(context, "Gold Plan", sp.ftchList, sp.ftchList.length);
                         } else if (sp.selectedIval == 2) {
-                          return planDescBox(context, "Platinum Plan", 3);
+                          return planDescBox(context, "Platinum Plan", sp.ftchList, sp.ftchList.length);
                         }
                       }),
                       // SizedBox(height: sp.selectedIval == 0 ? 15 : 0),
@@ -261,11 +269,17 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         mainAxisSize: MainAxisSize.min,
                                         children: List.generate(permiumbutton.length, (i) {
+                                          if (permiumbutton[i].type == 1) {
+                                            subsPack = "Silver";
+                                          } else if (permiumbutton[i].type == 2) {
+                                            subsPack = "Gold";
+                                          } else if (permiumbutton[i].type == 3) {
+                                            subsPack = "Platinum";
+                                          }
                                           if (i == 0) {
                                             mntVal = "1";
                                             mnth = "Month";
-                                            subsPack = "Silver";
-                                            clr = Colors.green[400];
+
                                             liGrdint = LinearGradient(
                                                 begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
@@ -274,8 +288,6 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                             mntVal = "3";
                                             mnth = "Months";
 
-                                            subsPack = "Gold";
-                                            clr = Colors.red[400];
                                             liGrdint = LinearGradient(
                                                 begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
@@ -284,8 +296,6 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                             mntVal = "12";
                                             mnth = "Months";
 
-                                            subsPack = "Platinum";
-                                            clr = Colors.amber[400];
                                             liGrdint = LinearGradient(
                                                 begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
@@ -446,7 +456,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                       direction: Axis.horizontal,
                                       children: [
                                         for (int i = 0;
-                                            i < 4;
+                                            i < sp.durationPackData.length;
                                             // permiumbutton.length;
 
                                             i++)
@@ -454,7 +464,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                             padding: const EdgeInsets.all(4.0),
                                             child: SizedBox(
                                               height: 36,
-                                              width: 80,
+                                              width: 81,
                                               child: ElevatedButton(
                                                 style: ButtonStyle(
                                                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -463,17 +473,26 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                     )),
                                                     backgroundColor: MaterialStateProperty.all<Color>(
                                                         i == sp.radioSelected ? Color(0xff3643a3) : Colors.white)),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    sp.setSelectedRadioVal(i);
-                                                  });
+                                                onPressed: () async {
+                                                  print("vaue of i::::   $i");
+                                                  sp.setSelectedRadioVal(i);
+                                                  sp.setSelectedIval(0);
+                                                  ProfileProvider pp = Provider.of(context, listen: false);
+                                                  pp.setSelectedContainer(0);
+                                                  await sp.setSelectedDurTimeQt(sp.durationPackData[i].durationType,
+                                                      sp.durationPackData[i].durationQuantity);
+
+                                                  CourseProvider cp = Provider.of(context, listen: false);
                                                 },
                                                 child: RichText(
                                                   textAlign: TextAlign.center,
                                                   text: TextSpan(children: <TextSpan>[
                                                     TextSpan(
-                                                      // text: permiumbutton[i].name ?? "",
-                                                      text: "6 Months",
+                                                      text: sp.durationPackData[i].durationType == 1
+                                                          ? sp.durationPackData[i].durationQuantity.toString() +
+                                                              " Months"
+                                                          : sp.durationPackData[i].durationQuantity.toString() +
+                                                              " Year",
                                                       style: TextStyle(
                                                           color: i == sp.radioSelected ? Colors.white : Colors.black,
                                                           fontSize: 10.0,
@@ -577,21 +596,31 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                     // }),
 
                                     SizedBox(
-                                        // height: 10,
-                                        ),
+                                      height: 10,
+                                    ),
 
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                      child: RichText(
-                                        textAlign: TextAlign.center,
-                                        text: TextSpan(children: <TextSpan>[
-                                          TextSpan(
-                                            text:
-                                                "In each of the plan you will be have complete Access to Mock Tests, PathFinders, Video Library, Domains and Flash Cards to Duration selected in Reading plan",
-                                            style: TextStyle(
-                                                color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w400),
-                                          )
-                                        ]),
+                                      child: Html(
+                                        // data: "",
+
+                                        data: sp.SubscritionPackList[sp.selectedIval].description.toString(),
+
+                                        onAnchorTap: (url, ctx, attributes, element) async {
+                                          print("anchor url : $url");
+
+                                          Uri uri = Uri.parse(url);
+                                          if (await canLaunchUrlString(url)) {
+                                            await launchUrlString(url, mode: LaunchMode.externalApplication);
+                                          } else {
+                                            GFToast.showToast(
+                                              "Can not launch this url",
+                                              context,
+                                              toastPosition: GFToastPosition.BOTTOM,
+                                            );
+                                          }
+                                        },
+                                        style: {},
                                       ),
                                     ),
                                   ],

@@ -307,8 +307,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                     ),
                                     Center(
                                         child: Text("No Data Found",
-                                            style: TextStyle(
-                                                fontSize: 18, color: _darkText, fontWeight: FontWeight.normal))),
+                                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal))),
                                   ],
                                 );
                         })

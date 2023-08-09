@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Widget customGreyRedRow(IconData icn, String txt, BuildContext context, int index) {
   IconData icnn;
+  print("index====$index");
   if (index == 0) {
     // icnn = FontAwesomeIcons.tableColumns;
     // icnn = FontAwesomeIcons.medal;
@@ -23,7 +24,7 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context, int inde
     icnn = FontAwesomeIcons.bookOpenReader;
   }
   return Padding(
-    padding: const EdgeInsets.only(bottom: 10.0),
+    padding: const EdgeInsets.only(top: 15),
     child: Container(
       width: MediaQuery.of(context).size.width * .85,
       child: Row(

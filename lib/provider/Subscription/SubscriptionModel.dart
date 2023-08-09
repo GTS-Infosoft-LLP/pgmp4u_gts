@@ -9,6 +9,10 @@ class SubscriptionDetails {
   List description;
   int status;
   int deleteStatus;
+  int durationType;
+  int durationQuantity;
+  String featureList;
+  String features;
 
   SubscriptionDetails.fromjson(Map<String, dynamic> json) {
     id = json['id'];
@@ -28,5 +32,19 @@ class SubscriptionDetails {
     type = json['type'];
     status = json['status'];
     deleteStatus = json['deleteStatus'];
+    featureList = json['featureList'];
+    features = json['features'];
+    durationType = json['durationType'];
+    durationQuantity = json['durationQuantity'];
+  }
+}
+
+class DurationDetail {
+  int durationType;
+  int durationQuantity;
+
+  DurationDetail.fromjson(Map<String, dynamic> json) {
+    durationType = json['durationType'];
+    durationQuantity = json['durationQuantity'];
   }
 }

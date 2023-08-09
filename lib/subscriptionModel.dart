@@ -11,3 +11,8 @@ class newButton {
   int type;
   newButton({this.name, this.type = 0, this.id = 0, this.amount = "£25.5"});
 }
+
+
+class subsDuration{
+  
+}

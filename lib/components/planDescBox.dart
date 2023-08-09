@@ -7,20 +7,12 @@ import 'package:provider/provider.dart';
 Widget planDescBox(
   BuildContext context,
   String planTyp,
+  List showList,
   int itmCnt,
 ) {
   SubscriptionProvider sp = Provider.of(context, listen: false);
 
-  List<String> showList = [];
-  if (planTyp == "Silver Plan") {
-    showList = sp.sliverList;
-  }
-  if (planTyp == "Gold Plan") {
-    showList = sp.GoldList;
-  }
-  if (planTyp == "Platinum Plan") {
-    showList = sp.platinumList;
-  }
+  print("itmCnt===$itmCnt");
 
   return Container(
     decoration: BoxDecoration(
@@ -30,22 +22,29 @@ Widget planDescBox(
     width: MediaQuery.of(context).size.width * 0.80,
     height: MediaQuery.of(context).size.height * 0.30,
     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Padding(
-        padding: const EdgeInsets.only(top: 15.0, left: 22),
-        child: Text(
-          planTyp,
-          style: TextStyle(
-            fontFamily: 'Roboto Bold',
-            fontSize: 22,
+      Container(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 15.0, left: 22),
+          child: Center(
+            child: Text(
+              planTyp,
+              style: TextStyle(
+                fontFamily: 'Roboto Bold',
+                fontSize: 22,
+              ),
+            ),
           ),
         ),
       ),
+      SizedBox(
+        height: 0.25,
+      ),
       Container(
-        
         height: MediaQuery.of(context).size.height * 0.25,
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: ListView.builder(
+                padding: EdgeInsets.all(0),
                 itemCount: itmCnt,
                 itemBuilder: (context, index) {
                   return customGreyRedRow(

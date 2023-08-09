@@ -25,7 +25,7 @@ class FlashDisplay extends StatefulWidget {
 class _FlashDisplayState extends State<FlashDisplay> {
   @override
   ResponseProvider responseProvider;
-
+  PageController _pageController = PageController(viewportFraction: 0.95);
   LinearGradient liGrdint;
   List<FlashCardDetails> flashTemp = [];
 
@@ -153,6 +153,7 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                     // color: Colors.amber,
                                     height: MediaQuery.of(context).size.height * .8,
                                     child: PageView.builder(
+                                        controller: _pageController,
                                         physics: BouncingScrollPhysics(),
                                         itemCount: storedFlash.length,
                                         itemBuilder: (context, index) {
@@ -179,7 +180,7 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                           }
 
                                           return Padding(
-                                            padding: const EdgeInsets.all(18.0),
+                                            padding: const EdgeInsets.only(top: 18.0, bottom: 18, left: 10, right: 10),
                                             child: Stack(
                                               children: [
                                                 Container(
@@ -254,16 +255,7 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                                         );
                                                                       }
                                                                     },
-                                                                    style: {
-                 
-       
-                                                                 
-
-                                                                     
-
-                                                                
-                                                                   
-                                                                    },
+                                                                    style: {},
                                                                   ),
                                                                 ),
                                                               ),

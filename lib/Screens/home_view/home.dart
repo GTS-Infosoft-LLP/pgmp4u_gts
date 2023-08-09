@@ -270,14 +270,18 @@ class _HomeViewState extends State<HomeView> {
                                                   if (storedCourse[index].isSubscribed == 0) {
                                                     pp.updateLoader(false);
                                                     SubscriptionProvider sp = Provider.of(context, listen: false);
-                                                    await sp.getSubscritionData(storedCourse[index].id);
+
+                                                    await sp.setSelectedDurTimeQt(0, 0);
+                                                    // await sp.getSubscritionData(storedCourse[index].id);
                                                     // Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
-                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => Subscriptionpg()));
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(builder: (context) => Subscriptionpg()));
                                                   } else {
                                                     pp.updateLoader(false);
                                                     courseProvider.getMasterData(storedCourse[index].id);
                                                     Future.delayed(const Duration(milliseconds: 100), () {
-                                                      Navigator.push(context,MaterialPageRoute(builder: (context) => MasterListPage()));
+                                                      Navigator.push(context,
+                                                          MaterialPageRoute(builder: (context) => MasterListPage()));
                                                     });
                                                   }
                                                   pp.updateLoader(false);
