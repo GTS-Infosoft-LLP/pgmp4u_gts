@@ -1,7 +1,7 @@
 List<newButton> permiumbutton = [
-  newButton(name: "Monthly", id: 1, amount: "£3.99 "),
-  newButton(name: "Quarterly", id: 2, amount: "£35.99"),
-  newButton(name: "Yearly", id: 3, amount: "£69.99"),
+  newButton(name: "Monthly", id: 1, amount: "\$250.00"),
+  newButton(name: "Quarterly", id: 2, amount: "\$350.00"),
+  newButton(name: "Yearly", id: 3, amount: "\$500.00"),
 ];
 
 class newButton {
@@ -12,7 +12,4 @@ class newButton {
   newButton({this.name, this.type = 0, this.id = 0, this.amount = "£25.5"});
 }
 
-
-class subsDuration{
-  
-}
+class subsDuration {}

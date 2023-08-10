@@ -137,9 +137,11 @@ class CourseProvider extends ChangeNotifier {
   }
 
   setSelectedMasterId(int val) {
-    selectedMasterId = val;
-    print("selectedMasterId===========$selectedMasterId");
-    notifyListeners();
+    Future.delayed(Duration.zero, () async {
+      selectedMasterId = val;
+      print("selectedMasterId===========$selectedMasterId");
+      notifyListeners();
+    });
   }
 
   setSelectedCourseId(int val) {
@@ -266,7 +268,6 @@ class CourseProvider extends ChangeNotifier {
         pptDataList.clear();
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse['success']=====${mapResponse['success']}");
-
         successValuePPT = mapResponse['success'];
         print("sucesssvalue======$successValuePPT");
         if (successValuePPT == false) {
@@ -502,14 +503,11 @@ class CourseProvider extends ChangeNotifier {
           }
 
           notifyListeners();
-
-         
         } else {
           updateFlashCateDataApiCall(false);
           print("status 400");
           flashCate = [];
           // HiveHandler.addFlashCateData(flashCate, id.toString());
-
           notifyListeners();
           return;
         }
@@ -559,12 +557,10 @@ class CourseProvider extends ChangeNotifier {
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
 
         List temp1 = mapResponse["data"];
-     
+
         videoCate = temp1.map((e) => VideoCateDetails.fromjson(e)).toList();
 
         updatevideoListApiCall(false);
-
-      
       } else {
         updatevideoListApiCall(false);
       }
@@ -588,7 +584,7 @@ class CourseProvider extends ChangeNotifier {
   List<int> enrolledId = [];
   Future<void> getCourse() async {
     updateGetCourseApiCalling(true);
-   
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -628,7 +624,6 @@ class CourseProvider extends ChangeNotifier {
             List<CourseDetails> res = HiveHandler.getCourseDataList();
 
             notifyListeners();
-    
           });
         } catch (e) {
           print("errorr===========>>>>>>$e");
@@ -636,7 +631,6 @@ class CourseProvider extends ChangeNotifier {
         updateGetCourseApiCalling(false);
 
         print("course lkengrtht=====${course.length}");
-     
       } else {
         print("status codeee====>>>>${response.statusCode}");
         course = [];
@@ -666,7 +660,6 @@ class CourseProvider extends ChangeNotifier {
       Uri.parse(GET_VIDEOS),
       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       body: json.encode(request),
-
     );
 
     print("response.statusCode===${response.statusCode}");
@@ -678,7 +671,6 @@ class CourseProvider extends ChangeNotifier {
     if (resStatus == 400) {
       Videos = [];
       videoPresent = 0;
-
       notifyListeners();
       return;
     }
@@ -737,7 +729,7 @@ class CourseProvider extends ChangeNotifier {
           successValueFlash = false;
           return;
         }
-   
+
         FlashCards = temp1.map((e) => FlashCardDetails.fromjson(e)).toList();
 
         print("FlashCards=========$FlashCards");
@@ -777,25 +769,18 @@ class CourseProvider extends ChangeNotifier {
         valOfSuccess = mapResponse['success'];
         print("valOfSuccess========>>$valOfSuccess");
         if (valOfSuccess == false) {
-          print("value is falseeeeeee");
           return;
         }
-
         List temp1 = mapResponse["data"]["list"];
- 
         testDetails = temp1.map((e) => TestDetails.fromjson(e)).toList();
-
         try {
           if (testDetails.isNotEmpty) {
-
             HiveHandler.setMockPercentdata(key: id.toString(), value: temp1);
           }
         } catch (e) {
           print("errororororor======$e");
         }
-
         notifyListeners();
-
         if (testDetails.isNotEmpty) {
           print("testDetails 0=== ${testDetails[0].testName}");
         }
@@ -837,27 +822,21 @@ class CourseProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         testData.clear();
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
-
         print("mapResponse===========$mapResponse");
         if (mapResponse["status"] == 200) {
           List temp1 = mapResponse["data"];
           print("temp list===$temp1");
           testData = temp1.map((e) => TestDataDetails.fromjson(e)).toList();
-
           try {
             HiveHandler.addTestMpData(jsonEncode(mapResponse["data"]), id.toString());
-
             Future.delayed(Duration(microseconds: 100), () {
               List<TestDataDetails> tempList = HiveHandler.getTestDataList(key: id.toString());
               testListTemp = HiveHandler.getTestDataList(key: id.toString());
-          
             });
           } catch (e) {
             print("errorr===========>>>>>>$e");
           }
-
           notifyListeners();
-
           if (testData.isNotEmpty) {
             print("testData 0=== ${testData[0].test_name}");
           }
@@ -899,11 +878,9 @@ class CourseProvider extends ChangeNotifier {
       if (resStatus == 400) {
         masterList = [];
         videoPresent = 0;
-
         notifyListeners();
         return;
       }
-
       print("val of vid present===$videoPresent");
 
       if (response.statusCode == 200) {
@@ -918,7 +895,6 @@ class CourseProvider extends ChangeNotifier {
   MockData mockData;
 
   Future apiCall(int selectedIdNew) async {
-  
     print("selectedIdNew==========$selectedIdNew");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -964,7 +940,6 @@ class CourseProvider extends ChangeNotifier {
   }
 
   bool showLoader;
-
 
   int selectedMokAtmptCnt;
 

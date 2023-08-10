@@ -49,7 +49,7 @@ class SubscriptionProvider extends ChangeNotifier {
   int selectedIval;
   setSelectedIval(int val) {
     print("new value of I====$val");
-    // print("PackList[$val].description====  ${SubscritionPackList[val].description}");
+
     Future.delayed(Duration.zero, () async {
       selectedIval = val;
       notifyListeners();
@@ -69,25 +69,23 @@ class SubscriptionProvider extends ChangeNotifier {
   List<SubscriptionDetails> SubscritionPackList = [];
 
   List<DurationDetail> durationPackData = [];
-  List<String> description = [];
 
   int selectedDurationTyp;
   int selectedDurationQt;
-  Future<void> setSelectedDurTimeQt(int type, int quntity) {
+  Future<void> setSelectedDurTimeQt(int type, int quntity, {int isFirtTime = 0}) {
     print("durationQuantity===$quntity");
     Future.delayed(Duration.zero, () async {
       selectedDurationTyp = type;
       selectedDurationQt = quntity;
-
       notifyListeners();
     }).then((value) {
       CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
-      getSubscritionData(cp.selectedCourseId);
+      getSubscritionData(cp.selectedCourseId).then(
+          (value) => isFirtTime == 1 ? setSelectedSubsId(permiumbutton[2].id) : setSelectedSubsId(permiumbutton[0].id));
     });
   }
 
   Future<void> getSubscritionData(int idCrs) async {
-    description = [];
     ftchList = [];
     print(">>>>>>>>>>>>>>getSubscritionData>>>>>>>>>>>>>>");
     // domainStatus = true;
@@ -147,7 +145,7 @@ class SubscriptionProvider extends ChangeNotifier {
         print("mapResponsemapResponse=====$mapResponse");
         print("mapResponse====${mapResponse['data']}");
         // description = mapResponse['description'];
-        print("description====$description");
+
         if (mapResponse['status'] == 400) {
           SubscritionPackList = [];
           print("SubscritionPackList=====$SubscritionPackList");
@@ -157,6 +155,7 @@ class SubscriptionProvider extends ChangeNotifier {
           List temp1 = mapResponse["data"]['list'];
           List temp2 = mapResponse["data"]['duration'];
           ftchList = mapResponse["data"]['featureList'];
+
           print("List of featuess====$ftchList");
           print("temp list===$temp1");
           SubscritionPackList = temp1.map((e) => SubscriptionDetails.fromjson(e)).toList();
@@ -174,7 +173,7 @@ class SubscriptionProvider extends ChangeNotifier {
                 id: SubscritionPackList[i].id,
                 type: SubscritionPackList[i].type));
           }
-          print("description====$description");
+
           print("permiumbutton=====$permiumbutton");
         }
       }
@@ -265,8 +264,12 @@ class SubscriptionProvider extends ChangeNotifier {
 
   var selectedSubsId;
   void setSelectedSubsId(int id) {
-    selectedSubsId = id;
-    notifyListeners();
+    print("vallllll$id");
+    Future.delayed(Duration.zero, () async {
+      selectedSubsId = id;
+      print("selectedSubsId********$selectedSubsId");
+      notifyListeners();
+    });
   }
 
   Future<void> cancelSubscription(
@@ -311,9 +314,6 @@ class SubscriptionProvider extends ChangeNotifier {
         print("");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse====$mapResponse");
-
-        // EasyLoading.showSuccess("Your Subscription Pack will be Expired at the end the Period.");
-
         if (mapResponse['success'] == true) {
           updateLoader(false);
           EasyLoading.showSuccess("Your Subscription Pack will be Expired at the end the Period.");
@@ -323,10 +323,6 @@ class SubscriptionProvider extends ChangeNotifier {
           EasyLoading.showSuccess("Plan for this course is already cancelled");
           return;
         }
-
-        // if (mapResponse["status"] == 200) {
-        //   print("respponse=== ${response.body}");
-        // }
       }
       print("respponse=== ${response.body}");
     } on Exception {

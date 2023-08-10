@@ -147,7 +147,6 @@ class _HomeViewState extends State<HomeView> {
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Roboto Bold',
                                 color: Colors.white,
-                                // fontStyle: FontStyle.italic,
                               ),
                             ),
                             Text(
@@ -157,7 +156,6 @@ class _HomeViewState extends State<HomeView> {
                                 fontSize: 17,
                                 fontFamily: 'Roboto Regular',
                                 color: Colors.white,
-                                // fontStyle: FontStyle.italic,
                               ),
                             ),
                           ],
@@ -221,7 +219,7 @@ class _HomeViewState extends State<HomeView> {
                       builder: (context, value, child) {
                         if (value.containsKey(HiveHandler.CourseKey)) {
                           List masterDataList = jsonDecode(value.get(HiveHandler.CourseKey));
-                          // print(">>> masterDataList :  $masterDataList");
+
                           storedCourse = masterDataList.map((e) => CourseDetails.fromjson(e)).toList();
                         } else {
                           storedCourse = [];
@@ -269,19 +267,19 @@ class _HomeViewState extends State<HomeView> {
 
                                                   if (storedCourse[index].isSubscribed == 0) {
                                                     pp.updateLoader(false);
+                                                    pp.setSelectedContainer(2);
                                                     SubscriptionProvider sp = Provider.of(context, listen: false);
-
-                                                    await sp.setSelectedDurTimeQt(0, 0);
+                                                    await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
+                                                    sp.setSelectedIval(2);
+                                                    sp.selectedIval = 2;
                                                     // await sp.getSubscritionData(storedCourse[index].id);
-                                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
                                                     Navigator.push(context,
                                                         MaterialPageRoute(builder: (context) => Subscriptionpg()));
                                                   } else {
                                                     pp.updateLoader(false);
                                                     courseProvider.getMasterData(storedCourse[index].id);
                                                     Future.delayed(const Duration(milliseconds: 100), () {
-                                                      Navigator.push(context,
-                                                          MaterialPageRoute(builder: (context) => MasterListPage()));
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => MasterListPage()));
                                                     });
                                                   }
                                                   pp.updateLoader(false);

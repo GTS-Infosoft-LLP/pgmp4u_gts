@@ -40,6 +40,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     ProfileProvider pp = Provider.of(context, listen: false);
     SubscriptionProvider sp = Provider.of(context, listen: false);
     sp.setSelectedIval(2);
+    print("permiumbutton[2].id${permiumbutton[2].id}");
+    sp.setSelectedSubsId(permiumbutton[2].id);
     sp.radioSelected = -1;
     sp.selectedIval = 2;
     if (sp.durationPackData.isNotEmpty) {
@@ -51,6 +53,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
 
     print("selevted sub type===${sp.selectedSubsType}");
     // hw = MediaQuery.of(context).size;
+    print("permiumbutton.length::::: ${permiumbutton.length}");
     if (permiumbutton.length == 3) {
       print("this is true");
       pp.setSelectedContainer(2);
@@ -77,6 +80,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
               child: InkWell(
                 onTap: () async {
                   SubscriptionProvider sp = Provider.of(context, listen: false);
+
                   sp.createSubscritionOrder(sp.selectedSubsId);
                   var token = await getTokenn();
                   ProfileProvider pp = Provider.of(context, listen: false);
@@ -477,6 +481,9 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                   print("vaue of i::::   $i");
                                                   sp.setSelectedRadioVal(i);
                                                   sp.setSelectedIval(0);
+                                                  sp.setSelectedSubsType(permiumbutton[0].type);
+                                                  print("");
+
                                                   ProfileProvider pp = Provider.of(context, listen: false);
                                                   pp.setSelectedContainer(0);
                                                   await sp.setSelectedDurTimeQt(sp.durationPackData[i].durationType,
@@ -603,9 +610,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                       padding: const EdgeInsets.symmetric(horizontal: 4.0),
                                       child: Html(
                                         // data: "",
-
                                         data: sp.SubscritionPackList[sp.selectedIval].description.toString(),
-
                                         onAnchorTap: (url, ctx, attributes, element) async {
                                           print("anchor url : $url");
 
@@ -620,7 +625,16 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                             );
                                           }
                                         },
-                                        style: {},
+                                        style: {
+                                          "body": Style(
+                                            padding: EdgeInsets.only(top: 5),
+                                            margin: EdgeInsets.zero,
+                                            color: Color(0xff000000),
+                                            textAlign: TextAlign.left,
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: FontSize(18),
+                                          )
+                                        },
                                       ),
                                     ),
                                   ],

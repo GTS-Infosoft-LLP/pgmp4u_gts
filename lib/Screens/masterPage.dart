@@ -189,9 +189,11 @@ class _MasterListPageState extends State<MasterListPage> {
                                                               courseProvider.changeonTap(0);
                                                               if (courseProvider.tapOnce == 0) {
                                                                 courseProvider.changeonTap(1);
-                                                                courseProvider.setSelectedMasterId(storedMaster[index].id);
+                                                                courseProvider
+                                                                    .setSelectedMasterId(storedMaster[index].id);
 
-                                                                print("id of the master list===${storedMaster[index].id}");
+                                                                print(
+                                                                    "id of the master list===${storedMaster[index].id}");
                                                                 String page = storedMaster[index].type;
 
                                                                 courseProvider
@@ -214,9 +216,11 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 if (page == "Domain") {
                                                                   ProfileProvider pp =
                                                                       Provider.of(context, listen: false);
-                                                                  DomainProvider dp = Provider.of(context, listen: false);
+                                                                  DomainProvider dp =
+                                                                      Provider.of(context, listen: false);
                                                                   pp.updateLoader(true);
-                                                                  await dp.getDomainData(storedMaster[index].id, cp.selectedCourseId);
+                                                                  await dp.getDomainData(
+                                                                      storedMaster[index].id, cp.selectedCourseId);
                                                                   var checkStat = dp.domainStatus;
                                                                   pp.updateLoader(false);
                                                                   print("====checkStat====$checkStat");
@@ -238,10 +242,8 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                                 domainName: storedMaster[index].name)));
                                                                   }
                                                                 }
-
                                                                 if (page == "Videos") {
                                                                   courseProvider.getVideoCate(storedMaster[index].id);
-
                                                                   Future.delayed(Duration(milliseconds: 0), () {
                                                                     Navigator.push(
                                                                         context,
@@ -250,7 +252,6 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                                 title: storedMaster[index].name)));
                                                                   });
                                                                 }
-
                                                                 if (page == "Support") {
                                                                   Navigator.push(
                                                                       context,
@@ -258,7 +259,6 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                           builder: (context) =>
                                                                               ApplicationSupportPage()));
                                                                 }
-
                                                                 if (page == "Flash Cards") {
                                                                   courseProvider.getFlashCate(storedMaster[index].id);
                                                                   Future.delayed(Duration(milliseconds: 0), () {
@@ -270,11 +270,9 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                                 )));
                                                                   });
                                                                 }
-
                                                                 if (page == "Mock Test") {
                                                                   courseProvider.getTest(
                                                                       storedMaster[index].id, "Mock Test");
-
                                                                   Future.delayed(Duration.zero, () {
                                                                     Navigator.push(
                                                                         context,
@@ -285,11 +283,9 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                                 )));
                                                                   });
                                                                 }
-
                                                                 if (page == "Practice Test") {
                                                                   courseProvider.getTest(
                                                                       storedMaster[index].id, "Practice Test");
-
                                                                   Future.delayed(Duration.zero, () async {
                                                                     Navigator.push(
                                                                         context,
@@ -301,7 +297,6 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                   });
                                                                 }
                                                               }
-                                                             
                                                             },
                                                             child: Row(
                                                               children: [
@@ -324,8 +319,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                           icon1,
                                                                           color: Colors.white,
                                                                         ),
-                                                                      )
-                                                                      ),
+                                                                      )),
                                                                 ),
                                                                 SizedBox(
                                                                   width: 15,

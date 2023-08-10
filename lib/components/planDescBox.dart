@@ -52,6 +52,7 @@ Widget planDescBox(
                       // sp.SubscritionPackList[sp.selectedIval].description[index] ?? "",
                       showList[index],
                       context,
+                      planTyp,
                       index);
                 })),
       ),
