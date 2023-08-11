@@ -278,7 +278,7 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                 Container(
                                                   // color: Colors.amber,
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
                                                       SizedBox(
@@ -286,10 +286,11 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                           ),
                                                       Container(
                                                           width: MediaQuery.of(context).size.width * .70,
-                                                          child: Center(
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(left: 8.0),
                                                             child: Text(
                                                               Taskop[index].questionOption,
-                                                                 maxLines: 5,
+                                                              maxLines: 5,
                                                             ),
                                                           )),
                                                       (selAns.length == ansRef.length &&

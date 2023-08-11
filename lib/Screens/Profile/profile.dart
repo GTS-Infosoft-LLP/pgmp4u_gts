@@ -931,8 +931,7 @@ class _ProfileState extends State<Profile> {
                                   onTap: () async {
                                     SharedPreferences prefs = await SharedPreferences.getInstance();
                                     await prefs.clear();
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+                                    Navigator.of(context).pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(bottom: 6),

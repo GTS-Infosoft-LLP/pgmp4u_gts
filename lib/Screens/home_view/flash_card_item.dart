@@ -288,8 +288,8 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                                       style: TextStyle(
                                                                           fontSize: 14,
                                                                           fontFamily: 'Roboto Medium',
-                                                                          // fontWeight: FontWeight.w600,
-                                                                          color: Colors.grey),
+                                                                          color: Colors.grey
+                                                                          ),
                                                                       maxLines: 2,
                                                                       overflow: TextOverflow.ellipsis,
                                                                     ),

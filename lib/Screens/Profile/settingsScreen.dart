@@ -173,8 +173,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                   'Name',
                                                   style: TextStyle(
                                                     fontFamily: 'Roboto Medium',
-                                                    fontSize:
-                                                        width * (18 / 420),
+                                                    fontSize: width * (18 / 420),
                                                     color: Colors.black,
                                                   ),
                                                 ),

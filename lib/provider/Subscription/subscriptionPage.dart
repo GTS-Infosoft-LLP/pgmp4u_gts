@@ -378,7 +378,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                                           style: TextStyle(
                                                                               color: Colors.white,
                                                                               fontSize: 15.0,
-                                                                              fontWeight: FontWeight.w600),
+                                                                              fontWeight: FontWeight.w600
+                                                                              ),
                                                                         )
                                                                       ]),
                                                                     ),
@@ -483,12 +484,10 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                   sp.setSelectedIval(0);
                                                   sp.setSelectedSubsType(permiumbutton[0].type);
                                                   print("");
-
                                                   ProfileProvider pp = Provider.of(context, listen: false);
                                                   pp.setSelectedContainer(0);
                                                   await sp.setSelectedDurTimeQt(sp.durationPackData[i].durationType,
                                                       sp.durationPackData[i].durationQuantity);
-
                                                   CourseProvider cp = Provider.of(context, listen: false);
                                                 },
                                                 child: RichText(
