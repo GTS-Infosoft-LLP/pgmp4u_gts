@@ -13,14 +13,15 @@ class ApplicationSupportPage extends StatefulWidget {
 
 class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
   String text1 =
-      "Please contact application support request to below email address. We strongly recommend to share full details of what you need. The support team will get back to you in 1-3 business days.";
-  //'''Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Epsum factorial non deposit quid pro quo hic escorol. ''';
-  // String text2 =
-  //     '''Olypian quarrels et gorilla congolium sic ad nauseum. Souvlaki ignitus carborundum e pluribus unum. Defacto lingo est igpay atinlay. Marquee selectus non provisio incongruous feline nolo contendre. ''';
-  // String text3 =
-  //     '''Quote meon an estimate et non interruptus stadium. Sic tempus fugit esperanto hiccup estrogen. Glorious baklava ex librus hup hey ad infinitum. ''';
-  // String text4 =
-  //     '''Non sequitur condominium facile et geranium incognito. Epsum factorial non deposit quid pro quo hic escorol. Marquee selectus non provisio incongruous feline nolo contendre Olypian quarrels et gorilla congolium sic ad nauseum. Souvlaki ignitus carborundum e pluribus unum. ''';
+      // "Please contact application support request to below email address. We strongly recommend to share full details of what you need. The support team will get back to you in 1-3 business days.";
+      ///  platinum
+      // "Part of this Application service you will receive the following support. These will assist to draft your application. Once your application is ready, you will send it to us for our review.\n\n1. A video - How to complete your application in your first attempt.\n2. Application Support Handbook\n3. Two examples\n4. Writable sample application\n5. Experience Calculator\n6. Mentor Connect ";
+
+      /// gold
+      // "Part of this Application service you will receive the following support. These will assist to draft your application. Once your application is ready, you will send it to us for our review.\n\n1. A video - How to complete your application in your first attempt.\n2. Application Support Handbook\n3. Two examples\n4. Writable sample application\n5. Experience Calculator\n\nUpgrade to Platinum to avail\n1. Session with Mentor\n2. Chat Support";
+
+      ///silver
+      "Part of this Application service you will receive the following support. These will assist to draft your application. Once your application is ready, you will send it to us for our review.\n\n1. A video - How to complete your application in your first attempt.\n\nUpgrade to Gold to avail\n1. Application Support Handbook\n2. Two examples\n3. Writable sample application\n4. Experience Calculator\n\nUpgrade to Platinum to avail\n1. Application Support Handbook\n2. Two examples\n3. Writable sample application\n4. Experience Calculator\n5. Session with Mentor\n6. Chat Support";
 
   Color _darkText = Color(0xff424b53);
   Color _lightText = Color(0xff424b53);
@@ -153,7 +154,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
 // await FlutterEmailSender.send(email);
                       },
                       child: Text(
-                        "Contact For Support",
+                        "Chat",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       )),
                 )

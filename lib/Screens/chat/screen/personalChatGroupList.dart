@@ -130,7 +130,6 @@ class _PersonalChatsState extends State<PersonalChats> {
                   itemCount: snapshot.data?.docs.length ?? 0,
                   itemBuilder: (context, index) {
                     PersonalGroupModel group = PersonalGroupModel.fromJson(snapshot.data?.docs[index].data());
-
                     return _userListTile(group);
                   });
             } else {
@@ -174,7 +173,7 @@ class _PersonalChatsState extends State<PersonalChats> {
               ),
             ),
             Spacer(),
-            Text(
+            Text( 
               "My Conversation",
               style: TextStyle(fontSize: 22, fontFamily: 'Roboto Medium', color: Colors.white),
             ),

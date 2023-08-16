@@ -38,6 +38,34 @@ class ProfileProvider extends ChangeNotifier {
     });
   }
 
+  // int selectedIval;
+  // setSelectedIval(int val) {
+  //   print("new value of I====$val");
+
+  //   Future.delayed(Duration.zero, () async {
+  //     selectedIval = val;
+  //     notifyListeners();
+  //   });
+  // }
+
+  // var selectedSubsId;
+  // void setSelectedSubsId(int id) {
+  //   print("vallllll$id");
+  //   Future.delayed(Duration.zero, () async {
+  //     selectedSubsId = id;
+  //     print("selectedSubsId********$selectedSubsId");
+  //     notifyListeners();
+  //   });
+  // }
+
+  // var selectedSubsType;
+  // void setSelectedSubsType(int id) {
+  //   Future.delayed(Duration.zero, () async {
+  //     selectedSubsType = id;
+  //     notifyListeners();
+  //   });
+  // }
+
   List<NotifiModel> NotificationData = [];
   List<NotifiModel> Announcements = [];
   List<NotifiModel> Notifications = [];

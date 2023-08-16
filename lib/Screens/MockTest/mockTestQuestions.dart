@@ -905,8 +905,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                                 margin: EdgeInsets.zero,
                                                                                 color: Color(0xff000000),
                                                                                 textAlign: TextAlign.left,
-                                                                                // maxLines: 7,
-                                                                                // textOverflow: TextOverflow.ellipsis,
+                                                                         
                                                                                 fontSize: FontSize(18),
                                                                               )
                                                                             },
@@ -1096,7 +1095,9 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
   Widget putOnDiscussionButton(BuildContext context) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
+        ProfileProvider pp = Provider.of(context, listen: false);
+        await pp.subscriptionStatus("Chat");
         questionLoader || context.read<ProfileProvider>().subscriptionApiCalling
             ? null
             : onTapOfPutOnDisscussion(

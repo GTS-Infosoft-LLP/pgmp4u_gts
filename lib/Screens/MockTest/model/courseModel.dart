@@ -26,8 +26,11 @@ class CourseDetails implements DropDownModel {
   @HiveField(9)
   int isChatSubscribed;
 
-@HiveField(10)
+  @HiveField(10)
   int isJoinNotification;
+
+  @HiveField(11)
+  int subscriptionType;
 
   CourseDetails();
 
@@ -42,7 +45,8 @@ class CourseDetails implements DropDownModel {
     deleteStatus = json["deleteStatus"];
     isSubscribed = json["isSubscribed"];
     isChatSubscribed = json["isChatSubscribed"];
-    isJoinNotification=json["isJoinNotification"];
+    isJoinNotification = json["isJoinNotification"];
+    subscriptionType = json["subscriptionType"];
   }
 
   @override

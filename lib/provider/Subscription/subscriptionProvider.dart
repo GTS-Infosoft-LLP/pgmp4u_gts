@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pgmp4u/Services/globalcontext.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
+import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
@@ -80,13 +81,36 @@ class SubscriptionProvider extends ChangeNotifier {
       notifyListeners();
     }).then((value) {
       CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
-      getSubscritionData(cp.selectedCourseId).then(
-          (value) => isFirtTime == 1 ? setSelectedSubsId(permiumbutton[2].id) : setSelectedSubsId(permiumbutton[0].id));
+      getSubscritionData(cp.selectedCourseId).then((value) {
+        ProfileProvider pp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
+
+        isFirtTime == 1 ? setSelectedSubsId(permiumbutton[2].id) : setSelectedSubsId(permiumbutton[0].id);
+      }
+
+          //  isFirtTime == 1 ? setSelectedSubsId(permiumbutton[2].id) : setSelectedSubsId(permiumbutton[0].id)
+
+          );
+    });
+  }
+
+  String desc1;
+  String desc2;
+  String desc3;
+
+  int SelectedPlanType;
+  setSelectedPlanType(int val) {
+    Future.delayed(Duration.zero, () async {
+      SelectedPlanType = val;
+      notifyListeners();
+    }).then((value) {
+      CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
+      getSubscritionData(cp.selectedCourseId);
     });
   }
 
   Future<void> getSubscritionData(int idCrs) async {
-    ftchList = [];
+    // updateLoader(true);
+    // ftchList = [];
     print(">>>>>>>>>>>>>>getSubscritionData>>>>>>>>>>>>>>");
     // domainStatus = true;
     updateSubsPackApiCall(true);
@@ -94,12 +118,17 @@ class SubscriptionProvider extends ChangeNotifier {
     print("idCrs=========>>>>>>>>>>>>>>>$idCrs");
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    print("issyue in this api....");
+    // print("issyue in this api....");
 
     String stringValue = prefs.getString('token');
 
     print("token valued===$stringValue");
-    var request = {"courseId": idCrs, "durationType": selectedDurationTyp, "durationQuantity": selectedDurationQt};
+    var request = {
+      "courseId": idCrs,
+      "durationType": selectedDurationTyp,
+      "durationQuantity": selectedDurationQt,
+      "type": SelectedPlanType
+    };
     print("requestt::::::$request");
     try {
       var response = await http.post(
@@ -125,6 +154,7 @@ class SubscriptionProvider extends ChangeNotifier {
         updateSubsPackApiCall(false);
         SubscritionPackList = [];
         ftchList = [];
+        updateLoader(false);
         return;
       }
 
@@ -133,10 +163,12 @@ class SubscriptionProvider extends ChangeNotifier {
         print("statussssssss");
         SubscritionPackList = [];
         ftchList = [];
+        updateLoader(false);
         notifyListeners();
         return;
       }
       if (response.statusCode == 200) {
+        updateLoader(false);
         ftchList = [];
         updateSubsPackApiCall(false);
         SubscritionPackList.clear();
@@ -164,6 +196,7 @@ class SubscriptionProvider extends ChangeNotifier {
           // description = mapResponse["data"]["description"];
           print("SubscritionPackList=========$SubscritionPackList");
           permiumbutton.clear();
+          desc1 = SubscritionPackList[0].description;
           for (int i = 0; i < SubscritionPackList.length; i++) {
             // description.add(SubscritionPackList[i].description.toString());
 
@@ -172,7 +205,16 @@ class SubscriptionProvider extends ChangeNotifier {
                 name: SubscritionPackList[i].title,
                 id: SubscritionPackList[i].id,
                 type: SubscritionPackList[i].type));
+
+            // if(i==0){
+            //   desc1= SubscritionPackList[i].description;
+            // }else if(i==1){
+
+            // }
           }
+          // for(){
+
+          // }
 
           print("permiumbutton=====$permiumbutton");
         }

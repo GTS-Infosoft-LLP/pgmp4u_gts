@@ -130,6 +130,8 @@ class _PracticeNewState extends State<PracticeNew> {
   bool questionLoader = false;
   onTapOfPutOnDisscussion(String question, List<String> optionQues) async {
     CourseProvider cp = Provider.of(context, listen: false);
+    ProfileProvider pp = Provider.of(context, listen: false);
+    print("pp.isChatSubscribed====${pp.isChatSubscribed}");
     if (!context.read<ProfileProvider>().isChatSubscribed) {
       setState(() => questionLoader = false);
 
@@ -764,9 +766,7 @@ class _PracticeNewState extends State<PracticeNew> {
 
                                                                                     Html(
                                                                                       data: op[index].questionOption,
-                                                                                      
                                                                                       style: {
-
                                                                                         "body": Style(
                                                                                           padding:
                                                                                               EdgeInsets.only(top: 5),
@@ -1215,7 +1215,9 @@ class _PracticeNewState extends State<PracticeNew> {
 
   Widget putOnDiscussionButton(List<Options> op, BuildContext context) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
+        ProfileProvider pp = Provider.of(context, listen: false);
+        await pp.subscriptionStatus("Chat");
         print("op le ${op.length}");
         List<String> otsList = getList(op);
         print("otsList le ${otsList.length}");

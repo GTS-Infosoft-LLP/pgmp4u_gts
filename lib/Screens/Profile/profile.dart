@@ -214,6 +214,18 @@ class _ProfileState extends State<Profile> {
                       toastPosition: GFToastPosition.BOTTOM,
                     );
                   }
+                  // if (isSub == false) {
+                  //   Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) => RandomPage(
+                  //                 index: 4,
+                  //                 price: context.read<ProfileProvider>().subsPrice.toString(),
+                  //                 categoryType: context.read<CourseProvider>().selectedMasterType,
+                  //                 categoryId: 0,
+                  //               )));
+                  // } else
+
                   CourseProvider cp = Provider.of(context, listen: false);
                   if (cp.course.isEmpty) {
                     GFToast.showToast(
@@ -288,13 +300,9 @@ class _ProfileState extends State<Profile> {
                                          ),
                                          Text(
                                            '  Profile',
-                                           style: TextStyle(
-                                               fontFamily: 'Roboto Medium',
-                                               fontSize: width * (16 / 420),
-                                               color: Colors.white,
+                                           style: TextStyle( fontFamily: 'Roboto Medium', fontSize: width * (16 / 420), color: Colors.white,
                                                letterSpacing: 0.3),
-                                         ),
-                                       ],
+                                         ),                                       ],
                                      ),
                                      Row(
                                        children: [
@@ -308,8 +316,7 @@ class _ProfileState extends State<Profile> {
                                            ),
                                          ),
                                          Icon(
-                                           Icons.notifications,
-                                           size: width * (24 / 420),
+                                           Icons.notifications, size: width * (24 / 420),
                                            color: Colors.white,
                                          ),
                                        ],
@@ -493,8 +500,7 @@ class _ProfileState extends State<Profile> {
                                                       style: TextStyle(
                                                           fontFamily: 'Roboto Medium',
                                                           color: Colors.white,
-                                                          fontSize: 10
-                                                          ),
+                                                          fontSize: 10),
                                                     ),
                                                   ],
                                                 ),
@@ -542,8 +548,7 @@ class _ProfileState extends State<Profile> {
                                                               style: TextStyle(
                                                                   fontFamily: 'Roboto Medium',
                                                                   color: Colors.white,
-                                                                  fontSize: 18
-                                                                  ),
+                                                                  fontSize: 18),
                                                             ),
                                                           ),
                                                         )
@@ -931,7 +936,8 @@ class _ProfileState extends State<Profile> {
                                   onTap: () async {
                                     SharedPreferences prefs = await SharedPreferences.getInstance();
                                     await prefs.clear();
-                                    Navigator.of(context).pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(bottom: 6),
@@ -1055,22 +1061,28 @@ class _ProfileState extends State<Profile> {
   void showNotifyOnOffPopup(bool val) {
     showDialog(
         barrierDismissible: false,
+        //insetPadding: EdgeInsets.all(10),
         context: context,
         builder: (context) => AlertDialog(
+              insetPadding: EdgeInsets.all(30),
               elevation: 20,
               backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0)),
               ),
-              title:
-                  Text(!val ? "Are you sure you want to disable notifications?" : "notifications enabled successfully",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'Roboto Medium',
-                        fontWeight: FontWeight.w200,
-                        color: Colors.black,
-                      )),
+              title: Container(
+                //color: Colors.amber,
+                width: MediaQuery.of(context).size.width * .95,
+                child: Text(
+                    !val ? "Are you sure you want to disable notifications?" : "Notifications enabled successfully",
+                    //textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'Roboto Medium',
+                      fontWeight: FontWeight.w200,
+                      color: Colors.black,
+                    )),
+              ),
               actions: [
                 !val
                     ? Row(
@@ -1153,27 +1165,30 @@ class _ProfileState extends State<Profile> {
                           pp.updateNotification();
                           Navigator.pop(context);
                         },
-                        child: Container(
-                          height: 35,
-                          width: MediaQuery.of(context).size.width * .75,
-                          // constraints: BoxConstraints(minWidth: 100),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                              gradient: LinearGradient(
-                                  colors: [
-                                    _colorfromhex("#3A47AD"),
-                                    _colorfromhex("#5163F3"),
-                                  ],
-                                  begin: const FractionalOffset(0.0, 0.0),
-                                  end: const FractionalOffset(1.0, 0.0),
-                                  stops: [0.0, 1.0],
-                                  tileMode: TileMode.clamp)),
-                          child: Center(
-                            child: Text(
-                              "Dismiss",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            height: 35,
+                            width: MediaQuery.of(context).size.width * .80,
+                            // constraints: BoxConstraints(minWidth: 100),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      _colorfromhex("#3A47AD"),
+                                      _colorfromhex("#5163F3"),
+                                    ],
+                                    begin: const FractionalOffset(0.0, 0.0),
+                                    end: const FractionalOffset(1.0, 0.0),
+                                    stops: [0.0, 1.0],
+                                    tileMode: TileMode.clamp)),
+                            child: Center(
+                              child: Text(
+                                "Dismiss",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
                           ),

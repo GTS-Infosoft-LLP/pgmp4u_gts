@@ -55,7 +55,15 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context, String p
   } else if (index == 6) {
     icnn = FontAwesomeIcons.bookOpenReader;
   } else if (index == 7) {
-    icnn = FontAwesomeIcons.bookOpenReader;
+    icnn = FontAwesomeIcons.artstation;
+  } else if (index == 8) {
+    icnn = FontAwesomeIcons.deezer;
+  } else if (index == 9) {
+    icnn = FontAwesomeIcons.renren;
+  } else if (index == 10) {
+    icnn = FontAwesomeIcons.xing;
+  } else if (index == 11) {
+    icnn = FontAwesomeIcons.accusoft;
   }
   return Padding(
     padding: const EdgeInsets.only(top: 15),

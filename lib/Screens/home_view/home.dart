@@ -269,8 +269,12 @@ class _HomeViewState extends State<HomeView> {
                                                     pp.updateLoader(false);
                                                     pp.setSelectedContainer(2);
                                                     SubscriptionProvider sp = Provider.of(context, listen: false);
+                                                    sp.SelectedPlanType = 3;
                                                     await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
                                                     sp.setSelectedIval(2);
+                                                    if (sp.durationPackData.isNotEmpty) {
+                                                      sp.setSelectedRadioVal(0);
+                                                    }
                                                     sp.selectedIval = 2;
                                                     // await sp.getSubscritionData(storedCourse[index].id);
                                                     Navigator.push(context,
@@ -279,7 +283,8 @@ class _HomeViewState extends State<HomeView> {
                                                     pp.updateLoader(false);
                                                     courseProvider.getMasterData(storedCourse[index].id);
                                                     Future.delayed(const Duration(milliseconds: 100), () {
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => MasterListPage()));
+                                                      Navigator.push(context,
+                                                          MaterialPageRoute(builder: (context) => MasterListPage()));
                                                     });
                                                   }
                                                   pp.updateLoader(false);
