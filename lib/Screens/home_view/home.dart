@@ -47,7 +47,7 @@ class _HomeViewState extends State<HomeView> {
     purchaseProvider.updateStatusNew();
 
     courseProvider.getCourse();
-
+    courseProvider.setFloatButton(1);
     super.initState();
   }
 
@@ -78,233 +78,447 @@ class _HomeViewState extends State<HomeView> {
 
     final double topHeight = 150;
 
-    return Stack(
-      children: [
-        ClipPath(
-          clipper: ShapeClipperMirrored(),
-          child: Container(
-            height: topHeight,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-            ),
-          ),
-        ),
-        SingleChildScrollView(
-          child: Consumer<CourseProvider>(builder: (context, cp, child) {
-            return Column(
-              children: [
-                SizedBox(
-                  height: topHeight - topHeight / 1.4,
-                ),
-
-                Container(
-                  height: MediaQuery.of(context).size.height * .32,
+    return Consumer<CourseProvider>(builder: (context, crp, child) {
+      return Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+        floatingActionButton: crp.showFloatButton == 1
+            ? Padding(
+                padding: const EdgeInsets.only(top: 0.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * .24,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(40.0),
-                      // bottomLeft: Radius.circular(40.0)
-                    ),
-                    gradient: LinearGradient(
-                        colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
-                        begin: const FractionalOffset(0.0, 0.0),
-                        end: const FractionalOffset(1.0, 0.0),
-                        stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
                   ),
+                  width: MediaQuery.of(context).size.width * .95,
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            "Hey, " + "${user.name}",
-                            style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold),
-                          ),
-                          CircularCachedNetworkImage(
-                            imageUrl: user.image,
-                            size: (topHeight / 4) * 2,
-                            borderColor: Colors.white,
-                            borderWidth: 0,
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 25,
+                        height: 20,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 32.0, right: 20),
-                        child: Column(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Row(
                           children: [
-                            Text(
-                              "Over 95% of app users reported High Scores \n",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Roboto Bold',
-                                color: Colors.white,
+                            CircleAvatar(
+                              radius: 24,
+                              backgroundColor: Colors.black,
+                              child: Container(
+                                height: 45,
+                                child: Image.asset(
+                                  "assets/userIcon.png",
+                                ),
                               ),
                             ),
-                            Text(
-                              "Be one of them ! Get Started NOW to boost your Knowledge!",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontFamily: 'Roboto Regular',
-                                color: Colors.white,
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * .75,
+                              child: Text(
+                                "Over 95% of app users reported High Scores. Be one of them ! Get Started Now to boost your Knowledge!",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontFamily: 'Roboto Medium',
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              crp.setFloatButton(0);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 221, 221, 221),
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                              height: 45.2,
+                              width: MediaQuery.of(context).size.width * .46,
+                              child: Center(
+                                  child: Text(
+                                "Close",
+                                style: TextStyle(fontSize: 17),
+                              )),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Subscriptionpg(
+                                            showDrpDown: 1,
+                                          )));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 221, 221, 221),
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                              height: 45.2,
+                              width: MediaQuery.of(context).size.width * .46,
+                              child: Center(
+                                  child: Text(
+                                "See Portfolios",
+                                style: TextStyle(fontSize: 17),
+                              )),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 4.6,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                        child: InkWell(
+                          onTap: () async {
+                            ProfileProvider pp = Provider.of(context, listen: false);
+
+                            CourseProvider crs = Provider.of(context, listen: false);
+                            pp.setSelectedContainer(2);
+                            SubscriptionProvider sp = Provider.of(context, listen: false);
+                            sp.SelectedPlanType = 3;
+                            await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
+                            sp.setSelectedIval(2);
+                            if (sp.durationPackData.isNotEmpty) {
+                              // sp.setSelectedRadioVal(0);
+                            }
+                            sp.selectedIval = 2;
+                            if (crs.course.isNotEmpty) {
+                              crs.setSelectedCourseId(crs.course[0].id);
+                            }
+
+                            Future.delayed(Duration(microseconds: 100), () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Subscriptionpg(
+                                            showDrpDown: 1,
+                                            showFreeTrial: 1,
+                                          )));
+                            });
+                          },
+                          child: Container(
+                            height: 61.3,
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 5, 0, 0),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: MediaQuery.of(context).size.width * .95,
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Container(
+                                  height: 34,
+                                  child: Image.asset(
+                                    "assets/flagIcon.png",
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      "Make the most of Genius",
+                                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.green),
+                                    ),
+                                    Text(
+                                      "Start with free trial for 3 days",
+                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                                new Spacer(),
+
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 18.0),
+                                  child: Icon(
+                                    Icons.east,
+                                    size: 26,
+                                    color: Colors.green,
+                                  ),
+                                )
+                                // Center(
+                                //     child: Text(
+                                //   "Make the most of Genius\n Start with free trial for 3 days",
+                                //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                                // )),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.all(20),
-                //   child: Container(
-                //     child: Center(
-                //       child: Column(mainAxisSize: MainAxisSize.min, children: [
-                //         CircularCachedNetworkImage(
-                //           imageUrl: user.image,
-                //           size: (topHeight / 2) * 2,
-                //           borderColor: Colors.white,
-                //         ),
-                //         SizedBox(
-                //           height: 5,
-                //         ),
-                //         Text(
-                //           "Hey, " + "${user.name}",
-                //           style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),
-                //         ),
-                //         SizedBox(
-                //           height: 10,
-                //         ),
-                //       ]),
-                //     ),
-                //   ),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.all(Radius.circular(45)),
-                //       gradient: LinearGradient(
-                //           begin: Alignment.topLeft,
-                //           end: Alignment.bottomRight,
-                //           colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-                //     ),
-                //     child: Padding(
-                //       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                //       child: Text(
-                //         "Over 90% of Students who use this app reported High Scores \nYou can be one of them NOW !\nGet Started NOW to boost your Knowledge !",
-                //         textAlign: TextAlign.center,
-                //         style: TextStyle(
-                //           fontSize: 18,
-                //           fontFamily: 'Roboto Bold',
-                //           color: Colors.white,
-                //           // fontStyle: FontStyle.italic,
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                Container(
-                  child: ValueListenableBuilder<Box<String>>(
-                      valueListenable: HiveHandler.getCourseListener(),
-                      builder: (context, value, child) {
-                        if (value.containsKey(HiveHandler.CourseKey)) {
-                          List masterDataList = jsonDecode(value.get(HiveHandler.CourseKey));
-
-                          storedCourse = masterDataList.map((e) => CourseDetails.fromjson(e)).toList();
-                        } else {
-                          storedCourse = [];
-                        }
-
-                        // print("storedMaster========================$storedCourse");
-
-                        if (storedCourse == null) {
-                          storedCourse = [];
-                        }
-
-                        return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
-                          return courseProvider.getCourseApiCalling && storedCourse.isEmpty
-                              ? Container(
-                                  height: MediaQuery.of(context).size.height * .55,
-                                  child: Center(child: CircularProgressIndicator.adaptive()))
-                              : storedCourse.isEmpty
-                                  ? Center(
-                                      child: Container(
-                                          height: MediaQuery.of(context).size.height * .35,
-                                          child: Center(child: Text("No Data Found"))))
-                                  : Container(
-                                      height: MediaQuery.of(context).size.height * .58,
-                                      child: ListView.builder(
-                                          itemCount: storedCourse.length,
-                                          itemBuilder: (context, index) {
-                                            if (index % 4 == 0) {
-                                              clr = Color(0xff3F9FC9);
-                                            } else if (index % 3 == 0) {
-                                              clr = Color(0xff3FC964);
-                                            } else if (index % 2 == 0) {
-                                              clr = Color(0xffDE682B);
-                                            } else {
-                                              clr = Color(0xffC93F7F);
-                                            }
-                                            return Padding(
-                                              padding: const EdgeInsets.only(bottom: 20),
-                                              child: InkWell(
-                                                onTap: () async {
-                                                  ProfileProvider pp = Provider.of(context, listen: false);
-                                                  pp.updateLoader(true);
-                                                  courseProvider.setSelectedCourseId(storedCourse[index].id);
-                                                  courseProvider.setSelectedCourseName(storedCourse[index].course);
-                                                  courseProvider.setSelectedCourseLable(storedCourse[index].lable);
-
-                                                  if (storedCourse[index].isSubscribed == 0) {
-                                                    pp.updateLoader(false);
-                                                    pp.setSelectedContainer(2);
-                                                    SubscriptionProvider sp = Provider.of(context, listen: false);
-                                                    sp.SelectedPlanType = 3;
-                                                    await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
-                                                    sp.setSelectedIval(2);
-                                                    if (sp.durationPackData.isNotEmpty) {
-                                                      sp.setSelectedRadioVal(0);
-                                                    }
-                                                    sp.selectedIval = 2;
-                                                    // await sp.getSubscritionData(storedCourse[index].id);
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(builder: (context) => Subscriptionpg()));
-                                                  } else {
-                                                    pp.updateLoader(false);
-                                                    courseProvider.getMasterData(storedCourse[index].id);
-                                                    Future.delayed(const Duration(milliseconds: 100), () {
-                                                      Navigator.push(context,
-                                                          MaterialPageRoute(builder: (context) => MasterListPage()));
-                                                    });
-                                                  }
-                                                  pp.updateLoader(false);
-                                                },
-                                                child: HomeListTile(clr, context, storedCourse[index]),
-                                              ),
-                                            );
-                                          }));
-                        });
-                      }),
+              )
+            : SizedBox(),
+        body: Stack(
+          children: [
+            ClipPath(
+              clipper: ShapeClipperMirrored(),
+              child: Container(
+                height: topHeight,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xff3643a3), Color(0xff5468ff)]),
                 ),
-                SizedBox(
-                  height: 10,
-                )
-              ],
-            );
-          }),
-        )
-      ],
-    );
+              ),
+            ),
+            SingleChildScrollView(
+              child: Consumer<CourseProvider>(builder: (context, cp, child) {
+                return Stack(
+                  children: [
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: topHeight - topHeight / 1.4,
+                        ),
+
+                        Container(
+                          height: MediaQuery.of(context).size.height * .32,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(40.0),
+                              // bottomLeft: Radius.circular(40.0)
+                            ),
+                            gradient: LinearGradient(
+                                colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
+                                begin: const FractionalOffset(0.0, 0.0),
+                                end: const FractionalOffset(1.0, 0.0),
+                                stops: [0.0, 1.0],
+                                tileMode: TileMode.clamp),
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    "Hey, " + "${user.name}",
+                                    style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold),
+                                  ),
+                                  CircularCachedNetworkImage(
+                                    imageUrl: user.image,
+                                    size: (topHeight / 4) * 2,
+                                    borderColor: Colors.white,
+                                    borderWidth: 0,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 32.0, right: 20),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "Over 95% of app users reported High Scores \n",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Roboto Bold',
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    cp.showFloatButton == 0
+                                        ? Text(
+                                            "Be one of them ! Get Started NOW to boost your Knowledge!",
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                              fontFamily: 'Roboto Regular',
+                                              color: Colors.white,
+                                            ),
+                                          )
+                                        : Text(""),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(20),
+                        //   child: Container(
+                        //     child: Center(
+                        //       child: Column(mainAxisSize: MainAxisSize.min, children: [
+                        //         CircularCachedNetworkImage(
+                        //           imageUrl: user.image,
+                        //           size: (topHeight / 2) * 2,
+                        //           borderColor: Colors.white,
+                        //         ),
+                        //         SizedBox(
+                        //           height: 5,
+                        //         ),
+                        //         Text(
+                        //           "Hey, " + "${user.name}",
+                        //           style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),
+                        //         ),
+                        //         SizedBox(
+                        //           height: 10,
+                        //         ),
+                        //       ]),
+                        //     ),
+                        //   ),
+                        // ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        //   child: Container(
+                        //     decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.all(Radius.circular(45)),
+                        //       gradient: LinearGradient(
+                        //           begin: Alignment.topLeft,
+                        //           end: Alignment.bottomRight,
+                        //           colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                        //     ),
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        //       child: Text(
+                        //         "Over 90% of Students who use this app reported High Scores \nYou can be one of them NOW !\nGet Started NOW to boost your Knowledge !",
+                        //         textAlign: TextAlign.center,
+                        //         style: TextStyle(
+                        //           fontSize: 18,
+                        //           fontFamily: 'Roboto Bold',
+                        //           color: Colors.white,
+                        //           // fontStyle: FontStyle.italic,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        Container(
+                          child: ValueListenableBuilder<Box<String>>(
+                              valueListenable: HiveHandler.getCourseListener(),
+                              builder: (context, value, child) {
+                                if (value.containsKey(HiveHandler.CourseKey)) {
+                                  List masterDataList = jsonDecode(value.get(HiveHandler.CourseKey));
+
+                                  storedCourse = masterDataList.map((e) => CourseDetails.fromjson(e)).toList();
+                                } else {
+                                  storedCourse = [];
+                                }
+
+                                // print("storedMaster========================$storedCourse");
+
+                                if (storedCourse == null) {
+                                  storedCourse = [];
+                                }
+
+                                return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
+                                  return courseProvider.getCourseApiCalling && storedCourse.isEmpty
+                                      ? Container(
+                                          height: MediaQuery.of(context).size.height * .55,
+                                          child: Center(child: CircularProgressIndicator.adaptive()))
+                                      : storedCourse.isEmpty
+                                          ? Center(
+                                              child: Container(
+                                                  height: MediaQuery.of(context).size.height * .35,
+                                                  child: Center(child: Text("No Data Found"))))
+                                          : Container(
+                                              height: MediaQuery.of(context).size.height * .58,
+                                              child: ListView.builder(
+                                                  itemCount: storedCourse.length,
+                                                  itemBuilder: (context, index) {
+                                                    if (index % 4 == 0) {
+                                                      clr = Color(0xff3F9FC9);
+                                                    } else if (index % 3 == 0) {
+                                                      clr = Color(0xff3FC964);
+                                                    } else if (index % 2 == 0) {
+                                                      clr = Color(0xffDE682B);
+                                                    } else {
+                                                      clr = Color(0xffC93F7F);
+                                                    }
+                                                    return Padding(
+                                                      padding: const EdgeInsets.only(bottom: 20),
+                                                      child: InkWell(
+                                                        onTap: () async {
+                                                          courseProvider.setSelectedPlanType(
+                                                              storedCourse[index].subscriptionType);
+                                                          ProfileProvider pp = Provider.of(context, listen: false);
+                                                          pp.updateLoader(true);
+                                                          courseProvider.setSelectedCourseId(storedCourse[index].id);
+                                                          courseProvider
+                                                              .setSelectedCourseName(storedCourse[index].course);
+                                                          courseProvider
+                                                              .setSelectedCourseLable(storedCourse[index].lable);
+
+                                                          if (storedCourse[index].isSubscribed == 0) {
+                                                            pp.updateLoader(false);
+                                                            pp.setSelectedContainer(2);
+                                                            SubscriptionProvider sp =
+                                                                Provider.of(context, listen: false);
+                                                            sp.SelectedPlanType = 3;
+                                                            await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
+                                                            sp.setSelectedIval(2);
+                                                            if (sp.durationPackData.isNotEmpty) {
+                                                              sp.setSelectedRadioVal(0);
+                                                            }
+                                                            sp.selectedIval = 2;
+                                                            // await sp.getSubscritionData(storedCourse[index].id);
+
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => Subscriptionpg()));
+                                                          } else {
+                                                            pp.updateLoader(false);
+                                                            courseProvider.getMasterData(storedCourse[index].id);
+                                                            Future.delayed(const Duration(milliseconds: 100), () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) => MasterListPage()));
+                                                            });
+                                                          }
+                                                          pp.updateLoader(false);
+                                                        },
+                                                        child: HomeListTile(clr, context, storedCourse[index]),
+                                                      ),
+                                                    );
+                                                  }));
+                                });
+                              }),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        )
+                      ],
+                    ),
+                  ],
+                );
+              }),
+            )
+          ],
+        ),
+      );
+    });
   }
 
   Future<void> _getData() async {

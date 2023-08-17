@@ -108,12 +108,69 @@ class SubscriptionProvider extends ChangeNotifier {
     });
   }
 
+  Future<void> freeSubscription(int idCrs) async {
+    updateLoader(true);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // print("issyue in this api....");
+
+    String stringValue = prefs.getString('token');
+
+    print("token valued===$stringValue");
+    var request = {
+      "courseId": idCrs,
+    };
+    print("requestt::::::$request");
+    try {
+      var response = await http.post(
+        Uri.parse(FREE_SUBSCRIPTION),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        body: json.encode(request),
+      );
+
+      print("response.statusCode===${response.body}");
+
+      print("response.statusCode===${response.statusCode}");
+      var resDDo = json.decode(response.body);
+      var resStatus = (resDDo["status"]);
+      // (resDDo["data"]);
+      print("check data=====${resDDo["data"]}");
+
+      print("satusss====${resDDo["success"]}");
+      if (resDDo["success"] == false) {
+        return;
+      }
+      if (response.statusCode == 400) {
+        print("statussssssss");
+
+        updateLoader(false);
+        notifyListeners();
+        return;
+      }
+      if (response.statusCode == 200) {
+        updateLoader(false);
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+        print("mapResponsemapResponse=====$mapResponse");
+        print("mapResponse====${mapResponse['data']}");
+
+        if (mapResponse['status'] == 400) {
+          return;
+        }
+        if (mapResponse["success"] == true) {}
+      }
+    } catch (e) {
+      print("error======$e");
+      updateLoader(false);
+    }
+  }
+
   Future<void> getSubscritionData(int idCrs) async {
     // updateLoader(true);
     // ftchList = [];
     print(">>>>>>>>>>>>>>getSubscritionData>>>>>>>>>>>>>>");
     // domainStatus = true;
     updateSubsPackApiCall(true);
+    updateLoader(true);
     SubscritionPackList = [];
     print("idCrs=========>>>>>>>>>>>>>>>$idCrs");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -152,6 +209,7 @@ class SubscriptionProvider extends ChangeNotifier {
 
       if (resDDo["success"] == false) {
         updateSubsPackApiCall(false);
+        updateLoader(false);
         SubscritionPackList = [];
         ftchList = [];
         updateLoader(false);
@@ -205,16 +263,7 @@ class SubscriptionProvider extends ChangeNotifier {
                 name: SubscritionPackList[i].title,
                 id: SubscritionPackList[i].id,
                 type: SubscritionPackList[i].type));
-
-            // if(i==0){
-            //   desc1= SubscritionPackList[i].description;
-            // }else if(i==1){
-
-            // }
           }
-          // for(){
-
-          // }
 
           print("permiumbutton=====$permiumbutton");
         }

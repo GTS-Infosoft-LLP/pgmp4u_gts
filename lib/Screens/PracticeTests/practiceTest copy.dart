@@ -16,8 +16,7 @@ class PracticeTestCopy extends StatefulWidget {
   });
 
   @override
-  _PracticeTestCopyState createState() =>
-      _PracticeTestCopyState(selectedIdNew: this.selectedId);
+  _PracticeTestCopyState createState() => _PracticeTestCopyState(selectedIdNew: this.selectedId);
 }
 
 class _PracticeTestCopyState extends State<PracticeTestCopy> {
@@ -58,8 +57,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
   }
 
   Future callApi() async {
-    await practiceProvider.apiCall(
-        categoryProvider.subCategoryId, categoryProvider.type);
+    await practiceProvider.apiCall(categoryProvider.subCategoryId, categoryProvider.type);
   }
 
   Future apiCall2() async {
@@ -67,10 +65,8 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
     String stringValue = prefs.getString('token');
     print(stringValue);
     http.Response response; //api/MockTestQuestions/124
-    response = await http.get(Uri.parse(REVIEWS_MOCK_TEST + "/22/4"), headers: {
-      'Content-Type': 'application/json',
-      'Authorization': stringValue
-    });
+    response = await http.get(Uri.parse(REVIEWS_MOCK_TEST + "/22/4"),
+        headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
 
     if (response.statusCode == 200) {
       print(convert.jsonDecode(response.body));
@@ -120,9 +116,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                   child: Column(
                     children: [
                       Container(
-                        height: SizerUtil.deviceType == DeviceType.mobile
-                            ? 195
-                            : 250,
+                        height: SizerUtil.deviceType == DeviceType.mobile ? 195 : 250,
                         width: width,
                         decoration: BoxDecoration(
                           image: DecorationImage(
@@ -132,9 +126,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                         ),
                         child: Container(
                           margin: EdgeInsets.only(
-                              left: width * (20 / 420),
-                              right: width * (20 / 420),
-                              top: height * (50 / 800)),
+                              left: width * (20 / 420), right: width * (20 / 420), top: height * (50 / 800)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,9 +142,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                                     ),
                                   ),
                                   Text(
-                                    arguments != null
-                                        ? '  Review'
-                                        : '  Practice Questions',
+                                    arguments != null ? '  Review' : '  Practice Questions',
                                     style: TextStyle(
                                         fontFamily: 'Roboto Medium',
                                         fontSize: width * (18 / 420),
@@ -168,8 +158,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                       data.practiceApiLoader
                           ? Container(
                               child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      _colorfromhex("#4849DF"))))
+                                  valueColor: AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF"))))
                           : data.questionsList != null
                               ? Expanded(
                                   // width: width,
@@ -179,14 +168,11 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                                       itemCount: data.questionsList.length,
                                       onPageChanged: (index) {
                                         print("index====>>$index");
-                                        print(
-                                            "currentIndex ====>>$currentIndex");
+                                        print("currentIndex ====>>$currentIndex");
                                         if (currentIndex < index) {
-                                          if (data.questionsList.length - 1 >
-                                              _quetionNo) {
+                                          if (data.questionsList.length - 1 > _quetionNo) {
                                             setState(() {
-                                              if (_quetionNo <
-                                                  data.questionsList.length) {
+                                              if (_quetionNo < data.questionsList.length) {
                                                 _quetionNo = _quetionNo + 1;
                                               }
                                               selectedAnswer = null;
@@ -219,15 +205,12 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                                                     left: width * (29 / 420),
                                                     right: width * (29 / 420),
                                                     top: height * (23 / 800),
-                                                    bottom:
-                                                        height * (23 / 800)),
+                                                    bottom: height * (23 / 800)),
                                                 color: Colors.white,
                                                 child: Column(
                                                   children: [
                                                     Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         _quetionNo != 0
                                                             ? GestureDetector(
@@ -235,163 +218,122 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                                                                   setState(() {
                                                                     _quetionNo--;
 
-                                                                    selectedAnswer =
-                                                                        null;
-                                                                    realAnswer =
-                                                                        null;
+                                                                    selectedAnswer = null;
+                                                                    realAnswer = null;
                                                                   })
                                                                 },
                                                                 child: Icon(
                                                                   Icons.west,
-                                                                  size: width *
-                                                                      (30 /
-                                                                          420),
-                                                                  color: Colors
-                                                                      .black,
+                                                                  size: width * (30 / 420),
+                                                                  color: Colors.black,
                                                                 ),
                                                               )
                                                             : Container(),
                                                         Text(
                                                           'QUESTION ${_quetionNo + 1}',
                                                           style: TextStyle(
-                                                            fontFamily:
-                                                                'Roboto Regular',
-                                                            fontSize: width *
-                                                                (16 / 420),
+                                                            fontFamily: 'Roboto Regular',
+                                                            fontSize: width * (16 / 420),
                                                             color: Colors.black,
                                                           ),
                                                         ),
-                                                        data.questionsList
-                                                                        .length -
-                                                                    1 >
-                                                                _quetionNo
+                                                        data.questionsList.length - 1 > _quetionNo
                                                             ? GestureDetector(
                                                                 onTap: () => {
                                                                   setState(() {
-                                                                    if (_quetionNo <
-                                                                        data.questionsList
-                                                                            .length) {
-                                                                      _quetionNo =
-                                                                          _quetionNo +
-                                                                              1;
+                                                                    if (_quetionNo < data.questionsList.length) {
+                                                                      _quetionNo = _quetionNo + 1;
                                                                     }
-                                                                    selectedAnswer =
-                                                                        null;
-                                                                    realAnswer =
-                                                                        null;
+                                                                    selectedAnswer = null;
+                                                                    realAnswer = null;
                                                                   }),
-                                                                  print(
-                                                                      _quetionNo)
+                                                                  print(_quetionNo)
                                                                 },
                                                                 child: Icon(
                                                                   Icons.east,
-                                                                  size: width *
-                                                                      (30 /
-                                                                          420),
-                                                                  color: Colors
-                                                                      .black,
+                                                                  size: width * (30 / 420),
+                                                                  color: Colors.black,
                                                                 ),
                                                               )
                                                             : Container(),
                                                       ],
                                                     ),
                                                     Container(
-                                                      margin: EdgeInsets.only(
-                                                          top: height *
-                                                              (15 / 800)),
+                                                      margin: EdgeInsets.only(top: height * (15 / 800)),
                                                       child: Text(
-                                                        data.questionsList !=
-                                                                null
-                                                            ? data
-                                                                .questionsList[
-                                                                    _quetionNo]
-                                                                .questions
+                                                        data.questionsList != null
+                                                            ? data.questionsList[_quetionNo].questions
                                                             : '',
                                                         style: TextStyle(
-                                                          fontFamily:
-                                                              'Roboto Regular',
-                                                          fontSize: width *
-                                                              (15 / 420),
+                                                          fontFamily: 'Roboto Regular',
+                                                          fontSize: width * (15 / 420),
                                                           color: Colors.black,
                                                           height: 1.7,
                                                         ),
                                                       ),
                                                     ),
                                                     Column(
-                                                      children: data
-                                                          .questionsList[
-                                                              _quetionNo]
-                                                          .optionsList
+                                                      children: data.questionsList[_quetionNo].optionsList
                                                           .map<Widget>((title) {
-                                                        var index = data
-                                                            .questionsList[
-                                                                _quetionNo]
-                                                            .optionsList
-                                                            .indexOf(title);
+                                                        var index =
+                                                            data.questionsList[_quetionNo].optionsList.indexOf(title);
                                                         return GestureDetector(
                                                           onTap: () => {
                                                             setState(() {
-                                                              selectedAnswer =
-                                                                  title.id;
-                                                              realAnswer = data
-                                                                  .questionsList[
-                                                                      _quetionNo]
-                                                                  .rightAnswer;
+                                                              selectedAnswer = title.id;
+                                                              realAnswer = data.questionsList[_quetionNo].rightAnswer;
                                                             })
                                                           },
                                                           child: Container(
-                                                            color: title.id ==
-                                                                        selectedAnswer &&
+                                                            color: title.id == selectedAnswer &&
                                                                     data.questionsList[_quetionNo].rightAnswer ==
                                                                         selectedAnswer
-                                                                ? _colorfromhex(
-                                                                    "#E6F7E7")
-                                                                : title.id ==
-                                                                            selectedAnswer &&
+                                                                ? _colorfromhex("#E6F7E7")
+                                                                : title.id == selectedAnswer &&
                                                                         data.questionsList[_quetionNo].rightAnswer !=
                                                                             selectedAnswer
-                                                                    ? _colorfromhex(
-                                                                        "#FFF6F6")
+                                                                    ? _colorfromhex("#FFF6F6")
                                                                     : selectedAnswer != null &&
-                                                                            data.questionsList[_quetionNo].rightAnswer !=
+                                                                            data.questionsList[_quetionNo]
+                                                                                    .rightAnswer !=
                                                                                 selectedAnswer &&
                                                                             title.id ==
-                                                                                data.questionsList[_quetionNo].rightAnswer
+                                                                                data.questionsList[_quetionNo]
+                                                                                    .rightAnswer
                                                                         ? _colorfromhex("#E6F7E7")
                                                                         : Colors.white,
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    top: height *
-                                                                        (21 /
-                                                                            800)),
+                                                            margin: EdgeInsets.only(top: height * (21 / 800)),
                                                             padding: EdgeInsets.only(
                                                                 top: 13,
                                                                 bottom: 13,
-                                                                left: width *
-                                                                    (13 / 420),
-                                                                right: width *
-                                                                    (11 / 420)),
+                                                                left: width * (13 / 420),
+                                                                right: width * (11 / 420)),
                                                             child: Row(
                                                               children: [
                                                                 Container(
-                                                                  width: width *
-                                                                      (25 /
-                                                                          420),
-                                                                  height:
-                                                                      width *
-                                                                          25 /
-                                                                          420,
+                                                                  width: width * (25 / 420),
+                                                                  height: width * 25 / 420,
                                                                   decoration: BoxDecoration(
                                                                       borderRadius: BorderRadius.circular(
-                                                                        width *
-                                                                            (25 /
-                                                                                420),
+                                                                        width * (25 / 420),
                                                                       ),
-                                                                      color: title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer == selectedAnswer
+                                                                      color: title.id == selectedAnswer &&
+                                                                              data.questionsList[_quetionNo]
+                                                                                      .rightAnswer ==
+                                                                                  selectedAnswer
                                                                           ? _colorfromhex("#04AE0B")
-                                                                          : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
+                                                                          : title.id == selectedAnswer &&
+                                                                                  data.questionsList[_quetionNo]
+                                                                                          .rightAnswer !=
+                                                                                      selectedAnswer
                                                                               ? _colorfromhex("#FF0000")
-                                                                              : selectedAnswer != null && data.questionsList[_quetionNo].rightAnswer != selectedAnswer && title.id == data.questionsList[_quetionNo].rightAnswer
+                                                                              : selectedAnswer != null &&
+                                                                                      data.questionsList[_quetionNo]
+                                                                                              .rightAnswer !=
+                                                                                          selectedAnswer &&
+                                                                                      title.id ==
+                                                                                          data.questionsList[_quetionNo]
+                                                                                              .rightAnswer
                                                                                   ? _colorfromhex("#04AE0B")
                                                                                   : Colors.white),
                                                                   child: Center(
@@ -408,55 +350,65 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                                                                       style: TextStyle(
                                                                           fontFamily: 'Roboto Regular',
                                                                           fontSize: width * 14 / 420,
-                                                                          color: title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer == selectedAnswer
+                                                                          color: title.id == selectedAnswer &&
+                                                                                  data.questionsList[_quetionNo]
+                                                                                          .rightAnswer ==
+                                                                                      selectedAnswer
                                                                               ? Colors.white
-                                                                              : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
+                                                                              : title
+                                                                                              .id ==
+                                                                                          selectedAnswer &&
+                                                                                      data.questionsList[_quetionNo]
+                                                                                              .rightAnswer !=
+                                                                                          selectedAnswer
                                                                                   ? Colors.white
-                                                                                  : selectedAnswer != null && data.questionsList[_quetionNo].rightAnswer != selectedAnswer && title.id == data.questionsList[_quetionNo].rightAnswer
+                                                                                  : selectedAnswer !=
+                                                                                              null &&
+                                                                                          data.questionsList[_quetionNo]
+                                                                                                  .rightAnswer !=
+                                                                                              selectedAnswer &&
+                                                                                          title.id ==
+                                                                                              data
+                                                                                                  .questionsList[
+                                                                                                      _quetionNo]
+                                                                                                  .rightAnswer
                                                                                       ? Colors.white
                                                                                       : Colors.grey),
                                                                     ),
                                                                   ),
                                                                 ),
                                                                 Column(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .end,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .end,
+                                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                                  crossAxisAlignment: CrossAxisAlignment.end,
                                                                   children: [
                                                                     Container(
-                                                                      margin: EdgeInsets.only(
-                                                                          left:
-                                                                              8),
-                                                                      width: width -
-                                                                          (width *
-                                                                              (25 / 420) *
-                                                                              5),
-                                                                      child: Text(
-                                                                          title
-                                                                              .questionsOptions,
-                                                                          style:
-                                                                              TextStyle(fontSize: width * 14 / 420)),
+                                                                      margin: EdgeInsets.only(left: 8),
+                                                                      width: width - (width * (25 / 420) * 5),
+                                                                      child: Text(title.questionsOptions,
+                                                                          style: TextStyle(fontSize: width * 14 / 420)),
                                                                     ),
                                                                     selectedAnswer != null &&
-                                                                            data.questionsList[_quetionNo].rightAnswer !=
+                                                                            data.questionsList[_quetionNo]
+                                                                                    .rightAnswer !=
                                                                                 selectedAnswer &&
                                                                             title.id ==
-                                                                                data.questionsList[_quetionNo].rightAnswer
+                                                                                data.questionsList[_quetionNo]
+                                                                                    .rightAnswer
                                                                         ? Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.end,
+                                                                            mainAxisAlignment: MainAxisAlignment.end,
                                                                             children: [
                                                                               Text(
                                                                                 'Correct Answer',
                                                                               ),
                                                                             ],
                                                                           )
-                                                                        : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
+                                                                        : title.id == selectedAnswer &&
+                                                                                data.questionsList[_quetionNo]
+                                                                                        .rightAnswer !=
+                                                                                    selectedAnswer
                                                                             ? Row(
-                                                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                                                mainAxisAlignment:
+                                                                                    MainAxisAlignment.end,
                                                                                 children: [
                                                                                   Text(
                                                                                     'Your selection',
@@ -475,126 +427,85 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                                                     selectedAnswer != null
                                                         ? Container(
                                                             decoration: BoxDecoration(
-                                                                color: _colorfromhex(
-                                                                    "#FAFAFA"),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            6)),
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    top: height *
-                                                                        (38 /
-                                                                            800)),
+                                                                color: _colorfromhex("#FAFAFA"),
+                                                                borderRadius: BorderRadius.circular(6)),
+                                                            margin: EdgeInsets.only(top: height * (38 / 800)),
                                                             padding: EdgeInsets.only(
-                                                                top: height *
-                                                                    (10 / 800),
-                                                                bottom: _show
-                                                                    ? height *
-                                                                        (23 /
-                                                                            800)
-                                                                    : height *
-                                                                        (12 /
-                                                                            800),
-                                                                left: width *
-                                                                    (18 / 420),
-                                                                right: width *
-                                                                    (10 / 420)),
+                                                                top: height * (10 / 800),
+                                                                bottom:
+                                                                    _show ? height * (23 / 800) : height * (12 / 800),
+                                                                left: width * (18 / 420),
+                                                                right: width * (10 / 420)),
                                                             child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
                                                                 GestureDetector(
                                                                   onTap: () {
-                                                                    setState(
-                                                                        () {
-                                                                      _show =
-                                                                          !_show;
+                                                                    setState(() {
+                                                                      _show = !_show;
                                                                     });
                                                                   },
                                                                   child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                     children: [
                                                                       Text(
                                                                         'See Solution',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontFamily:
-                                                                              'Roboto Regular',
-                                                                          fontSize:
-                                                                              width * (15 / 420),
-                                                                          color:
-                                                                              _colorfromhex("#ABAFD1"),
-                                                                          height:
-                                                                              1.7,
+                                                                        style: TextStyle(
+                                                                          fontFamily: 'Roboto Regular',
+                                                                          fontSize: width * (15 / 420),
+                                                                          color: _colorfromhex("#ABAFD1"),
+                                                                          height: 1.7,
                                                                         ),
                                                                       ),
                                                                       Icon(
-                                                                        _show
-                                                                            ? Icons.expand_less
-                                                                            : Icons.expand_more,
-                                                                        size: width *
-                                                                            (30 /
-                                                                                420),
-                                                                        color: _colorfromhex(
-                                                                            "#ABAFD1"),
+                                                                        _show ? Icons.expand_less : Icons.expand_more,
+                                                                        size: width * (30 / 420),
+                                                                        color: _colorfromhex("#ABAFD1"),
                                                                       ),
                                                                     ],
                                                                   ),
                                                                 ),
                                                                 _show
                                                                     ? Container(
-                                                                        margin: EdgeInsets.only(
-                                                                            top:
-                                                                                height * (9 / 800)),
-                                                                        child:
-                                                                            Text(
-                                                                          data.questionsList[_quetionNo] == data.questionsList[_quetionNo].optionsList[0].id
+                                                                        margin:
+                                                                            EdgeInsets.only(top: height * (9 / 800)),
+                                                                        child: Text(
+                                                                          data.questionsList[_quetionNo] ==
+                                                                                  data.questionsList[_quetionNo]
+                                                                                      .optionsList[0].id
                                                                               ? 'Answer A is the correct one'
-                                                                              : data.questionsList[_quetionNo].rightAnswer == data.questionsList[_quetionNo].optionsList[1].id
+                                                                              : data.questionsList[_quetionNo]
+                                                                                          .rightAnswer ==
+                                                                                      data.questionsList[_quetionNo]
+                                                                                          .optionsList[1].id
                                                                                   ? 'Answer B is the correct one'
-                                                                                  : data.questionsList[_quetionNo].rightAnswer == data.questionsList[_quetionNo].optionsList[2].id
+                                                                                  : data.questionsList[_quetionNo]
+                                                                                              .rightAnswer ==
+                                                                                          data.questionsList[_quetionNo]
+                                                                                              .optionsList[2].id
                                                                                       ? 'Answer C is the correct one'
                                                                                       : 'Answer D is the correct one',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontFamily:
-                                                                                'Roboto Regular',
-                                                                            fontSize:
-                                                                                width * (15 / 420),
-                                                                            color:
-                                                                                _colorfromhex("#04AE0B"),
-                                                                            height:
-                                                                                1.7,
+                                                                          style: TextStyle(
+                                                                            fontFamily: 'Roboto Regular',
+                                                                            fontSize: width * (15 / 420),
+                                                                            color: _colorfromhex("#04AE0B"),
+                                                                            height: 1.7,
                                                                           ),
                                                                         ),
                                                                       )
                                                                     : Container(),
                                                                 _show
                                                                     ? Container(
-                                                                        margin: EdgeInsets.only(
-                                                                            top:
-                                                                                height * (9 / 800)),
-                                                                        child:
-                                                                            Text(
-                                                                          data.questionsList[_quetionNo]
-                                                                              .explantions,
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontFamily:
-                                                                                'Roboto Regular',
-                                                                            fontSize:
-                                                                                width * (15 / 420),
-                                                                            color:
-                                                                                Colors.black,
-                                                                            height:
-                                                                                1.6,
+                                                                        margin:
+                                                                            EdgeInsets.only(top: height * (9 / 800)),
+                                                                        child: Text(
+                                                                          data.questionsList[_quetionNo].explantions,
+                                                                          style: TextStyle(
+                                                                            fontFamily: 'Roboto Regular',
+                                                                            fontSize: width * (15 / 420),
+                                                                            color: Colors.black,
+                                                                            height: 1.6,
                                                                           ),
                                                                         ),
                                                                       )
@@ -618,9 +529,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                 Text("data"),
                 realAnswer == selectedAnswer && selectedAnswer != null
                     ? Positioned(
-                        top: SizerUtil.deviceType == DeviceType.mobile
-                            ? 80
-                            : 140,
+                        top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
                         left: width / 2.9,
                         child: Container(
                           width: 110,
@@ -630,9 +539,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                     : Text(''),
                 realAnswer != selectedAnswer && selectedAnswer != null
                     ? Positioned(
-                        top: SizerUtil.deviceType == DeviceType.mobile
-                            ? 100
-                            : 165,
+                        top: SizerUtil.deviceType == DeviceType.mobile ? 100 : 165,
                         left: width / 2.5,
                         child: selectedAnswer == null
                             ? Text('')

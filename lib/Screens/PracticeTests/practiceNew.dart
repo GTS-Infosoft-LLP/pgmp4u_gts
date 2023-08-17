@@ -288,7 +288,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                               rightAns = [];
                                               correctAns = [];
                                               print("selAns=======$selAns");
-                                              print("index====>>$index");
+                                              // print("index====>>$index");
                                               print("currentIndex ====>>$currentIndex");
                                               if (currentIndex < index) {
                                                 if (PTList.length - 1 > _quetionNo) {

@@ -144,6 +144,15 @@ class CourseProvider extends ChangeNotifier {
     });
   }
 
+  int selectedPlanType;
+  setSelectedPlanType(int val) {
+    Future.delayed(Duration.zero, () async {
+      selectedPlanType = val;
+      print("selectedPlanType========>>>>>>>$selectedPlanType");
+      notifyListeners();
+    });
+  }
+
   setSelectedCourseId(int val) {
     Future.delayed(Duration.zero, () async {
       selectedCourseId = val;
@@ -151,6 +160,22 @@ class CourseProvider extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+
+   int showFloatButton=1;
+
+   setFloatButton(int val){
+       Future.delayed(Duration.zero, () async {
+      showFloatButton = val;
+      print("showFloatButton========>>>>>>>$showFloatButton");
+      notifyListeners();
+    });
+   }
+
+
+
+
+
 
   int toPage;
   int allowScroll = 1;

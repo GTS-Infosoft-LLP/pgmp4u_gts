@@ -124,6 +124,8 @@ const CREATE_SUBSCRIPTION_ORDER= _BASE_URL + "createSubscriptionOrder";
 const JOIN_NOTIFICATION= _BASE_URL + "joinNotification";
 const CANCEL_SUBSCRIPTION = _BASE_URL + "cancelSubscriptionPack";
 
+const FREE_SUBSCRIPTION = _BASE_URL + "createSubscriptionOrderFree";
+
 //cancelSubscriptionPack
 
 //getPPT

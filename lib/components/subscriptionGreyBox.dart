@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Widget customGreyRedRow(IconData icn, String txt, BuildContext context, String planType, int index) {
   IconData icnn;
-  print("index====$index");
+  // print("index====$index");
   if (index == 0) {
     if (planType == "Silver Plan") {
       icnn = Icons.text_fields_sharp;
