@@ -83,14 +83,14 @@ class _HomeViewState extends State<HomeView> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
         floatingActionButton: crp.showFloatButton == 1
             ? Padding(
-                padding: const EdgeInsets.only(top: 0.0),
+                padding: const EdgeInsets.only(top: 5.0),
                 child: Container(
-                  height: MediaQuery.of(context).size.height * .24,
+                  height: MediaQuery.of(context).size.height * .25,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  width: MediaQuery.of(context).size.width * .95,
+                  width: MediaQuery.of(context).size.width * .99,
                   child: Column(
                     children: [
                       SizedBox(
@@ -100,16 +100,22 @@ class _HomeViewState extends State<HomeView> {
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              radius: 24,
-                              backgroundColor: Colors.black,
-                              child: Container(
-                                height: 45,
-                                child: Image.asset(
-                                  "assets/userIcon.png",
-                                ),
-                              ),
+                            CircularCachedNetworkImage(
+                              imageUrl: user.image,
+                              size: 50,
+                              borderColor: Colors.white,
+                              borderWidth: 0,
                             ),
+                            // CircleAvatar(
+                            //   radius: 24,
+                            //   backgroundColor: Colors.black,
+                            //   child: Container(
+                            //     height: 45,
+                            //     child: Image.asset(
+                            //       "assets/userIcon.png",
+                            //     ),
+                            //   ),
+                            // ),
                             SizedBox(
                               width: 10,
                             ),
@@ -152,13 +158,32 @@ class _HomeViewState extends State<HomeView> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Subscriptionpg(
-                                            showDrpDown: 1,
-                                          )));
+                            onTap: () async {
+                              CourseProvider crs = Provider.of(context, listen: false);
+
+                              ProfileProvider pp = Provider.of(context, listen: false);
+                              pp.setSelectedContainer(2);
+                              SubscriptionProvider sp = Provider.of(context, listen: false);
+                              sp.SelectedPlanType = 3;
+                              await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
+                              sp.setSelectedIval(2);
+                              if (sp.durationPackData.isNotEmpty) {
+                                sp.setSelectedRadioVal(0);
+                              }
+                              sp.selectedIval = 2;
+                              if (crs.course.isNotEmpty) {
+                                crs.setSelectedCourseId(crs.course[0].id);
+                                crs.setSelectedCourseLable(storedCourse[0].lable);
+                              }
+                              Future.delayed(Duration(microseconds: 300), () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Subscriptionpg(
+                                              showDrpDown: 1,
+                                              showFreeTrial: 0,
+                                            )));
+                              });
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -169,7 +194,7 @@ class _HomeViewState extends State<HomeView> {
                               width: MediaQuery.of(context).size.width * .46,
                               child: Center(
                                   child: Text(
-                                "See Portfolios",
+                                "See Plans",
                                 style: TextStyle(fontSize: 17),
                               )),
                             ),
@@ -197,9 +222,12 @@ class _HomeViewState extends State<HomeView> {
                             sp.selectedIval = 2;
                             if (crs.course.isNotEmpty) {
                               crs.setSelectedCourseId(crs.course[0].id);
+                              crs.setSelectedCourseLable(storedCourse[0].lable);
                             }
+                            pp.updateLoader(true);
 
-                            Future.delayed(Duration(microseconds: 100), () {
+                            Future.delayed(Duration(milliseconds: 300), () {
+                              pp.updateLoader(false);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -213,6 +241,10 @@ class _HomeViewState extends State<HomeView> {
                             height: 61.3,
                             decoration: BoxDecoration(
                               color: Color.fromARGB(255, 5, 0, 0),
+                              gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [Color(0xff3643a3), Color(0xff5468ff)]),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             width: MediaQuery.of(context).size.width * .95,
@@ -231,19 +263,26 @@ class _HomeViewState extends State<HomeView> {
                                   width: 15,
                                 ),
                                 Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "Make the most of Genius",
-                                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.green),
-                                    ),
-                                    Text(
-                                      "Start with free trial for 3 days",
-                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                                        // height: 10,
+                                        ),
+                                    // Text(
+                                    //   "",
+                                    //   // "Make the most of Genius",
+                                    //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.green),
+                                    // ),
+                                    Container(
+                                      // color: Colors.amber,
+                                      width: MediaQuery.of(context).size.width * .65,
+                                      child: Text(
+                                        "Start with free trial for 3 days",
+                                        style:
+                                            TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+                                        // style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -254,7 +293,8 @@ class _HomeViewState extends State<HomeView> {
                                   child: Icon(
                                     Icons.east,
                                     size: 26,
-                                    color: Colors.green,
+                                    // color: Colors.green,
+                                    color: Colors.white,
                                   ),
                                 )
                                 // Center(
@@ -274,18 +314,23 @@ class _HomeViewState extends State<HomeView> {
             : SizedBox(),
         body: Stack(
           children: [
-            ClipPath(
-              clipper: ShapeClipperMirrored(),
-              child: Container(
-                height: topHeight,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-                ),
-              ),
-            ),
+            crp.showFloatButton == 1
+                ? Container(
+                    height: 80,
+                    color: Color.fromARGB(255, 50, 4, 58),
+                  )
+                : ClipPath(
+                    clipper: ShapeClipperMirrored(),
+                    child: Container(
+                      height: topHeight,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                      ),
+                    ),
+                  ),
             SingleChildScrollView(
               child: Consumer<CourseProvider>(builder: (context, cp, child) {
                 return Stack(
@@ -296,74 +341,80 @@ class _HomeViewState extends State<HomeView> {
                           height: topHeight - topHeight / 1.4,
                         ),
 
-                        Container(
-                          height: MediaQuery.of(context).size.height * .32,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(40.0),
-                              // bottomLeft: Radius.circular(40.0)
-                            ),
-                            gradient: LinearGradient(
-                                colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
-                                begin: const FractionalOffset(0.0, 0.0),
-                                end: const FractionalOffset(1.0, 0.0),
-                                stops: [0.0, 1.0],
-                                tileMode: TileMode.clamp),
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    "Hey, " + "${user.name}",
-                                    style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold),
+                        crp.showFloatButton == 1
+                            ? Container(
+                                color: Colors.white,
+                                height: MediaQuery.of(context).size.height * .22,
+                              )
+                            : Container(
+                                height: MediaQuery.of(context).size.height * .32,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(40.0),
+                                    // bottomLeft: Radius.circular(40.0)
                                   ),
-                                  CircularCachedNetworkImage(
-                                    imageUrl: user.image,
-                                    size: (topHeight / 4) * 2,
-                                    borderColor: Colors.white,
-                                    borderWidth: 0,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 25,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 32.0, right: 20),
+                                  gradient: LinearGradient(
+                                      colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
+                                      begin: const FractionalOffset(0.0, 0.0),
+                                      end: const FractionalOffset(1.0, 0.0),
+                                      stops: [0.0, 1.0],
+                                      tileMode: TileMode.clamp),
+                                ),
                                 child: Column(
                                   children: [
-                                    Text(
-                                      "Over 95% of app users reported High Scores \n",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Roboto Bold',
-                                        color: Colors.white,
-                                      ),
+                                    SizedBox(
+                                      height: 20,
                                     ),
-                                    cp.showFloatButton == 0
-                                        ? Text(
-                                            "Be one of them ! Get Started NOW to boost your Knowledge!",
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Text(
+                                          "Hey, " + "${user.name}",
+                                          style:
+                                              TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold),
+                                        ),
+                                        CircularCachedNetworkImage(
+                                          imageUrl: user.image,
+                                          size: (topHeight / 4) * 2,
+                                          borderColor: Colors.white,
+                                          borderWidth: 0,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 25,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 32.0, right: 20),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "Over 95% of app users reported High Scores \n",
                                             textAlign: TextAlign.left,
                                             style: TextStyle(
-                                              fontSize: 17,
-                                              fontFamily: 'Roboto Regular',
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Roboto Bold',
                                               color: Colors.white,
                                             ),
-                                          )
-                                        : Text(""),
+                                          ),
+                                          cp.showFloatButton == 0
+                                              ? Text(
+                                                  "Be one of them ! Get Started NOW to boost your Knowledge!",
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontFamily: 'Roboto Regular',
+                                                    color: Colors.white,
+                                                  ),
+                                                )
+                                              : Text(""),
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
                         // Padding(
                         //   padding: const EdgeInsets.all(20),
                         //   child: Container(
@@ -444,6 +495,7 @@ class _HomeViewState extends State<HomeView> {
                                           : Container(
                                               height: MediaQuery.of(context).size.height * .58,
                                               child: ListView.builder(
+                                                  physics: NeverScrollableScrollPhysics(),
                                                   itemCount: storedCourse.length,
                                                   itemBuilder: (context, index) {
                                                     if (index % 4 == 0) {
@@ -459,6 +511,8 @@ class _HomeViewState extends State<HomeView> {
                                                       padding: const EdgeInsets.only(bottom: 20),
                                                       child: InkWell(
                                                         onTap: () async {
+                                                          courseProvider.setFloatButton(1);
+                                                          print("isSubscribedd::: ${storedCourse[index].isSubscribed}");
                                                           courseProvider.setSelectedPlanType(
                                                               storedCourse[index].subscriptionType);
                                                           ProfileProvider pp = Provider.of(context, listen: false);
@@ -483,10 +537,22 @@ class _HomeViewState extends State<HomeView> {
                                                             sp.selectedIval = 2;
                                                             // await sp.getSubscritionData(storedCourse[index].id);
 
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => Subscriptionpg()));
+                                                            Future.delayed(const Duration(milliseconds: 400), () {
+                                                              sp.setSelectedIval(2);
+                                                              pp.setSelectedContainer(2);
+                                                              if (sp.durationPackData.isNotEmpty) {
+                                                                sp.setSelectedRadioVal(0);
+                                                              }
+                                                              sp.selectedIval = 2;
+                                                              print("sp.selectedIval::${sp.selectedIval}");
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) => Subscriptionpg(
+                                                                            showDrpDown: 0,
+                                                                            showFreeTrial: 0,
+                                                                          )));
+                                                            });
                                                           } else {
                                                             pp.updateLoader(false);
                                                             courseProvider.getMasterData(storedCourse[index].id);
@@ -498,6 +564,9 @@ class _HomeViewState extends State<HomeView> {
                                                             });
                                                           }
                                                           pp.updateLoader(false);
+                                                          Future.delayed(const Duration(seconds: 1), () {
+                                                            courseProvider.setFloatButton(1);
+                                                          });
                                                         },
                                                         child: HomeListTile(clr, context, storedCourse[index]),
                                                       ),

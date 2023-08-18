@@ -124,8 +124,9 @@ class CourseProvider extends ChangeNotifier {
   }
 
   setSelectedCourseLable(String val) {
-    selectedCourseLable = val;
     Future.delayed(Duration.zero, () {
+      selectedCourseLable = val;
+      print("selectedCourseLable:::: $selectedCourseLable");
       notifyListeners();
     });
   }
@@ -161,21 +162,15 @@ class CourseProvider extends ChangeNotifier {
     });
   }
 
+  int showFloatButton = 1;
 
-   int showFloatButton=1;
-
-   setFloatButton(int val){
-       Future.delayed(Duration.zero, () async {
+  setFloatButton(int val) {
+    Future.delayed(Duration.zero, () async {
       showFloatButton = val;
       print("showFloatButton========>>>>>>>$showFloatButton");
       notifyListeners();
     });
-   }
-
-
-
-
-
+  }
 
   int toPage;
   int allowScroll = 1;

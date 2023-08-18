@@ -83,8 +83,15 @@ class SubscriptionProvider extends ChangeNotifier {
       CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
       getSubscritionData(cp.selectedCourseId).then((value) {
         ProfileProvider pp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
+        if (isFirtTime == 1) {
+          if (permiumbutton.length > 2) {
+            setSelectedSubsId(permiumbutton[2].id);
+          }
+        } else {
+          setSelectedSubsId(permiumbutton[0].id);
+        }
 
-        isFirtTime == 1 ? setSelectedSubsId(permiumbutton[2].id) : setSelectedSubsId(permiumbutton[0].id);
+        // isFirtTime == 1 ? setSelectedSubsId(permiumbutton[2].id) : setSelectedSubsId(permiumbutton[0].id);
       }
 
           //  isFirtTime == 1 ? setSelectedSubsId(permiumbutton[2].id) : setSelectedSubsId(permiumbutton[0].id)
@@ -154,9 +161,13 @@ class SubscriptionProvider extends ChangeNotifier {
         print("mapResponse====${mapResponse['data']}");
 
         if (mapResponse['status'] == 400) {
+          print("here");
+          EasyLoading.showInfo("You have already used Free Pack for this Course");
           return;
+        } else if (mapResponse['status'] == 200) {
+          print("now here");
+          EasyLoading.showSuccess("Free Pack Activated Successfully");
         }
-        if (mapResponse["success"] == true) {}
       }
     } catch (e) {
       print("error======$e");
@@ -171,7 +182,7 @@ class SubscriptionProvider extends ChangeNotifier {
     // domainStatus = true;
     updateSubsPackApiCall(true);
     updateLoader(true);
-    SubscritionPackList = [];
+    // SubscritionPackList = [];
     print("idCrs=========>>>>>>>>>>>>>>>$idCrs");
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -211,6 +222,9 @@ class SubscriptionProvider extends ChangeNotifier {
         updateSubsPackApiCall(false);
         updateLoader(false);
         SubscritionPackList = [];
+        permiumbutton = [];
+        desc1 = "";
+        durationPackData = [];
         ftchList = [];
         updateLoader(false);
         return;
@@ -221,6 +235,7 @@ class SubscriptionProvider extends ChangeNotifier {
         print("statussssssss");
         SubscritionPackList = [];
         ftchList = [];
+        durationPackData = [];
         updateLoader(false);
         notifyListeners();
         return;
@@ -228,6 +243,7 @@ class SubscriptionProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         updateLoader(false);
         ftchList = [];
+        SubscritionPackList = [];
         updateSubsPackApiCall(false);
         SubscritionPackList.clear();
         print("");
@@ -267,6 +283,8 @@ class SubscriptionProvider extends ChangeNotifier {
 
           print("permiumbutton=====$permiumbutton");
         }
+      } else if (response.statusCode == 400) {
+        print("status is 400");
       }
       print("respponse=== ${response.body}");
     } on Exception {
@@ -355,7 +373,7 @@ class SubscriptionProvider extends ChangeNotifier {
 
   var selectedSubsId;
   void setSelectedSubsId(int id) {
-    print("vallllll$id");
+
     Future.delayed(Duration.zero, () async {
       selectedSubsId = id;
       print("selectedSubsId********$selectedSubsId");
@@ -394,7 +412,6 @@ class SubscriptionProvider extends ChangeNotifier {
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         if (mapResponse['success'] == false) {
           updateLoader(false);
-          // EasyLoading.showSuccess("Plan for this course is already cancelled");
           EasyLoading.showInfo("Plan for this course is already cancelled");
           notifyListeners();
           return;

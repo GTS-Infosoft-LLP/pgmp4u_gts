@@ -41,6 +41,7 @@ class CustomDropDown<T> extends StatelessWidget {
           decoration: BoxDecoration(
               boxShadow: const [BoxShadow(color: Colors.black26, offset: Offset(0, 0))],
               color: Colors.white,
+              // color: Colors.amber,
               borderRadius: BorderRadius.circular(28)),
           height: 56,
           width: width,
@@ -62,6 +63,7 @@ class CustomDropDown<T> extends StatelessWidget {
               return DropdownMenuItem<T>(
                   value: value,
                   child: Container(
+                    // color: Colors.black,
                     margin: EdgeInsets.only(top: 10.0),
                     width:
                         // MediaQuery.of(context).size.width * .5,

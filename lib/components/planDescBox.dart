@@ -20,7 +20,7 @@ Widget planDescBox(
       borderRadius: BorderRadius.all(Radius.circular(15)),
     ),
     width: MediaQuery.of(context).size.width * 0.80,
-    height: MediaQuery.of(context).size.height * 0.30,
+    height: MediaQuery.of(context).size.height * 0.31,
     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
         child: Padding(

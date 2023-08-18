@@ -48,7 +48,7 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context, String p
     } else if (planType == "Gold Plan") {
       icnn = Icons.lock_clock;
     } else if (planType == "Platinum Plan") {
-      icnn = Icons.lock_clock;
+      icnn = Icons.account_tree_rounded;
     }
   } else if (index == 5) {
     icnn = Icons.numbers_outlined;

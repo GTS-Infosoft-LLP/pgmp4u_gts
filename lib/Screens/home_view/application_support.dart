@@ -30,7 +30,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
   void initState() {
     CourseProvider cp = Provider.of(context, listen: false);
     print("p.selectedPlanType == ${cp.selectedPlanType}");
-    if (cp.selectedPlanType == 0 || cp.selectedPlanType == 1) {
+    if (cp.selectedPlanType == 0 || cp.selectedPlanType == 1 || cp.selectedPlanType == 4) {
       appbarTxt = "Silver and Free";
     } else if (cp.selectedPlanType == 2) {
       appbarTxt = "Gold";
@@ -85,7 +85,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                             child: Container(
                           width: MediaQuery.of(context).size.width * .75,
                           child: Text(
-                            "Application Support\n " + appbarTxt,
+                            "Application Support\n" + appbarTxt,
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -110,7 +110,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
               //     ))),
               SizedBox(height: 10),
 
-              cp.selectedPlanType == 0 || cp.selectedPlanType == 1
+              cp.selectedPlanType == 0 || cp.selectedPlanType == 1 || cp.selectedPlanType == 4
                   ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 22.0),
                       child: Center(
@@ -120,6 +120,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                           style: TextStyle(
                             color: _lightText,
                             fontFamily: "NunitoSans",
+                            fontWeight: FontWeight.w600,
                             fontSize: 15,
                           ),
                           // overflow: TextOverflow.ellipsis,
@@ -154,7 +155,10 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                   AppSupportRow("Writable sample application", context),
 
                   AppSupportRow("Experience Calculator", context),
-                  cp.selectedPlanType == 0 || cp.selectedPlanType == 1 || cp.selectedPlanType == 3
+                  cp.selectedPlanType == 0 ||
+                          cp.selectedPlanType == 1 ||
+                          cp.selectedPlanType == 3 ||
+                          cp.selectedPlanType == 4
                       ? AppSupportRow("Session with Mentor", context)
                       : SizedBox(),
 
@@ -213,7 +217,10 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      cp.selectedPlanType == 0 || cp.selectedPlanType == 1 || cp.selectedPlanType == 2
+                      cp.selectedPlanType == 0 ||
+                              cp.selectedPlanType == 1 ||
+                              cp.selectedPlanType == 2 ||
+                              cp.selectedPlanType == 4
                           ? Container(
                               height: 50,
                               width: MediaQuery.of(context).size.width * .4,
@@ -241,7 +248,15 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                     }
                                     sp.selectedIval = 2;
                                     // await sp.getSubscritionData(storedCourse[index].id);
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Subscriptionpg()));
+                                    Future.delayed(Duration(milliseconds: 300), () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Subscriptionpg(
+                                                    showDrpDown: 0,
+                                                    showFreeTrial: 0,
+                                                  )));
+                                    });
                                   },
                                   child: Text(
                                     "Upgrade",

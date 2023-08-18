@@ -69,6 +69,10 @@ class _RandomPageState extends State<RandomPage> {
 
     if (widget.price == null) {
       widget.price = "199";
+    } else if (widget.price.contains("\$")) {
+      print("widget.price.contains  \$");
+      widget.price = widget.price.replaceAll("\$", "");
+      print("final price:::: ${widget.price}");
     }
 
     // TODO: implement initState
@@ -239,7 +243,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                         letterSpacing: 0.3),
                                                                   )
                                                                 : widget.index == 6
-                                                                    ? Text(
+                                                                    ? Text( 
                                                                         'Get 1 year Access to Domains',
                                                                         textAlign: TextAlign.center,
                                                                         style: TextStyle(
@@ -262,7 +266,7 @@ class _RandomPageState extends State<RandomPage> {
                                         margin: EdgeInsets.only(top: 5),
                                         child: Center(
                                             child: Text(
-                                          ' On \n \$ ${widget.price}',
+                                          ' On \n \$${widget.price}',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontFamily: 'Roboto Bold',
@@ -306,8 +310,8 @@ class _RandomPageState extends State<RandomPage> {
                     // top: 300,
 
                     child: Container(
-                      height: 80,
-                      width: 80,
+                      height: 70,
+                      width: 70,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
@@ -1147,30 +1151,33 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
       //                                         ),
 
       SizedBox(
-        height: 18,
+        height: 10,
       ),
       context.watch<PurchaseProvider>().loaderStatus ? CircularProgressIndicator() : SizedBox(),
       Platform.isIOS
-          ? Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Purchased previously? ",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  InkWell(
-                    child: Text(
-                      "Restore purchase",
-                      style: TextStyle(
-                          // color: Colors.blue
-                          color: Colors.lightBlueAccent),
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 15.0),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Purchased previously? ",
+                      style: TextStyle(color: Colors.white),
                     ),
-                    onTap: () {
-                      // provider.restore();
-                    },
-                  )
-                ],
+                    InkWell(
+                      child: Text(
+                        "Restore purchase",
+                        style: TextStyle(
+                            // color: Colors.blue
+                            color: Colors.lightBlueAccent),
+                      ),
+                      onTap: () {
+                        // provider.restore();
+                      },
+                    )
+                  ],
+                ),
               ),
             )
           : Text("")

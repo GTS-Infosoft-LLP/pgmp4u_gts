@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../Screens/MockTest/model/courseModel.dart';
-import '../provider/Subscription/subscriptionPage.dart';
 
 Widget HomeListTile(Color clr, BuildContext context, CourseDetails storedCourse) {
   return ListTile(
@@ -41,13 +40,13 @@ Widget HomeListTile(Color clr, BuildContext context, CourseDetails storedCourse)
     trailing: storedCourse.isSubscribed == 0
         ? InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Subscriptionpg()));
+              // Navigator.push(context, MaterialPageRoute(builder: (context) => Subscriptionpg()));
             },
             child: Container(
               height: 80,
               // color: Colors.amber,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     height: 30,
@@ -101,7 +100,13 @@ Widget HomeListTile(Color clr, BuildContext context, CourseDetails storedCourse)
                                   fontWeight: FontWeight.w600,
                                   fontSize: 13,
                                 ))
-                            : Text("")
+                            : storedCourse.subscriptionType == 4
+                                ? Text("3 Days Trial",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 13,
+                                    ))
+                                : Text("")
               ],
             ),
           ),

@@ -365,7 +365,7 @@ Widget blurChat(BuildContext context, DisscussionGropModel group) {
         ),
         title: Column(
           children: [
-            Text("You are not succribed to chat ",
+            Text("You are not subscribed to chat ",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18,
