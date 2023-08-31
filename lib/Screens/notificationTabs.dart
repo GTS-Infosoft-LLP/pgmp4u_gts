@@ -9,7 +9,8 @@ import 'Profile/notifications.dart';
 import 'dropdown.dart';
 
 class NotificationTabs extends StatefulWidget {
-  const NotificationTabs({Key key}) : super(key: key);
+  int fromSplash;
+  NotificationTabs({Key key, this.fromSplash = 0}) : super(key: key);
 
   @override
   State<NotificationTabs> createState() => _NotificationTabsState();
@@ -77,7 +78,14 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                               child: IconButton(
                                   icon: Icon(Icons.arrow_back, color: Colors.white),
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    print("widget.fromSplash:::${widget.fromSplash}");
+                                    if (widget.fromSplash == 1) {
+                                      Navigator.pop(context);
+                                      // Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (r) => false);
+                                    } else {
+                                      Navigator.pop(context);
+                                    }
+                                    // Navigator.pop(context);
                                   }))),
                       SizedBox(width: 20),
                       Center(
@@ -130,7 +138,6 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                 onTap: (vall) {
                   print("_controller====${_controller.index}");
                   print("TAB INDEX $vall");
-
                   context.read<ProfileProvider>().setTabIndex(vall);
                 },
                 tabs: [
@@ -158,8 +165,8 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: TabBarView(controller: _controller, children: [
-                  Notifications(type: 1),
-                  Notifications(type: 0),
+                  Notifications(type: 1, fromSplash: widget.fromSplash),
+                  Notifications(type: 0, fromSplash: widget.fromSplash),
                 ]),
               ),
             ),

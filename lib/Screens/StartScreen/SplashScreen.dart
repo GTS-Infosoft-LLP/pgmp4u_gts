@@ -5,7 +5,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pgmp4u/Screens/Pdf/controller/pdf_controller.dart';
-import 'package:pgmp4u/Screens/Profile/notifications.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Services/globalcontext.dart';
@@ -16,6 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/user_object.dart';
 import '../Tests/local_handler/hive_handler.dart';
 import '../notificationTabs.dart';
+
+int flagForNoti = 0;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key key}) : super(key: key);
@@ -47,18 +48,24 @@ class _SplashScreenState extends State<SplashScreen> {
       tokenData = value;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Timer timer = new Timer(new Duration(seconds: 2), () async {
-      if (value != null) {
-        String token = prefs.getString('token');
-        String photo = prefs.getString('photo');
-        String name = prefs.getString('name');
-        String email = prefs.getString('email');
-        var _user = UserModel(image: photo, name: name, token: token, email: email);
-        UserObject.setUser(_user);
 
-        Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (r) => false);
+    Timer timer = new Timer(new Duration(seconds: 2), () async {
+      print("::::flagForNoti::::$flagForNoti");
+      if (flagForNoti == 1) {
       } else {
-        Navigator.of(context).pushNamedAndRemoveUntil('/start-screen', (r) => false);
+        print("condition somehow got true and its executing");
+        if (value != null) {
+          String token = prefs.getString('token');
+          String photo = prefs.getString('photo');
+          String name = prefs.getString('name');
+          String email = prefs.getString('email');
+          var _user = UserModel(image: photo, name: name, token: token, email: email);
+          UserObject.setUser(_user);
+          Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (r) => false);
+        } else {
+          print("is this true....");
+          Navigator.of(context).pushNamedAndRemoveUntil('/start-screen', (r) => false);
+        }
       }
     });
   }
@@ -73,6 +80,12 @@ class _SplashScreenState extends State<SplashScreen> {
     navigateToScreen();
     fireNotification();
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   // @override
   // void initState() {
   //   super.initState();
@@ -133,32 +146,35 @@ class _SplashScreenState extends State<SplashScreen> {
 
       print("message=======>>>>$message");
       if (message != null) {
+        flagForNoti = 1;
         print("message data=====${message.data}");
         // var json = jsonDecode(message.data);
         print("Notificationtype====getInitialMessage=====>>>>${message.data['notificationType']}");
         switch (message.data["notificationType"].toString()) {
           case "1":
             Navigator.push(
-                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
+                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs(fromSplash: 1,)));
+          
             break;
           case "2":
             Navigator.push(
-                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
+                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs(fromSplash: 1,)));
+          
             break;
           case "3":
-            //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
-            //   break;
+      
             Navigator.push(
                 GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => GroupListPage()));
-            return;
+            
             break;
           case "4":
             Navigator.push(
-                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
+                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs(fromSplash: 1,)));
+      
             break;
-          default:
-            Navigator.push(
-                GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
+          // default:
+          //   Navigator.push(
+          //       GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
         }
       }
     });

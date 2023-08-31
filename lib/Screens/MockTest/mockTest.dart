@@ -12,7 +12,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Models/mocktestmodel.dart';
+import '../../provider/Subscription/subscriptionProvider.dart';
 import '../../provider/courseProvider.dart';
+import '../../provider/profileProvider.dart';
 import '../../tool/ShapeClipper.dart';
 import '../../utils/app_color.dart';
 import '../PracticeTests/practiceNew.dart';
@@ -223,10 +225,13 @@ class _MockTestState extends State<MockTest> {
                                                     // print("${storedTestData[index].premium}");
                                                     return InkWell(
                                                       onTap: () async {
+                                                        ProfileProvider pp = Provider.of(context, listen: false);
+                                                        pp.updateLoader(true);
                                                         courseProvider
                                                             .setSelectedTestName(storedTestData[index].test_name);
                                                         await courseProvider.getTestDetails(storedTestData[index].id);
-                                                        PracticeTextProvider pracTestProvi = Provider.of(context, listen: false);
+                                                        PracticeTextProvider pracTestProvi =
+                                                            Provider.of(context, listen: false);
 
                                                         pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
                                                         if (widget.testType == "Practice Test") {
@@ -249,8 +254,14 @@ class _MockTestState extends State<MockTest> {
                                                         } else {
                                                           CourseProvider cp = Provider.of(context, listen: false);
                                                           cp.setSelectedMockId(storedTestData[index].id);
+                                                          ProfileProvider pp = Provider.of(context, listen: false);
+                                                          SubscriptionProvider sp = Provider.of(context, listen: false);
+                                                          pp.updateLoader(true);
+                                                          sp.updateLoader(true);
                                                           sucval = await cp.valOfSuccess;
                                                           print("sucvalsakdka=======$sucval");
+                                                          pp.updateLoader(false);
+                                                          sp.updateLoader(false);
                                                           if (sucval == false) {
                                                             Navigator.push(
                                                                 context,
@@ -268,7 +279,7 @@ class _MockTestState extends State<MockTest> {
 
                                                               // courseProvider.getTestDetails(storedTestData[index].id);
 
-                                                              Future.delayed(Duration(milliseconds: 500), () {
+                                                              Future.delayed(Duration.zero, () {
                                                                 Navigator.push(
                                                                     context,
                                                                     MaterialPageRoute(
@@ -277,6 +288,7 @@ class _MockTestState extends State<MockTest> {
                                                             }
                                                           }
                                                         }
+                                                        pp.updateLoader(false);
                                                       },
                                                       child: Padding(
                                                         padding: const EdgeInsets.symmetric(horizontal: 8.0),

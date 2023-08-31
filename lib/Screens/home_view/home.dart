@@ -47,8 +47,16 @@ class _HomeViewState extends State<HomeView> {
     purchaseProvider.updateStatusNew();
 
     courseProvider.getCourse();
-    courseProvider.setFloatButton(1);
+    callApi();
+
     super.initState();
+  }
+
+  callApi() {
+    Future.delayed(Duration(microseconds: 1500), () async {
+      CourseProvider courseProvider = Provider.of(context, listen: false);
+     await courseProvider.setFloatButton(1);
+    });
   }
 
   HideShowResponse hideShowRes = HideShowResponse();
@@ -292,6 +300,7 @@ class _HomeViewState extends State<HomeView> {
                                   padding: const EdgeInsets.only(right: 18.0),
                                   child: Icon(
                                     Icons.east,
+                                    // Icons.arrow_forward_ios,
                                     size: 26,
                                     // color: Colors.green,
                                     color: Colors.white,
@@ -492,86 +501,95 @@ class _HomeViewState extends State<HomeView> {
                                               child: Container(
                                                   height: MediaQuery.of(context).size.height * .35,
                                                   child: Center(child: Text("No Data Found"))))
-                                          : Container(
-                                              height: MediaQuery.of(context).size.height * .58,
-                                              child: ListView.builder(
-                                                  physics: NeverScrollableScrollPhysics(),
-                                                  itemCount: storedCourse.length,
-                                                  itemBuilder: (context, index) {
-                                                    if (index % 4 == 0) {
-                                                      clr = Color(0xff3F9FC9);
-                                                    } else if (index % 3 == 0) {
-                                                      clr = Color(0xff3FC964);
-                                                    } else if (index % 2 == 0) {
-                                                      clr = Color(0xffDE682B);
-                                                    } else {
-                                                      clr = Color(0xffC93F7F);
-                                                    }
-                                                    return Padding(
-                                                      padding: const EdgeInsets.only(bottom: 20),
-                                                      child: InkWell(
-                                                        onTap: () async {
-                                                          courseProvider.setFloatButton(1);
-                                                          print("isSubscribedd::: ${storedCourse[index].isSubscribed}");
-                                                          courseProvider.setSelectedPlanType(
-                                                              storedCourse[index].subscriptionType);
-                                                          ProfileProvider pp = Provider.of(context, listen: false);
-                                                          pp.updateLoader(true);
-                                                          courseProvider.setSelectedCourseId(storedCourse[index].id);
-                                                          courseProvider
-                                                              .setSelectedCourseName(storedCourse[index].course);
-                                                          courseProvider
-                                                              .setSelectedCourseLable(storedCourse[index].lable);
+                                          : Padding(
+                                              padding: const EdgeInsets.only(bottom: 8.0),
+                                              child: Container(
+                                                  height: MediaQuery.of(context).size.height * .58,
+                                                  child: ListView.builder(
+                                                      // physics: NeverScrollableScrollPhysics(),
 
-                                                          if (storedCourse[index].isSubscribed == 0) {
-                                                            pp.updateLoader(false);
-                                                            pp.setSelectedContainer(2);
-                                                            SubscriptionProvider sp =
-                                                                Provider.of(context, listen: false);
-                                                            sp.SelectedPlanType = 3;
-                                                            await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
-                                                            sp.setSelectedIval(2);
-                                                            if (sp.durationPackData.isNotEmpty) {
-                                                              sp.setSelectedRadioVal(0);
-                                                            }
-                                                            sp.selectedIval = 2;
-                                                            // await sp.getSubscritionData(storedCourse[index].id);
+                                                      physics: BouncingScrollPhysics(),
+                                                      itemCount: storedCourse.length,
+                                                      itemBuilder: (context, index) {
+                                                        if (index % 4 == 0) {
+                                                          clr = Color(0xff3F9FC9);
+                                                        } else if (index % 3 == 0) {
+                                                          clr = Color(0xff3FC964);
+                                                        } else if (index % 2 == 0) {
+                                                          clr = Color(0xffDE682B);
+                                                        } else {
+                                                          clr = Color(0xffC93F7F);
+                                                        }
+                                                        return Padding(
+                                                          padding: const EdgeInsets.only(bottom: 20),
+                                                          child: InkWell(
+                                                            onTap: () async {
+                                                              Future.delayed(const Duration(seconds: 1), () {
+                                                                courseProvider.setFloatButton(1);
+                                                              });
+                                                              print(
+                                                                  "isSubscribedd::: ${storedCourse[index].isSubscribed}");
+                                                              courseProvider.setSelectedPlanType(
+                                                                  storedCourse[index].subscriptionType);
+                                                              ProfileProvider pp = Provider.of(context, listen: false);
+                                                              pp.updateLoader(true);
+                                                              courseProvider
+                                                                  .setSelectedCourseId(storedCourse[index].id);
+                                                              courseProvider
+                                                                  .setSelectedCourseName(storedCourse[index].course);
+                                                              courseProvider
+                                                                  .setSelectedCourseLable(storedCourse[index].lable);
 
-                                                            Future.delayed(const Duration(milliseconds: 400), () {
-                                                              sp.setSelectedIval(2);
-                                                              pp.setSelectedContainer(2);
-                                                              if (sp.durationPackData.isNotEmpty) {
-                                                                sp.setSelectedRadioVal(0);
+                                                              if (storedCourse[index].isSubscribed == 0) {
+                                                                pp.updateLoader(false);
+                                                                pp.setSelectedContainer(2);
+                                                                SubscriptionProvider sp =
+                                                                    Provider.of(context, listen: false);
+                                                                sp.SelectedPlanType = 3;
+                                                                await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
+                                                                sp.setSelectedIval(2);
+                                                                if (sp.durationPackData.isNotEmpty) {
+                                                                  sp.setSelectedRadioVal(0);
+                                                                }
+                                                                sp.selectedIval = 2;
+                                                                // await sp.getSubscritionData(storedCourse[index].id);
+
+                                                                Future.delayed(const Duration(milliseconds: 400), () {
+                                                                  sp.setSelectedIval(2);
+                                                                  pp.setSelectedContainer(2);
+                                                                  if (sp.durationPackData.isNotEmpty) {
+                                                                    sp.setSelectedRadioVal(0);
+                                                                  }
+                                                                  sp.selectedIval = 2;
+                                                                  print("sp.selectedIval::${sp.selectedIval}");
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => Subscriptionpg(
+                                                                                showDrpDown: 0,
+                                                                                showFreeTrial: 0,
+                                                                              )));
+                                                                });
+                                                              } else {
+                                                                pp.updateLoader(false);
+                                                                courseProvider.getMasterData(storedCourse[index].id);
+                                                                Future.delayed(const Duration(milliseconds: 100), () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => MasterListPage()));
+                                                                });
                                                               }
-                                                              sp.selectedIval = 2;
-                                                              print("sp.selectedIval::${sp.selectedIval}");
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (context) => Subscriptionpg(
-                                                                            showDrpDown: 0,
-                                                                            showFreeTrial: 0,
-                                                                          )));
-                                                            });
-                                                          } else {
-                                                            pp.updateLoader(false);
-                                                            courseProvider.getMasterData(storedCourse[index].id);
-                                                            Future.delayed(const Duration(milliseconds: 100), () {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (context) => MasterListPage()));
-                                                            });
-                                                          }
-                                                          pp.updateLoader(false);
-                                                          Future.delayed(const Duration(seconds: 1), () {
-                                                            courseProvider.setFloatButton(1);
-                                                          });
-                                                        },
-                                                        child: HomeListTile(clr, context, storedCourse[index]),
-                                                      ),
-                                                    );
-                                                  }));
+                                                              pp.updateLoader(false);
+                                                              Future.delayed(const Duration(seconds: 1), () {
+                                                                courseProvider.setFloatButton(1);
+                                                              });
+                                                            },
+                                                            child: HomeListTile(clr, context, storedCourse[index]),
+                                                          ),
+                                                        );
+                                                      })),
+                                            );
                                 });
                               }),
                         ),

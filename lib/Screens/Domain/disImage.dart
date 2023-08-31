@@ -5,7 +5,8 @@ import 'package:pgmp4u/Screens/Domain/screens/domainProvider.dart';
 import 'package:provider/provider.dart';
 
 class ImageDispalyScreen extends StatefulWidget {
-  const ImageDispalyScreen({Key key}) : super(key: key);
+  String quesImages;
+  ImageDispalyScreen({Key key, this.quesImages = ""}) : super(key: key);
 
   @override
   State<ImageDispalyScreen> createState() => _ImageDispalyScreenState();
@@ -14,6 +15,7 @@ class ImageDispalyScreen extends StatefulWidget {
 class _ImageDispalyScreenState extends State<ImageDispalyScreen> {
   @override
   void initState() {
+    print("quesImages:::::::::::${widget.quesImages}");
     super.initState();
     _setOrientation([
       DeviceOrientation.landscapeRight,
@@ -63,7 +65,11 @@ class _ImageDispalyScreenState extends State<ImageDispalyScreen> {
                 borderRadius: BorderRadius.circular(10),
                 child: InteractiveViewer(
                   child: CachedNetworkImage(
-                    imageUrl: dp.TaskDetailList[0].Image != null ? dp.TaskDetailList[0].Image : '',
+                    imageUrl: widget.quesImages.isNotEmpty
+                        ? widget.quesImages
+                        : dp.TaskDetailList[0].Image != null
+                            ? dp.TaskDetailList[0].Image
+                            : '',
                     fit: BoxFit.fill,
                     placeholder: (context, url) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 78.0, vertical: 28),
@@ -102,8 +108,8 @@ class _ImageDispalyScreenState extends State<ImageDispalyScreen> {
         ),
       ),
       title: Center(
-          child: Text(
-        'Flow Diagram      ',
+          child: Text("",
+        // widget.quesImages.isNotEmpty ? "" : 'Flow Diagram      ',
         style: TextStyle(color: Colors.white),
       )),
     );

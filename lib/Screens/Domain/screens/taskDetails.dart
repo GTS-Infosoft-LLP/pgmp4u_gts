@@ -117,7 +117,7 @@ class _TaskDetailState extends State<TaskDetail> {
                 ClipPath(
                   clipper: ShapeClipper(),
                   child: Container(
-                    height: 150,
+                    height: 160,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                           begin: Alignment.topLeft,
@@ -354,7 +354,12 @@ Widget TaskImg(BuildContext context, index) {
           padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 10),
           child: InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDispalyScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ImageDispalyScreen(
+                            quesImages: dp.TaskDetailList[index].Image,
+                          )));
             },
             child: Container(
               // width: MediaQuery.of(context).size.width * .92,

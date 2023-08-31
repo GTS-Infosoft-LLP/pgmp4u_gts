@@ -8,7 +8,7 @@ class QuesDayModel {
   String rightAnswer;
   String explanation;
   String lable;
-  Null image;
+  String image;
   int sendDate;
   String sendDateFormat;
   int status;

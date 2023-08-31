@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
+import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:provider/provider.dart';
 import '../../tool/ShapeClipper.dart';
@@ -157,10 +158,13 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                             return InkWell(
                                               onTap: () async {
                                                 {
+                                                  ProfileProvider pp = Provider.of(context, listen: false);
                                                   print("id:::: ${courseProvider.videoCate[index].id}");
+                                                  pp.updateLoader(true);
                                                   await courseProvider.getVideos(courseProvider.videoCate[index].id);
                                                   var vdoSucVal = await courseProvider.vedioStatusValue;
                                                   print("vdoSucVal==============$vdoSucVal");
+                                                  pp.updateLoader(false);
                                                   if (vdoSucVal == false) {
                                                     Navigator.push(
                                                         context,

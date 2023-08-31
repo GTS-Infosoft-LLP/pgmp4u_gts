@@ -45,6 +45,104 @@ class _GroupListTileState extends State<GroupListTile> {
                 )));
   }
 
+
+  cancelSubsAlert(){
+    showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  elevation: 20,
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                    // side: BorderSide(color: _colorfromhex("#3A47AD"), width: 0)
+                  ),
+                  title: Column(
+                    children: [
+                      Text("Are you sure you want to cancel the subscription for this course?",
+                          // textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'Roboto Medium',
+                            fontWeight: FontWeight.w200,
+                            color: Colors.black,
+                          )),
+                    ],
+                  ),
+                  actions: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                                height: 35,
+                                width: MediaQuery.of(context).size.width * .15,
+                                // constraints: BoxConstraints(minWidth: 100),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                                    gradient: LinearGradient(
+                                        colors: [
+                                          Color(0xff3A47AD),
+                                          Color(0xff5163F3),
+                                        ],
+                                        begin: const FractionalOffset(0.0, 0.0),
+                                        end: const FractionalOffset(1.0, 0.0),
+                                        stops: [0.0, 1.0],
+                                        tileMode: TileMode.clamp)),
+                                child: Center(
+                                  child: Text(
+                                    "No",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ))),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        InkWell(
+                          onTap: () async {
+                          
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            height: 35,
+                            width: MediaQuery.of(context).size.width * .15,
+                            // constraints: BoxConstraints(minWidth: 100),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xff3A47AD),
+                                      Color(0xff5163F3),
+                                    ],
+                                    begin: const FractionalOffset(0.0, 0.0),
+                                    end: const FractionalOffset(1.0, 0.0),
+                                    stops: [0.0, 1.0],
+                                    tileMode: TileMode.clamp)),
+                            child: Center(
+                              child: Text(
+                                "Yes",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        )
+                      ],
+                    ),
+                  ],
+                ));
+  }
+
   onLongPressOfGroup(BuildContext context) {
     print("onLognPress groupId: ${widget.group.groupId}");
     context.read<ChatProvider>().isChatAdmin()

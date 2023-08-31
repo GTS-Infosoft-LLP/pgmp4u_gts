@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
@@ -107,11 +106,13 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                 onTap: () async {
                                   print("cousres id========>>>${courseProvider.course[index].id}");
                                   ProfileProvider pp = Provider.of(context, listen: false);
+                                  pp.updateLoader(true);
 
                                   int courseId = courseProvider.course[index].id;
                                   await pp.subscriptionStatus("Question");
 
                                   var chkStat = await pp.successValue;
+                                  pp.updateLoader(false);
                                   print("chkStat====$chkStat");
                                   if (chkStat == false) {
                                     Navigator.push(

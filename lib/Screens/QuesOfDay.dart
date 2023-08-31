@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:pgmp4u/Screens/MockTest/model/quesOfDayModel.dart';
@@ -11,6 +12,7 @@ import 'package:sizer/sizer.dart';
 
 import '../provider/courseProvider.dart';
 import '../provider/profileProvider.dart';
+import 'Domain/disImage.dart';
 
 class QuesOfDay extends StatefulWidget {
   var seltedId;
@@ -356,6 +358,42 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                     },
                                                   ),
                                                 ),
+                                                data.qdList[_quetionNo].image != null
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => ImageDispalyScreen(
+                                                                        quesImages: data.qdList[_quetionNo].image,
+                                                                      )));
+                                                        },
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.grey[300],
+                                                            borderRadius: BorderRadius.circular(20),
+                                                          ),
+                                                          child: ClipRRect(
+                                                            borderRadius: BorderRadius.circular(10),
+                                                            child: CachedNetworkImage(
+                                                              imageUrl: data.qdList[_quetionNo].image,
+                                                              fit: BoxFit.cover,
+                                                              placeholder: (context, url) => Padding(
+                                                                padding: const EdgeInsets.symmetric(
+                                                                    horizontal: 78.0, vertical: 28),
+                                                                child: CircularProgressIndicator(
+                                                                  strokeWidth: 2,
+                                                                  color: Colors.grey[400],
+                                                                ),
+                                                              ),
+                                                              errorWidget: (context, url, error) => Container(
+                                                                  height: MediaQuery.of(context).size.width * .4,
+                                                                  child: Center(child: Icon(Icons.error))),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : SizedBox(),
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: [

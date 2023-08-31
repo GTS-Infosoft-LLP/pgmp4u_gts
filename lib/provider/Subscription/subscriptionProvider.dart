@@ -43,6 +43,7 @@ class SubscriptionProvider extends ChangeNotifier {
   setSelectedRadioVal(int val) {
     Future.delayed(Duration.zero, () async {
       radioSelected = val;
+      print(":::::radioSelected::::::$radioSelected");
       notifyListeners();
     });
   }
@@ -295,7 +296,11 @@ class SubscriptionProvider extends ChangeNotifier {
 
   String finUrl;
 
+  int alredyPurchase = 0;
+
   Future<void> createSubscritionOrder(int id) async {
+    alredyPurchase = 0;
+
     finUrl = "";
     print(">>>>>>>>>>>>>>getSubscritionData>>>>>>>>>>>>>>");
 
@@ -322,6 +327,14 @@ class SubscriptionProvider extends ChangeNotifier {
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
+      if (resStatus == 400) {
+        alredyPurchase = 1;
+        EasyLoading.showInfo("${resDDo['message']}");
+        print("alredyPurchase $alredyPurchase");
+        print("resposnse is 400");
+        print("resDDo[message]::::${resDDo['message']}");
+        return;
+      }
 
       print("satusss====${resDDo["success"]}");
 
@@ -373,7 +386,6 @@ class SubscriptionProvider extends ChangeNotifier {
 
   var selectedSubsId;
   void setSelectedSubsId(int id) {
-
     Future.delayed(Duration.zero, () async {
       selectedSubsId = id;
       print("selectedSubsId********$selectedSubsId");

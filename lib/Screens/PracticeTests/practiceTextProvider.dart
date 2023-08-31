@@ -78,6 +78,7 @@ class PracticeTextProvider extends ChangeNotifier {
       // print("body=========>$body");
 
       if (response.statusCode == 200) {
+        print("api url::::::${MOCK_TEST_QUES + "/$id"}");
         pList = [];
         print(convert.jsonDecode(response.body));
         //  HiveHandler.setstringdata(key: "PracTestModel", value: response.body);

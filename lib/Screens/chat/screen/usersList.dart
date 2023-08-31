@@ -4,6 +4,7 @@ import 'package:pgmp4u/Screens/chat/model/singleGroupModel.dart';
 import 'package:pgmp4u/Screens/chat/screen/chatPage.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/userListModel.dart';
+import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:provider/provider.dart';
 
 class UsersList extends StatefulWidget {
@@ -91,11 +92,13 @@ class _UsersListState extends State<UsersList> {
   Widget _userListTile(Users user) {
     return InkWell(
       onTap: () async {
+        ProfileProvider pp = Provider.of(context, listen: false);
+        pp.updateLoader(true);
         // create a admin-user chat group
         bool isRoomCreated = await context
             .read<ChatProvider>()
             .initiatePersonalChat(reciver: MyUserInfo(id: user.uuid, name: user.name, isAdmin: user.isChatAdmin));
-
+        pp.updateLoader(false);
         String name = '';
         name = user.name;
         name += user.isChatAdmin == 1 ? " (Admin)" : '';

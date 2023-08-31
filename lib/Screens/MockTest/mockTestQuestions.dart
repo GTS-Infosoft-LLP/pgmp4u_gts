@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hive/hive.dart';
@@ -20,6 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import '../../Models/mockquestionanswermodel.dart';
+import '../Domain/disImage.dart';
 import '../Tests/local_handler/hive_handler.dart';
 
 class MockTestQuestions extends StatefulWidget {
@@ -338,7 +340,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   }
 
   Future apiCall() async {
-    // http://3.227.35.115:1011/api/MockTestQuestions/118
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -763,24 +764,64 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                             )
                                                           },
                                                         ),
-
-                                                        // Text(
-                                                        //   mockQuestion[_quetionNo].questionDetail.questiondata,
-                                                        //   // _quizList.isNotEmpty
-                                                        //   //     //questionAnswersList != null
-                                                        //   //     ? _quizList[_quetionNo].questionDetail.questiondata
-                                                        //   //     //listResponse[_quetionNo]
-                                                        //   //     //      ["Question"]
-                                                        //   //     //["question"]
-                                                        //   //     : '',
-                                                        //   style: TextStyle(
-                                                        //     fontFamily: 'Roboto Regular',
-                                                        //     fontSize: width * (15 / 420),
-                                                        //     color: Colors.black,
-                                                        //     height: 1.7,
-                                                        //   ),
-                                                        // ),
                                                       ),
+
+                                                      mockQuestion[_quetionNo].questionDetail.image != null
+                                                          ? InkWell(
+                                                              onTap: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) => ImageDispalyScreen(
+                                                                              quesImages: mockQuestion[_quetionNo]
+                                                                                  .questionDetail
+                                                                                  .image,
+                                                                            )));
+                                                              },
+                                                              child: Container(
+                                                                decoration: BoxDecoration(
+                                                                  color: Colors.grey[300],
+                                                                  borderRadius: BorderRadius.circular(20),
+                                                                ),
+                                                                child: ClipRRect(
+                                                                  borderRadius: BorderRadius.circular(10),
+                                                                  child: CachedNetworkImage(
+                                                                    imageUrl:
+                                                                        mockQuestion[_quetionNo].questionDetail.image,
+                                                                    fit: BoxFit.cover,
+                                                                    placeholder: (context, url) => Padding(
+                                                                      padding: const EdgeInsets.symmetric(
+                                                                          horizontal: 78.0, vertical: 28),
+                                                                      child: CircularProgressIndicator(
+                                                                        strokeWidth: 2,
+                                                                        color: Colors.grey[400],
+                                                                      ),
+                                                                    ),
+                                                                    errorWidget: (context, url, error) => Container(
+                                                                        height: MediaQuery.of(context).size.width * .4,
+                                                                        child: Center(child: Icon(Icons.error))),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : SizedBox(),
+                                                      // Container(
+                                                      //   margin: EdgeInsets.only(top: height * (15 / 800)),
+                                                      //   child: Html(
+                                                      //     data: mockQuestion[_quetionNo].questionDetail.image,
+                                                      //     style: {
+                                                      //       "body": Style(
+                                                      //         padding: EdgeInsets.only(top: 5),
+                                                      //         margin: EdgeInsets.zero,
+                                                      //         color: Color(0xff000000),
+                                                      //         textAlign: TextAlign.left,
+                                                      //         // maxLines: 7,
+                                                      //         // textOverflow: TextOverflow.ellipsis,
+                                                      //         fontSize: FontSize(18),
+                                                      //       )
+                                                      //     },
+                                                      //   ),
+                                                      // ),
                                                       SizedBox(
                                                         height: 10,
                                                       ),
@@ -905,7 +946,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                                 margin: EdgeInsets.zero,
                                                                                 color: Color(0xff000000),
                                                                                 textAlign: TextAlign.left,
-                                                                         
                                                                                 fontSize: FontSize(18),
                                                                               )
                                                                             },

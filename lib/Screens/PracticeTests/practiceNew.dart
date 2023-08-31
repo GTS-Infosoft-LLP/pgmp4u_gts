@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:pgmp4u/Screens/MockTest/model/pracTestModel.dart';
@@ -13,6 +14,7 @@ import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../Domain/disImage.dart';
 import '../Tests/local_handler/hive_handler.dart';
 
 class PracticeNew extends StatefulWidget {
@@ -428,16 +430,53 @@ class _PracticeNewState extends State<PracticeNew> {
                                                               },
                                                             ),
 
-                                                            // Text(
-                                                            //   PTList != null ? PTList[_quetionNo].ques.question : '',
-                                                            //   style: TextStyle(
-                                                            //     fontFamily: 'Roboto Regular',
-                                                            //     fontSize: width * (15 / 420),
-                                                            //     color: Colors.black,
-                                                            //     height: 1.7,
-                                                            //   ),
-                                                            // ),
+                                        
                                                           ),
+
+
+
+                                                     PTList[_quetionNo].ques.image!=null?  InkWell(
+                                                              onTap: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) => ImageDispalyScreen(
+                                                                           quesImages: PTList[_quetionNo].ques.image,
+                                                                            )));
+                                                              },
+                                                              child: Container(
+                                                                decoration: BoxDecoration(
+                                                                  color: Colors.grey[300],
+                                                                  borderRadius: BorderRadius.circular(20),
+                                                                ),
+                                                                child: ClipRRect(
+                                                                  borderRadius: BorderRadius.circular(10),
+                                                                  child: CachedNetworkImage(
+                                                                    imageUrl:
+                                                                       PTList[_quetionNo].ques.image,
+                                                                    fit: BoxFit.cover,
+                                                                    placeholder: (context, url) => Padding(
+                                                                      padding: const EdgeInsets.symmetric(
+                                                                          horizontal: 78.0, vertical: 28),
+                                                                      child: CircularProgressIndicator(
+                                                                        strokeWidth: 2,
+                                                                        color: Colors.grey[400],
+                                                                      ),
+                                                                    ),
+                                                                    errorWidget: (context, url, error) => Container(
+                                                                        height: MediaQuery.of(context).size.width * .4,
+                                                                        child: Center(child: Icon(Icons.error))),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ):SizedBox(),
+
+
+
+
+
+
+
 
                                                           SizedBox(
                                                             height: 20,

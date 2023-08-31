@@ -34,6 +34,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
   String subsTime;
   String mnths = "Months";
   String subTimeDur;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   int _value = -1;
 
@@ -62,6 +63,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     sp.selectedIval = 2;
     if (sp.durationPackData.isNotEmpty && widget.showFreeTrial != 1) {
       sp.setSelectedRadioVal(0);
+      print("selectedRadio val====${sp.radioSelected}");
     }
 
     print("sp.selectedIval====${sp.selectedIval}");
@@ -92,6 +94,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         bottomNavigationBar: widget.showFreeTrial == 1
             ? Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -129,7 +132,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                       padding: const EdgeInsets.only(bottom: 12.0, left: 15, right: 15),
                       child: InkWell(
                         onTap: () async {
-                          ShowSubsConfrm();
+                          ShowSubsConfrm(context);
                           // SubscriptionProvider sp = Provider.of(context, listen: false);
 
                           // sp.createSubscritionOrder(sp.selectedSubsId);
@@ -822,9 +825,10 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
 // return Container(child: ,);
   }
 
-  void ShowSubsConfrm() {
+  // ignore: non_constant_identifier_names
+  void ShowSubsConfrm(BuildContext context) {
     showDialog(
-        context: context,
+        context: _scaffoldKey.currentContext,
         builder: (context) => AlertDialog(
               elevation: 20,
               backgroundColor: Colors.white,
@@ -884,9 +888,14 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
 
                         SubscriptionProvider sp = Provider.of(context, listen: false);
 
-                        sp.createSubscritionOrder(sp.selectedSubsId);
+                        await sp.createSubscritionOrder(sp.selectedSubsId);
+                        print("alredyPurchase value====${sp.alredyPurchase}");
+                        if (sp.alredyPurchase == 1) {
+                          //  EasyLoading.s
+                        }
+
                         var token = await getTokenn();
-                        ProfileProvider pp = Provider.of(context, listen: false);
+                        // ProfileProvider pp = Provider.of(context, listen: false);
 
                         print(" selectedSubsType ====${sp.selectedSubsType}");
                         print("permiumbutton.length===${permiumbutton.length}");
@@ -898,7 +907,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                           );
                         } else {
                           bool status = await Navigator.push(
-                              context,
+                              _scaffoldKey.currentContext,
                               MaterialPageRoute(
                                 builder: (context) =>
                                     PaymentAndroid(token: token, statusFlash1videoLibrary2: 1, urlll: sp.finUrl),

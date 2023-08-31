@@ -49,7 +49,7 @@ class Question {
   String questionType;
   String rightAnswer;
   String explanation;
-  Null image;
+  String image;
   int status;
   int deleteStatus;
   List<Options> options;

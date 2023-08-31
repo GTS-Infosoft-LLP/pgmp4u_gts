@@ -12,7 +12,8 @@ import '../../utils/app_color.dart';
 
 class Notifications extends StatefulWidget {
   final type;
-  const Notifications({Key key, this.type}) : super(key: key);
+  int fromSplash;
+ Notifications({Key key, this.type,this.fromSplash=0}) : super(key: key);
 
   @override
   State<Notifications> createState() => _NotificationsState();
@@ -40,7 +41,6 @@ class _NotificationsState extends State<Notifications> {
         _dshbrdProvider.showNotification();
       }
     });
-
     super.initState();
   }
 

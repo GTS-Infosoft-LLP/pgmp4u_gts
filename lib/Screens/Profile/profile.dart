@@ -721,9 +721,16 @@ class _ProfileState extends State<Profile> {
                                                           : '   Study timer set at: ',
                                                       style: TextStyle(
                                                         fontFamily: 'Roboto Medium',
-                                                        fontSize: 16,
+                                                        // fontSize: 16,
+                                                        fontSize: width * (18 / 420),
                                                         color: Colors.black,
                                                       ),
+
+                                                      //          style: TextStyle(
+                                                      //   fontFamily: 'Roboto Medium',
+                                                      //   fontSize: width * (18 / 420),
+                                                      //   color: Colors.black,
+                                                      // ),
                                                     ),
                                                     Padding(
                                                       padding: const EdgeInsets.only(right: 18.0),
@@ -798,7 +805,11 @@ class _ProfileState extends State<Profile> {
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.push(
-                                        context, MaterialPageRoute(builder: (context) => NotificationTabs()));
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => NotificationTabs(
+                                                  fromSplash: 0,
+                                                )));
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(bottom: 6),
