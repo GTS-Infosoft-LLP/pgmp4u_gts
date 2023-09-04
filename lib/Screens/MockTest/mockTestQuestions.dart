@@ -50,14 +50,16 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   final mockNameNew;
   final attemptNew;
   List ids = [];
-    List<int> showAnswer = [];
+  List answer = [];
+  List<Map<String, dynamic>> answersMapp = [];
+  // List<int> showAnswer = [];
   _MockTestQuestionsState({
     this.selectedIdNew,
     this.mockNameNew,
     this.attemptNew,
   });
   List submitData = [];
-  List storeData = [];
+
   bool _show = true;
   int _quetionNo = 0;
   List<int> selectedAnswer = [];
@@ -647,14 +649,23 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                             ? BouncingScrollPhysics()
                                             : NeverScrollableScrollPhysics(),
                                         onPageChanged: (index) {
-                                          
+                                          // answer = [];
+                                          print("_question numner:::::::$_quetionNo");
+                                          print("::::answersMapp::::$answersMapp");
+                                          // for (int i = 0; i < answersMapp.length; i++) {
+                                          //   if (answersMapp[i]["questionNumber"] == (_quetionNo)) {
+                                          //     print(
+                                          //         "answersMapp[i][selectedAnser]::::${answersMapp[i]["selectedAnser"]}");
+                                          //     // answer = answersMapp[i]["selectedAnser"];
+                                          //     answer = (answersMapp[i]["selectedAnser"]);
+                                          //     setState(() {});
+                                          //     print("answer:::::::answer::::::::$answer");
+                                          //   }
+                                          // }
+                                          print("ansers after they are set:::::$answer");
 
-                                          cp.addToList(_quetionNo, showAnswer);
-                                          showAnswer=[];
-
-
-                                          print("index in onPageChagen ====>>$index");
-                                          print("currentIndex in onPageChagen ====>>$currentIndex");
+                                          // print("index in onPageChagen ====>>$index");
+                                          // print("currentIndex in onPageChagen ====>>$currentIndex");
 
                                           if (currentData != null) {
                                             print("selected andwer:::::::$selectedAnswer");
@@ -663,7 +674,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                 "rightAnswer.length:::::::::::::${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}");
                                             if (selectedAnswer.length ==
                                                 mockQuestion[_quetionNo].questionDetail.rightAnswer.length) {
-                                              print("addedd to listt");
                                               submitData.add({
                                                 "question": currentData["question"],
                                                 "answer": currentData["answer"],
@@ -671,13 +681,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                 "category": currentData["category"],
                                                 "type": selectedAnswer.length > 2 ? 2 : 1
                                               });
-
-                                              storeData.add({
-                                                "question": currentData["question"],
-                                                "selected": selectedAnswer.toString()
-                                              });
-                                              print("submitData::::$submitData");
-                                              print("storeData::::$storeData");
 
                                               currentData = null;
                                             } else {}
@@ -709,8 +712,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
                                           setState(() {
                                             currentIndex = index;
-
-                                            // print("final index===$currentIndex");
                                           });
                                         },
                                         itemCount: mockQuestion.length,
@@ -741,31 +742,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                               color: _colorfromhex("#ABAFD1"),
                                                             ),
                                                           ),
-
                                                           putOnDiscussionButton(context),
-
-                                                          // listResponse.length - 1 > _quetionNo
-                                                          //     ? GestureDetector(
-                                                          //         onTap: () => {
-                                                          //           setState(() {
-                                                          //             if (_quetionNo <
-                                                          //                 listResponse
-                                                          //                     .length) {
-                                                          //               _quetionNo =
-                                                          //                   _quetionNo + 1;
-                                                          //             }
-                                                          //             selectedAnswer = null;
-                                                          //           }),
-                                                          //           print(_quetionNo)
-                                                          //         },
-                                                          //         child: Icon(
-                                                          //           Icons.arrow_forward,
-                                                          //           size: width * (24 / 420),
-                                                          //           color: _colorfromhex(
-                                                          //               "#ABAFD1"),
-                                                          //         ),
-                                                          //       )
-                                                          //     : Container(),
                                                         ],
                                                       ),
                                                       Container(
@@ -852,6 +829,17 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                               .rightAnswer
                                                               .length;
 
+                                                          print("_question numner:::::::$_quetionNo");
+                                                          print("::::answersMapp::::$answersMapp");
+                                                          // for (int i = 0; i < answersMapp.length; i++) {
+                                                          //   if (answersMapp[i]["questionNumber"] == (_quetionNo)) {
+                                                          //     answer = (answersMapp[i]["selectedAnser"]);
+                                                          //   }
+                                                          // }
+
+                                                          print(
+                                                              "option index id:::::;::${mockQuestion[_quetionNo].questionDetail.Options[index].id}");
+
                                                           return title.question_option != null
                                                               ? GestureDetector(
                                                                   onTap: () => {
@@ -859,39 +847,73 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                       {showPausePopup()}
                                                                     else if (cp.allowScroll == 1)
                                                                       {
-                                                                        if (selectedAnswer.length != rightAnswerLength)
-                                                                          {
-                                                                            setState(() {
-                                                                              selectedAnswer.add(index);
-                                                                              showAnswer.add(mockQuestion[_quetionNo].questionDetail.Options[index].id);
-                                                                              print(
-                                                                                  "selected answer list::::== ${mockQuestion[_quetionNo].questionDetail.Options[index].id}");
-                                                                                  // if(showAnswer.contains(element)){
+                                                                        // if (answer.length == rightAnswerLength)
+                                                                        //   {}
+                                                                        // else
+                                                                        print(
+                                                                            "selectedAnswer length::::${selectedAnswer.length}"),
+                                                                        print(
+                                                                            "rightAnswerLength length::::$rightAnswerLength"),
+                                                                        {
+                                                                          if (selectedAnswer.length !=
+                                                                              rightAnswerLength)
+                                                                            {
+                                                                              setState(() {
+                                                                                selectedAnswer.add(index);
+                                                                                // showAnswer.add(mockQuestion[_quetionNo].questionDetail.Options[index].id);
+                                                                                print(
+                                                                                    "selected answer list::::== ${mockQuestion[_quetionNo].questionDetail.Options[index].id}");
+                                                                                // if(showAnswer.contains(element)){
 
-                                                                                  // }
-                                                                                  // showAnswer.add({"questionNo":_quetionNo,"selectedAns":mockQuestion[_quetionNo].questionDetail.Options[index].id});
+                                                                                // }
+                                                                                // showAnswer.add({"questionNo":_quetionNo,"selectedAns":mockQuestion[_quetionNo].questionDetail.Options[index].id});
 
+                                                                                ids.add(mockQuestion[_quetionNo]
+                                                                                    .questionDetail
+                                                                                    .Options[index]
+                                                                                    .id);
+                                                                                String finalString = ids.join(', ');
+                                                                                print(
+                                                                                    "_quetionNo::::${_quetionNo + 1}");
+                                                                                print(
+                                                                                    "finalString of ids::::$finalString");
+                                                                                addToMap(_quetionNo, ids);
+
+                                                                                // answersMapp.add(){}
+
+                                                                                currentData = {
+                                                                                  "question": mockQuestion[_quetionNo]
+                                                                                      .questionDetail
+                                                                                      .queID,
+                                                                                  "answer": finalString,
+                                                                                  "correct": 1,
+                                                                                  "category": mockQuestion[_quetionNo]
+                                                                                      .questionDetail
+                                                                                      .category,
+                                                                                  "type":
+                                                                                      selectedAnswer.length > 2 ? 2 : 1
+                                                                                };
+                                                                                print("currentData  $currentData");
+                                                                              })
+                                                                            }
+                                                                          else
+                                                                            {
+                                                                              print("inside this conditiion:::;"),
+                                                                              selectedAnswer = [],
+                                                                              answer = [],
+                                                                              ids = [],
                                                                               ids.add(mockQuestion[_quetionNo]
                                                                                   .questionDetail
                                                                                   .Options[index]
-                                                                                  .id);
-                                                                              String finalString = ids.join(', ');
-
-                                                                              currentData = {
-                                                                                "question": mockQuestion[_quetionNo]
-                                                                                    .questionDetail
-                                                                                    .queID,
-                                                                                "answer": finalString,
-                                                                                "correct": 1,
-                                                                                "category": mockQuestion[_quetionNo]
-                                                                                    .questionDetail
-                                                                                    .category,
-                                                                                "type":
-                                                                                    selectedAnswer.length > 2 ? 2 : 1
-                                                                              };
-                                                                              print("currentData  $currentData");
-                                                                            })
-                                                                          }
+                                                                                  .id),
+                                                                              selectedAnswer.add(index),
+                                                                              print("idsssssss$ids"),
+                                                                              print(
+                                                                                  "seleccted answer dfasfd:::;$selectedAnswer"),
+                                                                              print("answer answer dfasfd:::;$answer"),
+                                                                              setState(() {})
+                                                                            }
+                                                                        }
                                                                       }
                                                                   },
                                                                   child: Container(
@@ -904,8 +926,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                     ),
                                                                     decoration: BoxDecoration(
                                                                         borderRadius: BorderRadius.circular(8),
-                                                                        color: selectedAnswer.contains(index)
-                                                                            ? _colorfromhex("#F2F2FF")
+                                                                        color: selectedAnswer.contains(index) ||
+                                                                                answer.contains(mockQuestion[_quetionNo]
+                                                                                    .questionDetail
+                                                                                    .Options[index]
+                                                                                    .id)
+                                                                            ? Color(0xffF2F2FF)
                                                                             : Colors.white),
                                                                     child: Row(
                                                                       children: [
@@ -914,14 +940,24 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                           height: width * 25 / 420,
                                                                           decoration: BoxDecoration(
                                                                             border: Border.all(
-                                                                                color: selectedAnswer.contains(index)
-                                                                                    ? _colorfromhex("#3846A9")
-                                                                                    : _colorfromhex("#F1F1FF")),
+                                                                                color: selectedAnswer.contains(index) ||
+                                                                                        answer.contains(
+                                                                                            mockQuestion[_quetionNo]
+                                                                                                .questionDetail
+                                                                                                .Options[index]
+                                                                                                .id)
+                                                                                    ? Color(0xff3846A9)
+                                                                                    : Color(0xffF1F1FF)),
                                                                             borderRadius: BorderRadius.circular(
                                                                               width * (25 / 420),
                                                                             ),
-                                                                            color: selectedAnswer.contains(index)
-                                                                                ? _colorfromhex("#3846A9")
+                                                                            color: selectedAnswer.contains(index) ||
+                                                                                    answer.contains(
+                                                                                        mockQuestion[_quetionNo]
+                                                                                            .questionDetail
+                                                                                            .Options[index]
+                                                                                            .id)
+                                                                                ? Color(0xff3846A9)
                                                                                 : Colors.white,
                                                                           ),
                                                                           child: Center(
@@ -999,16 +1035,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               subQues = _quetionNo,
                                               pageController.animateToPage(--subQues,
                                                   duration: Duration(milliseconds: 500), curve: Curves.easeInCirc),
-                                              // setState(() {
-                                              //   currentIndex--;
-                                              //   print("currentIndex: $currentIndex");
-                                              // }),
-                                              // setState(() {
-                                              //   _quetionNo--;
-                                              //   selectedAnswer = [];
-                                              //   ids = [];
-                                              //   currentData = null;
-                                              // })
                                             },
                                             child: Container(
                                               width: width / 2,
@@ -1040,9 +1066,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                       onTap: () => {
                                         if (mockQuestion.length - 1 > _quetionNo)
                                           {
-                                            // CourseProvider cp=Provider.of(context,listen: false),
-                                            //   cp.addToList(_quetionNo, showAnswer)
-                                   
                                             plusQues = _quetionNo,
                                             pageController.animateToPage(++plusQues,
                                                 duration: Duration(milliseconds: 500), curve: Curves.easeInCirc),
@@ -1064,13 +1087,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                     "type": selectedAnswer.length > 2 ? 2 : 1
                                                   });
 
-                                                  storeData.add({
-                                                    "question": currentData["question"],
-                                                    "selected": selectedAnswer.toString()
-                                                  });
-                                                  print("submitData::::$submitData");
-                                                  print("storeData::::$storeData");
-
                                                   currentData = null;
                                                 } else {
                                                   // print("not added to list******************************");
@@ -1083,8 +1099,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               // }
 
                                               selectedAnswer = [];
-                                                
-                                          showAnswer=[];
+
                                               ids = [];
                                             }),
                                           }
@@ -1264,5 +1279,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                 )
               ],
             ));
+  }
+
+  void addToMap(int quetionNo, List finalString) {
+    Map<String, dynamic> map = {"questionNumber": quetionNo, "selectedAnser": finalString};
+
+    answersMapp.add(map);
+    print("answersMapp::::::::$answersMapp");
   }
 }

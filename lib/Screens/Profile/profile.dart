@@ -415,11 +415,12 @@ class _ProfileState extends State<Profile> {
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    if (cp.crsDropList.isEmpty) {
+                                    if (cp.course.isEmpty) {
                                       print("list is empty show popup");
 
                                       GFToast.showToast(
-                                        'No Course is purchased yet...',
+                                        // 'No Course is purchased yet...',
+                                        "No course available",
                                         context,
                                         toastPosition: GFToastPosition.CENTER,
                                       );
@@ -430,7 +431,7 @@ class _ProfileState extends State<Profile> {
                                     width: MediaQuery.of(context).size.width * .35,
                                     child: CustomDropDown<CourseDetails>(
                                       selectText: cp.selectedCourseLable ?? "Select",
-                                      itemList: cp.crsDropList ?? [],
+                                      itemList: cp.course ?? [],
                                       isEnable: true,
                                       title: "",
                                       value: null,
@@ -1400,10 +1401,7 @@ class cancelSubsBottomSheet extends StatelessWidget {
 
           InkWell(
             onTap: () {
-
-showCancelSubsPopup(context);
-
-          
+              showCancelSubsPopup(context);
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -1495,20 +1493,20 @@ showCancelSubsPopup(context);
                     ),
                     InkWell(
                       onTap: () {
-                         CourseProvider cp = Provider.of(context, listen: false);
-              print("cp sele lable===${cp.selectedCancelSubsLable}");
-              if (cp.selectedCancelSubsLable == null) {
-                GFToast.showToast(
-                  'Please select Plan for which you want to cancel the subscription',
-                  context,
-                  toastPosition: GFToastPosition.CENTER,
-                );
-              } else {
-                Navigator.pop(context);
-                // showCancelSubsPopup(context);
-                SubscriptionProvider sp = Provider.of(context, listen: false);
-                sp.cancelSubscription(cp.selectedCancelSubsId);
-              }
+                        CourseProvider cp = Provider.of(context, listen: false);
+                        print("cp sele lable===${cp.selectedCancelSubsLable}");
+                        if (cp.selectedCancelSubsLable == null) {
+                          GFToast.showToast(
+                            'Please select Plan for which you want to cancel the subscription',
+                            context,
+                            toastPosition: GFToastPosition.CENTER,
+                          );
+                        } else {
+                          Navigator.pop(context);
+                          // showCancelSubsPopup(context);
+                          SubscriptionProvider sp = Provider.of(context, listen: false);
+                          sp.cancelSubscription(cp.selectedCancelSubsId);
+                        }
                         Navigator.pop(context);
                       },
                       child: Container(

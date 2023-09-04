@@ -162,29 +162,34 @@ class CourseProvider extends ChangeNotifier {
     });
   }
 
-
   List<Map<String, dynamic>> mokQuesAnsMap = [];
-  addToList(int quesNo,List selAns){
-      print("mokQuesAnsMap::::==== ${mokQuesAnsMap}");
-    for(int i=0;i<mokQuesAnsMap.length;i++){
-      if(mokQuesAnsMap[i].containsKey(quesNo)){
-        mokQuesAnsMap[i]= {
-        "questionNumber": quesNo,
-        "selectedAnswers": selAns,
-      };
-      }else{
-         Map<String, dynamic> map = {
+  addToList(int quesNo, List selAns) {
+    // print("")
+    print("mokQuesAnsMap::::==== $mokQuesAnsMap");
+    if (mokQuesAnsMap.isEmpty) {
+      Map<String, dynamic> map = {
         "questionNumber": quesNo,
         "selectedAnswers": selAns,
       };
       mokQuesAnsMap.add(map);
+    } else {
+      for (int i = 0; i < mokQuesAnsMap.length; i++) {
+        if (mokQuesAnsMap[i].containsKey(quesNo)) {
+          mokQuesAnsMap[i] = {
+            "questionNumber": quesNo,
+            "selectedAnswers": selAns,
+          };
+        } else {
+          Map<String, dynamic> map = {
+            "questionNumber": quesNo,
+            "selectedAnswers": selAns,
+          };
+          mokQuesAnsMap.add(map);
+        }
       }
+      print("mokQuesAnsMap======== $mokQuesAnsMap");
     }
-    print("mokQuesAnsMap::::==== ${mokQuesAnsMap}");
-  
   }
-
-
 
   int showFloatButton = 0;
 
@@ -204,7 +209,7 @@ class CourseProvider extends ChangeNotifier {
     Future.delayed(Duration.zero, () {
       allowScroll = val;
       toPage = pageNum;
-      print("allowScroll==========$allowScroll");  
+      print("allowScroll==========$allowScroll");
       notifyListeners();
     });
   }
@@ -334,7 +339,6 @@ class CourseProvider extends ChangeNotifier {
           List temp1 = mapResponse["data"];
           print("temp list===$temp1");
           pptDataList = temp1.map((e) => PPTDataDetails.fromjson(e)).toList();
-       
         }
       }
     } on Exception {

@@ -1,6 +1,8 @@
 class SubscriptionDetails {
   int id;
   String title;
+  double amount;
+  String finalAmount;
   String price;
   int courseId;
   String planId;
@@ -15,6 +17,7 @@ class SubscriptionDetails {
   String features;
 
   SubscriptionDetails.fromjson(Map<String, dynamic> json) {
+    // finalAmount = json['price'].toStringAsFixed(2)();
     id = json['id'];
     title = json['title'];
     price = json['price'];

@@ -70,7 +70,7 @@ class _ImageDispalyScreenState extends State<ImageDispalyScreen> {
                         : dp.TaskDetailList[0].Image != null
                             ? dp.TaskDetailList[0].Image
                             : '',
-                    fit: BoxFit.fill,
+                    fit: BoxFit.fitWidth,
                     placeholder: (context, url) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 78.0, vertical: 28),
                       child: CircularProgressIndicator(
@@ -108,7 +108,8 @@ class _ImageDispalyScreenState extends State<ImageDispalyScreen> {
         ),
       ),
       title: Center(
-          child: Text("",
+          child: Text(
+        "",
         // widget.quesImages.isNotEmpty ? "" : 'Flow Diagram      ',
         style: TextStyle(color: Colors.white),
       )),

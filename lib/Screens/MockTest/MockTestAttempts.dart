@@ -235,7 +235,6 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                           children: [
                                             Text(
                                               detailsofMockAttempt.test_name + " Attempt Summary",
-
                                               style: TextStyle(
                                                   fontFamily: 'Roboto Bold',
                                                   fontSize: width * (20 / 420),
@@ -260,10 +259,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                       child: Container(
                                                           decoration: BoxDecoration(
                                                               color: Colors.white,
-                          
                                                               borderRadius: BorderRadius.circular(15)),
                                                           margin: EdgeInsets.only(top: 10),
-                                                       
                                                           padding:
                                                               EdgeInsets.only(left: 14, right: 8, top: 15, bottom: 15),
                                                           child: Column(children: [
@@ -332,8 +329,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                         restartModel =
                                                                             value.get(cp.selectedMockId.toString());
 
-                                                                        print(
-                                                                            "==== got Key: ${cp.selectedMockId.toString()} restartModel:displayTime ${restartModel.displayTime},quesNum ${restartModel.quesNum},restartAttempNum ${restartModel.restartAttempNum}");
+                                                                        // print(
+                                                                        //     "==== got Key: ${cp.selectedMockId.toString()} restartModel:displayTime ${restartModel.displayTime},quesNum ${restartModel.quesNum},restartAttempNum ${restartModel.restartAttempNum}");
 
                                                                         Future.delayed(Duration.zero, () {
                                                                           setState(() {});

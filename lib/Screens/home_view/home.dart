@@ -59,27 +59,26 @@ class _HomeViewState extends State<HomeView> {
   Future<void> callApi() {
     CourseProvider courseProvider = Provider.of(context, listen: false);
     courseProvider.getCourse();
-     Future<void>.delayed(Duration(seconds: 3), () {
-        courseProvider.setFloatButton(1);
-      });
-     
-      // Timer.periodic(Duration(seconds: 5), (timer) {
-      //   if (timer.tick == 3) {
-      //     timer.cancel();
-      //     setState(() {
-      //       courseProvider.setFloatButton(1);
-      //     });
-      //   }
-      // });
+    Future<void>.delayed(Duration(seconds: 3), () {
+      courseProvider.setFloatButton(1);
+    });
 
-      // Timer(Duration(seconds: 5), () {
-      //   courseProvider.setFloatButton(1);
-      // });
+    // Timer.periodic(Duration(seconds: 5), (timer) {
+    //   if (timer.tick == 3) {
+    //     timer.cancel();
+    //     setState(() {
+    //       courseProvider.setFloatButton(1);
+    //     });
+    //   }
+    // });
 
-      // Future.delayed(Duration(seconds: 5), () async {
-      //   await courseProvider.setFloatButton(1);
-      // });
-    
+    // Timer(Duration(seconds: 5), () {
+    //   courseProvider.setFloatButton(1);
+    // });
+
+    // Future.delayed(Duration(seconds: 5), () async {
+    //   await courseProvider.setFloatButton(1);
+    // });
   }
 
   HideShowResponse hideShowRes = HideShowResponse();
@@ -114,9 +113,9 @@ class _HomeViewState extends State<HomeView> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
         floatingActionButton: crp.showFloatButton == 1
             ? Padding(
-                padding: const EdgeInsets.only(top: 5.0),
+                padding: const EdgeInsets.only(top: 9.5),
                 child: Container(
-                  height: MediaQuery.of(context).size.height * .25,
+                  height: MediaQuery.of(context).size.height * .27,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
@@ -307,7 +306,7 @@ class _HomeViewState extends State<HomeView> {
                                     // ),
                                     Container(
                                       // color: Colors.amber,
-                                      width: MediaQuery.of(context).size.width * .65,
+                                      width: MediaQuery.of(context).size.width * .63,
                                       child: Text(
                                         "Start with free trial for 3 days",
                                         style:
@@ -320,7 +319,7 @@ class _HomeViewState extends State<HomeView> {
                                 new Spacer(),
 
                                 Padding(
-                                  padding: const EdgeInsets.only(right: 18.0),
+                                  padding: const EdgeInsets.only(right: 15.0),
                                   child: Icon(
                                     Icons.east,
                                     // Icons.arrow_forward_ios,

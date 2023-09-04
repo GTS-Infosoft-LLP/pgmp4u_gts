@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
-import 'package:pgmp4u/Models/constants.dart';
 import 'package:pgmp4u/Screens/Profile/paymentstripe2.dart';
 import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
@@ -243,7 +242,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                         letterSpacing: 0.3),
                                                                   )
                                                                 : widget.index == 6
-                                                                    ? Text( 
+                                                                    ? Text(
                                                                         'Get 1 year Access to Domains',
                                                                         textAlign: TextAlign.center,
                                                                         style: TextStyle(
@@ -1078,18 +1077,20 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
           child: OutlinedButton(
             onPressed: () async {
               //  IOS payment By Inn App Purchase
-              if (Platform.isIOS) {
-                print("buttonClicked ${purchaseProvider.products[0].id}");
-                print("price ${purchaseProvider.products[0].price}");
-                purchaseProvider.products.forEach((e) {
-                  print("Product id => ${e.id}");
-                  if (e.id == videoLibraryLearningPrograms && index1forFlash2forvideoLib == 2) {
-                    purchaseProvider.buy(e);
-                  } else if (e.id == flashCards && index1forFlash2forvideoLib == 1) {
-                    purchaseProvider.buy(e);
-                  }
-                });
-              } else {
+              print("platform::::$Platform");
+              // if (Platform.isIOS) {
+              //   print("buttonClicked ${purchaseProvider.products[0].id}");
+              //   print("price ${purchaseProvider.products[0].price}");
+              //   purchaseProvider.products.forEach((e) {
+              //     print("Product id => ${e.id}");
+              //     if (e.id == videoLibraryLearningPrograms && index1forFlash2forvideoLib == 2) {
+              //       purchaseProvider.buy(e);
+              //     } else if (e.id == flashCards && index1forFlash2forvideoLib == 1) {
+              //       purchaseProvider.buy(e);
+              //     }
+              //   });
+              // } else
+              {
                 ////////android payment with stripe
                 var token = await getToken();
 

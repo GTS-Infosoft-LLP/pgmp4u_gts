@@ -276,6 +276,7 @@ class SubscriptionProvider extends ChangeNotifier {
             // description.add(SubscritionPackList[i].description.toString());
 
             permiumbutton.add(newButton(
+                // amount: SubscritionPackList[i].amount.toString(),
                 amount: SubscritionPackList[i].price,
                 name: SubscritionPackList[i].title,
                 id: SubscritionPackList[i].id,

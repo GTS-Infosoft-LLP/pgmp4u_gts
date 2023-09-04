@@ -187,7 +187,7 @@ class _PracticeNewState extends State<PracticeNew> {
             builder: (context, value, child) {
               PracticeTextProvider pracTestProv = Provider.of(context, listen: false);
               var v1 = value.get(pracTestProv.selectedPracTestId.toString());
-              print("value of v1111======>>>>>>>>>$v1");
+              // print("value of v1111======>>>>>>>>>$v1");
 
               if (v1 != null) {
                 List temp = jsonDecode(v1);

@@ -113,7 +113,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
                           builder: (context, value, child) {
                             CourseProvider courseProv = Provider.of(context, listen: false);
                             var v1 = value.get(courseProv.selectedMockPercentId.toString());
-                            print("value of v1111======>>>>>>>>>$v1");
+                            // print("value of v1111======>>>>>>>>>$v1");
 
                             if (v1 != null) {
                               List temp = jsonDecode(v1);
