@@ -1400,20 +1400,10 @@ class cancelSubsBottomSheet extends StatelessWidget {
 
           InkWell(
             onTap: () {
-              CourseProvider cp = Provider.of(context, listen: false);
-              print("cp sele lable===${cp.selectedCancelSubsLable}");
-              if (cp.selectedCancelSubsLable == null) {
-                GFToast.showToast(
-                  'Please select Plan for which you want to cancel the subscription',
-                  context,
-                  toastPosition: GFToastPosition.CENTER,
-                );
-              } else {
-                Navigator.pop(context);
-                // showCancelSubsPopup(context);
-                SubscriptionProvider sp = Provider.of(context, listen: false);
-                sp.cancelSubscription(cp.selectedCancelSubsId);
-              }
+
+showCancelSubsPopup(context);
+
+          
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -1505,9 +1495,20 @@ class cancelSubsBottomSheet extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        ProfileProvider pp = Provider.of(context, listen: false);
-
-                        pp.deleteAccount();
+                         CourseProvider cp = Provider.of(context, listen: false);
+              print("cp sele lable===${cp.selectedCancelSubsLable}");
+              if (cp.selectedCancelSubsLable == null) {
+                GFToast.showToast(
+                  'Please select Plan for which you want to cancel the subscription',
+                  context,
+                  toastPosition: GFToastPosition.CENTER,
+                );
+              } else {
+                Navigator.pop(context);
+                // showCancelSubsPopup(context);
+                SubscriptionProvider sp = Provider.of(context, listen: false);
+                sp.cancelSubscription(cp.selectedCancelSubsId);
+              }
                         Navigator.pop(context);
                       },
                       child: Container(

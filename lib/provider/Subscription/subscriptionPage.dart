@@ -888,11 +888,11 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
 
                         SubscriptionProvider sp = Provider.of(context, listen: false);
 
-                        await sp.createSubscritionOrder(sp.selectedSubsId);
-                        print("alredyPurchase value====${sp.alredyPurchase}");
-                        if (sp.alredyPurchase == 1) {
-                          //  EasyLoading.s
-                        }
+                        // await sp.createSubscritionOrder(sp.selectedSubsId);
+                        // print("alredyPurchase value====${sp.alredyPurchase}");
+                        // if (sp.alredyPurchase == 1) {
+
+                        // }
 
                         var token = await getTokenn();
                         // ProfileProvider pp = Provider.of(context, listen: false);
@@ -906,19 +906,25 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                             toastPosition: GFToastPosition.CENTER,
                           );
                         } else {
-                          bool status = await Navigator.push(
-                              _scaffoldKey.currentContext,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    PaymentAndroid(token: token, statusFlash1videoLibrary2: 1, urlll: sp.finUrl),
-                              ));
-                          print("statueeess====>>>$status");
+                          await sp.createSubscritionOrder(sp.selectedSubsId);
+                          print("sp.alredyPurchase::::${sp.alredyPurchase}");
 
-                          if (status) {
-                            Navigator.pop(context);
-                            _handlePaymentSuccess2(context);
-                          } else {
-                            _handlePaymentError2(context);
+                          if (sp.alredyPurchase == 0) {
+                            print("final url:::::${sp.finUrl}");
+                            bool status = await Navigator.push(
+                                _scaffoldKey.currentContext,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      PaymentAndroid(token: token, statusFlash1videoLibrary2: 1, urlll: sp.finUrl),
+                                ));
+                            print("statueeess====>>>$status");
+
+                            if (status) {
+                              Navigator.pop(context);
+                              _handlePaymentSuccess2(context);
+                            } else {
+                              _handlePaymentError2(context);
+                            }
                           }
                         }
                       },

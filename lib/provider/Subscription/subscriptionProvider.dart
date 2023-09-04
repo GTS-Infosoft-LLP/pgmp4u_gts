@@ -306,7 +306,7 @@ class SubscriptionProvider extends ChangeNotifier {
 
     print("idCrs=========>>>>>>>>>>>>>>>$id");
     finUrl = CREATE_SUBSCRIPTION_ORDER + "/$id";
-    print("finUrl=========>>>>>>>>>>>>>>>$finUrl");
+    // print("finUrl=========>>>>>>>>>>>>>>>$finUrl");
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String stringValue = prefs.getString('token');

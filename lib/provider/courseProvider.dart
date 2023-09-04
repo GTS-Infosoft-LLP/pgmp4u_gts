@@ -162,10 +162,35 @@ class CourseProvider extends ChangeNotifier {
     });
   }
 
-  int showFloatButton = 1;
+
+  List<Map<String, dynamic>> mokQuesAnsMap = [];
+  addToList(int quesNo,List selAns){
+      print("mokQuesAnsMap::::==== ${mokQuesAnsMap}");
+    for(int i=0;i<mokQuesAnsMap.length;i++){
+      if(mokQuesAnsMap[i].containsKey(quesNo)){
+        mokQuesAnsMap[i]= {
+        "questionNumber": quesNo,
+        "selectedAnswers": selAns,
+      };
+      }else{
+         Map<String, dynamic> map = {
+        "questionNumber": quesNo,
+        "selectedAnswers": selAns,
+      };
+      mokQuesAnsMap.add(map);
+      }
+    }
+    print("mokQuesAnsMap::::==== ${mokQuesAnsMap}");
+  
+  }
+
+
+
+  int showFloatButton = 0;
 
   setFloatButton(int val) {
-    Future.delayed(Duration.zero, () async {
+    print("calll");
+    Future.delayed(Duration(seconds: 0), () async {
       showFloatButton = val;
       print("showFloatButton========>>>>>>>$showFloatButton");
       notifyListeners();
@@ -179,7 +204,7 @@ class CourseProvider extends ChangeNotifier {
     Future.delayed(Duration.zero, () {
       allowScroll = val;
       toPage = pageNum;
-      print("allowScroll==========$allowScroll");
+      print("allowScroll==========$allowScroll");  
       notifyListeners();
     });
   }
@@ -221,6 +246,9 @@ class CourseProvider extends ChangeNotifier {
       print("milisecondss value====$totalTime");
 
       print("allowScroll==========$allowScroll");
+
+      HiveHandler.addToRestartBox(selectedMockId.toString(),
+          RestartModel(displayTime: totalTime.toString(), quesNum: toPage, restartAttempNum: selectedAttemptNumer));
       notifyListeners();
     });
   }
@@ -306,7 +334,7 @@ class CourseProvider extends ChangeNotifier {
           List temp1 = mapResponse["data"];
           print("temp list===$temp1");
           pptDataList = temp1.map((e) => PPTDataDetails.fromjson(e)).toList();
-          print("pptDataList=========${pptDataList.length}");
+       
         }
       }
     } on Exception {

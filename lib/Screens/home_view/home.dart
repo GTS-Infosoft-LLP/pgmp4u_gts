@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert' as convert;
 import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -45,18 +44,42 @@ class _HomeViewState extends State<HomeView> {
     PurchaseProvider purchaseProvider = Provider.of(context, listen: false);
     CourseProvider courseProvider = Provider.of(context, listen: false);
     purchaseProvider.updateStatusNew();
+    // courseProvider.getCourse();
 
-    courseProvider.getCourse();
     callApi();
 
     super.initState();
   }
 
-  callApi() {
-    Future.delayed(Duration(microseconds: 1500), () async {
-      CourseProvider courseProvider = Provider.of(context, listen: false);
-     await courseProvider.setFloatButton(1);
-    });
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> callApi() {
+    CourseProvider courseProvider = Provider.of(context, listen: false);
+    courseProvider.getCourse();
+     Future<void>.delayed(Duration(seconds: 3), () {
+        courseProvider.setFloatButton(1);
+      });
+     
+      // Timer.periodic(Duration(seconds: 5), (timer) {
+      //   if (timer.tick == 3) {
+      //     timer.cancel();
+      //     setState(() {
+      //       courseProvider.setFloatButton(1);
+      //     });
+      //   }
+      // });
+
+      // Timer(Duration(seconds: 5), () {
+      //   courseProvider.setFloatButton(1);
+      // });
+
+      // Future.delayed(Duration(seconds: 5), () async {
+      //   await courseProvider.setFloatButton(1);
+      // });
+    
   }
 
   HideShowResponse hideShowRes = HideShowResponse();
@@ -524,7 +547,7 @@ class _HomeViewState extends State<HomeView> {
                                                           padding: const EdgeInsets.only(bottom: 20),
                                                           child: InkWell(
                                                             onTap: () async {
-                                                              Future.delayed(const Duration(seconds: 1), () {
+                                                              Future.delayed(const Duration(seconds: 5), () {
                                                                 courseProvider.setFloatButton(1);
                                                               });
                                                               print(
@@ -581,7 +604,7 @@ class _HomeViewState extends State<HomeView> {
                                                                 });
                                                               }
                                                               pp.updateLoader(false);
-                                                              Future.delayed(const Duration(seconds: 1), () {
+                                                              Future.delayed(const Duration(seconds: 5), () {
                                                                 courseProvider.setFloatButton(1);
                                                               });
                                                             },

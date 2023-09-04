@@ -39,9 +39,8 @@ class DomainProvider extends ChangeNotifier {
   int selectedDomainId;
   int selectedSubDomainId;
 
-
   String selectedSubDomainName;
-   setSelectedSubDomainName( val) {
+  setSelectedSubDomainName(val) {
     selectedSubDomainName = val;
     notifyListeners();
   }
@@ -303,6 +302,8 @@ class DomainProvider extends ChangeNotifier {
 
     print("token valued===$stringValue");
     var request = {"id": id};
+    print("request:::::$request");
+    print("api name::::::::$GET_TASK_DETAIL");
 
     try {
       var response = await http.post(
@@ -321,7 +322,6 @@ class DomainProvider extends ChangeNotifier {
         updateTaskDetailApiCall(false);
         print("statussssssss");
         TaskDetailList = [];
-
         notifyListeners();
         return;
       }
@@ -331,6 +331,7 @@ class DomainProvider extends ChangeNotifier {
         print("");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse====${mapResponse['status']}");
+        print("mapResponse data====${mapResponse['data']}");
         if (mapResponse['status'] == 400) {
           TaskDetailList = [];
           return;
@@ -338,7 +339,9 @@ class DomainProvider extends ChangeNotifier {
 
         if (mapResponse["status"] == 200) {
           List temp1 = mapResponse["data"];
+          print("temp1:::::temp1:::::$temp1");
           List temp2 = temp1[0]["practiceTest"];
+          print(":::::temp2:::::$temp2");
           TaskQues = temp2.map((e) => TaskPracQues.fromJson(e)).toList();
           print("Tpq=======$TaskQues");
           TaskDetailList = temp1.map((e) => TaskDetails.fromjson(e)).toList();

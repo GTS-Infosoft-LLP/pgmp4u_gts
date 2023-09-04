@@ -50,12 +50,14 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   final mockNameNew;
   final attemptNew;
   List ids = [];
+    List<int> showAnswer = [];
   _MockTestQuestionsState({
     this.selectedIdNew,
     this.mockNameNew,
     this.attemptNew,
   });
   List submitData = [];
+  List storeData = [];
   bool _show = true;
   int _quetionNo = 0;
   List<int> selectedAnswer = [];
@@ -136,6 +138,9 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
         widget.restartModel.quesNum = 2;
       }
       print("widget.restartModel.quesNum=====${widget.restartModel.quesNum}");
+      if (widget.restartModel.quesNum < 1) {
+        widget.restartModel.quesNum = 2;
+      }
       setState(() {
         _quetionNo = widget.restartModel.quesNum - 1;
       });
@@ -569,6 +574,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                           ),
                                           InkWell(
                                             onTap: () {
+                                              print("display timeee====$displayTime");
+                                              print("question  number that will set in model:::$_quetionNo");
                                               cp.resPauseTimer();
                                               if (_stopWatchTimer.isRunning) {
                                                 print("display timeee====$displayTime");
@@ -590,6 +597,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                 InkWell(
                                                   onTap: () {
                                                     cp.resPauseTimer();
+                                                    print("question  number that will set in model:::$_quetionNo");
                                                     if (_stopWatchTimer.isRunning) {
                                                       cp.setScroll(0, _quetionNo);
                                                       cp.setPauseTime(displayTime);
@@ -639,10 +647,17 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                             ? BouncingScrollPhysics()
                                             : NeverScrollableScrollPhysics(),
                                         onPageChanged: (index) {
+                                          
+
+                                          cp.addToList(_quetionNo, showAnswer);
+                                          showAnswer=[];
+
+
                                           print("index in onPageChagen ====>>$index");
                                           print("currentIndex in onPageChagen ====>>$currentIndex");
 
                                           if (currentData != null) {
+                                            print("selected andwer:::::::$selectedAnswer");
                                             print("selectedAnswer.length::::::::::${selectedAnswer.length}");
                                             print(
                                                 "rightAnswer.length:::::::::::::${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}");
@@ -656,10 +671,16 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                 "category": currentData["category"],
                                                 "type": selectedAnswer.length > 2 ? 2 : 1
                                               });
+
+                                              storeData.add({
+                                                "question": currentData["question"],
+                                                "selected": selectedAnswer.toString()
+                                              });
+                                              print("submitData::::$submitData");
+                                              print("storeData::::$storeData");
+
                                               currentData = null;
-                                            } else {
-                                              print("not added to list******************************");
-                                            }
+                                            } else {}
                                           }
 
                                           if (currentIndex < index) {
@@ -676,7 +697,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               if (!loader) submitMockTest('', displayTime);
                                             }
                                           } else {
-                                            print("tis is not $_quetionNo");
                                             if (_quetionNo != 0) {
                                               setState(() {
                                                 _quetionNo--;
@@ -765,7 +785,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                           },
                                                         ),
                                                       ),
-
                                                       mockQuestion[_quetionNo].questionDetail.image != null
                                                           ? InkWell(
                                                               onTap: () {
@@ -805,23 +824,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                               ),
                                                             )
                                                           : SizedBox(),
-                                                      // Container(
-                                                      //   margin: EdgeInsets.only(top: height * (15 / 800)),
-                                                      //   child: Html(
-                                                      //     data: mockQuestion[_quetionNo].questionDetail.image,
-                                                      //     style: {
-                                                      //       "body": Style(
-                                                      //         padding: EdgeInsets.only(top: 5),
-                                                      //         margin: EdgeInsets.zero,
-                                                      //         color: Color(0xff000000),
-                                                      //         textAlign: TextAlign.left,
-                                                      //         // maxLines: 7,
-                                                      //         // textOverflow: TextOverflow.ellipsis,
-                                                      //         fontSize: FontSize(18),
-                                                      //       )
-                                                      //     },
-                                                      //   ),
-                                                      // ),
                                                       SizedBox(
                                                         height: 10,
                                                       ),
@@ -861,6 +863,13 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                           {
                                                                             setState(() {
                                                                               selectedAnswer.add(index);
+                                                                              showAnswer.add(mockQuestion[_quetionNo].questionDetail.Options[index].id);
+                                                                              print(
+                                                                                  "selected answer list::::== ${mockQuestion[_quetionNo].questionDetail.Options[index].id}");
+                                                                                  // if(showAnswer.contains(element)){
+
+                                                                                  // }
+                                                                                  // showAnswer.add({"questionNo":_quetionNo,"selectedAns":mockQuestion[_quetionNo].questionDetail.Options[index].id});
 
                                                                               ids.add(mockQuestion[_quetionNo]
                                                                                   .questionDetail
@@ -1031,6 +1040,9 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                       onTap: () => {
                                         if (mockQuestion.length - 1 > _quetionNo)
                                           {
+                                            // CourseProvider cp=Provider.of(context,listen: false),
+                                            //   cp.addToList(_quetionNo, showAnswer)
+                                   
                                             plusQues = _quetionNo,
                                             pageController.animateToPage(++plusQues,
                                                 duration: Duration(milliseconds: 500), curve: Curves.easeInCirc),
@@ -1051,6 +1063,14 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                     "category": currentData["category"],
                                                     "type": selectedAnswer.length > 2 ? 2 : 1
                                                   });
+
+                                                  storeData.add({
+                                                    "question": currentData["question"],
+                                                    "selected": selectedAnswer.toString()
+                                                  });
+                                                  print("submitData::::$submitData");
+                                                  print("storeData::::$storeData");
+
                                                   currentData = null;
                                                 } else {
                                                   // print("not added to list******************************");
@@ -1063,6 +1083,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               // }
 
                                               selectedAnswer = [];
+                                                
+                                          showAnswer=[];
                                               ids = [];
                                             }),
                                           }
