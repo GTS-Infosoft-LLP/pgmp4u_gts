@@ -20,19 +20,22 @@ class RestartModelAdapter extends TypeAdapter<RestartModel> {
       restartAttempNum: fields[0] as int,
       displayTime: fields[1] as String,
       quesNum: fields[2] as int,
+      answersMapp: (fields[3] as List)?.cast<dynamic>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, RestartModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.restartAttempNum)
       ..writeByte(1)
       ..write(obj.displayTime)
       ..writeByte(2)
-      ..write(obj.quesNum);
+      ..write(obj.quesNum)
+      ..writeByte(3)
+      ..write(obj.answersMapp);
   }
 
   @override

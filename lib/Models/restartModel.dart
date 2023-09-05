@@ -9,12 +9,14 @@ class RestartModel {
   String displayTime;
   @HiveField(2)
   int quesNum;
-
-  RestartModel({this.restartAttempNum, this.displayTime, this.quesNum});
+  @HiveField(3)
+List answersMapp;
+  RestartModel({this.restartAttempNum, this.displayTime, this.quesNum,this.answersMapp});
 
   RestartModel.fromjson(Map<String, dynamic> jsn) {
     restartAttempNum = jsn["restartAttempNum"];
     displayTime = jsn["displayTime"];
     quesNum = jsn["quesNum"];
+    answersMapp = jsn["answersMapp"];
   }
 }

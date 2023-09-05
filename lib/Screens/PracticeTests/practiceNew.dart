@@ -584,83 +584,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                             ? _colorfromhex("#FFF6F6")
                                                                                             : Colors.white,
 
-                                                                        // color: _isattempt <
-                                                                        //         op
-                                                                        //             .where((element) =>
-                                                                        //                 element.isseleted == true)
-                                                                        //             .toList()
-                                                                        //             .length
-                                                                        //     ? op.any((element) =>
-                                                                        //             element.isseleted == true)
-                                                                        //         ? PTList[_quetionNo]
-                                                                        //                 .ques
-                                                                        //                 .rightAnswer
-                                                                        //                 .contains("${op[index].id}")
-                                                                        //             ? _colorfromhex("#E6F7E7")
-                                                                        //             : op[index].isseleted
-                                                                        //                 ? PTList[_quetionNo]
-                                                                        //                         .ques
-                                                                        //                         .rightAnswer
-                                                                        //                         .contains(
-                                                                        //                             "${op[index].id}")
-                                                                        //                     ? _colorfromhex("#E6F7E7")
-                                                                        //                     : _colorfromhex("#FFF6F6")
-                                                                        //                 : Colors.white
-                                                                        //         : op[index].isseleted
-                                                                        //             ? PTList[_quetionNo]
-                                                                        //                     .ques
-                                                                        //                     .rightAnswer
-                                                                        //                     .contains(
-                                                                        //                         "${op[index].id}")
-                                                                        //                 ? _colorfromhex("#E6F7E7")
-                                                                        //                 : _colorfromhex("#FFF6F6")
-                                                                        //             : Colors.white
-                                                                        //     : op[index].isseleted
-                                                                        //         ? PTList[_quetionNo]
-                                                                        //                 .ques
-                                                                        //                 .rightAnswer
-                                                                        //                 .contains("${op[index].id}")
-                                                                        //             ? _colorfromhex("#E6F7E7")
-                                                                        //             : _colorfromhex("#FFF6F6")
-                                                                        //         : Colors.white
-
-                                                                        // correctAns.contains(data.pList[_quetionNo]
-                                                                        //             .ques.options[index].id) &&
-                                                                        //         selAns.contains(data.pList[_quetionNo].ques
-                                                                        //             .options[index].id)
-                                                                        //     ? _colorfromhex("#E6F7E7")
-                                                                        //     : correctAns.contains(data.pList[_quetionNo]
-                                                                        //                 .ques.options[index].id) &&
-                                                                        //             !selAns.contains(data.pList[_quetionNo]
-                                                                        //                 .ques.options[index].id)
-                                                                        //         ? _colorfromhex("#FFF6F6")
-                                                                        //         : Colors.white
-
-                                                                        // color: data.pList[_quetionNo].ques.options[index].id ==
-                                                                        //             selectedAnswer &&
-                                                                        //         int.parse(data.pList[_quetionNo].ques.rightAnswer) ==
-                                                                        //             selectedAnswer
-                                                                        //     ? _colorfromhex("#E6F7E7")
-                                                                        //     : data.pList[_quetionNo].ques.options[index].id ==
-                                                                        //                 selectedAnswer &&
-                                                                        //             int.parse(data.pList[_quetionNo].ques.rightAnswer) !=
-                                                                        //                 selectedAnswer
-                                                                        //         ? _colorfromhex("#FFF6F6")
-                                                                        //         : selectedAnswer != null &&
-                                                                        //                 int.parse(data.pList[_quetionNo].ques
-                                                                        //                         .rightAnswer) !=
-                                                                        //                     selectedAnswer &&
-                                                                        //                 data.pList[_quetionNo].ques
-                                                                        //                         .options[index].id ==
-                                                                        //                     int.parse(data.pList[_quetionNo]
-                                                                        //                         .ques.rightAnswer)
-                                                                        //             ? _colorfromhex("#E6F7E7")
-                                                                        //             : Colors.white,
-
-                                                                        // border: Border(
-                                                                        //   bottom: BorderSide(
-                                                                        //       width: 1.5, color: Colors.grey[300]),
-                                                                        // )
+                                  
                                                                       ),
                                                                       child: Row(children: [
                                                                         Padding(
@@ -716,29 +640,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                             : _colorfromhex("#FFF6F6")
                                                                                         : Colors.white,
 
-                                                                                // color: data.pList[_quetionNo].ques.options[index].id ==
-                                                                                //             selectedAnswer &&
-                                                                                //         int.parse(data.pList[_quetionNo].ques.rightAnswer) ==
-                                                                                //             selectedAnswer
-                                                                                //     ? _colorfromhex("#04AE0B")
-                                                                                //     : data.pList[_quetionNo].ques
-                                                                                //                     .options[index].id ==
-                                                                                //                 selectedAnswer &&
-                                                                                //             int.parse(data.pList[_quetionNo]
-                                                                                //                     .ques.rightAnswer) !=
-                                                                                //                 selectedAnswer
-                                                                                //         ? _colorfromhex("#FF0000")
-                                                                                //         : selectedAnswer != null &&
-                                                                                //                 int.parse(data.pList[_quetionNo].ques.rightAnswer) !=
-                                                                                //                     selectedAnswer &&
-                                                                                //                 data.pList[_quetionNo].ques
-                                                                                //                         .options[index].id ==
-                                                                                //                     int.parse(data.pList[_quetionNo].ques.rightAnswer)
-                                                                                //             ? _colorfromhex("#04AE0B")
-                                                                                //             : Colors.white,
-                                                                                //selectedAnswer == realAnswer ? _colorfromhex("#E6F7E7") : Colors.white,
-
-                                                                                //data.pList[_quetionNo].ques.options.
+                                                                               
 
                                                                                 border: Border.all(
                                                                                     color: selAns.length == correctAns.length &&

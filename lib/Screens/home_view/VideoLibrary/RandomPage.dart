@@ -95,8 +95,10 @@ class _RandomPageState extends State<RandomPage> {
 
               sp.createSubscritionOrder(sp.selectedSubsId);
               var token = await getToken();
+              print("sp.selectedSubsId::::${sp.selectedSubsType}");
+              print("permiumbutton.length::::${permiumbutton.length}");
 
-              if (sp.selectedSubsId > permiumbutton.length) {
+              if (sp.selectedSubsType > permiumbutton.length) {
                 GFToast.showToast(
                   'Please select Plan',
                   context,

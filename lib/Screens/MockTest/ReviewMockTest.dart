@@ -72,6 +72,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
     print(stringValue);
     http.Response response;
     var request = {"id": id, "attempt": count, "domain": domain};
+    print("request:::::$request");
 
     response = await http.post(
       Uri.parse(REVIEW_MOCK_DOMAIN),
@@ -729,7 +730,10 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
 
   String getRightAnser(List value) {
     print("value.length=====${value.length}");
-    print("first element===${value[0]}");
+    if (value.length > 1) {
+      print("first element===${value[0]}");
+    }
+
     print("value=======$value");
     String correct = "";
     int customIndex;

@@ -271,7 +271,10 @@ class SubscriptionProvider extends ChangeNotifier {
           // description = mapResponse["data"]["description"];
           print("SubscritionPackList=========$SubscritionPackList");
           permiumbutton.clear();
-          desc1 = SubscritionPackList[0].description;
+          if(SubscritionPackList.isNotEmpty){
+       desc1 = SubscritionPackList[0].description;
+          }
+   
           for (int i = 0; i < SubscritionPackList.length; i++) {
             // description.add(SubscritionPackList[i].description.toString());
 
@@ -303,7 +306,7 @@ class SubscriptionProvider extends ChangeNotifier {
     alredyPurchase = 0;
 
     finUrl = "";
-    print(">>>>>>>>>>>>>>getSubscritionData>>>>>>>>>>>>>>");
+   
 
     print("idCrs=========>>>>>>>>>>>>>>>$id");
     finUrl = CREATE_SUBSCRIPTION_ORDER + "/$id";

@@ -115,7 +115,7 @@ class _HomeViewState extends State<HomeView> {
             ? Padding(
                 padding: const EdgeInsets.only(top: 9.5),
                 child: Container(
-                  height: MediaQuery.of(context).size.height * .27,
+                  height: MediaQuery.of(context).size.height * .25,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),

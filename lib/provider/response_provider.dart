@@ -103,8 +103,7 @@ class ResponseProvider extends ChangeNotifier {
       if (resources.status == 200) {
         updatestatusLoader(false);
         cardDetails = CardDetails.fromJson(resources.data);
-        // print(
-        //     " card details item ${cardDetails.cardDetailsList[0].description}");
+       
       }
     }
     else
