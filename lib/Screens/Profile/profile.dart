@@ -65,6 +65,7 @@ class _ProfileState extends State<Profile> {
     cp.getCourse();
 
     checkNotificationStatus();
+    print(">>>>>cp..MockcrsDropList>>>>>${cp.mockCrsDropList.length}");
     print("cp.crsDropList.=====${cp.crsDropList.length}");
     if (cp.crsDropList.isNotEmpty) {
       print("cp.course[0].id===========${cp.crsDropList[0].id}");
@@ -291,36 +292,7 @@ class _ProfileState extends State<Profile> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          /*  Row(
-                                       children: [
-                                         Icon(
-                                           Icons.menu,
-                                           size: width * (24 / 420),
-                                           color: Colors.white,
-                                         ),
-                                         Text(
-                                           '  Profile',
-                                           style: TextStyle( fontFamily: 'Roboto Medium', fontSize: width * (16 / 420), color: Colors.white,
-                                               letterSpacing: 0.3),
-                                         ),                                       ],
-                                     ),
-                                     Row(
-                                       children: [
-                                         Container(
-                                           margin: EdgeInsets.only(
-                                               right: width * (16 / 420)),
-                                           child: Icon(
-                                             Icons.search,
-                                             size: width * (24 / 420),
-                                             color: Colors.white,
-                                           ),
-                                         ),
-                                         Icon(
-                                           Icons.notifications, size: width * (24 / 420),
-                                           color: Colors.white,
-                                         ),
-                                       ],
-                                     ),*/
+                      
                         ],
                       ),
                     ),
@@ -431,7 +403,7 @@ class _ProfileState extends State<Profile> {
                                     width: MediaQuery.of(context).size.width * .35,
                                     child: CustomDropDown<CourseDetails>(
                                       selectText: cp.selectedCourseLable ?? "Select",
-                                      itemList: cp.course ?? [],
+                                      itemList: cp.mockCrsDropList ?? [],
                                       isEnable: true,
                                       title: "",
                                       value: null,
@@ -465,7 +437,8 @@ class _ProfileState extends State<Profile> {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               Container(
-                                                height: 120,
+                                                // height: 120,
+                                                height: MediaQuery.of(context).size.height * .15,
                                                 width: MediaQuery.of(context).size.width * .35,
                                                 decoration: BoxDecoration(
                                                   // color: AppColor.green,
@@ -531,7 +504,7 @@ class _ProfileState extends State<Profile> {
                                                   }
                                                 },
                                                 child: Container(
-                                                  height: 120,
+                                                  height: MediaQuery.of(context).size.height * .15,
                                                   width: MediaQuery.of(context).size.width * .35,
                                                   decoration: BoxDecoration(
                                                     color: AppColor.purpule,
@@ -605,7 +578,7 @@ class _ProfileState extends State<Profile> {
                                 ),
 
                                 Container(
-                                  // margin: EdgeInsets.only(bottom: 6),
+                            
                                   padding:
                                       EdgeInsets.only(top: 13, left: width * (18 / 420), right: width * (18 / 420)),
                                   color: Colors.white,
@@ -647,33 +620,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ),
 
-                                // Row(
-                                //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                //   children: [
-                                //     Text(
-                                //       'Notifications',
-                                //       style: TextStyle(
-                                //         fontFamily: 'Roboto Medium',
-                                //         fontSize: 16,
-                                //         color: Colors.black,
-                                //       ),
-                                //     ),
-                                //     Switch(
-                                //       onChanged: (val) {
-                                //         print("object val===$val");
-                                //         setState(() {
-                                //           isSwitched = val;
-                                //           showNotifyOnOffPopup(val);
-                                //         });
-                                //       },
-                                //       value: isSwitched,
-                                //       activeColor: AppColor.green,
-                                //       activeTrackColor: _colorfromhex("#3A47AD"),
-                                //       inactiveThumbColor: AppColor.purpule,
-                                //       inactiveTrackColor: Color.fromARGB(255, 197, 181, 181),
-                                //     ),
-                                //   ],
-                                // ),
+                              
 
                                 Consumer<ProfileProvider>(builder: (context, pp, child) {
                                   return GestureDetector(
@@ -986,74 +933,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ),
 
-                                // GestureDetector(
-                                //   onTap: context.watch<ProfileProvider>().subscriptionApiCalling
-                                //       ? null
-                                //       : () async {
-                                //           bool isSub = context.read<ProfileProvider>().isChatSubscribed;
-
-                                //           print("isChatSubscribed ======= $isSub");
-
-                                //           if (isSub == null) {
-                                //             GFToast.showToast(
-                                //               "Something went wrong,please try again",
-                                //               context,
-                                //               toastPosition: GFToastPosition.BOTTOM,
-                                //             );
-                                //           }
-
-                                //           if (!isSub) {
-                                //             Navigator.push(
-                                //                 context,
-                                //                 MaterialPageRoute(
-                                //                     builder: (context) => RandomPage(
-                                //                           index: 4,
-                                //                           price: context.read<ProfileProvider>().subsPrice.toString(),
-                                //                           categoryType:
-                                //                               context.read<CourseProvider>().selectedMasterType,
-                                //                           categoryId: 0,
-                                //                         )));
-                                //           } else {
-                                //             Navigator.push(
-                                //                 context, MaterialPageRoute(builder: (context) => GroupListPage()));
-                                //           }
-                                //         },
-                                //   child: Container(
-                                //     margin: EdgeInsets.only(bottom: 6),
-                                //     padding: EdgeInsets.only(
-                                //         top: 13, bottom: 13, left: width * (18 / 420), right: width * (18 / 420)),
-                                //     color: Colors.white,
-                                //     child: Row(
-                                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Row(
-                                //           children: [
-                                //             Icon(
-                                //               Icons.chat,
-                                //               size: width * (26 / 420),
-                                //               color: _colorfromhex("#ABAFD1"),
-                                //             ),
-                                //             Text(
-                                //               '   Chat',
-                                //               style: TextStyle(
-                                //                 fontFamily: 'Roboto Medium',
-                                //                 fontSize: width * (18 / 420),
-                                //                 color: context.watch<ProfileProvider>().subscriptionApiCalling
-                                //                     ? Colors.black54
-                                //                     : Colors.black,
-                                //               ),
-                                //             ),
-                                //           ],
-                                //         ),
-                                //         Icon(
-                                //           Icons.arrow_forward_ios,
-                                //           size: 20,
-                                //           color: _colorfromhex("#ABAFD1"),
-                                //         ),
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
+                            
                               ],
                             ),
                           );
@@ -1371,14 +1251,18 @@ class cancelSubsBottomSheet extends StatelessWidget {
                   ),
                 ),
 
-          cp.crsDropList.length > 0
+          cp.mockCrsDropList.length > 0
               ? Consumer<CourseProvider>(builder: (context, cp, child) {
+                  for (int i = 0; i < cp.mockCrsDropList.length; i++) {
+                    print("cp.mockCrsDropList::::::::;;;;; ${cp.mockCrsDropList[i].lable}");
+                  }
+
                   return Container(
                     alignment: Alignment.centerRight,
                     width: MediaQuery.of(context).size.width * .35,
                     child: CustomDropDown<CourseDetails>(
                       selectText: cp.selectedCancelSubsLable ?? "Select",
-                      itemList: cp.crsDropList ?? [],
+                      itemList: cp.mockCrsDropList ?? [],
                       isEnable: true,
                       title: "",
                       value: null,

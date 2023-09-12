@@ -454,14 +454,14 @@ class AddDiscussionBottomSheet extends StatelessWidget {
     CourseProvider cp = Provider.of(context, listen: false);
 
     List<String> mtyList = [];
+    String img="";
     if (titleController.text.trim().isNotEmpty) {
       await context
           .read<ChatProvider>()
-          .createDiscussionGroup(titleController.text.trim(), mtyList, context,
+          .createDiscussionGroup(titleController.text.trim(), mtyList, img,context,
               isFromBottomSheet: true, crsName: cp.selectedCourseLable)
           .whenComplete(() {
         titleController.clear();
-
         Navigator.pop(context);
       });
     }

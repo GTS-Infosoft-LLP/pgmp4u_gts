@@ -84,7 +84,7 @@ class _QuesListCourseState extends State<QuesListCourse> {
                 children: [
                   Consumer<CourseProvider>(builder: (context, courseProvider, child) {
                     return Container(
-                      height: MediaQuery.of(context).size.height * .78,
+                      height: MediaQuery.of(context).size.height * .75,
                       // color: Colors.amber,
                       child: ListView.builder(
                           shrinkWrap: true,

@@ -28,6 +28,8 @@ class CourseProvider extends ChangeNotifier {
 
   List<MasterDetails> masterList = [];
   List<CourseDetails> course = [];
+
+  List<CourseDetails> mockCrsDropList = [];
   List<CourseDetails> crsDropList = [];
   List<CourseDetails> chatCrsDropList = [];
   List<String> crsLable = [];
@@ -652,12 +654,19 @@ class CourseProvider extends ChangeNotifier {
         course.clear();
         crsDropList.clear();
         chatCrsDropList.clear();
+        mockCrsDropList.clear();
 
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         List temp1 = mapResponse["data"];
         print("temp list course === $temp1");
         course = temp1.map((e) => CourseDetails.fromjson(e)).toList();
         for (int i = 0; i < course.length; i++) {
+          print("::::length of mock list>>>>>..${course[i].Mocktests.length}");
+          print("::::isSubscribed value>>>>>..${course[i].isSubscribed}");
+          if (course[i].Mocktests.length > 0 || course[i].isSubscribed == 1) {
+            print("either if the provided condition is true");
+            mockCrsDropList.add(course[i]);
+          }
           if (course[i].isSubscribed == 1) {
             crsDropList.add(course[i]);
           }

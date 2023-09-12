@@ -271,10 +271,10 @@ class SubscriptionProvider extends ChangeNotifier {
           // description = mapResponse["data"]["description"];
           print("SubscritionPackList=========$SubscritionPackList");
           permiumbutton.clear();
-          if(SubscritionPackList.isNotEmpty){
-       desc1 = SubscritionPackList[0].description;
+          if (SubscritionPackList.isNotEmpty) {
+            desc1 = SubscritionPackList[0].description;
           }
-   
+
           for (int i = 0; i < SubscritionPackList.length; i++) {
             // description.add(SubscritionPackList[i].description.toString());
 
@@ -292,7 +292,8 @@ class SubscriptionProvider extends ChangeNotifier {
         print("status is 400");
       }
       print("respponse=== ${response.body}");
-    } on Exception {
+    } catch (e) {
+      print("exception offline:::: $e");
       updateSubsPackApiCall(false);
     }
     notifyListeners();
@@ -306,7 +307,6 @@ class SubscriptionProvider extends ChangeNotifier {
     alredyPurchase = 0;
 
     finUrl = "";
-   
 
     print("idCrs=========>>>>>>>>>>>>>>>$id");
     finUrl = CREATE_SUBSCRIPTION_ORDER + "/$id";

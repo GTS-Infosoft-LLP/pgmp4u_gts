@@ -152,7 +152,10 @@ class _RandomPageState extends State<RandomPage> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-                      borderRadius: BorderRadius.all(Radius.circular(28)),
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(25.0),
+                        bottomLeft: Radius.circular(25.0),
+                      ),
                     ),
                     // color: Colors.white,
                     child: Column(
@@ -191,7 +194,7 @@ class _RandomPageState extends State<RandomPage> {
                                       //   ],
                                       // ),
                                       Container(
-                                        margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+                                        margin: EdgeInsets.only(left: 20, right: 20, top: 8),
                                         child: Center(
                                             child: widget.index == 1
                                                 ? Text(

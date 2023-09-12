@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 
@@ -319,13 +320,28 @@ class _GroupListTileState extends State<GroupListTile> {
                 SizedBox(
                   width: 10,
                 ),
-                Expanded(
-                    child: Text(
-                  widget.group.title ?? '',
-                  maxLines: 6,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 18, fontFamily: 'Roboto Medium'),
-                )),
+
+                        Expanded(
+                    child: Html(
+                      data: widget.group.title ,
+                      style: {
+                        "body":Style(
+                          maxLines: 6,
+                          textOverflow: TextOverflow.ellipsis,
+                          fontSize: FontSize(18),
+                          fontFamily: 'Roboto Medium'
+                        )
+                      },
+                    )),
+                
+                // Expanded(
+                //     child: Text(
+                //   widget.group.title ?? '',
+                //   maxLines: 6,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: TextStyle(fontSize: 18, fontFamily: 'Roboto Medium'),
+                // )),
+
                 SizedBox(
                   width: 10,
                 ),

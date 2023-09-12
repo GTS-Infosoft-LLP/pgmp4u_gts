@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:pgmp4u/Screens/chat/chatHandler.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
@@ -78,15 +80,28 @@ class _DisscussionChatPageState extends State<DisscussionChatPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                widget.group.title ?? '',
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  //  fontSize: width * (18 / 420),
-                  fontFamily: 'Roboto Medium',
-                  color: Colors.black,
-                ),
+              // Text(
+              //   widget.group.title ?? '',
+              //   overflow: TextOverflow.ellipsis,
+              //   style: TextStyle(
+              //     //  fontSize: width * (18 / 420),
+              //     fontFamily: 'Roboto Medium',
+              //     color: Colors.black,
+              //   ),
+              // ),
+
+              Html(
+                data: widget.group.title ?? '',
+                style: {
+                  "body": Style(
+                    color: Color(0xff000000),
+                    textAlign: TextAlign.left,
+                    fontFamily: 'Roboto Medium',
+                    fontSize: FontSize(18),
+                  )
+                },
               ),
+
               SizedBox(
                 height: 6,
               ),
@@ -234,6 +249,8 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+
     List<String> options = [];
 
     for (int i = 0; i < group.ops.length; i++) {
@@ -261,27 +278,116 @@ class CustomDialog extends StatelessWidget {
                 SizedBox(height: 6),
                 Text(timeAgo),
                 SizedBox(height: 16),
-                Text(
-                  group.title ?? '',
-                  style: TextStyle(
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.w500,
-                  ),
+
+                Html(
+                  data: group.title ?? '',
+                  style: {
+                    "body": Style(
+                      // padding: EdgeInsets.only(top: 5),
+                      // margin: EdgeInsets.zero,
+                      color: Color(0xff000000),
+                      textAlign: TextAlign.left,
+                      fontWeight: FontWeight.w500,
+                      fontSize: FontSize(17),
+                    )
+                  },
                 ),
+
+                // Text(
+                //   group.title ?? '',
+                //   style: TextStyle(
+                //     fontSize: 17.0,
+                //     fontWeight: FontWeight.w500,
+                //   ),
+                // ),
                 SizedBox(height: 10.0),
+                group.image == null || group.image == ""
+                    ? SizedBox()
+                    : Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: group.image,
+                            // mockQuestion[_quetionNo].questionDetail.image,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 78.0, vertical: 28),
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.grey[400],
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                                height: MediaQuery.of(context).size.width * .4,
+                                child: Center(child: Icon(Icons.error))),
+                          ),
+                        ),
+                      ),
+                SizedBox(height: group.image == null || group.image == "" ? 0 : 10.0),
                 Flexible(
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: options.length,
                     itemBuilder: (context, index) {
-                      return Text(
-                        options[index],
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      print("option::::::${options[index]}");
+                      return Row(
+                        children: [
+                          Container(
+                            width: width * (25 / 420),
+                            height: width * 25 / 420,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                width * (25 / 420),
+                              ),
+                              color: Colors.white,
+                            ),
+                            child: Center(
+                              child: Text(
+                                index == 0
+                                    ? 'A'
+                                    : index == 1
+                                        ? 'B'
+                                        : index == 2
+                                            ? 'C'
+                                            : index == 3
+                                                ? 'D'
+                                                : 'E',
+                                style: TextStyle(fontFamily: 'Roboto Regular', color: Colors.black),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width * .65,
+                            child: Html(
+                              data: options[index],
+                              style: {
+                                "body": Style(
+                                  color: Color(0xff000000),
+                                  textAlign: TextAlign.left,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: FontSize(14),
+                                )
+                              },
+                            ),
+                          ),
+                        ],
                       );
+
+                      // Text(
+                      //   options[index],
+                      //   style: TextStyle(
+                      //     fontSize: 14.0,
+                      //     fontWeight: FontWeight.w500,
+                      //   ),
+                      // );
                     },
                   ),
                 ),

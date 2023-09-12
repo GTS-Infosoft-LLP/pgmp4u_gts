@@ -13,7 +13,7 @@ import '../../utils/app_color.dart';
 class Notifications extends StatefulWidget {
   final type;
   int fromSplash;
- Notifications({Key key, this.type,this.fromSplash=0}) : super(key: key);
+  Notifications({Key key, this.type, this.fromSplash = 0}) : super(key: key);
 
   @override
   State<Notifications> createState() => _NotificationsState();
@@ -153,27 +153,26 @@ class _NotificationsState extends State<Notifications> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * .7,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * .5,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width * .63,
-                                child: Text(
-                                  profileProvider.Notifications[index].title ?? '',
-                                  maxLines: 5,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontFamily: 'Roboto Medium', color: Colors.black, fontSize: 16),
-                                ),
+                        width: MediaQuery.of(context).size.width * .6,
+                        child: Row(
+                          children: [
+                            Container(
+                              // color: Colors.amber,
+                              width: MediaQuery.of(context).size.width * .60,
+                              child: Text(
+                                profileProvider.Notifications[index].title ?? '',
+                                maxLines: 5,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontFamily: 'Roboto Medium', color: Colors.black, fontSize: 16),
                               ),
-                              profileProvider.Notifications[index].type == 1
-                                  ? Icon(
-                                      Icons.expand_more,
-                                    )
-                                  : SizedBox(),
-                            ],
-                          ),
+                            ),
+                            profileProvider.Notifications[index].type == 1
+                                ? Icon(
+                                    Icons.expand_more,
+                                    // size: 12,
+                                  )
+                                : SizedBox(),
+                          ],
                         ),
                       ),
                       profileProvider.Notifications[index].type == 2
@@ -528,28 +527,24 @@ class _NotificationsState extends State<Notifications> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width * .7,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * .5,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width * .63,
-                                      child: Text(
-                                        profileProvider.Notifications[index].title ?? '',
-                                        maxLines: 5,
-                                        overflow: TextOverflow.ellipsis,
-                                        style:
-                                            TextStyle(fontFamily: 'Roboto Medium', color: Colors.black, fontSize: 16),
-                                      ),
+                              width: MediaQuery.of(context).size.width * .5,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width * .63,
+                                    child: Text(
+                                      profileProvider.Notifications[index].title ?? '',
+                                      maxLines: 5,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontFamily: 'Roboto Medium', color: Colors.black, fontSize: 16),
                                     ),
-                                    profileProvider.Notifications[index].type == 1
-                                        ? Icon(
-                                            Icons.expand_more,
-                                          )
-                                        : SizedBox(),
-                                  ],
-                                ),
+                                  ),
+                                  profileProvider.Notifications[index].type == 1
+                                      ? Icon(
+                                          Icons.expand_more,
+                                        )
+                                      : SizedBox(),
+                                ],
                               ),
                             ),
                             profileProvider.Notifications[index].type == 2

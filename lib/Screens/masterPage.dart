@@ -96,51 +96,55 @@ class _MasterListPageState extends State<MasterListPage> {
                         SizedBox(
                           width: 20,
                         ),
-                        Center(
-                            child: Text(
-                          // "Video Library",
-                          cp.selectedCourseLable,
-                          style: TextStyle(
-                              fontSize: 28, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
-                        )),
+                        InkWell(
+                          onTap: () {
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) => FlashCardBtn()));
+                          },
+                          child: Center(
+                              child: Text(
+                            cp.selectedCourseLable,
+                            style: TextStyle(
+                                fontSize: 28, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
+                          )),
+                        ),
                       ]),
                     ),
                   );
                 })
               ],
             ),
-
             SizedBox(
               height: 15,
             ),
-
             Consumer<CourseProvider>(builder: (context, cp, child) {
               return cp.masterDataApiCall
                   ? Center(
                       child: CircularProgressIndicator.adaptive(),
                     )
-                  : SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 18.0),
-                            child: ValueListenableBuilder<Box<String>>(
-                                valueListenable: HiveHandler.getMasterListener(),
-                                builder: (context, value, child) {
-                                  String courseId = context.read<CourseProvider>().selectedCourseId.toString();
+                  : Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 0.0),
+                          child: ValueListenableBuilder<Box<String>>(
+                              valueListenable: HiveHandler.getMasterListener(),
+                              builder: (context, value, child) {
+                                String courseId = context.read<CourseProvider>().selectedCourseId.toString();
 
-                                  if (value.containsKey(courseId)) {
-                                    List masterDataList = jsonDecode(value.get(courseId));
-                                    storedMaster = masterDataList.map((e) => MasterDetails.fromjson(e)).toList();
-                                  } else {
-                                    storedMaster = [];
-                                  }
-                                  if (storedMaster == null) {
-                                    storedMaster = [];
-                                  }
-                                  return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
-                                    return storedMaster.isNotEmpty
-                                        ? Container(
+                                if (value.containsKey(courseId)) {
+                                  List masterDataList = jsonDecode(value.get(courseId));
+                                  storedMaster = masterDataList.map((e) => MasterDetails.fromjson(e)).toList();
+                                } else {
+                                  storedMaster = [];
+                                }
+                                if (storedMaster == null) {
+                                  storedMaster = [];
+                                }
+                                return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
+                                  return storedMaster.isNotEmpty
+                                      ? Padding(
+                                          padding: const EdgeInsets.only(bottom: 0.0),
+                                          child: Container(
+                                            // color: Colors.amber,
                                             height: MediaQuery.of(context).size.height * .75,
                                             child: ListView.builder(
                                                 shrinkWrap: true,
@@ -358,24 +362,20 @@ class _MasterListPageState extends State<MasterListPage> {
                                                     ),
                                                   );
                                                 }),
-                                          )
-                                        : Container(
-                                            height: 150,
-                                            child: Center(
-                                              child: Text("No Data Found", style: TextStyle(fontSize: 18)),
-                                            ),
-                                          );
-                                  });
-                                }),
-                          ),
-
-                          // SizedBox(height: 20,)
-                        ],
-                      ),
+                                          ),
+                                        )
+                                      : Container(
+                                          height: 150,
+                                          child: Center(
+                                            child: Text("No Data Found", style: TextStyle(fontSize: 18)),
+                                          ),
+                                        );
+                                });
+                              }),
+                        ),
+                      ],
                     );
             }),
-
-            //  SizedBox(height: 20,)
           ],
         ),
       ),

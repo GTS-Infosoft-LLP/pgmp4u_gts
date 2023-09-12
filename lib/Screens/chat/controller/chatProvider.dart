@@ -54,6 +54,9 @@ class ChatProvider extends ChangeNotifier {
       sentAt: DateTime.now().millisecondsSinceEpoch.toString(),
       sentBy: getUser().uid,
       text: message,
+      image: "",
+      options: [],
+      question: "",
       senderName: getUser().displayName,
       profileUrl: getUser().photoURL,
       reactions: [],
@@ -71,19 +74,24 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future createDiscussionGroup(String title, List<String> opss, BuildContext context,
+  Future createDiscussionGroup(String title, List<String> opss, String img, BuildContext context,
       {String testName = '', bool isFromBottomSheet = false, String crsName}) async {
+    if (img == null) {
+      img = "";
+    }
     CourseProvider cp = Provider.of(context, listen: false);
     if (cp.course.length == 1) {
       crsName = cp.course[0].lable;
     }
     print("crsName============$crsName");
+    print("question image===:::::$img");
     updateDiscussionGroupLoader(true);
     var body = {
       "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
       "createdBy": getUser().displayName,
       "ownerId": getUser().uid,
       "title": title,
+      "image": img,
       "groupId": '',
       "options": opss,
       "courseName": crsName.toLowerCase()
@@ -96,7 +104,6 @@ class ChatProvider extends ChangeNotifier {
     bool isQuesExists = await FirebaseChatHandler.isQuestionAlreadyPostedByMe(body);
 
     if (isQuesExists) {
-      
       updateDiscussionGroupLoader(false);
       GFToast.showToast(
         'You have already posted this question.',
@@ -117,7 +124,7 @@ class ChatProvider extends ChangeNotifier {
       }
       sendNotification(title: 'New Discussion added', message: 'New Discussion has been created');
       // send the question as first message in group if not from bottom sheet
-      isFromBottomSheet ? null : await sendMessage(title, opss, testName, value);
+      isFromBottomSheet ? null : await sendMessage(title, opss, img, testName, value);
     }).whenComplete(() {
       updateDiscussionGroupLoader(false);
     });
@@ -141,7 +148,7 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> sendMessage(String title, List<String> opss, String testName, String value) async {
+  Future<void> sendMessage(String title, List<String> opss, String img, String testName, String value) async {
     String questionToPost = title;
     for (int i = 0; i < opss.length; i++) {
       String initial = '';
@@ -155,15 +162,18 @@ class ChatProvider extends ChangeNotifier {
     questionToPost += "\n$testName";
 
     print('Question to Post : $questionToPost');
-    await sendDisscussionGroupMessage(groupId: value, message: questionToPost);
+    await sendDisscussionGroupMessage(groupId: value, message: questionToPost, img: img, ops: opss, ques: title);
   }
 
-  Future sendDisscussionGroupMessage({String message, String groupId}) async {
+  Future sendDisscussionGroupMessage({String message, String groupId, String img, ques, ops}) async {
     // print('This is the message sent : ${getUser().photoURL}');
     ChatModel chatModel = ChatModel(
       messageId: '',
       messageType: 0,
       sentAt: DateTime.now().millisecondsSinceEpoch.toString(),
+      image: img,
+      question: ques,
+      options: ops,
       sentBy: getUserUID(),
       text: message,
       senderName: getUser().displayName,

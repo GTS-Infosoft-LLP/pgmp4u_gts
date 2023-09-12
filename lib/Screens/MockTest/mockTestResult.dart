@@ -254,7 +254,7 @@ class _MockTestResultState extends State<MockTestResult> {
                                     //   progressColor: Colors.green,
                                     // ),
                                     new CircularPercentIndicator(
-                                      radius: 110.0,
+                                      radius: 140,
                                       lineWidth: 10.0,
                                       percent: percentage / 100.0,
                                       center: Text(
@@ -413,7 +413,6 @@ class _MockTestResultState extends State<MockTestResult> {
 
                             CourseProvider cp = Provider.of(context, listen: false);
                             await cp.getTestDetails(ptp.selectedPracTestId);
-
                             print("mocktestIdNew====================$mocktestIdNew");
                             print("widget.atmptCount====================$widget.atmptCount");
                             // Navigator.pushAndRemoveUntil(

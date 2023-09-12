@@ -137,125 +137,128 @@ class _TaskListState extends State<TaskList> {
                           "No Data Found",
                           style: TextStyle(fontSize: 18),
                         ))
-                      : Container(
-                          height: MediaQuery.of(context).size.height * .75,
+                      : Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * .75,
 
-                          // width: MediaQuery.of(context).size.width * .95,
-                          child: ListView.builder(
-                              itemCount: dp.TaskList.length,
-                              itemBuilder: (context, index) {
-                                if (index % 4 == 0) {
-                                  clr = Color(0xff3F9FC9);
-                                } else if (index % 3 == 0) {
-                                  clr = Color(0xff3FC964);
-                                } else if (index % 2 == 0) {
-                                  clr = Color(0xffDE682B);
-                                } else {
-                                  clr = Color(0xffC93F7F);
-                                }
+                            // width: MediaQuery.of(context).size.width * .95,
+                            child: ListView.builder(
+                                itemCount: dp.TaskList.length,
+                                itemBuilder: (context, index) {
+                                  if (index % 4 == 0) {
+                                    clr = Color(0xff3F9FC9);
+                                  } else if (index % 3 == 0) {
+                                    clr = Color(0xff3FC964);
+                                  } else if (index % 2 == 0) {
+                                    clr = Color(0xffDE682B);
+                                  } else {
+                                    clr = Color(0xffC93F7F);
+                                  }
 
-                                return InkWell(
-                                  onTap: () async {
-                                    print("dp.TaskList[index].id===${dp.TaskList[index].id}");
-                                    print("dp.TaskList[index].id===${dp.TaskList[index].name}");
+                                  return InkWell(
+                                    onTap: () async {
+                                      print("dp.TaskList[index].id===${dp.TaskList[index].id}");
+                                      print("dp.TaskList[index].id===${dp.TaskList[index].name}");
 
-                                    dp.setSelectedTaskLable(dp.TaskList[index].lable);
-                                    dp.getTasksDetailData(dp.TaskList[index].id);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => TaskDetail(
-                                                  subDomainName: dp.TaskList[index].name,
-                                                )));
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                          border: Border(
-                                        bottom: BorderSide(
-                                          width: 1,
-                                          color: Color.fromARGB(255, 219, 211, 211),
-                                        ),
-                                      )),
-                                      height: 70,
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 0,
+                                      dp.setSelectedTaskLable(dp.TaskList[index].lable);
+                                      dp.getTasksDetailData(dp.TaskList[index].id);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => TaskDetail(
+                                                    subDomainName: dp.TaskList[index].name,
+                                                  )));
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                          bottom: BorderSide(
+                                            width: 1,
+                                            color: Color.fromARGB(255, 219, 211, 211),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(bottom: 4.0),
-                                            child: Container(
-                                                height: 60,
-                                                width: 60,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(17.0),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius: BorderRadius.circular(80),
-                                                    ),
-                                                    child: Center(
-                                                      child: Text('${index + 1}', style: TextStyle()),
-                                                    ),
+                                        )),
+                                        height: 70,
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              width: 0,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(bottom: 4.0),
+                                              child: Container(
+                                                  height: 60,
+                                                  width: 60,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
                                                   ),
-                                                )),
-                                          ),
-                                          SizedBox(
-                                            width: 15,
-                                          ),
-                                          Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: MediaQuery.of(context).size.width * .45,
-                                                // color: Colors.amber,
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      dp.TaskList[index].lable,
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(17.0),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius: BorderRadius.circular(80),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text('${index + 1}', style: TextStyle()),
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 0,
-                                              ),
-                                              Container(
-                                                width: MediaQuery.of(context).size.width * .55,
-                                                child: Text(
-                                                  dp.TaskList[index].name,
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.black,
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  width: MediaQuery.of(context).size.width * .45,
+                                                  // color: Colors.amber,
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        dp.TaskList[index].lable,
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          Spacer(),
-                                          Icon(
-                                            Icons.east,
-                                            color: Colors.grey,
-                                          )
-                                        ],
+                                                SizedBox(
+                                                  height: 0,
+                                                ),
+                                                Container(
+                                                  width: MediaQuery.of(context).size.width * .55,
+                                                  child: Text(
+                                                    dp.TaskList[index].name,
+                                                    maxLines: 2,
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Spacer(),
+                                            Icon(
+                                              Icons.east,
+                                              color: Colors.grey,
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }),
+                                  );
+                                }),
+                          ),
                         );
             })
           ],

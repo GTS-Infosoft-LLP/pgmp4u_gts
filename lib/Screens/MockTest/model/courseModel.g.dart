@@ -28,13 +28,14 @@ class CourseDetailsAdapter extends TypeAdapter<CourseDetails> {
       ..isSubscribed = fields[8] as int
       ..isChatSubscribed = fields[9] as int
       ..isJoinNotification = fields[10] as int
-      ..subscriptionType = fields[11] as int;
+      ..subscriptionType = fields[11] as int
+      ..Mocktests = (fields[12] as List)?.cast<dynamic>();
   }
 
   @override
   void write(BinaryWriter writer, CourseDetails obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -58,7 +59,9 @@ class CourseDetailsAdapter extends TypeAdapter<CourseDetails> {
       ..writeByte(10)
       ..write(obj.isJoinNotification)
       ..writeByte(11)
-      ..write(obj.subscriptionType);
+      ..write(obj.subscriptionType)
+      ..writeByte(12)
+      ..write(obj.Mocktests);
   }
 
   @override

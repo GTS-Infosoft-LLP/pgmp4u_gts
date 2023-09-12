@@ -61,6 +61,13 @@ class _PracticeNewState extends State<PracticeNew> {
   bool isListSame;
   int enableTap = 0;
   int isAnsCorrect;
+  List<int> ans = [];
+  Map<String, dynamic> selQuesMap = {};
+  List answer = [];
+  List<Map<String, dynamic>> answersMapp = [];
+
+  List<int> finalSelectedAns = [];
+  List<int> finalCorrectAns = [];
 
   // 1---- correct   2--- not correct
   // Map mapResponse;
@@ -130,7 +137,7 @@ class _PracticeNewState extends State<PracticeNew> {
   //   }
   // }
   bool questionLoader = false;
-  onTapOfPutOnDisscussion(String question, List<String> optionQues) async {
+  onTapOfPutOnDisscussion(String question, List<String> optionQues, String img) async {
     CourseProvider cp = Provider.of(context, listen: false);
     ProfileProvider pp = Provider.of(context, listen: false);
     print("pp.isChatSubscribed====${pp.isChatSubscribed}");
@@ -162,7 +169,7 @@ class _PracticeNewState extends State<PracticeNew> {
 
     await context
         .read<ChatProvider>()
-        .createDiscussionGroup(question, optionQues, context,
+        .createDiscussionGroup(question, optionQues,img, context,
             testName: 'From Practice Test: ' + widget.pracTestName, crsName: cp.selectedCourseLable)
         .whenComplete(() {
       setState(() => questionLoader = false);
@@ -284,6 +291,25 @@ class _PracticeNewState extends State<PracticeNew> {
                                             // itemCount: data.pList.length,
                                             itemCount: PTList.length,
                                             onPageChanged: (index) {
+                                              // print("_question numner:::::::$_quetionNo");
+                                              // print("::::answersMapp::::$answersMapp");
+                                              // for (int i = 0; i < answersMapp.length; i++) {
+                                              //   if (answersMapp[i]["questionNumber"] == (_quetionNo)) {
+                                              //     print(
+                                              //         "answersMapp[i][selectedAnser]::::${answersMapp[i]["selectedAnser"]}");
+
+                                              //     answer = (answersMapp[i]["selectedAnser"]);
+
+                                              //     print("answer:::::::answer::::::::$answer");
+                                              //   }
+                                              // }
+                                              // print("ans::::>>>>>>>>>>>>$ans");
+                                              // if (ans.isNotEmpty) {
+                                              //   addToMap(_quetionNo, ans);
+                                              // }
+
+                                              ans = [];
+
                                               enableTap = 0;
                                               isAnsCorrect = 0;
                                               selAns = [];
@@ -429,54 +455,46 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                 )
                                                               },
                                                             ),
-
-                                        
                                                           ),
 
-
-
-                                                     PTList[_quetionNo].ques.image!=null?  InkWell(
-                                                              onTap: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) => ImageDispalyScreen(
-                                                                           quesImages: PTList[_quetionNo].ques.image,
-                                                                            )));
-                                                              },
-                                                              child: Container(
-                                                                decoration: BoxDecoration(
-                                                                  color: Colors.grey[300],
-                                                                  borderRadius: BorderRadius.circular(20),
-                                                                ),
-                                                                child: ClipRRect(
-                                                                  borderRadius: BorderRadius.circular(10),
-                                                                  child: CachedNetworkImage(
-                                                                    imageUrl:
-                                                                       PTList[_quetionNo].ques.image,
-                                                                    fit: BoxFit.cover,
-                                                                    placeholder: (context, url) => Padding(
-                                                                      padding: const EdgeInsets.symmetric(
-                                                                          horizontal: 78.0, vertical: 28),
-                                                                      child: CircularProgressIndicator(
-                                                                        strokeWidth: 2,
-                                                                        color: Colors.grey[400],
+                                                          PTList[_quetionNo].ques.image != null
+                                                              ? InkWell(
+                                                                  onTap: () {
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) => ImageDispalyScreen(
+                                                                                  quesImages:
+                                                                                      PTList[_quetionNo].ques.image,
+                                                                                )));
+                                                                  },
+                                                                  child: Container(
+                                                                    decoration: BoxDecoration(
+                                                                      color: Colors.grey[300],
+                                                                      borderRadius: BorderRadius.circular(20),
+                                                                    ),
+                                                                    child: ClipRRect(
+                                                                      borderRadius: BorderRadius.circular(10),
+                                                                      child: CachedNetworkImage(
+                                                                        imageUrl: PTList[_quetionNo].ques.image,
+                                                                        fit: BoxFit.cover,
+                                                                        placeholder: (context, url) => Padding(
+                                                                          padding: const EdgeInsets.symmetric(
+                                                                              horizontal: 78.0, vertical: 28),
+                                                                          child: CircularProgressIndicator(
+                                                                            strokeWidth: 2,
+                                                                            color: Colors.grey[400],
+                                                                          ),
+                                                                        ),
+                                                                        errorWidget: (context, url, error) => Container(
+                                                                            height:
+                                                                                MediaQuery.of(context).size.width * .4,
+                                                                            child: Center(child: Icon(Icons.error))),
                                                                       ),
                                                                     ),
-                                                                    errorWidget: (context, url, error) => Container(
-                                                                        height: MediaQuery.of(context).size.width * .4,
-                                                                        child: Center(child: Icon(Icons.error))),
                                                                   ),
-                                                                ),
-                                                              ),
-                                                            ):SizedBox(),
-
-
-
-
-
-
-
+                                                                )
+                                                              : SizedBox(),
 
                                                           SizedBox(
                                                             height: 20,
@@ -502,12 +520,40 @@ class _PracticeNewState extends State<PracticeNew> {
                                                               physics: NeverScrollableScrollPhysics(),
                                                               itemCount: op.length,
                                                               itemBuilder: (context, index) {
-                                                                // if (data.pList[_quetionNo].ques.options[index]
-                                                                //         .questionOption ==
-                                                                //     "") {
-                                                                //   data.pList[_quetionNo].ques.options
-                                                                //       .remove(data.pList[_quetionNo].ques.options[index]);
-                                                                // }
+                                                                selQuesMap = {};
+                                                                finalSelectedAns = [];
+                                                                finalCorrectAns = [];
+
+                                                                print("::::answersMapp::listview::$answersMapp");
+                                                                for (int i = 0; i < answersMapp.length; i++) {
+                                                                  if (answersMapp[i]["questionNumber"] ==
+                                                                      (_quetionNo)) {
+                                                                    print(
+                                                                        "answersMapp[i][selectedAnser]::::${answersMapp[i]["selectedAnser"]}");
+                                                                    selQuesMap = {
+                                                                      "questionNumber": _quetionNo,
+                                                                      "selected": answersMapp[i]["selectedAnser"] ?? [],
+                                                                      "right": answersMapp[i]["rightNumber"] ?? []
+                                                                    };
+
+                                                                    answer = (answersMapp[i]["selectedAnser"]);
+                                                                  }
+                                                                }
+                                                                finalSelectedAns = selQuesMap['selected'] ?? [];
+                                                                finalCorrectAns = selQuesMap['right'] ?? [];
+                                                                print(
+                                                                    "selected answers for this question;::::$finalSelectedAns");
+                                                                print(
+                                                                    "correct answers for this question;::::$finalCorrectAns");
+
+                                                                print(
+                                                                    "data of this question::::::::::::::::::$selQuesMap");
+                                                                print(
+                                                                    "answer:::::::>>>>>>>>>djhsjdhfjshd::::::::$answer");
+                                                                if (selQuesMap.isNotEmpty) {
+                                                                  enableTap = 1;
+                                                                }
+
                                                                 return Padding(
                                                                   padding: const EdgeInsets.only(bottom: 15.0, top: 10),
                                                                   child: InkWell(
@@ -529,11 +575,19 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                         });
 
                                                                         setState(() {
+                                                                          ans.add(op[index].id);
+
+                                                                          answer.add(op[index].id);
                                                                           selAns.add(op[index].id);
                                                                           print("selAns=============$selAns");
 
                                                                           if (selAns.length == correctAns.length &&
                                                                               correctAns.length > 0) {
+                                                                            print(
+                                                                                "question answerrr:::;::::$_quetionNo");
+                                                                            print(
+                                                                                "selected answer:::::::::::::::::::$selAns");
+                                                                            addToMap(_quetionNo, selAns, correctAns);
                                                                             checkAllAns(selAns, correctAns);
                                                                             enableTap = 1;
                                                                           }
@@ -556,35 +610,45 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                       decoration: BoxDecoration(
                                                                         // shape: BoxShape.circle,
 
-                                                                        color: selAns.contains(op[index].id) &&
+                                                                        color: (selAns.contains(op[index].id) &&
                                                                                 correctAns.contains(op[index].id) &&
                                                                                 selAns.length == correctAns.length &&
-                                                                                selAns.length > 0
-                                                                            ? _colorfromhex("#E6F7E7")
-                                                                            : selAns.contains(op[index].id) &&
+                                                                                selAns.length > 0)
+                                                                            ? Color(0xffE6F7E7)
+                                                                            : (selAns.contains(op[index].id) &&
                                                                                     !correctAns
                                                                                         .contains(op[index].id) &&
                                                                                     selAns.length ==
                                                                                         correctAns.length &&
-                                                                                    selAns.length > 0
-                                                                                ? _colorfromhex("#FFF6F6")
-                                                                                : correctAns.contains(op[index].id) &&
+                                                                                    selAns.length > 0)
+                                                                                ? Color(0xffFFF6F6)
+                                                                                : (correctAns.contains(op[index].id) &&
                                                                                         selAns.length ==
                                                                                             correctAns.length &&
-                                                                                        selAns.length > 0
-                                                                                    ? _colorfromhex("#E6F7E7")
-                                                                                    : selAns.contains(op[index].id) &&
+                                                                                        selAns.length > 0)
+                                                                                    ? Color(0xffE6F7E7)
+                                                                                    : (selAns.contains(op[index].id) &&
                                                                                             correctAns
-                                                                                                .contains(op[index].id)
-                                                                                        ? _colorfromhex("#E6F7E7")
-                                                                                        : selAns.contains(
-                                                                                                    op[index].id) &&
+                                                                                                .contains(op[index].id))
+                                                                                        ? Color(0xffE6F7E7)
+                                                                                        : (selAns.contains(op[index].id) &&
                                                                                                 !correctAns.contains(
-                                                                                                    op[index].id)
-                                                                                            ? _colorfromhex("#FFF6F6")
-                                                                                            : Colors.white,
-
-                                  
+                                                                                                    op[index].id))
+                                                                                            ? Color(0xffFFF6F6)
+                                                                                            : finalSelectedAns.contains(
+                                                                                                        op[index].id) &&
+                                                                                                    finalCorrectAns.contains(
+                                                                                                        op[index].id)
+                                                                                                ? Color(0xffE6F7E7)
+                                                                                                : finalSelectedAns.contains(
+                                                                                                            op[index]
+                                                                                                                .id) &&
+                                                                                                        !finalCorrectAns
+                                                                                                            .contains(op[index].id)
+                                                                                                    ? Color(0xffFFF6F6)
+                                                                                                    : finalCorrectAns.contains(op[index].id)
+                                                                                                        ? Color(0xffE6F7E7)
+                                                                                                        : Colors.white,
                                                                       ),
                                                                       child: Row(children: [
                                                                         Padding(
@@ -605,19 +669,20 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                             .length
                                                                                     ? op.any((element) =>
                                                                                             element.isseleted == true)
-                                                                                        ? PTList[_quetionNo].ques.rightAnswer.contains(
-                                                                                                "${op[index].id}")
-                                                                                            ? _colorfromhex("#04AE0B")
+                                                                                        ? PTList[_quetionNo]
+                                                                                                .ques
+                                                                                                .rightAnswer
+                                                                                                .contains(
+                                                                                                    "${op[index].id}")
+                                                                                            ? Color(0xff04AE0B)
                                                                                             : op[index].isseleted
                                                                                                 ? PTList[_quetionNo]
                                                                                                         .ques
                                                                                                         .rightAnswer
                                                                                                         .contains(
                                                                                                             "${op[index].id}")
-                                                                                                    ? _colorfromhex(
-                                                                                                        "#E6F7E7")
-                                                                                                    : _colorfromhex(
-                                                                                                        "#FF0000")
+                                                                                                    ? Color(0xffE6F7E7)
+                                                                                                    : Color(0xffFF0000)
                                                                                                 : Colors.white
                                                                                         : op[index].isseleted
                                                                                             ? PTList[_quetionNo]
@@ -625,10 +690,8 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                                     .rightAnswer
                                                                                                     .contains(
                                                                                                         "${op[index].id}")
-                                                                                                ? _colorfromhex(
-                                                                                                    "#E6F7E7")
-                                                                                                : _colorfromhex(
-                                                                                                    "#FFF6F6")
+                                                                                                ? Color(0xffE6F7E7)
+                                                                                                : Color(0xffFFF6F6)
                                                                                             : Colors.white
                                                                                     : op[index].isseleted
                                                                                         ? PTList[_quetionNo]
@@ -636,17 +699,18 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                                 .rightAnswer
                                                                                                 .contains(
                                                                                                     "${op[index].id}")
-                                                                                            ? _colorfromhex("#E6F7E7")
-                                                                                            : _colorfromhex("#FFF6F6")
-                                                                                        : Colors.white,
-
-                                                                               
-
-                                                                                border: Border.all(
-                                                                                    color: selAns.length == correctAns.length &&
-                                                                                            selAns.length > 0
-                                                                                        ? Colors.grey
-                                                                                        : Colors.black)),
+                                                                                            ? Color(0xffE6F7E7)
+                                                                                            : Color(0xffFFF6F6)
+                                                                                        : finalCorrectAns
+                                                                                                .contains(op[index].id)
+                                                                                            ? Color(0xff04AE0B)
+                                                                                            : (finalSelectedAns.contains(
+                                                                                                        op[index].id) &&
+                                                                                                    !finalCorrectAns.contains(
+                                                                                                        op[index].id))
+                                                                                                ? Color(0xffFF0000)
+                                                                                                : Colors.white,
+                                                                                border: Border.all(color: selAns.length == correctAns.length && selAns.length > 0 ? Colors.grey : Colors.black)),
                                                                             child: Center(
                                                                               child: Text(
                                                                                 index == 0
@@ -735,15 +799,14 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                     //                 .ques
                                                                                     //                 .rightAnswer)
 
-                                                                                    (selAns.length ==
-                                                                                                    correctAns.length &&
+                                                                                    (finalCorrectAns.contains(op[index].id)) ||
+                                                                                            (selAns.length == correctAns.length &&
                                                                                                 selAns.length > 0 &&
                                                                                                 selAns.contains(
                                                                                                     op[index].id) &&
                                                                                                 correctAns.contains(
                                                                                                     op[index].id)) ||
-                                                                                            (selAns.length ==
-                                                                                                    correctAns.length &&
+                                                                                            (selAns.length == correctAns.length &&
                                                                                                 selAns.length > 0 &&
                                                                                                 correctAns.contains(
                                                                                                     op[index].id))
@@ -754,13 +817,17 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                               Text("Correct Answer")
                                                                                             ],
                                                                                           )
-                                                                                        : selAns.length ==
-                                                                                                    correctAns.length &&
-                                                                                                selAns.length > 0 &&
-                                                                                                selAns.contains(
-                                                                                                    op[index].id) &&
-                                                                                                !correctAns.contains(
-                                                                                                    op[index].id)
+                                                                                        : (selAns.length == correctAns.length &&
+                                                                                                    selAns.length > 0 &&
+                                                                                                    selAns.contains(
+                                                                                                        op[index].id) &&
+                                                                                                    !correctAns.contains(
+                                                                                                        op[index]
+                                                                                                            .id)) ||
+                                                                                                (finalSelectedAns.contains(
+                                                                                                        op[index].id) &&
+                                                                                                    !finalCorrectAns
+                                                                                                        .contains(op[index].id))
                                                                                             ? Row(
                                                                                                 mainAxisAlignment:
                                                                                                     MainAxisAlignment
@@ -783,8 +850,10 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                 );
                                                               }),
 
-                                                          if (selAns.length == correctAns.length &&
-                                                              correctAns.length > 0)
+                                                          if ((selAns.length == correctAns.length &&
+                                                                  correctAns.length > 0) 
+                                                                  // || (selQuesMap.isNotEmpty)
+                                                                  )
                                                             Container(
                                                               decoration: BoxDecoration(
                                                                   color: _colorfromhex("#FAFAFA"),
@@ -1167,7 +1236,7 @@ class _PracticeNewState extends State<PracticeNew> {
             ? null
             : context.read<ProfileProvider>().subscriptionApiCalling
                 ? null
-                : onTapOfPutOnDisscussion(PTList != null ? PTList[_quetionNo].ques.question : '', otsList);
+                : onTapOfPutOnDisscussion(PTList != null ? PTList[_quetionNo].ques.question : '', otsList,PTList != null ? PTList[_quetionNo].ques.image : '' );
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -1218,6 +1287,10 @@ class _PracticeNewState extends State<PracticeNew> {
         ],
       ),
     );
+  }
+
+  void check(List<int> selAns, List<int> rightAns){
+    // for(int)
   }
 
   void checkAllAns(List<int> selAns, List<int> rightAns) {
@@ -1323,5 +1396,17 @@ class _PracticeNewState extends State<PracticeNew> {
     }
     print("correct======$correct");
     return correct;
+  }
+
+  void addToMap(int quetionNo, List<int> selAns, List<int> rytAns) {
+    // for (int i = 0; i < answersMapp.length; i++) {
+    //   // if (answersMapp[i]["questionNumber"] == quetionNo) {
+    //   //   answersMapp.removeAt(i);
+    //   // }
+    // }
+    Map<String, dynamic> map = {"questionNumber": quetionNo, "selectedAnser": selAns, "rightNumber": rytAns};
+
+    answersMapp.add(map);
+    print("answersMapp::::::::$answersMapp");
   }
 }

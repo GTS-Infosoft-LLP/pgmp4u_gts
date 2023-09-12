@@ -202,29 +202,52 @@ class _MockTestDetailsState extends State<MockTestDetails> {
                                                       borderRadius: BorderRadius.circular(10)),
                                                   padding: EdgeInsets.only(top: 15, bottom: 15, left: 14),
                                                   child: Row(children: [
-                                                    Expanded(
-                                                      flex: 2,
+//  Container(
+//                                                                       width: 60,
+//                                                                       height: 60,
+//                                                                       padding: EdgeInsets.all(17),
+//                                                                       decoration: BoxDecoration(
+//                                                                           color: Color(0xff72A258),
+//                                                                           borderRadius: BorderRadius.circular(10)),
+//                                                                       child: Container(
+//                                                                         decoration: BoxDecoration(
+//                                                                           color: Colors.white,
+//                                                                           borderRadius: BorderRadius.circular(100),
+//                                                                         ),
+//                                                                         child: Center(
+//                                                                           child: Text('${index + 1}'),
+//                                                                         ),
+//                                                                       ),
+//                                                                     ),
+
+                                                    Container(
+                                                      width: 60,
+                                                      // MediaQuery.of(context).size.width * .09,
+                                                      height: 60,
+                                                      // MediaQuery.of(context).size.height * .07,
+                                                      padding: EdgeInsets.all(17),
+                                                      decoration: BoxDecoration(
+                                                          color: Color(0xff72A258),
+                                                          borderRadius: BorderRadius.circular(10)),
                                                       child: Container(
-                                                        width: 60,
-                                                        height: 60,
-                                                        padding: EdgeInsets.all(17),
-                                                        margin: EdgeInsets.only(
-                                                          right: 10,
-                                                        ),
                                                         decoration: BoxDecoration(
-                                                          color: index % 2 == 0 ? AppColor.green : AppColor.purpule,
-                                                          borderRadius: BorderRadius.circular(10),
+                                                          color: Colors.white,
+                                                          borderRadius: BorderRadius.circular(100),
                                                         ),
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.white,
-                                                            borderRadius: BorderRadius.circular(100),
-                                                          ),
-                                                          child: Center(
-                                                            child: Text('${index + 1}'),
+                                                        child: Center(
+                                                          child: Text(
+                                                            '${index + 1}',
+                                                            style: TextStyle(
+                                                              fontFamily: 'Roboto Medium',
+                                                              fontSize: 18,
+                                                              color: Colors.black,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
                                                     ),
                                                     Expanded(
                                                       flex: 8,

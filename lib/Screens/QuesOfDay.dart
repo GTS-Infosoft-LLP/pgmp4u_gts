@@ -69,7 +69,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
   }
 
   bool questionLoader = false;
-  onTapOfPutOnDisscussion(String question, List<OptionsDay> li, String crsNameLable) async {
+  onTapOfPutOnDisscussion(String question, List<OptionsDay> li, String img, String crsNameLable) async {
     if (!context.read<ProfileProvider>().isChatSubscribed) {
       setState(() => questionLoader = false);
 
@@ -109,7 +109,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
 
     await context
         .read<ChatProvider>()
-        .createDiscussionGroup(question, optsName, context, testName: 'Question of the day', crsName: crsNameLable)
+        .createDiscussionGroup(question, optsName, img,context, testName: 'Question of the day', crsName: crsNameLable)
         .whenComplete(() {
       setState(() => questionLoader = false);
       Navigator.push(
@@ -295,13 +295,16 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                         child: Row(
                                                           mainAxisAlignment: MainAxisAlignment.start,
                                                           children: [
+                                                            SizedBox(
+                                                              width: 10,
+                                                            ),
                                                             Text(
                                                               'QUESTION ${_quetionNo + 1}',
                                                               style: TextStyle(
-                                                                fontFamily: 'Roboto Regular',
-                                                                fontSize: width * (16 / 420),
-                                                                color: Colors.black,
-                                                              ),
+                                                                  fontFamily: 'Roboto Regular',
+                                                                  fontSize: width * (16 / 420),
+                                                                  color: Colors.black,
+                                                                  fontStyle: FontStyle.normal),
                                                             ),
                                                             new Spacer(),
                                                             data.qdList.length - 1 > _quetionNo
@@ -394,6 +397,9 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                         ),
                                                       )
                                                     : SizedBox(),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: [
@@ -402,22 +408,24 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                       textAlign: TextAlign.left,
                                                       style: TextStyle(
                                                         fontFamily: 'Roboto Regular',
-                                                        fontSize: 18,
+                                                        fontSize: width * (18 / 420),
+                                                        fontWeight: FontWeight.bold,
                                                         color: Colors.black,
+                                                        height: 1.7,
                                                       ),
                                                     ),
                                                   ],
                                                 ),
                                                 SizedBox(
-                                                  height: 10,
-                                                ),
+                                                    // height: 5,
+                                                    ),
                                                 ListView.builder(
                                                     shrinkWrap: true,
                                                     physics: NeverScrollableScrollPhysics(),
                                                     itemCount: options.length,
                                                     itemBuilder: (context, index) {
                                                       return Padding(
-                                                        padding: const EdgeInsets.only(bottom: 15.0, top: 10),
+                                                        padding: const EdgeInsets.only(bottom: 15.0, top: 6),
                                                         child: InkWell(
                                                           onTap: () {
                                                             if (enableTap == 0) {
@@ -792,7 +800,9 @@ class _QuesOfDayState extends State<QuesOfDay> {
               : context.read<ProfileProvider>().subscriptionApiCalling
                   ? null
                   : onTapOfPutOnDisscussion(data.pList != null ? data.qdList[_quetionNo].question : '',
-                      data.qdList[_quetionNo].options, data.qdList[_quetionNo].lable);
+                      data.qdList[_quetionNo].options, 
+                      data.pList != null ? data.qdList[_quetionNo].image : '',
+                      data.qdList[_quetionNo].lable);
         },
         child: Container(
           height: 35,

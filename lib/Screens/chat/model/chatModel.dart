@@ -63,8 +63,11 @@ final Map<Reaction, String> reactionIcons = {
 
 class ChatModel {
   String text;
+  String question;
+  List<dynamic> options;
   String messageId;
   String sentAt;
+  String image;
   int messageType;
   String sentBy;
   String senderName;
@@ -75,10 +78,13 @@ class ChatModel {
     @required this.messageId,
     @required this.messageType,
     @required this.sentAt,
+    @required this.image,
     @required this.sentBy,
     @required this.senderName,
     @required this.profileUrl,
     @required this.text,
+    @required this.options,
+    @required this.question,
     @required this.reactions,
   });
 
@@ -86,8 +92,11 @@ class ChatModel {
     messageId = json['messageId'] ?? "";
     messageType = json['messageType'] ?? "";
     sentAt = json['sentAt'] ?? "";
+    image = json['image'] ?? "";
     sentBy = json['sentBy'] ?? "";
     text = json['text'] ?? "";
+    question = json['question'] ?? "";
+    options = json['options'] ?? [];
     profileUrl = json['profileUrl'];
     senderName = json['senderName'] ?? '';
     List<dynamic> temp = json["reactions"] ?? [];
@@ -99,8 +108,11 @@ class ChatModel {
         "messageId": messageId,
         "messageType": messageType,
         "sentAt": sentAt,
+        "image": image,
         "sentBy": sentBy,
         "text": text,
+        "question": question,
+        "options": options,
         "senderName": senderName,
         "profileUrl": profileUrl,
         "reactions": List<dynamic>.from(reactions.map((x) => x.toJson())),

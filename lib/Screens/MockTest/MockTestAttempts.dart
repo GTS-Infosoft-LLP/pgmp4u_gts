@@ -274,7 +274,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                       height: 60,
                                                                       padding: EdgeInsets.all(17),
                                                                       decoration: BoxDecoration(
-                                                                          color: _colorfromhex("#72A258"),
+                                                                          color: Color(0xff72A258),
                                                                           borderRadius: BorderRadius.circular(10)),
                                                                       child: Container(
                                                                         decoration: BoxDecoration(

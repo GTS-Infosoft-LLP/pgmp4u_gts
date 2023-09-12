@@ -20,7 +20,9 @@ class RestartModelAdapter extends TypeAdapter<RestartModel> {
       restartAttempNum: fields[0] as int,
       displayTime: fields[1] as String,
       quesNum: fields[2] as int,
-      answersMapp: (fields[3] as List)?.cast<dynamic>(),
+      answersMapp: (fields[3] as List)
+          ?.map((dynamic e) => (e as Map)?.cast<String, dynamic>())
+          ?.toList(),
     );
   }
 

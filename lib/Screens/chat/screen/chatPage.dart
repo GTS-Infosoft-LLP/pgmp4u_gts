@@ -70,7 +70,7 @@ class _ChatPageState extends State<ChatPage> {
           if (chatController.text.trim() == '') return;
           await context
               .read<ChatProvider>()
-              .sendGroupMessage(message: chatController.text.trim(), chatRoomId: chatRoomId);
+              .sendGroupMessage(message: chatController.text.trim(), chatRoomId: chatRoomId,);
 
           chatController.clear();
         },

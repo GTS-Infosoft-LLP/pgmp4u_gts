@@ -394,7 +394,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   var displayTime = '';
 
   bool questionLoader = false;
-  onTapOfPutOnDisscussion(String question, List<Optionss> list01) async {
+  onTapOfPutOnDisscussion(String question, List<Optionss> list01,String quesImg) async {
     CourseProvider cp = Provider.of(context, listen: false);
 
     await context.read<ProfileProvider>().subscriptionStatus("Chat");
@@ -438,8 +438,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
     await context
         .read<ChatProvider>()
-        .createDiscussionGroup(question, mckOptions, context,
-            testName: 'From Mock Test: ' + mockNameNew, crsName: cp.selectedCourseLable)
+        .createDiscussionGroup(question, mckOptions,quesImg, context, testName: 'From Mock Test: ' + mockNameNew, crsName: cp.selectedCourseLable)
         .whenComplete(() {
       setState(() => questionLoader = false);
       Navigator.push(
@@ -673,9 +672,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                           print("::::answersMapp::::$answersMapp");
                                           for (int i = 0; i < answersMapp.length; i++) {
                                             if (answersMapp[i]["questionNumber"] == (_quetionNo)) {
-                                              print(
-                                                  "answersMapp[i][selectedAnser]::::${answersMapp[i]["selectedAnser"]}");
-                                              // answer = answersMapp[i]["selectedAnser"];
+                                              print( "answersMapp[i][selectedAnser]::::${answersMapp[i]["selectedAnser"]}");
+                                             
                                               answer = (answersMapp[i]["selectedAnser"]);
 
                                               print("answer:::::::answer::::::::$answer");
@@ -1423,7 +1421,9 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
         questionLoader || context.read<ProfileProvider>().subscriptionApiCalling
             ? null
             : onTapOfPutOnDisscussion(
-                mockQuestion[_quetionNo].questionDetail.questiondata, mockQuestion[_quetionNo].questionDetail.Options);
+                mockQuestion[_quetionNo].questionDetail.questiondata, mockQuestion[_quetionNo].questionDetail.Options,
+                mockQuestion[_quetionNo].questionDetail.image
+                );
       },
       child: Container(
         height: 35,

@@ -9,10 +9,21 @@ Widget planDescBox(
   String planTyp,
   List showList,
   int itmCnt,
+  int iVal,
 ) {
   SubscriptionProvider sp = Provider.of(context, listen: false);
-
+  print("i values is:::: $iVal");
   print("itmCnt===$itmCnt");
+  print("plan type::::$planTyp");
+  if (iVal == 1) {
+    planTyp = "Silver Plan";
+  }
+  if (iVal == 2) {
+    planTyp = "Gold Plan";
+  }
+  if (iVal == 3) {
+    planTyp = "Platinum Plan";
+  }
 
   return Container(
     decoration: BoxDecoration(
@@ -20,7 +31,7 @@ Widget planDescBox(
       borderRadius: BorderRadius.all(Radius.circular(15)),
     ),
     width: MediaQuery.of(context).size.width * 0.80,
-    height: MediaQuery.of(context).size.height * 0.31,
+    height: MediaQuery.of(context).size.height * 0.32,
     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
         child: Padding(

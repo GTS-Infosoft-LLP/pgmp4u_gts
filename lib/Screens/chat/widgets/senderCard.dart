@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
 import 'package:pgmp4u/Screens/chat/model/chatModel.dart';
 import 'package:pgmp4u/Screens/chat/widgets/profileUrl.dart';
@@ -27,6 +29,8 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
 
   @override
   void initState() {
+    print("option:::::::::${widget.chatModel.options}");
+    print("question:::::::::${widget.chatModel.question}");
     super.initState();
   }
 
@@ -125,6 +129,7 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return CompositedTransformTarget(
       link: layerLink,
       child: Stack(
@@ -149,7 +154,7 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
                 children: [
                   Container(
                     constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
-                    padding: EdgeInsets.symmetric(horizontal: 14.0, vertical: 16.0),
+                    padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 16.0),
                     decoration: BoxDecoration(
                       gradient: AppColor.appGradient,
                       borderRadius: BorderRadius.only(
@@ -177,10 +182,117 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
                         SizedBox(
                           height: 8,
                         ),
-                        Text(widget.chatModel.text ?? '',
-                            style: Theme.of(context).textTheme.titleSmall.copyWith(
-                                  color: Colors.white,
-                                )),
+
+                        Container(
+                          margin: EdgeInsets.only(left: 8),
+                          width: width - (width * (35 / 420) * 5),
+                          child: Html(
+                            data: widget.chatModel.question == null || widget.chatModel.question == ""
+                                ? widget.chatModel.text
+                                : widget.chatModel.question,
+                            style: {
+                              "body": Style(
+                                padding: EdgeInsets.only(top: 5),
+                                margin: EdgeInsets.zero,
+                                color: Colors.white,
+                                textAlign: TextAlign.left,
+                                fontSize: FontSize(18),
+                              )
+                            },
+                          ),
+                        ),
+
+                        widget.chatModel.image == null || widget.chatModel.image == ""
+                            ? SizedBox()
+                            : Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    imageUrl: widget.chatModel.image,
+                                    // mockQuestion[_quetionNo].questionDetail.image,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 78.0, vertical: 28),
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.grey[400],
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) => Container(
+                                        height: MediaQuery.of(context).size.width * .4,
+                                        child: Center(child: Icon(Icons.error))),
+                                  ),
+                                ),
+                              ),
+
+                        widget.chatModel.options.isEmpty
+                            ? SizedBox()
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: widget.chatModel.options.length,
+                                itemBuilder: (context, index) {
+                                  return Row(
+                                    children: [
+                                      Container(
+                                        width: width * (25 / 420),
+                                        height: width * 25 / 420,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.white,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            width * (25 / 420),
+                                          ),
+                                      
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                              index == 0
+                                                  ? 'A'
+                                                  : index == 1
+                                                      ? 'B'
+                                                      : index == 2
+                                                          ? 'C'
+                                                          : index == 3
+                                                              ? 'D'
+                                                              : 'E',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleSmall
+                                                  .copyWith(color: Colors.white, fontSize: 15)),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 8),
+                                        width: width - (width * (35 / 420) * 5),
+                                        child: Html(
+                                          data: widget.chatModel.options[index],
+                                          style: {
+                                            "body": Style(
+                                              padding: EdgeInsets.only(top: 5),
+                                              margin: EdgeInsets.zero,
+                                              color: Colors.white,
+                                              textAlign: TextAlign.left,
+                                              fontSize: FontSize(18),
+                                            )
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                })
+
+                        //   Text(
+
+                        //    widget.chatModel.options.,
+
+                        // style: Theme.of(context).textTheme.titleSmall.copyWith(
+                        //       color: Colors.white,
+                        //     )),
                       ],
                     ),
                   ),
@@ -203,15 +315,13 @@ class _SenderMessageCardState extends State<SenderMessageCard> with SingleTicker
   }
 }
 
-
-
 void showOverLay(BuildContext context, ChatModel message, LayerLink layerLink, bool isSentMessage) {
   // in discussion show only to admin user
   // in single chat to both user
   // bool isShowDelete = !(context.read<ChatProvider>().currentGroupType == GroupType.groupChat &&
   //         !context.read<ChatProvider>().isChatAdmin()) ||
   //     message.sentBy == context.read<ChatProvider>().getUser().uid;
-  bool isShowDelete = context.read<ChatProvider>().isShowDelete( message);
+  bool isShowDelete = context.read<ChatProvider>().isShowDelete(message);
 
   double overlayWidth = isShowDelete ? 230 : 170;
   context.read<ChatProvider>().reactionOverlayState = Overlay.of(context);

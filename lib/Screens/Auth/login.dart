@@ -13,6 +13,7 @@ import 'package:pgmp4u/utils/user_object.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:the_apple_sign_in/the_apple_sign_in.dart' as apple;
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -258,58 +259,63 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
+  //   final appleIdCredential = result.credential;
+  //   final oAuthProvider = OAuthProvider('apple.com');
+  //   final credential = oAuthProvider.credential(
+  //     idToken: String.fromCharCodes(appleIdCredential.identityToken),
+  //     accessToken:
+  //         String.fromCharCodes(appleIdCredential.authorizationCode),
+  //   );
+  //   final userCredential =
+  //       await FirebaseAuth.instance.signInWithCredential(credential);
+  //   final firebaseUser = userCredential.user;
+  //   if ([ Scope.fullName].contains(Scope.fullName) ) {
+  //     final fullName = appleIdCredential.fullName;
+  //     if (fullName != null &&
+  //         fullName.givenName != null &&
+  //         fullName.familyName != null) {
+  //       final displayName = '${fullName.givenName} ${fullName.familyName}';
+  //       await firebaseUser.updateDisplayName(displayName);
+  //     }
+  //   }
 
-  Future signInWithApple() async {
-    final result = await TheAppleSignIn.performRequests([
-      AppleIdRequest(requestedScopes: [Scope.fullName])
+  //   if (signInBool) {
+  //     loginHandler(firebaseUser, "apple");
+  //   }else {
+  //   registerHandler(firebaseUser,"apple");
+  // }
+  Future signInWithApple({List<Scope> scopes = const []}) async {
+    final result = await apple.TheAppleSignIn.performRequests([
+      apple.AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
     ]);
     switch (result.status) {
-      case AuthorizationStatus.authorized:
-        //   final appleIdCredential = result.credential;
-        //   final oAuthProvider = OAuthProvider('apple.com');
-        //   final credential = oAuthProvider.credential(
-        //     idToken: String.fromCharCodes(appleIdCredential.identityToken),
-        //     accessToken:
-        //         String.fromCharCodes(appleIdCredential.authorizationCode),
-        //   );
-        //   final userCredential =
-        //       await FirebaseAuth.instance.signInWithCredential(credential);
-        //   final firebaseUser = userCredential.user;
-        //   if ([ Scope.fullName].contains(Scope.fullName) ) {
-        //     final fullName = appleIdCredential.fullName;
-        //     if (fullName != null &&
-        //         fullName.givenName != null &&
-        //         fullName.familyName != null) {
-        //       final displayName = '${fullName.givenName} ${fullName.familyName}';
-        //       await firebaseUser.updateDisplayName(displayName);
-        //     }
-        //   }
-
-        //   if (signInBool) {
-        //     loginHandler(firebaseUser, "apple");
-        //   }else {
-        //   registerHandler(firebaseUser,"apple");
-        // }
-
+      case apple.AuthorizationStatus.authorized:
         final appleIdCredential = result.credential;
         final oAuthProvider = OAuthProvider('apple.com');
-        final credential = oAuthProvider.credential(
+        final OAuthCredential credential = oAuthProvider.credential(
           idToken: String.fromCharCodes(appleIdCredential.identityToken),
           accessToken: String.fromCharCodes(appleIdCredential.authorizationCode),
         );
-        final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+        // final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+        final FirebaseAuth _auth = FirebaseAuth.instance;
+
+        final userCredential = await _auth.signInWithCredential(credential);
         final firebaseUser = userCredential.user;
-        if ([Scope.fullName].contains(Scope.fullName)) {
+        print("firebaseUser::::;;;; $firebaseUser");
+        print("firebase user email:::: ${firebaseUser.email}");
+        print("firebase user photo:::: ${firebaseUser.photoURL}");
+        if (scopes.contains(Scope.fullName)) {
           final fullName = appleIdCredential.fullName;
           if (fullName != null && fullName.givenName != null && fullName.familyName != null) {
             final displayName = '${fullName.givenName} ${fullName.familyName}';
             await firebaseUser.updateDisplayName(displayName);
-
             print('firebaseUser new');
           }
         }
 
         print(firebaseUser);
+        print("userCredential=============");
+        print(userCredential.user);
 
         if (signInBool) {
           loginHandler(firebaseUser, "apple", uuid: firebaseUser.uid);

@@ -43,7 +43,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
   void initState() {
     ProfileProvider pp = Provider.of(context, listen: false);
     SubscriptionProvider sp = Provider.of(context, listen: false);
-
+    print("sp.radioSelected::::sp.radioSelected::::${sp.radioSelected}");
     Future.delayed(Duration(milliseconds: 200), () {
       print("is this workinggg");
       if (sp.durationPackData.isNotEmpty && widget.showFreeTrial == 0) {
@@ -123,88 +123,94 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                     ),
                   ),
                 ))
-            : Container(
-                height: MediaQuery.of(context).size.height * .13,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 12.0, left: 15, right: 15),
-                      child: InkWell(
-                        onTap: () async {
-                          ShowSubsConfrm(context);
-                          // SubscriptionProvider sp = Provider.of(context, listen: false);
+            : Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * .13,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0, left: 15, right: 15),
+                        child: InkWell(
+                          onTap: () async {
+                            ShowSubsConfrm(context);
+                            // SubscriptionProvider sp = Provider.of(context, listen: false);
 
-                          // sp.createSubscritionOrder(sp.selectedSubsId);
-                          // var token = await getTokenn();
-                          // ProfileProvider pp = Provider.of(context, listen: false);
+                            // sp.createSubscritionOrder(sp.selectedSubsId);
+                            // var token = await getTokenn();
+                            // ProfileProvider pp = Provider.of(context, listen: false);
 
-                          // print(" selectedSubsType ====${sp.selectedSubsType}");
-                          // print("permiumbutton.length===${permiumbutton.length}");
-                          // if (sp.selectedSubsType > permiumbutton.length) {
-                          //   GFToast.showToast(
-                          //     'Please select Plan',
-                          //     context,
-                          //     toastPosition: GFToastPosition.CENTER,
-                          //   );
-                          // } else {
-                          //   bool status = await Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             PaymentAndroid(token: token, statusFlash1videoLibrary2: 1, urlll: sp.finUrl),
-                          //       ));
-                          //   print("statueeess====>>>$status");
+                            // print(" selectedSubsType ====${sp.selectedSubsType}");
+                            // print("permiumbutton.length===${permiumbutton.length}");
+                            // if (sp.selectedSubsType > permiumbutton.length) {
+                            //   GFToast.showToast(
+                            //     'Please select Plan',
+                            //     context,
+                            //     toastPosition: GFToastPosition.CENTER,
+                            //   );
+                            // } else {
+                            //   bool status = await Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             PaymentAndroid(token: token, statusFlash1videoLibrary2: 1, urlll: sp.finUrl),
+                            //       ));
+                            //   print("statueeess====>>>$status");
 
-                          //   if (status) {
-                          //     Navigator.pop(context);
-                          //     _handlePaymentSuccess2(context);
-                          //   } else {
-                          //     _handlePaymentError2(context);
-                          //   }
-                          // }
+                            //   if (status) {
+                            //     Navigator.pop(context);
+                            //     _handlePaymentSuccess2(context);
+                            //   } else {
+                            //     _handlePaymentError2(context);
+                            //   }
+                            // }
+                          },
+                          child: Consumer<SubscriptionProvider>(builder: (context, sp, child) {
+                            return sp.SubscritionPackList.isNotEmpty
+                                ? Container(
+                                    width: MediaQuery.of(context).size.width * .9,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                            Color.fromARGB(255, 87, 101, 222),
+                                            Color.fromARGB(255, 87, 101, 222)
+                                          ]),
+                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      "Subscribe Now",
+                                      style: TextStyle(color: Colors.white, fontFamily: 'Roboto Bold', fontSize: 20),
+                                    )),
+                                  )
+                                : SizedBox();
+                          }),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          CourseProvider cp = Provider.of(context, listen: false);
+                          cp.getMasterData(cp.selectedCourseId);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MasterListPage()));
                         },
-                        child: Consumer<SubscriptionProvider>(builder: (context, sp, child) {
-                          return sp.SubscritionPackList.isNotEmpty
-                              ? Container(
-                                  width: MediaQuery.of(context).size.width * .9,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [Color.fromARGB(255, 87, 101, 222), Color.fromARGB(255, 87, 101, 222)]),
-                                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                                  ),
-                                  child: Center(
-                                      child: Text(
-                                    "Subscribe Now",
-                                    style: TextStyle(color: Colors.white, fontFamily: 'Roboto Bold', fontSize: 20),
-                                  )),
-                                )
-                              : SizedBox();
-                        }),
+                        child: Text(
+                          "OR Skip to Freemium",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontFamily: 'Roboto Medium',
+                              fontWeight: FontWeight.w100),
+                        ),
                       ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        CourseProvider cp = Provider.of(context, listen: false);
-                        cp.getMasterData(cp.selectedCourseId);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => MasterListPage()));
-                      },
-                      child: Text(
-                        "OR Skip to Freemium",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontFamily: 'Roboto Medium',
-                            fontWeight: FontWeight.w100),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    )
-                  ],
+                      SizedBox(
+                        height: 1.5,
+                      )
+                    ],
+                  ),
                 ),
               ),
         body:
@@ -303,7 +309,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                     : SizedBox(),
                                 Center(
                                   child: Container(
-                                      height: MediaQuery.of(context).size.height * .20,
+                                      height: MediaQuery.of(context).size.height * .18,
                                       child: Icon(
                                         Icons.diamond,
                                         color: Colors.transparent,
@@ -345,11 +351,14 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                         }
                         print("sp.selectedIval:::::::::::::${sp.selectedIval}");
                         if (sp.selectedIval == 0) {
-                          return planDescBox(context, "Silver Plan", sp.ftchList, sp.ftchList.length);
+                          return planDescBox(
+                              context, "Silver Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
                         } else if (sp.selectedIval == 1) {
-                          return planDescBox(context, "Gold Plan", sp.ftchList, sp.ftchList.length);
+                          return planDescBox(
+                              context, "Gold Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
                         } else if (sp.selectedIval == 2) {
-                          return planDescBox(context, "Platinum Plan", sp.ftchList, sp.ftchList.length);
+                          return planDescBox(
+                              context, "Platinum Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
                         } else {
                           return SizedBox();
                           //  planDescBox(context, "", sp.ftchList, sp.ftchList.length);

@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:http/http.dart' as http;
+import 'package:pgmp4u/Screens/Domain/disImage.dart';
 import 'dart:convert' as convert;
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -339,20 +342,80 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                       : Container(),
                                                 ],
                                               ),
+                                              // Container(
+                                              //   margin: EdgeInsets.only(top: height * (15 / 800)),
+                                              //   child: Text(
+                                              //     listResponse != null
+                                              //         ? listResponse[_quetionNo].question.question
+                                              //         : '',
+                                              //     style: TextStyle(
+                                              //       fontFamily: 'Roboto Regular',
+                                              //       fontSize: width * (15 / 420),
+                                              //       color: Colors.black,
+                                              //       height: 1.7,
+                                              //     ),
+                                              //   ),
+                                              // ),
+
                                               Container(
                                                 margin: EdgeInsets.only(top: height * (15 / 800)),
-                                                child: Text(
-                                                  listResponse != null
+                                                child: Html(
+                                                  data: listResponse != null
                                                       ? listResponse[_quetionNo].question.question
                                                       : '',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Roboto Regular',
-                                                    fontSize: width * (15 / 420),
-                                                    color: Colors.black,
-                                                    height: 1.7,
-                                                  ),
+                                                  style: {
+                                                    "body": Style(
+                                                      // padding: EdgeInsets.only(top: 5),
+                                                      margin: EdgeInsets.zero,
+                                                      fontFamily: 'Roboto Regular',
+                                                      color: Color(0xff000000),
+                                                      // textAlign: TextAlign.left,
+                                                      fontSize: FontSize(18
+                                                          // width * (15 / 420),
+                                                          ),
+                                                    )
+                                                  },
                                                 ),
                                               ),
+
+                                              listResponse[_quetionNo].question.image == null ||
+                                                      listResponse[_quetionNo].question.image == ""
+                                                  ? SizedBox()
+                                                  : InkWell(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) => ImageDispalyScreen(
+                                                                    quesImages:
+                                                                        listResponse[_quetionNo].question.image)));
+                                                      },
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.grey[300],
+                                                          borderRadius: BorderRadius.circular(20),
+                                                        ),
+                                                        child: ClipRRect(
+                                                          borderRadius: BorderRadius.circular(10),
+                                                          child: CachedNetworkImage(
+                                                            imageUrl: listResponse[_quetionNo].question.image,
+                                                            fit: BoxFit.cover,
+                                                            placeholder: (context, url) => Padding(
+                                                              padding: const EdgeInsets.symmetric(
+                                                                  horizontal: 78.0, vertical: 28),
+                                                              child: CircularProgressIndicator(
+                                                                strokeWidth: 2,
+                                                                color: Colors.grey[400],
+                                                              ),
+                                                            ),
+                                                            errorWidget: (context, url, error) => Container(
+                                                                height: MediaQuery.of(context).size.width * .4,
+                                                                child: Center(child: Icon(Icons.error))),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+
                                               Column(
                                                 children:
                                                     listResponse[_quetionNo].question.options.map<Widget>((title) {
@@ -570,8 +633,25 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                                   SizedBox(
                                                                     height: 3,
                                                                   ),
-                                                                  Text(title.questionOption,
-                                                                      style: TextStyle(fontSize: width * 14 / 420)),
+
+                                                                  // Text(title.questionOption,
+                                                                  //     style: TextStyle(fontSize: width * 14 / 420)),
+
+                                                                  Html(
+                                                                    data: title.questionOption,
+                                                                    style: {
+                                                                      "body": Style(
+                                                                        // margin: EdgeInsets.zero,
+                                                                        // fontFamily:  'Roboto Regular',
+                                                                        color: Color(0xff000000),
+                                                                        // textAlign: TextAlign.left,
+                                                                        fontSize: FontSize(16
+                                                                            // width * (14 / 420),
+                                                                            ),
+                                                                      )
+                                                                    },
+                                                                  ),
+
                                                                   Padding(
                                                                     padding: const EdgeInsets.all(8.0),
                                                                     child: Align(
