@@ -1,0 +1,551 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pgmp4u/Screens/Dashboard/dashboard.dart';
+import 'package:pgmp4u/Screens/chat/controller/chatProvider.dart';
+import 'package:pgmp4u/api/apis.dart';
+import 'package:pgmp4u/utils/user_object.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:the_apple_sign_in/the_apple_sign_in.dart' as apple;
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key key}) : super(key: key);
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  Color _colorfromhex(String hexColor) {
+    final hexCode = hexColor.replaceAll('#', '');
+    return Color(int.parse('FF$hexCode', radix: 16));
+  }
+
+  bool loading = false;
+  bool signInBool = false;
+
+  Future loginHandler(user, fromProvider, {String uuid}) async {
+    print(user);
+    setState(() {
+      loading = true;
+    });
+    http.Response response;
+
+    var request = json.encode({
+      "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
+      "email": user.email,
+      "access_type": fromProvider,
+      'uuid': uuid,
+    });
+
+    print("Request Data => $request");
+
+    response = await http.post(
+      Uri.parse(GMAIL_LOGIN),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: request,
+    );
+
+    print("Response => ${response.body}");
+
+    if (response.statusCode == 200) {
+      Map responseData = json.decode(response.body);
+
+      print("email >>>>> ${responseData['email']}");
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var _user = UserModel(
+          image: fromProvider == "google" ? user.photoUrl : '',
+          name: user.displayName,
+          token: responseData["token"],
+          email: responseData['data'][0]['email']);
+      UserObject.setUser(_user);
+
+      var u = UserObject().getUser;
+
+      //print("user name after login ${u.image}  name ${u.name}");
+      prefs.setString('token', responseData["token"]);
+      prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
+      prefs.setString('name', user.displayName);
+      prefs.setString('email', responseData['data'][0]['email']);
+      prefs.setString('id', responseData['data'][0]['id'].toString());
+      await prefs.setBool('isChatAdmin', responseData['data'][0]['isChatAdmin'] == 1 ? true : false);
+      prefs.setBool('isChatSubscribed', responseData['data'][0]['isChatSubscribed'] == 1 ? true : false);
+      GFToast.showToast(
+        'LoggedIn successfully',
+        context,
+        toastPosition: GFToastPosition.BOTTOM,
+      );
+      setState(() {
+        loading = false;
+      });
+      Navigator.pushAndRemoveUntil(
+          context, MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)), (r) => false);
+    } else {
+      GFToast.showToast(
+        "user is not registered",
+        context,
+        toastPosition: GFToastPosition.BOTTOM,
+      );
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
+  Future registerHandler(user, {String fromProvider, String uuid}) async {
+    print(user);
+    print("call function");
+    http.Response response;
+    setState(() {
+      loading = true;
+    });
+    var request = json.encode({
+      "google_id": fromProvider == "google" ? user.id : user.uid.toString(),
+      "email": user.email,
+      "name": user.displayName,
+      "access_type": fromProvider,
+      'uuid': uuid
+    });
+
+    print("Request => $request");
+    print("GMAIL_REGISTER $GMAIL_REGISTER");
+
+    try {
+      response = await http.post(
+        Uri.parse(GMAIL_REGISTER),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: request,
+      );
+
+      print("Response => ${response.body}");
+
+      if (response.statusCode == 200) {
+        Map responseData = json.decode(response.body);
+        print(json.decode(response.body));
+
+        print("user email ${responseData['data'][0]['email']}");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var _user = UserModel(
+            image: fromProvider == "google" ? user.photoUrl : '',
+            name: user.displayName,
+            token: responseData["token"],
+            email: responseData['data'][0]['email']);
+
+        UserObject.setUser(_user);
+        prefs.setString('token', responseData["token"]);
+        prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
+        prefs.setString('name', user.displayName);
+        prefs.setBool('isChatAdmin', responseData['data'][0]['isChatAdmin'] == 1 ? true : false);
+        prefs.setBool('isChatSubscribed', responseData['data'][0]['isChatSubscribed'] == 1 ? true : false);
+        //loginHandler(user);
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
+        GFToast.showToast(
+          'Registered successfully',
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
+        setState(() {
+          loading = false;
+        });
+      } else {
+        Map responseData = json.decode(response.body);
+        GFToast.showToast(
+          responseData["message"],
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+        setState(() {
+          loading = false;
+        });
+        print('Already Registerd: response is: $responseData');
+        if (responseData["alreadyExist"] != null && responseData["alreadyExist"] == 1) {
+          print("Do login flow");
+          GFToast.showToast(
+            "Logging in... ",
+            context,
+            toastPosition: GFToastPosition.BOTTOM,
+          );
+          loginHandler(user, fromProvider, uuid: uuid);
+        }
+      }
+    } on Exception {
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+// Future<String> refreshToken() async {
+//     final GoogleSignInAccount googleSignInAccount =
+//         await googleSignIn.signInSilently();
+//     final GoogleSignInAuthentication googleSignInAuthentication =
+//         await googleSignInAccount.authentication;
+
+//     final AuthCredential credential = GoogleAuthProvider.getCredential(
+//       accessToken: googleSignInAuthentication.accessToken,
+//       idToken: googleSignInAuthentication.idToken,
+//     );
+//     await auth.signInWithCredential(credential);
+
+//     return googleSignInAuthentication.accessToken; //new token
+//   }
+  Future signIn() async {
+    try {
+      final googleSignIn = GoogleSignIn();
+      await googleSignIn.signOut();
+      GoogleSignInAccount user;
+      // final user = await GoogleSignInApi.login();
+      final googleUser = await googleSignIn.signIn().catchError((error, stackTrace) {
+        print("error is ${error.toString()}");
+      });
+
+      final googleAuth = await googleUser.authentication;
+      // print('user uid: ${googleUser.}');
+
+      final cred = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // await FirebaseAuth.instance.signInWithCredential(cred);
+      final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(cred);
+
+      // create firestore user
+      context.read<ChatProvider>().createFirebaseUser(FirestoreUserModel(
+          image: userCredential.user.photoURL ?? '',
+          userId: userCredential.user.uid.toString(),
+          name: userCredential.user.displayName,
+          email: userCredential.user.email));
+
+      if (googleUser != null) {
+        if (signInBool) {
+          loginHandler(googleUser, "google", uuid: userCredential.user.uid);
+        } else {
+          // always hit this api
+          registerHandler(googleUser, fromProvider: "google", uuid: userCredential.user.uid);
+        }
+
+        // SharedPreferences prefs = await SharedPreferences.getInstance();
+        // prefs.setString('token', "value");
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)));
+      } else {
+        GFToast.showToast(
+          "Something went wrong,please try again",
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+      }
+    } catch (e) {
+      if (e.toString().toLowerCase().contains("issued at time")) {
+        GFToast.showToast(
+          "Check your device date time",
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+      }
+    }
+  }
+  //   final appleIdCredential = result.credential;
+  //   final oAuthProvider = OAuthProvider('apple.com');
+  //   final credential = oAuthProvider.credential(
+  //     idToken: String.fromCharCodes(appleIdCredential.identityToken),
+  //     accessToken:
+  //         String.fromCharCodes(appleIdCredential.authorizationCode),
+  //   );
+  //   final userCredential =
+  //       await FirebaseAuth.instance.signInWithCredential(credential);
+  //   final firebaseUser = userCredential.user;
+  //   if ([ Scope.fullName].contains(Scope.fullName) ) {
+  //     final fullName = appleIdCredential.fullName;
+  //     if (fullName != null &&
+  //         fullName.givenName != null &&
+  //         fullName.familyName != null) {
+  //       final displayName = '${fullName.givenName} ${fullName.familyName}';
+  //       await firebaseUser.updateDisplayName(displayName);
+  //     }
+  //   }
+
+  //   if (signInBool) {
+  //     loginHandler(firebaseUser, "apple");
+  //   }else {
+  //   registerHandler(firebaseUser,"apple");
+  // }
+  Future signInWithApple({List<Scope> scopes = const []}) async {
+    final result = await apple.TheAppleSignIn.performRequests([
+      apple.AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+    ]);
+    switch (result.status) {
+      case apple.AuthorizationStatus.authorized:
+        final appleIdCredential = result.credential;
+        final oAuthProvider = OAuthProvider('apple.com');
+        final OAuthCredential credential = oAuthProvider.credential(
+          idToken: String.fromCharCodes(appleIdCredential.identityToken),
+          accessToken: String.fromCharCodes(appleIdCredential.authorizationCode),
+        );
+        // final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+        final FirebaseAuth _auth = FirebaseAuth.instance;
+
+        final userCredential = await _auth.signInWithCredential(credential);
+        final firebaseUser = userCredential.user;
+        print("firebaseUser::::;;;; $firebaseUser");
+        print("firebase user email:::: ${firebaseUser.email}");
+        print("firebase user photo:::: ${firebaseUser.photoURL}");
+        if (scopes.contains(Scope.fullName)) {
+          final fullName = appleIdCredential.fullName;
+          if (fullName != null && fullName.givenName != null && fullName.familyName != null) {
+            final displayName = '${fullName.givenName} ${fullName.familyName}';
+            await firebaseUser.updateDisplayName(displayName);
+            print('firebaseUser new');
+          }
+        }
+
+        print(firebaseUser);
+        print("userCredential=============");
+        print(userCredential.user);
+
+        if (signInBool) {
+          loginHandler(firebaseUser, "apple", uuid: firebaseUser.uid);
+        } else {
+          registerHandler(firebaseUser, fromProvider: "apple", uuid: firebaseUser.uid);
+        }
+
+        break;
+      // return firebaseUser;
+      case AuthorizationStatus.error:
+        throw PlatformException(
+          code: 'ERROR_AUTHORIZATION_DENIED',
+          message: result.error.toString(),
+        );
+
+      case AuthorizationStatus.cancelled:
+        throw PlatformException(
+          code: 'ERROR_ABORTED_BY_USER',
+          message: 'Sign in aborted by user',
+        );
+      default:
+        throw UnimplementedError();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+      body: Container(
+        height: height,
+        color: Colors.white,
+        child: Stack(
+          children: [
+            Container(
+              height: height,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: height * (54 / 800), left: width * (66 / 420)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Hey",
+                            style: TextStyle(
+                              fontSize: width * (64 / 420),
+                              fontFamily: 'Roboto Bold',
+                            ),
+                          ),
+                          Text(
+                            "There .",
+                            style: TextStyle(
+                              fontSize: width * (64 / 420),
+                              fontFamily: 'Roboto Bold',
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Center(
+                        child: Image.asset(
+                      'assets/login_image1.png',
+                      height: height * .42,
+                    )),
+                    GestureDetector(
+                      onTap: signIn,
+                      child: Container(
+                        padding: EdgeInsets.only(top: height * (16 / 800), bottom: height * (16 / 800)),
+                        margin: EdgeInsets.only(
+                          left: width * (36 / 420),
+                          right: width * (36 / 420),
+                          bottom: height * (15 / 800),
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: _colorfromhex('#494AE2').withOpacity(0.12),
+                        ),
+                        child: loading
+                            ? Center(
+                                child: SizedBox(
+                                width: 33,
+                                height: 33,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    _colorfromhex("#4849DF"),
+                                  ),
+                                ),
+                              ))
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    // !signInBool ? "Sign up with Google   " : "Sign in with Google   ",
+                                    "Sign with Google  ",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: width * (20 / 420),
+                                      fontFamily: 'Roboto Medium',
+                                    ),
+                                  ),
+                                  Image.asset('assets/google.png'),
+                                ],
+                              ),
+                      ),
+                    ),
+                    Platform.isIOS
+                        ? Container(
+                            padding: EdgeInsets.only(top: height * (16 / 800), bottom: height * (16 / 800)),
+                            margin: EdgeInsets.only(
+                              left: width * (36 / 420),
+                              right: width * (36 / 420),
+                              bottom: height * (24 / 800),
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.black,
+                            ),
+                            child: loading
+                                ? Center(
+                                    child: SizedBox(
+                                    width: 33,
+                                    height: 33,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        _colorfromhex("#4849DF"),
+                                      ),
+                                    ),
+                                  ))
+                                : GestureDetector(
+                                    onTap: signInWithApple,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          !signInBool ? "Sign up with Apple   " : "Sign in with Apple   ",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: width * (20 / 420),
+                                            fontFamily: 'Roboto Medium',
+                                          ),
+                                        ),
+                                        Image.asset('assets/applelogo.png'),
+                                      ],
+                                    ),
+                                  ),
+                          )
+                        : Container(),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     Text(
+                    //       signInBool ? "You dont have an account? " : "Already have an account? ",
+                    //       style: TextStyle(
+                    //         color: _colorfromhex("#76767E"),
+                    //         fontSize: width * (16 / 420),
+                    //         fontFamily: 'Roboto Regular',
+                    //       ),
+                    //     ),
+                    //     GestureDetector(
+                    //       onTap: () => {
+                    //         setState(() {
+                    //           signInBool = !signInBool;
+                    //         })
+                    //       },
+                    //       child: Text(
+                    //         signInBool ? "Sign Up" : "Sign In",
+                    //         style: TextStyle(
+                    //           color: _colorfromhex("#494AE2"),
+                    //           fontSize: width * (16 / 420),
+                    //           fontFamily: 'Roboto Bold',
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: -30,
+              left: -120,
+              child: Container(
+                child: Image.asset('assets/vector1.png'),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: -10,
+              child: Container(
+                height: 180,
+                child: Image.asset('assets/Vector3.png'),
+              ),
+            ),
+            Positioned(
+              top: -30,
+              right: -10,
+              child: Container(
+                height: 180,
+                child: Image.asset('assets/Vector2.png'),
+              ),
+            ),
+            Positioned(
+              bottom: 35,
+              right: 0,
+              child: Container(
+                height: 200,
+                child: Image.asset('assets/Vector4.png'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AuthService {
+  final _firebaseAuth = FirebaseAuth.instance;
+
+  Future signInWithApple({List<Scope> scopes = const []}) async {
+    // 1. perform the sign-in request
+  }
+}
