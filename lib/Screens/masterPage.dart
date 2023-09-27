@@ -246,6 +246,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 }
                                                               }
                                                               if (page == "Videos") {
+                                                                print("this tab is being tapppppedddd");
                                                                 courseProvider.getVideoCate(storedMaster[index].id);
                                                                 Future.delayed(Duration(milliseconds: 0), () {
                                                                   Navigator.push(

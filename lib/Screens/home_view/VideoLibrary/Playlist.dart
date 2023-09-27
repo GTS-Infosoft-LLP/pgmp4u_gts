@@ -292,13 +292,16 @@ class VideoList extends StatelessWidget {
                                     print("Videos[index].videoUrl===${courseProvider.Videos[index].videoUrl}");
                                     print("");
                                     print("Videos[index].videoUrl===${courseProvider.Videos[index].videoUrl}");
-
+                                    print(
+                                        "in this condition videoType value::::::::: ${courseProvider.Videos[index].videoType}");
                                     if (courseProvider.Videos[index].videoType == 2) {
+                                      print("in this condition:::::::::");
                                       Navigator.of(context).push(MaterialPageRoute(
                                           builder: (context) => YoutubePlayerDemo(
                                                 videoid: courseProvider.Videos[index].videoUrl,
                                               )));
                                     } else {
+                                      print("in this condition videoType:::::::::");
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) => new VideoPlay(
@@ -466,9 +469,17 @@ class _VideoPlayState extends State<VideoPlay> {
     // setLandScape();
     var _url = Uri.parse(widget.url).toString();
     print("url $_url");
-    _controller = VideoPlayerController.network(
-      _url,
+    _controller = VideoPlayerController.contentUri(
+      Uri.parse(_url),
     )..initialize().then((_) {
+        setState(() {
+          try {
+            print("means it works fine.....");
+            _controller.play();
+          } catch (e) {
+            print("catching errors::::$e");
+          }
+        });
         // setState(() {});
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         // Future.delayed(Duration(seconds: 2)).then((value) {
@@ -477,6 +488,9 @@ class _VideoPlayState extends State<VideoPlay> {
 
         playVideo();
         count();
+      }).onError((error, stackTrace) {
+        print("errore:::::::$error");
+        print("stackTrace:::::::$stackTrace");
       });
 
     // playerProvider = Provider.of(context, listen: false);
@@ -486,7 +500,12 @@ class _VideoPlayState extends State<VideoPlay> {
     // }
 
     setState(() {});
-    VideoProgressIndicator(_controller, allowScrubbing: true);
+    try {
+      VideoProgressIndicator(_controller, allowScrubbing: true);
+    } catch (e) {
+      print("errororororoororor::::: $e");
+    }
+
     // _controller.initialize();
     _controller.setLooping(true);
     super.initState();

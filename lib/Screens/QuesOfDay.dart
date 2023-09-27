@@ -345,9 +345,6 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                                           Duration(milliseconds: 500),
                                                                                       curve: Curves.easeInCirc),
                                                                                   setState(() {
-                                                                                    // if (_quetionNo < data.qdList.length) {
-                                                                                    //   _quetionNo = _quetionNo + 1;
-                                                                                    // }
                                                                                     selectedAnswer = null;
                                                                                   }),
                                                                                   print(_quetionNo)
@@ -687,9 +684,8 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                           if (selAns.length == ansRef.length && ansRef.length > 0)
                                                             Container(
                                                               decoration: BoxDecoration(
-                                                                  color:
-                                                                      // Colors .amber,
-                                                                      _colorfromhex("#FAFAFA"),
+                                                                  color: Color(0xffFAFAFA),
+                                                                  // _colorfromhex("#FAFAFA"),
                                                                   borderRadius: BorderRadius.circular(6)),
                                                               margin: EdgeInsets.only(top: height * (38 / 800)),
                                                               padding: EdgeInsets.only(
