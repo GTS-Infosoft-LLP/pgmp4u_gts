@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -7,6 +9,7 @@ import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
 import '../../../provider/courseProvider.dart';
+import '../../Tests/local_handler/hive_handler.dart';
 import '../disImage.dart';
 import 'Models/taskModel.dart';
 
@@ -29,6 +32,7 @@ class _TaskDetailState extends State<TaskDetail> {
   ScrollController scrollController;
   int isAnsCorrect = 0;
   var indexPg;
+  List<TaskDetails> storedTask = [];
   void initState() {
     print("praclist::::");
     print(widget.taskDetailsObj.PracList);
@@ -194,87 +198,108 @@ class _TaskDetailState extends State<TaskDetail> {
               SizedBox(
                 height: 10,
               ),
-              Consumer<DomainProvider>(builder: (context, dp, child) {
-                return Container(
-                    height: MediaQuery.of(context).size.height * .7,
-                    // width: MediaQuery.of(context).size.width * .9,
-                    // color: Colors.blue,
-                    child: Stack(
-                      children: [
-                        PageView.builder(
-                            controller: pageController,
-                            itemCount: 5,
-                            onPageChanged: (index) {
-                              setState(() {
-                                colorIndex = index;
-                                currentIndex = index;
-                              });
-
-                              if (colorIndex % 10 == 0) {
-                                double maxWidth = MediaQuery.of(context).size.width - 10;
-                                double eachTileWidth = MediaQuery.of(context).size.width * .08 + 4;
-                                scrollController.animateTo(eachTileWidth * colorIndex,
-                                    curve: Curves.easeInCubic, duration: Duration(seconds: 1));
-                              }
-                            },
-                            itemBuilder: (context, index) {
-                              return dp.TaskList.isEmpty
-                                  ? Center(child: Text("No Data Found"))
-                                  : currentIndex == 0
-                                      ? TaskDisc(context, 0, widget.taskDetailsObj)
-                                      : currentIndex == 1
-                                          ? TaskImg(context, 0, widget.taskDetailsObj)
-                                          : currentIndex == 2
-                                              ? TaskExple(context, 0, widget.taskDetailsObj)
-                                              : currentIndex == 3
-                                                  ? TaskKeywrd(context, 0, widget.taskDetailsObj)
-                                                  : dp.TaskQues.isNotEmpty
-                                                      ? TaskQuestion()
-                                                      : Center(
-                                                          child: Text(
-                                                          "No Questions Available",
-                                                          style: TextStyle(fontSize: 18),
-                                                        ));
-                            }),
-                        dp.taskDetailApiCall
-                            ? SizedBox()
-                            : Container(
-                                margin: const EdgeInsets.only(left: 10.0),
-                                height: 12,
-                                child: ListView.builder(
-                                  controller: scrollController,
+              ValueListenableBuilder(
+                  valueListenable: HiveHandler.getTaskItemsListener(),
+                  builder: (context, value, child) {
+                    DomainProvider dp = Provider.of(context, listen: false);
+                    if (value.containsKey(dp.selectedDomainId.toString())) {
+                      print("containsssss keyyyyy");
+                      List taskList = jsonDecode(value.get(dp.selectedDomainId.toString()));
+                      // List temp2 =
+                      // taskList[0]["practiceTest"];
+                      storedTask = taskList.map((e) => TaskDetails.fromjson(e)).toList();
+                      print("storedTasks storedTaskQues List:::::: $storedTask");
+                      // print("storedTasks List  keywrod:::::: ${taskList[0]["Keywords"]}");
+                      // print("storedTasks List question:::::: ${taskList[0]["practiceTest"]}");
+                    } else {
+                      storedTask = [];
+                    }
+                    if (storedTask == null) {
+                      storedTask = [];
+                    }
+                    print("storedTasks storedTaskQues List:::::: $storedTask");
+                    return Consumer<DomainProvider>(builder: (context, dp, child) {
+                      return Container(
+                          height: MediaQuery.of(context).size.height * .7,
+                          // width: MediaQuery.of(context).size.width * .9,
+                          // color: Colors.blue,
+                          child: Stack(
+                            children: [
+                              PageView.builder(
+                                  controller: pageController,
                                   itemCount: 5,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) => Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                                          gradient: index <= colorIndex
-                                              ? LinearGradient(
-                                                  colors: [
-                                                    _colorfromhex("#3A47AD"),
-                                                    _colorfromhex("#5163F3"),
-                                                  ],
-                                                  begin: const FractionalOffset(0.0, 0.0),
-                                                  end: const FractionalOffset(1.0, 0.0),
-                                                  stops: [0.0, 1.0],
-                                                  tileMode: TileMode.clamp)
-                                              : LinearGradient(
-                                                  colors: [
-                                                    Colors.grey,
-                                                    Colors.grey,
-                                                  ],
-                                                )),
-                                      height: 10,
-                                      width: MediaQuery.of(context).size.width * .08,
-                                    ),
-                                  ),
-                                ),
-                              )
-                      ],
-                    ));
-              }),
+                                  onPageChanged: (index) {
+                                    setState(() {
+                                      colorIndex = index;
+                                      currentIndex = index;
+                                    });
+
+                                    if (colorIndex % 10 == 0) {
+                                      double maxWidth = MediaQuery.of(context).size.width - 10;
+                                      double eachTileWidth = MediaQuery.of(context).size.width * .08 + 4;
+                                      scrollController.animateTo(eachTileWidth * colorIndex,
+                                          curve: Curves.easeInCubic, duration: Duration(seconds: 1));
+                                    }
+                                  },
+                                  itemBuilder: (context, index) {
+                                    return storedTask.isEmpty
+                                        ? Center(child: Text("No Data Found"))
+                                        : currentIndex == 0
+                                            ? TaskDisc(context, 0, widget.taskDetailsObj)
+                                            : currentIndex == 1
+                                                ? TaskImg(context, 0, widget.taskDetailsObj)
+                                                : currentIndex == 2
+                                                    ? TaskExple(context, 0, widget.taskDetailsObj)
+                                                    : currentIndex == 3
+                                                        ? TaskKeywrd(context, 0, widget.taskDetailsObj)
+                                                        : dp.TaskQues.isNotEmpty
+                                                            ? TaskQuestion()
+                                                            : Center(
+                                                                child: Text(
+                                                                "No Questions Available",
+                                                                style: TextStyle(fontSize: 18),
+                                                              ));
+                                  }),
+                              dp.taskDetailApiCall
+                                  ? SizedBox()
+                                  : Container(
+                                      margin: const EdgeInsets.only(left: 10.0),
+                                      height: 12,
+                                      child: ListView.builder(
+                                        controller: scrollController,
+                                        itemCount: 5,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) => Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                                gradient: index <= colorIndex
+                                                    ? LinearGradient(
+                                                        colors: [
+                                                          _colorfromhex("#3A47AD"),
+                                                          _colorfromhex("#5163F3"),
+                                                        ],
+                                                        begin: const FractionalOffset(0.0, 0.0),
+                                                        end: const FractionalOffset(1.0, 0.0),
+                                                        stops: [0.0, 1.0],
+                                                        tileMode: TileMode.clamp)
+                                                    : LinearGradient(
+                                                        colors: [
+                                                          Colors.grey,
+                                                          Colors.grey,
+                                                        ],
+                                                      )),
+                                            height: 10,
+                                            width: MediaQuery.of(context).size.width * .08,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                            ],
+                          ));
+                    });
+                  }),
               SizedBox(
                 height: 10,
               )

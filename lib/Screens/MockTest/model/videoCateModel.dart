@@ -1,15 +1,36 @@
-class VideoCateDetails {
-  int id;
-  String name;
-  int position;
-  int courseId;
-  int masterList;
-  int payment_status;
-  String price;
-  int status;
-  int deleteStatus;
-  int videoLibraries;
+import 'package:hive/hive.dart';
+part 'videoCateModel.g.dart';
 
+class VideoCateApiModel {
+  List<VideoCateDetails> vedioCateList = [];
+  VideoCateApiModel.fromJson(Map<String, dynamic> json) {
+    vedioCateList = List<VideoCateDetails>.from(json['list'].map((x) => VideoCateDetails.fromjson(x)));
+  }
+}
+
+@HiveType(typeId: 26)
+class VideoCateDetails {
+  @HiveField(0)
+  int id;
+  @HiveField(1)
+  String name;
+  @HiveField(2)
+  int position;
+  @HiveField(3)
+  int courseId;
+  @HiveField(4)
+  int masterList;
+  @HiveField(5)
+  int payment_status;
+  @HiveField(6)
+  String price;
+  @HiveField(7)
+  int status;
+  @HiveField(8)
+  int deleteStatus;
+  @HiveField(9)
+  int videoLibraries;
+VideoCateDetails();
   VideoCateDetails.fromjson(Map<String, dynamic> json) {
     id = json["id"];
     name = json["name"];

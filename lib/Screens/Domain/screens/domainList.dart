@@ -159,6 +159,7 @@ class _DomainListState extends State<DomainList> {
                                             dp.setSelectedSubDomainName("");
 
                                             if (storedDomainList[index].SubDomains == 0) {
+                                              print("is this truuu ");
                                               dp.getTasksData(storedDomainList[index].id, "");
                                               Navigator.push(
                                                   context,
@@ -167,6 +168,7 @@ class _DomainListState extends State<DomainList> {
                                                             subDomainName: "",
                                                           )));
                                             } else {
+                                              print("elseeeeee  is this truuu ");
                                               dp.getSubDomainData(storedDomainList[index].id);
                                               Navigator.push(
                                                   context,

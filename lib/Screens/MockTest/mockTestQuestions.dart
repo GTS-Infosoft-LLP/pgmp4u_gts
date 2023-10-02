@@ -800,7 +800,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               if (_quetionNo < mockQuestion.length) {
                                                 _quetionNo = _quetionNo + 1;
                                               }
-
                                               selectedAnswer = [];
                                               ids = [];
                                             } else {
@@ -1533,20 +1532,17 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   Widget putOnDiscussionButton(BuildContext context) {
     return InkWell(
       onTap: () async {
-
-bool result= await checkInternetConn();
-if(result){
-  ProfileProvider pp = Provider.of(context, listen: false);
-        await pp.subscriptionStatus("Chat");
-        questionLoader || context.read<ProfileProvider>().subscriptionApiCalling
-            ? null
-            : onTapOfPutOnDisscussion(mockQuestion[_quetionNo].questionDetail.questiondata,
-                mockQuestion[_quetionNo].questionDetail.Options, mockQuestion[_quetionNo].questionDetail.image);
-}else{
-        EasyLoading.showInfo("Please check your internet connection");
-}
-
-      
+        bool result = await checkInternetConn();
+        if (result) {
+          ProfileProvider pp = Provider.of(context, listen: false);
+          await pp.subscriptionStatus("Chat");
+          questionLoader || context.read<ProfileProvider>().subscriptionApiCalling
+              ? null
+              : onTapOfPutOnDisscussion(mockQuestion[_quetionNo].questionDetail.questiondata,
+                  mockQuestion[_quetionNo].questionDetail.Options, mockQuestion[_quetionNo].questionDetail.image);
+        } else {
+          EasyLoading.showInfo("Please check your internet connection");
+        }
       },
       child: Container(
         height: 35,
@@ -1701,7 +1697,7 @@ if(result){
                                 gradient: LinearGradient(
                                     colors: [
                                       _colorfromhex("#3A47AD"),
-                                      _colorfromhex("#5163F3"),
+                                      _colorfromhex("#5163F3"), 
                                     ],
                                     begin: const FractionalOffset(0.0, 0.0),
                                     end: const FractionalOffset(1.0, 0.0),
@@ -1713,7 +1709,7 @@ if(result){
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w400,
-                                ),
+                                    ),
                               ),
                             ))),
                     SizedBox(
@@ -1724,6 +1720,7 @@ if(result){
               ],
             ));
   }
+
   Future checkInternetConn() async {
     bool result = await InternetConnectionChecker().hasConnection;
     print("result while call fun $result");

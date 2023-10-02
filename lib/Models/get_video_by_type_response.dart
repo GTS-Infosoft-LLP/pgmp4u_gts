@@ -2,8 +2,7 @@ class GetVideoByType {
   List<GetVideoByTypeListing> videoListing = [];
 
   GetVideoByType.fromJson(Map<String, dynamic> json) {
-    videoListing = List<GetVideoByTypeListing>.from(
-        json["videoList"].map((x) => GetVideoByTypeListing.fromJson(x)));
+    videoListing = List<GetVideoByTypeListing>.from(json["videoList"].map((x) => GetVideoByTypeListing.fromJson(x)));
   }
 }
 
@@ -26,5 +25,6 @@ class GetVideoByTypeListing {
     deleteStatus = json["deleteStatus"] ?? 0;
     status = json["status"] ?? 0;
     title = json["title"] ?? "";
+    // print("sds>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
   }
 }

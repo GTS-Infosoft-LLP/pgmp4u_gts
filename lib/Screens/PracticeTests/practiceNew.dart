@@ -293,25 +293,8 @@ class _PracticeNewState extends State<PracticeNew> {
                                             // itemCount: data.pList.length,
                                             itemCount: PTList.length,
                                             onPageChanged: (index) {
-                                              // print("_question numner:::::::$_quetionNo");
-                                              // print("::::answersMapp::::$answersMapp");
-                                              // for (int i = 0; i < answersMapp.length; i++) {
-                                              //   if (answersMapp[i]["questionNumber"] == (_quetionNo)) {
-                                              //     print(
-                                              //         "answersMapp[i][selectedAnser]::::${answersMapp[i]["selectedAnser"]}");
-
-                                              //     answer = (answersMapp[i]["selectedAnser"]);
-
-                                              //     print("answer:::::::answer::::::::$answer");
-                                              //   }
-                                              // }
-                                              // print("ans::::>>>>>>>>>>>>$ans");
-                                              // if (ans.isNotEmpty) {
-                                              //   addToMap(_quetionNo, ans);
-                                              // }
-
+                                        
                                               ans = [];
-
                                               enableTap = 0;
                                               isAnsCorrect = 0;
                                               selAns = [];

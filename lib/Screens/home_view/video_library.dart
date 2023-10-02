@@ -24,6 +24,8 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
   bool isShowPremiumOrNot;
 //ModelStatus maintainStatus;
   @override
+
+  List storedViedos=[];
   void initState() {
     CourseProvider cp = Provider.of(context, listen: false);
     cp.changeonTap(0);
@@ -161,7 +163,12 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                   ProfileProvider pp = Provider.of(context, listen: false);
                                                   print("id:::: ${courseProvider.videoCate[index].id}");
                                                   pp.updateLoader(true);
-                                                  await courseProvider.getVideos(courseProvider.videoCate[index].id);
+                                                  await courseProvider.getVideos(courseProvider.videoCate[index].id).onError((error, stackTrace) {
+                                                    print("error::::${error}}");
+                                                       print("error::::${stackTrace}}");
+
+                                                        pp.updateLoader(false);
+                                                  });
                                                   var vdoSucVal = await courseProvider.vedioStatusValue;
                                                   print("vdoSucVal==============$vdoSucVal");
                                                   pp.updateLoader(false);

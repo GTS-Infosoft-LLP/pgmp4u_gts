@@ -126,7 +126,6 @@ class PracticeTextProvider extends ChangeNotifier {
 
         List<PracListModel> pltm = [];
         plm.myList = pList.toString();
-
         practiceApiLoader = false;
         print("pList=============$pList");
 

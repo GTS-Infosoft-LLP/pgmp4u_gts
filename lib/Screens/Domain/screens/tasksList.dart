@@ -140,9 +140,10 @@ class _TaskListState extends State<TaskList> {
                 if (value.containsKey(dp.selectedDomainId.toString())) {
                   // print("cp.selectedMasterId>>>>>${cp.selectedMasterId}");
                   List taskList = jsonDecode(value.get(dp.selectedDomainId.toString()));
+                  print("storedTasks List questionsss  taskList:::::::::${taskList[0]["practiceTest"]}");
                   storedTasks = taskList.map((e) => TaskDetails.fromjson(e)).toList();
                   print("storedTasks List:::::: $storedTasks");
-                  print("storedTasks List questionsss:::::::::${storedTasks[0].PracList}");
+                  print("storedTasks List questionsss:::::::::${storedTasks[0].id}");
                 } else {
                   storedTasks = [];
                 }
@@ -183,7 +184,7 @@ class _TaskListState extends State<TaskList> {
                                         onTap: () async {
                                           print("storedTasks[index].id===${storedTasks[index].id}");
                                           print("storedTasks[index].name===${storedTasks[index].name}");
-
+                                          dp.setSelectedTaskId(storedTasks[index].id);
                                           dp.setSelectedTaskLable(storedTasks[index].lable);
                                           dp.getTasksDetailData(storedTasks[index].id);
                                           Navigator.push(

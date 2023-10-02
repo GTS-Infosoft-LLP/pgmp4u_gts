@@ -113,6 +113,8 @@ class _SubDomainState extends State<SubDomain> {
                     builder: (context, value, child) {
                       print("is this even working...?");
                       DomainProvider dp = Provider.of(context, listen: false);
+                      print("dp.selectedDomainId>>>>>>>> ${dp.selectedDomainId}");
+
                       if (value.containsKey(dp.selectedDomainId.toString())) {
                         print("not inside this condition");
                         List subDomainDetailList = jsonDecode(value.get(dp.selectedDomainId.toString()));

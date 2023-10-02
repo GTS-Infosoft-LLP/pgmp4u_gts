@@ -10,12 +10,14 @@ import '../../../Models/pptCateModel.dart';
 import '../../../Models/pptDetailsModel.dart';
 import '../../Domain/screens/Models/domainModel.dart';
 import '../../Domain/screens/Models/subDomainModel.dart';
+import '../../Domain/screens/Models/taskModel.dart';
 import '../../MockTest/model/courseModel.dart';
 import '../../MockTest/model/flashCardModel.dart';
 import '../../MockTest/model/flashCateModel.dart';
 import '../../MockTest/model/masterdataModel.dart';
 import '../../MockTest/model/pracTestModel.dart';
 import '../../MockTest/model/quesOfDayModel.dart';
+import '../../MockTest/model/taskQuesModel.dart';
 import '../../MockTest/model/testDataModel.dart';
 import '../../MockTest/model/testDetails.dart';
 import '../model/categorymodel.dart';
@@ -56,6 +58,9 @@ class HiveHandler {
   static const String pptCateBox = "pptCateBox";
   static const String pptCateKey = "pptCateKey";
 
+  static const String taskQuesBox = "taskQuesBox";
+  static const String taskQuesKey = "taskQuesKey";
+
   static const String quesOfDayBox = "quesOfDayBox";
   static const String quesOfDayKey = "quesOfDayKey";
 
@@ -94,6 +99,7 @@ class HiveHandler {
   static Box<String> pptCateListBox;
   static Box<RestartModel> mockRestartBox;
   static Box<String> submitDataBox;
+  static Box<String> taskPracTestBox;
 
   static Box<List<MockTestListApiModel>> MockListBox;
   static Box<List<QuestionAnswerModel>> MockTextBox;
@@ -101,7 +107,7 @@ class HiveHandler {
   static Box<String> TaskItemsBox;
   static Box<String> QuesOfDDayBox;
 
-  static Box<List<PracListModel>> PracTestBox;
+  // static Box<List<PracListModel>> PracTestBox;
 
   static Box<String> TestPMListBox;
   static Box<List<MockPercentModel>> TestPercentListBox;
@@ -127,6 +133,7 @@ class HiveHandler {
     Hive.registerAdapter(TestDataDetailsAdapter());
     Hive.registerAdapter(MockDataDetailsAdapter());
     Hive.registerAdapter(RestartModelAdapter());
+    Hive.registerAdapter(TaskQuesAdapter());
 
     mockNotSubmitBox = await Hive.openBox<String>(notSubmitBox);
     domainDetailListBox = await Hive.openBox<String>(DomainDetailBox);
@@ -138,6 +145,7 @@ class HiveHandler {
     flashListCateBox = await Hive.openBox<String>(FlashCateBox);
     categoryListBox = await Hive.openBox<List<CategoryListModel>>(userDataBox);
     QuesOfDDayBox = await Hive.openBox<String>(quesOfDayBox);
+    taskPracTestBox = await Hive.openBox<String>(taskQuesBox);
     masterListBox = await Hive.openBox<String>(MasterDataBox);
     submitDataBox = await Hive.openBox<String>(SubmitMockBoxKey);
 
@@ -145,8 +153,6 @@ class HiveHandler {
 
     TaskItemsBox = await Hive.openBox<String>(TaskItemsBoxKey);
     MockQuestionBox = await Hive.openBox<String>(MockQuestionBoxKey);
-
-    PracTestBox = await Hive.openBox<List<PracListModel>>(PracticeTestBox);
 
     TestPMListBox = await Hive.openBox<String>(TestDataBox);
 
@@ -240,10 +246,21 @@ class HiveHandler {
   }
 
   static setTaskItemsData({String value, String key}) async {
+    List<TaskDetails> storedTaskAllData = [];
     TaskItemsBox.put(key, value);
+
     if (TaskItemsBox.containsKey(key)) {
       print("===========added to box=========");
       print("TaskItemsBox.get  Key: $key, Data:${TaskItemsBox.get(key)}");
+
+      String taskData = TaskItemsBox.get(key);
+      print(" >> taskData :  $taskData");
+
+      List Tasklist = jsonDecode(taskData);
+
+      storedTaskAllData = Tasklist.map((e) => TaskDetails.fromjson(e)).toList();
+      print(" >> storedTaskAllData taskData :  ${storedTaskAllData[0].PracList}");
+      debugPrint(" >> storedTaskAllData : $storedTaskAllData");
     } else {
       print("===========box is empty=========");
     }
@@ -251,6 +268,30 @@ class HiveHandler {
 
   static ValueListenable<Box<String>> getTaskItemsListener() {
     return Hive.box<String>(TaskItemsBoxKey).listenable() ?? '';
+  }
+
+  static setTaskQuesData({String value, String key}) async {
+    List<TaskQues> storedTaskTestQuesData = [];
+    print("valueee of vallll>>>>>$value");
+    print("value of keyyyy>>>>$key");
+    taskPracTestBox.put(key, value);
+    
+    if (taskPracTestBox.containsKey(key)) {
+      print("===========added to box   setTaskQuesData=========");
+      print("taskPracTestBox.get  Key: $key, Data:${taskPracTestBox.get(key)}");
+      String taskQuesData = taskPracTestBox.get(key);
+      print(" >> taskData :  $taskQuesData");
+
+      List TaskquestionsList = jsonDecode(taskQuesData);
+      storedTaskTestQuesData = TaskquestionsList.map((e) => TaskQues.fromJson(e)).toList();
+      debugPrint(" >> storedTaskTestQuesData : $storedTaskTestQuesData");
+    } else {
+      print("===========box is empty=========");
+    }
+  }
+
+  static ValueListenable<Box<String>> getTaskQuesListener() {
+    return Hive.box<String>(taskQuesBox).listenable() ?? '';
   }
 
   static setQuesOfDayData({String value, String key}) async {
@@ -361,6 +402,7 @@ class HiveHandler {
     subDomainDetailListBox.put(key, subdomainDetailResponse);
 
     if (subDomainDetailListBox.containsKey(key)) {
+      print("subdomain box keyy>>>>>>>.$key");
       print("===========added to box=========");
       print("subDomainDetailListBox.get ${subDomainDetailListBox.get(key)}");
     } else {

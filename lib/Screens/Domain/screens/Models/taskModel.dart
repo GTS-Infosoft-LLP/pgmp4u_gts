@@ -1,21 +1,20 @@
-
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
 part 'taskModel.g.dart';
 
 @HiveType(typeId: 21)
-class AllTaskModel{
-  List<TaskDetails> allTaskList=[];
-   @HiveField(0)
+class AllTaskModel {
+  List<TaskDetails> allTaskList = [];
+  @HiveField(0)
   String myList = "";
   AllTaskModel();
-  AllTaskModel.fromjson(List data){
-    allTaskList=data.map((e) => TaskDetails.fromjson(e)).toList();
-    myList=jsonEncode(data);
-
+  AllTaskModel.fromjson(List data) {
+    allTaskList = data.map((e) => TaskDetails.fromjson(e)).toList();
+    myList = jsonEncode(data);
+    print("************************************************************");
+    print("list is $myList");
   }
-
 }
 
 class TaskDetails {
@@ -31,6 +30,7 @@ class TaskDetails {
   int status;
   int deleteStatus;
   List<TaskPracQues> PracList;
+  TaskDetails();
 
   TaskDetails.fromjson(Map<String, dynamic> json) {
     id = json['id'];
@@ -72,6 +72,7 @@ class TaskPracQues {
   int deleteStatus;
   String sendDateFormat;
   List<TaskOptions> options;
+
   TaskPracQues.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     questionNo = json['question_no'];

@@ -45,6 +45,13 @@ class DomainProvider extends ChangeNotifier {
   int selectedDomainId;
   int selectedSubDomainId;
 
+
+    int selectedTaskId;
+    setSelectedTaskId(int val) {
+    selectedTaskId = val;
+    notifyListeners();
+  }
+
   String selectedSubDomainName;
   setSelectedSubDomainName(val) {
     selectedSubDomainName = val;
@@ -348,6 +355,7 @@ class DomainProvider extends ChangeNotifier {
 
         if (mapResponse["status"] == 200) {
           List temp1 = mapResponse["data"];
+          print('mapResponse["data"]>>>>>>>${mapResponse["data"]}');
           print('mapResponse["data"] lableee:::::::::::::${mapResponse["data"][0]["lable"]}');
           print('mapResponse["data"] pracques:::::::::::::${mapResponse["data"][0]["practiceTest"]}');
           HiveHandler.setTaskItemsData(key: id.toString(), value: jsonEncode(mapResponse["data"]));
@@ -371,7 +379,7 @@ class DomainProvider extends ChangeNotifier {
     TaskDetailList = [];
     print("this apiii====");
     print("idddd=========>>>>>>>>>>>>>>>$id");
-    print("idddd=========>>>>>>>>>>>>>>>$selectedDomainId");
+    print("idddd selectedDomainId=====>>>>$selectedDomainId");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -424,7 +432,8 @@ class DomainProvider extends ChangeNotifier {
         print("");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse====${mapResponse['status']}");
-        print("mapResponse data====${mapResponse['data']}");
+        debugPrint("mapResponse data====${mapResponse['data']}");
+        print("mapResponse data practiceTest====${mapResponse['data'][0]["practiceTest"]}");
         if (mapResponse['status'] == 400) {
           TaskDetailList = [];
           return;
@@ -432,8 +441,10 @@ class DomainProvider extends ChangeNotifier {
 
         if (mapResponse["status"] == 200) {
           List temp1 = mapResponse["data"];
+          print("addinggg to the boxxxX::::::::;");
           HiveHandler.setTaskItemsData(key: id.toString(), value: jsonEncode(mapResponse["data"]));
           print("temp1:::::temp1:::::$temp1");
+          HiveHandler.setTaskQuesData(key: id.toString(), value: jsonEncode(mapResponse['data'][0]["practiceTest"]));
           List temp2 = temp1[0]["practiceTest"];
           print(":::::temp2:::::$temp2");
           TaskQues = temp2.map((e) => TaskPracQues.fromJson(e)).toList();

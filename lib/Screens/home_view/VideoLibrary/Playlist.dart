@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pgmp4u/Models/get_video_by_type_response.dart';
@@ -302,14 +303,18 @@ class VideoList extends StatelessWidget {
                                               )));
                                     } else {
                                       print("in this condition videoType:::::::::");
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => new VideoPlay(
-                                            url: courseProvider.Videos[index].videoUrl,
-                                            videoDuration: "",
+                                      try {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => VideoPlay(
+                                              url: courseProvider.Videos[index].videoUrl,
+                                              videoDuration: "",
+                                            ),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      } catch (e) {
+                                        print("errrorororoorr::::$e");
+                                      }
                                     }
                                   },
                                   child: Center(
@@ -458,58 +463,75 @@ class VideoPlay extends StatefulWidget {
 
 class _VideoPlayState extends State<VideoPlay> {
   PlayerProvider playerProvider;
-  VideoPlayerController _controller;
-  bool isPauseVisible;
+  // VideoPlayerController _controller;
+  bool isPauseVisible = true;
   bool isIconVisible = true;
+  final FijkPlayer player = FijkPlayer();
 
 //  Future<void> _initializeVideoPlayerFuture;
 
   @override
   void initState() {
     // setLandScape();
-    var _url = Uri.parse(widget.url).toString();
-    print("url $_url");
-    _controller = VideoPlayerController.contentUri(
-      Uri.parse(_url),
-    )..initialize().then((_) {
-        setState(() {
-          try {
-            print("means it works fine.....");
-            _controller.play();
-          } catch (e) {
-            print("catching errors::::$e");
-          }
-        });
-        // setState(() {});
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        // Future.delayed(Duration(seconds: 2)).then((value) {
-        //   setState(() {});
-        // });
+    var _url =
+        "https://pgmp4ubucket.s3.amazonaws.com/uploads/document/3PgMPVBCChapter3Introduction202004212hrs1min.mp4";
 
-        playVideo();
-        count();
-      }).onError((error, stackTrace) {
-        print("errore:::::::$error");
-        print("stackTrace:::::::$stackTrace");
-      });
+    player.setDataSource(widget.url, autoPlay: true);
+    // player.pause();
+    // player.p
+
+    // _controller = VideoPlayerController.networkUrl(
+    //   Uri.parse(_url),
+    // )..initialize().then((_) {
+    // setState(() {
+    //   try {
+    //     print("means it works fine.....");
+    //     _controller.play();
+    //   } catch (e) {
+    //     print("catching errors::::$e");
+    //   }
+    // });
+    // // setState(() {});
+    // // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+    // // Future.delayed(Duration(seconds: 2)).then((value) {
+    // //   setState(() {});
+    // // });
+
+    //   playVideo();
+    //   count();
+    // }).onError((error, stackTrace) {
+    //   print("errore:::::::$error");
+    //   print("stackTrace:::::::$stackTrace");
+    // });
 
     // playerProvider = Provider.of(context, listen: false);
-    isPauseVisible = true;
+    // isPauseVisible = true;
     // if (_controller.value.isPlaying) {
     //   isIconVisible = false;
     // }
 
     setState(() {});
-    try {
-      VideoProgressIndicator(_controller, allowScrubbing: true);
-    } catch (e) {
-      print("errororororoororor::::: $e");
-    }
+
+    // VideoProgressIndicator(_controller, allowScrubbing: true);
 
     // _controller.initialize();
-    _controller.setLooping(true);
+    // _controller.setLooping(true);
+    // codeForVideo();
     super.initState();
   }
+
+  // codeForVideo() {
+  //   print("call function");
+  //   final arguments = [
+  //     '-i', widget.url, // Input WebM file
+  //     '-c:v', 'libx264', // Video codec for MP4
+  //     '-c:a', 'aac', // Audio codec for MP4
+  //     "${DateTime.now()}.mp4", // Output MP4 file
+  //   ];
+  //   FFmpegKit.executeWithArguments(arguments).then((value) async {
+  //     print("value is >> ${await value.getOutput()}");
+  //   });
+  // }
 
   Timer _timer;
 
@@ -562,20 +584,19 @@ class _VideoPlayState extends State<VideoPlay> {
                       },
                       child: Stack(
                         children: [
-                          _controller.value.isInitialized
-                              ? Center(
-                                  child: AspectRatio(
-                                    child: VideoPlayer(_controller),
-                                    aspectRatio: _controller.value.aspectRatio + 0.5,
-                                  ),
-                                )
-                              : Positioned(
-                                  top: 50,
-                                  bottom: 50,
-                                  left: 50,
-                                  right: 50,
-                                  child: Center(child: CircularProgressIndicator.adaptive()),
-                                ),
+                          Center(
+                            child: FijkView(
+                              color: Colors.black,
+                              player: player,
+                            ),
+                          ),
+                          // : Positioned(
+                          //     top: 50,
+                          //     bottom: 50,
+                          //     left: 50,
+                          //     right: 50,
+                          //     child: Center(child: CircularProgressIndicator.adaptive()),
+                          //   ),
                           Positioned(
                             top: 50,
                             bottom: 50,
@@ -584,14 +605,22 @@ class _VideoPlayState extends State<VideoPlay> {
                             child: Center(
                               child: InkWell(
                                 onTap: () {
-                                  if (_controller.value.isPlaying) {
-                                    isPauseVisible = false;
-                                  } else {
-                                    isPauseVisible = true;
-                                  }
-                                  playVideo();
-                                  count();
-                                  // setState(() {});
+                                  print("playerr state${player.state.toString()}");
+                                  print("player valueeeE::: ${player.value}");
+                                  // player.
+
+                                  isPauseVisible ? player.pause() : player.start();
+
+                                  isPauseVisible = !isPauseVisible;
+
+                                  // if (_controller.value.isPlaying) {
+                                  //   isPauseVisible = false;
+                                  // } else {
+                                  //   isPauseVisible = true;
+                                  // }
+                                  // playVideo();
+                                  // count();
+                                  setState(() {});
                                 },
                                 child: isIconVisible
                                     ? isPauseVisible
@@ -651,7 +680,7 @@ class _VideoPlayState extends State<VideoPlay> {
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      TextWidget(controller: _controller),
+                                      // TextWidget(controller: _controller),
                                     ]),
                               )),
                           Positioned(
@@ -666,9 +695,9 @@ class _VideoPlayState extends State<VideoPlay> {
                     ),
                   )),
                 ),
-                _controller.value.isInitialized
-                    ? VideoProgressIndicator(_controller, allowScrubbing: true)
-                    : SizedBox(),
+                // _controller.value.isInitialized
+                //     ? VideoProgressIndicator(_controller, allowScrubbing: true)
+                //     : SizedBox(),
                 // Padding(
                 //   padding: const EdgeInsets.all(12),
                 //   child: Row(
@@ -697,7 +726,8 @@ class _VideoPlayState extends State<VideoPlay> {
     if (_timer != null) {
       _timer.cancel();
     }
-    _controller.dispose();
+    // _controller.dispose();
+    player.release();
 
     super.dispose();
   }
@@ -714,19 +744,19 @@ class _VideoPlayState extends State<VideoPlay> {
   //   }
   // }
 
-  playVideo() {
-    _controller.value.isPlaying ? _controller.pause() : _controller.play();
-    setState(() {});
-  }
-
-  // hideIcon(bool isIconVisible) {
-  //   Future.delayed(Duration(seconds: 3), () {
-  //     if (isIconVisible) {
-  //       isIconVisible = false;
-  //     }
-  //   });
-  // }
+  // playVideo() {
+  //   _controller.value.isPlaying ? _controller.pause() : _controller.play();
+  //   setState(() {});
 }
+
+// hideIcon(bool isIconVisible) {
+//   Future.delayed(Duration(seconds: 3), () {
+//     if (isIconVisible) {
+//       isIconVisible = false;
+//     }
+//   });
+// }
+// }
 
 Future<bool> setOrientation(BuildContext context) async {
   bool isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;

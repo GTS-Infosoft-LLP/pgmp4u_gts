@@ -41,7 +41,8 @@ dependencies:
   firebase_database: ^7.2.2
   # Online Database For Data
   cloud_firestore:
-  video_player: ^2.4.0
+  video_player: ^2.7.2
+  fijkplayer: ^0.10.0
   # Add Authentication such as Google SignIn, Facebook SignIn, Apple SignIn, Phone Auth etc.
   firebase_auth: ^1.1.0
   razorpay_flutter: ^1.2.7
@@ -54,6 +55,7 @@ dependencies:
   provider: ^6.0.0
   platform: ^3.1.0
   flutter_inappwebview: ^5.4.3
+  
   firebase_messaging: ^11.1.0
   flutter_local_notifications: ^9.1.4
   flutter_swiper_null_safety: ^1.0.2
