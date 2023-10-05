@@ -217,7 +217,6 @@ class _PPTCardItemState extends State<PPTCardItem> {
                                                         borderRadius: BorderRadius.circular(10),
                                                         color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
 
-                                                        //     colors: [Color(0xff3643a3), Color(0xff5468ff)]),
                                                       ),
                                                       child: Padding(
                                                         padding: const EdgeInsets.all(17.0),

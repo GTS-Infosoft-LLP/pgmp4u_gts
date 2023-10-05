@@ -94,7 +94,12 @@ class _HomeViewState extends State<HomeView> {
 
     courseProvider.getCourse();
     Future<void>.delayed(Duration(seconds: 3), () {
-      courseProvider.setFloatButton(1);
+      print("courseProvider.crsDropList.length:::${courseProvider.crsDropList.length}");
+      if (courseProvider.crsDropList.length == 0) {
+        courseProvider.setFloatButton(1);
+      } else {
+        courseProvider.setFloatButton(0);
+      }
     });
   }
 
@@ -393,7 +398,7 @@ class _HomeViewState extends State<HomeView> {
                       SizedBox(
                         height: topHeight - topHeight / 1.4,
                       ),
-                      crp.showFloatButton == 1
+                      crp.showFloatButton == 1 && crp.masterTemp.length == 0
                           ? Container(
                               child: Column(
                                 children: [
@@ -705,7 +710,11 @@ class _HomeViewState extends State<HomeView> {
                                                           child: InkWell(
                                                               onTap: () async {
                                                                 Future.delayed(const Duration(seconds: 5), () {
-                                                                  courseProvider.setFloatButton(1);
+                                                                  if (courseProvider.crsDropList.length == 0) {
+                                                                    courseProvider.setFloatButton(1);
+                                                                  } else {
+                                                                    courseProvider.setFloatButton(0);
+                                                                  }
                                                                 });
                                                                 print(
                                                                     "isSubscribedd::: ${storedCourse[index].isSubscribed}");
@@ -764,7 +773,11 @@ class _HomeViewState extends State<HomeView> {
                                                                 }
                                                                 pp.updateLoader(false);
                                                                 Future.delayed(const Duration(seconds: 5), () {
-                                                                  courseProvider.setFloatButton(1);
+                                                                  if (courseProvider.crsDropList.length == 0) {
+                                                                    courseProvider.setFloatButton(1);
+                                                                  } else {
+                                                                    courseProvider.setFloatButton(0);
+                                                                  }
                                                                 });
                                                               },
                                                               child: ListTile(
@@ -819,7 +832,13 @@ class _HomeViewState extends State<HomeView> {
                                                                                           listen: false);
                                                                                   Future.delayed(
                                                                                       const Duration(seconds: 5), () {
-                                                                                    courseProvider.setFloatButton(1);
+                                                                                    if (courseProvider
+                                                                                            .crsDropList.length ==
+                                                                                        0) {
+                                                                                      courseProvider.setFloatButton(1);
+                                                                                    } else {
+                                                                                      courseProvider.setFloatButton(0);
+                                                                                    }
                                                                                   });
                                                                                   print(
                                                                                       "isSubscribedd::: ${storedCourse[index].isSubscribed}");
@@ -894,7 +913,13 @@ class _HomeViewState extends State<HomeView> {
                                                                                   pp.updateLoader(false);
                                                                                   Future.delayed(
                                                                                       const Duration(seconds: 5), () {
-                                                                                    courseProvider.setFloatButton(1);
+                                                                                    if (courseProvider
+                                                                                            .crsDropList.length ==
+                                                                                        0) {
+                                                                                      courseProvider.setFloatButton(1);
+                                                                                    } else {
+                                                                                      courseProvider.setFloatButton(0);
+                                                                                    }
                                                                                   });
                                                                                 },
                                                                                 child: Container(

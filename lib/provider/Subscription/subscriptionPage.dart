@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pgmp4u/Screens/dropdown.dart';
 import 'package:pgmp4u/provider/Subscription/subscriptionProvider.dart';
 import 'package:provider/provider.dart';
@@ -453,6 +455,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                             child: InkWell(
                                               onTap: () {
                                                 if (widget.showFreeTrial == 1) {
+                                                    pp.updateLoader(false);
+                                                  sp.updateLoader(false);
                                                 } else {
                                                   sp.setSelectedIval(i);
                                                   sp.setSelectedSubsId(permiumbutton[i].id);
@@ -460,6 +464,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                   sp.setSelectedPlanType(permiumbutton[i].type);
                                                   print("index val===$i");
                                                   pp.setSelectedContainer(i);
+                                                  pp.updateLoader(false);
+                                                  sp.updateLoader(false);
                                                 }
                                               },
                                               child: Container(
@@ -623,6 +629,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                     i == sp.radioSelected ? Color(0xff3643a3) : Colors.white)),
                                             onPressed: () async {
                                               if (widget.showFreeTrial == 1) {
+                                                ProfileProvider pp = Provider.of(context, listen: false);
+                                                pp.updateLoader(false);
                                               } else {
                                                 print("vaue of i::::   $i");
                                                 sp.setSelectedRadioVal(i);
@@ -634,6 +642,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                 await sp.setSelectedDurTimeQt(sp.durationPackData[i].durationType,
                                                     sp.durationPackData[i].durationQuantity);
                                                 CourseProvider cp = Provider.of(context, listen: false);
+                                                pp.updateLoader(false);
+                                                sp.updateLoader(false);
                                               }
                                             },
                                             child: RichText(
@@ -898,14 +908,15 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                       onTap: () async {
                         Navigator.pop(context);
 
+                         bool result = await checkInternetConn();
+                  print("result internet  $result");
+                  if (result) {
+
+
+
                         SubscriptionProvider sp = Provider.of(context, listen: false);
 
-                        // await sp.createSubscritionOrder(sp.selectedSubsId);
-                        // print("alredyPurchase value====${sp.alredyPurchase}");
-                        // if (sp.alredyPurchase == 1) {
-
-                        // }
-
+     
                         var token = await getTokenn();
                         // ProfileProvider pp = Provider.of(context, listen: false);
 
@@ -939,7 +950,12 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                             }
                           }
                         }
-                      },
+                        }else{
+                               EasyLoading.showInfo("Please check your Internet Connection");
+
+                        }
+                        
+                          },
                       child: Container(
                         height: 35,
                         width: MediaQuery.of(context).size.width * .15,
@@ -973,5 +989,17 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                 ),
               ],
             ));
+  }
+  
+  Future checkInternetConn() async {
+    bool result = await InternetConnectionChecker().hasConnection;
+    print("result while call fun $result");
+    if (result == false) {
+      Future.delayed(Duration(seconds: 1), () async {
+        //  await EasyLoading.showToast("Internet Not Connected",toastPosition: EasyLoadingToastPosition.bottom);
+      });
+      return result;
+    } else {}
+    return result;
   }
 }

@@ -94,7 +94,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
   @override
   void initState() {
-    pageController = PageController(initialPage: -2);
+    pageController = PageController(initialPage: 1);
     print("widget.restartModel========${widget.restartModel}");
     beforeCallApi();
     if (mockQuestion.isEmpty) {
@@ -159,9 +159,11 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
       try {
         // Future.delayed(Duration(seconds: 2), () {
-
+        print("question number before navi:::${widget.restartModel.quesNum}");
         SchedulerBinding.instance.addPostFrameCallback((_) {
-          pageController.animateToPage(widget.restartModel.quesNum,
+          // pageController.jumpToPage(widget.restartModel.quesNum);
+
+          pageController.animateToPage(widget.restartModel.quesNum + 1,
               duration: Duration(milliseconds: 10), curve: Curves.bounceOut);
           // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
         });
@@ -364,7 +366,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
             answersMapp: answersMapp,
             atempedData: submitData)); /////////////
     cp.setToRestartList(displayTime, cp.selectedAttemptNumer, cp.toPage);
-    // HiveHandler.setSubmitMockData(cp.selectedMockId.toString(), submitData.toString());
     Navigator.pop(context);
   }
 
@@ -752,11 +753,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                         physics: cp.allowScroll == 1
                                             ? BouncingScrollPhysics()
                                             : NeverScrollableScrollPhysics(),
-                                        onPageChanged: (index) {
-                                          print("lkjgkjdfhgkljh");
-
-                                          // answer = [];
-
+                                        onPageChanged: (int index) {
                                           if (answersMapp != null) {
                                             for (int i = 0; i < answersMapp.length; i++) {
                                               if (answersMapp[i]["questionNumber"] == (_quetionNo)) {
@@ -764,7 +761,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               }
                                             }
                                           }
-
                                           print("ansers after they are set:::::$answer");
 
                                           if (currentData != null) {
@@ -793,6 +789,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                           }
                                           print(" index current   >> $currentIndex");
                                           print(" index  >> $index");
+                                          print("_quetionNo:::: $_quetionNo");
                                           if (currentIndex < index) {
                                             print("dfg");
 
@@ -806,6 +803,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               if (!loader) submitMockTest('', displayTime);
                                             }
                                           } else {
+                                            print("_quetionNo:::: this $_quetionNo");
                                             print("hwllo");
                                             if (_quetionNo != 0) {
                                               _quetionNo--;
@@ -1372,21 +1370,11 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                             onTap: () => {
                                               print("_quetionNo:::::_quetionNo$_quetionNo"),
                                               subQues = _quetionNo,
-
                                               setState(() {
                                                 _quetionNo--;
                                               }),
                                               print("subQues::::::;$subQues"),
                                               print("-------subQues::::::;${--subQues}"),
-                                              // if (pageController != null)
-                                              {
-                                                pageController.previousPage(
-                                                  duration: Duration(milliseconds: 500), // You can adjust the duration
-                                                  curve: Curves.ease,
-                                                ),
-                                                // pageController.animateToPage(--subQues,
-                                                //     duration: Duration(milliseconds: 500), curve: Curves.easeInCirc),
-                                              }
                                             },
                                             child: Container(
                                               width: width / 2,
@@ -1424,8 +1412,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               duration: Duration(milliseconds: 500), // You can adjust the duration
                                               curve: Curves.ease,
                                             ),
-                                            // pageController.animateToPage(++plusQues,
-                                            //     duration: Duration(milliseconds: 500), curve: Curves.easeInCirc),
                                             if (currentData != null)
                                               {
                                                 print("selectedAnswer.length::::::::::${selectedAnswer.length}"),
@@ -1697,7 +1683,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                 gradient: LinearGradient(
                                     colors: [
                                       _colorfromhex("#3A47AD"),
-                                      _colorfromhex("#5163F3"), 
+                                      _colorfromhex("#5163F3"),
                                     ],
                                     begin: const FractionalOffset(0.0, 0.0),
                                     end: const FractionalOffset(1.0, 0.0),
@@ -1709,7 +1695,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w400,
-                                    ),
+                                ),
                               ),
                             ))),
                     SizedBox(

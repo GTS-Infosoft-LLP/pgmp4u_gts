@@ -130,6 +130,7 @@ class _FlashDisplayState extends State<FlashDisplay> {
                           }
 
                           print("storedFlashCate========================$storedFlash");
+                     
 
                           if (storedFlash == null) {
                             storedFlash = [];

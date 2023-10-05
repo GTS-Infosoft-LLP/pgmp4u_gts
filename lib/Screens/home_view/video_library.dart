@@ -164,10 +164,9 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                   print("id:::: ${courseProvider.videoCate[index].id}");
                                                   pp.updateLoader(true);
                                                   await courseProvider.getVideos(courseProvider.videoCate[index].id).onError((error, stackTrace) {
-                                                    print("error::::${error}}");
+                                                       print("error::::${error}}");
                                                        print("error::::${stackTrace}}");
-
-                                                        pp.updateLoader(false);
+                                                       pp.updateLoader(false);
                                                   });
                                                   var vdoSucVal = await courseProvider.vedioStatusValue;
                                                   print("vdoSucVal==============$vdoSucVal");

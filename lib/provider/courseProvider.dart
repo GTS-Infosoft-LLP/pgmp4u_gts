@@ -906,6 +906,7 @@ class CourseProvider extends ChangeNotifier {
         );
         if (response.statusCode == 200) {
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          // HiveHandler.removeFromRestartBox();
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }

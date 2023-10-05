@@ -55,9 +55,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
     print("attemppt count=========>>..${widget.attemptCnt}");
     print("widget.attemptCnt=${widget.attemptLength}");
     super.initState();
-
     cp = Provider.of(context, listen: false);
-
     apiCall();
   }
 
@@ -461,6 +459,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                         Text(
                                                                           (mockData.attemptList[index].attempted_date !=
                                                                                       null &&
+
                                                                                   mockData.attemptList[index]
                                                                                       .attempted_date.isNotEmpty)
                                                                               ? 'Date of Attempt: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(mockData.attemptList[index].attempted_date))}'

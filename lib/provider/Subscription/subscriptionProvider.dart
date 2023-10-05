@@ -18,8 +18,8 @@ import 'SubscriptionModel.dart';
 
 class SubscriptionProvider extends ChangeNotifier {
   SharedPreferences prefs;
-String bodyyyy;
-CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: false);
+  String bodyyyy;
+  CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
 
   initSharePreferecne() async {
     prefs = await SharedPreferences.getInstance();
@@ -134,18 +134,24 @@ CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: fal
       "courseId": idCrs,
     };
     print("requestt::::::$request");
-  bool checkConn = await checkInternetConn();
+    bool checkConn = await checkInternetConn();
     if (checkConn) {
       bodyyyy = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
       if (bodyyyy == null) {
         bodyyyy = "";
       }
       if (bodyyyy.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        );
+        )
+            .onError((error, stackTrace) {
+          print("erroror::::$error");
+          print("stackTrace::::$stackTrace");
+          updateLoader(false);
+        });
         if (response.statusCode == 200) {
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
@@ -154,13 +160,18 @@ CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: fal
       }
     }
 
-
     try {
-      var response = await http.post(
+      var response = await http
+          .post(
         Uri.parse(FREE_SUBSCRIPTION),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
-      );
+      )
+          .onError((error, stackTrace) {
+        print("erroror::::$error");
+        print("stackTrace::::$stackTrace");
+        updateLoader(false);
+      });
 
       print("response.statusCode===${response.body}");
 
@@ -203,7 +214,6 @@ CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: fal
   }
 
   Future<void> getSubscritionData(int idCrs) async {
-    // updateLoader(true);
     // ftchList = [];
     print(">>>>>>>>>>>>>>getSubscritionData>>>>>>>>>>>>>>");
     // domainStatus = true;
@@ -226,18 +236,25 @@ CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: fal
     };
     print("requestt::::::$request");
 
-  bool checkConn = await checkInternetConn();
+    bool checkConn = await checkInternetConn();
     if (checkConn) {
       bodyyyy = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
       if (bodyyyy == null) {
         bodyyyy = "";
       }
       if (bodyyyy.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        );
+        )
+            .onError((error, stackTrace) {
+          updateLoader(false);
+          print("erroror::::$error");
+          print("stackTrace::::$stackTrace");
+          updateLoader(false);
+        });
         if (response.statusCode == 200) {
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
@@ -246,13 +263,18 @@ CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: fal
       }
     }
 
-
     try {
-      var response = await http.post(
+      var response = await http
+          .post(
         Uri.parse(GET_SUBSCRIPTION_PACK),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
-      );
+      )
+          .onError((error, stackTrace) {
+        print("erroror::::$error");
+        print("stackTrace::::$stackTrace");
+        updateLoader(false);
+      });
 
       print("response.statusCode===${response.body}");
 
@@ -364,18 +386,24 @@ CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: fal
     String stringValue = prefs.getString('token');
 
     print("token valued===$stringValue");
-  bool checkConn = await checkInternetConn();
+    bool checkConn = await checkInternetConn();
     if (checkConn) {
       bodyyyy = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
       if (bodyyyy == null) {
         bodyyyy = "";
       }
       if (bodyyyy.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        );
+        )
+            .onError((error, stackTrace) {
+          print("erroror::::$error");
+          print("stackTrace::::$stackTrace");
+          updateLoader(false);
+        });
         if (response.statusCode == 200) {
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
@@ -387,8 +415,11 @@ CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: fal
       var response = await http.get(
         Uri.parse(CREATE_SUBSCRIPTION_ORDER + "/$id"),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
-      );
-
+      ).onError((error, stackTrace) {
+        print("erroror::::$error");
+        print("stackTrace::::$stackTrace");
+        updateLoader(false);
+      });
       print("response.statusCode===${response.body}");
 
       print("response.statusCode===${response.statusCode}");
@@ -475,18 +506,24 @@ CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: fal
     var request = {"courseId": id};
     print("request==============$request");
     updateLoader(true);
-  bool checkConn = await checkInternetConn();
+    bool checkConn = await checkInternetConn();
     if (checkConn) {
       bodyyyy = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
       if (bodyyyy == null) {
         bodyyyy = "";
       }
       if (bodyyyy.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        );
+        )
+            .onError((error, stackTrace) {
+          print("erroror::::$error");
+          print("stackTrace::::$stackTrace");
+          updateLoader(false);
+        });
         if (response.statusCode == 200) {
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
@@ -495,13 +532,18 @@ CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: fal
       }
     }
 
-
     try {
-      var response = await http.post(
+      var response = await http
+          .post(
         Uri.parse(CANCEL_SUBSCRIPTION),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
-      );
+      )
+          .onError((error, stackTrace) {
+        print("erroror::::$error");
+        print("stackTrace::::$stackTrace");
+        updateLoader(false);
+      });
 
       print("response.statusCode===${response.body}");
       print("response.statusCode===${response.statusCode}");
@@ -542,7 +584,6 @@ CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: fal
     notifyListeners();
   }
 
-
   Future checkInternetConn() async {
     bool result = await InternetConnectionChecker().hasConnection;
     print("result while call fun $result");
@@ -554,8 +595,4 @@ CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: fal
     } else {}
     return result;
   }
-
-
-
-
 }
