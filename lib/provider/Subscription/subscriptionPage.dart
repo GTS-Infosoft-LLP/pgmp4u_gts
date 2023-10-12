@@ -626,7 +626,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                   borderRadius: BorderRadius.circular(4),
                                                 )),
                                                 backgroundColor: MaterialStateProperty.all<Color>(
-                                                    i == sp.radioSelected ? Color(0xff3643a3) : Colors.white)),
+                                                    i == sp.radioSelected ? Color(0xff3643a3) : Colors.white)
+                                                    ),
                                             onPressed: () async {
                                               if (widget.showFreeTrial == 1) {
                                                 ProfileProvider pp = Provider.of(context, listen: false);

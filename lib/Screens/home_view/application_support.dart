@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pgmp4u/components/applSupportRow.dart';
 import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/provider/profileProvider.dart';
@@ -281,7 +283,14 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                               //shadowColor: MaterialStateProperty.all(Colors.indigo),
                             ),
                             onPressed: () async {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => GroupListPage()));
+                              bool result = await checkInternetConn();
+                              print("result internet  $result");
+                              if (result) {
+                                Navigator. push(context, MaterialPageRoute(builder: (context) => GroupListPage()));
+                              } else {
+                                EasyLoading.showInfo("Please check your Internet Connection");
+                              }
+
                               // await send(context);
                               //showDialog(context: context, builder: (context)=>AlertDialog());
 
@@ -382,6 +391,18 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
         ),
       );
     });
+  }
+
+  Future checkInternetConn() async {
+    bool result = await InternetConnectionChecker().hasConnection;
+    print("result while call fun $result");
+    if (result == false) {
+      Future.delayed(Duration(seconds: 1), () async {
+        //  await EasyLoading.showToast("Internet Not Connected",toastPosition: EasyLoadingToastPosition.bottom);
+      });
+      return result;
+    } else {}
+    return result;
   }
 }
 

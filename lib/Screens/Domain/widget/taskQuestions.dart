@@ -112,7 +112,7 @@ class _TaskQuestionState extends State<TaskQuestion> {
                           itemBuilder: (context, indexxx) {
                             List<TaskQuesOption> Taskop = [];
                             if (storedTaskQues.isNotEmpty) {
-                              Taskop = storedTaskQues[0]
+                              Taskop = storedTaskQues[indexxx]
                                   .options
                                   .where((element) => element.questionOption.isNotEmpty)
                                   .toList();

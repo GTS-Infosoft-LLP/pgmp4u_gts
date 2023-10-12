@@ -120,7 +120,7 @@ class SubscriptionProvider extends ChangeNotifier {
       getSubscritionData(cp.selectedCourseId);
     });
   }
-
+CourseProvider courseProvider=Provider.of(GlobalVariable.navState.currentContext,listen: false);
   Future<void> freeSubscription(int idCrs) async {
     updateLoader(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -146,13 +146,25 @@ class SubscriptionProvider extends ChangeNotifier {
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        )
+        ).whenComplete(() async {
+           await courseProvider.getTestDetails(courseProvider.selectedMockId);
+        await courseProvider.apiCall(courseProvider.selectedTstPrcentId);
+         Response response=await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
+            headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+               Map getit;
+              if (response.statusCode == 200) {
+        getit = convert.jsonDecode(response.body);
+        print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+        await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.setPendindIndex.toString());
+        } 
+        })
             .onError((error, stackTrace) {
           print("erroror::::$error");
           print("stackTrace::::$stackTrace");
           updateLoader(false);
         });
         if (response.statusCode == 200) {
+           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
@@ -248,7 +260,18 @@ class SubscriptionProvider extends ChangeNotifier {
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        )
+        ).whenComplete(() async {
+           await courseProvider.getTestDetails(courseProvider.selectedMockId);
+        await courseProvider.apiCall(courseProvider.selectedTstPrcentId);
+        Response response=await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
+            headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+               Map getit;
+              if (response.statusCode == 200) {
+        getit = convert.jsonDecode(response.body);
+        print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+        await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.setPendindIndex.toString());
+        } 
+        })
             .onError((error, stackTrace) {
           updateLoader(false);
           print("erroror::::$error");
@@ -256,6 +279,7 @@ class SubscriptionProvider extends ChangeNotifier {
           updateLoader(false);
         });
         if (response.statusCode == 200) {
+           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
@@ -398,7 +422,18 @@ class SubscriptionProvider extends ChangeNotifier {
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        )
+        ).whenComplete(() async {
+           await courseProvider.getTestDetails(courseProvider.selectedMockId);
+        await courseProvider.apiCall(courseProvider.selectedTstPrcentId);
+           Response response=await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
+            headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+               Map getit;
+              if (response.statusCode == 200) {
+        getit = convert.jsonDecode(response.body);
+        print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+        await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.setPendindIndex.toString());
+        } 
+        })
             .onError((error, stackTrace) {
           print("erroror::::$error");
           print("stackTrace::::$stackTrace");
@@ -406,6 +441,7 @@ class SubscriptionProvider extends ChangeNotifier {
         });
         if (response.statusCode == 200) {
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
         }
@@ -518,13 +554,25 @@ class SubscriptionProvider extends ChangeNotifier {
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        )
+        ).whenComplete(() async {
+           await courseProvider.getTestDetails(courseProvider.selectedMockId);
+        await courseProvider.apiCall(courseProvider.selectedTstPrcentId);
+      Response response=await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
+            headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+               Map getit;
+              if (response.statusCode == 200) {
+        getit = convert.jsonDecode(response.body);
+        print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+        await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.setPendindIndex.toString());
+        } 
+        })
             .onError((error, stackTrace) {
           print("erroror::::$error");
           print("stackTrace::::$stackTrace");
           updateLoader(false);
         });
         if (response.statusCode == 200) {
+           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
@@ -585,6 +633,7 @@ class SubscriptionProvider extends ChangeNotifier {
   }
 
   Future checkInternetConn() async {
+
     bool result = await InternetConnectionChecker().hasConnection;
     print("result while call fun $result");
     if (result == false) {

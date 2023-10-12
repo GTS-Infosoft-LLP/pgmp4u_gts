@@ -51,6 +51,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     return Color(int.parse('FF$hexCode', radix: 16));
   }
 
+  bool apiLoader = false;
+  updateLoader(bool value) {
+    apiLoader = value;
+    setState(() {});
+  }
+
   PageController pageController;
   final Connectivity _connectivity = Connectivity();
   var subQues;
@@ -94,7 +100,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
 
   @override
   void initState() {
-    pageController = PageController(initialPage: 1);
+    pageController = PageController(initialPage: 0);
     print("widget.restartModel========${widget.restartModel}");
     beforeCallApi();
     if (mockQuestion.isEmpty) {
@@ -104,15 +110,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     CourseProvider cp = Provider.of(context, listen: false);
     cp.timerValue = false;
     cp.allowScroll = 1;
-    // _stopWatchTimer.setPresetMinuteTime(5);
 
-    print("***********************************************");
-
-    print("selectedId======${widget.selectedId}");
-    print("mockName======${widget.mockName}");
-    print("attempt======${widget.attempt}");
-
-    print("***********************************************");
     currentIndex = 0;
     _stopWatchTimer.rawTime.listen((value) => {});
     _stopWatchTimer.minuteTime.listen((value) => {});
@@ -140,16 +138,13 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   beforeCallApi() async {
     if (widget.restartModel != null) {
       answersMapp = widget.restartModel.answersMapp;
-      print("answersMapp after hive set::::$answersMapp");
       if (widget.restartModel.atempedData != null) {
         submitData = widget.restartModel.atempedData;
       }
-      print("submit data  submit data  submit data submit data >>>>> $submitData");
 
       if (widget.restartModel.quesNum < 0) {
         widget.restartModel.quesNum = 2;
       }
-      print("widget.restartModel.quesNum=====${widget.restartModel.quesNum}");
       if (widget.restartModel.quesNum < 1) {
         widget.restartModel.quesNum = 2;
       }
@@ -158,14 +153,10 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       });
 
       try {
-        // Future.delayed(Duration(seconds: 2), () {
         print("question number before navi:::${widget.restartModel.quesNum}");
         SchedulerBinding.instance.addPostFrameCallback((_) {
-          // pageController.jumpToPage(widget.restartModel.quesNum);
-
           pageController.animateToPage(widget.restartModel.quesNum + 1,
               duration: Duration(milliseconds: 10), curve: Curves.bounceOut);
-          // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
         });
 
         // });
@@ -225,10 +216,13 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       )
           .whenComplete(() async {
         CourseProvider courseProvider = Provider.of(context, listen: false);
-
+        // HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
+        // HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
         await courseProvider.getTestDetails(courseProvider.selectedMockId);
         await courseProvider.apiCall(courseProvider.selectedTstPrcentId);
-        await http.get(Uri.parse(MOCK_TEST + '/${courseProvider.selectedTstPrcentId}'),
+
+        await percentApi();
+        await http.get(Uri.parse(MOCK_TEST + '/${widget.selectedId}'),
             headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
       });
 
@@ -261,6 +255,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       // if (error == "Failed host lookup: 'apivcarestage.vcareprojectmanagement.com'") {
       cp.setToBeSubmitIndex(widget.selectedIndex);
       showInternetPopup();
+      cp.setAttempListIdOffline(cp.selectedTstPrcentId);
+      cp.setAllTestListIdOfline(cp.selectedMockId);
+      print("attempListIdOffline>>>>>>>>>>${cp.attempListIdOffline}");
+      print("allTestListIdOfline>><<<<<<<<${cp.allTestListIdOfline}");
+      cp.addToPendingMockList(cp.selectedMockId.toString());
+      print("setting the not submitter mock idddD:::::::::${cp.selectedMockId.toString()}");
       cp.setnotSubmitedMockID(cp.selectedMockId.toString());
       HiveHandler.addNotSubmittedMock(params, KeyName: cp.selectedMockId.toString());
       // }
@@ -269,12 +269,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     print("is continue>>>> $isContinue");
 
     if (isContinue == 0) {
-      print("Url :=> $SUBMIT_MOCK_TEST");
-      print("request body  :=> $params");
-      print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
-
-      print("API Response => ${response.request.url}; $params; ${response.body}");
-      print("response.statusCode===========${response.statusCode}");
       CourseProvider cp = Provider.of(context, listen: false);
       if (response.statusCode == 200) {
         cp.totalTime = 0;
@@ -292,15 +286,11 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                     activeTime: stopTime,
                     atmptCount: cp.selectedMokAtmptCnt)),
           );
-
-          // Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (Route<dynamic> route) => false);
         } else {
           setState(() {
             loader = false;
           });
 
-          // print(">>>>>>>>> review data $responseData");
-          // print("widget.attempt==========${widget.attempt}");
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -350,13 +340,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       print("errorrrr>>>>$e");
     }
 
-    print("inside go back func");
-    // print("time eeee===>>>${_yi}");
-    print("submitData==========${submitData.toString()}");
-
-    print("cp.toPage${cp.toPage}");
-    print("go back answersMapp>>>> $answersMapp");
-
     HiveHandler.addToRestartBox(
         cp.selectedMockId.toString(),
         RestartModel(
@@ -385,44 +368,47 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                 child: new Text('No'),
               ),
               TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                  if (_stopWatchTimer.isRunning) {
-                    CourseProvider cp = Provider.of(context, listen: false);
-                    cp.restartList.remove(cp.selectedAttemptNumer);
-                    if (isContinue == 1) {
-                      Navigator.pop(context);
-                      updateIsContinue(0);
-                      GFToast.showToast(
-                        'Check Your Internet Connection',
-                        context,
-                        toastPosition: GFToastPosition.BOTTOM,
-                      );
-                      setState(() {
-                        loader = false;
-                      });
-                      Navigator.pop(context);
+                onPressed: () async {
+                  bool result = await checkInternetConn();
+                  {
+                    Navigator.of(context).pop(false);
+                    if (_stopWatchTimer.isRunning) {
+                      CourseProvider cp = Provider.of(context, listen: false);
+                      cp.restartList.remove(cp.selectedAttemptNumer);
+                      if (isContinue == 1) {
+                        Navigator.pop(context);
+                        updateIsContinue(0);
+                        GFToast.showToast(
+                          'Check Your Internet Connection',
+                          context,
+                          toastPosition: GFToastPosition.BOTTOM,
+                        );
+                        setState(() {
+                          loader = false;
+                        });
+                        Navigator.pop(context);
 
-                      return;
+                        return;
+                      }
+                      print("this is callingggggggggggg");
+
+                      submitMockTest("back", displayTime);
+                    } else {
+                      CourseProvider cp = Provider.of(context, listen: false);
+                      print("cp.toPage,cp.toPage,===${cp.toPage}");
+
+                      HiveHandler.addToRestartBox(
+                          cp.selectedMockId.toString(),
+                          RestartModel(
+                              displayTime: displayTime,
+                              quesNum: cp.toPage,
+                              restartAttempNum: cp.selectedAttemptNumer,
+                              answersMapp: answersMapp,
+                              atempedData: submitData));
+
+                      Navigator.pop(context);
+                      Navigator.pop(context);
                     }
-                    print("this is callingggggggggggg");
-
-                    submitMockTest("back", displayTime);
-                  } else {
-                    CourseProvider cp = Provider.of(context, listen: false);
-                    print("cp.toPage,cp.toPage,===${cp.toPage}");
-
-                    HiveHandler.addToRestartBox(
-                        cp.selectedMockId.toString(),
-                        RestartModel(
-                            displayTime: displayTime,
-                            quesNum: cp.toPage,
-                            restartAttempNum: cp.selectedAttemptNumer,
-                            answersMapp: answersMapp,
-                            atempedData: submitData));
-
-                    Navigator.pop(context);
-                    Navigator.pop(context);
                   }
                 },
                 child: new Text('Yes'),
@@ -455,8 +441,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       print("Url :=> ${Uri.parse(MOCK_TEST_QUESTIONS + '/$selectedIdNew')}");
 
       print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
-      // print("responseeeeeeeeee>>>>>>>>>>>>>>> $response");
-      // print("responseeeee body>>>>>>>${response.body}");
+
       if (response != null) {
         if (response.body != null) {
           var _mapResponse = convert.jsonDecode(response.body);
@@ -513,8 +498,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       }
     }
 
-    // print("optsValue=========$mckOptions");
-
     if (question.isEmpty) {
       setState(() => questionLoader = false);
       return;
@@ -553,7 +536,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                 print("mockQuestion length >>> ${mockQuestion.length}");
                 print("selecteed id:: ${selectedIdNew.toString()}");
                 if (value.containsKey(selectedIdNew.toString())) {
-                  // print("value:>> ${value.get(selectedIdNew.toString())} ");
                   String data = value.get(selectedIdNew.toString());
                   List resList = jsonDecode(data);
                   mockQuestion = resList.map((e) => Queans.fromjss(e)).toList();
@@ -567,12 +549,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                       .Options
                       .where((element) => element.question_option.isNotEmpty)
                       .toList();
-                  if (op.isNotEmpty) {
-                    // print("mock test op opopo po pop::; ${op[0].question_option}");
-                  }
+                  if (op.isNotEmpty) {}
                 }
-
-                // print("mockQuestion==============>>   $mockQuestion");
 
                 return Container(
                   color: _colorfromhex("#FCFCFF"),
@@ -615,8 +593,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                             } catch (e) {
                                               print("errorrrrrr is =====>$e");
                                             }
-
-                                            // if (loader) {} else {submitMockTest("back", displayTime)}
                                           },
                                           child: Icon(
                                             Icons.arrow_back_ios,
@@ -641,8 +617,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                           cp.setScroll(0, _quetionNo);
                                           cp.setPauseTime(displayTime, answersMapp, atmpData: submitData);
                                           _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
-                                          // commingSoonDialog(context);
-                                          // showPausePopup();
                                         } else {
                                           cp.setScroll(1, _quetionNo);
                                           cp.totalTime = 0;
@@ -688,8 +662,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                 cp.setScroll(0, _quetionNo);
                                                 cp.setPauseTime(displayTime, answersMapp, atmpData: submitData);
                                                 _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
-                                                // commingSoonDialog(context);
-                                                // showPausePopup();
                                               } else {
                                                 print("startttt timerrrrr");
                                                 cp.totalTime = 0;
@@ -707,10 +679,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                     if (_stopWatchTimer.isRunning) {
                                                       cp.setScroll(0, _quetionNo);
                                                       cp.setPauseTime(displayTime, answersMapp, atmpData: submitData);
-
                                                       _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
-                                                      // commingSoonDialog(context);
-                                                      // showPausePopup();
                                                     } else {
                                                       cp.setScroll(1, _quetionNo);
                                                       cp.totalTime = 0;
@@ -738,13 +707,8 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                               ),
                             );
                           }),
-                          // showLoader
-                          //     ? Container(
-                          //         child: CircularProgressIndicator(
-                          //             valueColor: AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF"))))
-                          //     :
+
                           mockQuestion != null && mockQuestion.isNotEmpty
-                              //questionAnswersList != null
                               ? Consumer<CourseProvider>(builder: (context, cp, child) {
                                   print("cp.allowScroll ${cp.allowScroll}");
                                   return Expanded(
@@ -761,7 +725,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                               }
                                             }
                                           }
-                                          print("ansers after they are set:::::$answer");
+                                          // print("ansers after they are set:::::$answer");
 
                                           if (currentData != null) {
                                             if (selectedAnswer.length ==
@@ -790,7 +754,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                           print(" index current   >> $currentIndex");
                                           print(" index  >> $index");
                                           print("_quetionNo:::: $_quetionNo");
-                                          if (currentIndex < index) {
+                                          if (currentIndex <= index) {
                                             print("dfg");
 
                                             if (mockQuestion.length - 1 > _quetionNo) {
@@ -860,8 +824,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                               margin: EdgeInsets.zero,
                                                               color: Color(0xff000000),
                                                               textAlign: TextAlign.left,
-                                                              // maxLines: 7,
-                                                              // textOverflow: TextOverflow.ellipsis,
                                                               fontSize: FontSize(18),
                                                             )
                                                           },
@@ -919,7 +881,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                           height: 1.7,
                                                         ),
                                                       ),
-
                                                       ListView.builder(
                                                           shrinkWrap: true,
                                                           physics: NeverScrollableScrollPhysics(),
@@ -928,11 +889,9 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                             if (answersMapp != null) {
                                                               for (int i = 0; i < answersMapp.length; i++) {
                                                                 if (answersMapp[i]["questionNumber"] == (_quetionNo)) {
-                                                                  print(
-                                                                      "answersMapp[i][selectedAnser]::::${answersMapp[i]["selectedAnser"]}");
-                                                                  // answer = answersMapp[i]["selectedAnser"];
+                                                                  // print( "answersMapp[i][selectedAnser]::::${answersMapp[i]["selectedAnser"]}");
                                                                   answer = (answersMapp[i]["selectedAnser"]);
-                                                                  print("answer:::::::answer::::::::$answer");
+                                                                  // print("answer:::::::answer::::::::$answer");
                                                                 }
                                                               }
                                                             }
@@ -1022,12 +981,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                         var nextData = currentData['answer'];
                                                                         print("::nextData:: $nextData");
                                                                         print("::previusData:: $previusData");
-                                                                        // if (nextData == previusData) {
-                                                                        //   answer = [];
-                                                                        //   selectedAnswer = [];
-                                                                        // }
-
-                                                                        setState(() {});
                                                                       }
                                                                     }
                                                                     setState(() {});
@@ -1123,212 +1076,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                               ),
                                                             );
                                                           })
-
-                                                      // Column(
-                                                      //   children: mockQuestion[_quetionNo]
-                                                      //       .questionDetail
-                                                      //       .Options
-                                                      //       .map<Widget>((title) {
-                                                      //     var index = mockQuestion[_quetionNo]
-                                                      //         .questionDetail
-                                                      //         .Options
-                                                      //         .indexOf(title);
-
-                                                      //     int rightAnswerLength = mockQuestion[_quetionNo]
-                                                      //         .questionDetail
-                                                      //         .rightAnswer
-                                                      //         .length;
-
-                                                      //     print("_question numner:::::::$_quetionNo");
-                                                      //     print("::::answersMapp::::$answersMapp");
-                                                      //     // for (int i = 0; i < answersMapp.length; i++) {
-                                                      //     //   if (answersMapp[i]["questionNumber"] == (_quetionNo)) {
-                                                      //     //     answer = (answersMapp[i]["selectedAnser"]);
-                                                      //     //   }
-                                                      //     // }
-
-                                                      //     print(
-                                                      //         "option index id:::::;::${mockQuestion[_quetionNo].questionDetail.Options[index].id}");
-
-                                                      //     String finalStr;
-                                                      //     var finalString;
-                                                      //     return title.question_option != null
-                                                      //         ? GestureDetector(
-                                                      //             onTap: () => {
-                                                      //               if (cp.allowScroll == 0)
-                                                      //                 {showPausePopup()}
-                                                      //               else if (cp.allowScroll == 1)
-                                                      //                 {
-                                                      //                   // if (answer.length == rightAnswerLength)
-                                                      //                   //   {}
-                                                      //                   // else
-                                                      //                   print(
-                                                      //                       "selectedAnswer length::::${selectedAnswer.length}"),
-                                                      //                   print(
-                                                      //                       "rightAnswerLength length::::$rightAnswerLength"),
-                                                      //                   {
-                                                      //                     if (selectedAnswer.length !=
-                                                      //                         rightAnswerLength)
-                                                      //                       {
-                                                      //                         selectedAnswer.add(index),
-                                                      //                         // showAnswer.add(mockQuestion[_quetionNo].questionDetail.Options[index].id);
-
-                                                      //                         // showAnswer.add({"questionNo":_quetionNo,"selectedAns":mockQuestion[_quetionNo].questionDetail.Options[index].id});
-
-                                                      //                         ids.add(mockQuestion[_quetionNo]
-                                                      //                             .questionDetail
-                                                      //                             .Options[index]
-                                                      //                             .id),
-                                                      //                         finalString = ids.join(', '),
-                                                      //                         print("_quetionNo::::${_quetionNo + 1}"),
-                                                      //                         print(
-                                                      //                             "finalString of ids::::$finalString"),
-                                                      //                         addToMap(_quetionNo, ids),
-
-                                                      //                         // answersMapp.add(){}
-
-                                                      //                         currentData = {
-                                                      //                           "question": mockQuestion[_quetionNo]
-                                                      //                               .questionDetail
-                                                      //                               .queID,
-                                                      //                           "answer": finalString,
-                                                      //                           "correct": 1,
-                                                      //                           "category": mockQuestion[_quetionNo]
-                                                      //                               .questionDetail
-                                                      //                               .category,
-                                                      //                           "type":
-                                                      //                               selectedAnswer.length > 2 ? 2 : 1
-                                                      //                         },
-
-                                                      //                         print(
-                                                      //                             "currentData current  first tim,e:::::  $currentData"),
-                                                      //                       }
-                                                      //                     else
-                                                      //                       {
-                                                      //                         print("inside this conditiion:::;"),
-                                                      //                         print(
-                                                      //                             "currentData current data before:::::  $currentData"),
-                                                      //                         selectedAnswer = [],
-                                                      //                         answer = [],
-                                                      //                         ids = [],
-                                                      //                         selectedAnswer.add(index),
-                                                      //                         ids.add(mockQuestion[_quetionNo]
-                                                      //                             .questionDetail
-                                                      //                             .Options[index]
-                                                      //                             .id),
-                                                      //                         finalStr = ids.join(', '),
-                                                      //                         currentData = {
-                                                      //                           "question": mockQuestion[_quetionNo]
-                                                      //                               .questionDetail
-                                                      //                               .queID,
-                                                      //                           "answer": finalStr,
-                                                      //                           "correct": 1,
-                                                      //                           "category": mockQuestion[_quetionNo]
-                                                      //                               .questionDetail
-                                                      //                               .category,
-                                                      //                           "type":
-                                                      //                               selectedAnswer.length > 2 ? 2 : 1
-                                                      //                         },
-                                                      //                         print(
-                                                      //                             "currentData current data after:::::  $currentData"),
-                                                      //                         print("idsssssss$ids"),
-                                                      //                         print(
-                                                      //                             "seleccted answer dfasfd:::;$selectedAnswer"),
-                                                      //                         print("answer answer dfasfd:::;$answer"),
-                                                      //                         // setState(() {})
-                                                      //                       }
-                                                      //                   },
-                                                      //                   setState(() {})
-                                                      //                 }
-                                                      //             },
-                                                      //             child: Container(
-                                                      //               margin: EdgeInsets.only(top: height * (21 / 800)),
-                                                      //               padding: EdgeInsets.only(
-                                                      //                 top: 13,
-                                                      //                 bottom: 13,
-                                                      //                 left: width * (13 / 420),
-                                                      //                 right: width * (11 / 420),
-                                                      //               ),
-                                                      //               decoration: BoxDecoration(
-                                                      //                   borderRadius: BorderRadius.circular(8),
-                                                      //                   color: selectedAnswer.contains(index) ||
-                                                      //                           answer.contains(mockQuestion[_quetionNo]
-                                                      //                               .questionDetail
-                                                      //                               .Options[index]
-                                                      //                               .id)
-                                                      //                       ? Color(0xffF2F2FF)
-                                                      //                       : Colors.white),
-                                                      //               child:
-                                                      // Row(
-                                                      //                 children: [
-                                                      //                   Container(
-                                                      //                     width: width * (25 / 420),
-                                                      //                     height: width * 25 / 420,
-                                                      //                     decoration: BoxDecoration(
-                                                      //                       border: Border.all(
-                                                      //                           color: selectedAnswer.contains(index) ||
-                                                      //                                   answer.contains(
-                                                      //                                       mockQuestion[_quetionNo]
-                                                      //                                           .questionDetail
-                                                      //                                           .Options[index]
-                                                      //                                           .id)
-                                                      //                               ? Color(0xff3846A9)
-                                                      //                               : Color(0xffF1F1FF)),
-                                                      //                       borderRadius: BorderRadius.circular(
-                                                      //                         width * (25 / 420),
-                                                      //                       ),
-                                                      //                       color: selectedAnswer.contains(index) ||
-                                                      //                               answer.contains(
-                                                      //                                   mockQuestion[_quetionNo]
-                                                      //                                       .questionDetail
-                                                      //                                       .Options[index]
-                                                      //                                       .id)
-                                                      //                           ? Color(0xff3846A9)
-                                                      //                           : Colors.white,
-                                                      //                     ),
-                                                      //                     child: Center(
-                                                      //                       child: Text(
-                                                      //                         index == 0
-                                                      //                             ? 'A'
-                                                      //                             : index == 1
-                                                      //                                 ? 'B'
-                                                      //                                 : index == 2
-                                                      //                                     ? 'C'
-                                                      //                                     : index == 3
-                                                      //                                         ? 'D'
-                                                      //                                         : 'E',
-                                                      //                         style: TextStyle(
-                                                      //                           fontFamily: 'Roboto Regular',
-                                                      //                           color: selectedAnswer.contains(index)
-                                                      //                               ? Colors.white
-                                                      //                               : _colorfromhex("#ABAFD1"),
-                                                      //                         ),
-                                                      //                       ),
-                                                      //                     ),
-                                                      //                   ),
-                                                      //                   Container(
-                                                      //                     margin: EdgeInsets.only(left: 8),
-                                                      //                     width: width - (width * (25 / 420) * 5),
-                                                      //                     child: Html(
-                                                      //                       data: title.question_option,
-                                                      //                       style: {
-                                                      //                         "body": Style(
-                                                      //                           padding: EdgeInsets.only(top: 5),
-                                                      //                           margin: EdgeInsets.zero,
-                                                      //                           color: Color(0xff000000),
-                                                      //                           textAlign: TextAlign.left,
-                                                      //                           fontSize: FontSize(18),
-                                                      //                         )
-                                                      //                       },
-                                                      //                     ),
-                                                      //                   )
-                                                      //                 ],
-                                                      //               ),
-                                                      //             ),
-                                                      //           )
-                                                      //         : SizedBox();
-                                                      //   }).toList(),
-                                                      // ),
                                                     ],
                                                   ),
                                                 ),
@@ -1338,16 +1085,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                         }),
                                   );
                                 })
-                              :
-                              // anotherLoader == false && mockQuestion.isEmpty
-                              //     ? Center(
-                              //         child: Text(
-                              //         "No Data Found",
-                              //         style: TextStyle(fontSize: 16),
-                              //       ))
-                              //     : anotherLoader == true
-                              //         ?
-                              Container(
+                              : Container(
                                   child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(_colorfromhex("#4849DF")),
                                 ))
@@ -1368,16 +1106,19 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                     _quetionNo != 0
                                         ? GestureDetector(
                                             onTap: () => {
+                                              print("_quetionNo:::::initial :: $_quetionNo"),
+                                              pageController.previousPage(
+                                                  duration: Duration(milliseconds: 500), curve: Curves.ease),
                                               print("_quetionNo:::::_quetionNo$_quetionNo"),
-                                              subQues = _quetionNo,
                                               setState(() {
-                                                _quetionNo--;
+                                                // _quetionNo--;
                                               }),
-                                              print("subQues::::::;$subQues"),
-                                              print("-------subQues::::::;${--subQues}"),
+                                              print("_quetionNo:::::_quetionNo after -- $_quetionNo"),
                                             },
                                             child: Container(
+                                              // color: Colors.lightGreenAccent,
                                               width: width / 2,
+                                              height: 40,
                                               child: Row(
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
@@ -1415,8 +1156,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                             if (currentData != null)
                                               {
                                                 print("selectedAnswer.length::::::::::${selectedAnswer.length}"),
-                                                // print("rightAnswer.length:::::::::::::${mockQuestion[_quetionNo].questionDetail.rightAnswer.length}");
-
                                                 if (selectedAnswer.length ==
                                                     mockQuestion[_quetionNo].questionDetail.rightAnswer.length)
                                                   {
@@ -1598,10 +1337,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: InkWell(
                       onTap: () {
-                        // CourseProvider cp = Provider.of(context, listen: false);
-                        // _stopWatchTimer.onExecute.add(StopWatchExecute.start);
                         Navigator.pop(context);
-                        // cp.resPauseTimer();
                       },
                       child: Container(
                           height: 35,
@@ -1640,7 +1376,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     Map<String, dynamic> map = {"questionNumber": quetionNo, "selectedAnser": finalString};
 
     answersMapp.add(map);
-    print("answersMapp::::::::$answersMapp");
+    // print("answersMapp::::::::$answersMapp");
   }
 
   void showInternetPopup() {
@@ -1672,7 +1408,9 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                   children: [
                     InkWell(
                         onTap: () {
+                          print("is this realliny calling");
                           Navigator.pop(context);
+                          // Navigator.of(context).pop();
                           Navigator.pop(context);
                         },
                         child: Container(
@@ -1711,16 +1449,36 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     bool result = await InternetConnectionChecker().hasConnection;
     print("result while call fun $result");
     if (result == false) {
-      Future.delayed(Duration(seconds: 1), () async {
-        //  await EasyLoading.showToast("Internet Not Connected",toastPosition: EasyLoadingToastPosition.bottom);
-      });
+      Future.delayed(Duration(seconds: 1), () async {});
       return result;
     } else {}
     return result;
   }
 
-  // <bool> ifNet() async{
-  //   var connectivityResult = await (Connectivity().checkConnectivity());
-  //   return true;
-  // }
+  Future percentApi() async {
+    updateLoader(true);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    http.Response response;
+    try {
+      response = await http.get(Uri.parse(MOCK_TEST + '/$selectedIdNew'),
+          headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+
+      Map getit;
+      if (response.statusCode == 200) {
+        getit = convert.jsonDecode(response.body);
+        print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+        await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), selectedIdNew.toString());
+        setState(() {
+          print("mock data==================>>>>>>>>>>${jsonEncode(getit["data"])}");
+          // mockData = MockData.fromjd(getit["data"]);
+        });
+        updateLoader(false);
+      } else {
+        updateLoader(false);
+      }
+    } on Exception {
+      updateLoader(false);
+    }
+  }
 }

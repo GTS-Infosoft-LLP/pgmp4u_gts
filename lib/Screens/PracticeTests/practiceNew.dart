@@ -341,7 +341,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                       padding: EdgeInsets.only(
                                                           left: width * (29 / 420),
                                                           right: width * (29 / 420),
-                                                          // top: height * (23 / 800),
+                                                         
                                                           top: 10,
                                                           bottom: height * (23 / 800)),
                                                       color: Colors.white,

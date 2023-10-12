@@ -220,14 +220,14 @@ class _MockTestState extends State<MockTest> {
                                                   shrinkWrap: true,
                                                   itemCount: storedTestData.length,
                                                   itemBuilder: (context, index) {
-                                                    // print("storedTestData.length,=========${storedTestData.length}");
-
-                                                    // print("${storedTestData[index].premium}");
                                                     return InkWell(
                                                       onTap: () async {
+                                                        print(
+                                                            "storedTestData[index].idoooooooooooooooooooo${storedTestData[index].id}");
                                                         ProfileProvider pp = Provider.of(context, listen: false);
                                                         pp.updateLoader(true);
-                                                        courseProvider.setSelectedTestName(storedTestData[index].test_name);
+                                                        courseProvider
+                                                            .setSelectedTestName(storedTestData[index].test_name);
                                                         await courseProvider.getTestDetails(storedTestData[index].id);
                                                         PracticeTextProvider pracTestProvi =
                                                             Provider.of(context, listen: false);
@@ -275,7 +275,8 @@ class _MockTestState extends State<MockTest> {
                                                             print(
                                                                 "testData[index].id===========${storedTestData[index].id}");
                                                             if (widget.testType == "Mock Test") {
-                                                              courseProvider.setMockTestPercentId(storedTestData[index].id);
+                                                              courseProvider
+                                                                  .setMockTestPercentId(storedTestData[index].id);
 
                                                               // courseProvider.getTestDetails(storedTestData[index].id);
 

@@ -47,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     print("Request Data => $request");
+    print("url>>>>>>>$GMAIL_LOGIN");
 
     response = await http.post(
       Uri.parse(GMAIL_LOGIN),
@@ -57,48 +58,59 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     print("Response => ${response.body}");
-
-    if (response.statusCode == 200) {
-      Map responseData = json.decode(response.body);
-
-      print("email >>>>> ${responseData['email']}");
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var _user = UserModel(
-          image: fromProvider == "google" ? user.photoUrl : '',
-          name: user.displayName,
-          token: responseData["token"],
-          email: responseData['data'][0]['email']);
-      UserObject.setUser(_user);
-
-      var u = UserObject().getUser;
-
-      //print("user name after login ${u.image}  name ${u.name}");
-      prefs.setString('token', responseData["token"]);
-      prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
-      prefs.setString('name', user.displayName);
-      prefs.setString('email', responseData['data'][0]['email']);
-      prefs.setString('id', responseData['data'][0]['id'].toString());
-      await prefs.setBool('isChatAdmin', responseData['data'][0]['isChatAdmin'] == 1 ? true : false);
-      prefs.setBool('isChatSubscribed', responseData['data'][0]['isChatSubscribed'] == 1 ? true : false);
+    json.decode(response.body);
+    // print("response body succes value${response.body}");
+    Map responseData = json.decode(response.body);
+    print("resposne success::::${responseData['success']}");
+    if (responseData['success'] == false) {
       GFToast.showToast(
-        'LoggedIn successfully',
+        responseData['message'],
         context,
         toastPosition: GFToastPosition.BOTTOM,
       );
-      setState(() {
-        loading = false;
-      });
-      Navigator.pushAndRemoveUntil(
-          context, MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)), (r) => false);
     } else {
-      GFToast.showToast(
-        "user is not registered",
-        context,
-        toastPosition: GFToastPosition.BOTTOM,
-      );
-      setState(() {
-        loading = false;
-      });
+      if (response.statusCode == 200) {
+        Map responseData = json.decode(response.body);
+
+        print("email >>>>> ${responseData['email']}");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var _user = UserModel(
+            image: fromProvider == "google" ? user.photoUrl : '',
+            name: user.displayName,
+            token: responseData["token"],
+            email: responseData['data'][0]['email']);
+        UserObject.setUser(_user);
+
+        var u = UserObject().getUser;
+
+        //print("user name after login ${u.image}  name ${u.name}");
+        prefs.setString('token', responseData["token"]);
+        prefs.setString('photo', fromProvider == "google" ? user.photoUrl : '');
+        prefs.setString('name', user.displayName);
+        prefs.setString('email', responseData['data'][0]['email']);
+        prefs.setString('id', responseData['data'][0]['id'].toString());
+        await prefs.setBool('isChatAdmin', responseData['data'][0]['isChatAdmin'] == 1 ? true : false);
+        prefs.setBool('isChatSubscribed', responseData['data'][0]['isChatSubscribed'] == 1 ? true : false);
+        GFToast.showToast(
+          'LoggedIn successfully',
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+        setState(() {
+          loading = false;
+        });
+        Navigator.pushAndRemoveUntil(
+            context, MaterialPageRoute(builder: (context) => Dashboard(selectedId: user)), (r) => false);
+      } else {
+        GFToast.showToast(
+          "user is not registered",
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+        );
+        setState(() {
+          loading = false;
+        });
+      }
     }
   }
 

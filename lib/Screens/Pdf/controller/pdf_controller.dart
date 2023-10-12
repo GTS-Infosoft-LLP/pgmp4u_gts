@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:convert'as convert;
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
@@ -51,8 +51,20 @@ class PdfProvider extends ChangeNotifier {
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        );
+        ).whenComplete(() async {
+ await cp.getTestDetails(cp.selectedMockId);
+        await cp.apiCall(cp.selectedTstPrcentId);
+              Response response=await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
+            headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+               Map getit;
+              if (response.statusCode == 200) {
+        getit = convert.jsonDecode(response.body);
+        print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+        await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.setPendindIndex.toString());
+        } 
+        });
         if (response.statusCode == 200) {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
@@ -123,9 +135,21 @@ class PdfProvider extends ChangeNotifier {
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        );
+        ).whenComplete(() async {
+           await cp.getTestDetails(cp.selectedMockId);
+        await cp.apiCall(cp.selectedTstPrcentId);
+              Response response=await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
+            headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+               Map getit;
+              if (response.statusCode == 200) {
+        getit = convert.jsonDecode(response.body);
+        print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+        await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.setPendindIndex.toString());
+        } 
+        });
         if (response.statusCode == 200) {
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
         }

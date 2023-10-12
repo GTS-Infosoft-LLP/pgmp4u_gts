@@ -165,6 +165,7 @@ class _SubDomainState extends State<SubDomain> {
 
                                           return InkWell(
                                             onTap: () async {
+                                              DomainProvider dp=Provider.of(context,listen: false);
                                               dp.setSelectedSubDomainId(storedSubDomainList[index].id);
                                               dp.setSelectedSubDomainName(storedSubDomainList[index].name);
                                               print("selected doadfdfmin id====${storedSubDomainList[index].id}");
@@ -223,7 +224,7 @@ class _SubDomainState extends State<SubDomain> {
                                                       children: [
                                                         Container(
                                                           width: MediaQuery.of(context).size.width * .45,
-                                                          // color: Colors.amber,
+                                                      
                                                           child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: [

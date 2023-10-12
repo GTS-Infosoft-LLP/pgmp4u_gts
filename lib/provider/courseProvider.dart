@@ -75,6 +75,24 @@ class CourseProvider extends ChangeNotifier {
   String notiSelectCrsLable;
 
   String notSubmitedMockID;
+
+  List<String> pendingMocksId = [];
+  addToPendingMockList(String id) {
+    if (pendingMocksId.contains(id)) {
+    } else {
+      pendingMocksId.add(id);
+    }
+    notifyListeners();
+  }
+
+  removeFromPendingMockList(String id) {
+    if (pendingMocksId.contains(id)) {
+      pendingMocksId.remove(id);
+    }
+
+    notifyListeners();
+  }
+
   void setnotSubmitedMockID(String val) {
     Future.delayed(Duration.zero, () {
       notSubmitedMockID = val;
@@ -309,11 +327,11 @@ class CourseProvider extends ChangeNotifier {
   String pptUrlLink = "";
   PPTDataDetails oflinePptDtail;
 
-
-  setOflinePptDetail(PPTDataDetails val){
-    oflinePptDtail=val;
+  setOflinePptDetail(PPTDataDetails val) {
+    oflinePptDtail = val;
     notifyListeners();
   }
+
   var successValuePPT;
   Future<void> getPpt(int id) async {
     successValuePPT = true;
@@ -331,13 +349,29 @@ class CourseProvider extends ChangeNotifier {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
+        )
+            .whenComplete(() async {
+               HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+        
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          }
+        });
         if (response.statusCode == 200) {
-          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+         
+          // remove
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -387,7 +421,7 @@ class CourseProvider extends ChangeNotifier {
           if (temp1.length == 1) {
             pptUrlLink = mapResponse["data"][0]["filename"];
             print(
-                ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>pptUrlLink::::::$pptUrlLink");
+                ">>>>>>>>>>>>>>>>>>>>>>>>>>>>pptUrlLink::::::$pptUrlLink");
           }
           print("idddddd::::::$id");
           print("mapResponse[data]urllll:::${mapResponse["data"][0]["filename"]}");
@@ -424,13 +458,31 @@ class CourseProvider extends ChangeNotifier {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
+        )
+            .whenComplete(() async {
+          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          print("response.statusCode >>>>>>>=====************<<<<<<<<<<<${response.statusCode}");
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+            HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          }
+        });
         if (response.statusCode == 200) {
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -491,18 +543,41 @@ class CourseProvider extends ChangeNotifier {
     var request = {"id": id};
     bool checkConn = await checkInternetConn();
     if (checkConn) {
+      print("api caliing after internet>>>$notSubmitedMockID");
       body = HiveHandler.getNotSubmittedMock(keyName: notSubmitedMockID);
+      print("bodyy>>>>::::::::::::::$body");
       if (body == null) {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
+        )
+            .whenComplete(() async {
+                HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
+         
+
+          await getTestDetails(allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          print("api boddddydyydydydyd>>>.${MOCK_TEST + '/$attempListIdOffline'}");
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          print("responseeee");
+          print("responseeee>>>>><<<<<<<%%%%%%%%%%>>>>>>>>>>>>>>${response.statusCode}");
+          print("responseeee BODY>>>>><<<<<<<%%%%%%%%%%>>>>>>>>>>>>>>${response.body}");
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          }
+        });
         if (response.statusCode == 200) {
-          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+        
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -581,13 +656,28 @@ class CourseProvider extends ChangeNotifier {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
+        )
+            .whenComplete(() async {
+                HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          }
+        });
         if (response.statusCode == 200) {
-          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+        
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -649,13 +739,28 @@ class CourseProvider extends ChangeNotifier {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
+        )
+            .whenComplete(() async {
+                 HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          }
+        });
         if (response.statusCode == 200) {
-          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+       
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -729,13 +834,28 @@ class CourseProvider extends ChangeNotifier {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
+        )
+            .whenComplete(() async {
+                  HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          }
+        });
         if (response.statusCode == 200) {
-          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+      
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -807,13 +927,28 @@ class CourseProvider extends ChangeNotifier {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
+        )
+            .whenComplete(() async {
+               HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          }
+        });
         if (response.statusCode == 200) {
-          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+         
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -899,13 +1034,28 @@ class CourseProvider extends ChangeNotifier {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
+        )
+            .whenComplete(() async {
+                HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          }
+        });
         if (response.statusCode == 200) {
-          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+        
           // HiveHandler.removeFromRestartBox();
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
@@ -973,13 +1123,28 @@ class CourseProvider extends ChangeNotifier {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
-        if (response.statusCode == 200) {
+        )
+            .whenComplete(() async {
+               HiveHandler.removeFromRestartBox(notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          }
+        });
+        if (response.statusCode == 200) {
+         
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -1038,13 +1203,28 @@ class CourseProvider extends ChangeNotifier {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
-        if (response.statusCode == 200) {
+        )
+            .whenComplete(() async {
+              HiveHandler.removeFromRestartBox(notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          }
+        });
+        if (response.statusCode == 200) {
+          
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -1114,13 +1294,28 @@ class CourseProvider extends ChangeNotifier {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
-        if (response.statusCode == 200) {
+        )
+            .whenComplete(() async {
+              HiveHandler.removeFromRestartBox(notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          }
+        });
+        if (response.statusCode == 200) {
+        
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -1183,13 +1378,28 @@ class CourseProvider extends ChangeNotifier {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
-        if (response.statusCode == 200) {
+        )
+            .whenComplete(() async {
+                HiveHandler.removeFromRestartBox(notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          }
+        });
+        if (response.statusCode == 200) {
+      
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -1239,13 +1449,29 @@ class CourseProvider extends ChangeNotifier {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        );
-        if (response.statusCode == 200) {
+        )
+            .whenComplete(() async {
+                  HiveHandler.removeFromRestartBox(notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+
+          // Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+          //     headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          // Map getit;
+          // if (response.statusCode == 200) {
+          //   getit = convert.jsonDecode(response.body);
+          //   print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+          //   await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          // }
+        });
+        if (response.statusCode == 200) {
+          // HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          // HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -1332,6 +1558,20 @@ class CourseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  int allTestListIdOfline;
+
+  void setAllTestListIdOfline(int id) {
+    allTestListIdOfline = id;
+    notifyListeners();
+  }
+
+  int attempListIdOffline;
+
+  void setAttempListIdOffline(int id) {
+    attempListIdOffline = id;
+    notifyListeners();
+  }
+
   int setPendindIndex = 1000;
 
   void setToBeSubmitIndex(int index) {
@@ -1344,7 +1584,7 @@ class CourseProvider extends ChangeNotifier {
   int selectedTstPrcentId;
   void setSelectedTestPercetId(index) {
     Future.delayed(Duration.zero, () {
-      setPendindIndex = index;
+      selectedTstPrcentId = index;
       notifyListeners();
     });
   }

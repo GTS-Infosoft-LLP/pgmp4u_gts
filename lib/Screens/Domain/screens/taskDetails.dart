@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pgmp4u/Screens/Domain/screens/domainProvider.dart';
 import 'package:pgmp4u/Screens/Domain/widget/taskQuestions.dart';
 import 'package:pgmp4u/tool/ShapeClipper.dart';
@@ -385,13 +387,22 @@ Widget TaskImg(BuildContext context, index, TaskDetails tdo) {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 10),
           child: InkWell(
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+
+bool result = await checkInternetConn();
+if (result) {
+    Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => ImageDispalyScreen(
                             quesImages: dp.TaskDetailList[index].Image,
                           )));
+}else{
+                      EasyLoading.showInfo("Please check your Internet Connection");
+
+}
+
+          
             },
             child: Container(
               // width: MediaQuery.of(context).size.width * .92,
@@ -429,6 +440,18 @@ Widget TaskImg(BuildContext context, index, TaskDetails tdo) {
     ),
   );
 }
+
+  Future checkInternetConn() async {
+    bool result = await InternetConnectionChecker().hasConnection;
+    print("result while call fun $result");
+    if (result == false) {
+      Future.delayed(Duration(seconds: 1), () async {
+        //  await EasyLoading.showToast("Internet Not Connected",toastPosition: EasyLoadingToastPosition.bottom);
+      });
+      return result;
+    } else {}
+    return result;
+  }
 
 void showImage(context, imageee) {
   showDialog(

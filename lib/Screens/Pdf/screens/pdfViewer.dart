@@ -92,6 +92,9 @@ class _PdfViewerState extends State<PdfViewer> {
     );
   }
 
+
+  
+
   Container _appBar(String title) {
     return Container(
       height: 100,

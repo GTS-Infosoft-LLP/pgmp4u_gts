@@ -17,14 +17,16 @@ import 'dart:convert' as convert;
 import '../../Models/mockListmodel.dart';
 import '../home_view/VideoLibrary/RandomPage.dart';
 import 'mockTestQuestions.dart';
+import 'model/testDetails.dart';
 
 class MockTestAttempts extends StatefulWidget {
   final int selectedId;
   int startAgn;
   int attemptCnt;
+  List<Attempts> attemptedPectenage;
   int attemptLength;
 
-  MockTestAttempts({this.selectedId, this.startAgn, this.attemptCnt, this.attemptLength});
+  MockTestAttempts({this.selectedId, this.startAgn, this.attemptCnt, this.attemptLength, this.attemptedPectenage});
 
   @override
   _MockTestAttemptsState createState() => _MockTestAttemptsState(selectedIdNew: this.selectedId);
@@ -36,6 +38,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
   CourseProvider cp;
   RestartModel restartModel;
   bool isNetAvailable = false;
+  int percListLength;
+  List<Attempts> toGetPerc = [];
 
   _MockTestAttemptsState({
     this.selectedIdNew,
@@ -87,15 +91,15 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
       //   // setState(() {});
       //   updateLoader(false);
       // });
-      print("Url :=> ${Uri.parse(MOCK_TEST + "/$selectedIdNew")}");
-      print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
-      print("API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
-      print("API Response ; $stringValue => ${response.request.url}; ${response.body}");
+      // print("Url :=> ${Uri.parse(MOCK_TEST + "/$selectedIdNew")}");
+      // print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
+      // print("API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
+      // print("API Response ; $stringValue => ${response.request.url}; ${response.body}");
 
       Map getit;
       if (response.statusCode == 200) {
         getit = convert.jsonDecode(response.body);
-        print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+        print("mock data==================>>>>>>attempt screen ${jsonEncode(getit["data"])}");
         await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), selectedIdNew.toString());
         setState(() {
           print("mock data==================>>>>>>>>>>${jsonEncode(getit["data"])}");
@@ -124,9 +128,11 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
       //     widget.attemptLength)
 
       if (index == cp.setPendindIndex) {
-      } else if (cp.aviAttempts[index].attempted_date == null && cp.aviAttempts[index].tobeAttempted == 1) {
+      } else if (mockData.attemptList[index].attempted_date == null && mockData.attemptList[index].tobeAttempted == 1) {
         isNetAvailable = await checkInternetConn();
         print("isNetAvailable::: $isNetAvailable");
+
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
 
         Navigator.push(
             context,
@@ -139,7 +145,8 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                 attempt: cp.selectedMokAtmptCnt,
                 connStatus: isNetAvailable,
               ),
-            ));
+            )
+            );
       }
       //  else if (cp.aviAttempts[index].attempted_date == null && cp.aviAttempts[index].tobeAttempted == 0) {
       // }
@@ -216,8 +223,11 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
 
                             if (value.containsKey(selectedIdNew.toString())) {
                               mockAttempt = jsonDecode(value.get(selectedIdNew.toString()));
+                              // print("direct from hive boxxxx>>>>>${jsonDecode(value.get(selectedIdNew.toString()))}");
                               mockData = MockData.fromjd(jsonDecode(value.get(selectedIdNew.toString())));
-                              // print(">>> mockAttempt :  $mockAttempt");
+                              // print("mockData. namee>>>>${mockData.detailsofMock.num_attemptes}");
+                              // print("mockData.attemptList.length>>>>${mockData.attemptList.length}");
+
                               detailsofMockAttempt = MockDataDetails.fromjson(mockAttempt["mocktest"]);
                               // print(" details of MockAttempt======== $detailsofMockAttempt");
 
@@ -255,18 +265,6 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                             SizedBox(
                                               height: 8,
                                             ),
-
-// ListView.builder(
-//   itemCount:cp.aviAttempts.length ,
-//   itemBuilder: (context,index)
-// {
-// return InkWell(
-//   onTap: ()=>navigateToMockTest(index, restartModel),
-
-// );
-// }
-// ),
-
                                             Container(
                                               // color: Colors.amber,
                                               child: Column(
@@ -274,6 +272,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: cp.aviAttempts.map<Widget>((title) {
                                                   var index = cp.aviAttempts.indexOf(title);
+
                                                   // print("cp.aviAttempts=========${cp.aviAttempts[index].percentage}");
                                                   return InkWell(
                                                     onTap: () => navigateToMockTest(index, restartModel),
@@ -316,7 +315,10 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                                         children: [
                                                                           Text(
-                                                                            cp.aviAttempts[index].attempted_date == null
+                                                                            mockData.attemptList[index]
+                                                                                        .attempted_date ==
+                                                                                    null
+                                                                                // cp.aviAttempts[index].attempted_date == null
                                                                                 ? 'Attempt ${index + 1}'
                                                                                 : "Attempted",
                                                                             style: TextStyle(
@@ -367,7 +369,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                             decoration: BoxDecoration(
                                                                                 color:
                                                                                     // cp.aviAttempts[index].attempted_date == null &&
-                                                                                    cp.aviAttempts[index]
+                                                                                    mockData.attemptList[index]
                                                                                                 .tobeAttempted ==
                                                                                             1
                                                                                         ? _colorfromhex("#3A47AD")
@@ -393,23 +395,17 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                                   onTap: () => navigateToMockTest(
                                                                                       index, restartModel),
                                                                                   child: Text(
-// HiveHandler.getNotSubmittedMock(keyName: courseProvider.notSubmitedMockID)
-
-                                                                                    // cp.notSubmitedMockID.isNotEmpty
-                                                                                    //     ? "Pending"
-                                                                                    //     :
-
                                                                                     index == cp.setPendindIndex
                                                                                         ? "Result Pending"
-                                                                                        : cp.aviAttempts[index]
+                                                                                        : mockData.attemptList[index]
                                                                                                     .attempted_date !=
                                                                                                 null
                                                                                             ? "More Details"
                                                                                             : restartModel != null &&
                                                                                                     restartModel
                                                                                                             .restartAttempNum ==
-                                                                                                        cp
-                                                                                                            .aviAttempts[
+                                                                                                        mockData
+                                                                                                            .attemptList[
                                                                                                                 index]
                                                                                                             .attempt
                                                                                                 ? "Restart"
@@ -459,15 +455,15 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                         Text(
                                                                           (mockData.attemptList[index].attempted_date !=
                                                                                       null &&
-
                                                                                   mockData.attemptList[index]
                                                                                       .attempted_date.isNotEmpty)
                                                                               ? 'Date of Attempt: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(mockData.attemptList[index].attempted_date))}'
                                                                               : restartModel != null &&
                                                                                       restartModel.restartAttempNum ==
-                                                                                          cp.aviAttempts[index].attempt
+                                                                                          mockData.attemptList[index]
+                                                                                              .attempt
                                                                                   ? 'You can re-start this now! All the best'
-                                                                                  : cp.aviAttempts[index]
+                                                                                  : mockData.attemptList[index]
                                                                                               .tobeAttempted ==
                                                                                           1
                                                                                       ? 'You can start this now! All the best'

@@ -19,7 +19,7 @@ class TextPreDetail extends StatefulWidget {
 class _TextPreDetailState extends State<TextPreDetail> {
   @override
   var attemptNum;
-
+  List<String> sendList;
   List<TestDetails> testPercent = [];
 
   void initState() {
@@ -122,6 +122,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
 
                               testPercent = temp.map((e) => TestDetails.fromjson(e)).toList();
                               print("testPercent===========$testPercent");
+                              // print("testPercent${testPercent[1].numAttemptes}");
                             } else {
                               testPercent = [];
                             }
@@ -139,8 +140,8 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                         itemBuilder: (context, index) {
                                           return InkWell(
                                             onTap: () async {
-                                              print("attempt count length====>>>${testPercent[index].numAttemptes}");
-
+                                              print("testPercent[index].idooooooooooooooooo${testPercent[index].id}"); 
+                                           
                                               CourseProvider courseProvider = Provider.of(context, listen: false);
                                               courseProvider.setSelectedMokAtemptCnt(testPercent[index].noOfattempts);
                                               courseProvider
@@ -159,16 +160,27 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                               courseProvider.setSelectedTestPercetId(testPercent[index].id);
 
                                               courseProvider.apiCall(testPercent[index].id);
+                                              // for (int i = 0; i < testPercent[index].attempts.length; i++) {
+                                              //   print("test prec value:::${testPercent[index].attempts[i].perc}");
+                                              //   String str = testPercent[index].attempts[i].perc.toString();
+                                              //   print("str:::::::$str");
+                                              //   sendList[i] = str;
+                                              // }
+                                              print("sendList>>>>>>>>>$sendList");
 
                                               Future.delayed(const Duration(milliseconds: 4), () {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) => MockTestAttempts(
-                                                            attemptLength: testPercent[index].attempts.length,
-                                                            selectedId: testPercent[index].id,
-                                                            startAgn: startval,
-                                                            attemptCnt: courseProvider.selectedMokAtmptCnt)));
+                                                              attemptLength: testPercent[index].attempts.length,
+                                                              selectedId: testPercent[index].id,
+                                                              startAgn: startval,
+                                                              attemptedPectenage: testPercent[index].attempts,
+                                                              attemptCnt: courseProvider.selectedMokAtmptCnt,
+
+                                                              // attemptedPectenage:testPercent
+                                                            )));
                                               });
                                             },
                                             child: Padding(

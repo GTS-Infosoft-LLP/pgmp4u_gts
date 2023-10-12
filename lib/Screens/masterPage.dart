@@ -275,6 +275,8 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 });
                                                               }
                                                               if (page == "Mock Test") {
+                                                                print(
+                                                                    "storedMaster[index].idooooooooooooooooooooooooooo${storedMaster[index].id}");
                                                                 courseProvider.getTest(
                                                                     storedMaster[index].id, "Mock Test");
                                                                 Future.delayed(Duration.zero, () {

@@ -83,9 +83,23 @@ class PracticeTextProvider extends ChangeNotifier {
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        );
+        ).whenComplete(() async {
+       HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
+          await cp.getTestDetails(cp.allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.attempListIdOffline.toString());
+          }
+        });
         if (response.statusCode == 200) {
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
         }
@@ -162,8 +176,22 @@ class PracticeTextProvider extends ChangeNotifier {
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        );
+        ).whenComplete(() async {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
+          await cp.getTestDetails(cp.allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.attempListIdOffline.toString());
+          }
+        });
         if (response.statusCode == 200) {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
@@ -243,8 +271,22 @@ class PracticeTextProvider extends ChangeNotifier {
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        );
+        ).whenComplete(() async {
+      HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
+          await cp.getTestDetails(cp.allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.attempListIdOffline.toString());
+          }
+        });
         if (response.statusCode == 200) {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
