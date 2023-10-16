@@ -233,17 +233,16 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                               print("***********$selAns");
                                                               print("***********$ansRef");
                                                               print("so is inside this alsoooo");
-
                                                               checkAllAns(selAns, ansRef);
                                                               enableTap = 1;
-                                                              // dp.setList(selAns, ansRef);
+                                                            
                                                             }
                                                             setState(() {});
                                                           }
                                                         },
                                                         child: Container(
                                                           width: MediaQuery.of(context).size.width * .70,
-                                                          height: width * 100 / 420,
+                                                          height: height * 60 / 420,
                                                           // height: 100,
                                                           color: selAns.contains(Taskop[index].id) &&
                                                                   ansRef.contains(Taskop[index].id) &&
@@ -330,7 +329,7 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                                           padding: const EdgeInsets.only(left: 8.0),
                                                                           child: Text(
                                                                             Taskop[index].questionOption,
-                                                                            maxLines: 5,
+                                                                            // maxLines: 3,
                                                                           ),
                                                                         )),
                                                                     (selAns.length == ansRef.length &&
@@ -364,8 +363,8 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                                               )
                                                                             : Container(),
                                                                     SizedBox(
-                                                                      height: 10,
-                                                                    )
+                                                                        // height: 10,
+                                                                        )
                                                                   ],
                                                                 ),
                                                               ),
@@ -431,19 +430,20 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                             ? Container(
                                                                 margin: EdgeInsets.only(top: height * (9 / 800)),
                                                                 child: Text(
-                                                                  storedTaskQues[indexxx].rightAnswer ==
-                                                                          Taskop[0].id.toString()
-                                                                      ? 'Answer A is the correct one'
-                                                                      : storedTaskQues[indexxx].rightAnswer ==
-                                                                              Taskop[1].id.toString()
-                                                                          ? 'Answer B is the correct one'
-                                                                          : storedTaskQues[indexxx].rightAnswer ==
-                                                                                  Taskop[2].id.toString()
-                                                                              ? 'Answer c is the correct one'
-                                                                              : storedTaskQues[indexxx].rightAnswer ==
-                                                                                      Taskop[3].id.toString()
-                                                                                  ? 'Answer D is the correct one'
-                                                                                  : 'Answer E is the correct one',
+                                                                  "${getTstAns(Taskop)}",
+                                                                  // storedTaskQues[indexxx].rightAnswer ==
+                                                                  //         Taskop[0].id.toString()
+                                                                  //     ? 'Answer A is the correct one'
+                                                                  //     : storedTaskQues[indexxx].rightAnswer ==
+                                                                  //             Taskop[1].id.toString()
+                                                                  //         ? 'Answer B is the correct one'
+                                                                  //         : storedTaskQues[indexxx].rightAnswer ==
+                                                                  //                 Taskop[2].id.toString()
+                                                                  //             ? 'Answer c is the correct one'
+                                                                  //             : storedTaskQues[indexxx].rightAnswer ==
+                                                                  //                     Taskop[3].id.toString()
+                                                                  //                 ? 'Answer D is the correct one'
+                                                                  //                 : 'Answer E is the correct one',
                                                                   style: TextStyle(
                                                                     fontFamily: 'Roboto Regular',
                                                                     fontSize: 16,
@@ -505,6 +505,121 @@ class _TaskQuestionState extends State<TaskQuestion> {
             });
           }),
     );
+  }
+
+  String getTstAns(List<TaskQuesOption> op) {
+    String correct = "";
+    print("rightAns lenght===${rightAns.length}");
+    print("rightAns ===$rightAns");
+    for (int i = 0; i < op.length; i++) {
+      print("op>>>>>>>>>>${op[i].id}");
+    }
+    print("op length>>>>>>>..${op.length}");
+    if (rightAns.contains(op[2].id.toString()) &&
+        rightAns.contains(op[3].id.toString()) &&
+        rightAns.contains(op[1].id.toString())) {
+      print(" b c and d are presettttttt ");
+    } else {
+      print("b c and d are absent");
+    }
+
+    if (rightAns.length == 1) {
+      if (rightAns.contains(op[0].id.toString())) {
+        print("this is correct");
+        correct = 'Answer A is the correct one';
+      } else if (rightAns.contains(op[1].id.toString())) {
+        correct = 'Answer B is the correct one';
+      } else if (rightAns.contains(op[2].id.toString())) {
+        correct = 'Answer C is the correct one';
+        print("this is correct ans c");
+      } else if (rightAns.contains(op[3].id.toString())) {
+        correct = 'Answer D is the correct one';
+      } else {
+        correct = 'Answer E is the correct one';
+      }
+    } else if (rightAns.length == 2) {
+      if (op.length > 4) {
+        print("E option is present ");
+
+        if (rightAns.contains(op[0].id.toString()) && rightAns.contains(op[4].id.toString())) {
+          correct = "Answer A and E are the correct one";
+        } else if (rightAns.contains(op[1].id.toString()) && rightAns.contains(op[4].id.toString())) {
+          correct = "Answer B and E are the correct one";
+        } else if (rightAns.contains(op[2].id.toString()) && rightAns.contains(op[4].id.toString())) {
+          correct = "Answer C and E are the correct one";
+        } else if (rightAns.contains(op[3].id.toString()) && rightAns.contains(op[4].id.toString())) {
+          correct = "Answer D and E are the correct one";
+        }
+      } else {
+        print("E option is not present and means its absent ");
+        if (rightAns.contains(op[0].id.toString()) && rightAns.contains(op[1].id.toString())) {
+          correct = "Answer A and B are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) && rightAns.contains(op[2].id.toString())) {
+          correct = "Answer A and C are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) && rightAns.contains(op[3].id.toString())) {
+          correct = "Answer A and D are the correct one";
+        } else if (rightAns.contains(op[1].id.toString()) && rightAns.contains(op[2].id.toString())) {
+          correct = "Answer B and C are the correct one";
+        } else if (rightAns.contains(op[1].id.toString()) && rightAns.contains(op[3].id.toString())) {
+          correct = "Answer B and D are the correct one";
+        } else if (rightAns.contains(op[2].id.toString()) && rightAns.contains(op[3].id.toString())) {
+          correct = "Answer C and D are the correct one";
+        }
+      }
+    } else if (rightAns.length == 3) {
+      print("checking for length 3");
+
+      if (op.length > 4) {
+        print("E option is present");
+        if (rightAns.contains(op[0].id.toString()) &&
+            rightAns.contains(op[1].id.toString()) &&
+            rightAns.contains(op[4].id.toString())) {
+          correct = "Answer A, B and E are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) &&
+            rightAns.contains(op[2].id.toString()) &&
+            rightAns.contains(op[4].id.toString())) {
+          correct = "Answer A, C and E are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) &&
+            rightAns.contains(op[3].id.toString()) &&
+            rightAns.contains(op[4].id.toString())) {
+          correct = "Answer A, D and E are the correct one";
+        }
+        if (rightAns.contains(op[1].id.toString()) &&
+            rightAns.contains(op[2].id.toString()) &&
+            rightAns.contains(op[4].id.toString())) {
+          correct = "Answer B, C and E are the correct one";
+        } else if (rightAns.contains(op[1].id.toString()) &&
+            rightAns.contains(op[3].id.toString()) &&
+            rightAns.contains(op[4].id.toString())) {
+          correct = "Answer B, D and E are the correct one";
+        } else if (rightAns.contains(op[2].id.toString()) &&
+            rightAns.contains(op[3].id.toString()) &&
+            rightAns.contains(op[4].id.toString())) {
+          correct = "Answer C, D and E are the correct one";
+        }
+      } else {
+        print("E option is not present and means its absent ");
+        if (rightAns.contains(op[0].id.toString()) &&
+            rightAns.contains(op[1].id.toString()) &&
+            rightAns.contains(op[2].id.toString())) {
+          correct = "Answer A, B and C are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) &&
+            rightAns.contains(op[1].id.toString()) &&
+            rightAns.contains(op[3].id.toString())) {
+          correct = "Answer A, B and D are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) &&
+            rightAns.contains(op[2].id.toString()) &&
+            rightAns.contains(op[3].id.toString())) {
+          correct = "Answer A, C and D are the correct one";
+        } else if (rightAns.contains(op[2].id.toString()) &&
+            rightAns.contains(op[3].id.toString()) &&
+            rightAns.contains(op[1].id.toString())) {
+          correct = "Answer B, C and D are the correct one";
+        }
+      }
+    }
+    print("correct======$correct");
+    return correct;
   }
 }
 

@@ -130,9 +130,14 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
       if (index == cp.setPendindIndex) {
       } else if (mockData.attemptList[index].attempted_date == null && mockData.attemptList[index].tobeAttempted == 1) {
         isNetAvailable = await checkInternetConn();
-        print("isNetAvailable::: $isNetAvailable");
+        print("notSubmitedMockID::: ${cp.selectedMockId.toString()}");
 
-          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+        // if (HiveHandler.mockRestartBox != null) {
+        //   if (HiveHandler.mockRestartBox.containsKey(cp.selectedMockId.toString())) {
+        //     print("both conditions truye and ss its here");
+        //     await HiveHandler.removeFromRestartBox(cp.selectedMockId.toString());
+        //   }
+        // }
 
         Navigator.push(
             context,
@@ -145,8 +150,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                 attempt: cp.selectedMokAtmptCnt,
                 connStatus: isNetAvailable,
               ),
-            )
-            );
+            ));
       }
       //  else if (cp.aviAttempts[index].attempted_date == null && cp.aviAttempts[index].tobeAttempted == 0) {
       // }

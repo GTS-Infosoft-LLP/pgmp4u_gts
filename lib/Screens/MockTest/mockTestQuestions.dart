@@ -431,7 +431,6 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
       response = await http.get(Uri.parse(MOCK_TEST_QUESTIONS + '/$selectedIdNew'),
           headers: {'Content-Type': 'application/json', 'Authorization': stringValue}).onError((error, stackTrace) {
         anotherLoader = false;
-
         print("erroeee::::: $error");
         print("stackTrace:::: $stackTrace");
       });
@@ -831,15 +830,21 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                       ),
                                                       mockQuestion[_quetionNo].questionDetail.image != null
                                                           ? InkWell(
-                                                              onTap: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) => ImageDispalyScreen(
-                                                                              quesImages: mockQuestion[_quetionNo]
-                                                                                  .questionDetail
-                                                                                  .image,
-                                                                            )));
+                                                              onTap: () async {
+                                                                bool result = await checkInternetConn();
+                                                                if (result) {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => ImageDispalyScreen(
+                                                                                quesImages: mockQuestion[_quetionNo]
+                                                                                    .questionDetail
+                                                                                    .image,
+                                                                              )));
+                                                                } else {
+                                                                  EasyLoading.showInfo(
+                                                                      "Please check your Internet Connection");
+                                                                }
                                                               },
                                                               child: Container(
                                                                 decoration: BoxDecoration(

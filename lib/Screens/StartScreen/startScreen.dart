@@ -168,7 +168,7 @@ class _StartScreenState extends State<StartScreen> {
                         Slide(
                           title: "Huge Resources",
                           styleTitle: TextStyle(color: Colors.black, fontSize: 30.0, fontFamily: 'Roboto Bold'),
-                          description: data['step3'],
+                          description: data['step3'], 
                           styleDescription:
                               TextStyle(color: _colorfromhex("#76767E"), fontSize: 14.0, fontFamily: 'Roboto Regular'),
                           directionColorBegin: Alignment.topCenter,

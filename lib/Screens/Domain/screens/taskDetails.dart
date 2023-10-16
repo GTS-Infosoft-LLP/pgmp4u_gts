@@ -177,7 +177,8 @@ class _TaskDetailState extends State<TaskDetail> {
                     ),
                   );
                 }),
-              ]),
+              ]
+              ),
               SizedBox(height: 20),
               Consumer<DomainProvider>(builder: (context, dp, child) {
                 return dp.taskDetailApiCall

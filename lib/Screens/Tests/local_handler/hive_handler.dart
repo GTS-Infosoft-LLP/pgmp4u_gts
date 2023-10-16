@@ -275,7 +275,7 @@ class HiveHandler {
     print("valueee of vallll>>>>>$value");
     print("value of keyyyy>>>>$key");
     taskPracTestBox.put(key, value);
-    
+
     if (taskPracTestBox.containsKey(key)) {
       print("===========added to box   setTaskQuesData=========");
       print("taskPracTestBox.get  Key: $key, Data:${taskPracTestBox.get(key)}");
@@ -482,10 +482,6 @@ class HiveHandler {
     }
   }
 
-
-
-
-
   static addToRestartBox(String mockId, RestartModel restartModel) {
     print("restart model answersMapp>>>${restartModel.answersMapp}");
     print("restart model quesNum>>>${restartModel.quesNum}");
@@ -501,12 +497,17 @@ class HiveHandler {
   }
 
   static removeFromRestartBox(String mockId) {
+    print("removing FromRestartBox");
     // mockRestartBox.put(mockId, atemNum);
 
     if (mockRestartBox.isNotEmpty) {
+      print("mockRestartBox.isNotEmpty::::");
       if (mockRestartBox.containsKey(mockId)) {
+        print("mockRestartBox.containsKey");
+        print("deleting from the boxxxxx");
         mockRestartBox.delete(mockId);
       }
+      print("mockRestartBox.get for key after deleted: $mockId = ${mockRestartBox.get(mockId)}");
     } else {
       print("===========box is empty=========");
     }

@@ -293,7 +293,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                             // itemCount: data.pList.length,
                                             itemCount: PTList.length,
                                             onPageChanged: (index) {
-                                        
                                               ans = [];
                                               enableTap = 0;
                                               isAnsCorrect = 0;
@@ -341,7 +340,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                       padding: EdgeInsets.only(
                                                           left: width * (29 / 420),
                                                           right: width * (29 / 420),
-                                                         
                                                           top: 10,
                                                           bottom: height * (23 / 800)),
                                                       color: Colors.white,
@@ -444,14 +442,20 @@ class _PracticeNewState extends State<PracticeNew> {
 
                                                           PTList[_quetionNo].ques.image != null
                                                               ? InkWell(
-                                                                  onTap: () {
-                                                                    Navigator.push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                            builder: (context) => ImageDispalyScreen(
-                                                                                  quesImages:
-                                                                                      PTList[_quetionNo].ques.image,
-                                                                                )));
+                                                                  onTap: () async {
+                                                                    bool result = await checkInternetConn();
+                                                                    if (result) {
+                                                                      Navigator.push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                              builder: (context) => ImageDispalyScreen(
+                                                                                    quesImages:
+                                                                                        PTList[_quetionNo].ques.image,
+                                                                                  )));
+                                                                    } else {
+                                                                      EasyLoading.showInfo(
+                                                                          "Please check your Internet Connection");
+                                                                    }
                                                                   },
                                                                   child: Container(
                                                                     decoration: BoxDecoration(
@@ -509,32 +513,37 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                 finalSelectedAns = [];
                                                                 finalCorrectAns = [];
 
-                                                                print("::::answersMapp::listview::$answersMapp");
+                                                                // print("::::answersMapp::listview::$answersMapp");
                                                                 for (int i = 0; i < answersMapp.length; i++) {
                                                                   if (answersMapp[i]["questionNumber"] ==
                                                                       (_quetionNo)) {
-                                                                    print(
-                                                                        "answersMapp[i][selectedAnser]::::${answersMapp[i]["selectedAnser"]}");
+                                                                    // print(
+                                                                    //     "answersMapp[i][selectedAnser]::::${answersMapp[i]["selectedAnser"]}");
                                                                     selQuesMap = {
-                                                                      "questionNumber": _quetionNo,
-                                                                      "selected": answersMapp[i]["selectedAnser"] ?? [],
-                                                                      "right": answersMapp[i]["rightNumber"] ?? []
-                                                                    };
+                                                                      "questionNumber": _quetionNo,  
+                                                                      "selected": answersMapp[i]["selectedAnser"] ?? [],   
+                                                                      "right": answersMapp[i]["rightNumber"] ?? []  
+                                                                    }; 
 
-                                                                    answer = (answersMapp[i]["selectedAnser"]);
-                                                                  }
+                                                                    answer = (answersMapp[i]["selectedAnser"]);  
+                                                                  }  
+                                                                }  
+                                                                finalSelectedAns = selQuesMap['selected'] ?? [];   
+                                                                finalCorrectAns = selQuesMap['right'] ?? [];   
+                                                                print( "selected answers for this question;::::$finalSelectedAns");   
+                                                                if (finalSelectedAns.isNotEmpty) {
+                                                                  print("finalSelectedAns is not empty");    
+                                                                  // setState(() {
+                                                                    _show = !_show;    
+                                                                  // });
                                                                 }
-                                                                finalSelectedAns = selQuesMap['selected'] ?? [];
-                                                                finalCorrectAns = selQuesMap['right'] ?? [];
-                                                                print(
-                                                                    "selected answers for this question;::::$finalSelectedAns");
-                                                                print(
-                                                                    "correct answers for this question;::::$finalCorrectAns");
+                                                                // print(
+                                                                //     "correct answers for this question;::::$finalCorrectAns");
 
-                                                                print(
-                                                                    "data of this question::::::::::::::::::$selQuesMap");
-                                                                print(
-                                                                    "answer:::::::>>>>>>>>>djhsjdhfjshd::::::::$answer");
+                                                                // print(
+                                                                //     "data of this question::::::::::::::::::$selQuesMap");
+                                                                // print(
+                                                                //     "answer:::::::>>>>>>>>>djhsjdhfjshd::::::::$answer");
                                                                 if (selQuesMap.isNotEmpty) {
                                                                   enableTap = 1;
                                                                 }
@@ -918,15 +927,32 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                       ? Container(
                                                                           margin:
                                                                               EdgeInsets.only(top: height * (9 / 800)),
-                                                                          child: Text(
-                                                                            PTList[_quetionNo].ques.explanation,
-                                                                            style: TextStyle(
-                                                                              fontFamily: 'Roboto Regular',
-                                                                              fontSize: width * (15 / 420),
-                                                                              color: Colors.black,
-                                                                              height: 1.6,
-                                                                            ),
+                                                                          child: Html(
+                                                                            data: PTList[_quetionNo].ques.explanation,
+                                                                            style: {
+                                                                              "body": Style(
+                                                                                padding: EdgeInsets.only(top: 5),
+                                                                                fontFamily: 'Roboto Regular',
+
+                                                                                margin: EdgeInsets.zero,
+                                                                                color: Color(0xff000000),
+                                                                                textAlign: TextAlign.left,
+                                                                                // maxLines: 7,
+                                                                                // textOverflow: TextOverflow.ellipsis,
+                                                                                fontSize: FontSize(18),
+                                                                              )
+                                                                            },
                                                                           ),
+
+                                                                          // Text(
+                                                                          //   PTList[_quetionNo].ques.explanation,
+                                                                          //   style: TextStyle(
+                                                                          //     fontFamily: 'Roboto Regular',
+                                                                          //     fontSize: width * (15 / 420),
+                                                                          //     color: Colors.black,
+                                                                          //     height: 1.6,
+                                                                          //   ),
+                                                                          // ),
                                                                         )
                                                                       : Container()
                                                                 ],
@@ -1391,11 +1417,6 @@ class _PracticeNewState extends State<PracticeNew> {
   }
 
   void addToMap(int quetionNo, List<int> selAns, List<int> rytAns) {
-    // for (int i = 0; i < answersMapp.length; i++) {
-    //   // if (answersMapp[i]["questionNumber"] == quetionNo) {
-    //   //   answersMapp.removeAt(i);
-    //   // }
-    // }
     Map<String, dynamic> map = {"questionNumber": quetionNo, "selectedAnser": selAns, "rightNumber": rytAns};
 
     answersMapp.add(map);
