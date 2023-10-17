@@ -171,8 +171,6 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                               "No Data Found...",
                                               style: TextStyle(color: Colors.black, fontSize: 18),
                                             ),
-
-                                         
                                           ],
                                         ),
                                       ),
@@ -276,16 +274,16 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 children: [
                                                                   Container(
-                                                                    // width: MediaQuery.of(context).size.width * .7,
+                                                                    // color: Colors.amber,
+                                                                    width: MediaQuery.of(context).size.width * .7,
                                                                     child: Text(
                                                                       storedFlashCate[index].flashcards.toString() +
                                                                           " ${widget.title} available",
+                                                                      maxLines: 2,
                                                                       style: TextStyle(
                                                                           fontSize: 14,
                                                                           fontFamily: 'Roboto Medium',
-                                                                          color: Colors.grey
-                                                                          ),
-                                                                      maxLines: 2,
+                                                                          color: Colors.grey),
                                                                       overflow: TextOverflow.ellipsis,
                                                                     ),
                                                                   ),

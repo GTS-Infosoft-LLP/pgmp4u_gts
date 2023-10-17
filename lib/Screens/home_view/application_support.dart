@@ -122,6 +122,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                     padding: const EdgeInsets.only(top: 40.0, left: 10, right: 10),
                     child: PageView.builder(
                         controller: pageController,
+                        itemCount: 1,
                         onPageChanged: (index) {
                           setState(() {
                             colorIndex = index;
@@ -145,41 +146,41 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                 );
                         }),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 10.0),
-                      height: 12,
-                      child: ListView.builder(
-                          // itemCount: 15,
-                          controller: scrollController,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                                    gradient: index <= colorIndex
-                                        ? LinearGradient(
-                                            colors: [Color(0xff3A47AD), Color(0xff5163F3)],
-                                            begin: const FractionalOffset(0.0, 0.0),
-                                            end: const FractionalOffset(1.0, 0.0),
-                                            stops: [0.0, 1.0],
-                                            tileMode: TileMode.clamp)
-                                        : LinearGradient(
-                                            colors: [
-                                              Colors.grey,
-                                              Colors.grey,
-                                            ],
-                                          )),
-                                height: 10,
-                                width: MediaQuery.of(context).size.width * .08,
-                              ),
-                            );
-                          }),
-                    ),
-                  )
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
+                  //   child: Container(
+                  //     margin: const EdgeInsets.only(left: 10.0),
+                  //     height: 12,
+                  //     child: ListView.builder(
+                  //         // itemCount: 15,
+                  //         controller: scrollController,
+                  //         scrollDirection: Axis.horizontal,
+                  //         itemBuilder: (context, index) {
+                  //           return Padding(
+                  //             padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  //             child: Container(
+                  //               decoration: BoxDecoration(
+                  //                   borderRadius: BorderRadius.all(Radius.circular(20)),
+                  //                   gradient: index <= colorIndex
+                  //                       ? LinearGradient(
+                  //                           colors: [Color(0xff3A47AD), Color(0xff5163F3)],
+                  //                           begin: const FractionalOffset(0.0, 0.0),
+                  //                           end: const FractionalOffset(1.0, 0.0),
+                  //                           stops: [0.0, 1.0],
+                  //                           tileMode: TileMode.clamp)
+                  //                       : LinearGradient(
+                  //                           colors: [
+                  //                             Colors.grey,
+                  //                             Colors.grey,
+                  //                           ],
+                  //                         )),
+                  //               height: 10,
+                  //               width: MediaQuery.of(context).size.width * .08,
+                  //             ),
+                  //           );
+                  //         }),
+                  //   ),
+                  // )
                 ],
               ),
             ),

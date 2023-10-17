@@ -926,7 +926,11 @@ class _HomeViewState extends State<HomeView> {
                                                                                   height: 30,
                                                                                   child: Chip(
                                                                                       label: Text(
-                                                                                        "Join",
+                                                                                        storedCourse[index]
+                                                                                                    .isCancelSubscription ==
+                                                                                                1
+                                                                                            ? "Cancelled"
+                                                                                            : "Join",
                                                                                         style: TextStyle(
                                                                                             color: Colors.white,
                                                                                             fontWeight:
@@ -953,7 +957,11 @@ class _HomeViewState extends State<HomeView> {
                                                                               height: 35,
                                                                               child: Chip(
                                                                                   label: Text(
-                                                                                    "Enrolled",
+                                                                                    storedCourse[index]
+                                                                                                .isCancelSubscription ==
+                                                                                            1
+                                                                                        ? "Cancelled"
+                                                                                        : "Enrolled",
                                                                                     style: TextStyle(
                                                                                         color: Colors.white,
                                                                                         fontWeight: FontWeight.w600),
