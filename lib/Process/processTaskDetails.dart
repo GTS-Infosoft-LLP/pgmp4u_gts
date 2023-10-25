@@ -2,31 +2,34 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:pgmp4u/Screens/Domain/screens/domainProvider.dart';
-import 'package:pgmp4u/Screens/Domain/widget/taskQuestions.dart';
-import 'package:pgmp4u/tool/ShapeClipper.dart';
+import 'package:pgmp4u/Process/processDomainProvider.dart';
+import 'package:pgmp4u/Process/processQuestions.dart';
 import 'package:provider/provider.dart';
 
-import '../../../provider/courseProvider.dart';
-import '../../Tests/local_handler/hive_handler.dart';
-import '../disImage.dart';
-import 'Models/taskModel.dart';
+import '../Screens/Domain/disImage.dart';
+import '../Screens/Domain/screens/Models/taskModel.dart';
+import '../Screens/Tests/local_handler/hive_handler.dart';
+import '../provider/courseProvider.dart';
+import '../tool/ShapeClipper.dart';
 
-class TaskDetail extends StatefulWidget {
+class ProcessTaskDetails extends StatefulWidget {
   String subDomainName;
   TaskDetails taskDetailsObj;
-  TaskDetail({Key key, this.subDomainName, this.taskDetailsObj}) : super(key: key);
+ ProcessTaskDetails({Key key, this.subDomainName, this.taskDetailsObj}) : super(key: key);
 
   @override
-  State<TaskDetail> createState() => _TaskDetailState();
+  State<ProcessTaskDetails> createState() => _ProcessTaskDetailsState();
 }
 
-class _TaskDetailState extends State<TaskDetail> {
-  @override
-  var currentIndex;
+class _ProcessTaskDetailsState extends State<ProcessTaskDetails> {
+   var currentIndex;
   int colorIndex;
   int count;
   int isChange;
@@ -34,44 +37,42 @@ class _TaskDetailState extends State<TaskDetail> {
   ScrollController scrollController;
   int isAnsCorrect = 0;
   var indexPg;
-  List<TaskDetails> storedTask = [];
+    // List<TaskDetails> storedTask = [];
+      List storedProcessTask = [];
+
+
+@override
   void initState() {
-    print("praclist::::");
-    print(widget.taskDetailsObj.PracList);
-    print("description");
-    print(widget.taskDetailsObj.description);
-    CourseProvider cp = Provider.of(context, listen: false);
-    print("lableeee=====${cp.selectedCourseLable}");
-    isChange = 0;
+      isChange = 0;
     colorIndex = 0;
     currentIndex = 0;
     count = 100;
     indexPg = 0;
     pageController = PageController();
     scrollController = ScrollController();
-
-    // TODO: implement initState
     super.initState();
   }
 
+
   @override
   void dispose() {
-    super.dispose();
-    pageController.dispose();
+       pageController.dispose();
     scrollController.dispose();
+    super.dispose();
   }
+
 
   Color _colorfromhex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        floatingActionButton: currentIndex == 4
-            ? SizedBox()
-            : InkWell(
+              floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButton: currentIndex == 4 ? SizedBox():
+        InkWell(
                 onTap: () {
                   print("currentIndex====$currentIndex");
                   var plusIndex = ++currentIndex;
@@ -121,11 +122,13 @@ class _TaskDetailState extends State<TaskDetail> {
                   ),
                 ),
               ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(children: <Widget>[
+
+
+body: SingleChildScrollView(
+  child: Column(
+   crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Stack(children: <Widget>[
                 ClipPath(
                   clipper: ShapeClipper(),
                   child: Container(
@@ -138,7 +141,7 @@ class _TaskDetailState extends State<TaskDetail> {
                     ),
                   ),
                 ),
-                Consumer<DomainProvider>(builder: (context, dp, child) {
+                Consumer<ProcessDomainProvider>(builder: (context, pdp, child) {
                   return Container(
                     padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
                     child: Row(
@@ -163,7 +166,7 @@ class _TaskDetailState extends State<TaskDetail> {
                           width: MediaQuery.of(context).size.width * .65,
                           child: Text(
                             // widget.subDomainName,
-                            dp.selectedDomainName,
+                            pdp.selectedProcessName,
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -179,16 +182,18 @@ class _TaskDetailState extends State<TaskDetail> {
                 }),
               ]
               ),
+
               SizedBox(height: 20),
-              Consumer<DomainProvider>(builder: (context, dp, child) {
-                return dp.taskDetailApiCall
+        Consumer<ProcessDomainProvider>(builder: (context, pdp, child) {
+                return pdp.processTaskDetailApiCall
                     ? Container(
                         height: MediaQuery.of(context).size.height * .60,
                         child: Center(child: CircularProgressIndicator.adaptive()))
                     : Padding(
                         padding: const EdgeInsets.only(left: 18.0),
                         child: Text(
-                          dp.selectedTaskName,
+                          "process task name",
+                          // pdp.selectedProcessTaskName,
                           maxLines: 2,
                           style: TextStyle(
                             fontFamily: 'Roboto',
@@ -201,26 +206,26 @@ class _TaskDetailState extends State<TaskDetail> {
               SizedBox(
                 height: 10,
               ),
-              ValueListenableBuilder(
-                  valueListenable: HiveHandler.getTaskItemsListener(),
-                  builder: (context, value, child) {
-                    DomainProvider dp = Provider.of(context, listen: false);
-                    if (value.containsKey(dp.selectedDomainId.toString())) {
+ValueListenableBuilder(
+  valueListenable:  HiveHandler.getTaskItemsListener(),
+  builder:(context, value, child) {
+    ProcessDomainProvider pdp = Provider.of(context, listen: false);
+                    if (value.containsKey(pdp.selectedProcessId.toString())) {
                       print("containsssss keyyyyy");
-                      List taskList = jsonDecode(value.get(dp.selectedDomainId.toString()));
+                      List taskList = jsonDecode(value.get(pdp.selectedProcessId.toString()));
                      
-                      storedTask = taskList.map((e) => TaskDetails.fromjson(e)).toList();
-                      print("storedTasks storedTaskQues List:::::: $storedTask");
+                      storedProcessTask = taskList.map((e) => TaskDetails.fromjson(e)).toList();
+                      print("storedTasks storedTaskQues List:::::: $storedProcessTask");
                       // print("storedTasks List  keywrod:::::: ${taskList[0]["Keywords"]}");
                       // print("storedTasks List question:::::: ${taskList[0]["practiceTest"]}");
                     } else {
-                      storedTask = [];
+                      storedProcessTask = [];
                     }
-                    if (storedTask == null) {
-                      storedTask = [];
+                    if (storedProcessTask == null) {
+                      storedProcessTask = [];
                     }
-                    print("storedTasks storedTaskQues List:::::: $storedTask");
-                    return Consumer<DomainProvider>(builder: (context, dp, child) {
+
+     return Consumer<ProcessDomainProvider>(builder: (context, pdp, child) {
                       return Container(
                           height: MediaQuery.of(context).size.height * .7,
                           // width: MediaQuery.of(context).size.width * .9,
@@ -244,25 +249,25 @@ class _TaskDetailState extends State<TaskDetail> {
                                     }
                                   },
                                   itemBuilder: (context, index) {
-                                    return storedTask.isEmpty
+                                    return storedProcessTask.isEmpty
                                         ? Center(child: Text("No Data Found"))
                                         : currentIndex == 0
-                                            ? TaskDisc(context, 0, widget.taskDetailsObj)
+                                            ? ProcessTaskDisc(context, 0, widget.taskDetailsObj)
                                             : currentIndex == 1
-                                                ? TaskImg(context, 0, widget.taskDetailsObj)
+                                                ? ProcessTaskImg(context, 0, widget.taskDetailsObj)
                                                 : currentIndex == 2
-                                                    ? TaskExple(context, 0, widget.taskDetailsObj)
+                                                    ? ProcessTaskExple(context, 0, widget.taskDetailsObj)
                                                     : currentIndex == 3
-                                                        ? TaskKeywrd(context, 0, widget.taskDetailsObj)
-                                                        : dp.TaskQues.isNotEmpty
-                                                            ? TaskQuestion()
+                                                        ? ProcessTaskKeywrd(context, 0, widget.taskDetailsObj)
+                                                        : pdp.ProcessQues.isNotEmpty
+                                                            ? ProcessTaskQuestions()
                                                             : Center(
                                                                 child: Text(
                                                                 "No Questions Available",
                                                                 style: TextStyle(fontSize: 18),
                                                               ));
                                   }),
-                              dp.taskDetailApiCall
+                              pdp.processTaskDetailApiCall
                                   ? SizedBox()
                                   : Container(
                                       margin: const EdgeInsets.only(left: 10.0),
@@ -301,245 +306,23 @@ class _TaskDetailState extends State<TaskDetail> {
                             ],
                           ));
                     });
-                  }),
-              SizedBox(
+
+
+  }),
+   SizedBox(
                 height: 10,
               )
-            ],
-          ),
-        )
-        );
+
+    ],
+  ),
+),
+
+    );
   }
-}
+  
+  ProcessTaskDisc(BuildContext context, index, TaskDetails tdo) {
 
-Color _colorfromhex(String hexColor) {
-  final hexCode = hexColor.replaceAll('#', '');
-  return Color(int.parse('FF$hexCode', radix: 16));
-}
-
-Widget TaskKeywrd(BuildContext context, index, TaskDetails tdo) {
-  DomainProvider dp = Provider.of(context, listen: false);
-  return SingleChildScrollView(
-    child: Column(
-      children: [
-        SizedBox(
-          height: 30,
-        ),
-        Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            "    Keywords",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontFamily: 'Roboto Regular',
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 80.0, left: 15),
-          child: Html(
-            data: tdo.Keywords,
-            style: {
-              "body": Style(
-                padding: EdgeInsets.only(top: 5),
-                margin: EdgeInsets.zero,
-                color: Color(0xff000000),
-                textAlign: TextAlign.left,
-                // maxLines: 7,
-                // textOverflow: TextOverflow.ellipsis,
-                fontSize: FontSize(18),
-              )
-            },
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget TaskImg(BuildContext context, index, TaskDetails tdo) {
-  DomainProvider dp = Provider.of(context, listen: false);
-  print("dddd ${tdo.Image}");
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 25,
-        ),
-        Text(
-          "  Flow Diagram",
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            fontFamily: 'Roboto Regular',
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 10),
-          child: InkWell(
-            onTap: () async {
-
-bool result = await checkInternetConn();
-if (result) {
-    Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ImageDispalyScreen(
-                            quesImages: dp.TaskDetailList[index].Image,
-                          )));
-}else{
-                      EasyLoading.showInfo("Please check your Internet Connection");
-
-}
-
-          
-            },
-            child: Container(
-              // width: MediaQuery.of(context).size.width * .92,
-              // height: MediaQuery.of(context).size.height * .2,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: CachedNetworkImage(
-                  imageUrl: tdo.Image,
-                  // dp.TaskDetailList[index].Image != null ? dp.TaskDetailList[index].Image : '',
-                  fit: BoxFit.cover,
-                  // width: MediaQuery.of(context).size.width * .92,
-                  // height: MediaQuery.of(context).size.height * .2,
-                  placeholder: (context, url) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 78.0, vertical: 28),
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.grey[400],
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                      height: MediaQuery.of(context).size.width * .4,
-                      child: Center(
-                          // child: Image.asset(tdo.Image),
-                          child: Icon(Icons.error))),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-  Future checkInternetConn() async {
-    bool result = await InternetConnectionChecker().hasConnection;
-    print("result while call fun $result");
-    if (result == false) {
-      Future.delayed(Duration(seconds: 1), () async {
-        //  await EasyLoading.showToast("Internet Not Connected",toastPosition: EasyLoadingToastPosition.bottom);
-      });
-      return result;
-    } else {}
-    return result;
-  }
-
-void showImage(context, imageee) {
-  showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.zero,
-          scrollable: true,
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(4.0),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * .7,
-                  width: MediaQuery.of(context).size.width * .98,
-                  child: CachedNetworkImage(
-                    imageUrl: imageee ?? "",
-                    fit: BoxFit.fill,
-                    placeholder: (context, url) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 78.0, vertical: 28),
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.grey[400],
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                        height: MediaQuery.of(context).size.width * .4, child: Center(child: Icon(Icons.error))),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      });
-}
-
-Widget TaskExple(BuildContext context, index, TaskDetails tdo) {
-  DomainProvider dp = Provider.of(context, listen: false);
-  return SingleChildScrollView(
-    child: Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15, top: 18, bottom: 38),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 15,
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Examples ",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontFamily: 'Roboto Regular',
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Html(
-            data: tdo.Examples,
-            //  dp.TaskDetailList != null ? dp.TaskDetailList[index].Examples : '',
-            style: {
-              "body": Style(
-                padding: EdgeInsets.only(top: 5, bottom: 10),
-                margin: EdgeInsets.zero,
-                color: Color(0xff000000),
-                textAlign: TextAlign.left,
-                // maxLines: 7,
-                // textOverflow: TextOverflow.ellipsis,
-                fontSize: FontSize(18),
-              )
-            },
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget TaskDisc(BuildContext context, currentIndex, TaskDetails tdo) {
-  DomainProvider dp = Provider.of(context, listen: false);
+    ProcessDomainProvider pdp = Provider.of(context, listen: false);
 
   return SingleChildScrollView(
     child: Padding(
@@ -631,4 +414,204 @@ Widget TaskDisc(BuildContext context, currentIndex, TaskDetails tdo) {
       ]),
     ),
   );
+
+
+
+  }
+  
+  ProcessTaskImg(BuildContext context,index, TaskDetails tdo) {
+  ProcessDomainProvider pdp = Provider.of(context, listen: false);
+  print("dddd ${tdo.Image}");
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 25,
+        ),
+        Text(
+          "  Flow Diagram",
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontFamily: 'Roboto Regular',
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 10),
+          child: InkWell(
+            onTap: () async {
+
+bool result = await checkInternetConn();
+if (result) {
+    Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ImageDispalyScreen(
+                            // quesImages: pdp.ProcessTaskDetailList[index].Image,
+                          )));
+}else{
+                      EasyLoading.showInfo("Please check your Internet Connection");
+
+}
+
+          
+            },
+            child: Container(
+              // width: MediaQuery.of(context).size.width * .92,
+              // height: MediaQuery.of(context).size.height * .2,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
+                  imageUrl: tdo.Image,
+                  // dp.TaskDetailList[index].Image != null ? dp.TaskDetailList[index].Image : '',
+                  fit: BoxFit.cover,
+                  // width: MediaQuery.of(context).size.width * .92,
+                  // height: MediaQuery.of(context).size.height * .2,
+                  placeholder: (context, url) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 78.0, vertical: 28),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                      height: MediaQuery.of(context).size.width * .4,
+                      child: Center(
+                          // child: Image.asset(tdo.Image),
+                          child: Icon(Icons.error))),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+
+
+  }
+    Future checkInternetConn() async {
+    bool result = await InternetConnectionChecker().hasConnection;
+    print("result while call fun $result");
+    if (result == false) {
+      Future.delayed(Duration(seconds: 1), () async {
+        //  await EasyLoading.showToast("Internet Not Connected",toastPosition: EasyLoadingToastPosition.bottom);
+      });
+      return result;
+    } else {}
+    return result;
+  }
+  ProcessTaskExple(BuildContext context,index, TaskDetails tdo) {
+
+  ProcessDomainProvider pdp = Provider.of(context, listen: false);
+  return SingleChildScrollView(
+    child: Padding(
+      padding: const EdgeInsets.only(left: 15.0, right: 15, top: 18, bottom: 38),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              "Examples ",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontFamily: 'Roboto Regular',
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Html(
+            data: tdo.Examples,
+            //  dp.TaskDetailList != null ? dp.TaskDetailList[index].Examples : '',
+            style: {
+              "body": Style(
+                padding: EdgeInsets.only(top: 5, bottom: 10),
+                margin: EdgeInsets.zero,
+                color: Color(0xff000000),
+                textAlign: TextAlign.left,
+                // maxLines: 7,
+                // textOverflow: TextOverflow.ellipsis,
+                fontSize: FontSize(18),
+              )
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+
+
+
+
+  }
+  
+  ProcessTaskKeywrd(BuildContext context, index, TaskDetails tdo) {
+
+  ProcessDomainProvider pdp = Provider.of(context, listen: false);
+  return SingleChildScrollView(
+    child: Column(
+      children: [
+        SizedBox(
+          height: 30,
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "    Keywords",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontFamily: 'Roboto Regular',
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 80.0, left: 15),
+          child: Html(
+            data: tdo.Keywords,
+            style: {
+              "body": Style(
+                padding: EdgeInsets.only(top: 5),
+                margin: EdgeInsets.zero,
+                color: Color(0xff000000),
+                textAlign: TextAlign.left,
+                // maxLines: 7,
+                // textOverflow: TextOverflow.ellipsis,
+                fontSize: FontSize(18),
+              )
+            },
+          ),
+        ),
+      ],
+    ),
+  );
+
+
+
+  }
+}
+Color _colorfromhex(String hexColor) {
+  final hexCode = hexColor.replaceAll('#', '');
+  return Color(int.parse('FF$hexCode', radix: 16));
 }

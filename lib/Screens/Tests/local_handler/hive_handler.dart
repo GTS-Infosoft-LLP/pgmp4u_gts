@@ -72,6 +72,9 @@ class HiveHandler {
   static const String SubDomainDetailBox = "subdomainBox";
   static const String SubDomainDetailKey = "subdomainKey";
 
+
+
+
   static const String FlashCateBox = "flashCateBox";
 
   static const String TestDataBox = "testListBox";
@@ -83,6 +86,15 @@ class HiveHandler {
   static const String MockAttemptsBox = "moclAttemptBox";
   static const String MockQuestionBoxKey = "mockQuestionsBox";
   static const String TaskItemsBoxKey = "taskItemsBox";
+
+
+    static const String ProcessDetailBox = "processBox";
+  static const String ProcessDetailKey = "processKey";
+  static const String SubProcessDetailBox = "subprocessBox";
+  static const String SubProcessDetailKey = "subprocessKey";
+
+    static Box<String> processDetailListBox;
+  static Box<String> subProcessDetailListBox;
 
   static Box<String> mockNotSubmitBox;
   static Box<String> courseListBox;
@@ -707,6 +719,74 @@ class HiveHandler {
       return [];
     }
   }
+
+
+
+
+  // static addProcessDetailData(String ProcessDetailResponse, String key) async {
+  //   processDetailListBox.put(key, ProcessDetailResponse);
+
+  //   if (processDetailListBox.containsKey(key)) {
+  //     print("===========added to box=========");
+  //     print("ProcessDetailResponse.get ${processDetailListBox.get(key)}");
+  //   } else {
+  //     print("===========box is empty=========");
+  //   }
+  // }
+
+  // static ValueListenable<Box<String>> getProcessDetailListener() {
+  //   return Hive.box<String>(ProcessDetailBox).listenable() ?? "";
+  // }
+
+  // static addsubProcessDetailData(String subProcessDetailResponse, String key) async {
+  //   subProcessDetailListBox.put(key, subProcessDetailResponse);
+
+  //   if (subProcessDetailListBox.containsKey(key)) {
+  //     print("subdomain box keyy>>>>>>>.$key");
+  //     print("===========added to box=========");
+  //     print("subProcessDetailListBox.get ${subProcessDetailListBox.get(key)}");
+  //   } else {
+  //     print("===========box is empty=========");
+  //   }
+  // }
+
+  // static ValueListenable<Box<String>> getsubProcessDetailListener() {
+  //   return Hive.box<String>(SubProcessDetailBox).listenable() ?? "";
+  // }
+
+
+
+  // static setProcessTaskItemsData({String value, String key}) async {
+  //   List<TaskDetails> storedProcesssTaskAllData = [];
+  //   ProcessTaskItemsBox.put(key, value);
+
+  //   if (ProcessTaskItemsBox.containsKey(key)) {
+  //     print("===========added to box=========");
+  //     print("ProcessTaskItemsBox.get  Key: $key, Data:${ProcessTaskItemsBox.get(key)}");
+
+  //     String taskData = TaskItemsBox.get(key);
+  //     print(" >> taskData :  $taskData");
+
+  //     List ProcessTasklist = jsonDecode(taskData);
+
+  //     storedProcessTaskAllData = ProcessTasklist.map((e) => TaskDetails.fromjson(e)).toList();
+  //     print(" >> storedProcessTaskAllData taskData :  ${storedProcessTaskAllData[0].PracList}");
+  //     debugPrint(" >> storedProcessTaskAllData : $storedProcessTaskAllData");
+  //   } else {
+  //     print("===========box is empty=========");
+  //   }
+  // }
+
+  // static ValueListenable<Box<String>> getProcessTaskItemsListener() {
+  //   return Hive.box<String>(ProcessTaskItemsBoxKey).listenable() ?? '';
+  // }
+
+
+
+
+
+
+
 
   static setDeviceToken(String val) async {
     var _userBox = Hive.box(deviceTokenBox);

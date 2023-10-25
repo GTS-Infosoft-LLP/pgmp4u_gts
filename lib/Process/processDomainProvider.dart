@@ -1,109 +1,97 @@
+// import 'package:dio/dio.dart';
 import 'dart:convert';
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
+import 'dart:convert'as convert;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart'as http;
 import 'package:http/http.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:pgmp4u/Screens/Domain/screens/Models/domainCategoryModel.dart';
-import 'package:pgmp4u/Services/globalcontext.dart';
 import 'package:provider/provider.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../api/apis.dart';
-import '../../../provider/courseProvider.dart';
-import '../../Tests/local_handler/hive_handler.dart';
-import 'Models/domainModel.dart';
-import 'Models/subDomainModel.dart';
-import 'Models/taskModel.dart';
+import '../Screens/Domain/screens/Models/taskModel.dart';
+import '../Screens/Tests/local_handler/hive_handler.dart';
+import '../Services/globalcontext.dart';
+import '../api/apis.dart';
+import '../provider/courseProvider.dart';
 
-class DomainProvider extends ChangeNotifier {
-  SharedPreferences prefs;
+class ProcessDomainProvider extends ChangeNotifier{
+    SharedPreferences prefs;
 
   initSharePreferecne() async {
     prefs = await SharedPreferences.getInstance();
   }
+  
+  List ProcessList = [];
+    List SubProcessList = [];
+      List ProcessTaskList = [];
+           List ProcessTaskDetailsList = [];
 
-  List<DomainCategoryDetails> DomainCateList = [];
-  List<TaskDetails> TaskList = [];
-  List<TaskDetails> TaskDetailList = [];
-  List<DomainDetails> DomainList = [];
-  List<SubDomainDetails> SubDomainList = [];
 
-  String selectedTaskName;
-  setSelectedTaskLable(val) {
-    selectedTaskName = val;
+
+
+
+
+           int selectedProcessTaskId;
+                  setSelectedProcessTaskId(int val) {
+    selectedProcessTaskId = val;
     notifyListeners();
   }
 
-  String selectedDomainName;
-  setSelectedDomainName(val) {
-    selectedDomainName = val;
+
+  int selectedProcessId;
+    int selectedSubProcessId;
+       setSelectedProcessId(int val) {
+    selectedProcessId = val;
+    notifyListeners();
+  }
+    setSelectedSubProcessId(int val) {
+    selectedSubProcessId = val;
     notifyListeners();
   }
 
-  int selectedDomainId;
-  int selectedSubDomainId;
+String selectedProcessName;
+String selectedSubProcessName;
 
-  int selectedTaskId;
-  setSelectedTaskId(int val) {
-    selectedTaskId = val;
+   setSubSelectedProcessName(String val) {
+    selectedSubProcessName = val;
+    notifyListeners();
+  }
+    setSelectedProcessName(String val) {
+    selectedProcessName = val;
     notifyListeners();
   }
 
-  String selectedSubDomainName;
-  setSelectedSubDomainName(val) {
-    selectedSubDomainName = val;
+  bool subProcessApiCall = false;
+
+  bool processTaskApiCall = false;
+  bool processTaskDetailApiCall = false;
+  bool processApiCall = false;
+
+    updateProcessApiCall(bool val) {
+    processApiCall = val;
+    notifyListeners();
+  }
+     updateSubProcessApiCall(bool val) {
+    subProcessApiCall = val;
+    notifyListeners();
+  }
+     updateProcessTaskApiCall(bool val) {
+    processTaskApiCall = val;
+    notifyListeners();
+  }
+       updateProcessTaskDetailApiCall(bool val) {
+    processTaskDetailApiCall = val;
     notifyListeners();
   }
 
-  setSelectedSubDomainId(int val) {
-    selectedSubDomainId = val;
-    notifyListeners();
-  }
 
-  setSelectedDomainId(int val) {
-    selectedDomainId = val;
-    notifyListeners();
-  }
-
-  bool subDomainApiCall = false;
-  bool domainCateApiCall = false;
-  bool taskApiCall = false;
-  bool taskDetailApiCall = false;
-  bool domainApiCall = false;
-
-  updateTaskDetailApiCall(bool val) {
-    taskDetailApiCall = val;
-    notifyListeners();
-  }
-
-  updateSubDomainApiCall(bool val) {
-    subDomainApiCall = val;
-    notifyListeners();
-  }
-
-  updateDomainApiCall(bool val) {
-    domainApiCall = val;
-    notifyListeners();
-  }
-
-  updateTaskApiCall(bool val) {
-    taskApiCall = val;
-    notifyListeners();
-  }
-
-  updateDomainCateApiCall(bool val) {
-    domainCateApiCall = val;
-    notifyListeners();
-  }
 
   String bodyyyy;
-  CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
+    CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
 
-  Future<void> getSubDomainData(int id) async {
-    updateSubDomainApiCall(true);
-    SubDomainList = [];
+  Future<void> getProcessData(int id) async {
+    updateProcessApiCall(true);
+    ProcessList = [];
     print("idMaster=========>>>>>>>>>>>>>>>$id");
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -130,7 +118,7 @@ class DomainProvider extends ChangeNotifier {
           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           await cp.getTestDetails(cp.allTestListIdOfline);
-          // await apiCall(attempListIdOffline);
+         
           Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
@@ -163,21 +151,21 @@ class DomainProvider extends ChangeNotifier {
       var resStatus = (resDDo["status"]);
 
       if (response.statusCode == 400) {
-        updateSubDomainApiCall(false);
+        updateProcessApiCall(false);
         print("statussssssss");
-        SubDomainList = [];
+        ProcessList = [];
 
         notifyListeners();
         return;
       }
       if (response.statusCode == 200) {
-        updateSubDomainApiCall(false);
-        SubDomainList.clear();
+        updateProcessApiCall(false);
+        ProcessList.clear();
         print("");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse====${mapResponse['status']}");
         if (mapResponse['status'] == 400) {
-          SubDomainList = [];
+          ProcessList = [];
 
           return;
         }
@@ -187,30 +175,29 @@ class DomainProvider extends ChangeNotifier {
           print("temp list===$temp1");
           HiveHandler.addsubDomainDetailData(jsonEncode(mapResponse["data"]), id.toString());
 
-          SubDomainList = temp1.map((e) => SubDomainDetails.fromjson(e)).toList();
-          print("SubDomainList=========$SubDomainList");
+          // ProcessList = temp1.map((e) => SubDomainDetails.fromjson(e)).toList();
+          print("SubDomainList=========$ProcessList");
         }
       }
       print("respponse=== ${response.body}");
     } on Exception {
-      updateSubDomainApiCall(false);
+      updateProcessApiCall(false);
     }
     notifyListeners();
   }
 
-  bool domainStatus = true;
-  Future<void> getDomainData(int idMaster, int idCrs) async {
-    domainStatus = true;
-    updateDomainApiCall(true);
-    DomainList = [];
-    print("idMaster=========>>>>>>>>>>>>>>>$idMaster");
-    print("idCrs=========>>>>>>>>>>>>>>>$idCrs");
+  Future<void> getSubProcessData(int id) async {
+    updateSubProcessApiCall(true);
+    SubProcessList = [];
+    print("idMaster=========>>>>>>>>>>>>>>>$id");
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String stringValue = prefs.getString('token');
 
     print("token valued===$stringValue");
-    var request = {"courseId": idCrs, "masterList": idMaster};
+    var request = {"id": id};
+
     bool checkConn = await checkInternetConn();
     if (checkConn) {
       bodyyyy = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
@@ -228,7 +215,7 @@ class DomainProvider extends ChangeNotifier {
           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           await cp.getTestDetails(cp.allTestListIdOfline);
-          // await apiCall(attempListIdOffline);
+         
           Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
@@ -239,53 +226,43 @@ class DomainProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
         }
       }
     }
+
     try {
       var response = await http.post(
-        Uri.parse(GET_DOMAIN),
+        Uri.parse(GET_SUB_DOMAIN),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );
 
       print("response.statusCode===${response.body}");
-
       print("response.statusCode===${response.statusCode}");
-
-      // domainStatus;
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
 
-      print("satusss====${resDDo["success"]}");
-
-      if (resDDo["success"] == false) {
-        domainStatus = false;
-        return;
-      }
-
       if (response.statusCode == 400) {
-        updateDomainApiCall(false);
+        updateSubProcessApiCall(false);
         print("statussssssss");
-        DomainList = [];
+        SubProcessList = [];
 
         notifyListeners();
         return;
       }
       if (response.statusCode == 200) {
-        updateDomainApiCall(false);
-        DomainList.clear();
+        updateSubProcessApiCall(false);
+        SubProcessList.clear();
         print("");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse====${mapResponse['status']}");
         if (mapResponse['status'] == 400) {
-          DomainList = [];
-          print("DomainList=====$DomainList");
+          SubProcessList = [];
 
           return;
         }
@@ -293,44 +270,42 @@ class DomainProvider extends ChangeNotifier {
         if (mapResponse["status"] == 200) {
           List temp1 = mapResponse["data"];
           print("temp list===$temp1");
-          DomainList = temp1.map((e) => DomainDetails.fromjson(e)).toList();
-          print("DomainList=========$DomainList");
-          try {
-            HiveHandler.addDomainDetailData(jsonEncode(mapResponse["data"]), idMaster.toString());
-          } catch (e) {
-            print("errorr===========>>>>>>$e");
-          }
+          HiveHandler.addsubDomainDetailData(jsonEncode(mapResponse["data"]), id.toString());
+
+          // SubProcessList = temp1.map((e) => SubDomainDetails.fromjson(e)).toList();
+          print("SubDomainList=========$SubProcessList");
         }
       }
       print("respponse=== ${response.body}");
     } on Exception {
-      updateDomainApiCall(false);
+      updateSubProcessApiCall(false);
     }
     notifyListeners();
   }
 
-  int taskCount;
-  Future<void> getTasksData(int id, dynamic val) async {
-    updateTaskApiCall(true);
-    print("tast loader lOADER====$taskApiCall");
-    TaskList = [];
+
+
+  Future<void> getProcessTaskData(int id, dynamic val) async {
+    updateProcessTaskApiCall(true);
+    print("tast loader lOADER====$processTaskApiCall");
+    ProcessTaskList = [];
 
     print("idddd=========>>>>>>>>>>>>>>>$id");
     print("val=========>>>>>>>>>>>>>>>$val");
 
-    dynamic subDomnId = selectedDomainId;
+    dynamic subProcessId = selectedProcessId;
     if (val == "") {
-      subDomnId = "";
+      subProcessId = "";
     } else {
-      subDomnId = val;
+      subProcessId = val;
     }
 
-    print("domnId======$subDomnId");
+    print("domnId======$subProcessId");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
     print("token valued===$stringValue");
-    var request = {"domainId": id, "subdomainId": subDomnId};
+    var request = {"domainId": id, "subdomainId": subProcessId};
     print("request==============$request");
     bool checkConn = await checkInternetConn();
     if (checkConn) {
@@ -381,22 +356,22 @@ class DomainProvider extends ChangeNotifier {
       var resStatus = (resDDo["status"]);
 
       if (response.statusCode == 400) {
-        updateTaskApiCall(false);
+        updateProcessTaskApiCall(false);
         print("statussssssss");
-        TaskList = [];
+        ProcessTaskList = [];
 
         notifyListeners();
         return;
       }
       if (response.statusCode == 200) {
-        updateTaskApiCall(false);
-        TaskList.clear();
+        updateProcessTaskApiCall(false);
+        ProcessTaskList.clear();
         print("");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse====${mapResponse['status']}");
         if (mapResponse['status'] == 400) {
-          TaskList = [];
-          print("TaskList====$TaskList");
+          ProcessTaskList = [];
+          print("TaskList====$ProcessTaskList");
           return;
         }
 
@@ -407,26 +382,28 @@ class DomainProvider extends ChangeNotifier {
           print('mapResponse["data"] pracques:::::::::::::${mapResponse["data"][0]["practiceTest"]}');
           HiveHandler.setTaskItemsData(key: id.toString(), value: jsonEncode(mapResponse["data"]));
           print("temp list===$temp1");
-          TaskList = temp1.map((e) => TaskDetails.fromjson(e)).toList();
-          print("TaskList=========$TaskList");
-          taskCount = TaskList.length;
-          print("taskCount======$taskCount");
+          ProcessTaskList = temp1.map((e) => TaskDetails.fromjson(e)).toList();
+          print("ProcessTaskList=========$ProcessTaskList");
+          // taskCount = ProcessTaskList.length;
+          // print("taskCount======$taskCount");
         }
       }
       print("respponse=== ${response.body}");
     } on Exception {
-      updateTaskApiCall(false);
+      updateProcessTaskApiCall(false);
     }
     notifyListeners();
   }
 
-  List<TaskPracQues> TaskQues = [];
-  Future<void> getTasksDetailData(int id) async {
-    updateTaskDetailApiCall(true);
-    TaskDetailList = [];
+
+
+  List<TaskPracQues> ProcessQues = [];
+  Future<void> getProcessTasksDetailData(int id) async {
+    updateProcessTaskDetailApiCall(true);
+    ProcessTaskDetailsList = [];
     print("this apiii====");
     print("idddd=========>>>>>>>>>>>>>>>$id");
-    print("idddd selectedDomainId=====>>>>$selectedDomainId");
+    print("idddd selectedDomainId=====>>>>$selectedProcessId");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -483,22 +460,22 @@ class DomainProvider extends ChangeNotifier {
       var resStatus = (resDDo["status"]);
 
       if (response.statusCode == 400) {
-        updateTaskDetailApiCall(false);
+        updateProcessTaskDetailApiCall(false);
         print("statussssssss");
-        TaskDetailList = [];
+        ProcessTaskDetailsList = [];
         notifyListeners();
         return;
       }
       if (response.statusCode == 200) {
-        updateTaskDetailApiCall(false);
-        TaskDetailList.clear();
+        updateProcessTaskDetailApiCall(false);
+        ProcessTaskDetailsList.clear();
         print("");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse====${mapResponse['status']}");
         debugPrint("mapResponse data====${mapResponse['data']}");
         print("mapResponse data practiceTest====${mapResponse['data'][0]["practiceTest"]}");
         if (mapResponse['status'] == 400) {
-          TaskDetailList = [];
+          ProcessTaskDetailsList = [];
           return;
         }
 
@@ -510,27 +487,27 @@ class DomainProvider extends ChangeNotifier {
           HiveHandler.setTaskQuesData(key: id.toString(), value: jsonEncode(mapResponse['data'][0]["practiceTest"]));
           List temp2 = temp1[0]["practiceTest"];
           print(":::::temp2:::::$temp2");
-          TaskQues = temp2.map((e) => TaskPracQues.fromJson(e)).toList();
-          print("Tpq=======$TaskQues");
-          TaskDetailList = temp1.map((e) => TaskDetails.fromjson(e)).toList();
-          print("TaskDetailList=========${TaskDetailList[0].name}");
+          ProcessQues = temp2.map((e) => TaskPracQues.fromJson(e)).toList();
+          print("Tpq=======$ProcessQues");
+          ProcessTaskDetailsList = temp1.map((e) => TaskDetails.fromjson(e)).toList();
+          print("TaskDetailList=========${ProcessTaskDetailsList[0].name}");
         }
       }
       print("respponse=== ${response.body}");
     } on Exception {
-      updateTaskDetailApiCall(false);
+      updateProcessTaskDetailApiCall(false);
     }
     notifyListeners();
   }
 
-  // List<int> dpselAns = [];
-  // List<int> dpansRef = [];
-  // void setList(List<int> selAns, List<int> ansRef) {
-  //   dpselAns = selAns;
-  //   dpansRef = ansRef;
-  //   notifyListeners();
-  // }
 
+
+
+
+
+
+
+  
   Future checkInternetConn() async {
     bool result = await InternetConnectionChecker().hasConnection;
     print("result while call fun $result");
@@ -542,4 +519,5 @@ class DomainProvider extends ChangeNotifier {
     } else {}
     return result;
   }
+
 }

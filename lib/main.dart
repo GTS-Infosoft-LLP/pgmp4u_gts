@@ -28,6 +28,7 @@ import './Screens/Dashboard/dashboard.dart';
 import './Screens/Auth/login.dart';
 import 'package:provider/provider.dart';
 
+import 'Process/processDomainProvider.dart';
 import 'Screens/Domain/screens/domainProvider.dart';
 import 'Screens/PracticeTests/practiceTest copy.dart';
 import 'Screens/Tests/local_handler/hive_handler.dart';
@@ -134,6 +135,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<PdfProvider>(create: (_) => PdfProvider()),
         ChangeNotifierProvider<DomainProvider>(create: (_) => DomainProvider()),
         ChangeNotifierProvider<SubscriptionProvider>(create: (_) => SubscriptionProvider()),
+        ChangeNotifierProvider<ProcessDomainProvider>(create: (_)=>ProcessDomainProvider()),
 
       ],
       child: MaterialApp(

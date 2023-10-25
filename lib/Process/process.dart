@@ -1,48 +1,41 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:hive/hive.dart';
-import 'package:pgmp4u/Screens/Domain/screens/Models/domainModel.dart';
-import 'package:pgmp4u/Screens/Domain/screens/subDomainList.dart';
-import 'package:pgmp4u/Screens/Domain/screens/tasksList.dart';
-import 'package:pgmp4u/tool/ShapeClipper.dart';
-
+import 'package:pgmp4u/Process/processDomainProvider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../provider/courseProvider.dart';
-import '../../../utils/app_color.dart';
-import '../../Tests/local_handler/hive_handler.dart';
-import 'domainProvider.dart';
+import '../Screens/Domain/screens/Models/domainModel.dart';
+import '../Screens/Domain/screens/domainProvider.dart';
+import '../Screens/Tests/local_handler/hive_handler.dart';
+import '../provider/courseProvider.dart';
+import '../tool/ShapeClipper.dart';
+import '../utils/app_color.dart';
 
-class DomainList extends StatefulWidget {
-  String domainName;
-  DomainList({Key key, this.domainName}) : super(key: key);
+class ProcessList extends StatefulWidget {
+  const ProcessList({Key key}) : super(key: key);
 
   @override
-  State<DomainList> createState() => _DomainListState();
+  State<ProcessList> createState() => _ProcessListState();
 }
 
-class _DomainListState extends State<DomainList> {
+class _ProcessListState extends State<ProcessList> {
+    Color clr;
+      List<DomainDetails> storedProcessList = [];
   @override
-  Color clr;
-  List<DomainDetails> storedDomainList = [];
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   Widget build(BuildContext context) {
-    Color _colorfromhex(String hexColor) {
+     Color _colorfromhex(String hexColor) {
       final hexCode = hexColor.replaceAll('#', '');
       return Color(int.parse('FF$hexCode', radix: 16));
     }
-
     return Scaffold(
       body: SingleChildScrollView(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(children: <Widget>[
+        child: Column(
+          children: [
+               Stack(children: <Widget>[
             ClipPath(
               clipper: ShapeClipper(),
               child: Container(
@@ -93,32 +86,32 @@ class _DomainListState extends State<DomainList> {
               );
             }),
           ]),
-          SizedBox(height: 20),
-          Container(
+            SizedBox(height: 20),
+            Container(
               child: ValueListenableBuilder<Box<String>>(
                   valueListenable: HiveHandler.getDomainDetailListener(),
                   builder: (context, value, child) {
                     CourseProvider cp = Provider.of(context, listen: false);
                     if (value.containsKey(cp.selectedMasterId.toString())) {
-                      List domainDetailList = jsonDecode(value.get(cp.selectedMasterId.toString()));
-                      storedDomainList = domainDetailList.map((e) => DomainDetails.fromjson(e)).toList();
-                      print("storedDomainList:::::: $storedDomainList");
+                      List processDetailList = jsonDecode(value.get(cp.selectedMasterId.toString()));
+                      storedProcessList = processDetailList.map((e) => DomainDetails.fromjson(e)).toList();
+                      print("storedDomainList:::::: $storedProcessList");
                     } else {
-                      storedDomainList = [];
+                      storedProcessList = [];
                     }
-                    if (storedDomainList == null) {
-                      storedDomainList = [];
+                    if (storedProcessList == null) {
+                      storedProcessList = [];
                     }
 
-                    return Consumer<DomainProvider>(builder: (context, dp, child) {
-                      return dp.domainApiCall
+                    return Consumer<ProcessDomainProvider>(builder: (context, pdp, child) {
+                      return pdp.processApiCall
                           ? Container(
                               height: MediaQuery.of(context).size.height * .6,
                               child: Center(
                                 child: CircularProgressIndicator.adaptive(),
                               ),
                             )
-                          : storedDomainList.length == 0
+                          : storedProcessList.length == 0
                               ? Container(
                                   height: MediaQuery.of(context).size.height * .5,
                                   child: Center(
@@ -137,46 +130,37 @@ class _DomainListState extends State<DomainList> {
                                   height: MediaQuery.of(context).size.height * .70,
                                   // width: MediaQuery.of(context).size.width * .95,
                                   child: ListView.builder(
-                                      itemCount: storedDomainList.length,
+                                      itemCount:5, 
+                                      // storedDomainList.length,
                                       itemBuilder: (context, index) {
-                                        if (index % 5 == 0) {
-                                          clr = Color(0xff9953C1);
-                                        } else if (index % 4 == 0) {
-                                          clr = Color(0xff3F9FC9);
-                                        } else if (index % 3 == 0) {
-                                          clr = Color(0xff3FC964);
-                                        } else if (index % 2 == 0) {
-                                          clr = Color(0xffC93F7F);
-                                        } else {
-                                          clr = Color(0xffDE682B);
-                                        }
+                                       
 
                                         return InkWell(
                                           onTap: () async {
-                                            print("storedDomainList[index].name====${storedDomainList[index].name}");
-                                            dp.setSelectedDomainId(storedDomainList[index].id);
-                                            dp.setSelectedDomainName(storedDomainList[index].name);
-                                            dp.setSelectedSubDomainName("");
+                                            // print("storedDomainList[index].name====${storedDomainList[index].name}");
+                                            // dp.setSelectedDomainId(storedDomainList[index].id);
+                                            // dp.setSelectedDomainName(storedDomainList[index].name);
+                                            // dp.setSelectedSubDomainName("");
 
-                                            if (storedDomainList[index].SubDomains == 0) {
-                                              print("is this truuu ");
-                                              dp.getTasksData(storedDomainList[index].id, "");
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => TaskList(
-                                                            subDomainName: "",
-                                                          )));
-                                            } else {
-                                              print("elseeeeee  is this truuu ");
-                                              dp.getSubDomainData(storedDomainList[index].id);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => SubDomain(
-                                                            dmnName: storedDomainList[index].name,
-                                                          )));
-                                            }
+                                            // if (storedDomainList[index].SubDomains == 0) {
+                                            //   print("is this truuu ");
+                                            //   dp.getTasksData(storedDomainList[index].id, "");
+                                            //   Navigator.push(
+                                            //       context,
+                                            //       MaterialPageRoute(
+                                            //           builder: (context) => TaskList(
+                                            //                 subDomainName: "",
+                                            //               )));
+                                            // } else {
+                                            //   print("elseeeeee  is this truuu ");
+                                            //   dp.getSubDomainData(storedDomainList[index].id);
+                                            //   Navigator.push(
+                                            //       context,
+                                            //       MaterialPageRoute(
+                                            //           builder: (context) => SubDomain(
+                                            //                 dmnName: storedDomainList[index].name,
+                                            //               )));
+                                            // }
                                           },
                                           child: Padding(
                                             padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
@@ -227,10 +211,10 @@ class _DomainListState extends State<DomainList> {
                                                         child: Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
-                                                            Text(
-                                                              storedDomainList[index].SubDomains == 1
-                                                                  ? "${storedDomainList[index].Tasks} Task"
-                                                                  : "${storedDomainList[index].Tasks} Tasks",
+                                                            Text("Process",
+                                                              // storedProcessList[index].SubDomains == 1
+                                                              //     ? "${storedProcessList[index].Tasks} Task"
+                                                              //     : "${storedProcessList[index].Tasks} Tasks",
                                                               style: TextStyle(
                                                                 fontSize: 14,
                                                                 color: Colors.grey,
@@ -245,7 +229,8 @@ class _DomainListState extends State<DomainList> {
                                                       Container(
                                                         width: MediaQuery.of(context).size.width * .55,
                                                         child: Text(
-                                                          storedDomainList[index].name,
+                                                          " Process name",
+                                                          // storedProcessList[index].name,
                                                           maxLines: 2,
                                                           style: TextStyle(
                                                             fontSize: 18,
@@ -282,8 +267,13 @@ class _DomainListState extends State<DomainList> {
 
                   
                   }))
-        ],
-      )),
+
+
+
+
+          ],
+        ),
+      ),
     );
   }
 }

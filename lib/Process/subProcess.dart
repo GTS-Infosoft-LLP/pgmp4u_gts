@@ -1,46 +1,45 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:hive/hive.dart';
-import 'package:pgmp4u/Screens/Domain/screens/tasksList.dart';
-import 'package:pgmp4u/tool/ShapeClipper.dart';
+import 'package:pgmp4u/Process/processDomainProvider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../provider/courseProvider.dart';
-import '../../../utils/app_color.dart';
-import '../../Tests/local_handler/hive_handler.dart';
-import 'Models/subDomainModel.dart';
-import 'domainProvider.dart';
+import '../Screens/Tests/local_handler/hive_handler.dart';
+import '../provider/courseProvider.dart';
+import '../tool/ShapeClipper.dart';
+import '../utils/app_color.dart';
 
-class SubDomain extends StatefulWidget {
-  final dmnName;
-  SubDomain({Key key, this.dmnName}) : super(key: key);
+class SubProcess extends StatefulWidget {
+  const SubProcess({Key key}) : super(key: key);
 
   @override
-  State<SubDomain> createState() => _SubDomainState();
+  State<SubProcess> createState() => _SubProcessState();
 }
 
-class _SubDomainState extends State<SubDomain> {
-  @override
-  Color clr;
-  List<SubDomainDetails> storedSubDomainList = [];
+class _SubProcessState extends State<SubProcess> {
+  //  List<SubDomainDetails> storedSubDomainList = [];
+   List storedSubProcessList = [];
+
   void initState() {
 
     super.initState();
   }
-
+  @override
   Widget build(BuildContext context) {
-    Color _colorfromhex(String hexColor) {
+     Color _colorfromhex(String hexColor) {
       final hexCode = hexColor.replaceAll('#', '');
       return Color(int.parse('FF$hexCode', radix: 16));
     }
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(children: <Widget>[
+ Stack(children: <Widget>[
               ClipPath(
                 clipper: ShapeClipper(),
                 child: Container(
@@ -80,7 +79,7 @@ class _SubDomainState extends State<SubDomain> {
                         child: Container(
                           width: MediaQuery.of(context).size.width * .8,
                           child: Text(
-                            "Subdomain",
+                            "SubProcess",
                             // cp.selectedCourseName,
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
@@ -94,11 +93,12 @@ class _SubDomainState extends State<SubDomain> {
                 );
               }),
             ]),
-            SizedBox(height: 20),
+          SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.only(left: 18.0),
               child: Text(
-                widget.dmnName,
+                "Process Name",
+                // widget.dmnName,
                 maxLines: 2,
                 style: TextStyle(
                   fontFamily: 'Roboto Regular',
@@ -107,32 +107,34 @@ class _SubDomainState extends State<SubDomain> {
                 ),
               ),
             ),
-            Container(
-                child: ValueListenableBuilder<Box<String>>(
-                    valueListenable: HiveHandler.getsubDomainDetailListener(),
-                    builder: (context, value, child) {
-                      print("is this even working...?");
-                      DomainProvider dp = Provider.of(context, listen: false);
-                      print("dp.selectedDomainId>>>>>>>> ${dp.selectedDomainId}");
+           Container(
+            child:ValueListenableBuilder<Box<String>>(
+              valueListenable: HiveHandler.getsubDomainDetailListener(),
+              builder:(context, value, child){
+                 ProcessDomainProvider pdp = Provider.of(context, listen: false);
+                      print("dp.selectedDomainId>>>>>>>> ${pdp.selectedProcessId}");
 
-                      if (value.containsKey(dp.selectedDomainId.toString())) {
+
+                          if (value.containsKey(pdp.selectedProcessId.toString())) {
                         print("not inside this condition");
-                        List subDomainDetailList = jsonDecode(value.get(dp.selectedDomainId.toString()));
-                        storedSubDomainList = subDomainDetailList.map((e) => SubDomainDetails.fromjson(e)).toList();
-                        print("storedSubDomainList:::::: $storedSubDomainList");
+                        List subProcessDetailList = jsonDecode(value.get(pdp.selectedProcessId.toString()));
+                        // storedSubProcessList = subProcessDetailList.map((e) => SubDomainDetails.fromjson(e)).toList();
+                        print("storedSubDomainList:::::: $storedSubProcessList");
                       } else {
                         print("else condutoin is true..");
-                        storedSubDomainList = [];
+                        storedSubProcessList = [];
                       }
-                      if (storedSubDomainList == null) {
-                        storedSubDomainList = [];
+                      if (storedSubProcessList == null) {
+                        storedSubProcessList = [];
                       }
-                      return Consumer<DomainProvider>(builder: (context, dp, child) {
-                        return dp.subDomainApiCall
+
+
+                          return Consumer<ProcessDomainProvider>(builder: (context, pdp, child) {
+                        return pdp.subProcessApiCall
                             ? Container(
                                 height: MediaQuery.of(context).size.height * .60,
                                 child: Center(child: CircularProgressIndicator.adaptive()))
-                            : storedSubDomainList.length == 0
+                            : storedSubProcessList.length == 0
                                 ? Container(
                                     height: MediaQuery.of(context).size.height * .5,
                                     child: Center(
@@ -151,34 +153,27 @@ class _SubDomainState extends State<SubDomain> {
                                     height: MediaQuery.of(context).size.height * .70,
                                     // width: MediaQuery.of(context).size.width * .95,
                                     child: ListView.builder(
-                                        itemCount: storedSubDomainList.length,
+                                        itemCount:5, 
+                                        // storedSubProcessList.length,
                                         itemBuilder: (context, index) {
-                                          if (index % 4 == 0) {
-                                            clr = Color(0xff3F9FC9);
-                                          } else if (index % 3 == 0) {
-                                            clr = Color(0xff3FC964);
-                                          } else if (index % 2 == 0) {
-                                            clr = Color(0xffDE682B);
-                                          } else {
-                                            clr = Color(0xffC93F7F);
-                                          }
+                                         
 
                                           return InkWell(
                                             onTap: () async {
-                                              DomainProvider dp=Provider.of(context,listen: false);
-                                              dp.setSelectedSubDomainId(storedSubDomainList[index].id);
-                                              dp.setSelectedSubDomainName(storedSubDomainList[index].name);
-                                              print("selected doadfdfmin id====${storedSubDomainList[index].id}");
-                                              print("selected doamin id====${dp.selectedDomainId}");
+                                              // ProcessDomainProvider pdp=Provider.of(context,listen: false);
+                                              // pdp.setSelectedSubProcessId(storedSubProcessList[index].id);
+                                              // dp.setSelectedSubDomainName(storedSubProcessList[index].name);
+                                              // print("selected doadfdfmin id====${storedSubProcessList[index].id}");
+                                              // print("selected doamin id====${pdp.selectedProcessId}");
 
-                                              dp.getTasksData(dp.selectedDomainId, storedSubDomainList[index].id);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => TaskList(
-                                                            subDomainName: storedSubDomainList[index].name,
-                                                            subDomainLable: storedSubDomainList[index].lable,
-                                                          )));
+                                              // dp.getTasksData(dp.selectedDomainId, storedSubProcessList[index].id);
+                                              // Navigator.push(
+                                              //     context,
+                                              //     MaterialPageRoute(
+                                              //         builder: (context) => TaskList(
+                                              //               subDomainName: storedSubProcessList[index].name,
+                                              //               subDomainLable: storedSubProcessList[index].lable,
+                                              //             )));
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 10),
@@ -229,10 +224,11 @@ class _SubDomainState extends State<SubDomain> {
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: [
                                                               Text(
-                                                                storedSubDomainList[index].Tasks == 1 ||
-                                                                        storedSubDomainList[index].Tasks == 0
-                                                                    ? "${storedSubDomainList[index].Tasks} task "
-                                                                    : "${storedSubDomainList[index].Tasks} tasks ",
+                                                                "sub-process task",
+                                                                // storedSubProcessList[index].Tasks == 1 ||
+                                                                //         storedSubProcessList[index].Tasks == 0
+                                                                //     ? "${storedSubProcessList[index].Tasks} task "
+                                                                //     : "${storedSubProcessList[index].Tasks} tasks ",
                                                                 style: TextStyle(
                                                                   fontSize: 14,
                                                                   color: Colors.grey,
@@ -247,7 +243,8 @@ class _SubDomainState extends State<SubDomain> {
                                                         Container(
                                                           width: MediaQuery.of(context).size.width * .55,
                                                           child: Text(
-                                                            storedSubDomainList[index].name,
+                                                            "sub process name",
+                                                            // storedSubProcessList[index].name,
                                                             maxLines: 2,
                                                             style: TextStyle(
                                                               fontSize: 18,
@@ -266,10 +263,17 @@ class _SubDomainState extends State<SubDomain> {
                                         }),
                                   );
                       });
-                    }))
+
+
+
+              } ) ,
+           )
+
+
           ],
         ),
       ),
+
     );
   }
 }
