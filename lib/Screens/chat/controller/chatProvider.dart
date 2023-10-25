@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:convert'as convert;
+import 'dart:convert' as convert;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
@@ -251,23 +251,23 @@ class ChatProvider extends ChangeNotifier {
         bodyyyy = "";
       }
       if (bodyyyy.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        ).whenComplete(() async {
-                 await cp.getTestDetails(cp.selectedMockId);
-        await cp.apiCall(cp.selectedTstPrcentId);
-         Response response=await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
-            headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
-               Map getit;
-              if (response.statusCode == 200) {
-        getit = convert.jsonDecode(response.body);
-        print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
-        await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.setPendindIndex.toString());
-     
-        
-      }
+        )
+            .whenComplete(() async {
+          await cp.getTestDetails(cp.selectedMockId);
+          await cp.apiCall(cp.selectedTstPrcentId);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.setPendindIndex.toString());
+          }
         });
         if (response.statusCode == 200) {
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
@@ -464,23 +464,23 @@ class ChatProvider extends ChangeNotifier {
         bodyyyy = "";
       }
       if (bodyyyy.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        ).whenComplete(() async {
-                 await cp.getTestDetails(cp.selectedMockId);
-        await cp.apiCall(cp.selectedTstPrcentId);
-         Response response=await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
-            headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
-               Map getit;
-              if (response.statusCode == 200) {
-        getit = convert.jsonDecode(response.body);
-        print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
-        await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.setPendindIndex.toString());
-     
-        
-      }
+        )
+            .whenComplete(() async {
+          await cp.getTestDetails(cp.selectedMockId);
+          await cp.apiCall(cp.selectedTstPrcentId);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.setPendindIndex.toString());
+          }
         });
         if (response.statusCode == 200) {
           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
@@ -496,7 +496,7 @@ class ChatProvider extends ChangeNotifier {
           body: jsonEncode({"page": currentPageIndex}));
 
       print("resqust: ${jsonEncode({"page": currentPageIndex})} ");
-
+      print("response do status codeeee>>${response.statusCode}");
       if (response.statusCode == 200) {
         print(jsonDecode(response.body));
         UserListResponseModel userListResponseTemp = UserListResponseModel.fromJson(jsonDecode(response.body));

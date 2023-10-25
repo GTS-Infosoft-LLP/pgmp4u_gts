@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 
 import '../../MockTest/model/taskQuesModel.dart';
@@ -461,15 +462,37 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                         _show
                                                             ? Container(
                                                                 margin: EdgeInsets.only(top: height * (9 / 800)),
-                                                                child: Text(
-                                                                  storedTaskQues[indexxx].explanation,
-                                                                  style: TextStyle(
-                                                                    fontFamily: 'Roboto Regular',
-                                                                    fontSize: width * (15 / 420),
-                                                                    color: Colors.black,
-                                                                    height: 1.6,
-                                                                  ),
-                                                                ),
+                                                                child:  Html(
+                                                                            data: storedTaskQues[indexxx].explanation,
+                                                                            style: {
+                                                                              "body": Style(
+                                                                                padding: EdgeInsets.only(top: 5),
+                                                                                fontFamily: 'Roboto Regular',
+
+                                                                                margin: EdgeInsets.zero,
+                                                                                color: Color(0xff000000),
+                                                                                // textAlign: TextAlign.left,
+                                                                                height: 1.6,
+                                                                                // maxLines: 7,
+                                                                                // textOverflow: TextOverflow.ellipsis,
+                                                                                fontSize: FontSize(width * (15 / 420),),
+                                                                              )
+                                                                            },
+                                                                          ),
+                                                                // Text(
+                                                                //   storedTaskQues[indexxx].explanation,
+                                                                //   style: TextStyle(
+                                                                //     fontFamily: 'Roboto Regular',
+                                                                //     fontSize: width * (15 / 420),
+                                                                //     color: Colors.black,
+                                                                //     height: 1.6,
+                                                                //   ),
+                                                                // ),
+
+
+
+
+
                                                               )
                                                             : Container()
                                                       ],

@@ -156,7 +156,7 @@ class CourseProvider extends ChangeNotifier {
   setSelectedCourseLable(String val) {
     Future.delayed(Duration.zero, () {
       selectedCourseLable = val;
-      print("selectedCourseLable:::: $selectedCourseLable");
+      // print("selectedCourseLable:::: $selectedCourseLable");
       notifyListeners();
     });
   }

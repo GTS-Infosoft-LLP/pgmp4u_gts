@@ -122,6 +122,7 @@ class _GroupListPageState extends State<GroupListPage> {
 
     if (cp.selectedCourseLable == null || cp.selectedCourseLable.isEmpty) {
       cp.setSelectedCourseLable(cp.course[0].lable);
+      // print("cp.selectedCourseLable>>>>>${cp.selectedCourseLable}");
     }
     // print("dhfjdf====${context.read<CourseProvider>().selectedCourseLable.toLowerCase()}");
 
