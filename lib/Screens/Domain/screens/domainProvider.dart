@@ -179,6 +179,8 @@ class DomainProvider extends ChangeNotifier {
         if (mapResponse['status'] == 400) {
           SubDomainList = [];
 
+          HiveHandler.addsubDomainDetailData(jsonEncode(SubDomainList), id.toString());
+
           return;
         }
 
@@ -189,6 +191,9 @@ class DomainProvider extends ChangeNotifier {
 
           SubDomainList = temp1.map((e) => SubDomainDetails.fromjson(e)).toList();
           print("SubDomainList=========$SubDomainList");
+        } else {
+          SubDomainList = [];
+          HiveHandler.addsubDomainDetailData(jsonEncode(SubDomainList), id.toString());
         }
       }
       print("respponse=== ${response.body}");
@@ -284,8 +289,10 @@ class DomainProvider extends ChangeNotifier {
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse====${mapResponse['status']}");
         if (mapResponse['status'] == 400) {
+          print("status code is 400");
           DomainList = [];
           print("DomainList=====$DomainList");
+          HiveHandler.addDomainDetailData(jsonEncode(DomainList), idMaster.toString());
 
           return;
         }
@@ -300,6 +307,9 @@ class DomainProvider extends ChangeNotifier {
           } catch (e) {
             print("errorr===========>>>>>>$e");
           }
+        } else {
+          DomainList = [];
+          HiveHandler.addDomainDetailData(jsonEncode(DomainList), idMaster.toString());
         }
       }
       print("respponse=== ${response.body}");
@@ -397,6 +407,7 @@ class DomainProvider extends ChangeNotifier {
         if (mapResponse['status'] == 400) {
           TaskList = [];
           print("TaskList====$TaskList");
+          HiveHandler.setTaskItemsData(key: id.toString(), value: jsonEncode(TaskList));
           return;
         }
 
@@ -411,6 +422,9 @@ class DomainProvider extends ChangeNotifier {
           print("TaskList=========$TaskList");
           taskCount = TaskList.length;
           print("taskCount======$taskCount");
+        } else {
+          TaskList = [];
+          HiveHandler.setTaskItemsData(key: id.toString(), value: jsonEncode(TaskList));
         }
       }
       print("respponse=== ${response.body}");
@@ -499,6 +513,7 @@ class DomainProvider extends ChangeNotifier {
         print("mapResponse data practiceTest====${mapResponse['data'][0]["practiceTest"]}");
         if (mapResponse['status'] == 400) {
           TaskDetailList = [];
+          HiveHandler.setTaskItemsData(key: id.toString(), value: jsonEncode(TaskDetailList));
           return;
         }
 
@@ -514,6 +529,9 @@ class DomainProvider extends ChangeNotifier {
           print("Tpq=======$TaskQues");
           TaskDetailList = temp1.map((e) => TaskDetails.fromjson(e)).toList();
           print("TaskDetailList=========${TaskDetailList[0].name}");
+        } else {
+          TaskDetailList = [];
+          HiveHandler.setTaskQuesData(key: id.toString(), value: jsonEncode(TaskDetailList));
         }
       }
       print("respponse=== ${response.body}");

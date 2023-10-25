@@ -52,7 +52,7 @@ class _PPTDataState extends State<PPTData> {
                 ),
                 Consumer<CourseProvider>(builder: (context, cp, child) {
                   return Container(
-                    padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
+                    padding: EdgeInsets.fromLTRB(20, 50, 10, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[

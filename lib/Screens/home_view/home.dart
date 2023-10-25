@@ -132,245 +132,14 @@ class _HomeViewState extends State<HomeView> {
 
     return Consumer<CourseProvider>(builder: (context, crp, child) {
       return Scaffold(
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
-        // floatingActionButton: crp.showFloatButton == 1
-        //     ? Padding(
-        //         padding: const EdgeInsets.only(
-        //           top: 10.5,
-        //         ),
-        //         child: Container(
-        //           height: Platform.isIOS
-        //               ? MediaQuery.of(context).size.height * .28
-        //               : MediaQuery.of(context).size.height * .25,
-        //           decoration: BoxDecoration(
-        //             // color: Colors.amber,
+        
+      
+      
 
-        //             color: Colors.white,
-        //             borderRadius: BorderRadius.circular(10),
-        //           ),
-        //           width: Platform.isIOS ? double.infinity : MediaQuery.of(context).size.width * .99,
-        //           child: Column(
-        //             children: [
-        //               SizedBox(
-        //                 height: 10,
-        //               ),
-        //               Padding(
-        //                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        //                 child: Row(
-        //                   children: [
-        //                     CircularCachedNetworkImage(
-        //                       imageUrl: user.image,
-        //                       size: 50,
-        //                       borderColor: Colors.white,
-        //                       borderWidth: 0,
-        //                     ),
-        //                     // CircleAvatar(
-        //                     //   radius: 24,
-        //                     //   backgroundColor: Colors.black,
-        //                     //   child: Container(
-        //                     //     height: 45,
-        //                     //     child: Image.asset(
-        //                     //       "assets/userIcon.png",
-        //                     //     ),
-        //                     //   ),
-        //                     // ),
-        //                     SizedBox(
-        //                       width: 10,
-        //                     ),
-        //                     Container(
-        //                       width: MediaQuery.of(context).size.width * .75,
-        //                       child: Text(
-        //                         "Over 95% of app users reported High Scores. Be one of them ! Get Started Now to boost your Knowledge!",
-        //                         style: TextStyle(
-        //                           color: Colors.black,
-        //                           fontSize: 16,
-        //                           fontFamily: 'Roboto Medium',
-        //                         ),
-        //                       ),
-        //                     ),
-        //                   ],
-        //                 ),
-        //               ),
-        //               SizedBox(
-        //                 height: 8,
-        //               ),
-        //               Row(
-        //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //                 children: [
-        //                   InkWell(
-        //                     onTap: () {
-        //                       crp.setFloatButton(0);
-        //                     },
-        //                     child: Container(
-        //                       decoration: BoxDecoration(
-        //                         color: Color.fromARGB(255, 221, 221, 221),
-        //                         borderRadius: BorderRadius.circular(2),
-        //                       ),
-        //                       height: 45.2,
-        //                       width: MediaQuery.of(context).size.width * .46,
-        //                       child: Center(
-        //                           child: Text(
-        //                         "Close",
-        //                         style: TextStyle(fontSize: 17),
-        //                       )),
-        //                     ),
-        //                   ),
-        //                   InkWell(
-        //                     onTap: () async {
-        //                       CourseProvider crs = Provider.of(context, listen: false);
 
-        //                       ProfileProvider pp = Provider.of(context, listen: false);
-        //                       pp.setSelectedContainer(2);
-        //                       SubscriptionProvider sp = Provider.of(context, listen: false);
-        //                       sp.SelectedPlanType = 3;
-        //                       await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
-        //                       sp.setSelectedIval(2);
-        //                       if (sp.durationPackData.isNotEmpty) {
-        //                         sp.setSelectedRadioVal(0);
-        //                       }
-        //                       sp.selectedIval = 2;
-        //                       if (crs.course.isNotEmpty) {
-        //                         crs.setSelectedCourseId(crs.course[0].id);
-        //                         crs.setSelectedCourseLable(storedCourse[0].lable);
-        //                       }
-        //                       Future.delayed(Duration(microseconds: 300), () {
-        //                         Navigator.push(
-        //                             context,
-        //                             MaterialPageRoute(
-        //                                 builder: (context) => Subscriptionpg(
-        //                                       showDrpDown: 1,
-        //                                       showFreeTrial: 0,
-        //                                     )));
-        //                       });
-        //                     },
-        //                     child: Container(
-        //                       decoration: BoxDecoration(
-        //                         color: Color.fromARGB(255, 221, 221, 221),
-        //                         borderRadius: BorderRadius.circular(2),
-        //                       ),
-        //                       height: 45.2,
-        //                       width: MediaQuery.of(context).size.width * .46,
-        //                       child: Center(
-        //                           child: Text(
-        //                         "See Plans",
-        //                         style: TextStyle(fontSize: 17),
-        //                       )),
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //               SizedBox(
-        //                 height: 4.6,
-        //               ),
-        //               Padding(
-        //                 padding: const EdgeInsets.symmetric(horizontal: 0.0),
-        //                 child: InkWell(
-        //                   onTap: () async {
-        //                     ProfileProvider pp = Provider.of(context, listen: false);
 
-        //                     CourseProvider crs = Provider.of(context, listen: false);
-        //                     pp.setSelectedContainer(2);
-        //                     SubscriptionProvider sp = Provider.of(context, listen: false);
-        //                     sp.SelectedPlanType = 3;
-        //                     await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
-        //                     sp.setSelectedIval(2);
-        //                     if (sp.durationPackData.isNotEmpty) {
-        //                       // sp.setSelectedRadioVal(0);
-        //                     }
-        //                     sp.selectedIval = 2;
-        //                     if (crs.course.isNotEmpty) {
-        //                       crs.setSelectedCourseId(crs.course[0].id);
-        //                       crs.setSelectedCourseLable(storedCourse[0].lable);
-        //                     }
-        //                     pp.updateLoader(true);
 
-        //                     Future.delayed(Duration(milliseconds: 300), () {
-        //                       pp.updateLoader(false);
-        //                       Navigator.push(
-        //                           context,
-        //                           MaterialPageRoute(
-        //                               builder: (context) => Subscriptionpg(
-        //                                     showDrpDown: 1,
-        //                                     showFreeTrial: 1,
-        //                                   )));
-        //                     });
-        //                   },
-        //                   child: Container(
-        //                     height: 61.3,
-        //                     decoration: BoxDecoration(
-        //                       color: Color.fromARGB(255, 5, 0, 0),
-        //                       gradient: LinearGradient(
-        //                           begin: Alignment.topLeft,
-        //                           end: Alignment.bottomRight,
-        //                           colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-        //                       borderRadius: BorderRadius.circular(10),
-        //                     ),
-        //                     width: MediaQuery.of(context).size.width * .95,
-        //                     child: Row(
-        //                       children: [
-        //                         SizedBox(
-        //                           width: 15,
-        //                         ),
-        //                         Container(
-        //                           height: 34,
-        //                           child: Image.asset(
-        //                             "assets/flagIcon.png",
-        //                           ),
-        //                         ),
-        //                         SizedBox(
-        //                           width: 15,
-        //                         ),
-        //                         Column(
-        //                           mainAxisAlignment: MainAxisAlignment.center,
-        //                           crossAxisAlignment: CrossAxisAlignment.start,
-        //                           children: [
-        //                             SizedBox(
-        //                                 // height: 10,
-        //                                 ),
-        //                             // Text(
-        //                             //   "",
-        //                             //   // "Make the most of Genius",
-        //                             //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.green),
-        //                             // ),
-        //                             Container(
-        //                               // color: Colors.amber,
-        //                               width: MediaQuery.of(context).size.width * .63,
-        //                               child: Text(
-        //                                 "Start with free trial for 3 days",
-        //                                 style:
-        //                                     TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
-        //                                 // style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
-        //                               ),
-        //                             ),
-        //                           ],
-        //                         ),
-        //                         new Spacer(),
-
-        //                         Padding(
-        //                           padding: const EdgeInsets.only(right: 15.0),
-        //                           child: Icon(
-        //                             Icons.east,
-        //                             // Icons.arrow_forward_ios,
-        //                             size: 26,
-        //                             // color: Colors.green,
-        //                             color: Colors.white,
-        //                           ),
-        //                         )
-        //                         // Center(
-        //                         //     child: Text(
-        //                         //   "Make the most of Genius\n Start with free trial for 3 days",
-        //                         //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
-        //                         // )),
-        //                       ],
-        //                     ),
-        //                   ),
-        //                 ),
-        //               )
-        //             ],
-        //           ),
-        //         ),
-        //       )
-        //     : SizedBox(),
+   
         body: Stack(
           children: [
             crp.showFloatButton == 1
@@ -420,16 +189,28 @@ class _HomeViewState extends State<HomeView> {
                                             width: 10,
                                           ),
                                           Container(
-                                            width: MediaQuery.of(context).size.width * .75,
-                                            child: Text(
-                                              "Over 95% of app users reported High Scores. Be one of them ! Get Started Now to boost your Knowledge!",
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                                fontFamily: 'Roboto Medium',
+                                              width: MediaQuery.of(context).size.width * .75,
+                                              child: RichText(
+                                                  // overflow: TextOverflow.ellipsis,
+                                                  // maxLines: 2,
+                                                  // textAlign: TextAlign.center,
+                                                  text: TextSpan(children: <TextSpan>[
+                                                TextSpan(
+                                                  text:
+                                                      "Over 95% of app users reported High Scores. Be one of them ! Get Started Now to boost your Knowledge!",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 17,
+                                                    fontFamily: 'Roboto Medium',
+                                                    // fontWeight: FontWeight.bold
+
+                                                    // fontFamily: AppFont.poppinsRegular,
+                                                  ),
+                                                ),
+                                              ]))
+
+                                       
                                               ),
-                                            ),
-                                          ),
                                         ],
                                       ),
                                     ),
@@ -452,10 +233,37 @@ class _HomeViewState extends State<HomeView> {
                                           height: 45.2,
                                           width: MediaQuery.of(context).size.width * .46,
                                           child: Center(
-                                              child: Text(
-                                            "Close",
-                                            style: TextStyle(fontSize: 17),
-                                          )),
+                                              child: 
+                                              
+                                              
+                                          //     Text(
+                                          //   "Close",
+                                          //   style: TextStyle(fontSize: 17),
+                                          // )
+                                          
+                                          
+                                          RichText(
+                                                  // overflow: TextOverflow.ellipsis,
+                                                  // maxLines: 2,
+                                                  // textAlign: TextAlign.left,
+                                                  text: TextSpan(children: <TextSpan>[
+                                                TextSpan(
+                                                  text:    "Close",
+                                                 
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 17,
+                                                    // fontFamily: 'Roboto Regular',
+                                                    // fontWeight: FontWeight.bold
+
+                                                    // fontFamily: AppFont.poppinsRegular,
+                                                  ),
+                                                ),
+                                              ]))
+                                          
+                                          
+                                          
+                                          ),
                                         ),
                                       ),
                                       InkWell(
@@ -494,10 +302,38 @@ class _HomeViewState extends State<HomeView> {
                                           height: 45.2,
                                           width: MediaQuery.of(context).size.width * .46,
                                           child: Center(
-                                              child: Text(
-                                            "See Plans",
-                                            style: TextStyle(fontSize: 17),
-                                          )),
+                                              child:
+                                              
+                                              
+                                           
+                                          
+                                          
+                                          
+                                             RichText(
+                                                  // overflow: TextOverflow.ellipsis,
+                                                  // maxLines: 2,
+                                                  // textAlign: TextAlign.left,
+                                                  text: TextSpan(children: <TextSpan>[
+                                                TextSpan(
+                                                  text:    "See Plans",
+                                                 
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 17,
+                                                    // fontFamily: 'Roboto Regular',
+                                                    // fontWeight: FontWeight.bold
+
+                                                    // fontFamily: AppFont.poppinsRegular,
+                                                  ),
+                                                ),
+                                              ]))
+                                          
+                                          
+                                          
+                                          
+                                          
+                                          
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -561,13 +397,24 @@ class _HomeViewState extends State<HomeView> {
                                           width: 15,
                                         ),
                                         Container(
-                                          width: MediaQuery.of(context).size.width * .63,
-                                          child: Text(
-                                            "Start with free trial for 3 days",
-                                            style: TextStyle(
-                                                fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
-                                          ),
-                                        ),
+                                            width: MediaQuery.of(context).size.width * .63,
+                                            child: RichText(
+                                                // overflow: TextOverflow.ellipsis,
+                                                // maxLines: 2,
+                                                // textAlign: TextAlign.center,
+                                                text: TextSpan(children: <TextSpan>[
+                                              TextSpan(
+                                                text: "Start with free trial for 3 days",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 17,
+                                                  fontFamily: 'Roboto Medium',
+                                                  // fontWeight: FontWeight.bold
+
+                                                  // fontFamily: AppFont.poppinsRegular,
+                                                ),
+                                              ),
+                                            ]))),
                                         new Spacer(),
                                         Padding(
                                           padding: const EdgeInsets.only(right: 15.0),
@@ -604,11 +451,30 @@ class _HomeViewState extends State<HomeView> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
-                                      Text(
-                                        "Hey, " + "${user.name}",
-                                        style:
-                                            TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold),
-                                      ),
+                                   
+
+
+      RichText(
+                                                  // overflow: TextOverflow.ellipsis,
+                                                  // maxLines: 2,
+                                                  // textAlign: TextAlign.left,
+                                                  text: TextSpan(children: <TextSpan>[
+                                                TextSpan(
+                                                  text:    "Hey, " + "${user.name}",
+                                                 
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 22,
+                                                    // fontFamily: 'Roboto Regular',
+                                                    fontWeight: FontWeight.bold
+
+                                                    // fontFamily: AppFont.poppinsRegular,
+                                                  ),
+                                                ),
+                                              ])),
+
+
+
                                       CircularCachedNetworkImage(
                                         imageUrl: user.image,
                                         size: (topHeight / 4) * 2,
@@ -624,26 +490,58 @@ class _HomeViewState extends State<HomeView> {
                                     padding: const EdgeInsets.only(left: 32.0, right: 20),
                                     child: Column(
                                       children: [
-                                        Text(
-                                          "Over 95% of app users reported High Scores \n",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Roboto Bold',
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        cp.showFloatButton == 0
-                                            ? Text(
-                                                "Be one of them ! Get Started NOW to boost your Knowledge!",
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontFamily: 'Roboto Regular',
-                                                  color: Colors.white,
+                                   
+
+RichText(
+                                                  // overflow: TextOverflow.ellipsis,
+                                                  // maxLines: 2,
+                                                  textAlign: TextAlign.left,
+                                                  text: TextSpan(children: <TextSpan>[
+                                                TextSpan(
+                                                  text:
+                                                      "Over 95% of app users reported High Scores. Be one of them ! Get Started Now to boost your Knowledge!",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 18,
+                                                    fontFamily:'Roboto Bold',
+                                                    // fontWeight: FontWeight.bold
+
+                                                    // fontFamily: AppFont.poppinsRegular,
+                                                  ),
                                                 ),
-                                              )
+                                              ])),
+
+
+
+
+                                        cp.showFloatButton == 0
+                                            ?
+                                            
+
+RichText(
+                                                  // overflow: TextOverflow.ellipsis,
+                                                  // maxLines: 2,
+                                                  textAlign: TextAlign.left,
+                                                  text: TextSpan(children: <TextSpan>[
+                                                TextSpan(
+                                                  text: "Be one of them ! Get Started NOW to boost your Knowledge!",
+                                                 
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 17,
+                                                    fontFamily: 'Roboto Regular',
+                                                    // fontWeight: FontWeight.bold
+
+                                                    // fontFamily: AppFont.poppinsRegular,
+                                                  ),
+                                                ),
+                                              ]))
+
+
+
+
+
+
                                             : Text(""),
                                         SizedBox(
                                           height: 15,
@@ -798,20 +696,40 @@ class _HomeViewState extends State<HomeView> {
                                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                                   children: [
-                                                                    Text(
-                                                                      storedCourse[index].lable,
-                                                                      style: TextStyle(
-                                                                        fontSize: 14,
-                                                                        color: Colors.grey,
+                                                                    RichText(
+                                                                        // overflow: TextOverflow.ellipsis,
+                                                                        // maxLines: 2,
+                                                                        // textAlign: TextAlign.center,
+                                                                        text: TextSpan(children: <TextSpan>[
+                                                                      TextSpan(
+                                                                        text: storedCourse[index].lable,
+                                                                        style: TextStyle(
+                                                                          color: Colors.grey,
+                                                                          fontSize: 14,
+                                                                          // fontFamily: 'Roboto Medium',
+                                                                          // fontWeight: FontWeight.bold
+
+                                                                          // fontFamily: AppFont.poppinsRegular,
+                                                                        ),
                                                                       ),
-                                                                    ),
-                                                                    Text(
-                                                                      storedCourse[index].course,
-                                                                      style: TextStyle(
-                                                                        fontSize: 18,
-                                                                        color: Colors.black,
+                                                                    ])),
+                                                                    RichText(
+                                                                        // overflow: TextOverflow.ellipsis,
+                                                                        // maxLines: 2,
+                                                                        // textAlign: TextAlign.center,
+                                                                        text: TextSpan(children: <TextSpan>[
+                                                                      TextSpan(
+                                                                        text: storedCourse[index].course,
+                                                                        style: TextStyle(
+                                                                          color: Colors.black,
+                                                                          fontSize: 18,
+                                                                          // fontFamily: 'Roboto Medium',
+                                                                          // fontWeight: FontWeight.bold
+
+                                                                          // fontFamily: AppFont.poppinsRegular,
+                                                                        ),
                                                                       ),
-                                                                    ),
+                                                                    ])),
                                                                   ],
                                                                 ),
                                                                 trailing: storedCourse[index].isSubscribed == 0

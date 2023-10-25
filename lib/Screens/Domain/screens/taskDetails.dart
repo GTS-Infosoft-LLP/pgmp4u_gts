@@ -140,7 +140,7 @@ class _TaskDetailState extends State<TaskDetail> {
                 ),
                 Consumer<DomainProvider>(builder: (context, dp, child) {
                   return Container(
-                    padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
+                    padding: EdgeInsets.fromLTRB(20, 50, 10, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
@@ -177,8 +177,7 @@ class _TaskDetailState extends State<TaskDetail> {
                     ),
                   );
                 }),
-              ]
-              ),
+              ]),
               SizedBox(height: 20),
               Consumer<DomainProvider>(builder: (context, dp, child) {
                 return dp.taskDetailApiCall
@@ -208,7 +207,7 @@ class _TaskDetailState extends State<TaskDetail> {
                     if (value.containsKey(dp.selectedDomainId.toString())) {
                       print("containsssss keyyyyy");
                       List taskList = jsonDecode(value.get(dp.selectedDomainId.toString()));
-                     
+
                       storedTask = taskList.map((e) => TaskDetails.fromjson(e)).toList();
                       print("storedTasks storedTaskQues List:::::: $storedTask");
                       // print("storedTasks List  keywrod:::::: ${taskList[0]["Keywords"]}");
@@ -307,8 +306,7 @@ class _TaskDetailState extends State<TaskDetail> {
               )
             ],
           ),
-        )
-        );
+        ));
   }
 }
 
@@ -388,25 +386,23 @@ Widget TaskImg(BuildContext context, index, TaskDetails tdo) {
           padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 10),
           child: InkWell(
             onTap: () async {
-
-bool result = await checkInternetConn();
-if (result) {
-    Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ImageDispalyScreen(
-                            quesImages: dp.TaskDetailList[index].Image,
-                          )));
-}else{
-                      EasyLoading.showInfo("Please check your Internet Connection");
-
-}
-
-          
+              bool result = await checkInternetConn();
+              if (result) {
+                print("tdo.Image>>>>>>>>>${tdo.Image}");
+                // print("dp.TaskDetailList[index].Image>>>>>>>>>${dp.TaskDetailList[index].Image}");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ImageDispalyScreen(quesImages: tdo.Image
+                            // dp.TaskDetailList[index].Image,
+                            )));
+              } else {
+                EasyLoading.showInfo("Please check your Internet Connection");
+              }
             },
             child: Container(
-              // width: MediaQuery.of(context).size.width * .92,
-              // height: MediaQuery.of(context).size.height * .2,
+              width: MediaQuery.of(context).size.width * .92,
+              height: MediaQuery.of(context).size.height * .2,
               decoration: BoxDecoration(
                 color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(20),
@@ -441,17 +437,17 @@ if (result) {
   );
 }
 
-  Future checkInternetConn() async {
-    bool result = await InternetConnectionChecker().hasConnection;
-    print("result while call fun $result");
-    if (result == false) {
-      Future.delayed(Duration(seconds: 1), () async {
-        //  await EasyLoading.showToast("Internet Not Connected",toastPosition: EasyLoadingToastPosition.bottom);
-      });
-      return result;
-    } else {}
+Future checkInternetConn() async {
+  bool result = await InternetConnectionChecker().hasConnection;
+  print("result while call fun $result");
+  if (result == false) {
+    Future.delayed(Duration(seconds: 1), () async {
+      //  await EasyLoading.showToast("Internet Not Connected",toastPosition: EasyLoadingToastPosition.bottom);
+    });
     return result;
-  }
+  } else {}
+  return result;
+}
 
 void showImage(context, imageee) {
   showDialog(

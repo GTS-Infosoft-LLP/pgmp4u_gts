@@ -206,6 +206,8 @@ class _ProfileState extends State<Profile> {
           onTap: context.watch<ProfileProvider>().subscriptionApiCalling
               ? null
               : () async {
+                  CourseProvider cp = Provider.of(context, listen: false);
+                  print("cp.course>>>>>>>${cp.course.length}");
                   bool result = await checkInternetConn();
                   print("result internet  $result");
                   if (result) {
@@ -221,7 +223,6 @@ class _ProfileState extends State<Profile> {
                       );
                     }
 
-                    CourseProvider cp = Provider.of(context, listen: false);
                     if (cp.course.isEmpty) {
                       GFToast.showToast(
                         'No Course Available',
@@ -303,23 +304,41 @@ class _ProfileState extends State<Profile> {
                             children: [
                               Container(
                                 margin: EdgeInsets.only(bottom: 6),
-                                child: Text(
-                                  "${_user.name}",
+                                child: RichText(
+                                    // overflow: TextOverflow.ellipsis,
+                                    // maxLines: 2,
+                                    // textAlign: TextAlign.center,
+                                    text: TextSpan(children: <TextSpan>[
+                                  TextSpan(
+                                    text: "${_user.name}",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: width * (18 / 420),
+                                      fontFamily: 'Roboto Medium',
+                                      // fontWeight: FontWeight.bold
+
+                                      // fontFamily: AppFont.poppinsRegular,
+                                    ),
+                                  ),
+                                ])),
+                              ),
+                              RichText(
+                                  // overflow: TextOverflow.ellipsis,
+                                  // maxLines: 2,
+                                  // textAlign: TextAlign.center,
+                                  text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                  text: "${_user.email ?? ""}",
                                   style: TextStyle(
-                                    fontFamily: 'Roboto Medium',
-                                    fontSize: width * (18 / 420),
                                     color: Colors.white,
+                                    fontSize: width * (12 / 420),
+                                    fontFamily: 'Roboto Medium',
+                                    // fontWeight: FontWeight.bold
+
+                                    // fontFamily: AppFont.poppinsRegular,
                                   ),
                                 ),
-                              ),
-                              Text(
-                                "${_user.email ?? ""}",
-                                style: TextStyle(
-                                  fontFamily: 'Roboto Medium',
-                                  fontSize: width * (12 / 420),
-                                  color: Colors.white,
-                                ),
-                              )
+                              ])),
                             ],
                           ),
 
@@ -382,6 +401,14 @@ class _ProfileState extends State<Profile> {
                               children: [
                                 InkWell(
                                   onTap: () {
+                                    if (cp.mockCrsDropList.isEmpty) {
+                                      GFToast.showToast(
+                                        // 'No Course is purchased yet...',
+                                        "Subscribe to a course or attempt mock test",
+                                        context,
+                                        toastPosition: GFToastPosition.CENTER,
+                                      );
+                                    }
                                     if (cp.course.isEmpty) {
                                       print("list is empty show popup");
 
@@ -441,27 +468,45 @@ class _ProfileState extends State<Profile> {
                                                 child: Column(
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: [
-                                                    Text(
-                                                      "Mock Test",
-                                                      style: TextStyle(
-                                                          fontFamily: 'Roboto Medium',
+                                                    RichText(
+                                                        text: TextSpan(children: <TextSpan>[
+                                                      TextSpan(
+                                                        text: "Mock Test",
+                                                        style: TextStyle(
                                                           color: Colors.white,
-                                                          fontSize: 18),
-                                                    ),
-                                                    Text(
-                                                      pp.dayDiff == "NaN" ? "0.0%" : pp.dayDiff + "%",
-                                                      style: TextStyle(
+                                                          fontSize: 18,
                                                           fontFamily: 'Roboto Medium',
+                                                        ),
+                                                      ),
+                                                    ])),
+                                                    RichText(
+                                                        text: TextSpan(children: <TextSpan>[
+                                                      TextSpan(
+                                                        text: pp.dayDiff == "NaN" ? "0.0%" : pp.dayDiff + "%",
+                                                        style: TextStyle(
                                                           color: Colors.white,
-                                                          fontSize: 25),
-                                                    ),
-                                                    Text(
-                                                      "Average Score",
-                                                      style: TextStyle(
+                                                          fontSize: 28,
                                                           fontFamily: 'Roboto Medium',
+                                                          // fontWeight: FontWeight.bold
+
+                                                          // fontFamily: AppFont.poppinsRegular,
+                                                        ),
+                                                      ),
+                                                    ])),
+                                                    RichText(
+                                                        text: TextSpan(children: <TextSpan>[
+                                                      TextSpan(
+                                                        text: "Average Score",
+                                                        style: TextStyle(
                                                           color: Colors.white,
-                                                          fontSize: 18),
-                                                    ),
+                                                          fontSize: 18,
+                                                          fontFamily: 'Roboto Medium',
+                                                          // fontWeight: FontWeight.bold
+
+                                                          // fontFamily: AppFont.poppinsRegular,
+                                                        ),
+                                                      ),
+                                                    ])),
                                                     Text(
                                                       "",
                                                       style: TextStyle(
@@ -507,50 +552,72 @@ class _ProfileState extends State<Profile> {
                                                       ? Padding(
                                                           padding: const EdgeInsets.all(8.0),
                                                           child: Center(
-                                                            child: Text(
-                                                              pp.avgScore == '0'
-                                                                  ? "Tap to select exam date"
-                                                                  : "Exam Date",
-                                                              textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  fontFamily: 'Roboto Medium',
+                                                            child: RichText(
+                                                                text: TextSpan(children: <TextSpan>[
+                                                              TextSpan(
+                                                                text: pp.avgScore == '0'
+                                                                    ? "Tap to select exam date"
+                                                                    : "Exam Date",
+                                                                style: TextStyle(
                                                                   color: Colors.white,
-                                                                  fontSize: 18),
-                                                            ),
+                                                                  fontSize: 18,
+                                                                  fontFamily: 'Roboto Medium',
+                                                                ),
+                                                              ),
+                                                            ])),
                                                           ),
                                                         )
                                                       : Column(
                                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                           children: [
-                                                            Text(
-                                                              "Exam Date",
-                                                              textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                  fontFamily: 'Roboto Medium',
-                                                                  color: Colors.white,
-                                                                  fontSize: 18),
-                                                            ),
-                                                            Text(
-                                                              pp.avgScore.toString(),
-                                                              style: TextStyle(
-                                                                  fontFamily: 'Roboto Medium',
-                                                                  color: Colors.white,
-                                                                  fontSize: 25),
-                                                            ),
-                                                            Text(
-                                                              "Days Left",
-                                                              style: TextStyle(
-                                                                  fontFamily: 'Roboto Medium',
-                                                                  color: Colors.white,
-                                                                  fontSize: 18),
-                                                            ),
-                                                            Text(
-                                                              "(Tap to Change)",
-                                                              style: TextStyle(
-                                                                  fontFamily: 'Roboto Medium',
-                                                                  color: Colors.white,
-                                                                  fontSize: 10),
-                                                            ),
+                                                            RichText(
+                                                                textAlign: TextAlign.center,
+                                                                text: TextSpan(children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text: "Exam Date",
+                                                                    style: TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontSize: 18,
+                                                                      fontFamily: 'Roboto Medium',
+                                                                    ),
+                                                                  ),
+                                                                ])),
+                                                            RichText(
+                                                                textAlign: TextAlign.center,
+                                                                text: TextSpan(children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text: pp.avgScore.toString(),
+                                                                    style: TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontSize: 25,
+                                                                      fontFamily: 'Roboto Medium',
+                                                                    ),
+                                                                  ),
+                                                                ])),
+                                                            RichText(
+                                                                textAlign: TextAlign.center,
+                                                                text: TextSpan(children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text: "Days Left",
+                                                                    style: TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontSize: 18,
+                                                                      fontFamily: 'Roboto Medium',
+                                                                    ),
+                                                                  ),
+                                                                ])),
+                                                            RichText(
+                                                                textAlign: TextAlign.center,
+                                                                text: TextSpan(children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text: "(Tap to Change)",
+                                                                    style: TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontSize: 10,
+                                                                      fontFamily: 'Roboto Medium',
+                                                                    ),
+                                                                  ),
+                                                                ])),
                                                           ],
                                                         ),
                                                 ),
@@ -582,14 +649,17 @@ class _ProfileState extends State<Profile> {
                                             size: width * (26 / 420),
                                             color: _colorfromhex("#ABAFD1"),
                                           ),
-                                          Text(
-                                            '   Notifications',
-                                            style: TextStyle(
-                                              fontFamily: 'Roboto Medium',
-                                              fontSize: width * (18 / 420),
-                                              color: Colors.black,
+                                          RichText(
+                                              text: TextSpan(children: <TextSpan>[
+                                            TextSpan(
+                                              text: '   Notifications',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: width * (18 / 420),
+                                                fontFamily: 'Roboto Medium',
+                                              ),
                                             ),
-                                          ),
+                                          ])),
                                         ],
                                       ),
                                       Switch(
@@ -650,34 +720,33 @@ class _ProfileState extends State<Profile> {
                                                 child: Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    Text(
-                                                      pp.isStudyRemAdded == 0
-                                                          ? '   Set Study Time'
-                                                          : '   Study timer set at: ',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Roboto Medium',
-                                                        // fontSize: 16,
-                                                        fontSize: width * (18 / 420),
-                                                        color: Colors.black,
-                                                      ),
-
-                                                      //          style: TextStyle(
-                                                      //   fontFamily: 'Roboto Medium',
-                                                      //   fontSize: width * (18 / 420),
-                                                      //   color: Colors.black,
-                                                      // ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(right: 18.0),
-                                                      child: Text(
-                                                        pp.isStudyRemAdded == 0 ? "" : pp.studyTime,
-                                                        maxLines: 2,
+                                                    RichText(
+                                                        // textAlign: TextAlign.center,
+                                                        text: TextSpan(children: <TextSpan>[
+                                                      TextSpan(
+                                                        text: pp.isStudyRemAdded == 0
+                                                            ? '   Set Study Time'
+                                                            : '   Study timer set at: ',
                                                         style: TextStyle(
-                                                          fontFamily: 'Roboto Medium',
-                                                          fontSize: width * (18 / 420),
                                                           color: Colors.black,
+                                                          fontSize: width * (18 / 420),
+                                                          fontFamily: 'Roboto Medium',
                                                         ),
                                                       ),
+                                                    ])),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(right: 18.0),
+                                                      child: RichText(
+                                                          text: TextSpan(children: <TextSpan>[
+                                                        TextSpan(
+                                                          text: pp.isStudyRemAdded == 0 ? "" : pp.studyTime,
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: width * (18 / 420),
+                                                            fontFamily: 'Roboto Medium',
+                                                          ),
+                                                        ),
+                                                      ])),
                                                     ),
                                                   ],
                                                 ),
@@ -716,14 +785,17 @@ class _ProfileState extends State<Profile> {
                                               size: width * (26 / 420),
                                               color: _colorfromhex("#ABAFD1"),
                                             ),
-                                            Text(
-                                              '   Question of the day',
-                                              style: TextStyle(
-                                                fontFamily: 'Roboto Medium',
-                                                fontSize: width * (18 / 420),
-                                                color: Colors.black,
+                                            RichText(
+                                                text: TextSpan(children: <TextSpan>[
+                                              TextSpan(
+                                                text: '   Question of the day',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: width * (18 / 420),
+                                                  fontFamily: 'Roboto Medium',
+                                                ),
                                               ),
-                                            ),
+                                            ])),
                                           ],
                                         ),
                                         Icon(
@@ -759,14 +831,17 @@ class _ProfileState extends State<Profile> {
                                               size: width * (26 / 420),
                                               color: _colorfromhex("#ABAFD1"),
                                             ),
-                                            Text(
-                                              '   Announcements',
-                                              style: TextStyle(
-                                                fontFamily: 'Roboto Medium',
-                                                fontSize: width * (18 / 420),
-                                                color: Colors.black,
+                                            RichText(
+                                                text: TextSpan(children: <TextSpan>[
+                                              TextSpan(
+                                                text: '   Announcements',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: width * (18 / 420),
+                                                  fontFamily: 'Roboto Medium',
+                                                ),
                                               ),
-                                            ),
+                                            ])),
                                           ],
                                         ),
                                         Icon(
@@ -797,14 +872,17 @@ class _ProfileState extends State<Profile> {
                                               size: width * (26 / 420),
                                               color: _colorfromhex("#ABAFD1"),
                                             ),
-                                            Text(
-                                              '   Delete Account',
-                                              style: TextStyle(
-                                                fontFamily: 'Roboto Medium',
-                                                fontSize: width * (18 / 420),
-                                                color: Colors.black,
+                                            RichText(
+                                                text: TextSpan(children: <TextSpan>[
+                                              TextSpan(
+                                                text: '   Delete Account',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: width * (18 / 420),
+                                                  fontFamily: 'Roboto Medium',
+                                                ),
                                               ),
-                                            ),
+                                            ])),
                                           ],
                                         ),
                                         Icon(
@@ -854,14 +932,17 @@ class _ProfileState extends State<Profile> {
                                               size: width * (26 / 420),
                                               color: _colorfromhex("#ABAFD1"),
                                             ),
-                                            Text(
-                                              '   Cancel Subscription',
-                                              style: TextStyle(
-                                                fontFamily: 'Roboto Medium',
-                                                fontSize: width * (18 / 420),
-                                                color: Colors.black,
+                                            RichText(
+                                                text: TextSpan(children: <TextSpan>[
+                                              TextSpan(
+                                                text: '   Cancel Subscription',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: width * (18 / 420),
+                                                  fontFamily: 'Roboto Medium',
+                                                ),
                                               ),
-                                            ),
+                                            ])),
                                           ],
                                         ),
                                         Icon(
@@ -895,14 +976,17 @@ class _ProfileState extends State<Profile> {
                                               size: width * (26 / 420),
                                               color: _colorfromhex("#ABAFD1"),
                                             ),
-                                            Text(
-                                              '   Log Out',
-                                              style: TextStyle(
-                                                fontFamily: 'Roboto Medium',
-                                                fontSize: width * (18 / 420),
-                                                color: Colors.black,
+                                            RichText(
+                                                text: TextSpan(children: <TextSpan>[
+                                              TextSpan(
+                                                text: '   Log Out',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: width * (18 / 420),
+                                                  fontFamily: 'Roboto Medium',
+                                                ),
                                               ),
-                                            ),
+                                            ])),
                                           ],
                                         ),
                                         Icon(
@@ -945,15 +1029,16 @@ class _ProfileState extends State<Profile> {
               title: Container(
                 //color: Colors.amber,
                 width: MediaQuery.of(context).size.width * .95,
-                child: Text(
-                    !val ? "Are you sure you want to disable notifications?" : "Notifications enabled successfully",
-                    //textAlign: TextAlign.center,
+                child: RichText(
+                    // textAlign: TextAlign.center,
+                    text: TextSpan(children: <TextSpan>[
+                  TextSpan(
+                    text:
+                        !val ? "Are you sure you want to disable notifications?" : "Notifications enabled successfully",
                     style: TextStyle(
-                      fontSize: 18,
-                      fontFamily: 'Roboto Medium',
-                      fontWeight: FontWeight.w200,
-                      color: Colors.black,
-                    )),
+                        color: Colors.black, fontSize: 18, fontFamily: 'Roboto Medium', fontWeight: FontWeight.w200),
+                  ),
+                ])),
               ),
               actions: [
                 !val
@@ -983,13 +1068,18 @@ class _ProfileState extends State<Profile> {
                                           stops: [0.0, 1.0],
                                           tileMode: TileMode.clamp)),
                                   child: Center(
-                                    child: Text(
-                                      "No",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400,
+                                    child: RichText(
+                                        // textAlign: TextAlign.center,
+                                        text: TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                        text: "No",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            // fontSize: 18,
+                                            // fontFamily: 'Roboto Medium',
+                                            fontWeight: FontWeight.w400),
                                       ),
-                                    ),
+                                    ])),
                                   ))),
                           SizedBox(
                             width: 10,
@@ -1016,13 +1106,18 @@ class _ProfileState extends State<Profile> {
                                       stops: [0.0, 1.0],
                                       tileMode: TileMode.clamp)),
                               child: Center(
-                                child: Text(
-                                  "Yes",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400,
+                                child: RichText(
+                                    // textAlign: TextAlign.center,
+                                    text: TextSpan(children: <TextSpan>[
+                                  TextSpan(
+                                    text: "Yes",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        // fontSize: 18,
+                                        // fontFamily: 'Roboto Medium',
+                                        fontWeight: FontWeight.w400),
                                   ),
-                                ),
+                                ])),
                               ),
                             ),
                           ),
@@ -1055,13 +1150,18 @@ class _ProfileState extends State<Profile> {
                                     stops: [0.0, 1.0],
                                     tileMode: TileMode.clamp)),
                             child: Center(
-                              child: Text(
-                                "Dismiss",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
+                              child: RichText(
+                                  // textAlign: TextAlign.center,
+                                  text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                  text: "Dismiss",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      // fontSize: 18,
+                                      // fontFamily: 'Roboto Medium',
+                                      fontWeight: FontWeight.w400),
                                 ),
-                              ),
+                              ])),
                             ),
                           ),
                         ),
@@ -1081,14 +1181,26 @@ class _ProfileState extends State<Profile> {
               ),
               title: Column(
                 children: [
-                  Text("Are you sure you want to delete this account?",
+                  // Text("Are you sure you want to delete this account?",
+                  //     textAlign: TextAlign.center,
+                  //     style: TextStyle(
+                  //       fontSize: 18,
+                  //       fontFamily: 'Roboto Medium',
+                  //       fontWeight: FontWeight.w200,
+                  //       color: Colors.black,
+                  //     )),
+                  RichText(
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'Roboto Medium',
-                        fontWeight: FontWeight.w200,
-                        color: Colors.black,
-                      )),
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: "Are you sure you want to delete this account?",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontFamily: 'Roboto Medium',
+                              fontWeight: FontWeight.w200),
+                        ),
+                      ])),
                 ],
               ),
               actions: [
@@ -1115,13 +1227,18 @@ class _ProfileState extends State<Profile> {
                                     stops: [0.0, 1.0],
                                     tileMode: TileMode.clamp)),
                             child: Center(
-                              child: Text(
-                                "No",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
+                              child: RichText(
+                                  // textAlign: TextAlign.center,
+                                  text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                  text: "No",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      // fontSize: 18,
+                                      // fontFamily: 'Roboto Medium',
+                                      fontWeight: FontWeight.w400),
                                 ),
-                              ),
+                              ])),
                             ))),
                     SizedBox(
                       width: 10,
@@ -1149,13 +1266,18 @@ class _ProfileState extends State<Profile> {
                                 stops: [0.0, 1.0],
                                 tileMode: TileMode.clamp)),
                         child: Center(
-                          child: Text(
-                            "Yes",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
+                          child: RichText(
+                              // textAlign: TextAlign.center,
+                              text: TextSpan(children: <TextSpan>[
+                            TextSpan(
+                              text: "Yes",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  // fontSize: 18,
+                                  // fontFamily: 'Roboto Medium',
+                                  fontWeight: FontWeight.w400),
                             ),
-                          ),
+                          ])),
                         ),
                       ),
                     ),
@@ -1187,6 +1309,8 @@ class cancelSubsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CourseProvider cp = Provider.of(context, listen: false);
+
+    print(" cp.crsDropList>>>>>>${cp.crsDropList}");
     return Card(
       margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Column(
@@ -1196,10 +1320,17 @@ class cancelSubsBottomSheet extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Row(
               children: [
-                Text(
-                  'Cancel Subscription',
-                  style: TextStyle(fontSize: 18, fontFamily: 'Roboto Medium', color: Colors.black),
-                ),
+                RichText(
+                    text: TextSpan(children: <TextSpan>[
+                  TextSpan(
+                    text: 'Cancel Subscription',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontFamily: 'Roboto Medium',
+                    ),
+                  ),
+                ])),
                 Spacer(),
                 InkWell(
                     onTap: () {
@@ -1221,11 +1352,17 @@ class cancelSubsBottomSheet extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Container(
-                      child: Text(
-                        'Select Course for which you want to cancel the Subscription pack',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 18, color: Colors.black),
-                      ),
+                      child: RichText(
+                          text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: 'Select Course for which you want to cancel the Subscription pack',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            // fontFamily: 'Roboto Medium',
+                          ),
+                        ),
+                      ])),
                     ),
                   ),
                 )
@@ -1234,27 +1371,34 @@ class cancelSubsBottomSheet extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Container(
-                      child: Text(
-                        'No course is purchased yet',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 18, color: Colors.black),
-                      ),
+                      child: RichText(
+                          textAlign: TextAlign.left,
+                          text: TextSpan(children: <TextSpan>[
+                            TextSpan(
+                              text: 'No course is purchased yet',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                // fontFamily: 'Roboto Medium',
+                              ),
+                            ),
+                          ])),
                     ),
                   ),
                 ),
 
-          cp.mockCrsDropList.length > 0
+          cp.crsDropList.length > 0
               ? Consumer<CourseProvider>(builder: (context, cp, child) {
-                  for (int i = 0; i < cp.mockCrsDropList.length; i++) {
-                    print("cp.mockCrsDropList::::::::;;;;; ${cp.mockCrsDropList[i].lable}");
-                  }
+                  // for (int i = 0; i < cp.mockCrsDropList.length; i++) {
+                  //   print("cp.mockCrsDropList::::::::;;;;; ${cp.mockCrsDropList[i].lable}");
+                  // }
 
                   return Container(
                     alignment: Alignment.centerRight,
                     width: MediaQuery.of(context).size.width * .35,
                     child: CustomDropDown<CourseDetails>(
                       selectText: cp.selectedCancelSubsLable ?? "Select",
-                      itemList: cp.mockCrsDropList ?? [],
+                      itemList: cp.crsDropList ?? [],
                       isEnable: true,
                       title: "",
                       value: null,
@@ -1288,15 +1432,18 @@ class cancelSubsBottomSheet extends StatelessWidget {
                   gradient: AppColor.appGradient,
                 ),
                 alignment: Alignment.center,
-                child: Text(
-                  'CANCEL NOW',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'Roboto Medium',
-                    color: Colors.white,
-                    letterSpacing: 1,
+                child: RichText(
+                    // textAlign: TextAlign.left,
+                    text: TextSpan(children: <TextSpan>[
+                  TextSpan(
+                    text: 'CANCEL NOW',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontFamily: 'Roboto Medium',
+                    ),
                   ),
-                ),
+                ])),
               ),
             ),
           ),
@@ -1322,14 +1469,18 @@ class cancelSubsBottomSheet extends StatelessWidget {
               ),
               title: Column(
                 children: [
-                  Text("Are you sure you want to cancel the subscription for this course?",
+                  RichText(
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'Roboto Medium',
-                        fontWeight: FontWeight.w200,
-                        color: Colors.black,
-                      )),
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: "Are you sure you want to cancel the subscription for this course?",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontFamily: 'Roboto Medium',
+                              fontWeight: FontWeight.w200),
+                        ),
+                      ])),
                 ],
               ),
               actions: [
@@ -1356,13 +1507,18 @@ class cancelSubsBottomSheet extends StatelessWidget {
                                     stops: [0.0, 1.0],
                                     tileMode: TileMode.clamp)),
                             child: Center(
-                              child: Text(
-                                "No",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
+                              child: RichText(
+                                  // textAlign: TextAlign.center,
+                                  text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                  text: "No",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      // fontSize: 18,
+                                      // fontFamily: 'Roboto Medium',
+                                      fontWeight: FontWeight.w200),
                                 ),
-                              ),
+                              ])),
                             ))),
                     SizedBox(
                       width: 10,
@@ -1401,13 +1557,18 @@ class cancelSubsBottomSheet extends StatelessWidget {
                                 stops: [0.0, 1.0],
                                 tileMode: TileMode.clamp)),
                         child: Center(
-                          child: Text(
-                            "Yes",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
+                          child: RichText(
+                              // textAlign: TextAlign.center,
+                              text: TextSpan(children: <TextSpan>[
+                            TextSpan(
+                              text: "Yes",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  // fontSize: 18,
+                                  // fontFamily: 'Roboto Medium',
+                                  fontWeight: FontWeight.w400),
                             ),
-                          ),
+                          ])),
                         ),
                       ),
                     ),

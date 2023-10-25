@@ -33,14 +33,22 @@ class _PaymentStatusState extends State<PaymentStatus> {
           children: [
             Container(
                 margin: EdgeInsets.only(bottom: 25),
-                child: statusNew == "success" ? Image.asset('assets/succs.png') : Image.asset('assets/succ.png')),
+                child: statusNew == "success"
+                    ? Image.asset('assets/succs.png')
+                    : Icon(
+                        Icons.cancel_outlined,
+                        size: 80,
+                        color: Colors.red,
+                      )),
+            // Image.asset('assets/succ.png')),
             Text(
               statusNew == "success" ? 'Payment Successful' : 'Payment Fail',
               style: TextStyle(
-                fontFamily: 'Roboto Bold',
-                fontSize: width * (32 / 420),
-                color: _colorfromhex("#04AE0B"),
-              ),
+                  fontFamily: 'Roboto Bold',
+                  fontSize: width * (32 / 420),
+                  color: statusNew == "success" ? Color(0xff04AE0B) : Colors.red
+                  // Color(0xff04AE0B),
+                  ),
             ),
             Container(
               height: 2,
@@ -178,10 +186,11 @@ class _PaymentStatusState2 extends State<PaymentStatus2> {
             Text(
               statusNew == "success" ? 'Payment Successful' : 'Payment Fail',
               style: TextStyle(
-                fontFamily: 'Roboto Bold',
-                fontSize: width * (32 / 420),
-                color: _colorfromhex("#04AE0B"),
-              ),
+                  fontFamily: 'Roboto Bold',
+                  fontSize: width * (32 / 420),
+                  color: statusNew == "success" ? Color(0xff04AE0B) : Colors.red
+                  // _colorfromhex("#04AE0B"),
+                  ),
             ),
             Container(
               height: 2,

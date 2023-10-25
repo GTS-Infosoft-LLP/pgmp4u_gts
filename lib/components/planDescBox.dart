@@ -37,14 +37,30 @@ Widget planDescBox(
         child: Padding(
           padding: const EdgeInsets.only(top: 15.0, left: 22),
           child: Center(
-            child: Text(
-              planTyp,
-              style: TextStyle(
-                fontFamily: 'Roboto Bold',
-                fontSize: 22,
+              child: RichText(
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  // textAlign: TextAlign.center,
+                  text: TextSpan(children: <TextSpan>[
+                    TextSpan(
+                      text: planTyp,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22,
+                        fontFamily: 'Roboto Bold',
+                        // fontWeight: FontWeight.w100
+                      ),
+                    ),
+                  ]))
+
+              // Text(
+              //   planTyp,
+              //   style: TextStyle(
+              //     fontFamily: 'Roboto Bold',
+              //     fontSize: 22,
+              //   ),
+              // ),
               ),
-            ),
-          ),
         ),
       ),
       SizedBox(

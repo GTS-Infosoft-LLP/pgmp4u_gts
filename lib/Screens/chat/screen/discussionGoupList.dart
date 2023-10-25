@@ -87,22 +87,27 @@ class _GroupListPageState extends State<GroupListPage> {
             children: [
               _appBar(),
               cp.course.length > 1
-                  ? Container(
-                      alignment: Alignment.centerRight,
-                      width: MediaQuery.of(context).size.width * .35,
-                      child: CustomDropDown<CourseDetails>(
-                        selectText: cp.selectedCourseLable ?? "Select",
-                        itemList: cp.course ?? [],
-                        isEnable: true,
-                        title: "",
-                        value: null,
-                        onChange: (val) {
-                          print("val.course=========>${val.course}");
-                          print("val.course=========>${val.lable}");
-                          cp.setSelectedCourseLable(val.lable);
-                          cp.setSelectedCourseId(val.id);
-                          setState(() {});
-                        },
+                  ? InkWell(
+                      onTap: () {
+                        print("cp.course>>>>>>>${cp.course.length}");
+                      },
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        width: MediaQuery.of(context).size.width * .35,
+                        child: CustomDropDown<CourseDetails>(
+                          selectText: cp.selectedCourseLable ?? "Select",
+                          itemList: cp.course ?? [],
+                          isEnable: true,
+                          title: "",
+                          value: null,
+                          onChange: (val) {
+                            print("val.course=========>${val.course}");
+                            print("val.course=========>${val.lable}");
+                            cp.setSelectedCourseLable(val.lable);
+                            cp.setSelectedCourseId(val.id);
+                            setState(() {});
+                          },
+                        ),
                       ),
                     )
                   : SizedBox(),
@@ -118,7 +123,7 @@ class _GroupListPageState extends State<GroupListPage> {
     if (cp.selectedCourseLable == null || cp.selectedCourseLable.isEmpty) {
       cp.setSelectedCourseLable(cp.course[0].lable);
     }
-    print("dhfjdf====${context.read<CourseProvider>().selectedCourseLable.toLowerCase()}");
+    // print("dhfjdf====${context.read<CourseProvider>().selectedCourseLable.toLowerCase()}");
 
     return Expanded(
       child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
@@ -454,11 +459,11 @@ class AddDiscussionBottomSheet extends StatelessWidget {
     CourseProvider cp = Provider.of(context, listen: false);
 
     List<String> mtyList = [];
-    String img="";
+    String img = "";
     if (titleController.text.trim().isNotEmpty) {
       await context
           .read<ChatProvider>()
-          .createDiscussionGroup(titleController.text.trim(), mtyList, img,context,
+          .createDiscussionGroup(titleController.text.trim(), mtyList, img, context,
               isFromBottomSheet: true, crsName: cp.selectedCourseLable)
           .whenComplete(() {
         titleController.clear();

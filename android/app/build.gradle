@@ -50,8 +50,8 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.codesigns.pgmp4u"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 10
+        targetSdkVersion 33
+        versionCode 12
         versionName flutterVersionName
         multiDexEnabled true
     }

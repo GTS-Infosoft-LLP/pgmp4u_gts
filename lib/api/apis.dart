@@ -7,7 +7,12 @@
 //PRODUCTION BASE URL
 // const _BASE_URL ="https://pgmp4uapiconnect.vcareprojectmanagement.com/api/";
 // const _BASE_URL = "http://3.227.35.115:1011/api/";
-const _BASE_URL = "https://apivcarestage.vcareprojectmanagement.com/api/v2/";
+
+// const _BASE_URL = "https://apivcarestage.vcareprojectmanagement.com/api/v2/"; // staging
+const _BASE_URL = "https://pgmp4uapiconnect.vcareprojectmanagement.com/api/v2/"; // Production
+
+//production
+
 // const _BASE_URL ="https://apivcarestage.vcareprojectmanagement.com/api/";
 
 //const _BASE_URL2 = "https://tspgmp4uapiconnect.vcareprojectmanagement.com/api/";
@@ -16,8 +21,9 @@ const _BASE_URL = "https://apivcarestage.vcareprojectmanagement.com/api/v2/";
 // const _BASE_URL2 = "http://18.119.55.81:1011/api/";
 //const TEMP_URL = "http://18.119.55.81:3003/api/";
 
-// const TEMP_URL = _BASE_URL;    
+// const TEMP_URL = _BASE_URL;
 // const TEMP_URL = "http://3.227.35.115:1011/api/";
+
 const UPDATE_NOTIFICATION = _BASE_URL + "updateNotification";
 const IN_APP_PURCHASE = _BASE_URL + "InAppPurchasePayment";
 const GMAIL_REGISTER = _BASE_URL + "GmailRegister";
@@ -107,21 +113,20 @@ const GET_PPTS_DETAILS = _BASE_URL + "getPPtsDetails";
 const SET_REMINDER = _BASE_URL + "setReminders";
 const GET_REMINDER = _BASE_URL + "getReminders";
 
-
 const GET_PPT_CATEGORIES = _BASE_URL + "getPPTCategories";
 const GET_PPT = _BASE_URL + "getPPT";
 const DELETE_ACCOUNT = _BASE_URL + "deleteMyAccount";
 
-const GET_DOMAIN_CATEGORIES = _BASE_URL+ "getDomainCategories";
+const GET_DOMAIN_CATEGORIES = _BASE_URL + "getDomainCategories";
 
-const GET_TASKS = _BASE_URL+ "getTasks";
-const GET_SUB_DOMAIN = _BASE_URL+ "getSubDomain";
-const GET_DOMAIN = _BASE_URL+ "getDomain";
-const GET_TASK_DETAIL =_BASE_URL + "getTaskDetails";
+const GET_TASKS = _BASE_URL + "getTasks";
+const GET_SUB_DOMAIN = _BASE_URL + "getSubDomain";
+const GET_DOMAIN = _BASE_URL + "getDomain";
+const GET_TASK_DETAIL = _BASE_URL + "getTaskDetails";
 
-const GET_SUBSCRIPTION_PACK= _BASE_URL + "getsubscriptionPacks";
-const CREATE_SUBSCRIPTION_ORDER= _BASE_URL + "createSubscriptionOrder";
-const JOIN_NOTIFICATION= _BASE_URL + "joinNotification";
+const GET_SUBSCRIPTION_PACK = _BASE_URL + "getsubscriptionPacks";
+const CREATE_SUBSCRIPTION_ORDER = _BASE_URL + "createSubscriptionOrder";
+const JOIN_NOTIFICATION = _BASE_URL + "joinNotification";
 const CANCEL_SUBSCRIPTION = _BASE_URL + "cancelSubscriptionPack";
 
 const FREE_SUBSCRIPTION = _BASE_URL + "createSubscriptionOrderFree";

@@ -74,14 +74,28 @@ class _TextPreDetailState extends State<TextPreDetail> {
                           SizedBox(
                             width: 5,
                           ),
-                          Text(
-                            cp.selectedCourseLable,
-                            style: TextStyle(
-                                fontFamily: 'Roboto Medium',
-                                fontSize: width * (20 / 420),
-                                color: Colors.white,
-                                letterSpacing: 0.3),
-                          ),
+                       
+
+
+ RichText(
+  // maxLines: 2,
+                      // textAlign: TextAlign.left,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text:   cp.selectedCourseLable,
+                          style: TextStyle(
+                           color:Colors.white,
+                              fontSize:width * (20 / 420),
+                              fontFamily:'Roboto Medium',
+                              // height: 1.7
+                              // fontWeight: FontWeight.w600,
+                              letterSpacing: 0.3,
+                              ),
+                        ),
+                      ]))
+
+
+
                         ],
                       );
                     }),
@@ -99,16 +113,31 @@ class _TextPreDetailState extends State<TextPreDetail> {
                     children: [
                       Container(
                         margin: EdgeInsets.only(bottom: height * (22 / 800)),
-                        child: Text(
-                          'Mock Test',
+                        child: 
+                   
+
+ RichText(
+  // maxLines: 2,
+                      // textAlign: TextAlign.left,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text:   'Mock Test',
                           style: TextStyle(
-                            fontFamily: 'Roboto Bold',
-                            fontSize: width * (18 / 420),
-                            color: Colors.black,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 0.3,
-                          ),
+                           color:Colors.black,
+                              fontSize:width * (18 / 420),
+                              fontFamily:'Roboto Bold',
+                              // height: 1.7
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 0.3,
+                              ),
                         ),
+                      ]))
+
+
+
+
+
+
                       ),
                       ValueListenableBuilder(
                           valueListenable: HiveHandler.getMockPercentListener(),
@@ -229,16 +258,29 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                               mainAxisAlignment: MainAxisAlignment.start,
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
-                                                                Text(
-                                                                  testPercent[index].testName,
-                                                                  style: TextStyle(
-                                                                    fontFamily: 'Roboto Medium',
-                                                                    fontWeight: FontWeight.w600,
-                                                                    fontSize: width * (17 / 420),
-                                                                    color: _colorfromhex("171726"),
-                                                                    letterSpacing: 0.3,
-                                                                  ),
-                                                                ),
+                                                              
+
+ RichText(
+  // maxLines: 2,
+                      // textAlign: TextAlign.left,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text:  testPercent[index].testName,
+                          style: TextStyle(
+                           color: _colorfromhex("171726"),
+                              fontSize:width * (17 / 420),
+                              fontFamily:'Roboto Medium',
+                              // height: 1.7
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.3,
+                              ),
+                        ),
+                      ])),
+
+
+
+
+
                                                                 SizedBox(
                                                                   height: 10,
                                                                 ),

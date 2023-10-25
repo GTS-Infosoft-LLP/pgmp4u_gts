@@ -65,7 +65,7 @@ class _TaskListState extends State<TaskList> {
               ),
               Consumer<DomainProvider>(builder: (context, dp, child) {
                 return Container(
-                  padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
+                  padding: EdgeInsets.fromLTRB(20, 50, 10, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -86,17 +86,22 @@ class _TaskListState extends State<TaskList> {
                       Consumer<CourseProvider>(builder: (context, cp, child) {
                         return Center(
                             child: Container(
-                          // color: Colors.amber,
-                          width: MediaQuery.of(context).size.width * .65,
-                          child: Text(
-                            widget.subDomainLable ?? "" + " Tasks",
-                            // cp.selectedCourseName,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
-                          ),
-                        ));
+                                // color: Colors.amber,
+                                width: MediaQuery.of(context).size.width * .65,
+                                child: RichText(
+                                    //textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                        text: widget.subDomainLable ?? "" + " Tasks",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                            fontFamily: 'Roboto ',
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ]))));
                       }),
                     ],
                   ),
@@ -112,23 +117,43 @@ class _TaskListState extends State<TaskList> {
                     : Container(
                         width: MediaQuery.of(context).size.width * .93,
                         child: Container(
-                          width: MediaQuery.of(context).size.width * .67,
-                          child: Text(
-                            dp.selectedSubDomainName == ""
-                                ? dp.selectedDomainName
-                                : dp.TaskList.isEmpty
-                                    ? ""
-                                    : dp.selectedDomainName + "  --> " + dp.selectedSubDomainName,
+                            width: MediaQuery.of(context).size.width * .67,
+                            child:
+                                // Text(
+                                //   dp.selectedSubDomainName == ""
+                                //       ? dp.selectedDomainName
+                                //       : dp.TaskList.isEmpty
+                                //           ? ""
+                                //           : dp.selectedDomainName + "  --> " + dp.selectedSubDomainName,
 
-                            // cp.pptCategoryList[index].name,
-                            maxLines: 3,
-                            style: TextStyle(
-                              fontFamily: 'Roboto Regular',
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
+                                //   // cp.pptCategoryList[index].name,
+                                //   maxLines: 3,
+                                //   style: TextStyle(
+                                //     fontFamily: 'Roboto Regular',
+                                //     fontSize: 18,
+                                //     color: Colors.black,
+                                //   ),
+                                // ),
+
+                                RichText(
+                                    //textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                        text: dp.selectedSubDomainName == ""
+                                            ? dp.selectedDomainName
+                                            : dp.TaskList.isEmpty
+                                                ? ""
+                                                : dp.selectedDomainName + "  --> " + dp.selectedSubDomainName,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                          fontFamily: 'Roboto Regular',
+                                          // fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                    ]))),
                       ),
               );
             }),
@@ -170,16 +195,6 @@ class _TaskListState extends State<TaskList> {
                                 child: ListView.builder(
                                     itemCount: storedTasks.length,
                                     itemBuilder: (context, index) {
-                                      if (index % 4 == 0) {
-                                        clr = Color(0xff3F9FC9);
-                                      } else if (index % 3 == 0) {
-                                        clr = Color(0xff3FC964);
-                                      } else if (index % 2 == 0) {
-                                        clr = Color(0xffDE682B);
-                                      } else {
-                                        clr = Color(0xffC93F7F);
-                                      }
-
                                       return InkWell(
                                         onTap: () async {
                                           print("storedTasks[index].id===${storedTasks[index].id}");
@@ -228,8 +243,24 @@ class _TaskListState extends State<TaskList> {
                                                             borderRadius: BorderRadius.circular(80),
                                                           ),
                                                           child: Center(
-                                                            child: Text('${index + 1}', style: TextStyle()),
-                                                          ),
+                                                              child:
+                                                                  // Text('${index + 1}', style: TextStyle()),
+
+                                                                  RichText(
+                                                                      //textAlign: TextAlign.center,
+                                                                      // maxLines: 2,
+                                                                      overflow: TextOverflow.ellipsis,
+                                                                      text: TextSpan(children: <TextSpan>[
+                                                                        TextSpan(
+                                                                          text: '${index + 1}',
+                                                                          style: TextStyle(
+                                                                            color: Colors.black,
+                                                                            // fontSize: 18,
+                                                                            // fontFamily:  'Roboto Regular',
+                                                                            // fontWeight: FontWeight.bold
+                                                                          ),
+                                                                        ),
+                                                                      ]))),
                                                         ),
                                                       )),
                                                 ),
@@ -241,18 +272,29 @@ class _TaskListState extends State<TaskList> {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Container(
-                                                      width: MediaQuery.of(context).size.width * .45,
+                                                      // width: MediaQuery.of(context).size.width * .45,
                                                       // color: Colors.amber,
                                                       child: Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
-                                                          Text(
-                                                            storedTasks[index].lable,
-                                                            style: TextStyle(
-                                                              fontSize: 14,
-                                                              color: Colors.grey,
-                                                            ),
-                                                          ),
+                                                          Container(
+                                                              width: MediaQuery.of(context).size.width * .65,
+                                                              // color: Colors.amber,
+                                                              child: RichText(
+                                                                  //textAlign: TextAlign.center,
+                                                                  maxLines: 2,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                  text: TextSpan(children: <TextSpan>[
+                                                                    TextSpan(
+                                                                      text: storedTasks[index].lable,
+                                                                      style: TextStyle(
+                                                                        color: Colors.grey,
+                                                                        fontSize: 14,
+                                                                        // fontFamily:  'Roboto Regular',
+                                                                        // fontWeight: FontWeight.bold
+                                                                      ),
+                                                                    ),
+                                                                  ]))),
                                                         ],
                                                       ),
                                                     ),
@@ -260,16 +302,24 @@ class _TaskListState extends State<TaskList> {
                                                       height: 0,
                                                     ),
                                                     Container(
-                                                      width: MediaQuery.of(context).size.width * .55,
-                                                      child: Text(
-                                                        storedTasks[index].name,
-                                                        maxLines: 2,
-                                                        style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ),
+                                                        width: MediaQuery.of(context).size.width * .65,
+                                                        // color: Colors.amber,
+                                                        child: RichText(
+                                                            //textAlign: TextAlign.center,
+                                                            maxLines: 1,
+                                                            overflow: TextOverflow.ellipsis,
+                                                            text: TextSpan(children: <TextSpan>[
+                                                              TextSpan(
+                                                                text: storedTasks[index].name,
+                                                                style: TextStyle(
+                                                                  color: Colors.black,
+                                                                  fontSize: 18,
+                                                                  // fontFamily:  'Roboto Regular',
+                                                                  // fontWeight: FontWeight.bold
+                                                                ),
+                                                              ),
+                                                            ]))
+                                                            ),
                                                   ],
                                                 ),
                                                 Spacer(),

@@ -122,6 +122,7 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
     stringValue = "Bearer " + stringValue;
     print(stringValue);
     http.Response response;
+    print("REVIEW_MOCK_TEST + /${widget.selectedId}/${widget.attemptData + 1}");
     response = await http.get(Uri.parse(REVIEW_MOCK_TEST + "/${widget.selectedId}/${widget.attemptData + 1}"),
         headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
     print("header : ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
@@ -725,14 +726,24 @@ class _ReviewMockTestState extends State<ReviewMockTest> {
                                                           _show
                                                               ? Container(
                                                                   margin: EdgeInsets.only(top: height * (9 / 800)),
-                                                                  child: Text(
-                                                                    listResponse[_quetionNo].question.explanation,
-                                                                    style: TextStyle(
-                                                                      fontFamily: 'Roboto Regular',
-                                                                      fontSize: width * (15 / 420),
-                                                                      color: Colors.black,
-                                                                      height: 1.6,
-                                                                    ),
+                                                                  child: Html(
+                                                                    data: listResponse[_quetionNo].question.explanation,
+                                                                    style: {
+                                                                      "body": Style(
+                                                                          // padding: EdgeInsets.only(top: 5),
+                                                                          margin: EdgeInsets.zero,
+                                                                          fontFamily: 'Roboto Regular',
+                                                                          color: Colors.black,
+                                                                          // textAlign: TextAlign.left,
+                                                                          fontSize: FontSize(
+                                                                            width * (15 / 420),
+                                                                          )
+
+                                                                          // FontSize(18
+                                                                          // width * (15 / 420),
+                                                                          // ),
+                                                                          )
+                                                                    },
                                                                   ),
                                                                 )
                                                               : Container()

@@ -197,74 +197,110 @@ class _RandomPageState extends State<RandomPage> {
                                         margin: EdgeInsets.only(left: 20, right: 20, top: 8),
                                         child: Center(
                                             child: widget.index == 1
-                                                ? Text(
-                                                    'Get 1 year Access to Flash Card',
+                                                ? RichText(
                                                     textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        fontFamily: 'Roboto Bold',
-                                                        fontSize: width * (30 / 420),
-                                                        color: Colors.white,
-                                                        letterSpacing: 0.3),
-                                                  )
-                                                : widget.index == 2
-                                                    ? Text(
-                                                        'Get 1 year Access to Video Library',
-                                                        textAlign: TextAlign.center,
+                                                    text: TextSpan(children: <TextSpan>[
+                                                      TextSpan(
+                                                        text: 'Get 1 year Access to Flash Card',
                                                         style: TextStyle(
-                                                            fontFamily: 'Roboto Bold',
-                                                            fontSize: width * (30 / 420),
-                                                            color: Colors.white,
-                                                            letterSpacing: 0.3),
-                                                      )
-                                                    : widget.index == 3
-                                                        ? Text(
-                                                            'Get 1 year Access to Mock Tests',
-                                                            textAlign: TextAlign.center,
+                                                          color: Colors.white,
+                                                          fontSize: width * (30 / 420),
+                                                          fontFamily: 'Roboto Bold',
+                                                          // fontWeight: FontWeight.w600,
+                                                          letterSpacing: 0.3,
+                                                        ),
+                                                      ),
+                                                    ]))
+                                                : widget.index == 2
+                                                    ? RichText(
+                                                        textAlign: TextAlign.center,
+                                                        text: TextSpan(children: <TextSpan>[
+                                                          TextSpan(
+                                                            text: 'Get 1 year Access to Video Library',
                                                             style: TextStyle(
-                                                                fontFamily: 'Roboto Bold',
-                                                                fontSize: width * (30 / 420),
-                                                                color: Colors.white,
-                                                                letterSpacing: 0.3),
-                                                          )
-                                                        : widget.index == 4
-                                                            ? Text(
-                                                                'Get 1 year Access to Chats',
-                                                                textAlign: TextAlign.center,
+                                                              color: Colors.white,
+                                                              fontSize: width * (30 / 420),
+                                                              fontFamily: 'Roboto Bold',
+                                                              // fontWeight: FontWeight.w600,
+                                                              letterSpacing: 0.3,
+                                                            ),
+                                                          ),
+                                                        ]))
+                                                    : widget.index == 3
+                                                        ? RichText(
+                                                            textAlign: TextAlign.center,
+                                                            text: TextSpan(children: <TextSpan>[
+                                                              TextSpan(
+                                                                text: 'Get 1 year Access to Mock Tests',
                                                                 style: TextStyle(
-                                                                    fontFamily: 'Roboto Bold',
-                                                                    fontSize: width * (30 / 420),
-                                                                    color: Colors.white,
-                                                                    letterSpacing: 0.3),
-                                                              )
-                                                            : widget.index == 5
-                                                                ? Text(
-                                                                    'Get 1 year Access to PTT',
-                                                                    textAlign: TextAlign.center,
+                                                                  color: Colors.white,
+                                                                  fontSize: width * (30 / 420),
+                                                                  fontFamily: 'Roboto Bold',
+                                                                  // fontWeight: FontWeight.w600,
+                                                                  letterSpacing: 0.3,
+                                                                ),
+                                                              ),
+                                                            ]))
+                                                        : widget.index == 4
+                                                            ? RichText(
+                                                                textAlign: TextAlign.center,
+                                                                text: TextSpan(children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text: 'Get 1 year Access to Chats',
                                                                     style: TextStyle(
-                                                                        fontFamily: 'Roboto Bold',
-                                                                        fontSize: width * (30 / 420),
-                                                                        color: Colors.white,
-                                                                        letterSpacing: 0.3),
-                                                                  )
-                                                                : widget.index == 6
-                                                                    ? Text(
-                                                                        'Get 1 year Access to Domains',
-                                                                        textAlign: TextAlign.center,
+                                                                      color: Colors.white,
+                                                                      fontSize: width * (30 / 420),
+                                                                      fontFamily: 'Roboto Bold',
+                                                                      // fontWeight: FontWeight.w600,
+                                                                      letterSpacing: 0.3,
+                                                                    ),
+                                                                  ),
+                                                                ]))
+                                                            : widget.index == 5
+                                                                ? RichText(
+                                                                    textAlign: TextAlign.center,
+                                                                    text: TextSpan(children: <TextSpan>[
+                                                                      TextSpan(
+                                                                        text: 'Get 1 year Access to PTT',
                                                                         style: TextStyle(
-                                                                            fontFamily: 'Roboto Bold',
-                                                                            fontSize: width * (30 / 420),
-                                                                            color: Colors.white,
-                                                                            letterSpacing: 0.3),
-                                                                      )
-                                                                    : Text(
-                                                                        'Get 1 year Access to Question of the day',
-                                                                        textAlign: TextAlign.center,
-                                                                        style: TextStyle(
-                                                                          fontFamily: 'Roboto Bold',
-                                                                          fontSize: width * (30 / 420),
                                                                           color: Colors.white,
+                                                                          fontSize: width * (30 / 420),
+                                                                          fontFamily: 'Roboto Bold',
+                                                                          // fontWeight: FontWeight.w600,
+                                                                          letterSpacing: 0.3,
                                                                         ),
-                                                                      )),
+                                                                      ),
+                                                                    ]))
+                                                                : widget.index == 6
+                                                                    ? RichText(
+                                                                        textAlign: TextAlign.center,
+                                                                        text: TextSpan(children: <TextSpan>[
+                                                                          TextSpan(
+                                                                            text: 'Get 1 year Access to Domains',
+                                                                            style: TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: width * (30 / 420),
+                                                                              fontFamily: 'Roboto Bold',
+                                                                              // fontWeight: FontWeight.w600,
+                                                                              letterSpacing: 0.3,
+                                                                            ),
+                                                                          ),
+                                                                        ]))
+                                                                    : RichText(
+                                                                        textAlign: TextAlign.center,
+                                                                        text: TextSpan(children: <TextSpan>[
+                                                                          TextSpan(
+                                                                            text:
+                                                                                'Get 1 year Access to Question of the day',
+                                                                            style: TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: width * (30 / 420),
+                                                                              fontFamily: 'Roboto Bold',
+                                                                              // fontWeight: FontWeight.w600,
+                                                                              letterSpacing: 0.3,
+                                                                            ),
+                                                                          ),
+                                                                        ]))),
                                       ),
                                       Container(
                                         margin: EdgeInsets.only(top: 5),

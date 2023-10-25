@@ -63,6 +63,7 @@ class _TaskQuestionState extends State<TaskQuestion> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: ValueListenableBuilder(
           valueListenable: HiveHandler.getTaskQuesListener(),
           builder: (context, value, child) {
@@ -235,14 +236,13 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                               print("so is inside this alsoooo");
                                                               checkAllAns(selAns, ansRef);
                                                               enableTap = 1;
-                                                            
                                                             }
                                                             setState(() {});
                                                           }
                                                         },
                                                         child: Container(
                                                           width: MediaQuery.of(context).size.width * .70,
-                                                          height: height * 60 / 420,
+                                                          // height: height * 60 / 420,
                                                           // height: 100,
                                                           color: selAns.contains(Taskop[index].id) &&
                                                                   ansRef.contains(Taskop[index].id) &&
@@ -323,15 +323,20 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                                     SizedBox(
                                                                         // height: 20,
                                                                         ),
-                                                                    Container(
-                                                                        width: MediaQuery.of(context).size.width * .70,
-                                                                        child: Padding(
-                                                                          padding: const EdgeInsets.only(left: 8.0),
-                                                                          child: Text(
-                                                                            Taskop[index].questionOption,
-                                                                            // maxLines: 3,
-                                                                          ),
-                                                                        )),
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(bottom: 15.0),
+                                                                      child: Container(
+                                                                          // color: Colors.white,
+                                                                          width:
+                                                                              MediaQuery.of(context).size.width * .70,
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(left: 8.0),
+                                                                            child: Text(
+                                                                              Taskop[index].questionOption,
+                                                                              // maxLines: 3,
+                                                                            ),
+                                                                          )),
+                                                                    ),
                                                                     (selAns.length == ansRef.length &&
                                                                                 selAns.length > 0 &&
                                                                                 selAns.contains(Taskop[index].id) &&

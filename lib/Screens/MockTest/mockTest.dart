@@ -139,12 +139,30 @@ class _MockTestState extends State<MockTest> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * .75,
-                          child: Text(
-                            // "Video Library",
-                            cp.selectedCourseLable,
-                            style: TextStyle(
-                                fontSize: 22, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
-                          ),
+                          child:
+                          //  Text(
+                          //   // "Video Library",
+                          //   cp.selectedCourseLable,
+                          //   style: TextStyle(
+                          //       fontSize: 22, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
+                          // ),
+
+
+ RichText(
+                      // textAlign: TextAlign.center,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text:  cp.selectedCourseLable,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontFamily: "Raleway",
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ])),
+
+
+
                         ),
                       ]),
                     ),
@@ -173,16 +191,38 @@ class _MockTestState extends State<MockTest> {
                               ),
                               Container(
                                 margin: EdgeInsets.only(bottom: height * (22 / 800)),
-                                child: Text(
-                                  '${widget.testName}',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto Bold',
-                                    fontSize: width * (18 / 420),
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w800,
-                                    letterSpacing: 0.3,
-                                  ),
-                                ),
+                                child:
+                                //  Text(
+                                //   '${widget.testName}',
+                                //   style: TextStyle(
+                                //     fontFamily: 'Roboto Bold',
+                                //     fontSize: width * (18 / 420),
+                                //     color: Colors.black,
+                                //     fontWeight: FontWeight.w800,
+                                //     letterSpacing: 0.3,
+                                //   ),
+                                // ),
+
+
+
+ RichText(
+                      // textAlign: TextAlign.center,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text:  '${widget.testName}',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize:width * (18 / 420),
+                              fontFamily:'Roboto Bold',
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 0.3,
+                              ),
+                        ),
+                      ])),
+
+
+
+
                               ),
                               ValueListenableBuilder<Box<String>>(
                                   valueListenable: HiveHandler.getTestDataListener(),
@@ -325,7 +365,28 @@ class _MockTestState extends State<MockTest> {
                                                                   borderRadius: BorderRadius.circular(100),
                                                                 ),
                                                                 child: Center(
-                                                                  child: Text('${index + 1}'),
+                                                                  child: 
+                                                                  // Text('${index + 1}'),
+
+
+
+
+ RichText(
+                      // textAlign: TextAlign.center,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: '${index + 1}',
+                          style: TextStyle(
+                              color: Colors.black,
+                              // fontSize:width * (18 / 420),
+                              // fontFamily:'Roboto Bold',
+                              // fontWeight: FontWeight.w800,
+                              // letterSpacing: 0.3,
+                              ),
+                        ),
+                      ])),
+
+
                                                                 ),
                                                               ),
                                                             ),
@@ -337,16 +398,32 @@ class _MockTestState extends State<MockTest> {
                                                                 children: [
                                                                   Container(
                                                                     width: MediaQuery.of(context).size.width * .45,
-                                                                    child: Text(
-                                                                      storedTestData[index].test_name,
-                                                                      style: TextStyle(
-                                                                        fontFamily: 'Roboto Medium',
-                                                                        fontWeight: FontWeight.w600,
-                                                                        fontSize: width * (17 / 420),
-                                                                        color: _colorfromhex("171726"),
-                                                                        letterSpacing: 0.3,
-                                                                      ),
-                                                                    ),
+                                                                    child: 
+                                                             
+
+
+ RichText(
+                      // textAlign: TextAlign.center,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text:  storedTestData[index].test_name,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize:width * (17 / 420),
+                              fontFamily:'Roboto Medium',
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.3,
+                              ),
+                        ),
+                      ])),
+
+
+
+
+
+
+
+
                                                                   ),
                                                                 ],
                                                               ),

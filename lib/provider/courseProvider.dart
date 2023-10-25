@@ -356,10 +356,10 @@ class CourseProvider extends ChangeNotifier {
           body: body,
         )
             .whenComplete(() async {
-               HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           HiveHandler.removeFromRestartBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
-        
+
           Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
@@ -370,7 +370,6 @@ class CourseProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-         
           // remove
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
@@ -411,6 +410,7 @@ class CourseProvider extends ChangeNotifier {
 
         if (mapResponse['status'] == 400) {
           pptDataList = [];
+           HiveHandler.addpptDataBox(jsonEncode(pptDataList), id.toString());
           return;
         }
 
@@ -420,14 +420,16 @@ class CourseProvider extends ChangeNotifier {
           print("mapResponse[data]length::::::${temp1.length}");
           if (temp1.length == 1) {
             pptUrlLink = mapResponse["data"][0]["filename"];
-            print(
-                ">>>>>>>>>>>>>>>>>>>>>>>>>>>>pptUrlLink::::::$pptUrlLink");
+            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>pptUrlLink::::::$pptUrlLink");
           }
           print("idddddd::::::$id");
           print("mapResponse[data]urllll:::${mapResponse["data"][0]["filename"]}");
           HiveHandler.addpptDataBox(jsonEncode(mapResponse["data"]), id.toString());
           print("temp list===$temp1");
           pptDataList = temp1.map((e) => PPTDataDetails.fromjson(e)).toList();
+        } else {
+          pptDataList = [];
+          HiveHandler.addpptDataBox(jsonEncode(pptDataList), id.toString());
         }
       }
     } on Exception {
@@ -514,6 +516,7 @@ class CourseProvider extends ChangeNotifier {
 
         if (mapResponse['status'] == 400) {
           pptCategoryList = [];
+             HiveHandler.addpptCateData(jsonEncode(pptCategoryList), id.toString());
           return;
         }
 
@@ -524,6 +527,9 @@ class CourseProvider extends ChangeNotifier {
           print("temp list===$temp1");
           pptCategoryList = temp1.map((e) => PPTCateDetails.fromjson(e)).toList();
           print("master list=========$pptCategoryList");
+        } else {
+          pptCategoryList = [];
+          HiveHandler.addpptCateData(jsonEncode(pptCategoryList), id.toString());
         }
         updateIsPPLoading(false);
       }
@@ -557,9 +563,8 @@ class CourseProvider extends ChangeNotifier {
           body: body,
         )
             .whenComplete(() async {
-                HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           HiveHandler.removeFromRestartBox(notSubmitedMockID);
-         
 
           await getTestDetails(allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -577,7 +582,6 @@ class CourseProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-        
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -616,7 +620,7 @@ class CourseProvider extends ChangeNotifier {
         // print("mapResponse====${mapResponse['status']}");
         if (mapResponse['status'] == 400) {
           tempListMaster = [];
-          // HiveHandler.addMasterData(tempListMaster, keyName: id.toString());
+          HiveHandler.addMasterData(jsonEncode(tempListMaster), keyName: id.toString());
           return;
         }
 
@@ -631,6 +635,9 @@ class CourseProvider extends ChangeNotifier {
           } catch (e) {
             print("errorr===========>>>>>> $e");
           }
+        } else {
+          masterList = [];
+          HiveHandler.addMasterData(jsonEncode(masterList), keyName: id.toString());
         }
       }
       // print("respponse=== ${response.body}");
@@ -663,7 +670,7 @@ class CourseProvider extends ChangeNotifier {
           body: body,
         )
             .whenComplete(() async {
-                HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           HiveHandler.removeFromRestartBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -677,7 +684,6 @@ class CourseProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-        
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -746,7 +752,7 @@ class CourseProvider extends ChangeNotifier {
           body: body,
         )
             .whenComplete(() async {
-                 HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           HiveHandler.removeFromRestartBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -760,7 +766,6 @@ class CourseProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-       
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -800,10 +805,12 @@ class CourseProvider extends ChangeNotifier {
 
           notifyListeners();
         } else {
+            // HiveHandler.addFlashCateData(jsonEncode(mapResponse["data"]), id.toString());
           updateFlashCateDataApiCall(false);
           print("status 400");
           flashCate = [];
-          // HiveHandler.addFlashCateData(flashCate, id.toString());
+
+          HiveHandler.addFlashCateData(jsonEncode(flashCate), id.toString());
           notifyListeners();
           return;
         }
@@ -841,7 +848,7 @@ class CourseProvider extends ChangeNotifier {
           body: body,
         )
             .whenComplete(() async {
-                  HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           HiveHandler.removeFromRestartBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -855,7 +862,6 @@ class CourseProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-      
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -896,7 +902,7 @@ class CourseProvider extends ChangeNotifier {
         updatevideoListApiCall(false);
       }
 
-      print("respponse=== ${response.body}");
+      print("respponse=== *9*9${response.body}");
     } on Exception {
       // TODO
       updatevideoListApiCall(false);
@@ -934,7 +940,7 @@ class CourseProvider extends ChangeNotifier {
           body: body,
         )
             .whenComplete(() async {
-               HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           HiveHandler.removeFromRestartBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -948,7 +954,6 @@ class CourseProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-         
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -1011,7 +1016,7 @@ class CourseProvider extends ChangeNotifier {
         HiveHandler.addCourseData(jsonEncode(course));
         updateGetCourseApiCalling(false);
       }
-      print("respponse=== ${response.body}");
+      print("787878 ${response.body}");
     } on Exception {
       // TODO
       updateGetCourseApiCalling(false);
@@ -1041,7 +1046,7 @@ class CourseProvider extends ChangeNotifier {
           body: body,
         )
             .whenComplete(() async {
-                HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           HiveHandler.removeFromRestartBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -1055,7 +1060,6 @@ class CourseProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-        
           // HiveHandler.removeFromRestartBox();
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
@@ -1130,7 +1134,7 @@ class CourseProvider extends ChangeNotifier {
           body: body,
         )
             .whenComplete(() async {
-               HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -1144,7 +1148,6 @@ class CourseProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-         
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -1210,7 +1213,7 @@ class CourseProvider extends ChangeNotifier {
           body: body,
         )
             .whenComplete(() async {
-              HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -1224,7 +1227,6 @@ class CourseProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-          
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -1262,7 +1264,7 @@ class CourseProvider extends ChangeNotifier {
           print("testDetails 0=== ${testDetails[0].testName}");
         }
       }
-      print("respponse=== ${response.body}");
+      print("respponse===45665 ${response.body}");
     } on Exception {
       // TODO
     }
@@ -1280,6 +1282,7 @@ class CourseProvider extends ChangeNotifier {
 
   // for mock tests list
   Future<void> getTest(int id, String testType) async {
+    testData.clear();
     updateisMockTestLoading(true);
     print("id valueeee===========>>>>>>>>>>>$id");
 
@@ -1301,7 +1304,7 @@ class CourseProvider extends ChangeNotifier {
           body: body,
         )
             .whenComplete(() async {
-              HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -1315,7 +1318,6 @@ class CourseProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-        
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -1327,12 +1329,18 @@ class CourseProvider extends ChangeNotifier {
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );
-      print("respponse=== ${response.body}");
+      print("respponse=== 54545454${response.body}");
+      print("testData>>>>>>$testData");
 
       if (response.statusCode == 200) {
         testData.clear();
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse===========$mapResponse");
+        print('mapResponse["data"]>>>>>>>>>${mapResponse["data"]}');
+        if (mapResponse["data"] == {}) {
+          print("this is data and it is empthyyyyyyyyy");
+        }
+
         if (mapResponse["status"] == 200) {
           List temp1 = mapResponse["data"];
           print("temp list===$temp1");
@@ -1351,7 +1359,11 @@ class CourseProvider extends ChangeNotifier {
             print("testData 0=== ${testData[0].test_name}");
           }
         } else {
+          print("in this conditionnnnnn");
           testData = [];
+          print("jason encode test data>>>>>${jsonEncode(testData)}");
+          HiveHandler.addTestMpData(jsonEncode(testData), id.toString());
+
           notifyListeners();
         }
         updateisMockTestLoading(false);
@@ -1385,7 +1397,7 @@ class CourseProvider extends ChangeNotifier {
           body: body,
         )
             .whenComplete(() async {
-                HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -1399,7 +1411,6 @@ class CourseProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-      
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -1456,7 +1467,7 @@ class CourseProvider extends ChangeNotifier {
           body: body,
         )
             .whenComplete(() async {
-                  HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
 

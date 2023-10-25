@@ -205,14 +205,22 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                           color: Colors.white,
                         ),
                       ),
-                      Text(
-                        "Mock Attempts",
-                        style: TextStyle(
-                            fontFamily: 'Roboto Medium',
-                            fontSize: width * (20 / 420),
+                      RichText(
+                          // maxLines: 2,
+                          // textAlign: TextAlign.left,
+                          text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: "Mock Attempts",
+                          style: TextStyle(
                             color: Colors.white,
-                            letterSpacing: 0.3),
-                      ),
+                            fontSize: width * (20 / 420),
+                            fontFamily: 'Roboto Medium',
+                            // height: 1.7
+                            // fontWeight: FontWeight.w600,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                      ]))
                     ],
                   ),
                 ),
@@ -258,14 +266,22 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              detailsofMockAttempt.test_name + " Attempt Summary",
-                                              style: TextStyle(
-                                                  fontFamily: 'Roboto Bold',
-                                                  fontSize: width * (20 / 420),
+                                            RichText(
+                                                // maxLines: 2,
+                                                // textAlign: TextAlign.left,
+                                                text: TextSpan(children: <TextSpan>[
+                                              TextSpan(
+                                                text: detailsofMockAttempt.test_name + " Attempt Summary",
+                                                style: TextStyle(
                                                   color: Colors.black,
-                                                  letterSpacing: 0.3),
-                                            ),
+                                                  fontSize: width * (20 / 420),
+                                                  fontFamily: 'Roboto Bold',
+                                                  // height: 1.7
+                                                  // fontWeight: FontWeight.w600,
+                                                  letterSpacing: 0.3,
+                                                ),
+                                              ),
+                                            ])),
                                             SizedBox(
                                               height: 8,
                                             ),
@@ -318,32 +334,44 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                                         children: [
-                                                                          Text(
-                                                                            mockData.attemptList[index]
-                                                                                        .attempted_date ==
-                                                                                    null
-                                                                                // cp.aviAttempts[index].attempted_date == null
-                                                                                ? 'Attempt ${index + 1}'
-                                                                                : "Attempted",
-                                                                            style: TextStyle(
-                                                                                fontFamily: 'Roboto Medium',
-                                                                                fontSize: width * (18 / 420),
+                                                                          RichText(
+                                                                              // maxLines: 2,
+                                                                              // textAlign: TextAlign.left,
+                                                                              text: TextSpan(children: <TextSpan>[
+                                                                            TextSpan(
+                                                                              text: mockData.attemptList[index]
+                                                                                          .attempted_date ==
+                                                                                      null
+                                                                                  ? 'Attempt ${index + 1}'
+                                                                                  : "Attempted",
+                                                                              style: TextStyle(
                                                                                 color: Colors.black,
-                                                                                fontWeight: FontWeight.w600,
-                                                                                letterSpacing: 0.3),
-                                                                          ),
-                                                                          Text(
-                                                                            title.attempted_date == null
-                                                                                // cp.selectedMokAtmptCnt <
-                                                                                //         widget.attemptLength
-                                                                                ? '--/--'
-                                                                                : 'Result ${((double.parse(title.percentage.toString())).toInt())}%',
-                                                                            style: TextStyle(
-                                                                                fontFamily: 'Roboto Regular',
                                                                                 fontSize: width * (18 / 420),
+                                                                                fontFamily: 'Roboto Medium',
+                                                                                // height: 1.7
+                                                                                fontWeight: FontWeight.w600,
+                                                                                letterSpacing: 0.3,
+                                                                              ),
+                                                                            ),
+                                                                          ])),
+                                                                          RichText(
+                                                                              // maxLines: 2,
+                                                                              // textAlign: TextAlign.left,
+                                                                              text: TextSpan(children: <TextSpan>[
+                                                                            TextSpan(
+                                                                              text: title.attempted_date == null
+                                                                                  ? '--/--'
+                                                                                  : 'Result ${((double.parse(title.percentage.toString())).toInt())}%',
+                                                                              style: TextStyle(
                                                                                 color: _colorfromhex("#ABAFD1"),
-                                                                                letterSpacing: 0.3),
-                                                                          ),
+                                                                                fontSize: width * (18 / 420),
+                                                                                fontFamily: 'Roboto Regular',
+                                                                                // height: 1.7
+                                                                                // fontWeight: FontWeight.w600,
+                                                                                letterSpacing: 0.3,
+                                                                              ),
+                                                                            ),
+                                                                          ])),
                                                                         ],
                                                                       ),
                                                                     ),
@@ -398,28 +426,37 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                                 return GestureDetector(
                                                                                   onTap: () => navigateToMockTest(
                                                                                       index, restartModel),
-                                                                                  child: Text(
-                                                                                    index == cp.setPendindIndex
-                                                                                        ? "Result Pending"
-                                                                                        : mockData.attemptList[index]
-                                                                                                    .attempted_date !=
-                                                                                                null
-                                                                                            ? "More Details"
-                                                                                            : restartModel != null &&
-                                                                                                    restartModel
-                                                                                                            .restartAttempNum ==
-                                                                                                        mockData
-                                                                                                            .attemptList[
-                                                                                                                index]
-                                                                                                            .attempt
-                                                                                                ? "Restart"
-                                                                                                : 'Start',
-                                                                                    style: TextStyle(
-                                                                                        fontFamily: 'Roboto Regular',
-                                                                                        fontSize: 13,
+                                                                                  child: RichText(
+                                                                                      // maxLines: 2,
+                                                                                      // textAlign: TextAlign.left,
+                                                                                      text:
+                                                                                          TextSpan(children: <TextSpan>[
+                                                                                    TextSpan(
+                                                                                      text: index == cp.setPendindIndex
+                                                                                          ? "Result Pending"
+                                                                                          : mockData.attemptList[index]
+                                                                                                      .attempted_date !=
+                                                                                                  null
+                                                                                              ? "More Details"
+                                                                                              : restartModel != null &&
+                                                                                                      restartModel
+                                                                                                              .restartAttempNum ==
+                                                                                                          mockData
+                                                                                                              .attemptList[
+                                                                                                                  index]
+                                                                                                              .attempt
+                                                                                                  ? "Restart"
+                                                                                                  : 'Start',
+                                                                                      style: TextStyle(
                                                                                         color: Colors.white,
-                                                                                        letterSpacing: 0.3),
-                                                                                  ),
+                                                                                        fontSize: 13,
+                                                                                        fontFamily: 'Roboto Regular',
+                                                                                        // height: 1.7
+                                                                                        // fontWeight: FontWeight.w600,
+                                                                                        letterSpacing: 0.3,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ])),
                                                                                 );
                                                                               }),
                                                                             ),
@@ -456,40 +493,57 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                     child: Row(
                                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                       children: [
-                                                                        Text(
-                                                                          (mockData.attemptList[index].attempted_date !=
-                                                                                      null &&
-                                                                                  mockData.attemptList[index]
-                                                                                      .attempted_date.isNotEmpty)
-                                                                              ? 'Date of Attempt: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(mockData.attemptList[index].attempted_date))}'
-                                                                              : restartModel != null &&
-                                                                                      restartModel.restartAttempNum ==
-                                                                                          mockData.attemptList[index]
-                                                                                              .attempt
-                                                                                  ? 'You can re-start this now! All the best'
-                                                                                  : mockData.attemptList[index]
-                                                                                              .tobeAttempted ==
-                                                                                          1
-                                                                                      ? 'You can start this now! All the best'
-                                                                                      : 'On Hold Until Previous Test Concludes ',
-                                                                          style: TextStyle(
-                                                                              fontFamily: 'Roboto Regular',
-                                                                              fontSize: width * (15 / 420),
+                                                                        RichText(
+                                                                            // maxLines: 2,
+                                                                            // textAlign: TextAlign.left,
+                                                                            text: TextSpan(children: <TextSpan>[
+                                                                          TextSpan(
+                                                                            text: (mockData.attemptList[index]
+                                                                                            .attempted_date !=
+                                                                                        null &&
+                                                                                    mockData.attemptList[index]
+                                                                                        .attempted_date.isNotEmpty)
+                                                                                ? 'Date of Attempt: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(mockData.attemptList[index].attempted_date))}'
+                                                                                : restartModel != null &&
+                                                                                        restartModel.restartAttempNum ==
+                                                                                            mockData.attemptList[index]
+                                                                                                .attempt
+                                                                                    ? 'You can re-start this now! All the best'
+                                                                                    : mockData.attemptList[index]
+                                                                                                .tobeAttempted ==
+                                                                                            1
+                                                                                        ? 'You can start this now! All the best'
+                                                                                        : 'On Hold Until Previous Test Concludes ',
+                                                                            style: TextStyle(
                                                                               color: Colors.black,
-                                                                              letterSpacing: 0.3),
-                                                                        ),
+                                                                              fontSize: width * (15 / 420),
+                                                                              fontFamily: 'Roboto Regular',
+                                                                              // height: 1.7
+                                                                              // fontWeight: FontWeight.w600,
+                                                                              letterSpacing: 0.3,
+                                                                            ),
+                                                                          ),
+                                                                        ])),
                                                                         Row(
                                                                           children: [
                                                                             Image.asset('assets/timer.png'),
                                                                             Container(width: 2),
-                                                                            Text(
-                                                                              title.start_date ?? "",
-                                                                              style: TextStyle(
-                                                                                  fontFamily: 'Roboto Regular',
-                                                                                  fontSize: width * (15 / 420),
+                                                                            RichText(
+                                                                                // maxLines: 2,
+                                                                                // textAlign: TextAlign.left,
+                                                                                text: TextSpan(children: <TextSpan>[
+                                                                              TextSpan(
+                                                                                text: title.start_date ?? "",
+                                                                                style: TextStyle(
                                                                                   color: Colors.black,
-                                                                                  letterSpacing: 0.3),
-                                                                            ),
+                                                                                  fontSize: width * (15 / 420),
+                                                                                  fontFamily: 'Roboto Regular',
+                                                                                  // height: 1.7
+                                                                                  // fontWeight: FontWeight.w600,
+                                                                                  letterSpacing: 0.3,
+                                                                                ),
+                                                                              ),
+                                                                            ])),
                                                                           ],
                                                                         ),
                                                                       ],
@@ -514,22 +568,38 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                           ),
                                                                           child: Column(
                                                                             children: [
-                                                                              Text(
-                                                                                title.total_qns.toString(),
-                                                                                style: TextStyle(
-                                                                                    fontFamily: 'Roboto Bold',
-                                                                                    fontSize: width * (20 / 420),
+                                                                              RichText(
+                                                                                  // maxLines: 2,
+                                                                                  // textAlign: TextAlign.left,
+                                                                                  text: TextSpan(children: <TextSpan>[
+                                                                                TextSpan(
+                                                                                  text: title.total_qns.toString(),
+                                                                                  style: TextStyle(
                                                                                     color: Colors.black,
-                                                                                    letterSpacing: 0.3),
-                                                                              ),
-                                                                              Text(
-                                                                                'Total',
-                                                                                style: TextStyle(
-                                                                                    fontFamily: 'Roboto Regular',
-                                                                                    fontSize: width * (18 / 420),
+                                                                                    fontSize: width * (20 / 420),
+                                                                                    fontFamily: 'Roboto Bold',
+                                                                                    // height: 1.7
+                                                                                    // fontWeight: FontWeight.w600,
+                                                                                    letterSpacing: 0.3,
+                                                                                  ),
+                                                                                ),
+                                                                              ])),
+                                                                              RichText(
+                                                                                  // maxLines: 2,
+                                                                                  // textAlign: TextAlign.left,
+                                                                                  text: TextSpan(children: <TextSpan>[
+                                                                                TextSpan(
+                                                                                  text: 'Total',
+                                                                                  style: TextStyle(
                                                                                     color: _colorfromhex("#ABAFD1"),
-                                                                                    letterSpacing: 0.3),
-                                                                              ),
+                                                                                    fontSize: width * (18 / 420),
+                                                                                    fontFamily: 'Roboto Regular',
+                                                                                    // height: 1.7
+                                                                                    // fontWeight: FontWeight.w600,
+                                                                                    letterSpacing: 0.3,
+                                                                                  ),
+                                                                                ),
+                                                                              ])),
                                                                             ],
                                                                           ),
                                                                         ),
@@ -539,22 +609,38 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                           ),
                                                                           child: Column(
                                                                             children: [
-                                                                              Text(
-                                                                                title.correct.toString(),
-                                                                                style: TextStyle(
-                                                                                    fontFamily: 'Roboto Bold',
-                                                                                    fontSize: width * (20 / 420),
+                                                                              RichText(
+                                                                                  // maxLines: 2,
+                                                                                  // textAlign: TextAlign.left,
+                                                                                  text: TextSpan(children: <TextSpan>[
+                                                                                TextSpan(
+                                                                                  text: title.correct.toString(),
+                                                                                  style: TextStyle(
                                                                                     color: Colors.black,
-                                                                                    letterSpacing: 0.3),
-                                                                              ),
-                                                                              Text(
-                                                                                'Right',
-                                                                                style: TextStyle(
-                                                                                    fontFamily: 'Roboto Regular',
-                                                                                    fontSize: width * (18 / 420),
+                                                                                    fontSize: width * (20 / 420),
+                                                                                    fontFamily: 'Roboto Bold',
+                                                                                    // height: 1.7
+                                                                                    // fontWeight: FontWeight.w600,
+                                                                                    letterSpacing: 0.3,
+                                                                                  ),
+                                                                                ),
+                                                                              ])),
+                                                                              RichText(
+                                                                                  // maxLines: 2,
+                                                                                  // textAlign: TextAlign.left,
+                                                                                  text: TextSpan(children: <TextSpan>[
+                                                                                TextSpan(
+                                                                                  text: 'Right',
+                                                                                  style: TextStyle(
                                                                                     color: _colorfromhex("#ABAFD1"),
-                                                                                    letterSpacing: 0.3),
-                                                                              ),
+                                                                                    fontSize: width * (18 / 420),
+                                                                                    fontFamily: 'Roboto Regular',
+                                                                                    // height: 1.7
+                                                                                    // fontWeight: FontWeight.w600,
+                                                                                    letterSpacing: 0.3,
+                                                                                  ),
+                                                                                ),
+                                                                              ])),
                                                                             ],
                                                                           ),
                                                                         ),
@@ -564,44 +650,78 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                           ),
                                                                           child: Column(
                                                                             children: [
-                                                                              Text(
-                                                                                title.wrong.toString(),
-                                                                                style: TextStyle(
-                                                                                    fontFamily: 'Roboto Bold',
-                                                                                    fontSize: width * (20 / 420),
+                                                                              RichText(
+                                                                                  // maxLines: 2,
+                                                                                  // textAlign: TextAlign.left,
+                                                                                  text: TextSpan(children: <TextSpan>[
+                                                                                TextSpan(
+                                                                                  text: title.wrong.toString(),
+                                                                                  style: TextStyle(
                                                                                     color: Colors.black,
-                                                                                    letterSpacing: 0.3),
-                                                                              ),
-                                                                              Text(
-                                                                                'Wrong',
-                                                                                style: TextStyle(
-                                                                                    fontFamily: 'Roboto Regular',
-                                                                                    fontSize: width * (18 / 420),
+                                                                                    fontSize: width * (20 / 420),
+                                                                                    fontFamily: 'Roboto Bold',
+                                                                                    // height: 1.7
+                                                                                    // fontWeight: FontWeight.w600,
+                                                                                    letterSpacing: 0.3,
+                                                                                  ),
+                                                                                ),
+                                                                              ])),
+                                                                              RichText(
+                                                                                  // maxLines: 2,
+                                                                                  // textAlign: TextAlign.left,
+                                                                                  text: TextSpan(children: <TextSpan>[
+                                                                                TextSpan(
+                                                                                  text: 'Wrong',
+                                                                                  style: TextStyle(
                                                                                     color: _colorfromhex("#ABAFD1"),
-                                                                                    letterSpacing: 0.3),
-                                                                              ),
+                                                                                    fontSize: width * (18 / 420),
+                                                                                    fontFamily: 'Roboto Bold',
+
+                                                                                    // height: 1.7
+                                                                                    // fontWeight: FontWeight.w600,
+                                                                                    letterSpacing: 0.3,
+                                                                                  ),
+                                                                                ),
+                                                                              ])),
                                                                             ],
                                                                           ),
                                                                         ),
                                                                         Container(
                                                                           child: Column(
                                                                             children: [
-                                                                              Text(
-                                                                                title.notanswered.toString(),
-                                                                                style: TextStyle(
-                                                                                    fontFamily: 'Roboto Bold',
-                                                                                    fontSize: width * (20 / 420),
+                                                                              RichText(
+                                                                                  // maxLines: 2,
+                                                                                  // textAlign: TextAlign.left,
+                                                                                  text: TextSpan(children: <TextSpan>[
+                                                                                TextSpan(
+                                                                                  text: title.notanswered.toString(),
+                                                                                  style: TextStyle(
                                                                                     color: Colors.black,
-                                                                                    letterSpacing: 0.3),
-                                                                              ),
-                                                                              Text(
-                                                                                'Skipped',
-                                                                                style: TextStyle(
-                                                                                    fontFamily: 'Roboto Regular',
-                                                                                    fontSize: width * (18 / 420),
+                                                                                    fontSize: width * (20 / 420),
+                                                                                    fontFamily: 'Roboto Bold',
+                                                                                    // height: 1.7
+                                                                                    // fontWeight: FontWeight.w600,
+                                                                                    letterSpacing: 0.3,
+                                                                                  ),
+                                                                                ),
+                                                                              ])),
+                                                                              RichText(
+                                                                                  // maxLines: 2,
+                                                                                  // textAlign: TextAlign.left,
+                                                                                  text: TextSpan(children: <TextSpan>[
+                                                                                TextSpan(
+                                                                                  text: 'Skipped',
+                                                                                  style: TextStyle(
                                                                                     color: _colorfromhex("#ABAFD1"),
-                                                                                    letterSpacing: 0.3),
-                                                                              ),
+                                                                                    fontSize: width * (18 / 420),
+                                                                                    fontFamily: 'Roboto Bold',
+
+                                                                                    // height: 1.7
+                                                                                    // fontWeight: FontWeight.w600,
+                                                                                    letterSpacing: 0.3,
+                                                                                  ),
+                                                                                ),
+                                                                              ])),
                                                                             ],
                                                                           ),
                                                                         ),

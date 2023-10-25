@@ -24,8 +24,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
   bool isShowPremiumOrNot;
 //ModelStatus maintainStatus;
   @override
-
-  List storedViedos=[];
+  List storedViedos = [];
   void initState() {
     CourseProvider cp = Provider.of(context, listen: false);
     cp.changeonTap(0);
@@ -109,19 +108,23 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                           SizedBox(width: 20),
                           Center(
                               child: Container(
-                            width: MediaQuery.of(context).size.width * .70,
-                            // color: Colors.amberAccent,
-                            child: Text(
-                              courseProvider.selectedCourseLable,
-                              maxLines: 2,
-                              // "Master Data",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontFamily: "Raleway",
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          )),
+                                  width: MediaQuery.of(context).size.width * .70,
+                                  // color: Colors.amberAccent,
+                                  child: RichText(
+                                      //textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      text: TextSpan(children: <TextSpan>[
+                                        TextSpan(
+                                          text: courseProvider.selectedCourseLable,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            // fontFamily:  "Raleway",
+                                            // fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      ])))),
                         ],
                       ),
 
@@ -131,12 +134,21 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                 ),
                 SizedBox(height: 15),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    widget.title,
-                    style: TextStyle(fontSize: 24, color: _darkText, fontWeight: FontWeight.bold),
-                  ),
-                ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: RichText(
+                        //textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        text: TextSpan(children: <TextSpan>[
+                          TextSpan(
+                            text: widget.title,
+                            style: TextStyle(
+                                color: _darkText,
+                                fontSize: 24,
+                                // fontFamily:  "Raleway",
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ]))),
                 SizedBox(height: 15),
                 Expanded(
                   child: SingleChildScrollView(
@@ -163,10 +175,12 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                   ProfileProvider pp = Provider.of(context, listen: false);
                                                   print("id:::: ${courseProvider.videoCate[index].id}");
                                                   pp.updateLoader(true);
-                                                  await courseProvider.getVideos(courseProvider.videoCate[index].id).onError((error, stackTrace) {
-                                                       print("error::::${error}}");
-                                                       print("error::::${stackTrace}}");
-                                                       pp.updateLoader(false);
+                                                  await courseProvider
+                                                      .getVideos(courseProvider.videoCate[index].id)
+                                                      .onError((error, stackTrace) {
+                                                    print("error::::$error}");
+                                                    print("error::::$stackTrace}");
+                                                    pp.updateLoader(false);
                                                   });
                                                   var vdoSucVal = await courseProvider.vedioStatusValue;
                                                   print("vdoSucVal==============$vdoSucVal");
@@ -235,30 +249,52 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                           child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: [
-                                                              Text(
-                                                                courseProvider.videoCate[index].videoLibraries
-                                                                            .toString() ==
-                                                                        "1"
-                                                                    ? courseProvider.videoCate[index].videoLibraries
-                                                                            .toString() +
-                                                                        " video available"
-                                                                    : courseProvider.videoCate[index].videoLibraries
-                                                                            .toString() +
-                                                                        " videos available",
-                                                                style: TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Colors.grey,
-                                                                ),
-                                                              ),
-                                                              courseProvider.videoCate[index].payment_status == 1
-                                                                  ? Text(
-                                                                      "Premium",
-                                                                      maxLines: 2,
+                                                              RichText(
+                                                                  //textAlign: TextAlign.center,
+                                                                  // maxLines: 2,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                  text: TextSpan(children: <TextSpan>[
+                                                                    TextSpan(
+                                                                      text: courseProvider
+                                                                                  .videoCate[index].videoLibraries
+                                                                                  .toString() ==
+                                                                              "1"
+                                                                          ? courseProvider
+                                                                                  .videoCate[index].videoLibraries
+                                                                                  .toString() +
+                                                                              " video available"
+                                                                          : courseProvider
+                                                                                  .videoCate[index].videoLibraries
+                                                                                  .toString() +
+                                                                              " videos available",
                                                                       style: TextStyle(
+                                                                        color: Colors.grey,
                                                                         fontSize: 14,
-                                                                        color: Colors.black,
+                                                                        // fontFamily:  "Raleway",
+                                                                        // fontWeight: FontWeight.bold
                                                                       ),
-                                                                    )
+                                                                    ),
+                                                                  ])),
+                                                              courseProvider.videoCate[index].payment_status == 1
+                                                                  ? 
+
+
+                                                                   RichText(
+                                                                  //textAlign: TextAlign.center,
+                                                                  // maxLines: 2,
+                                                                  // overflow: TextOverflow.ellipsis,
+                                                                  text: TextSpan(children: <TextSpan>[
+                                                                    TextSpan(
+                                                                      text: "Premium",
+                                                                      style: TextStyle(
+                                                                        color: Colors.black,
+                                                                        fontSize: 14,
+                                                                        // fontFamily:  "Raleway",
+                                                                        // fontWeight: FontWeight.bold
+                                                                      ),
+                                                                    ),
+                                                                  ]))
+                                                                 
                                                                   : Text(""),
                                                             ],
                                                           ),
@@ -268,14 +304,32 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                         ),
                                                         Container(
                                                           width: MediaQuery.of(context).size.width * .7,
-                                                          child: Text(
-                                                            courseProvider.videoCate[index].name,
-                                                            maxLines: 2,
-                                                            style: TextStyle(
-                                                              fontSize: 18,
-                                                              color: Colors.black,
-                                                            ),
-                                                          ),
+                                                          child: 
+                                                          
+                                                          
+
+
+                                                             RichText(
+                                                                  //textAlign: TextAlign.center,
+                                                                  maxLines: 2,
+                                                                  // overflow: TextOverflow.ellipsis,
+                                                                  text: TextSpan(children: <TextSpan>[
+                                                                    TextSpan(
+                                                                      text: courseProvider.videoCate[index].name,
+                                                                      style: TextStyle(
+                                                                        color: Colors.black,
+                                                                        fontSize: 18,
+                                                                        // fontFamily:  "Raleway",
+                                                                        // fontWeight: FontWeight.bold
+                                                                      ),
+                                                                    ),
+                                                                  ]))
+
+
+
+
+
+
                                                         ),
                                                       ],
                                                     )
@@ -322,88 +376,9 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                 );
                         })
 
-                        //         Options(
-                        //           isShowPremium: false,
-                        //           iconBackground: Color(0xff72a258),
-                        //           icon: Icon(
-                        //             FontAwesomeIcons.edit,
-                        //             size: 50,
-                        //             color: Colors.white,
-                        //           ),
-                        //           text: "PgMP Prep Free",
-                        //           onTap: () {
-
-                        //       CourseProvider courseProvider=Provider.of(context,listen: false);
-                        // courseProvider.getVideos(4);
-                        //           print("on tabbbb");
-                        //               Navigator.push(
-                        //               context,
-                        //               MaterialPageRoute(
-                        //                 builder: (BuildContext context) => new PlaylistPage(
-                        //                   videoType: 1,
-                        //                   title: "PgMP Prep Free",
-
-                        //                 ),
-                        //               ),
-                        //             );
-
-                        // //         purchaseProvider.products.forEach((e) {
-                        // //   print("Product id => ${e.id}");
-                        // //   if (e.id == videoLibraryLearningPrograms) {
-                        // //     purchaseProvider.buy(e);
-                        // //   }
-                        // // });
-
-                        //   },
-                        // ),
-                        //   Options(
-                        //     iconBackground: Color(0xff463b97),
-                        //     icon: Icon(
-                        //       FontAwesomeIcons.splotch,
-                        //       size: 50,
-                        //       color: Colors.white,
-                        //     ),
-                        //     text: "PgMP Recorded Program Premium",
-                        //     isShowPremium:isShowPremiumOrNot,
-
-                        //     onTap: () {
-
-                        //       //PurchaseProvider purchaseProvider = Provider.of(context,listen: false);
-
-                        //       if(purchaseProvider.latestStatus?.videoLibStatus==1)
-                        //       {
-                        //         Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //           builder: (BuildContext context) => PlaylistPage(
-                        //             title: "PgMP Recorded Program Premium",
-                        //             videoType: 2,
-                        //           ),
-                        //         ),
-                        //       );
-                        //       }else{
-                        //            Navigator.push(
-                        //           context,
-                        //           MaterialPageRoute(
-                        //             builder: (BuildContext context) => RandomPage(index: 2,),
-                        //           ));
-                        // //         purchaseProvider.products.forEach((e) {
-                        // //   print("Product id => ${e.id}");
-                        // //   if (e.id == videoLibraryLearningPrograms) {
-                        // //     purchaseProvider.buy(e);
-                        // //   }
-                        // // });
-                        //       }
-
-                        //     },
-                        //     onPremiumTap: () {
-                        //       Navigator.push(
-                        //           context,
-                        //           MaterialPageRoute(
-                        //             builder: (BuildContext context) => RandomPage(index: 2,),
-                        //           ));
-                        //     },
-                        //   ),
+             
+            
+                  
                       ],
                     ),
                   ),

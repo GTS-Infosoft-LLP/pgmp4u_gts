@@ -263,15 +263,21 @@ class _PracticeNewState extends State<PracticeNew> {
                                         ),
                                         Container(
                                           width: MediaQuery.of(context).size.width * .8,
-                                          child: Text(
-                                            "  " + widget.pracTestName,
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                                fontFamily: 'Roboto Medium',
-                                                fontSize: width * (18 / 420),
-                                                color: Colors.white,
-                                                letterSpacing: 0.3),
-                                          ),
+                                          child: RichText(
+                                              maxLines: 2,
+                                              // textAlign: TextAlign.center,
+                                              text: TextSpan(children: <TextSpan>[
+                                                TextSpan(
+                                                  text: "  " + widget.pracTestName,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: width * (17 / 420),
+                                                    fontFamily: 'Roboto Medium',
+                                                    // fontWeight: FontWeight.w600,
+                                                    letterSpacing: 0.3,
+                                                  ),
+                                                ),
+                                              ])),
                                         ),
                                       ],
                                     ),
@@ -382,14 +388,21 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                       ),
                                                                     )
                                                                   : Container(),
-                                                              Text(
-                                                                'QUESTION ${_quetionNo + 1}',
-                                                                style: TextStyle(
-                                                                  fontFamily: 'Roboto Regular',
-                                                                  fontSize: width * (16 / 420),
-                                                                  color: Colors.black,
+                                                              RichText(
+                                                                  // maxLines: 2,
+                                                                  // textAlign: TextAlign.center,
+                                                                  text: TextSpan(children: <TextSpan>[
+                                                                TextSpan(
+                                                                  text: 'QUESTION ${_quetionNo + 1}',
+                                                                  style: TextStyle(
+                                                                    color: Colors.black,
+                                                                    fontSize: width * (16 / 420),
+                                                                    fontFamily: 'Roboto Regular',
+                                                                    // fontWeight: FontWeight.w600,
+                                                                    // letterSpacing: 0.3,
+                                                                  ),
                                                                 ),
-                                                              ),
+                                                              ])),
                                                               PTList.length - 1 > _quetionNo
                                                                   ? GestureDetector(
                                                                       onTap: () => {
@@ -492,15 +505,22 @@ class _PracticeNewState extends State<PracticeNew> {
                                                           Row(
                                                             mainAxisAlignment: MainAxisAlignment.start,
                                                             children: [
-                                                              Text(
-                                                                "Maximum selection: ${PTList[index].ques.rightAnswer.split(',').length}",
-                                                                textAlign: TextAlign.left,
-                                                                style: TextStyle(
-                                                                  fontFamily: 'Roboto Regular',
-                                                                  fontSize: 18,
-                                                                  color: Colors.black,
-                                                                ),
-                                                              ),
+                                                              RichText(
+                                                                  // maxLines: 2,
+                                                                  textAlign: TextAlign.left,
+                                                                  text: TextSpan(children: <TextSpan>[
+                                                                    TextSpan(
+                                                                      text:
+                                                                          "Maximum selection: ${PTList[index].ques.rightAnswer.split(',').length}",
+                                                                      style: TextStyle(
+                                                                        color: Colors.black,
+                                                                        fontSize: 18,
+                                                                        fontFamily: 'Roboto Regular',
+                                                                        // fontWeight: FontWeight.w600,
+                                                                        // letterSpacing: 0.3,
+                                                                      ),
+                                                                    ),
+                                                                  ])),
                                                             ],
                                                           ),
 
@@ -520,21 +540,22 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                     // print(
                                                                     //     "answersMapp[i][selectedAnser]::::${answersMapp[i]["selectedAnser"]}");
                                                                     selQuesMap = {
-                                                                      "questionNumber": _quetionNo,  
-                                                                      "selected": answersMapp[i]["selectedAnser"] ?? [],   
-                                                                      "right": answersMapp[i]["rightNumber"] ?? []  
-                                                                    }; 
+                                                                      "questionNumber": _quetionNo,
+                                                                      "selected": answersMapp[i]["selectedAnser"] ?? [],
+                                                                      "right": answersMapp[i]["rightNumber"] ?? []
+                                                                    };
 
-                                                                    answer = (answersMapp[i]["selectedAnser"]);  
-                                                                  }  
-                                                                }  
-                                                                finalSelectedAns = selQuesMap['selected'] ?? [];   
-                                                                finalCorrectAns = selQuesMap['right'] ?? [];   
-                                                                print( "selected answers for this question;::::$finalSelectedAns");   
+                                                                    answer = (answersMapp[i]["selectedAnser"]);
+                                                                  }
+                                                                }
+                                                                finalSelectedAns = selQuesMap['selected'] ?? [];
+                                                                finalCorrectAns = selQuesMap['right'] ?? [];
+                                                                print(
+                                                                    "selected answers for this question;::::$finalSelectedAns");
                                                                 if (finalSelectedAns.isNotEmpty) {
-                                                                  print("finalSelectedAns is not empty");    
+                                                                  print("finalSelectedAns is not empty");
                                                                   // setState(() {
-                                                                    _show = !_show;    
+                                                                  _show = !_show;
                                                                   // });
                                                                 }
                                                                 // print(
@@ -873,15 +894,22 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                         mainAxisAlignment:
                                                                             MainAxisAlignment.spaceBetween,
                                                                         children: [
-                                                                          Text(
-                                                                            'See Solution',
-                                                                            style: TextStyle(
-                                                                              fontFamily: 'Roboto Regular',
-                                                                              fontSize: width * (15 / 420),
-                                                                              color: _colorfromhex("#ABAFD1"),
-                                                                              height: 1.7,
+                                                                          RichText(
+                                                                              // maxLines: 2,
+                                                                              // textAlign: TextAlign.left,
+                                                                              text: TextSpan(children: <TextSpan>[
+                                                                            TextSpan(
+                                                                              text: 'See Solution',
+                                                                              style: TextStyle(
+                                                                                  color: _colorfromhex("#ABAFD1"),
+                                                                                  fontSize: width * (15 / 420),
+                                                                                  fontFamily: 'Roboto Regular',
+                                                                                  height: 1.7
+                                                                                  // fontWeight: FontWeight.w600,
+                                                                                  // letterSpacing: 0.3,
+                                                                                  ),
                                                                             ),
-                                                                          ),
+                                                                          ])),
                                                                           Icon(
                                                                             _show
                                                                                 ? Icons.expand_less
@@ -895,32 +923,28 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                       ? Container(
                                                                           margin:
                                                                               EdgeInsets.only(top: height * (9 / 800)),
-                                                                          child: Text(
-                                                                            "${getTstAns(op)}",
+                                                                          child: 
 
-                                                                            ///////////////////////
-                                                                            // correctAns.contains(op[0].id)
-                                                                            //     ? 'Answer A is the correct one'
-                                                                            //     :
 
-                                                                            //     // PTList[_quetionNo].ques.rightAnswer ==
-                                                                            //     //         op[1].id.toString()
-                                                                            //     correctAns.contains(op[1].id)
-                                                                            //         ? 'Answer B is the correct one'
-                                                                            //         : correctAns.contains(op[2].id)
-                                                                            //             ? 'Answer c is the correct one'
-                                                                            //             : correctAns.contains(op[3].id)
-                                                                            //                 ? 'Answer D is the correct one'
-                                                                            //                 : 'Answer E is the correct one',
 
-                                                                            ///////////////
-                                                                            style: TextStyle(
-                                                                              fontFamily: 'Roboto Regular',
-                                                                              fontSize: width * (15 / 420),
-                                                                              color: _colorfromhex("#04AE0B"),
-                                                                              height: 1.7,
-                                                                            ),
-                                                                          ),
+ RichText(
+  // maxLines: 2,
+                      // textAlign: TextAlign.left,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text:  "${getTstAns(op)}",
+                          style: TextStyle(
+                           color:_colorfromhex("#04AE0B"),
+                              fontSize:width * (15 / 420),
+                              fontFamily:'Roboto Regular',
+                              height: 1.7
+                              // fontWeight: FontWeight.w600,
+                              // letterSpacing: 0.3,
+                              ),
+                        ),
+                      ]))
+
+
                                                                         )
                                                                       : Container(),
                                                                   _show
@@ -1292,10 +1316,34 @@ class _PracticeNewState extends State<PracticeNew> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                            child: Text(
-                              "Put on discussion",
-                              style: TextStyle(color: Colors.white, fontSize: 12),
-                            ),
+                            child:
+                            //  Text(
+                            //   "Put on discussion",
+                            //   style: TextStyle(color: Colors.white, fontSize: 12),
+                            // ),
+
+
+
+
+ RichText(
+  // maxLines: 2,
+                      // textAlign: TextAlign.left,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: "Put on discussion",
+                          style: TextStyle(
+                           color:Colors.white,
+                              fontSize:12
+                              // fontFamily:'Roboto Regular',
+                              // height: 1.7
+                              // fontWeight: FontWeight.w600,
+                              // letterSpacing: 0.3,
+                              ),
+                        ),
+                      ]))
+
+
+
                           ),
                         ],
                       ),

@@ -1048,7 +1048,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                                           ? 'C'
                                                                                           : index == 3
                                                                                               ? 'D'
-                                                                                              : 'E',
+                                                                                              : 'E', 
                                                                               style: TextStyle(
                                                                                 fontFamily: 'Roboto Regular',
                                                                                 color: selectedAnswer.contains(index)

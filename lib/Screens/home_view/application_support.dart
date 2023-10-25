@@ -96,15 +96,23 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                       Center(
                           child: Container(
                         width: MediaQuery.of(context).size.width * .75,
-                        child: Text(
-                          "Application Support\n" + appbarTxt,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "Raleway",
-                            fontSize: 22,
+                        child: RichText(
+                            // maxLines: 2,
+                            // textAlign: TextAlign.left,
+                            text: TextSpan(children: <TextSpan>[
+                          TextSpan(
+                            text: "Application Support\n" + appbarTxt,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontFamily: "Raleway",
+
+                              // height: 1.7
+                              fontWeight: FontWeight.bold,
+                              // letterSpacing: 0.3,
+                            ),
                           ),
-                        ),
+                        ])),
                       )),
                     ],
                   ),
@@ -209,15 +217,23 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
               ? Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 22.0),
                   child: Center(
-                    child: Text(
-                      "Currently, Application Support is part of only Gold and Platinum Plans",
-                      style: TextStyle(
-                        color: _lightText,
-                        fontFamily: "NunitoSans",
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                    child: RichText(
+                        // maxLines: 2,
+                        // textAlign: TextAlign.left,
+                        text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                        text: "Currently, Application Support is part of only Gold and Platinum Plans",
+                        style: TextStyle(
+                          color: _lightText,
+                          fontSize: 15,
+                          fontFamily: "NunitoSans",
+
+                          // height: 1.7
+                          fontWeight: FontWeight.w600,
+                          // letterSpacing: 0.3,
+                        ),
                       ),
-                    ),
+                    ])),
                   ),
                 )
               : SizedBox(),
@@ -226,16 +242,24 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
             child: Column(children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(5, 22, 22, 22),
-                child: Text(
-                  text1,
-                  style: TextStyle(
-                    color: _lightText,
-                    fontFamily: "NunitoSans",
-                    fontSize: 15,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1000,
-                ),
+                child: RichText(
+                    maxLines: 1000,
+                    overflow: TextOverflow.ellipsis,
+                    // textAlign: TextAlign.left,
+                    text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                        text: text1,
+                        style: TextStyle(
+                          color: _lightText,
+                          fontSize: 15,
+                          fontFamily: "NunitoSans",
+
+                          // height: 1.7
+                          // fontWeight: FontWeight.w600,
+                          // letterSpacing: 0.3,
+                        ),
+                      ),
+                    ])),
               ),
               AppSupportRow("A video - How to complete your application in your first attempt.", context),
               AppSupportRow("Application Support Handbook", context),
@@ -252,10 +276,24 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                 height: 20,
               ),
               cp.selectedPlanType == 2
-                  ? Text(
-                      "Upgrade to Platinum for Session with Mentor",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                    )
+                  ? RichText(
+                      // maxLines: 1000,
+                      // overflow: TextOverflow.ellipsis,
+                      // textAlign: TextAlign.left,
+                      text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                        text: "Upgrade to Platinum for Session with Mentor",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          // fontFamily: "NunitoSans",
+
+                          // height: 1.7
+                          fontWeight: FontWeight.w600,
+                          // letterSpacing: 0.3,
+                        ),
+                      ),
+                    ]))
                   : SizedBox(),
               SizedBox(
                 height: 10,
@@ -300,10 +338,28 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                               )));
                                 });
                               },
-                              child: Text(
-                                "Upgrade",
-                                style: TextStyle(color: Colors.white, fontSize: 16),
-                              )),
+                              child:
+                                
+                                  RichText(
+                                      // maxLines: 1000,
+                                      // overflow: TextOverflow.ellipsis,
+                                      // textAlign: TextAlign.left,
+                                      text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                  text: "Upgrade",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    // fontFamily: "NunitoSans",
+
+                                    // height: 1.7
+                                    // fontWeight: FontWeight.w600,
+                                    // letterSpacing: 0.3,
+                                  ),
+                                ),
+                              ]))
+                              )
+                              ,
                         )
                       : SizedBox(),
                   SizedBox(
@@ -329,10 +385,30 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                             EasyLoading.showInfo("Please check your Internet Connection");
                           }
                         },
-                        child: Text(
-                          "Chat",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        )),
+                        child:
+                            //  Text(
+                            // "Chat",
+                            // style: TextStyle(color: Colors.white, fontSize: 16),
+                            // )
+
+                            RichText(
+                                // maxLines: 1000,
+                                // overflow: TextOverflow.ellipsis,
+                                // textAlign: TextAlign.left,
+                                text: TextSpan(children: <TextSpan>[
+                          TextSpan(
+                            text: "Chat",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              // fontFamily: "NunitoSans",
+
+                              // height: 1.7
+                              // fontWeight: FontWeight.w600,
+                              // letterSpacing: 0.3,
+                            ),
+                          ),
+                        ]))),
                   ),
                 ],
               ),

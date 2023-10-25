@@ -58,7 +58,7 @@ class _PPTCardItemState extends State<PPTCardItem> {
             ),
             Consumer<CourseProvider>(builder: (context, cp, child) {
               return Container(
-                padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
+                padding: EdgeInsets.fromLTRB(20, 50, 10, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -98,6 +98,8 @@ class _PPTCardItemState extends State<PPTCardItem> {
             padding: const EdgeInsets.all(10.0),
             child: Text(
               widget.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(fontSize: 24, color: _darkText, fontWeight: FontWeight.bold),
             ),
           ),
@@ -216,7 +218,6 @@ class _PPTCardItemState extends State<PPTCardItem> {
                                                       decoration: BoxDecoration(
                                                         borderRadius: BorderRadius.circular(10),
                                                         color: index % 2 == 0 ? AppColor.purpule : AppColor.green,
-
                                                       ),
                                                       child: Padding(
                                                         padding: const EdgeInsets.all(17.0),
@@ -245,23 +246,46 @@ class _PPTCardItemState extends State<PPTCardItem> {
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           Container(
-                                                            // color: Colors.amber,
-                                                            width: MediaQuery.of(context).size.width * .67,
-                                                            child: Text(
-                                                              storedpptCate[index].label,
+                                                              // color: Colors.amber,
+                                                              width: MediaQuery.of(context).size.width * .67,
+                                                              child: RichText(
+                                                                  // maxLines: 1000,
+                                                                  // overflow: TextOverflow.ellipsis,
+                                                                  // textAlign: TextAlign.left,
+                                                                  text: TextSpan(children: <TextSpan>[
+                                                                TextSpan(
+                                                                  text: storedpptCate[index].label,
+                                                                  style: TextStyle(
+                                                                    color: Colors.grey,
+                                                                    fontSize: 14,
+                                                                    // fontFamily: "NunitoSans",
+
+                                                                    // height: 1.7
+                                                                    // fontWeight: FontWeight.w600,
+                                                                    // letterSpacing: 0.3,
+                                                                  ),
+                                                                ),
+                                                              ]))),
+                                                          RichText(
+                                                              // maxLines: 1000,
+                                                              // overflow: TextOverflow.ellipsis,
+                                                              // textAlign: TextAlign.left,
+                                                              text: TextSpan(children: <TextSpan>[
+                                                            TextSpan(
+                                                              text: storedpptCate[index].paymentStatus == 1
+                                                                  ? "Premium"
+                                                                  : "",
                                                               style: TextStyle(
+                                                                color: Colors.black,
                                                                 fontSize: 14,
-                                                                color: Colors.grey,
+                                                                // fontFamily: "NunitoSans",
+
+                                                                // height: 1.7
+                                                                // fontWeight: FontWeight.w600,
+                                                                // letterSpacing: 0.3,
                                                               ),
                                                             ),
-                                                          ),
-                                                          Text(
-                                                            storedpptCate[index].paymentStatus == 1 ? "Premium" : "",
-                                                            style: TextStyle(
-                                                              fontSize: 14,
-                                                              color: Colors.black,
-                                                            ),
-                                                          ),
+                                                          ]))
                                                         ],
                                                       ),
                                                     ),
@@ -269,16 +293,35 @@ class _PPTCardItemState extends State<PPTCardItem> {
                                                       height: 0,
                                                     ),
                                                     Container(
-                                                      width: MediaQuery.of(context).size.width * .65,
-                                                      child: Text(
-                                                        storedpptCate[index].name,
-                                                        maxLines: 2,
-                                                        style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ),
+                                                        width: MediaQuery.of(context).size.width * .65,
+                                                        child:
+                                                            // Text(
+                                                            //   storedpptCate[index].name,
+                                                            //   maxLines: 2,
+                                                            //   style: TextStyle(
+                                                            //     fontSize: 18,
+                                                            //     color: Colors.black,
+                                                            //   ),
+                                                            // ),
+
+                                                            RichText(
+                                                                maxLines: 2,
+                                                                // overflow: TextOverflow.ellipsis,
+                                                                // textAlign: TextAlign.left,
+                                                                text: TextSpan(children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text: storedpptCate[index].name,
+                                                                    style: TextStyle(
+                                                                      color: Colors.black,
+                                                                      fontSize: 18,
+                                                                      // fontFamily: "NunitoSans",
+
+                                                                      // height: 1.7
+                                                                      // fontWeight: FontWeight.w600,
+                                                                      // letterSpacing: 0.3,
+                                                                    ),
+                                                                  ),
+                                                                ]))),
                                                   ],
                                                 ),
                                               ],

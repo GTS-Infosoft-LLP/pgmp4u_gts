@@ -25,7 +25,6 @@ class _SubDomainState extends State<SubDomain> {
   Color clr;
   List<SubDomainDetails> storedSubDomainList = [];
   void initState() {
-
     super.initState();
   }
 
@@ -55,7 +54,7 @@ class _SubDomainState extends State<SubDomain> {
               ),
               Consumer<CourseProvider>(builder: (context, cp, child) {
                 return Container(
-                  padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
+                  padding: EdgeInsets.fromLTRB(20, 50, 10, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -78,16 +77,20 @@ class _SubDomainState extends State<SubDomain> {
                         // color: Colors.amber,
                         width: MediaQuery.of(context).size.width * .65,
                         child: Container(
-                          width: MediaQuery.of(context).size.width * .8,
-                          child: Text(
-                            "Subdomain",
-                            // cp.selectedCourseName,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
-                          ),
-                        ),
+                            width: MediaQuery.of(context).size.width * .8,
+                            child: RichText(
+                                //textAlign: TextAlign.center,
+                                // maxLines: 2,
+                                text: TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                text: "Subdomain",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    fontFamily: "Roboto",
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ]))),
                       )),
                     ],
                   ),
@@ -96,17 +99,31 @@ class _SubDomainState extends State<SubDomain> {
             ]),
             SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.only(left: 18.0),
-              child: Text(
-                widget.dmnName,
-                maxLines: 2,
-                style: TextStyle(
-                  fontFamily: 'Roboto Regular',
-                  fontSize: 18,
-                  color: Colors.black,
-                ),
-              ),
-            ),
+                padding: const EdgeInsets.only(left: 18.0),
+                child:
+                    // Text(
+                    //   widget.dmnName,
+                    //   maxLines: 2,
+                    //   style: TextStyle(
+                    //     fontFamily: 'Roboto Regular',
+                    //     fontSize: 18,
+                    //     color: Colors.black,
+                    //   ),
+                    // ),
+                    RichText(
+                        //textAlign: TextAlign.center,
+                        maxLines: 2,
+                        text: TextSpan(children: <TextSpan>[
+                          TextSpan(
+                            text: widget.dmnName,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontFamily: 'Roboto Regular',
+                              // fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ]))),
             Container(
                 child: ValueListenableBuilder<Box<String>>(
                     valueListenable: HiveHandler.getsubDomainDetailListener(),
@@ -153,19 +170,9 @@ class _SubDomainState extends State<SubDomain> {
                                     child: ListView.builder(
                                         itemCount: storedSubDomainList.length,
                                         itemBuilder: (context, index) {
-                                          if (index % 4 == 0) {
-                                            clr = Color(0xff3F9FC9);
-                                          } else if (index % 3 == 0) {
-                                            clr = Color(0xff3FC964);
-                                          } else if (index % 2 == 0) {
-                                            clr = Color(0xffDE682B);
-                                          } else {
-                                            clr = Color(0xffC93F7F);
-                                          }
-
                                           return InkWell(
                                             onTap: () async {
-                                              DomainProvider dp=Provider.of(context,listen: false);
+                                              DomainProvider dp = Provider.of(context, listen: false);
                                               dp.setSelectedSubDomainId(storedSubDomainList[index].id);
                                               dp.setSelectedSubDomainName(storedSubDomainList[index].name);
                                               print("selected doadfdfmin id====${storedSubDomainList[index].id}");
@@ -210,8 +217,20 @@ class _SubDomainState extends State<SubDomain> {
                                                                 borderRadius: BorderRadius.circular(80),
                                                               ),
                                                               child: Center(
-                                                                child: Text('${index + 1}', style: TextStyle()),
-                                                              ),
+                                                                  child:
+                                                                     
+
+                                                                      RichText(
+                                                                         
+                                                                          text: TextSpan(children: <TextSpan>[
+                                                                TextSpan(
+                                                                  text: '${index + 1}',
+                                                                  style: TextStyle(
+                                                                    color: Colors.black,
+                                                               
+                                                                  ),
+                                                                ),
+                                                              ]))),
                                                             ),
                                                           )),
                                                     ),
@@ -224,20 +243,26 @@ class _SubDomainState extends State<SubDomain> {
                                                       children: [
                                                         Container(
                                                           width: MediaQuery.of(context).size.width * .45,
-                                                      
                                                           child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: [
-                                                              Text(
-                                                                storedSubDomainList[index].Tasks == 1 ||
-                                                                        storedSubDomainList[index].Tasks == 0
-                                                                    ? "${storedSubDomainList[index].Tasks} task "
-                                                                    : "${storedSubDomainList[index].Tasks} tasks ",
-                                                                style: TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Colors.grey,
+                                                           
+
+                                                              RichText(
+                                                             
+                                                                  text: TextSpan(children: <TextSpan>[
+                                                                TextSpan(
+                                                                  text: storedSubDomainList[index].Tasks == 1 ||
+                                                                          storedSubDomainList[index].Tasks == 0
+                                                                      ? "${storedSubDomainList[index].Tasks} task "
+                                                                      : "${storedSubDomainList[index].Tasks} tasks ",
+                                                                  style: TextStyle(
+                                                                    color: Colors.grey,
+                                                                    fontSize: 14,
+                                                                 
+                                                                  ),
                                                                 ),
-                                                              ),
+                                                              ]))
                                                             ],
                                                           ),
                                                         ),
@@ -245,16 +270,26 @@ class _SubDomainState extends State<SubDomain> {
                                                           height: 0,
                                                         ),
                                                         Container(
-                                                          width: MediaQuery.of(context).size.width * .55,
-                                                          child: Text(
-                                                            storedSubDomainList[index].name,
-                                                            maxLines: 2,
-                                                            style: TextStyle(
-                                                              fontSize: 18,
-                                                              color: Colors.black,
-                                                            ),
-                                                          ),
-                                                        ),
+                                                            width: MediaQuery.of(context).size.width * .55,
+                                                            child:
+
+                                                             
+
+                                                                RichText(
+                                                                    //textAlign: TextAlign.center,
+                                                                    maxLines: 2,
+                                                                    text: TextSpan(children: <TextSpan>[
+                                                                      TextSpan(
+                                                                        text: storedSubDomainList[index].name,
+                                                                        style: TextStyle(
+                                                                          color: Colors.black,
+                                                                          fontSize: 18,
+                                                                          // fontFamily: 'Roboto Regular',
+                                                                          // fontWeight: FontWeight.bold
+                                                                        ),
+                                                                      ),
+                                                                    ]))
+                                                                    ),
                                                       ],
                                                     ),
                                                     // new Spacer(),

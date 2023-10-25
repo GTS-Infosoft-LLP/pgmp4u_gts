@@ -307,7 +307,7 @@ class ProfileProvider extends ChangeNotifier {
 
       notifyListeners();
     }
-    print("respponse=== ${response.body}");
+    print("respponse=== *********${response.body}");
   }
 
   var successValue;
@@ -566,7 +566,7 @@ class ProfileProvider extends ChangeNotifier {
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
 
-      print("respponse=== ${response.body}");
+      print("respponse===*/*/*/*/ ${response.body}");
       if (response.statusCode == 200) {
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse==========$mapResponse");

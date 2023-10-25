@@ -94,19 +94,22 @@ class _PlaylistPageState extends State<PlaylistPage> {
                             ),
                             Center(
                                 child: Container(
-                              width: MediaQuery.of(context).size.width * .72,
-                              child: Text(
-                                cp.selectedCourseLable
-                                // widget.title
-                                // "Video Library",
-                                ,
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    color: Colors.white,
-                                    fontFamily: "Raleway",
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )),
+                                    width: MediaQuery.of(context).size.width * .72,
+                                    child: RichText(
+                                        //textAlign: TextAlign.center,
+                                        // maxLines: 2,
+                                        // overflow: TextOverflow.ellipsis,
+                                        text: TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                        text: cp.selectedCourseLable,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                            fontFamily: "Raleway",
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ]))
+                                    )),
                           ]);
                         }),
                       ),
@@ -178,12 +181,21 @@ class _PlaylistPageState extends State<PlaylistPage> {
                 // ),
                 SizedBox(height: 20),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    widget.title,
-                    style: TextStyle(fontSize: 24, color: AppColor.darkText, fontWeight: FontWeight.bold),
-                  ),
-                ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: RichText(
+                        //textAlign: TextAlign.center,
+                        // maxLines: 2,
+                        // overflow: TextOverflow.ellipsis,
+                        text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                        text: widget.title,
+                        style: TextStyle(
+                            color: AppColor.darkText,
+                            fontSize: 24,
+                            // fontFamily:  "Raleway",
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ]))),
                 Container(
                     child: FutureBuilder<GetVideoByType>(
                   future: responseProvider.getCardVideoTypeApi(widget.videoType),
@@ -337,16 +349,21 @@ class VideoList extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4),
                         child: Container(
-                          // color: Colors.amber,
-                          child: Text(
-                            courseProvider.Videos[index].title,
+                            // color: Colors.amber,
+                            child: RichText(
+                                //textAlign: TextAlign.center,
+                                // maxLines: 2,
+                                // overflow: TextOverflow.ellipsis,
+                                text: TextSpan(children: <TextSpan>[
+                          TextSpan(
+                            text: courseProvider.Videos[index].title,
                             style: TextStyle(
+                                color: AppColor.darkText,
                                 fontSize: Sizes.titleSize,
-                                fontWeight: FontWeight.bold,
                                 fontFamily: 'Lato-Regular',
-                                color: AppColor.darkText),
+                                fontWeight: FontWeight.bold),
                           ),
-                        ),
+                        ]))),
                       ),
                       // Divider(
                       //   color: Colors.grey,

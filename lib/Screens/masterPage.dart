@@ -39,11 +39,6 @@ class _MasterListPageState extends State<MasterListPage> {
     CourseProvider courseProvider = Provider.of(context, listen: false);
     print("master list===${courseProvider.masterList}");
     courseProvider.changeonTap(0);
-    // if (Mastertemplist.isEmpty) {
-    //   Mastertemplist = HiveHandler.getMasterDataList(key: courseProvider.selectedCourseId.toString());
-    //   print("*************************************************");
-    //   print("tempList==========$Mastertemplist");
-    // }
 
     if (courseProvider.masterList.isEmpty) {
       print("list is empty");
@@ -100,12 +95,24 @@ class _MasterListPageState extends State<MasterListPage> {
                           onTap: () {
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => FlashCardBtn()));
                           },
-                          child: Center(
-                              child: Text(
-                            cp.selectedCourseLable,
-                            style: TextStyle(
-                                fontSize: 28, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
-                          )),
+                          child: RichText(
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              // textAlign: TextAlign.center,
+                              text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                  text: cp.selectedCourseLable,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 28,
+                                      fontFamily: "Raleway",
+                                      fontWeight: FontWeight.bold
+
+                                      // fontFamily: AppFont.poppinsRegular,
+                                      ),
+                                ),
+                              ])),
+                        
                         ),
                       ]),
                     ),
@@ -334,26 +341,48 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
-                                                                  Text(
-                                                                    storedMaster[index].label,
-                                                                    style: TextStyle(
-                                                                      fontSize: 14,
-                                                                      color: Colors.grey,
-                                                                    ),
+                                                                  Container(
+                                                                    width: MediaQuery.of(context).size.width * .65,
+                                                                    // color: Colors.amber,
+                                                                    child: RichText(
+                                                                        overflow: TextOverflow.ellipsis,
+                                                                        maxLines: 2,
+                                                                        // textAlign: TextAlign.center,
+                                                                        text: TextSpan(children: <TextSpan>[
+                                                                          TextSpan(
+                                                                            text: storedMaster[index].label,
+                                                                            style: TextStyle(
+                                                                              color: Colors.grey,
+                                                                              fontSize: 14,
+
+                                                                              // fontFamily: AppFont.poppinsRegular,
+                                                                            ),
+                                                                          ),
+                                                                        ])),
                                                                   ),
+
+                                                              
                                                                   SizedBox(
                                                                     height: 3,
                                                                   ),
                                                                   Container(
                                                                     width: MediaQuery.of(context).size.width * .65,
-                                                                    child: Text(
-                                                                      storedMaster[index].name,
-                                                                      maxLines: 2,
-                                                                      style: TextStyle(
-                                                                        fontSize: 18,
-                                                                        color: Colors.black,
-                                                                      ),
-                                                                    ),
+                                                                    child: RichText(
+                                                                        overflow: TextOverflow.ellipsis,
+                                                                        maxLines: 2,
+                                                                        // textAlign: TextAlign.center,
+                                                                        text: TextSpan(children: <TextSpan>[
+                                                                          TextSpan(
+                                                                            text: storedMaster[index].name,
+                                                                            style: TextStyle(
+                                                                              color: Colors.black,
+                                                                              fontSize: 18,
+
+                                                                              // fontFamily: AppFont.poppinsRegular,
+                                                                            ),
+                                                                          ),
+                                                                        ])),
+                                                                
                                                                   ),
                                                                 ],
                                                               ),
