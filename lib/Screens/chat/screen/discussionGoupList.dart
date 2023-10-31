@@ -131,20 +131,27 @@ class _GroupListPageState extends State<GroupListPage> {
           stream: FirebaseChatHandler.getAllDiscussionGroups(
               context.read<CourseProvider>().selectedCourseLable.toLowerCase()),
           builder: (context, snapshot) {
+            print("printing snapshot data>>>.${snapshot.data.docs}");
             if (snapshot.hasData) {
-              return ListView.builder(
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemCount: snapshot.data?.docs.length ?? 0,
-                  itemBuilder: (context, index) {
-                    DisscussionGropModel group = DisscussionGropModel.fromJson(snapshot.data?.docs[index].data());
-                    return GroupListTile(
-                      index: index,
-                      color: colors[index % colors.length],
-                      group: group,
-                    );
-                  });
+              print("snapshot has data...");
+              return snapshot.data.docs.isEmpty
+                  ? Center(
+                      child: Text("No Data Found...", style: TextStyle(fontSize: 16)),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemCount: snapshot.data?.docs.length ?? 0,
+                      itemBuilder: (context, index) {
+                        DisscussionGropModel group = DisscussionGropModel.fromJson(snapshot.data?.docs[index].data());
+                        return GroupListTile(
+                          index: index,
+                          color: colors[index % colors.length],
+                          group: group,
+                        );
+                      });
             } else {
+              print("inside else conditionnnnn");
               return const Center(child: CircularProgressIndicator.adaptive());
             }
           }),

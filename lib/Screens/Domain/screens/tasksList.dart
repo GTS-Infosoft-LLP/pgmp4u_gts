@@ -162,13 +162,15 @@ class _TaskListState extends State<TaskList> {
               valueListenable: HiveHandler.getTaskItemsListener(),
               builder: (context, value, child) {
                 DomainProvider dp = Provider.of(context, listen: false);
+                print("dp.selectedDomainId.toString()>${dp.selectedDomainId.toString()}");
                 if (value.containsKey(dp.selectedDomainId.toString())) {
+                  print("dp.selectedDomainId.toString() key is prsent");
                   // print("cp.selectedMasterId>>>>>${cp.selectedMasterId}");
                   List taskList = jsonDecode(value.get(dp.selectedDomainId.toString()));
-                  print("storedTasks List questionsss  taskList:::::::::${taskList[0]["practiceTest"]}");
+                  // print("storedTasks List questionsss  taskList:::::::::${taskList[0]["practiceTest"]}");
                   storedTasks = taskList.map((e) => TaskDetails.fromjson(e)).toList();
                   print("storedTasks List:::::: $storedTasks");
-                  print("storedTasks List questionsss:::::::::${storedTasks[0].id}");
+                  // print("storedTasks List questionsss:::::::::${storedTasks[0].id}");
                 } else {
                   storedTasks = [];
                 }
@@ -318,8 +320,7 @@ class _TaskListState extends State<TaskList> {
                                                                   // fontWeight: FontWeight.bold
                                                                 ),
                                                               ),
-                                                            ]))
-                                                            ),
+                                                            ]))),
                                                   ],
                                                 ),
                                                 Spacer(),

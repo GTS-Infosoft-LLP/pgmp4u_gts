@@ -76,6 +76,20 @@ class CourseProvider extends ChangeNotifier {
 
   String notSubmitedMockID;
 
+
+
+  int isInAppPurchaseOn;
+  void setInAppPurchaseValue(int val) {
+    Future.delayed(Duration.zero, () {
+      isInAppPurchaseOn = val;
+      notifyListeners();
+    });
+  }
+
+
+
+
+
   List<String> pendingMocksId = [];
   addToPendingMockList(String id) {
     if (pendingMocksId.contains(id)) {

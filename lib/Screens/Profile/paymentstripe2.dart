@@ -14,6 +14,7 @@ class PaymentAndroid extends StatefulWidget {
 class _PaymentWithStripeState extends State<PaymentAndroid> {
   @override
   void initState() {
+    print("android payment screennnnnnnnnn  ");
     super.initState();
   }
 

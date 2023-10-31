@@ -80,8 +80,7 @@ class CustomDropDown<T> extends StatelessWidget {
                             style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           decoration: BoxDecoration(
-                              // color: Colors.amber,
-                              // border: Border(bottom: BorderSide(color: Colors.black87))
+                            
                               ),
                           width: double.maxFinite,
                         ),

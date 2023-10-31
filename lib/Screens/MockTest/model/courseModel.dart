@@ -37,6 +37,8 @@ class CourseDetails implements DropDownModel {
 
   @HiveField(13)
   int isCancelSubscription;
+    @HiveField(14)
+  int inAppPurchaseEnabled;
 
   CourseDetails();
 
@@ -55,6 +57,7 @@ class CourseDetails implements DropDownModel {
     subscriptionType = json["subscriptionType"];
     Mocktests = json["Mocktests"];
         isCancelSubscription = json["isCancelSubscription"];
+        inAppPurchaseEnabled=json["inAppPurchaseEnabled"];
   }
 
   @override

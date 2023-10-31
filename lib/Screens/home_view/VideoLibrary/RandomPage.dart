@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../../Models/constants.dart';
 import '../../../provider/Subscription/subscriptionProvider.dart';
 import '../../../subscriptionModel.dart';
 
@@ -85,932 +86,973 @@ class _RandomPageState extends State<RandomPage> {
 
     return SafeArea(
       top: false,
-      child: Scaffold(
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15),
-          child: InkWell(
-            onTap: () async {
-              SubscriptionProvider sp = Provider.of(context, listen: false);
-              ProfileProvider pp = Provider.of(context, listen: false);
+      child: Consumer<CourseProvider>(builder: (context, cp, value) {
+        return Scaffold(
+          bottomNavigationBar: (cp.isInAppPurchaseOn == 1 && Platform.isIOS)
+              ? SizedBox()
+              : Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15),
+                  child: InkWell(
+                    onTap: () async {
+                      SubscriptionProvider sp = Provider.of(context, listen: false);
+                      ProfileProvider pp = Provider.of(context, listen: false);
+                      CourseProvider cp = Provider.of(context, listen: false);
+                      sp.createSubscritionOrder(sp.selectedSubsId);
+                      var token = await getToken();
+                      print("sp.selectedSubsId::::${sp.selectedSubsType}");
+                      print("permiumbutton.length::::${permiumbutton.length}");
 
-              sp.createSubscritionOrder(sp.selectedSubsId);
-              var token = await getToken();
-              print("sp.selectedSubsId::::${sp.selectedSubsType}");
-              print("permiumbutton.length::::${permiumbutton.length}");
+                      if (sp.selectedSubsType > permiumbutton.length) {
+                        GFToast.showToast(
+                          'Please select Plan',
+                          context,
+                          toastPosition: GFToastPosition.BOTTOM,
+                        );
+                      } else {
+                        PurchaseProvider purchaseProvider = Provider.of(context, listen: false);
 
-              if (sp.selectedSubsType > permiumbutton.length) {
-                GFToast.showToast(
-                  'Please select Plan',
-                  context,
-                  toastPosition: GFToastPosition.BOTTOM,
-                );
-              } else {
-                bool status = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          PaymentAndroid(token: token, statusFlash1videoLibrary2: 1, urlll: sp.finUrl),
-                    ));
-                print("statueeess====>>>$status");
+                        if (Platform.isIOS) {
+                          if (cp.isInAppPurchaseOn == 1) {
+                            print("buttonClicked ${purchaseProvider.products[0].id}");
+                            print("price ${purchaseProvider.products[0].price}");
+                            purchaseProvider.products.forEach((e) {
+                              print("Product id => ${e.id}");
+                              print("product price>>>${e.price}");
+                              // print("index1forFlash2forvideoLib>>>>>$index1forFlash2forvideoLib");
+                              var index1forFlash2forvideoLib = 2;
+                              if (e.id == videoLibraryLearningPrograms && index1forFlash2forvideoLib == 2) {
+                                print("we are noew be calling buy function...");
+                                purchaseProvider.buy(e);
+                              } else if (e.id == flashCards && index1forFlash2forvideoLib == 1) {
+                                purchaseProvider.buy(e);
+                              }
+                            });
+                          } else {
+                            bool status = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      PaymentAndroid(token: token, statusFlash1videoLibrary2: 1, urlll: sp.finUrl),
+                                ));
+                            print("statueeess====>>>$status");
 
-                if (status) {
-                  Navigator.pop(context);
-                  _handlePaymentSuccess2(context);
-                } else {
-                  _handlePaymentError2(context);
-                }
-              }
-            },
-            child: Container(
-              width: MediaQuery.of(context).size.width * .9,
-              height: 50,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-              ),
-              child: Center(
-                  child: Text(
-                "Subscribe Now",
-                style: TextStyle(color: Colors.white, fontFamily: 'Roboto Bold', fontSize: 20),
-              )),
-            ),
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height * .43,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [Color(0xff3643a3), Color(0xff5468ff)]),
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(25.0),
-                        bottomLeft: Radius.circular(25.0),
+                            if (status) {
+                              Navigator.pop(context);
+                              _handlePaymentSuccess2(context);
+                            } else {
+                              _handlePaymentError2(context);
+                            }
+                          }
+                        } else {
+                          bool status = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    PaymentAndroid(token: token, statusFlash1videoLibrary2: 1, urlll: sp.finUrl),
+                              ));
+                          print("statueeess====>>>$status");
+
+                          if (status) {
+                            Navigator.pop(context);
+                            _handlePaymentSuccess2(context);
+                          } else {
+                            _handlePaymentError2(context);
+                          }
+                        }
+                      }
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * .9,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
-                    ),
-                    // color: Colors.white,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * .04,
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Container(
-                                // color: Colors.white,
-                                width: width,
-                                // height: height,
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(left: 20, top: 15),
-                                        child: GestureDetector(
-                                          onTap: () => {Navigator.of(context).pop()},
-                                          child: Icon(
-                                            Icons.arrow_back_ios,
-                                            size: 27,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                      // Row(
-                                      //   mainAxisAlignment: MainAxisAlignment.center,
-                                      //   children: [
-                                      //     Container(
-                                      //       margin: EdgeInsets.only(top: 30, bottom: 25),
-                                      //       child: Image.asset('assets/premium.png'),
-                                      //     ),
-                                      //   ],
-                                      // ),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 20, right: 20, top: 8),
-                                        child: Center(
-                                            child: widget.index == 1
-                                                ? RichText(
-                                                    textAlign: TextAlign.center,
-                                                    text: TextSpan(children: <TextSpan>[
-                                                      TextSpan(
-                                                        text: 'Get 1 year Access to Flash Card',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: width * (30 / 420),
-                                                          fontFamily: 'Roboto Bold',
-                                                          // fontWeight: FontWeight.w600,
-                                                          letterSpacing: 0.3,
-                                                        ),
-                                                      ),
-                                                    ]))
-                                                : widget.index == 2
-                                                    ? RichText(
-                                                        textAlign: TextAlign.center,
-                                                        text: TextSpan(children: <TextSpan>[
-                                                          TextSpan(
-                                                            text: 'Get 1 year Access to Video Library',
-                                                            style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: width * (30 / 420),
-                                                              fontFamily: 'Roboto Bold',
-                                                              // fontWeight: FontWeight.w600,
-                                                              letterSpacing: 0.3,
-                                                            ),
-                                                          ),
-                                                        ]))
-                                                    : widget.index == 3
-                                                        ? RichText(
-                                                            textAlign: TextAlign.center,
-                                                            text: TextSpan(children: <TextSpan>[
-                                                              TextSpan(
-                                                                text: 'Get 1 year Access to Mock Tests',
-                                                                style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontSize: width * (30 / 420),
-                                                                  fontFamily: 'Roboto Bold',
-                                                                  // fontWeight: FontWeight.w600,
-                                                                  letterSpacing: 0.3,
-                                                                ),
-                                                              ),
-                                                            ]))
-                                                        : widget.index == 4
-                                                            ? RichText(
-                                                                textAlign: TextAlign.center,
-                                                                text: TextSpan(children: <TextSpan>[
-                                                                  TextSpan(
-                                                                    text: 'Get 1 year Access to Chats',
-                                                                    style: TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontSize: width * (30 / 420),
-                                                                      fontFamily: 'Roboto Bold',
-                                                                      // fontWeight: FontWeight.w600,
-                                                                      letterSpacing: 0.3,
-                                                                    ),
-                                                                  ),
-                                                                ]))
-                                                            : widget.index == 5
-                                                                ? RichText(
-                                                                    textAlign: TextAlign.center,
-                                                                    text: TextSpan(children: <TextSpan>[
-                                                                      TextSpan(
-                                                                        text: 'Get 1 year Access to PTT',
-                                                                        style: TextStyle(
-                                                                          color: Colors.white,
-                                                                          fontSize: width * (30 / 420),
-                                                                          fontFamily: 'Roboto Bold',
-                                                                          // fontWeight: FontWeight.w600,
-                                                                          letterSpacing: 0.3,
-                                                                        ),
-                                                                      ),
-                                                                    ]))
-                                                                : widget.index == 6
-                                                                    ? RichText(
-                                                                        textAlign: TextAlign.center,
-                                                                        text: TextSpan(children: <TextSpan>[
-                                                                          TextSpan(
-                                                                            text: 'Get 1 year Access to Domains',
-                                                                            style: TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: width * (30 / 420),
-                                                                              fontFamily: 'Roboto Bold',
-                                                                              // fontWeight: FontWeight.w600,
-                                                                              letterSpacing: 0.3,
-                                                                            ),
-                                                                          ),
-                                                                        ]))
-                                                                    : RichText(
-                                                                        textAlign: TextAlign.center,
-                                                                        text: TextSpan(children: <TextSpan>[
-                                                                          TextSpan(
-                                                                            text:
-                                                                                'Get 1 year Access to Question of the day',
-                                                                            style: TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: width * (30 / 420),
-                                                                              fontFamily: 'Roboto Bold',
-                                                                              // fontWeight: FontWeight.w600,
-                                                                              letterSpacing: 0.3,
-                                                                            ),
-                                                                          ),
-                                                                        ]))),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(top: 5),
-                                        child: Center(
-                                            child: Text(
-                                          ' On \n \$${widget.price}',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontFamily: 'Roboto Bold',
-                                              fontSize: 24,
-                                              color: Colors.white,
-                                              letterSpacing: 0.3),
-                                        )),
-                                      ),
-                                      Consumer2<PurchaseProvider, CourseProvider>(
-                                        builder: (context, value, cp, child) {
-                                          var latestState = value.serverResponse.getContent();
-                                          if (latestState is Loading) {
-                                            return Center(child: CircularProgressIndicator());
-                                          }
-
-                                          if (latestState is Default) {
-                                            value.showToast(context, latestState.message);
-                                          }
-
-                                          print("value.serverResponse = ${latestState is Success}");
-                                          if (latestState is Success) {
-                                            print("Pop called");
-                                            Future.delayed(Duration.zero, () async {
-                                              Navigator.pop(context, true);
-                                            });
-                                          }
-                                          return BuyButton2(context, value, widget.index, cp.selectedMasterType,
-                                              widget.categoryId, widget.index);
-                                        },
-                                      ),
-                                    ])),
-                          ),
-                        )
-                      ],
+                      child: Center(
+                          child: Text(
+                        "Subscribe Now",
+                        style: TextStyle(color: Colors.white, fontFamily: 'Roboto Bold', fontSize: 20),
+                      )),
                     ),
                   ),
-                  Positioned(
-                    bottom: -30,
-                    left: MediaQuery.of(context).size.width * .4,
-                    // top: MediaQuery.of(context).size.height * .35,
-                    // top: 300,
-
-                    child: Container(
-                      height: 70,
-                      width: 70,
+                ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * .43,
+                      width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [Color(0xff3643a3), Color(0xff5468ff)]),
+                        borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(25.0),
+                          bottomLeft: Radius.circular(25.0),
+                        ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 18.0),
-                        child: Center(
-                            child: Text(
-                          "OR",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontFamily: 'Roboto Bold',
-                          ),
-                        )),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              // Center(
-              //     child: Text(
-              //   "Select a plan",
-              //   style: TextStyle(
-              //     fontFamily: 'Roboto Bold',
-              //     fontSize: 22,
-              //   ),
-              // )),
-              // SizedBox(
-              //   height: 25,
-              // ),
-
-              Consumer2<ProfileProvider, SubscriptionProvider>(builder: (context, pp, sp, child) {
-                return
-                    //  sp.getSubsPackApiCall
-                    //     ? Center(child: CircularProgressIndicator.adaptive())
-                    //     :
-                    SingleChildScrollView(
-                  child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 15),
+                      // color: Colors.white,
                       child: Column(
                         children: [
-                          Center(
-                              child: Text(
-                            "Select a Reading Plan",
-                            style: TextStyle(fontFamily: 'Roboto Bold', fontSize: 22, color: Color(0xff3643a3)),
-                          )),
                           SizedBox(
-                            height: 6,
+                            height: MediaQuery.of(context).size.height * .04,
                           ),
-                          permiumbutton.length == 0
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 38.0),
-                                  child: Center(
-                                      child: Text(
-                                    "No Plans Found....",
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                                  )),
-                                )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: List.generate(permiumbutton.length, (i) {
-                                    if (permiumbutton[i].type == 1) {
-                                      subsPack = "Silver";
-                                    } else if (permiumbutton[i].type == 2) {
-                                      subsPack = "Gold";
-                                    } else if (permiumbutton[i].type == 3) {
-                                      subsPack = "Platinum";
-                                    }
-                                    if (i == 0) {
-                                      mntVal = "1";
-                                      mnth = "Month";
-
-                                      liGrdint = LinearGradient(
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                          colors: [Color(0xff099773), Color(0xff43B692)]);
-                                    } else if (i == 1) {
-                                      mntVal = "3";
-                                      mnth = "Months";
-
-                                      liGrdint = LinearGradient(
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                          colors: [Color(0xffEF709B), Color(0xffF68080)]);
-                                    } else {
-                                      mntVal = "12";
-                                      mnth = "Months";
-
-                                      liGrdint = LinearGradient(
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                          colors: [Color(0xffF28E54), Color(0xffDFB668)]);
-                                    }
-
-                                    return Expanded(
-                                        child: Padding(
-                                      padding: permiumbutton.length == 1
-                                          ? EdgeInsets.symmetric(horizontal: 114)
-                                          : EdgeInsets.symmetric(horizontal: 4),
-                                      child: InkWell(
-                                        onTap: () {
-                                          sp.setSelectedIval(i);
-
-                                          sp.setSelectedSubsId(permiumbutton[i].id);
-                                          sp.setSelectedSubsType(permiumbutton[i].type);
-                                          sp.setSelectedPlanType(permiumbutton[i].type);
-
-                                          print("index val===$i");
-                                          pp.setSelectedContainer(i);
-                                        },
-                                        child: Container(
-                                          height: 160,
-                                          child: Center(
-                                            child: Stack(
-                                              children: [
-                                                Container(
-                                                  margin: EdgeInsets.only(top: 15, bottom: 10),
-                                                  height: pp.selectedSubsBox == i ? 148 : 138,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: pp.selectedSubsBox == i ? Colors.black : Color(0xff3643a3),
-                                                      width: pp.selectedSubsBox == i ? 2.5 : 0,
-                                                    ),
-                                                    gradient: liGrdint,
-                                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                                  ),
-                                                  child: Stack(
-                                                    children: [
-                                                      Container(
-                                                        child: Center(child: Image.asset("assets/diamond.png")),
-                                                      ),
-                                                      Column(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: [
-                                                          SizedBox(
-                                                            height: 15,
-                                                          ),
-                                                          RichText(
-                                                            text: TextSpan(children: <TextSpan>[
-                                                              TextSpan(
-                                                                // text: mntVal + " " + mnth,
-                                                                text: subsPack,
-                                                                style: TextStyle(
-                                                                    color: Colors.white,
-                                                                    fontSize: 20.0,
-                                                                    fontWeight: FontWeight.w600),
-                                                              )
-                                                            ]),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                                                            child: Container(
-                                                              width: MediaQuery.of(context).size.width * .5,
-                                                              child: RichText(
-                                                                textAlign: TextAlign.center,
-                                                                text: TextSpan(children: <TextSpan>[
-                                                                  TextSpan(
-                                                                    text: "Subscription",
-                                                                    //   text: "",
-                                                                    style: TextStyle(
-                                                                        color: Colors.white,
-                                                                        fontSize: 15.0,
-                                                                        fontWeight: FontWeight.w600),
-                                                                  )
-                                                                ]),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          new Spacer(),
-                                                          Container(
-                                                            decoration: BoxDecoration(
-                                                              border: Border.all(color: Colors.transparent),
-                                                              borderRadius: BorderRadius.only(
-                                                                bottomRight: Radius.circular(9.5),
-                                                                bottomLeft: Radius.circular(9.5),
-                                                              ),
-                                                              color: Colors.white,
-                                                            ),
-                                                            height: 40,
-                                                            child: Center(
-                                                              child: RichText(
-                                                                text: TextSpan(children: <TextSpan>[
-                                                                  TextSpan(
-                                                                    text: "\$" + permiumbutton[i].amount,
-                                                                    style: TextStyle(
-                                                                        color: Color(0xff3643a3),
-                                                                        fontSize: 18.0,
-                                                                        fontWeight: FontWeight.w600),
-                                                                  )
-                                                                ]),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                i == 2
-                                                    ? Positioned(
-                                                        top: 0,
-                                                        right: 10,
-                                                        left: 10,
-                                                        child: Container(
-                                                          height: 28,
-                                                          decoration: BoxDecoration(
-                                                            gradient: LinearGradient(
-                                                                colors: [
-                                                                  _colorfromhex('#3846A9'),
-                                                                  _colorfromhex('#5265F8')
-                                                                ],
-                                                                begin: const FractionalOffset(0.0, 0.0),
-                                                                end: const FractionalOffset(1.0, 0.0),
-                                                                stops: [0.0, 1.0],
-                                                                tileMode: TileMode.clamp),
-                                                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                                                          ),
-                                                          child: Center(
-                                                            child: Text(
-                                                              "20% OFF",
-                                                              style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontSize: 15,
-                                                                  fontWeight: FontWeight.w400),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : SizedBox()
-                                              ],
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Container(
+                                  // color: Colors.white,
+                                  width: width,
+                                  // height: height,
+                                  child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(left: 20, top: 15),
+                                          child: GestureDetector(
+                                            onTap: () => {Navigator.of(context).pop()},
+                                            child: Icon(
+                                              Icons.arrow_back_ios,
+                                              size: 27,
+                                              color: Colors.white,
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ));
-                                  })),
-
-                          Wrap(
-                            direction: Axis.horizontal,
-                            children: [
-                              for (int i = 0;
-                                  i < sp.durationPackData.length;
-                                  // permiumbutton.length;
-
-                                  i++)
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: SizedBox(
-                                    height: 36,
-                                    width: 81,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          shape:
-                                              MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(4),
-                                          )),
-                                          backgroundColor: MaterialStateProperty.all<Color>(
-                                              i == sp.radioSelected ? Color(0xff3643a3) : Colors.white)),
-                                      onPressed: () async {
-                                        print("vaue of i::::   $i");
-                                        sp.setSelectedRadioVal(i);
-                                        sp.setSelectedIval(0);
-                                        sp.setSelectedSubsType(permiumbutton[0].type);
-                                        print("");
-
-                                        ProfileProvider pp = Provider.of(context, listen: false);
-                                        pp.setSelectedContainer(0);
-                                        await sp.setSelectedDurTimeQt(sp.durationPackData[i].durationType,
-                                            sp.durationPackData[i].durationQuantity);
-
-                                        CourseProvider cp = Provider.of(context, listen: false);
-                                      },
-                                      child: RichText(
-                                        textAlign: TextAlign.center,
-                                        text: TextSpan(children: <TextSpan>[
-                                          TextSpan(
-                                            text: sp.durationPackData[i].durationType == 1
-                                                ? sp.durationPackData[i].durationQuantity.toString() + " Months"
-                                                : sp.durationPackData[i].durationQuantity.toString() + " Year",
+                                        // Row(
+                                        //   mainAxisAlignment: MainAxisAlignment.center,
+                                        //   children: [
+                                        //     Container(
+                                        //       margin: EdgeInsets.only(top: 30, bottom: 25),
+                                        //       child: Image.asset('assets/premium.png'),
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 20, right: 20, top: 8),
+                                          child: Center(
+                                              child: widget.index == 1
+                                                  ? RichText(
+                                                      textAlign: TextAlign.center,
+                                                      text: TextSpan(children: <TextSpan>[
+                                                        TextSpan(
+                                                          text: 'Get 1 year Access to Flash Card',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: width * (30 / 420),
+                                                            fontFamily: 'Roboto Bold',
+                                                            // fontWeight: FontWeight.w600,
+                                                            letterSpacing: 0.3,
+                                                          ),
+                                                        ),
+                                                      ]))
+                                                  : widget.index == 2
+                                                      ? RichText(
+                                                          textAlign: TextAlign.center,
+                                                          text: TextSpan(children: <TextSpan>[
+                                                            TextSpan(
+                                                              text: 'Get 1 year Access to Video Library',
+                                                              style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: width * (30 / 420),
+                                                                fontFamily: 'Roboto Bold',
+                                                                // fontWeight: FontWeight.w600,
+                                                                letterSpacing: 0.3,
+                                                              ),
+                                                            ),
+                                                          ]))
+                                                      : widget.index == 3
+                                                          ? RichText(
+                                                              textAlign: TextAlign.center,
+                                                              text: TextSpan(children: <TextSpan>[
+                                                                TextSpan(
+                                                                  text: 'Get 1 year Access to Mock Tests',
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontSize: width * (30 / 420),
+                                                                    fontFamily: 'Roboto Bold',
+                                                                    // fontWeight: FontWeight.w600,
+                                                                    letterSpacing: 0.3,
+                                                                  ),
+                                                                ),
+                                                              ]))
+                                                          : widget.index == 4
+                                                              ? RichText(
+                                                                  textAlign: TextAlign.center,
+                                                                  text: TextSpan(children: <TextSpan>[
+                                                                    TextSpan(
+                                                                      text: 'Get 1 year Access to Chats',
+                                                                      style: TextStyle(
+                                                                        color: Colors.white,
+                                                                        fontSize: width * (30 / 420),
+                                                                        fontFamily: 'Roboto Bold',
+                                                                        // fontWeight: FontWeight.w600,
+                                                                        letterSpacing: 0.3,
+                                                                      ),
+                                                                    ),
+                                                                  ]))
+                                                              : widget.index == 5
+                                                                  ? RichText(
+                                                                      textAlign: TextAlign.center,
+                                                                      text: TextSpan(children: <TextSpan>[
+                                                                        TextSpan(
+                                                                          text: 'Get 1 year Access to PTT',
+                                                                          style: TextStyle(
+                                                                            color: Colors.white,
+                                                                            fontSize: width * (30 / 420),
+                                                                            fontFamily: 'Roboto Bold',
+                                                                            // fontWeight: FontWeight.w600,
+                                                                            letterSpacing: 0.3,
+                                                                          ),
+                                                                        ),
+                                                                      ]))
+                                                                  : widget.index == 6
+                                                                      ? RichText(
+                                                                          textAlign: TextAlign.center,
+                                                                          text: TextSpan(children: <TextSpan>[
+                                                                            TextSpan(
+                                                                              text: 'Get 1 year Access to Domains',
+                                                                              style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontSize: width * (30 / 420),
+                                                                                fontFamily: 'Roboto Bold',
+                                                                                // fontWeight: FontWeight.w600,
+                                                                                letterSpacing: 0.3,
+                                                                              ),
+                                                                            ),
+                                                                          ]))
+                                                                      : RichText(
+                                                                          textAlign: TextAlign.center,
+                                                                          text: TextSpan(children: <TextSpan>[
+                                                                            TextSpan(
+                                                                              text:
+                                                                                  'Get 1 year Access to Question of the day',
+                                                                              style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontSize: width * (30 / 420),
+                                                                                fontFamily: 'Roboto Bold',
+                                                                                // fontWeight: FontWeight.w600,
+                                                                                letterSpacing: 0.3,
+                                                                              ),
+                                                                            ),
+                                                                          ]))),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 5),
+                                          child: Center(
+                                              child: Text(
+                                            ' On \n \$${widget.price}',
+                                            textAlign: TextAlign.center,
                                             style: TextStyle(
-                                                color: i == sp.radioSelected ? Colors.white : Colors.black,
-                                                fontSize: 10.0,
-                                                fontWeight: FontWeight.w800),
+                                                fontFamily: 'Roboto Bold',
+                                                fontSize: 24,
+                                                color: Colors.white,
+                                                letterSpacing: 0.3),
+                                          )),
+                                        ),
+                                        Consumer2<PurchaseProvider, CourseProvider>(
+                                          builder: (context, value, cp, child) {
+                                            var latestState = value.serverResponse.getContent();
+                                            if (latestState is Loading) {
+                                              return Center(child: CircularProgressIndicator());
+                                            }
+
+                                            if (latestState is Default) {
+                                              value.showToast(context, latestState.message);
+                                            }
+
+                                            print("value.serverResponse = ${latestState is Success}");
+                                            if (latestState is Success) {
+                                              print("Pop called");
+                                              Future.delayed(Duration.zero, () async {
+                                                Navigator.pop(context, true);
+                                              });
+                                            }
+                                            return BuyButton2(context, value, widget.index, cp.selectedMasterType,
+                                                widget.categoryId, widget.index);
+                                          },
+                                        ),
+                                      ])),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      bottom: -30,
+                      left: MediaQuery.of(context).size.width * .4,
+                      // top: MediaQuery.of(context).size.height * .35,
+                      // top: 300,
+
+                      child: Container(
+                        height: 70,
+                        width: 70,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 18.0),
+                          child: Center(
+                              child: Text(
+                            cp.isInAppPurchaseOn == 1 && Platform.isIOS ? "" : "OR",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontFamily: 'Roboto Bold',
+                            ),
+                          )),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                // Center(
+                //     child: Text(
+                //   "Select a plan",
+                //   style: TextStyle(
+                //     fontFamily: 'Roboto Bold',
+                //     fontSize: 22,
+                //   ),
+                // )),
+                // SizedBox(
+                //   height: 25,
+                // ),
+
+                Consumer3<ProfileProvider, SubscriptionProvider, CourseProvider>(builder: (context, pp, sp, cp, child) {
+                  return (cp.isInAppPurchaseOn == 1 && Platform.isIOS)
+                      ? SizedBox()
+                      : SingleChildScrollView(
+                          child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 15),
+                              child: Column(
+                                children: [
+                                  Center(
+                                      child: Text(
+                                    "Select a Subscription Plan",
+                                    style: TextStyle(fontFamily: 'Roboto Bold', fontSize: 22, color: Color(0xff3643a3)),
+                                  )),
+                                  SizedBox(
+                                    height: 6,
+                                  ),
+                                  permiumbutton.length == 0
+                                      ? Padding(
+                                          padding: const EdgeInsets.only(top: 38.0),
+                                          child: Center(
+                                              child: Text(
+                                            "No Plans Found....",
+                                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                          )),
+                                        )
+                                      : Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: List.generate(permiumbutton.length, (i) {
+                                            if (permiumbutton[i].type == 1) {
+                                              subsPack = "Silver";
+                                            } else if (permiumbutton[i].type == 2) {
+                                              subsPack = "Gold";
+                                            } else if (permiumbutton[i].type == 3) {
+                                              subsPack = "Platinum";
+                                            }
+                                            if (i == 0) {
+                                              mntVal = "1";
+                                              mnth = "Month";
+
+                                              liGrdint = LinearGradient(
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                  colors: [Color(0xff099773), Color(0xff43B692)]);
+                                            } else if (i == 1) {
+                                              mntVal = "3";
+                                              mnth = "Months";
+
+                                              liGrdint = LinearGradient(
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                  colors: [Color(0xffEF709B), Color(0xffF68080)]);
+                                            } else {
+                                              mntVal = "12";
+                                              mnth = "Months";
+
+                                              liGrdint = LinearGradient(
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                  colors: [Color(0xffF28E54), Color(0xffDFB668)]);
+                                            }
+
+                                            return Expanded(
+                                                child: Padding(
+                                              padding: permiumbutton.length == 1
+                                                  ? EdgeInsets.symmetric(horizontal: 114)
+                                                  : EdgeInsets.symmetric(horizontal: 4),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  sp.setSelectedIval(i);
+
+                                                  sp.setSelectedSubsId(permiumbutton[i].id);
+                                                  sp.setSelectedSubsType(permiumbutton[i].type);
+                                                  sp.setSelectedPlanType(permiumbutton[i].type);
+
+                                                  print("index val===$i");
+                                                  pp.setSelectedContainer(i);
+                                                },
+                                                child: Container(
+                                                  height: 160,
+                                                  child: Center(
+                                                    child: Stack(
+                                                      children: [
+                                                        Container(
+                                                          margin: EdgeInsets.only(top: 15, bottom: 10),
+                                                          height: pp.selectedSubsBox == i ? 148 : 138,
+                                                          decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                              color: pp.selectedSubsBox == i
+                                                                  ? Colors.black
+                                                                  : Color(0xff3643a3),
+                                                              width: pp.selectedSubsBox == i ? 2.5 : 0,
+                                                            ),
+                                                            gradient: liGrdint,
+                                                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                          ),
+                                                          child: Stack(
+                                                            children: [
+                                                              Container(
+                                                                child: Center(child: Image.asset("assets/diamond.png")),
+                                                              ),
+                                                              Column(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                children: [
+                                                                  SizedBox(
+                                                                    height: 15,
+                                                                  ),
+                                                                  RichText(
+                                                                    text: TextSpan(children: <TextSpan>[
+                                                                      TextSpan(
+                                                                        // text: mntVal + " " + mnth,
+                                                                        text: subsPack,
+                                                                        style: TextStyle(
+                                                                            color: Colors.white,
+                                                                            fontSize: 20.0,
+                                                                            fontWeight: FontWeight.w600),
+                                                                      )
+                                                                    ]),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.symmetric(horizontal: 1.0),
+                                                                    child: Container(
+                                                                      width: MediaQuery.of(context).size.width * .5,
+                                                                      child: RichText(
+                                                                        textAlign: TextAlign.center,
+                                                                        text: TextSpan(children: <TextSpan>[
+                                                                          TextSpan(
+                                                                            text: "",
+                                                                            //   text: "",
+                                                                            style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontSize: 15.0,
+                                                                                fontWeight: FontWeight.w600),
+                                                                          )
+                                                                        ]),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  new Spacer(),
+                                                                  Container(
+                                                                    decoration: BoxDecoration(
+                                                                      border: Border.all(color: Colors.transparent),
+                                                                      borderRadius: BorderRadius.only(
+                                                                        bottomRight: Radius.circular(9.5),
+                                                                        bottomLeft: Radius.circular(9.5),
+                                                                      ),
+                                                                      color: Colors.white,
+                                                                    ),
+                                                                    height: 40,
+                                                                    child: Center(
+                                                                      child: RichText(
+                                                                        text: TextSpan(children: <TextSpan>[
+                                                                          TextSpan(
+                                                                            text: "\$" + permiumbutton[i].amount,
+                                                                            style: TextStyle(
+                                                                                color: Color(0xff3643a3),
+                                                                                fontSize: 18.0,
+                                                                                fontWeight: FontWeight.w600),
+                                                                          )
+                                                                        ]),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        i == 2
+                                                            ? Positioned(
+                                                                top: 0,
+                                                                right: 10,
+                                                                left: 10,
+                                                                child: Container(
+                                                                  height: 28,
+                                                                  decoration: BoxDecoration(
+                                                                    gradient: LinearGradient(
+                                                                        colors: [
+                                                                          _colorfromhex('#3846A9'),
+                                                                          _colorfromhex('#5265F8')
+                                                                        ],
+                                                                        begin: const FractionalOffset(0.0, 0.0),
+                                                                        end: const FractionalOffset(1.0, 0.0),
+                                                                        stops: [0.0, 1.0],
+                                                                        tileMode: TileMode.clamp),
+                                                                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                                                                  ),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      "20% OFF",
+                                                                      style: TextStyle(
+                                                                          color: Colors.white,
+                                                                          fontSize: 15,
+                                                                          fontWeight: FontWeight.w400),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            : SizedBox()
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ));
+                                          })),
+
+                                  Wrap(
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      for (int i = 0;
+                                          i < sp.durationPackData.length;
+                                          // permiumbutton.length;
+
+                                          i++)
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: SizedBox(
+                                            height: 36,
+                                            width: 81,
+                                            child: ElevatedButton(
+                                              style: ButtonStyle(
+                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(4),
+                                                  )),
+                                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                                      i == sp.radioSelected ? Color(0xff3643a3) : Colors.white)),
+                                              onPressed: () async {
+                                                print("vaue of i::::   $i");
+                                                sp.setSelectedRadioVal(i);
+                                                sp.setSelectedIval(0);
+                                                sp.setSelectedSubsType(permiumbutton[0].type);
+                                                print("");
+
+                                                ProfileProvider pp = Provider.of(context, listen: false);
+                                                pp.setSelectedContainer(0);
+                                                await sp.setSelectedDurTimeQt(sp.durationPackData[i].durationType,
+                                                    sp.durationPackData[i].durationQuantity);
+
+                                                CourseProvider cp = Provider.of(context, listen: false);
+                                              },
+                                              child: RichText(
+                                                textAlign: TextAlign.center,
+                                                text: TextSpan(children: <TextSpan>[
+                                                  TextSpan(
+                                                    text: sp.durationPackData[i].durationType == 1
+                                                        ? sp.durationPackData[i].durationQuantity.toString() + " Months"
+                                                        : sp.durationPackData[i].durationQuantity.toString() + " Year",
+                                                    style: TextStyle(
+                                                        color: i == sp.radioSelected ? Colors.white : Colors.black,
+                                                        fontSize: 10.0,
+                                                        fontWeight: FontWeight.w800),
+                                                  ),
+                                                ]),
+                                              ),
+                                            ),
                                           ),
-                                        ]),
-                                      ),
+                                        )
+                                    ],
+                                    //     }
+                                  ),
+
+                                  ///**************************************
+                                  // SingleChildScrollView(
+                                  //   scrollDirection: Axis.horizontal,
+                                  //   physics: BouncingScrollPhysics(),
+                                  //   child: Padding(
+                                  //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  //     child: Row(
+                                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  //         mainAxisSize: MainAxisSize.min,
+                                  //         children: List.generate(permiumbutton.length, (i) {
+                                  //           String nameVal;
+                                  //           if (i == 0) {
+                                  //             subsTime = "1 Month";
+                                  //           } else if (i == 1) {
+                                  //             subsTime = "3 Months";
+                                  //           } else if (i == 2) {
+                                  //             subsTime = "6 Months";
+                                  //           }
+                                  //           return Row(
+                                  //             children: [
+                                  //               Text(
+                                  //                 subsTime,
+                                  //                 style: TextStyle(
+                                  //                     fontSize: 14,
+                                  //                     fontWeight: FontWeight.w600,
+                                  //                     color: sp.radioSelected == i ? Color(0xff3643a3) : Colors.black),
+                                  //               ),
+                                  //               Radio(
+                                  //                   value: i,
+                                  //                   groupValue: _value,
+                                  //                   activeColor: Color(0xff3643a3),
+                                  //                   onChanged: (val) {
+                                  //                     print("val====$val");
+                                  //                     setState(() {
+                                  //                       _value = val;
+                                  //                       sp.setSelectedRadioVal(val);
+                                  //                     });
+                                  //                   }),
+                                  //             ],
+                                  //           );
+                                  //         })),
+                                  //   ),
+                                  // ),
+
+                                  ///**************************************
+
+                                  /// dropdown month select
+
+                                  // Consumer<CourseProvider>(builder: (context, cp, child) {
+                                  //   return Container(
+                                  //     height: 40,
+                                  //     // width: MediaQuery.of(context).size.width * .25,
+                                  //     decoration: BoxDecoration(
+                                  //         border: Border.all(color: Colors.black, width: 2),
+                                  //         boxShadow: const [BoxShadow(color: Colors.black26, offset: Offset(0, 0))],
+                                  //         color: Colors.lightBlue[100],
+                                  //         borderRadius: BorderRadius.circular(28)),
+                                  //     child: DropdownButton(
+                                  //       value: cp.selectedTimeSubs,
+                                  //       items: cp.subsTime.map((String items) {
+                                  //         return DropdownMenuItem(
+                                  //           value: items,
+                                  //           child: Container(
+                                  //               margin: EdgeInsets.only(top: 8.0),
+                                  //               // width: double.maxFinite,
+                                  //               child: Padding(
+                                  //                 padding: const EdgeInsets.only(bottom: 9.0, left: 8, right: 8),
+                                  //                 child: Text(
+                                  //                   items,
+                                  //                   textAlign: TextAlign.left,
+                                  //                   style: TextStyle(
+                                  //                       // color: Colors.orange,
+                                  //                       fontSize: 15,
+                                  //                       fontWeight: FontWeight.bold),
+                                  //                 ),
+                                  //               )),
+                                  //         );
+                                  //       }).toList(),
+                                  //       underline: const SizedBox(),
+                                  //       onChanged: (val) {
+                                  //         print("val==-=-=-=-=-  $val");
+                                  //         cp.setSelectedSubsTime(val);
+                                  //       },
+                                  //       dropdownColor: Colors.white,
+                                  //     ),
+                                  //   );
+                                  // }),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                    child: Html(
+                                      // data: "",
+                                      data: sp.desc1.toString(),
+                                      onAnchorTap: (url, ctx, attributes, element) async {
+                                        print("anchor url : $url");
+                                        Uri uri = Uri.parse(url);
+                                        if (await canLaunchUrlString(url)) {
+                                          await launchUrlString(url, mode: LaunchMode.externalApplication);
+                                        } else {
+                                          GFToast.showToast(
+                                            "Can not launch this url",
+                                            context,
+                                            toastPosition: GFToastPosition.BOTTOM,
+                                          );
+                                        }
+                                      },
+                                      style: {
+                                        "body": Style(
+                                          padding: EdgeInsets.only(top: 5),
+                                          margin: EdgeInsets.zero,
+                                          color: Color(0xff000000),
+                                          textAlign: TextAlign.left,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: FontSize(18),
+                                        )
+                                      },
                                     ),
                                   ),
-                                )
-                            ],
-                            //     }
-                          ),
+                                ],
+                              )),
+                        );
+                }),
 
-                          ///**************************************
-                          // SingleChildScrollView(
-                          //   scrollDirection: Axis.horizontal,
-                          //   physics: BouncingScrollPhysics(),
-                          //   child: Padding(
-                          //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          //     child: Row(
-                          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //         mainAxisSize: MainAxisSize.min,
-                          //         children: List.generate(permiumbutton.length, (i) {
-                          //           String nameVal;
-                          //           if (i == 0) {
-                          //             subsTime = "1 Month";
-                          //           } else if (i == 1) {
-                          //             subsTime = "3 Months";
-                          //           } else if (i == 2) {
-                          //             subsTime = "6 Months";
-                          //           }
-                          //           return Row(
-                          //             children: [
-                          //               Text(
-                          //                 subsTime,
-                          //                 style: TextStyle(
-                          //                     fontSize: 14,
-                          //                     fontWeight: FontWeight.w600,
-                          //                     color: sp.radioSelected == i ? Color(0xff3643a3) : Colors.black),
-                          //               ),
-                          //               Radio(
-                          //                   value: i,
-                          //                   groupValue: _value,
-                          //                   activeColor: Color(0xff3643a3),
-                          //                   onChanged: (val) {
-                          //                     print("val====$val");
-                          //                     setState(() {
-                          //                       _value = val;
-                          //                       sp.setSelectedRadioVal(val);
-                          //                     });
-                          //                   }),
-                          //             ],
-                          //           );
-                          //         })),
-                          //   ),
-                          // ),
+                // Consumer2<ProfileProvider, SubscriptionProvider>(builder: (context, pp, sp, child) {
+                //   return sp.getSubsPackApiCall
+                //       ? Center(child: CircularProgressIndicator.adaptive())
+                //       : SingleChildScrollView(
+                //           child: Container(
+                //             // color: Colors.amber,
+                //             child: Padding(
+                //                 padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 15),
+                //                 child: Column(
+                //                   children: [
+                //                     Center(
+                //                         child: Text(
+                //                       "Select a Reading Plan",
+                //                       style: TextStyle(fontFamily: 'Roboto Bold', fontSize: 22, color: Color(0xff3643a3)),
+                //                     )),
+                //                     SizedBox(
+                //                       height: 10,
+                //                     ),
+                //                     Row(
+                //                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //                         mainAxisSize: MainAxisSize.min,
+                //                         children: List.generate(permiumbutton.length, (i) {
+                //                           if (i == 0) {
+                //                             mntVal = "1";
+                //                             mnth = "Month";
+                //                             clr = Colors.green[400];
+                //                             liGrdint = LinearGradient(
+                //                                 begin: Alignment.topLeft,
+                //                                 end: Alignment.bottomRight,
+                //                                 colors: [Color(0xff099773), Color(0xff43B692)]);
+                //                           } else if (i == 1) {
+                //                             mntVal = "3";
+                //                             mnth = "Months";
+                //                             clr = Colors.red[400];
+                //                             liGrdint = LinearGradient(
+                //                                 begin: Alignment.topLeft,
+                //                                 end: Alignment.bottomRight,
+                //                                 colors: [Color(0xffEF709B), Color(0xffF68080)]);
+                //                           } else {
+                //                             mntVal = "12";
+                //                             mnth = "Months";
+                //                             clr = Colors.amber[400];
+                //                             liGrdint = LinearGradient(
+                //                                 begin: Alignment.topLeft,
+                //                                 end: Alignment.bottomRight,
+                //                                 colors: [Color(0xffF28E54), Color(0xffDFB668)]);
+                //                           }
 
-                          ///**************************************
+                //                           return Expanded(
+                //                               child: Padding(
+                //                             padding: permiumbutton.length == 1
+                //                                 ? EdgeInsets.symmetric(horizontal: 114)
+                //                                 : EdgeInsets.symmetric(horizontal: 4),
+                //                             child: InkWell(
+                //                               onTap: () {
+                //                                 print("permiumbutton iddd===${permiumbutton[i].id}");
+                //                                 print("permiumbutton tye===${permiumbutton[i].type}");
 
-                          /// dropdown month select
+                //                                 sp.setSelectedSubsId(permiumbutton[i].id);
+                //                                 sp.setSelectedSubsType(permiumbutton[i].type);
 
-                          // Consumer<CourseProvider>(builder: (context, cp, child) {
-                          //   return Container(
-                          //     height: 40,
-                          //     // width: MediaQuery.of(context).size.width * .25,
-                          //     decoration: BoxDecoration(
-                          //         border: Border.all(color: Colors.black, width: 2),
-                          //         boxShadow: const [BoxShadow(color: Colors.black26, offset: Offset(0, 0))],
-                          //         color: Colors.lightBlue[100],
-                          //         borderRadius: BorderRadius.circular(28)),
-                          //     child: DropdownButton(
-                          //       value: cp.selectedTimeSubs,
-                          //       items: cp.subsTime.map((String items) {
-                          //         return DropdownMenuItem(
-                          //           value: items,
-                          //           child: Container(
-                          //               margin: EdgeInsets.only(top: 8.0),
-                          //               // width: double.maxFinite,
-                          //               child: Padding(
-                          //                 padding: const EdgeInsets.only(bottom: 9.0, left: 8, right: 8),
-                          //                 child: Text(
-                          //                   items,
-                          //                   textAlign: TextAlign.left,
-                          //                   style: TextStyle(
-                          //                       // color: Colors.orange,
-                          //                       fontSize: 15,
-                          //                       fontWeight: FontWeight.bold),
-                          //                 ),
-                          //               )),
-                          //         );
-                          //       }).toList(),
-                          //       underline: const SizedBox(),
-                          //       onChanged: (val) {
-                          //         print("val==-=-=-=-=-  $val");
-                          //         cp.setSelectedSubsTime(val);
-                          //       },
-                          //       dropdownColor: Colors.white,
-                          //     ),
-                          //   );
-                          // }),
+                //                                 print("index val===$i");
+                //                                 pp.setSelectedContainer(i);
+                //                               },
+                //                               child: Container(
+                //                                 height: 160,
+                //                                 // color: Colors.amber,
+                //                                 // padding: EdgeInsets.only(top: 0),
+                //                                 child: Center(
+                //                                   child: Stack(
+                //                                     children: [
+                //                                       Container(
+                //                                         margin: EdgeInsets.only(top: 15, bottom: 10),
+                //                                         // height: 120,
+                //                                         height: pp.selectedSubsBox == i ? 148 : 138,
+                //                                         decoration: BoxDecoration(
+                //                                           border: Border.all(
+                //                                             color: pp.selectedSubsBox == i
+                //                                                 ? Colors.black
+                //                                                 : Color(0xff3643a3),
+                //                                             width: pp.selectedSubsBox == i ? 2.5 : 0,
+                //                                           ),
+                //                                           gradient: liGrdint,
+                //                                           borderRadius: BorderRadius.all(Radius.circular(10)),
+                //                                         ),
+                //                                         child: Stack(
+                //                                           children: [
+                //                                             Container(
+                //                                               child: Center(child: Image.asset("assets/diamond.png")),
+                //                                             ),
+                //                                             Column(
+                //                                               mainAxisAlignment: MainAxisAlignment.start,
+                //                                               children: [
+                //                                                 SizedBox(
+                //                                                   height: 15,
+                //                                                 ),
+                //                                                 RichText(
+                //                                                   text: TextSpan(children: <TextSpan>[
+                //                                                     TextSpan(
+                //                                                       text: mntVal + " " + mnth,
+                //                                                       style: TextStyle(
+                //                                                           color: Colors.white,
+                //                                                           fontSize: 20.0,
+                //                                                           fontWeight: FontWeight.w600),
+                //                                                     )
+                //                                                   ]),
+                //                                                 ),
+                //                                                 SizedBox(
+                //                                                   height: 5,
+                //                                                 ),
+                //                                                 Padding(
+                //                                                   padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                //                                                   child: Container(
+                //                                                     // color: Colors.amber,
+                //                                                     width: MediaQuery.of(context).size.width * .5,
+                //                                                     child: RichText(
+                //                                                       textAlign: TextAlign.center,
+                //                                                       text: TextSpan(children: <TextSpan>[
+                //                                                         TextSpan(
+                //                                                           text: "Subscription",
+                //                                                           style: TextStyle(
+                //                                                               color: Colors.white,
+                //                                                               fontSize: 15.0,
+                //                                                               fontWeight: FontWeight.w600),
+                //                                                         )
+                //                                                       ]),
+                //                                                     ),
+                //                                                   ),
+                //                                                 ),
+                //                                                 SizedBox(
+                //                                                   height: 5,
+                //                                                 ),
+                //                                                 new Spacer(),
+                //                                                 Container(
+                //                                                   decoration: BoxDecoration(
+                //                                                     border: Border.all(color: Colors.transparent),
+                //                                                     borderRadius: BorderRadius.only(
+                //                                                       bottomRight: Radius.circular(9.5),
+                //                                                       bottomLeft: Radius.circular(9.5),
+                //                                                     ),
+                //                                                     color: Colors.white,
+                //                                                   ),
+                //                                                   height: 40,
+                //                                                   child: Center(
+                //                                                     child: RichText(
+                //                                                       text: TextSpan(children: <TextSpan>[
+                //                                                         TextSpan(
+                //                                                           text: "\$" + permiumbutton[i].amount,
+                //                                                           style: TextStyle(
+                //                                                               color: Color(0xff3643a3),
+                //                                                               fontSize: 18.0,
 
-                          SizedBox(
-                            height: 10,
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                            child: Html(
-                              // data: "",
-                              data: sp.desc1.toString(),
-                              onAnchorTap: (url, ctx, attributes, element) async {
-                                print("anchor url : $url");
-                                Uri uri = Uri.parse(url);
-                                if (await canLaunchUrlString(url)) {
-                                  await launchUrlString(url, mode: LaunchMode.externalApplication);
-                                } else {
-                                  GFToast.showToast(
-                                    "Can not launch this url",
-                                    context,
-                                    toastPosition: GFToastPosition.BOTTOM,
-                                  );
-                                }
-                              },
-                              style: {
-                                "body": Style(
-                                  padding: EdgeInsets.only(top: 5),
-                                  margin: EdgeInsets.zero,
-                                  color: Color(0xff000000),
-                                  textAlign: TextAlign.left,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: FontSize(18),
-                                )
-                              },
-                            ),
-                          ),
-                        ],
-                      )),
-                );
-              }),
-
-              // Consumer2<ProfileProvider, SubscriptionProvider>(builder: (context, pp, sp, child) {
-              //   return sp.getSubsPackApiCall
-              //       ? Center(child: CircularProgressIndicator.adaptive())
-              //       : SingleChildScrollView(
-              //           child: Container(
-              //             // color: Colors.amber,
-              //             child: Padding(
-              //                 padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 15),
-              //                 child: Column(
-              //                   children: [
-              //                     Center(
-              //                         child: Text(
-              //                       "Select a Reading Plan",
-              //                       style: TextStyle(fontFamily: 'Roboto Bold', fontSize: 22, color: Color(0xff3643a3)),
-              //                     )),
-              //                     SizedBox(
-              //                       height: 10,
-              //                     ),
-              //                     Row(
-              //                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //                         mainAxisSize: MainAxisSize.min,
-              //                         children: List.generate(permiumbutton.length, (i) {
-              //                           if (i == 0) {
-              //                             mntVal = "1";
-              //                             mnth = "Month";
-              //                             clr = Colors.green[400];
-              //                             liGrdint = LinearGradient(
-              //                                 begin: Alignment.topLeft,
-              //                                 end: Alignment.bottomRight,
-              //                                 colors: [Color(0xff099773), Color(0xff43B692)]);
-              //                           } else if (i == 1) {
-              //                             mntVal = "3";
-              //                             mnth = "Months";
-              //                             clr = Colors.red[400];
-              //                             liGrdint = LinearGradient(
-              //                                 begin: Alignment.topLeft,
-              //                                 end: Alignment.bottomRight,
-              //                                 colors: [Color(0xffEF709B), Color(0xffF68080)]);
-              //                           } else {
-              //                             mntVal = "12";
-              //                             mnth = "Months";
-              //                             clr = Colors.amber[400];
-              //                             liGrdint = LinearGradient(
-              //                                 begin: Alignment.topLeft,
-              //                                 end: Alignment.bottomRight,
-              //                                 colors: [Color(0xffF28E54), Color(0xffDFB668)]);
-              //                           }
-
-              //                           return Expanded(
-              //                               child: Padding(
-              //                             padding: permiumbutton.length == 1
-              //                                 ? EdgeInsets.symmetric(horizontal: 114)
-              //                                 : EdgeInsets.symmetric(horizontal: 4),
-              //                             child: InkWell(
-              //                               onTap: () {
-              //                                 print("permiumbutton iddd===${permiumbutton[i].id}");
-              //                                 print("permiumbutton tye===${permiumbutton[i].type}");
-
-              //                                 sp.setSelectedSubsId(permiumbutton[i].id);
-              //                                 sp.setSelectedSubsType(permiumbutton[i].type);
-
-              //                                 print("index val===$i");
-              //                                 pp.setSelectedContainer(i);
-              //                               },
-              //                               child: Container(
-              //                                 height: 160,
-              //                                 // color: Colors.amber,
-              //                                 // padding: EdgeInsets.only(top: 0),
-              //                                 child: Center(
-              //                                   child: Stack(
-              //                                     children: [
-              //                                       Container(
-              //                                         margin: EdgeInsets.only(top: 15, bottom: 10),
-              //                                         // height: 120,
-              //                                         height: pp.selectedSubsBox == i ? 148 : 138,
-              //                                         decoration: BoxDecoration(
-              //                                           border: Border.all(
-              //                                             color: pp.selectedSubsBox == i
-              //                                                 ? Colors.black
-              //                                                 : Color(0xff3643a3),
-              //                                             width: pp.selectedSubsBox == i ? 2.5 : 0,
-              //                                           ),
-              //                                           gradient: liGrdint,
-              //                                           borderRadius: BorderRadius.all(Radius.circular(10)),
-              //                                         ),
-              //                                         child: Stack(
-              //                                           children: [
-              //                                             Container(
-              //                                               child: Center(child: Image.asset("assets/diamond.png")),
-              //                                             ),
-              //                                             Column(
-              //                                               mainAxisAlignment: MainAxisAlignment.start,
-              //                                               children: [
-              //                                                 SizedBox(
-              //                                                   height: 15,
-              //                                                 ),
-              //                                                 RichText(
-              //                                                   text: TextSpan(children: <TextSpan>[
-              //                                                     TextSpan(
-              //                                                       text: mntVal + " " + mnth,
-              //                                                       style: TextStyle(
-              //                                                           color: Colors.white,
-              //                                                           fontSize: 20.0,
-              //                                                           fontWeight: FontWeight.w600),
-              //                                                     )
-              //                                                   ]),
-              //                                                 ),
-              //                                                 SizedBox(
-              //                                                   height: 5,
-              //                                                 ),
-              //                                                 Padding(
-              //                                                   padding: const EdgeInsets.symmetric(horizontal: 1.0),
-              //                                                   child: Container(
-              //                                                     // color: Colors.amber,
-              //                                                     width: MediaQuery.of(context).size.width * .5,
-              //                                                     child: RichText(
-              //                                                       textAlign: TextAlign.center,
-              //                                                       text: TextSpan(children: <TextSpan>[
-              //                                                         TextSpan(
-              //                                                           text: "Subscription",
-              //                                                           style: TextStyle(
-              //                                                               color: Colors.white,
-              //                                                               fontSize: 15.0,
-              //                                                               fontWeight: FontWeight.w600),
-              //                                                         )
-              //                                                       ]),
-              //                                                     ),
-              //                                                   ),
-              //                                                 ),
-              //                                                 SizedBox(
-              //                                                   height: 5,
-              //                                                 ),
-              //                                                 new Spacer(),
-              //                                                 Container(
-              //                                                   decoration: BoxDecoration(
-              //                                                     border: Border.all(color: Colors.transparent),
-              //                                                     borderRadius: BorderRadius.only(
-              //                                                       bottomRight: Radius.circular(9.5),
-              //                                                       bottomLeft: Radius.circular(9.5),
-              //                                                     ),
-              //                                                     color: Colors.white,
-              //                                                   ),
-              //                                                   height: 40,
-              //                                                   child: Center(
-              //                                                     child: RichText(
-              //                                                       text: TextSpan(children: <TextSpan>[
-              //                                                         TextSpan(
-              //                                                           text: "\$" + permiumbutton[i].amount,
-              //                                                           style: TextStyle(
-              //                                                               color: Color(0xff3643a3),
-              //                                                               fontSize: 18.0,
-
-              //                                                               fontWeight: FontWeight.w600),
-              //                                                         )
-              //                                                       ]),
-              //                                                     ),
-              //                                                   ),
-              //                                                 ),
-              //                                               ],
-              //                                             ),
-              //                                           ],
-              //                                         ),
-              //                                       ),
-              //                                       i == 2
-              //                                           ? Positioned(
-              //                                               top: 0,
-              //                                               right: 10,
-              //                                               left: 10,
-              //                                               // bottom: 100,
-              //                                               child: Container(
-              //                                                 height: 28,
-              //                                                 decoration: BoxDecoration(
-              //                                                   gradient: LinearGradient(
-              //                                                       colors: [
-              //                                                         _colorfromhex('#3846A9'),
-              //                                                         _colorfromhex('#5265F8')
-              //                                                       ],
-              //                                                       begin: const FractionalOffset(0.0, 0.0),
-              //                                                       end: const FractionalOffset(1.0, 0.0),
-              //                                                       stops: [0.0, 1.0],
-              //                                                       tileMode: TileMode.clamp),
-              //                                                   borderRadius: BorderRadius.all(Radius.circular(15)),
-              //                                                 ),
-              //                                                 child: Center(
-              //                                                   child: Text(
-              //                                                     "20% OFF",
-              //                                                     style: TextStyle(
-              //                                                         color: Colors.white,
-              //                                                         fontSize: 15,
-              //                                                         fontWeight: FontWeight.w400),
-              //                                                   ),
-              //                                                 ),
-              //                                               ),
-              //                                             )
-              //                                           : SizedBox()
-              //                                     ],
-              //                                   ),
-              //                                 ),
-              //                               ),
-              //                             ),
-              //                           ));
-              //                         })),
-              //                     SizedBox(
-              //                       height: 10,
-              //                     ),
-              //                     Padding(
-              //                       padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              //                       child: RichText(
-              //                         textAlign: TextAlign.center,
-              //                         text: TextSpan(children: <TextSpan>[
-              //                           TextSpan(
-              //                             text:
-              //                                 "In each of the plan you will be have complete Access to Mock Tests, PathFinders, Video Library, Domains and Flash Cards to Duration selected in Reading plan",
-              //                             style: TextStyle(
-              //                                 color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w400),
-              //                           )
-              //                         ]),
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 )),
-              //           ),
-              //         );
-              // }),
-            ],
+                //                                                               fontWeight: FontWeight.w600),
+                //                                                         )
+                //                                                       ]),
+                //                                                     ),
+                //                                                   ),
+                //                                                 ),
+                //                                               ],
+                //                                             ),
+                //                                           ],
+                //                                         ),
+                //                                       ),
+                //                                       i == 2
+                //                                           ? Positioned(
+                //                                               top: 0,
+                //                                               right: 10,
+                //                                               left: 10,
+                //                                               // bottom: 100,
+                //                                               child: Container(
+                //                                                 height: 28,
+                //                                                 decoration: BoxDecoration(
+                //                                                   gradient: LinearGradient(
+                //                                                       colors: [
+                //                                                         _colorfromhex('#3846A9'),
+                //                                                         _colorfromhex('#5265F8')
+                //                                                       ],
+                //                                                       begin: const FractionalOffset(0.0, 0.0),
+                //                                                       end: const FractionalOffset(1.0, 0.0),
+                //                                                       stops: [0.0, 1.0],
+                //                                                       tileMode: TileMode.clamp),
+                //                                                   borderRadius: BorderRadius.all(Radius.circular(15)),
+                //                                                 ),
+                //                                                 child: Center(
+                //                                                   child: Text(
+                //                                                     "20% OFF",
+                //                                                     style: TextStyle(
+                //                                                         color: Colors.white,
+                //                                                         fontSize: 15,
+                //                                                         fontWeight: FontWeight.w400),
+                //                                                   ),
+                //                                                 ),
+                //                                               ),
+                //                                             )
+                //                                           : SizedBox()
+                //                                     ],
+                //                                   ),
+                //                                 ),
+                //                               ),
+                //                             ),
+                //                           ));
+                //                         })),
+                //                     SizedBox(
+                //                       height: 10,
+                //                     ),
+                //                     Padding(
+                //                       padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                //                       child: RichText(
+                //                         textAlign: TextAlign.center,
+                //                         text: TextSpan(children: <TextSpan>[
+                //                           TextSpan(
+                //                             text:
+                //                                 "In each of the plan you will be have complete Access to Mock Tests, PathFinders, Video Library, Domains and Flash Cards to Duration selected in Reading plan",
+                //                             style: TextStyle(
+                //                                 color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w400),
+                //                           )
+                //                         ]),
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 )),
+                //           ),
+                //         );
+                // }),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -1131,19 +1173,55 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
             onPressed: () async {
               //  IOS payment By Inn App Purchase
               print("platform::::$Platform");
-              // if (Platform.isIOS) {
-              //   print("buttonClicked ${purchaseProvider.products[0].id}");
-              //   print("price ${purchaseProvider.products[0].price}");
-              //   purchaseProvider.products.forEach((e) {
-              //     print("Product id => ${e.id}");
-              //     if (e.id == videoLibraryLearningPrograms && index1forFlash2forvideoLib == 2) {
-              //       purchaseProvider.buy(e);
-              //     } else if (e.id == flashCards && index1forFlash2forvideoLib == 1) {
-              //       purchaseProvider.buy(e);
-              //     }
-              //   });
-              // } else
-              {
+              if (Platform.isIOS) {
+                print("print that platform is apppleeeeee");
+              }
+
+              CourseProvider cp = Provider.of(context, listen: false);
+
+              if (Platform.isIOS) {
+                if (cp.isInAppPurchaseOn == 1) {
+                  print("buttonClicked ${purchaseProvider.products[0].id}");
+                  print("price ${purchaseProvider.products[0].price}");
+                  purchaseProvider.products.forEach((e) {
+                    print("Product id => ${e.id}");
+                    print("product price>>>${e.price}");
+                    print("index1forFlash2forvideoLib>>>>>$index1forFlash2forvideoLib");
+                    index1forFlash2forvideoLib = 2;
+                    if (e.id == videoLibraryLearningPrograms && index1forFlash2forvideoLib == 2) {
+                      print("we are noew be calling buy function...");
+                      purchaseProvider.buy(e);
+                    } else if (e.id == flashCards && index1forFlash2forvideoLib == 1) {
+                      purchaseProvider.buy(e);
+                    }
+                  });
+                } else {
+                  var token = await getToken();
+
+                  ProfileProvider profProvi = Provider.of(context, listen: false);
+                  await profProvi.callCreateOrder(IdValue, type);
+                  type = type.replaceAll(" ", "");
+
+                  String urll = CREATE_ORDER + "/$IdValue/$type";
+
+                  /// Payment implement with stripe
+                  bool status = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PaymentAndroid(
+                            token: token, statusFlash1videoLibrary2: index1forFlash2forvideoLib, urlll: urll),
+                      ));
+                  print("statueeess====>>>$status");
+
+                  if (status) {
+                    Navigator.pop(context);
+                    _handlePaymentSuccess2(context);
+                  } else {
+                    _handlePaymentError2(context);
+                  }
+                }
+              } else {
+                print("platform is android so no issuesssss");
                 ////////android payment with stripe
                 var token = await getToken();
 

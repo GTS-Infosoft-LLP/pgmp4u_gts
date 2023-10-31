@@ -445,7 +445,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                                                               .attemptList[
                                                                                                                   index]
                                                                                                               .attempt
-                                                                                                  ? "Restart"
+                                                                                                  ? "Resume"
                                                                                                   : 'Start',
                                                                                       style: TextStyle(
                                                                                         color: Colors.white,

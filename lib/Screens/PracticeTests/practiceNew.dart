@@ -83,8 +83,7 @@ class _PracticeNewState extends State<PracticeNew> {
     selAns = [];
     correctAns = [];
 
-    print("widhet test name=====>>>${widget.pracTestName}");
-    print("widhet test selectedId=====>>>${widget.selectedId}");
+   
 
     super.initState();
     practiceProvider = Provider.of(context, listen: false);
@@ -100,44 +99,6 @@ class _PracticeNewState extends State<PracticeNew> {
     await practiceProvider.apiCall(widget.selectedId, categoryProvider.type);
   }
 
-  // Future apiCall2() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String stringValue = prefs.getString('token');
-  //   print(stringValue);
-  //   http.Response response; //api/MockTestQuestions/124
-  //   response = await http.get(Uri.parse(REVIEWS_MOCK_TEST + "/22/4"),
-  //       headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
-
-  //   if (response.statusCode == 200) {
-  //     print(convert.jsonDecode(response.body));
-  //     setState(() {
-  //       var _mapResponse = convert.jsonDecode(response.body);
-
-  //       listResponse = _mapResponse["data"];
-  //     });
-  //     // print(convert.jsonDecode(response.body));
-  //   }
-  // }
-
-  // Future apiCall() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String stringValue = prefs.getString('token');
-  //   print("stringValue  $stringValue");
-  //   http.Response response;
-  //   response = await http.get(Uri.parse(PRACTICE_TEST_QUESTIONS), headers: {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': stringValue
-  //   });
-
-  //   if (response.statusCode == 200) {
-  //     print(convert.jsonDecode(response.body));
-  //     setState(() {
-  //       var _mapResponse = convert.jsonDecode(response.body);
-  //       listResponse = _mapResponse["data"];
-  //     });
-  //     // print(convert.jsonDecode(response.body));
-  //   }
-  // }
   bool questionLoader = false;
   onTapOfPutOnDisscussion(String question, List<String> optionQues, String img) async {
     CourseProvider cp = Provider.of(context, listen: false);
@@ -160,9 +121,7 @@ class _PracticeNewState extends State<PracticeNew> {
 
     setState(() => questionLoader = true);
 
-    print('Practice question : $question');
-
-    print("optionQues=========$optionQues");
+ 
 
     if (question.isEmpty) {
       setState(() => questionLoader = false);
@@ -196,7 +155,7 @@ class _PracticeNewState extends State<PracticeNew> {
             builder: (context, value, child) {
               PracticeTextProvider pracTestProv = Provider.of(context, listen: false);
               var v1 = value.get(pracTestProv.selectedPracTestId.toString());
-              // print("value of v1111======>>>>>>>>>$v1");
+        
 
               if (v1 != null) {
                 List temp = jsonDecode(v1);
@@ -206,28 +165,19 @@ class _PracticeNewState extends State<PracticeNew> {
                 pracTestProv.practiceApiLoader = false;
               }
 
-              // print("=====PTList=======$PTList");
 
-              // print("**************************************************");
               List<Options> op = [];
               if (PTList.isNotEmpty) {
                 pracTestProv.practiceApiLoader = false;
-                // print("list is not emptyyyyy");
+         
                 op = PTList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
 
-                // print("op======>>${op.length}");
+        
               }
 
               return Consumer<PracticeTextProvider>(builder: (context, data, child) {
-                // List<Options> options = [];
-
-                // if (data.pList.isNotEmpty) {
-                //   options = data.pList[_quetionNo].ques.options
-                //       .where((element) => element.questionOption.isNotEmpty)
-                //       .toList();
-                // }
-
-                // data.pList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
+           
+              
                 return Container(
                   color: _colorfromhex("#FCFCFF"),
                   child: Stack(
@@ -265,7 +215,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                           width: MediaQuery.of(context).size.width * .8,
                                           child: RichText(
                                               maxLines: 2,
-                                              // textAlign: TextAlign.center,
+                                           
                                               text: TextSpan(children: <TextSpan>[
                                                 TextSpan(
                                                   text: "  " + widget.pracTestName,
@@ -273,7 +223,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                     color: Colors.white,
                                                     fontSize: width * (17 / 420),
                                                     fontFamily: 'Roboto Medium',
-                                                    // fontWeight: FontWeight.w600,
+                                                 
                                                     letterSpacing: 0.3,
                                                   ),
                                                 ),
@@ -292,11 +242,10 @@ class _PracticeNewState extends State<PracticeNew> {
                                 // : data.pList != null
                                 : PTList != null
                                     ? Expanded(
-                                        // width: width,
-                                        // height: height - 235,
+                                 
                                         child: PageView.builder(
                                             controller: pageController,
-                                            // itemCount: data.pList.length,
+                                         
                                             itemCount: PTList.length,
                                             onPageChanged: (index) {
                                               ans = [];
@@ -306,7 +255,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                               rightAns = [];
                                               correctAns = [];
                                               print("selAns=======$selAns");
-                                              // print("index====>>$index");
+                                        
                                               print("currentIndex ====>>$currentIndex");
                                               if (currentIndex < index) {
                                                 if (PTList.length - 1 > _quetionNo) {
@@ -317,7 +266,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                     selectedAnswer = null;
                                                     realAnswer = null;
                                                   });
-                                                  print(_quetionNo);
+                                            
                                                 }
                                               } else {
                                                 if (_quetionNo != 0) {
@@ -363,7 +312,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                               _quetionNo != 0
                                                                   ? GestureDetector(
                                                                       onTap: () => {
-                                                                        // pageController.
+                                                                       
                                                                         enableTap = 0,
                                                                         isAnsCorrect = 0,
                                                                         selAns = [],
@@ -389,8 +338,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                     )
                                                                   : Container(),
                                                               RichText(
-                                                                  // maxLines: 2,
-                                                                  // textAlign: TextAlign.center,
+                                                                
                                                                   text: TextSpan(children: <TextSpan>[
                                                                 TextSpan(
                                                                   text: 'QUESTION ${_quetionNo + 1}',
@@ -398,8 +346,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                     color: Colors.black,
                                                                     fontSize: width * (16 / 420),
                                                                     fontFamily: 'Roboto Regular',
-                                                                    // fontWeight: FontWeight.w600,
-                                                                    // letterSpacing: 0.3,
+                                                                  
                                                                   ),
                                                                 ),
                                                               ])),
@@ -416,13 +363,11 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                             duration: Duration(milliseconds: 500),
                                                                             curve: Curves.easeInCirc),
                                                                         setState(() {
-                                                                          // if (_quetionNo < PTList.length) {
-                                                                          //   _quetionNo = _quetionNo + 1;
-                                                                          // }
+                                                                       
                                                                           selectedAnswer = null;
                                                                           realAnswer = null;
                                                                         }),
-                                                                        print(_quetionNo)
+                                                                    
                                                                       },
                                                                       child: Icon(
                                                                         Icons.east,
@@ -445,8 +390,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                   margin: EdgeInsets.zero,
                                                                   color: Color(0xff000000),
                                                                   textAlign: TextAlign.left,
-                                                                  // maxLines: 7,
-                                                                  // textOverflow: TextOverflow.ellipsis,
+                                                                
                                                                   fontSize: FontSize(18),
                                                                 )
                                                               },
@@ -516,8 +460,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                         color: Colors.black,
                                                                         fontSize: 18,
                                                                         fontFamily: 'Roboto Regular',
-                                                                        // fontWeight: FontWeight.w600,
-                                                                        // letterSpacing: 0.3,
+                                                                     
                                                                       ),
                                                                     ),
                                                                   ])),
@@ -531,14 +474,15 @@ class _PracticeNewState extends State<PracticeNew> {
                                                               itemBuilder: (context, index) {
                                                                 selQuesMap = {};
                                                                 finalSelectedAns = [];
+                                                                finalSelectedAns.clear();
                                                                 finalCorrectAns = [];
+                                                                print("finalSelectedAns>>>>>>>>>>>$finalSelectedAns");
 
-                                                                // print("::::answersMapp::listview::$answersMapp");
+                                                              
                                                                 for (int i = 0; i < answersMapp.length; i++) {
                                                                   if (answersMapp[i]["questionNumber"] ==
                                                                       (_quetionNo)) {
-                                                                    // print(
-                                                                    //     "answersMapp[i][selectedAnser]::::${answersMapp[i]["selectedAnser"]}");
+                                                                 
                                                                     selQuesMap = {
                                                                       "questionNumber": _quetionNo,
                                                                       "selected": answersMapp[i]["selectedAnser"] ?? [],
@@ -551,20 +495,17 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                 finalSelectedAns = selQuesMap['selected'] ?? [];
                                                                 finalCorrectAns = selQuesMap['right'] ?? [];
                                                                 print(
-                                                                    "selected answers for this question;::::$finalSelectedAns");
+                                                                    "finalSelectedAns final selected answers for this question;::::$finalSelectedAns");
+                                                                print(
+                                                                    "finalCorrectAns answers for this question;::::$finalCorrectAns");
                                                                 if (finalSelectedAns.isNotEmpty) {
                                                                   print("finalSelectedAns is not empty");
                                                                   // setState(() {
                                                                   _show = !_show;
+                                                                  print("value of is showw>>$_show");
                                                                   // });
                                                                 }
-                                                                // print(
-                                                                //     "correct answers for this question;::::$finalCorrectAns");
-
-                                                                // print(
-                                                                //     "data of this question::::::::::::::::::$selQuesMap");
-                                                                // print(
-                                                                //     "answer:::::::>>>>>>>>>djhsjdhfjshd::::::::$answer");
+                   
                                                                 if (selQuesMap.isNotEmpty) {
                                                                   enableTap = 1;
                                                                 }
@@ -581,12 +522,12 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                               .ques
                                                                               .rightAnswer
                                                                               .split(',');
-                                                                          print("rightAns========>>>$rightAns");
+                                                                       
 
                                                                           for (int i = 0; i < rightAns.length; i++) {
                                                                             correctAns.add(int.parse(rightAns[i]));
                                                                           }
-                                                                          print("correctAns=========>>>>>>$correctAns");
+                                                                       
                                                                         });
 
                                                                         setState(() {
@@ -598,10 +539,7 @@ class _PracticeNewState extends State<PracticeNew> {
 
                                                                           if (selAns.length == correctAns.length &&
                                                                               correctAns.length > 0) {
-                                                                            print(
-                                                                                "question answerrr:::;::::$_quetionNo");
-                                                                            print(
-                                                                                "selected answer:::::::::::::::::::$selAns");
+                                                                          
                                                                             addToMap(_quetionNo, selAns, correctAns);
                                                                             checkAllAns(selAns, correctAns);
                                                                             enableTap = 1;
@@ -793,26 +731,13 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                           margin: EdgeInsets.zero,
                                                                                           color: Color(0xff000000),
                                                                                           textAlign: TextAlign.left,
-                                                                                          // maxLines: 7,
-                                                                                          // textOverflow: TextOverflow.ellipsis,
+                                                          
                                                                                           fontSize: FontSize(18),
                                                                                         )
                                                                                       },
                                                                                     ),
 
-                                                                                    // Text(
-                                                                                    //   op[index].questionOption,
-                                                                                    //   style: TextStyle(fontSize: 16),
-                                                                                    // ),
-                                                                                    // selectedAnswer != null &&
-                                                                                    //         int.parse(data.pList[_quetionNo]
-                                                                                    //                 .ques.rightAnswer) !=
-                                                                                    //             selectedAnswer &&
-                                                                                    //         options[index].id ==
-                                                                                    //             int.parse(data
-                                                                                    //                 .pList[_quetionNo]
-                                                                                    //                 .ques
-                                                                                    //                 .rightAnswer)
+                                                                             
 
                                                                                     (finalCorrectAns.contains(op[index].id)) ||
                                                                                             (selAns.length == correctAns.length &&
@@ -866,9 +791,8 @@ class _PracticeNewState extends State<PracticeNew> {
                                                               }),
 
                                                           if ((selAns.length == correctAns.length &&
-                                                              correctAns.length > 0)
-                                                          // || (selQuesMap.isNotEmpty)
-                                                          )
+                                                                  correctAns.length > 0) ||
+                                                              (finalSelectedAns.isNotEmpty))
                                                             Container(
                                                               decoration: BoxDecoration(
                                                                   color: _colorfromhex("#FAFAFA"),
@@ -895,8 +819,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                             MainAxisAlignment.spaceBetween,
                                                                         children: [
                                                                           RichText(
-                                                                              // maxLines: 2,
-                                                                              // textAlign: TextAlign.left,
+                                                                            
                                                                               text: TextSpan(children: <TextSpan>[
                                                                             TextSpan(
                                                                               text: 'See Solution',
@@ -905,8 +828,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                   fontSize: width * (15 / 420),
                                                                                   fontFamily: 'Roboto Regular',
                                                                                   height: 1.7
-                                                                                  // fontWeight: FontWeight.w600,
-                                                                                  // letterSpacing: 0.3,
+                                                                              
                                                                                   ),
                                                                             ),
                                                                           ])),
@@ -923,29 +845,20 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                       ? Container(
                                                                           margin:
                                                                               EdgeInsets.only(top: height * (9 / 800)),
-                                                                          child: 
-
-
-
- RichText(
-  // maxLines: 2,
-                      // textAlign: TextAlign.left,
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                          text:  "${getTstAns(op)}",
-                          style: TextStyle(
-                           color:_colorfromhex("#04AE0B"),
-                              fontSize:width * (15 / 420),
-                              fontFamily:'Roboto Regular',
-                              height: 1.7
-                              // fontWeight: FontWeight.w600,
-                              // letterSpacing: 0.3,
-                              ),
-                        ),
-                      ]))
-
-
-                                                                        )
+                                                                          child: RichText(
+                                                                            
+                                                                              text: TextSpan(children: <TextSpan>[
+                                                                            TextSpan(
+                                                                              text: "${getTstAns(op)}",
+                                                                              style: TextStyle(
+                                                                                  color: _colorfromhex("#04AE0B"),
+                                                                                  fontSize: width * (15 / 420),
+                                                                                  fontFamily: 'Roboto Regular',
+                                                                                  height: 1.7
+                                                                         
+                                                                                  ),
+                                                                            ),
+                                                                          ])))
                                                                       : Container(),
                                                                   _show
                                                                       ? Container(
@@ -968,218 +881,17 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                             },
                                                                           ),
 
-                                                                          // Text(
-                                                                          //   PTList[_quetionNo].ques.explanation,
-                                                                          //   style: TextStyle(
-                                                                          //     fontFamily: 'Roboto Regular',
-                                                                          //     fontSize: width * (15 / 420),
-                                                                          //     color: Colors.black,
-                                                                          //     height: 1.6,
-                                                                          //   ),
-                                                                          // ),
+                                                                      
                                                                         )
                                                                       : Container()
                                                                 ],
                                                               ),
                                                             )
 
-                                                          // Column(
-                                                          //   children: data
-                                                          //       .questionsList[
-                                                          //           _quetionNo]
-                                                          //       .optionsList
-                                                          //       .map<Widget>((title) {
-                                                          //     var index = data
-                                                          //         .questionsList[
-                                                          //             _quetionNo]
-                                                          //         .optionsList
-                                                          //         .indexOf(title);
-                                                          //     return GestureDetector(
-                                                          //       onTap: () => {
-                                                          //         setState(() {
-                                                          //           selectedAnswer =
-                                                          //               title.id;
-                                                          //           realAnswer = data
-                                                          //               .questionsList[
-                                                          //                   _quetionNo]
-                                                          //               .rightAnswer;
-                                                          //         })
-                                                          //       },
-                                                          //       child: Container(
-                                                          //         color: title.id ==
-                                                          //                     selectedAnswer &&
-                                                          //                 data.questionsList[_quetionNo].rightAnswer ==
-                                                          //                     selectedAnswer
-                                                          //             ? _colorfromhex(
-                                                          //                 "#E6F7E7")
-                                                          //             : title.id ==
-                                                          //                         selectedAnswer &&
-                                                          //                     data.questionsList[_quetionNo].rightAnswer !=
-                                                          //                         selectedAnswer
-                                                          //                 ? _colorfromhex(
-                                                          //                     "#FFF6F6")
-                                                          //                 : selectedAnswer != null &&
-                                                          //                         data.questionsList[_quetionNo].rightAnswer !=
-                                                          //                             selectedAnswer &&
-                                                          //                         title.id ==
-                                                          //                             data.questionsList[_quetionNo].rightAnswer
-                                                          //                     ? _colorfromhex("#E6F7E7")
-                                                          //                     : Colors.white,
-                                                          //         margin:
-                                                          //             EdgeInsets.only(
-                                                          //                 top: height *
-                                                          //                     (21 /
-                                                          //                         800)),
-                                                          //         padding: EdgeInsets.only(
-                                                          //             top: 13,
-                                                          //             bottom: 13,
-                                                          //             left: width *
-                                                          //                 (13 / 420),
-                                                          //             right: width *
-                                                          //                 (11 / 420)),
-                                                          //         child: Row(
-                                                          //           children: [
-                                                          //             Container(
-                                                          //               width: width *
-                                                          //                   (25 /
-                                                          //                       420),
-                                                          //               height:
-                                                          //                   width *
-                                                          //                       25 /
-                                                          //                       420,
-                                                          //               decoration: BoxDecoration(
-                                                          //                   borderRadius: BorderRadius.circular(
-                                                          //                     width *
-                                                          //                         (25 /
-                                                          //                             420),
-                                                          //                   ),
-                                                          //                   color: title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer == selectedAnswer
-                                                          //                       ? _colorfromhex("#04AE0B")
-                                                          //                       : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
-                                                          //                           ? _colorfromhex("#FF0000")
-                                                          //                           : selectedAnswer != null && data.questionsList[_quetionNo].rightAnswer != selectedAnswer && title.id == data.questionsList[_quetionNo].rightAnswer
-                                                          //                               ? _colorfromhex("#04AE0B")
-                                                          //                               : Colors.white),
-                                                          //               child: Center(
-                                                          //                 child: Text(
-                                                          //                   index == 0
-                                                          //                       ? 'A'
-                                                          //                       : index == 1
-                                                          //                           ? 'B'
-                                                          //                           : index == 2
-                                                          //                               ? 'C'
-                                                          //                               : index == 3
-                                                          //                                   ? 'D'
-                                                          //                                   : '',
-                                                          //                   style: TextStyle(
-                                                          //                       fontFamily: 'Roboto Regular',
-                                                          //                       fontSize: width * 14 / 420,
-                                                          //                       color: title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer == selectedAnswer
-                                                          //                           ? Colors.white
-                                                          //                           : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
-                                                          //                               ? Colors.white
-                                                          //                               : selectedAnswer != null && data.questionsList[_quetionNo].rightAnswer != selectedAnswer && title.id == data.questionsList[_quetionNo].rightAnswer
-                                                          //                                   ? Colors.white
-                                                          //                                   : Colors.grey),
-                                                          //                 ),
-                                                          //               ),
-                                                          //             ),
-                                                          //             Column(
-                                                          //               mainAxisAlignment:
-                                                          //                   MainAxisAlignment
-                                                          //                       .end,
-                                                          //               crossAxisAlignment:
-                                                          //                   CrossAxisAlignment
-                                                          //                       .end,
-                                                          //               children: [
-                                                          //                 Container(
-                                                          //                   margin: EdgeInsets.only(
-                                                          //                       left:
-                                                          //                           8),
-                                                          //                   width: width -
-                                                          //                       (width *
-                                                          //                           (25 / 420) *
-                                                          //                           5),
-                                                          //                   child: Text(
-                                                          //                       title
-                                                          //                           .questionsOptions,
-                                                          //                       style:
-                                                          //                           TextStyle(fontSize: width * 14 / 420)),
-                                                          //                 ),
-                                                          //                 selectedAnswer != null &&
-                                                          //                         data.questionsList[_quetionNo].rightAnswer !=
-                                                          //                             selectedAnswer &&
-                                                          //                         title.id ==
-                                                          //                             data.questionsList[_quetionNo].rightAnswer
-                                                          //                     ? Row(
-                                                          //                         mainAxisAlignment:
-                                                          //                             MainAxisAlignment.end,
-                                                          //                         children: [
-                                                          //                           Text(
-                                                          //                             'Correct Answer',
-                                                          //                           ),
-                                                          //                         ],
-                                                          //                       )
-                                                          //                     : title.id == selectedAnswer && data.questionsList[_quetionNo].rightAnswer != selectedAnswer
-                                                          //                         ? Row(
-                                                          //                             mainAxisAlignment: MainAxisAlignment.end,
-                                                          //                             children: [
-                                                          //                               Text(
-                                                          //                                 'Your selection',
-                                                          //                               ),
-                                                          //                             ],
-                                                          //                           )
-                                                          //                         : Container(),
-                                                          //               ],
-                                                          //             )
-                                                          //           ],
-                                                          //         ),
-                                                          //       ),
-                                                          //     );
-                                                          //   }).toList(),
-                                                          // ),
+                                                      
+                                                     
+                                                   
 
-                                                          // ;  Container(
-                                                          //     decoration: BoxDecoration(
-                                                          //         color: _colorfromhex(
-                                                          //             "#FAFAFA"),
-                                                          //         borderRadius:
-                                                          //             BorderRadius
-                                                          //                 .circular(6)),
-                                                          //     margin: EdgeInsets.only(
-                                                          //         top: height *
-                                                          //             (38 / 800)),
-                                                          //     // padding: EdgeInsets.only(
-                                                          //     //     top: height *
-                                                          //     //         (10 / 800),
-                                                          //     //     bottom: _show
-                                                          //     //         ? height *
-                                                          //     //             (23 / 800)
-                                                          //     //         : height *
-                                                          //     //             (12 / 800),
-                                                          //     //     left: width *
-                                                          //     //         (18 / 420),
-                                                          //     //     right: width *
-                                                          //     //         (10 / 420)),
-                                                          //     // child: Column(
-                                                          //     //   mainAxisAlignment:
-                                                          //     //       MainAxisAlignment
-                                                          //     //           .start,
-                                                          //     //   crossAxisAlignment:
-                                                          //     //       CrossAxisAlignment
-                                                          //     //           .start,
-                                                          //     //   // children: [
-                                                          //     //   //   GestureDetector(
-                                                          //     //   //     child: Row(
-                                                          //     //   //       mainAxisAlignment:
-                                                          //     //   //           MainAxisAlignment
-                                                          //     //   //               .spaceBetween,
-                                                          //     //   //       children: [],
-                                                          //     //   //     ),
-                                                          //     //   //   ),
-                                                          //     //   // ],
-                                                          //     // ),
-                                                          //   )
                                                         ],
                                                       ),
                                                     ),
@@ -1221,34 +933,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                   ))
                               : SizedBox()
 
-                      // realAnswer == selectedAnswer && selectedAnswer != null
-                      // isAnsCorrect == 1
-                      //     ? Positioned(
-                      //         top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
-                      //         left: width / 2.9,
-                      //         child: Container(
-                      //           width: 110,
-                      //           height: 110,
-                      //           child: Image.asset('assets/smile.png'),
-                      //         ))
-                      //     : Text(''),
-                      // // realAnswer != selectedAnswer && selectedAnswer != null
-                      // isAnsCorrect == 1
-                      //     ? Positioned(
-                      //         top: SizerUtil.deviceType == DeviceType.mobile ? 100 : 165,
-                      //         left: width / 2.5,
-                      //         child: selectedAnswer == null
-                      //             ? Text('')
-                      //             : realAnswer == selectedAnswer
-                      //                 ? Container(
-                      //                     width: 100,
-                      //                     height: 100,
-                      //                     child: Image.asset('assets/smile.png'),
-                      //                   )
-                      //                 : isAnsCorrect == 2
-                      //                     ? Image.asset('assets/smiley-sad1.png')
-                      //                     : SizedBox())
-                      //     : Text(''),
+                    
                     ],
                   ),
                 );
@@ -1315,36 +1000,19 @@ class _PracticeNewState extends State<PracticeNew> {
                             width: 5,
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                            child:
-                            //  Text(
-                            //   "Put on discussion",
-                            //   style: TextStyle(color: Colors.white, fontSize: 12),
-                            // ),
-
-
-
-
- RichText(
-  // maxLines: 2,
-                      // textAlign: TextAlign.left,
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                          text: "Put on discussion",
-                          style: TextStyle(
-                           color:Colors.white,
-                              fontSize:12
-                              // fontFamily:'Roboto Regular',
-                              // height: 1.7
-                              // fontWeight: FontWeight.w600,
-                              // letterSpacing: 0.3,
-                              ),
-                        ),
-                      ]))
-
-
-
-                          ),
+                              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                              child:
+                                 
+                                  RichText(
+                                      
+                                      text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                  text: "Put on discussion",
+                                  style: TextStyle(color: Colors.white, fontSize: 12
+                                      
+                                      ),
+                                ),
+                              ]))),
                         ],
                       ),
                     ),
@@ -1361,27 +1029,26 @@ class _PracticeNewState extends State<PracticeNew> {
 
   void checkAllAns(List<int> selAns, List<int> rightAns) {
     isListSame = true;
-    print("inside checkAllAns===============================");
+  
     selAns.sort();
-    print("selAns======$selAns");
-    print("rightAns======$rightAns");
+
 
     for (int i = 0; i < selAns.length; i++) {
       if (selAns[i] == (rightAns[i])) {
       } else {
         isListSame = false;
-        print("isListSame=======$isListSame");
+       
         break;
       }
     }
 
-    print("isListSame=======$isListSame");
+   
     if (isListSame) {
       isAnsCorrect = 1;
-      print("same are both the lkstssss");
+  
     } else {
       isAnsCorrect = 2;
-      print("  list are not same are both the lkstssss");
+     
     }
   }
 
@@ -1395,71 +1062,161 @@ class _PracticeNewState extends State<PracticeNew> {
         optsValueList.add(name);
       }
     }
-    print("optsValueList==========$optsValueList");
+  
 
     return optsValueList;
   }
 
   String getTstAns(List<Options> op) {
     String correct = "";
+    List<int> rightAns = [];
+    print("op length>>>>>>>>>${op.length}");
+
+    for (int i = 0; i < op.length; i++) {
+      print("op>>>>>>>>>${op[i].id}");
+    }
+    print("finalSelectedAns for correct option>>>>$finalSelectedAns");
     print("correctanslength===${correctAns.length}");
-    if (correctAns.length == 1) {
-      if (correctAns.contains(op[0].id)) {
+    if (correctAns.isEmpty) {
+      rightAns = finalSelectedAns;
+    } else {
+      rightAns = correctAns;
+    }
+    print("rightAns rightAns rightAns>>>>$rightAns");
+
+    if (rightAns.length == 1) {
+      if (rightAns.contains(op[0].id)) {
+        print("this is correct");
         correct = 'Answer A is the correct one';
-      } else if (correctAns.contains(op[1].id)) {
+      } else if (rightAns.contains(op[1].id)) {
         correct = 'Answer B is the correct one';
-      } else if (correctAns.contains(op[2].id)) {
+      } else if (rightAns.contains(op[2].id)) {
         correct = 'Answer C is the correct one';
-      } else if (correctAns.contains(op[3].id)) {
+        print("this is correct ans c");
+      } else if (rightAns.contains(op[3].id)) {
         correct = 'Answer D is the correct one';
       } else {
         correct = 'Answer E is the correct one';
       }
-    } else if (correctAns.length == 2) {
-      if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id)) {
-        correct = "Answer A and B are the correct one";
-      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[2].id)) {
-        correct = "Answer A and C are the correct one";
-      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[3].id)) {
-        correct = "Answer A and D are the correct one";
-      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[4].id)) {
-        correct = "Answer A and E are the correct one";
-      } else if (correctAns.contains(op[1].id) && correctAns.contains(op[2].id)) {
-        correct = "Answer B and C are the correct one";
-      } else if (correctAns.contains(op[1].id) && correctAns.contains(op[3].id)) {
-        correct = "Answer B and D are the correct one";
-      } else if (correctAns.contains(op[1].id) && correctAns.contains(op[4].id)) {
-        correct = "Answer B and E are the correct one";
-      } else if (correctAns.contains(op[2].id) && correctAns.contains(op[3].id)) {
-        correct = "Answer C and D are the correct one";
-      } else if (correctAns.contains(op[2].id) && correctAns.contains(op[4].id)) {
-        correct = "Answer C and E are the correct one";
-      } else if (correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
-        correct = "Answer D and E are the correct one";
+    } else if (rightAns.length == 2) {
+      if (op.length > 4) {
+        print("E option is present ");
+
+        if (rightAns.contains(op[0].id) && rightAns.contains(op[4].id)) {
+          correct = "Answer A and E are the correct one";
+        } else if (rightAns.contains(op[1].id) && rightAns.contains(op[4].id)) {
+          correct = "Answer B and E are the correct one";
+        } else if (rightAns.contains(op[2].id) && rightAns.contains(op[4].id)) {
+          correct = "Answer C and E are the correct one";
+        } else if (rightAns.contains(op[3].id) && rightAns.contains(op[4].id)) {
+          correct = "Answer D and E are the correct one";
+        }
+      } else {
+        print("E option is not present and means its absent ");
+        if (rightAns.contains(op[0].id) && rightAns.contains(op[1].id)) {
+          correct = "Answer A and B are the correct one";
+        } else if (rightAns.contains(op[0].id) && rightAns.contains(op[2].id)) {
+          correct = "Answer A and C are the correct one";
+        } else if (rightAns.contains(op[0].id) && rightAns.contains(op[3].id)) {
+          correct = "Answer A and D are the correct one";
+        } else if (rightAns.contains(op[1].id) && rightAns.contains(op[2].id)) {
+          correct = "Answer B and C are the correct one";
+        } else if (rightAns.contains(op[1].id) && rightAns.contains(op[3].id)) {
+          correct = "Answer B and D are the correct one";
+        } else if (rightAns.contains(op[2].id) && rightAns.contains(op[3].id)) {
+          correct = "Answer C and D are the correct one";
+        }
       }
-    } else if (correctAns.length == 3) {
-      if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id) && correctAns.contains(op[2].id)) {
-        correct = "Answer A, B and C are the correct one";
-      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id) && correctAns.contains(op[3].id)) {
-        correct = "Answer A, B and D are the correct one";
-      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id) && correctAns.contains(op[4].id)) {
-        correct = "Answer A, B and E are the correct one";
-      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[2].id) && correctAns.contains(op[3].id)) {
-        correct = "Answer A, C and D are the correct one";
-      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[2].id) && correctAns.contains(op[4].id)) {
-        correct = "Answer A, C and E are the correct one";
-      } else if (correctAns.contains(op[0].id) && correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
-        correct = "Answer A, D and E are the correct one";
-      } else if (correctAns.contains(op[1].id) && correctAns.contains(op[2].id) && correctAns.contains(op[3].id)) {
-        correct = "Answer B, C and D are the correct one";
-      } else if (correctAns.contains(op[1].id) && correctAns.contains(op[2].id) && correctAns.contains(op[4].id)) {
-        correct = "Answer B, C and E are the correct one";
-      } else if (correctAns.contains(op[1].id) && correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
-        correct = "Answer B, D and E are the correct one";
-      } else if (correctAns.contains(op[2].id) && correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
-        correct = "Answer C, D and E are the correct one";
+    } else if (rightAns.length == 3) {
+      print("checking for length 3");
+
+      if (op.length > 4) {
+        print("E option is present");
+        if (rightAns.contains(op[0].id) && rightAns.contains(op[1].id) && rightAns.contains(op[4].id)) {
+          correct = "Answer A, B and E are the correct one";
+        } else if (rightAns.contains(op[0].id) && rightAns.contains(op[2].id) && rightAns.contains(op[4].id)) {
+          correct = "Answer A, C and E are the correct one";
+        } else if (rightAns.contains(op[0].id) && rightAns.contains(op[3].id) && rightAns.contains(op[4].id)) {
+          correct = "Answer A, D and E are the correct one";
+        }
+        if (rightAns.contains(op[1].id) && rightAns.contains(op[2].id) && rightAns.contains(op[4].id)) {
+          correct = "Answer B, C and E are the correct one";
+        } else if (rightAns.contains(op[1].id) && rightAns.contains(op[3].id) && rightAns.contains(op[4].id)) {
+          correct = "Answer B, D and E are the correct one";
+        } else if (rightAns.contains(op[2].id) && rightAns.contains(op[3].id) && rightAns.contains(op[4].id)) {
+          correct = "Answer C, D and E are the correct one";
+        }
+      } else {
+        print("E option is not present and means its absent ");
+        if (rightAns.contains(op[0].id) && rightAns.contains(op[1].id) && rightAns.contains(op[2].id)) {
+          correct = "Answer A, B and C are the correct one";
+        } else if (rightAns.contains(op[0].id) && rightAns.contains(op[1].id) && rightAns.contains(op[3].id)) {
+          correct = "Answer A, B and D are the correct one";
+        } else if (rightAns.contains(op[0].id) && rightAns.contains(op[2].id) && rightAns.contains(op[3].id)) {
+          correct = "Answer A, C and D are the correct one";
+        } else if (rightAns.contains(op[2].id) && rightAns.contains(op[3].id) && rightAns.contains(op[1].id)) {
+          correct = "Answer B, C and D are the correct one";
+        }
       }
     }
+
+    // if (correctAns.length == 1) {
+    //   if (correctAns.contains(op[0].id)) {
+    //     correct = 'Answer A is the correct one';
+    //   } else if (correctAns.contains(op[1].id)) {
+    //     correct = 'Answer B is the correct one';
+    //   } else if (correctAns.contains(op[2].id)) {
+    //     correct = 'Answer C is the correct one';
+    //   } else if (correctAns.contains(op[3].id)) {
+    //     correct = 'Answer D is the correct one';
+    //   } else {
+    //     correct = 'Answer E is the correct one';
+    //   }
+    // } else if (correctAns.length == 2) {
+    //   if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id)) {
+    //     correct = "Answer A and B are the correct one";
+    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[2].id)) {
+    //     correct = "Answer A and C are the correct one";
+    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[3].id)) {
+    //     correct = "Answer A and D are the correct one";
+    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[4].id)) {
+    //     correct = "Answer A and E are the correct one";
+    //   } else if (correctAns.contains(op[1].id) && correctAns.contains(op[2].id)) {
+    //     correct = "Answer B and C are the correct one";
+    //   } else if (correctAns.contains(op[1].id) && correctAns.contains(op[3].id)) {
+    //     correct = "Answer B and D are the correct one";
+    //   } else if (correctAns.contains(op[1].id) && correctAns.contains(op[4].id)) {
+    //     correct = "Answer B and E are the correct one";
+    //   } else if (correctAns.contains(op[2].id) && correctAns.contains(op[3].id)) {
+    //     correct = "Answer C and D are the correct one";
+    //   } else if (correctAns.contains(op[2].id) && correctAns.contains(op[4].id)) {
+    //     correct = "Answer C and E are the correct one";
+    //   } else if (correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
+    //     correct = "Answer D and E are the correct one";
+    //   }
+    // } else if (correctAns.length == 3) {
+    //   if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id) && correctAns.contains(op[2].id)) {
+    //     correct = "Answer A, B and C are the correct one";
+    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id) && correctAns.contains(op[3].id)) {
+    //     correct = "Answer A, B and D are the correct one";
+    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id) && correctAns.contains(op[4].id)) {
+    //     correct = "Answer A, B and E are the correct one";
+    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[2].id) && correctAns.contains(op[3].id)) {
+    //     correct = "Answer A, C and D are the correct one";
+    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[2].id) && correctAns.contains(op[4].id)) {
+    //     correct = "Answer A, C and E are the correct one";
+    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
+    //     correct = "Answer A, D and E are the correct one";
+    //   } else if (correctAns.contains(op[1].id) && correctAns.contains(op[2].id) && correctAns.contains(op[3].id)) {
+    //     correct = "Answer B, C and D are the correct one";
+    //   } else if (correctAns.contains(op[1].id) && correctAns.contains(op[2].id) && correctAns.contains(op[4].id)) {
+    //     correct = "Answer B, C and E are the correct one";
+    //   } else if (correctAns.contains(op[1].id) && correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
+    //     correct = "Answer B, D and E are the correct one";
+    //   } else if (correctAns.contains(op[2].id) && correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
+    //     correct = "Answer C, D and E are the correct one";
+    //   }
+    // }
     print("correct======$correct");
     return correct;
   }
@@ -1468,12 +1225,12 @@ class _PracticeNewState extends State<PracticeNew> {
     Map<String, dynamic> map = {"questionNumber": quetionNo, "selectedAnser": selAns, "rightNumber": rytAns};
 
     answersMapp.add(map);
-    print("answersMapp::::::::$answersMapp");
+
   }
 
   Future checkInternetConn() async {
     bool result = await InternetConnectionChecker().hasConnection;
-    print("result while call fun $result");
+
     if (result == false) {
       Future.delayed(Duration(seconds: 1), () async {
         //  await EasyLoading.showToast("Internet Not Connected",toastPosition: EasyLoadingToastPosition.bottom);

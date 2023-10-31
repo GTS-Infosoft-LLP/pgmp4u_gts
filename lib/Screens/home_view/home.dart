@@ -132,14 +132,6 @@ class _HomeViewState extends State<HomeView> {
 
     return Consumer<CourseProvider>(builder: (context, crp, child) {
       return Scaffold(
-        
-      
-      
-
-
-
-
-   
         body: Stack(
           children: [
             crp.showFloatButton == 1
@@ -207,10 +199,7 @@ class _HomeViewState extends State<HomeView> {
                                                     // fontFamily: AppFont.poppinsRegular,
                                                   ),
                                                 ),
-                                              ]))
-
-                                       
-                                              ),
+                                              ]))),
                                         ],
                                       ),
                                     ),
@@ -233,37 +222,30 @@ class _HomeViewState extends State<HomeView> {
                                           height: 45.2,
                                           width: MediaQuery.of(context).size.width * .46,
                                           child: Center(
-                                              child: 
-                                              
-                                              
-                                          //     Text(
-                                          //   "Close",
-                                          //   style: TextStyle(fontSize: 17),
-                                          // )
-                                          
-                                          
-                                          RichText(
-                                                  // overflow: TextOverflow.ellipsis,
-                                                  // maxLines: 2,
-                                                  // textAlign: TextAlign.left,
-                                                  text: TextSpan(children: <TextSpan>[
-                                                TextSpan(
-                                                  text:    "Close",
-                                                 
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 17,
-                                                    // fontFamily: 'Roboto Regular',
-                                                    // fontWeight: FontWeight.bold
+                                              child:
 
-                                                    // fontFamily: AppFont.poppinsRegular,
-                                                  ),
-                                                ),
-                                              ]))
-                                          
-                                          
-                                          
-                                          ),
+                                                  //     Text(
+                                                  //   "Close",
+                                                  //   style: TextStyle(fontSize: 17),
+                                                  // )
+
+                                                  RichText(
+                                                      // overflow: TextOverflow.ellipsis,
+                                                      // maxLines: 2,
+                                                      // textAlign: TextAlign.left,
+                                                      text: TextSpan(children: <TextSpan>[
+                                            TextSpan(
+                                              text: "Close",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 17,
+                                                // fontFamily: 'Roboto Regular',
+                                                // fontWeight: FontWeight.bold
+
+                                                // fontFamily: AppFont.poppinsRegular,
+                                              ),
+                                            ),
+                                          ]))),
                                         ),
                                       ),
                                       InkWell(
@@ -302,38 +284,23 @@ class _HomeViewState extends State<HomeView> {
                                           height: 45.2,
                                           width: MediaQuery.of(context).size.width * .46,
                                           child: Center(
-                                              child:
-                                              
-                                              
-                                           
-                                          
-                                          
-                                          
-                                             RichText(
+                                              child: RichText(
                                                   // overflow: TextOverflow.ellipsis,
                                                   // maxLines: 2,
                                                   // textAlign: TextAlign.left,
                                                   text: TextSpan(children: <TextSpan>[
-                                                TextSpan(
-                                                  text:    "See Plans",
-                                                 
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 17,
-                                                    // fontFamily: 'Roboto Regular',
-                                                    // fontWeight: FontWeight.bold
+                                            TextSpan(
+                                              text: "See Plans",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 17,
+                                                // fontFamily: 'Roboto Regular',
+                                                // fontWeight: FontWeight.bold
 
-                                                    // fontFamily: AppFont.poppinsRegular,
-                                                  ),
-                                                ),
-                                              ]))
-                                          
-                                          
-                                          
-                                          
-                                          
-                                          
-                                          ),
+                                                // fontFamily: AppFont.poppinsRegular,
+                                              ),
+                                            ),
+                                          ]))),
                                         ),
                                       ),
                                     ],
@@ -451,30 +418,23 @@ class _HomeViewState extends State<HomeView> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
-                                   
+                                      RichText(
+                                          // overflow: TextOverflow.ellipsis,
+                                          // maxLines: 2,
+                                          // textAlign: TextAlign.left,
+                                          text: TextSpan(children: <TextSpan>[
+                                        TextSpan(
+                                          text: "Hey, " + "${user.name}",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 22,
+                                              // fontFamily: 'Roboto Regular',
+                                              fontWeight: FontWeight.bold
 
-
-      RichText(
-                                                  // overflow: TextOverflow.ellipsis,
-                                                  // maxLines: 2,
-                                                  // textAlign: TextAlign.left,
-                                                  text: TextSpan(children: <TextSpan>[
-                                                TextSpan(
-                                                  text:    "Hey, " + "${user.name}",
-                                                 
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 22,
-                                                    // fontFamily: 'Roboto Regular',
-                                                    fontWeight: FontWeight.bold
-
-                                                    // fontFamily: AppFont.poppinsRegular,
-                                                  ),
-                                                ),
-                                              ])),
-
-
-
+                                              // fontFamily: AppFont.poppinsRegular,
+                                              ),
+                                        ),
+                                      ])),
                                       CircularCachedNetworkImage(
                                         imageUrl: user.image,
                                         size: (topHeight / 4) * 2,
@@ -490,58 +450,42 @@ class _HomeViewState extends State<HomeView> {
                                     padding: const EdgeInsets.only(left: 32.0, right: 20),
                                     child: Column(
                                       children: [
-                                   
+                                        RichText(
+                                            // overflow: TextOverflow.ellipsis,
+                                            // maxLines: 2,
+                                            textAlign: TextAlign.left,
+                                            text: TextSpan(children: <TextSpan>[
+                                              TextSpan(
+                                                text:
+                                                    "Over 95% of app users reported High Scores. Be one of them ! Get Started Now to boost your Knowledge!",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 18,
+                                                  fontFamily: 'Roboto Bold',
+                                                  // fontWeight: FontWeight.bold
 
-RichText(
-                                                  // overflow: TextOverflow.ellipsis,
-                                                  // maxLines: 2,
-                                                  textAlign: TextAlign.left,
-                                                  text: TextSpan(children: <TextSpan>[
-                                                TextSpan(
-                                                  text:
-                                                      "Over 95% of app users reported High Scores. Be one of them ! Get Started Now to boost your Knowledge!",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 18,
-                                                    fontFamily:'Roboto Bold',
-                                                    // fontWeight: FontWeight.bold
-
-                                                    // fontFamily: AppFont.poppinsRegular,
-                                                  ),
+                                                  // fontFamily: AppFont.poppinsRegular,
                                                 ),
-                                              ])),
-
-
-
-
+                                              ),
+                                            ])),
                                         cp.showFloatButton == 0
-                                            ?
-                                            
+                                            ? RichText(
+                                                // overflow: TextOverflow.ellipsis,
+                                                // maxLines: 2,
+                                                textAlign: TextAlign.left,
+                                                text: TextSpan(children: <TextSpan>[
+                                                  TextSpan(
+                                                    text: "Be one of them ! Get Started NOW to boost your Knowledge!",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17,
+                                                      fontFamily: 'Roboto Regular',
+                                                      // fontWeight: FontWeight.bold
 
-RichText(
-                                                  // overflow: TextOverflow.ellipsis,
-                                                  // maxLines: 2,
-                                                  textAlign: TextAlign.left,
-                                                  text: TextSpan(children: <TextSpan>[
-                                                TextSpan(
-                                                  text: "Be one of them ! Get Started NOW to boost your Knowledge!",
-                                                 
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 17,
-                                                    fontFamily: 'Roboto Regular',
-                                                    // fontWeight: FontWeight.bold
-
-                                                    // fontFamily: AppFont.poppinsRegular,
+                                                      // fontFamily: AppFont.poppinsRegular,
+                                                    ),
                                                   ),
-                                                ),
-                                              ]))
-
-
-
-
-
-
+                                                ]))
                                             : Text(""),
                                         SizedBox(
                                           height: 15,
@@ -607,6 +551,12 @@ RichText(
                                                           padding: const EdgeInsets.only(bottom: 20),
                                                           child: InkWell(
                                                               onTap: () async {
+                                                                print(
+                                                                    "storedCourse[index]>>>is inapppurchseenable>>${storedCourse[index].inAppPurchaseEnabled}");
+
+                                                                courseProvider.setInAppPurchaseValue(
+                                                                    storedCourse[index].inAppPurchaseEnabled);
+
                                                                 Future.delayed(const Duration(seconds: 5), () {
                                                                   if (courseProvider.crsDropList.length == 0) {
                                                                     courseProvider.setFloatButton(1);
@@ -887,8 +837,9 @@ RichText(
                                                                                   backgroundColor: Color(0xff3F9FC9)),
                                                                             ),
                                                                             SizedBox(
-                                                                              height: 5,
+                                                                              height: 4,
                                                                             ),
+                                                                      
                                                                             storedCourse[index].subscriptionType == 1
                                                                                 ? Text("Silver",
                                                                                     style: TextStyle(

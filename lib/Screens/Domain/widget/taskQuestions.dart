@@ -411,6 +411,8 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                           onTap: () {
                                                             setState(() {
                                                               _show = !_show;
+                                                              print(
+                                                                  "storedTaskQues[indexxx].explanation${storedTaskQues[indexxx].explanation}");
                                                             });
                                                           },
                                                           child: Row(
@@ -462,24 +464,25 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                         _show
                                                             ? Container(
                                                                 margin: EdgeInsets.only(top: height * (9 / 800)),
-                                                                child:  Html(
-                                                                            data: storedTaskQues[indexxx].explanation,
-                                                                            style: {
-                                                                              "body": Style(
-                                                                                padding: EdgeInsets.only(top: 5),
-                                                                                fontFamily: 'Roboto Regular',
+                                                                child: Html(
+                                                                  data: storedTaskQues[indexxx].explanation,
+                                                                  style: {
+                                                                    "body": Style(
+                                                                      padding: EdgeInsets.only(top: 5),
+                                                                      fontFamily: 'Roboto Regular',
 
-                                                                                margin: EdgeInsets.zero,
-                                                                                color: Color(0xff000000),
-                                                                                // textAlign: TextAlign.left,
-                                                                                height: 1.6,
-                                                                                // maxLines: 7,
-                                                                                // textOverflow: TextOverflow.ellipsis,
-                                                                                fontSize: FontSize(width * (15 / 420),),
-                                                                              )
-                                                                            },
-                                                                          ),
-                                                                // Text(
+                                                                      margin: EdgeInsets.zero,
+                                                                      color: Color(0xff000000),
+                                                                     
+                                                                      maxLines: 7,
+                                                                      textOverflow: TextOverflow.ellipsis,
+                                                                      fontSize: FontSize(
+                                                                        width * (15 / 420),
+                                                                      ),
+                                                                    )
+                                                                  },
+                                                                ),
+                                                                //     Text(
                                                                 //   storedTaskQues[indexxx].explanation,
                                                                 //   style: TextStyle(
                                                                 //     fontFamily: 'Roboto Regular',
@@ -488,11 +491,6 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                                 //     height: 1.6,
                                                                 //   ),
                                                                 // ),
-
-
-
-
-
                                                               )
                                                             : Container()
                                                       ],

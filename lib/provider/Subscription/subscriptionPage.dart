@@ -432,19 +432,16 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                             // maxLines: 2,
                                             // textAlign: TextAlign.center,
                                             text: TextSpan(children: <TextSpan>[
-                                              TextSpan(
-                                                text: "Select a Reading Plan",
-                                                style: TextStyle(
-                                                    color: Color(0xff3643a3), fontSize: 22, fontFamily: 'Roboto Bold'
-                                                    // fontWeight: FontWeight.bold
+                                        TextSpan(
+                                          text: "Select a Subscription Plan",
+                                          style: TextStyle(
+                                              color: Color(0xff3643a3), fontSize: 22, fontFamily: 'Roboto Bold'
+                                              // fontWeight: FontWeight.bold
 
-                                                    // fontFamily: AppFont.poppinsRegular,
-                                                    ),
+                                              // fontFamily: AppFont.poppinsRegular,
                                               ),
-                                            ]))
-                                    
-
-                                        )
+                                        ),
+                                      ])))
                                     : SizedBox();
                               }),
                               SizedBox(
@@ -458,32 +455,22 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                           height: MediaQuery.of(context).size.height * .6,
                                           // color: Colors.amber,
                                           child: Center(
-                                            child: 
-                                            
-                                       
+                                              child: RichText(
+                                                  // overflow: TextOverflow.ellipsis,
+                                                  // maxLines: 2,
+                                                  // textAlign: TextAlign.center,
+                                                  text: TextSpan(children: <TextSpan>[
+                                            TextSpan(
+                                              text: "No Plans Available...",
+                                              style: TextStyle(
+                                                color: Colors.black, fontSize: 18,
+                                                // fontFamily: 'Roboto Bold'
+                                                // fontWeight: FontWeight.bold
 
-RichText(
-                                            // overflow: TextOverflow.ellipsis,
-                                            // maxLines: 2,
-                                            // textAlign: TextAlign.center,
-                                            text: TextSpan(children: <TextSpan>[
-                                              TextSpan(
-                                                text:  "No Plans Available...",
-                                                style: TextStyle(
-                                                    color:  Colors.black, fontSize: 18, 
-                                                    // fontFamily: 'Roboto Bold'
-                                                    // fontWeight: FontWeight.bold
-
-                                                    // fontFamily: AppFont.poppinsRegular,
-                                                    ),
+                                                // fontFamily: AppFont.poppinsRegular,
                                               ),
-                                            ]))
-
-
-
-
-
-                                          ),
+                                            ),
+                                          ]))),
                                         ),
                                       )
                                     : Row(
@@ -595,7 +582,7 @@ RichText(
                                                                       textAlign: TextAlign.center,
                                                                       text: TextSpan(children: <TextSpan>[
                                                                         TextSpan(
-                                                                          text: "Subscription",
+                                                                          text: "",
                                                                           //   text: "",
                                                                           style: TextStyle(
                                                                               color: Colors.white,
@@ -935,8 +922,6 @@ RichText(
               ),
               title: Column(
                 children: [
-
-
                   // Text("Are you sure you want to purchase subscription for this course?",
                   //     textAlign: TextAlign.center,
                   //     style: TextStyle(
@@ -946,29 +931,23 @@ RichText(
                   //       color: Colors.black,
                   //     )),
 
+                  RichText(
+                      // overflow: TextOverflow.ellipsis,
+                      // maxLines: 2,
+                      textAlign: TextAlign.center,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: "Are you sure you want to purchase subscription for this course?",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontFamily: 'Roboto Medium',
+                              fontWeight: FontWeight.w200
 
-
-                      RichText(
-                                            // overflow: TextOverflow.ellipsis,
-                                            // maxLines: 2,
-                                            textAlign: TextAlign.center,
-                                            text: TextSpan(children: <TextSpan>[
-                                              TextSpan(
-                                                text: "Are you sure you want to purchase subscription for this course?",
-                                                style: TextStyle(
-                                                    color:  Colors.black, fontSize: 18, 
-                                                    fontFamily: 'Roboto Medium',
-                                                    fontWeight: FontWeight.w200
-
-                                                    // fontFamily: AppFont.poppinsRegular,
-                                                    ),
-                                              ),
-                                            ]))
-
-
-
-
-
+                              // fontFamily: AppFont.poppinsRegular,
+                              ),
+                        ),
+                      ]))
                 ],
               ),
               actions: [
