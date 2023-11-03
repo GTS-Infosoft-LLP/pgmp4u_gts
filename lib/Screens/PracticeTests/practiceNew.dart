@@ -83,8 +83,6 @@ class _PracticeNewState extends State<PracticeNew> {
     selAns = [];
     correctAns = [];
 
-   
-
     super.initState();
     practiceProvider = Provider.of(context, listen: false);
     categoryProvider = Provider.of(context, listen: false);
@@ -121,8 +119,6 @@ class _PracticeNewState extends State<PracticeNew> {
 
     setState(() => questionLoader = true);
 
- 
-
     if (question.isEmpty) {
       setState(() => questionLoader = false);
       return;
@@ -155,7 +151,6 @@ class _PracticeNewState extends State<PracticeNew> {
             builder: (context, value, child) {
               PracticeTextProvider pracTestProv = Provider.of(context, listen: false);
               var v1 = value.get(pracTestProv.selectedPracTestId.toString());
-        
 
               if (v1 != null) {
                 List temp = jsonDecode(v1);
@@ -165,19 +160,14 @@ class _PracticeNewState extends State<PracticeNew> {
                 pracTestProv.practiceApiLoader = false;
               }
 
-
               List<Options> op = [];
               if (PTList.isNotEmpty) {
                 pracTestProv.practiceApiLoader = false;
-         
-                op = PTList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
 
-        
+                op = PTList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
               }
 
               return Consumer<PracticeTextProvider>(builder: (context, data, child) {
-           
-              
                 return Container(
                   color: _colorfromhex("#FCFCFF"),
                   child: Stack(
@@ -215,7 +205,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                           width: MediaQuery.of(context).size.width * .8,
                                           child: RichText(
                                               maxLines: 2,
-                                           
                                               text: TextSpan(children: <TextSpan>[
                                                 TextSpan(
                                                   text: "  " + widget.pracTestName,
@@ -223,7 +212,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                     color: Colors.white,
                                                     fontSize: width * (17 / 420),
                                                     fontFamily: 'Roboto Medium',
-                                                 
                                                     letterSpacing: 0.3,
                                                   ),
                                                 ),
@@ -242,10 +230,8 @@ class _PracticeNewState extends State<PracticeNew> {
                                 // : data.pList != null
                                 : PTList != null
                                     ? Expanded(
-                                 
                                         child: PageView.builder(
                                             controller: pageController,
-                                         
                                             itemCount: PTList.length,
                                             onPageChanged: (index) {
                                               ans = [];
@@ -255,7 +241,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                               rightAns = [];
                                               correctAns = [];
                                               print("selAns=======$selAns");
-                                        
+
                                               print("currentIndex ====>>$currentIndex");
                                               if (currentIndex < index) {
                                                 if (PTList.length - 1 > _quetionNo) {
@@ -266,7 +252,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                     selectedAnswer = null;
                                                     realAnswer = null;
                                                   });
-                                            
                                                 }
                                               } else {
                                                 if (_quetionNo != 0) {
@@ -301,18 +286,15 @@ class _PracticeNewState extends State<PracticeNew> {
                                                       child: Column(
                                                         children: [
                                                           putOnDiscussionButton(op, context),
-
                                                           SizedBox(
                                                             height: 10,
                                                           ),
-
                                                           Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: [
                                                               _quetionNo != 0
                                                                   ? GestureDetector(
                                                                       onTap: () => {
-                                                                       
                                                                         enableTap = 0,
                                                                         isAnsCorrect = 0,
                                                                         selAns = [],
@@ -322,7 +304,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                         pageController.animateToPage(--subQues,
                                                                             duration: Duration(milliseconds: 500),
                                                                             curve: Curves.easeInCirc),
-
                                                                         setState(() {
                                                                           // _quetionNo--;
 
@@ -338,7 +319,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                     )
                                                                   : Container(),
                                                               RichText(
-                                                                
                                                                   text: TextSpan(children: <TextSpan>[
                                                                 TextSpan(
                                                                   text: 'QUESTION ${_quetionNo + 1}',
@@ -346,7 +326,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                     color: Colors.black,
                                                                     fontSize: width * (16 / 420),
                                                                     fontFamily: 'Roboto Regular',
-                                                                  
                                                                   ),
                                                                 ),
                                                               ])),
@@ -363,11 +342,9 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                             duration: Duration(milliseconds: 500),
                                                                             curve: Curves.easeInCirc),
                                                                         setState(() {
-                                                                       
                                                                           selectedAnswer = null;
                                                                           realAnswer = null;
                                                                         }),
-                                                                    
                                                                       },
                                                                       child: Icon(
                                                                         Icons.east,
@@ -390,13 +367,11 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                   margin: EdgeInsets.zero,
                                                                   color: Color(0xff000000),
                                                                   textAlign: TextAlign.left,
-                                                                
                                                                   fontSize: FontSize(18),
                                                                 )
                                                               },
                                                             ),
                                                           ),
-
                                                           PTList[_quetionNo].ques.image != null
                                                               ? InkWell(
                                                                   onTap: () async {
@@ -441,11 +416,9 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                   ),
                                                                 )
                                                               : SizedBox(),
-
                                                           SizedBox(
                                                             height: 20,
                                                           ),
-
                                                           Row(
                                                             mainAxisAlignment: MainAxisAlignment.start,
                                                             children: [
@@ -460,29 +433,26 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                         color: Colors.black,
                                                                         fontSize: 18,
                                                                         fontFamily: 'Roboto Regular',
-                                                                     
                                                                       ),
                                                                     ),
                                                                   ])),
                                                             ],
                                                           ),
-
                                                           ListView.builder(
                                                               shrinkWrap: true,
                                                               physics: NeverScrollableScrollPhysics(),
                                                               itemCount: op.length,
                                                               itemBuilder: (context, index) {
                                                                 selQuesMap = {};
+                                                                print("selQuesMap>>>>>${selQuesMap['selected']}");
                                                                 finalSelectedAns = [];
                                                                 finalSelectedAns.clear();
                                                                 finalCorrectAns = [];
                                                                 print("finalSelectedAns>>>>>>>>>>>$finalSelectedAns");
 
-                                                              
                                                                 for (int i = 0; i < answersMapp.length; i++) {
                                                                   if (answersMapp[i]["questionNumber"] ==
                                                                       (_quetionNo)) {
-                                                                 
                                                                     selQuesMap = {
                                                                       "questionNumber": _quetionNo,
                                                                       "selected": answersMapp[i]["selectedAnser"] ?? [],
@@ -490,6 +460,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                     };
 
                                                                     answer = (answersMapp[i]["selectedAnser"]);
+                                                                    print("answer extracted>>>>>>$answer");
                                                                   }
                                                                 }
                                                                 finalSelectedAns = selQuesMap['selected'] ?? [];
@@ -501,11 +472,11 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                 if (finalSelectedAns.isNotEmpty) {
                                                                   print("finalSelectedAns is not empty");
                                                                   // setState(() {
-                                                                  _show = !_show;
+                                                                  _show = true;
                                                                   print("value of is showw>>$_show");
                                                                   // });
                                                                 }
-                   
+
                                                                 if (selQuesMap.isNotEmpty) {
                                                                   enableTap = 1;
                                                                 }
@@ -522,12 +493,10 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                               .ques
                                                                               .rightAnswer
                                                                               .split(',');
-                                                                       
 
                                                                           for (int i = 0; i < rightAns.length; i++) {
                                                                             correctAns.add(int.parse(rightAns[i]));
                                                                           }
-                                                                       
                                                                         });
 
                                                                         setState(() {
@@ -539,7 +508,6 @@ class _PracticeNewState extends State<PracticeNew> {
 
                                                                           if (selAns.length == correctAns.length &&
                                                                               correctAns.length > 0) {
-                                                                          
                                                                             addToMap(_quetionNo, selAns, correctAns);
                                                                             checkAllAns(selAns, correctAns);
                                                                             enableTap = 1;
@@ -561,8 +529,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                     },
                                                                     child: Container(
                                                                       decoration: BoxDecoration(
-                                                                        // shape: BoxShape.circle,
-
                                                                         color: (selAns.contains(op[index].id) &&
                                                                                 correctAns.contains(op[index].id) &&
                                                                                 selAns.length == correctAns.length &&
@@ -721,7 +687,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                     SizedBox(
                                                                                       height: 8,
                                                                                     ),
-
                                                                                     Html(
                                                                                       data: op[index].questionOption,
                                                                                       style: {
@@ -731,14 +696,10 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                           margin: EdgeInsets.zero,
                                                                                           color: Color(0xff000000),
                                                                                           textAlign: TextAlign.left,
-                                                          
                                                                                           fontSize: FontSize(18),
                                                                                         )
                                                                                       },
                                                                                     ),
-
-                                                                             
-
                                                                                     (finalCorrectAns.contains(op[index].id)) ||
                                                                                             (selAns.length == correctAns.length &&
                                                                                                 selAns.length > 0 &&
@@ -789,7 +750,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                   ),
                                                                 );
                                                               }),
-
                                                           if ((selAns.length == correctAns.length &&
                                                                   correctAns.length > 0) ||
                                                               (finalSelectedAns.isNotEmpty))
@@ -819,7 +779,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                             MainAxisAlignment.spaceBetween,
                                                                         children: [
                                                                           RichText(
-                                                                            
                                                                               text: TextSpan(children: <TextSpan>[
                                                                             TextSpan(
                                                                               text: 'See Solution',
@@ -827,9 +786,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                                   color: _colorfromhex("#ABAFD1"),
                                                                                   fontSize: width * (15 / 420),
                                                                                   fontFamily: 'Roboto Regular',
-                                                                                  height: 1.7
-                                                                              
-                                                                                  ),
+                                                                                  height: 1.7),
                                                                             ),
                                                                           ])),
                                                                           Icon(
@@ -846,17 +803,15 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                           margin:
                                                                               EdgeInsets.only(top: height * (9 / 800)),
                                                                           child: RichText(
-                                                                            
                                                                               text: TextSpan(children: <TextSpan>[
                                                                             TextSpan(
-                                                                              text: "${getTstAns(op)}",
+                                                                              text:
+                                                                                  "${getTstAns(op, PTList[_quetionNo].ques.rightAnswer)}",
                                                                               style: TextStyle(
                                                                                   color: _colorfromhex("#04AE0B"),
                                                                                   fontSize: width * (15 / 420),
                                                                                   fontFamily: 'Roboto Regular',
-                                                                                  height: 1.7
-                                                                         
-                                                                                  ),
+                                                                                  height: 1.7),
                                                                             ),
                                                                           ])))
                                                                       : Container(),
@@ -880,18 +835,11 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                               )
                                                                             },
                                                                           ),
-
-                                                                      
                                                                         )
                                                                       : Container()
                                                                 ],
                                                               ),
                                                             )
-
-                                                      
-                                                     
-                                                   
-
                                                         ],
                                                       ),
                                                     ),
@@ -912,7 +860,6 @@ class _PracticeNewState extends State<PracticeNew> {
                         ),
                       ),
                       Text(""),
-
                       isAnsCorrect == 1
                           ? Positioned(
                               top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
@@ -932,8 +879,6 @@ class _PracticeNewState extends State<PracticeNew> {
                                     child: Image.asset('assets/smiley-sad1.png'),
                                   ))
                               : SizedBox()
-
-                    
                     ],
                   ),
                 );
@@ -1001,16 +946,11 @@ class _PracticeNewState extends State<PracticeNew> {
                           ),
                           Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                              child:
-                                 
-                                  RichText(
-                                      
-                                      text: TextSpan(children: <TextSpan>[
+                              child: RichText(
+                                  text: TextSpan(children: <TextSpan>[
                                 TextSpan(
                                   text: "Put on discussion",
-                                  style: TextStyle(color: Colors.white, fontSize: 12
-                                      
-                                      ),
+                                  style: TextStyle(color: Colors.white, fontSize: 12),
                                 ),
                               ]))),
                         ],
@@ -1029,26 +969,22 @@ class _PracticeNewState extends State<PracticeNew> {
 
   void checkAllAns(List<int> selAns, List<int> rightAns) {
     isListSame = true;
-  
-    selAns.sort();
 
+    selAns.sort();
 
     for (int i = 0; i < selAns.length; i++) {
       if (selAns[i] == (rightAns[i])) {
       } else {
         isListSame = false;
-       
+
         break;
       }
     }
 
-   
     if (isListSame) {
       isAnsCorrect = 1;
-  
     } else {
       isAnsCorrect = 2;
-     
     }
   }
 
@@ -1062,12 +998,22 @@ class _PracticeNewState extends State<PracticeNew> {
         optsValueList.add(name);
       }
     }
-  
 
     return optsValueList;
   }
 
-  String getTstAns(List<Options> op) {
+  String getTstAns(List<Options> op, String ansRight) {
+    _show = true;
+
+    List<int> checkFrmList = [];
+    List<String> checkStrList = [];
+    checkStrList = ansRight.split(',');
+    for (int i = 0; i < checkStrList.length; i++) {
+      checkFrmList.add(int.parse(checkStrList[i]));
+    }
+    print("checkFrmList:::::********************************$checkFrmList");
+
+    print("ansRight>>>>>>>>>$ansRight");
     String correct = "";
     List<int> rightAns = [];
     print("op length>>>>>>>>>${op.length}");
@@ -1075,13 +1021,14 @@ class _PracticeNewState extends State<PracticeNew> {
     for (int i = 0; i < op.length; i++) {
       print("op>>>>>>>>>${op[i].id}");
     }
-    print("finalSelectedAns for correct option>>>>$finalSelectedAns");
-    print("correctanslength===${correctAns.length}");
-    if (correctAns.isEmpty) {
-      rightAns = finalSelectedAns;
-    } else {
-      rightAns = correctAns;
-    }
+    // print("finalSelectedAns for correct option>>>>$finalSelectedAns");
+    // print("correctanslength===${correctAns.length}");
+    // if (correctAns.isEmpty) {
+    //   rightAns = finalSelectedAns;
+    // } else {
+    //   rightAns = correctAns;
+    // }
+    rightAns = checkFrmList;
     print("rightAns rightAns rightAns>>>>$rightAns");
 
     if (rightAns.length == 1) {
@@ -1225,7 +1172,6 @@ class _PracticeNewState extends State<PracticeNew> {
     Map<String, dynamic> map = {"questionNumber": quetionNo, "selectedAnser": selAns, "rightNumber": rytAns};
 
     answersMapp.add(map);
-
   }
 
   Future checkInternetConn() async {

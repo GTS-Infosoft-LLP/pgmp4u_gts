@@ -1346,7 +1346,7 @@ class cancelSubsBottomSheet extends StatelessWidget {
           Divider(
             thickness: 2,
           ),
-          cp.crsDropList.length > 0
+          cp.cancelSubsList.length > 0
               ? Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Align(
@@ -1387,7 +1387,7 @@ class cancelSubsBottomSheet extends StatelessWidget {
                   ),
                 ),
 
-          cp.crsDropList.length > 0
+          cp.cancelSubsList.length > 0
               ? Consumer<CourseProvider>(builder: (context, cp, child) {
                   // for (int i = 0; i < cp.mockCrsDropList.length; i++) {
                   //   print("cp.mockCrsDropList::::::::;;;;; ${cp.mockCrsDropList[i].lable}");
@@ -1398,7 +1398,7 @@ class cancelSubsBottomSheet extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * .35,
                     child: CustomDropDown<CourseDetails>(
                       selectText: cp.selectedCancelSubsLable ?? "Select",
-                      itemList: cp.crsDropList ?? [],
+                      itemList: cp.cancelSubsList ?? [],
                       isEnable: true,
                       title: "",
                       value: null,
@@ -1407,7 +1407,6 @@ class cancelSubsBottomSheet extends StatelessWidget {
                         print("val.course lable=========>${val.lable}");
                         cp.setSelectedCancelSubsCrsLable(val.lable);
                         cp.setSelectedCancelSubsId(val.id);
-
                         // cp.setSelectedCourseId(val.id);
                       },
                     ),

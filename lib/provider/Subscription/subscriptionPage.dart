@@ -876,7 +876,9 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     CourseProvider cp = Provider.of(context, listen: false);
     // provider.updateStatusNew(isnav: true);
     print("insidee the payment success");
-    cp.getCourse();
+    cp.getCourse().whenComplete(() {
+      Navigator.pop(context);
+    });
 
     /// success payment handle from backend side, after amount deduct from card
     // await paymentStatus("success");
@@ -942,10 +944,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                               color: Colors.black,
                               fontSize: 18,
                               fontFamily: 'Roboto Medium',
-                              fontWeight: FontWeight.w200
-
-                              // fontFamily: AppFont.poppinsRegular,
-                              ),
+                              fontWeight: FontWeight.w200),
                         ),
                       ]))
                 ],
@@ -987,7 +986,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                     ),
                     InkWell(
                       onTap: () async {
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
 
                         bool result = await checkInternetConn();
                         print("result internet  $result");
@@ -1006,6 +1005,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                               toastPosition: GFToastPosition.CENTER,
                             );
                           } else {
+                            Navigator.pop(context);
                             await sp.createSubscritionOrder(sp.selectedSubsId);
                             print("sp.alredyPurchase::::${sp.alredyPurchase}");
 
@@ -1021,8 +1021,18 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                               print("statueeess====>>>$status");
 
                               if (status) {
-                                Navigator.pop(context);
                                 _handlePaymentSuccess2(context);
+                                // Navigator.pop(context);
+                                print("sucess value is trueeeeeeee");
+                                CourseProvider courseProvider = Provider.of(context, listen: false);
+                                courseProvider.getCourse();
+                                Navigator.pop(_scaffoldKey.currentContext);
+                                // SchedulerBinding.instance.addPostFrameCallback((_) {
+                                //   CourseProvider cp = Provider.of(context, listen: false);
+
+                                //   cp.getMasterData(cp.selectedCourseId);
+                                //   Navigator.push(context, MaterialPageRoute(builder: (context) => MasterListPage()));
+                                // });
                               } else {
                                 _handlePaymentError2(context);
                               }

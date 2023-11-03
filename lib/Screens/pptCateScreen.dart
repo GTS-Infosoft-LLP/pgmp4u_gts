@@ -93,7 +93,7 @@ class _PPTCardItemState extends State<PPTCardItem> {
               );
             }),
           ]),
-          SizedBox(height: 20),
+          SizedBox(height: 18),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Text(
@@ -204,7 +204,7 @@ class _PPTCardItemState extends State<PPTCardItem> {
                                                 border: Border(
                                                     bottom: BorderSide(
                                                         width: 1, color: Color.fromARGB(255, 219, 211, 211)))),
-                                            height: 75,
+                                            height: 78,
                                             child: Row(
                                               children: [
                                                 SizedBox(

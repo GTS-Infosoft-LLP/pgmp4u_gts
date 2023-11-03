@@ -2,6 +2,9 @@ import 'dart:convert';
 
 class MockTestModel{
 List<MockText> mockList=[];
+MockTestModel({
+this.mockList
+});
 MockTestModel.fromjson(List json){
 
   

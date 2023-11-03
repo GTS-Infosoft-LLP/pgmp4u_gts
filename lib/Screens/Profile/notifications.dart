@@ -126,8 +126,9 @@ class _NotificationsState extends State<Notifications> {
                       ));
           },
           child: Container(
-              width: MediaQuery.of(context).size.width * .7,
+              width: MediaQuery.of(context).size.width * .65,
               decoration: BoxDecoration(
+                  // color: Colors.amber,
                   border: Border(
                 // top: BorderSide(width: 16.0, color: Colors.lightBlue.shade600),
                 bottom: BorderSide(color: Colors.grey[300]),
@@ -146,7 +147,7 @@ class _NotificationsState extends State<Notifications> {
                         color: Colors.white,
                       )),
                   SizedBox(
-                    width: 15,
+                    width: 10,
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -177,7 +178,7 @@ class _NotificationsState extends State<Notifications> {
                       ),
                       profileProvider.Notifications[index].type == 2
                           ? Container(
-                              width: MediaQuery.of(context).size.width * .7,
+                              width: MediaQuery.of(context).size.width * .65,
                               child: Text(
                                 profileProvider.Notifications[index].courseName ?? '',
                                 maxLines: 5,
@@ -264,7 +265,7 @@ class _NotificationsState extends State<Notifications> {
                         color: Colors.white,
                       )),
                   SizedBox(
-                    width: 15,
+                    width: 10,
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,

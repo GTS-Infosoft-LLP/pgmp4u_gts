@@ -8,12 +8,12 @@
 // const _BASE_URL ="https://pgmp4uapiconnect.vcareprojectmanagement.com/api/";
 // const _BASE_URL = "http://3.227.35.115:1011/api/";
 
-// const _BASE_URL = "https://apivcarestage.vcareprojectmanagement.com/api/v2/"; // staging
-const _BASE_URL = "https://pgmp4uapiconnect.vcareprojectmanagement.com/api/v2/"; // Production
+const _BASE_URL = "https://apivcarestage.vcareprojectmanagement.com/api/v2/"; // staging
+// const _BASE_URL = "https://pgmp4uapiconnect.vcareprojectmanagement.com/api/v2/"; // Production
 
 //production
 
-// const _BASE_URL ="https://apivcarestage.vcareprojectmanagement.com/api/";
+// const _BASE_URL ="https://apivcarestage.vcareprojectmanagement.com/api/";      
 
 //const _BASE_URL2 = "https://tspgmp4uapiconnect.vcareprojectmanagement.com/api/";
 

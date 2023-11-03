@@ -33,6 +33,7 @@ class CourseProvider extends ChangeNotifier {
 
   List<CourseDetails> mockCrsDropList = [];
   List<CourseDetails> crsDropList = [];
+  List<CourseDetails> cancelSubsList = [];
   List<CourseDetails> chatCrsDropList = [];
   List<String> crsLable = [];
   List<VideoCateDetails> videoCate = [];
@@ -76,8 +77,6 @@ class CourseProvider extends ChangeNotifier {
 
   String notSubmitedMockID;
 
-
-
   int isInAppPurchaseOn;
   void setInAppPurchaseValue(int val) {
     Future.delayed(Duration.zero, () {
@@ -85,10 +84,6 @@ class CourseProvider extends ChangeNotifier {
       notifyListeners();
     });
   }
-
-
-
-
 
   List<String> pendingMocksId = [];
   addToPendingMockList(String id) {
@@ -424,7 +419,7 @@ class CourseProvider extends ChangeNotifier {
 
         if (mapResponse['status'] == 400) {
           pptDataList = [];
-           HiveHandler.addpptDataBox(jsonEncode(pptDataList), id.toString());
+          HiveHandler.addpptDataBox(jsonEncode(pptDataList), id.toString());
           return;
         }
 
@@ -530,7 +525,7 @@ class CourseProvider extends ChangeNotifier {
 
         if (mapResponse['status'] == 400) {
           pptCategoryList = [];
-             HiveHandler.addpptCateData(jsonEncode(pptCategoryList), id.toString());
+          HiveHandler.addpptCateData(jsonEncode(pptCategoryList), id.toString());
           return;
         }
 
@@ -819,7 +814,7 @@ class CourseProvider extends ChangeNotifier {
 
           notifyListeners();
         } else {
-            // HiveHandler.addFlashCateData(jsonEncode(mapResponse["data"]), id.toString());
+          // HiveHandler.addFlashCateData(jsonEncode(mapResponse["data"]), id.toString());
           updateFlashCateDataApiCall(false);
           print("status 400");
           flashCate = [];
@@ -984,6 +979,7 @@ class CourseProvider extends ChangeNotifier {
         crsDropList.clear();
         chatCrsDropList.clear();
         mockCrsDropList.clear();
+        cancelSubsList.clear();
 
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         List temp1 = mapResponse["data"];
@@ -999,6 +995,10 @@ class CourseProvider extends ChangeNotifier {
           if (course[i].isSubscribed == 1) {
             crsDropList.add(course[i]);
           }
+          if (course[i].isCancelSubscription == 0) {
+            cancelSubsList.add(course[i]);
+          }
+
           if (course[i].isChatSubscribed == 1 || course[i].isSubscribed == 1) {
             chatCrsDropList.add(course[i]);
           }

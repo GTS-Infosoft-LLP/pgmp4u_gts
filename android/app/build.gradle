@@ -51,7 +51,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
         applicationId "com.codesigns.pgmp4u"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 13
+        versionCode 14
         versionName flutterVersionName
         multiDexEnabled true
     }

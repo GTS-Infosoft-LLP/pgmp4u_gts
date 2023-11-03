@@ -115,7 +115,6 @@ class _HomeViewState extends State<HomeView> {
 
       if (response.statusCode == 200) {
         print(convert.jsonDecode(response.body));
-
         await prefs.setString('useStatus', response.body);
         _getData();
       }
