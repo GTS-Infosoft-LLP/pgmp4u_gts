@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pgmp4u/Screens/Tests/local_handler/hive_handler.dart';
@@ -1038,6 +1039,72 @@ class CourseProvider extends ChangeNotifier {
   }
 
   var vedioStatusValue;
+
+  Future<void> restoreCourse(int id) async {
+    Map restoreBody = {"courseId": id};
+    updateLoader(true);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('token');
+    print("token valueddfdfdf===$stringValue");
+    bool checkConn = await checkInternetConn();
+    if (checkConn) {
+      body = HiveHandler.getNotSubmittedMock(keyName: notSubmitedMockID);
+      if (body == null) {
+        body = "";
+      }
+      if (body.isNotEmpty) {
+        Response response = await http
+            .post(
+          Uri.parse(SUBMIT_MOCK_TEST),
+          headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+          body: body,
+        )
+            .whenComplete(() async {
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          await getTestDetails(allTestListIdOfline);
+          // await apiCall(attempListIdOffline);
+          Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
+              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+          Map getit;
+          if (response.statusCode == 200) {
+            getit = convert.jsonDecode(response.body);
+            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
+          }
+        });
+        if (response.statusCode == 200) {
+          HiveHandler.removeFromRestartBox(notSubmitedMockID);
+          HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
+          setnotSubmitedMockID("");
+          setToBeSubmitIndex(1000);
+        }
+      }
+    }
+    try {
+      var response = await http.post(Uri.parse(RESTORE_SUBSCRIPTION),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': stringValue,
+          },
+          body: json.encode(restoreBody));
+      print("restoreBody>>>> $restoreBody");
+
+      if (response.statusCode == 200) {
+        getCourse().then((value) {
+          updateLoader(false);
+          EasyLoading.showInfo("Course Restored Successfully");
+        });
+      } else {
+        updateLoader(false);
+        EasyLoading.showToast("Something went wrong...");
+      }
+    } catch (e) {
+      updateLoader(false);
+      print("errrorororr====$e");
+    }
+  }
+
   Future<void> getVideos(int id) async {
     vedioStatusValue = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1624,5 +1691,23 @@ class CourseProvider extends ChangeNotifier {
       return result;
     } else {}
     return result;
+  }
+
+  bool loader = false;
+  updateLoader(bool status) async {
+    loaderUpdate(status);
+
+    loader = status;
+    await Future.delayed(Duration(seconds: 0));
+    notifyListeners();
+  }
+
+  loaderUpdate(bool status) {
+    if (status) {
+      EasyLoading.show(status: "Loading", maskType: EasyLoadingMaskType.clear);
+    } else {
+      print("dismiss loader");
+      EasyLoading.dismiss();
+    }
   }
 }

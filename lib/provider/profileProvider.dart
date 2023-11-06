@@ -787,6 +787,28 @@ class ProfileProvider extends ChangeNotifier {
       print("errrorororr====$e");
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   Future checkInternetConn() async {
     bool result = await InternetConnectionChecker().hasConnection;

@@ -8,16 +8,17 @@
 // const _BASE_URL ="https://pgmp4uapiconnect.vcareprojectmanagement.com/api/";
 // const _BASE_URL = "http://3.227.35.115:1011/api/";
 
-const _BASE_URL = "https://apivcarestage.vcareprojectmanagement.com/api/v2/"; // staging
-// const _BASE_URL = "https://pgmp4uapiconnect.vcareprojectmanagement.com/api/v2/"; // Production
+// const _BASE_URL = "https://apivcarestage.vcareprojectmanagement.com/api/v2/"; // staging
+const _BASE_URL = "https://pgmp4uapiconnect.vcareprojectmanagement.com/api/v2/"; // Production
 
 //production
 
-// const _BASE_URL ="https://apivcarestage.vcareprojectmanagement.com/api/";      
+// const _BASE_URL ="https://apivcarestage.vcareprojectmanagement.com/api/";
 
 //const _BASE_URL2 = "https://tspgmp4uapiconnect.vcareprojectmanagement.com/api/";
 
 // const _BASE_URL2 = "http://192.168.2.6:1011/api/";
+
 // const _BASE_URL2 = "http://18.119.55.81:1011/api/";
 //const TEMP_URL = "http://18.119.55.81:3003/api/";
 
@@ -130,6 +131,7 @@ const JOIN_NOTIFICATION = _BASE_URL + "joinNotification";
 const CANCEL_SUBSCRIPTION = _BASE_URL + "cancelSubscriptionPack";
 
 const FREE_SUBSCRIPTION = _BASE_URL + "createSubscriptionOrderFree";
+const RESTORE_SUBSCRIPTION = _BASE_URL + "restoreSubscriptionPack";
 
 //cancelSubscriptionPack
 

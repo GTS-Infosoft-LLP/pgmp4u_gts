@@ -15,7 +15,6 @@ class PracitceTextResponseModelList {
     if (json['status'] == 200) {
       list = List<PracitceTextResponseModel>.from(json['data']['list']
           .map((x) => PracitceTextResponseModel.fromJson(x)));
-
       pracList = jsonEncode(json['data']['list']);
       print("**************************************************");
       print("pracList=====$pracList");

@@ -90,16 +90,29 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                       SizedBox(width: 20),
                       Center(
                           child: Container(
-                        // color: Colors.amber,
-                        width: MediaQuery.of(context).size.width * .65,
-                        child: Text(
-                          _controller.index == 1 ? "Notifications" : "Announcements",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
-                        ),
-                      )),
+                              // color: Colors.amber,
+                              width: MediaQuery.of(context).size.width * .65,
+                              child: RichText(
+                                text: TextSpan(children: <TextSpan>[
+                                  TextSpan(
+                                    text: _controller.index == 1 ? "Notifications" : "Announcements",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22.0,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "Roboto"),
+                                  )
+                                ]),
+                              )
+                              //  Text(
+                              //   _controller.index == 1 ? "Notifications" : "Announcements",
+                              //   maxLines: 2,
+                              //   overflow: TextOverflow.ellipsis,
+                              //   style: TextStyle(
+                              //       fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
+                              // ),
+
+                              )),
                     ],
                   ),
                 );
@@ -142,7 +155,7 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                 },
                 tabs: [
                   Tab(
-                    text: "Annoncements",
+                    text: "Announcements",
                   ),
                   Tab(
                     text: "Notifications",

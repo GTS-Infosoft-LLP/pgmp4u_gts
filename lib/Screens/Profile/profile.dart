@@ -1515,7 +1515,7 @@ class cancelSubsBottomSheet extends StatelessWidget {
                                       color: Colors.white,
                                       // fontSize: 18,
                                       // fontFamily: 'Roboto Medium',
-                                      fontWeight: FontWeight.w200),
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ])),
                             ))),

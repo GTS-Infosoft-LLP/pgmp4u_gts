@@ -226,10 +226,10 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 TextSpan(
                                   text: "OR Skip to Freemium",
                                   style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
+                                      color: Colors.black87.withOpacity(0.8),
+                                      fontSize: 18,
                                       fontFamily: 'Roboto Medium',
-                                      fontWeight: FontWeight.w100),
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ]))
 
@@ -554,43 +554,23 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                               child: Center(child: Image.asset("assets/diamond.png")),
                                                             ),
                                                             Column(
-                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              mainAxisAlignment: MainAxisAlignment.center,
                                                               children: [
                                                                 SizedBox(
-                                                                  height: 15,
+                                                                  height: 35,
                                                                 ),
-                                                                RichText(
-                                                                  text: TextSpan(children: <TextSpan>[
-                                                                    TextSpan(
-                                                                      // text: mntVal + " " + mnth,
-                                                                      text: subsPack,
-                                                                      style: TextStyle(
-                                                                          color: Colors.white,
-                                                                          fontSize: 20.0,
-                                                                          fontWeight: FontWeight.w600),
-                                                                    )
-                                                                  ]),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 5,
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                                                                  child: Container(
-                                                                    width: MediaQuery.of(context).size.width * .5,
-                                                                    child: RichText(
-                                                                      textAlign: TextAlign.center,
-                                                                      text: TextSpan(children: <TextSpan>[
-                                                                        TextSpan(
-                                                                          text: "",
-                                                                          //   text: "",
-                                                                          style: TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: 15.0,
-                                                                              fontWeight: FontWeight.w600),
-                                                                        )
-                                                                      ]),
-                                                                    ),
+                                                                Center(
+                                                                  child: RichText(
+                                                                    text: TextSpan(children: <TextSpan>[
+                                                                      TextSpan(
+                                                                        // text: mntVal + " " + mnth,
+                                                                        text: subsPack,
+                                                                        style: TextStyle(
+                                                                            color: Colors.white,
+                                                                            fontSize: 20.0,
+                                                                            fontWeight: FontWeight.w600),
+                                                                      )
+                                                                    ]),
                                                                   ),
                                                                 ),
                                                                 SizedBox(
@@ -845,13 +825,13 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                     },
                                     style: {
                                       "body": Style(
-                                        padding: EdgeInsets.only(top: 5),
-                                        margin: EdgeInsets.zero,
-                                        color: Color(0xff000000),
+                                        // padding: EdgeInsets.only(top: 5),
+                                        // margin: EdgeInsets.zero,
+                                        color: Colors.black87.withOpacity(0.8),
                                         textAlign: TextAlign.left,
-                                        // fontWeight: FontWeight.w400,
+                                        fontWeight: FontWeight.w500,
                                         fontFamily: 'Roboto Medium',
-                                        fontSize: FontSize(17),
+                                        fontSize: FontSize(16),
                                       )
                                     },
                                   ),
@@ -951,7 +931,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
               ),
               actions: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
                         onTap: () {
@@ -965,8 +945,10 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 borderRadius: BorderRadius.all(Radius.circular(20)),
                                 gradient: LinearGradient(
                                     colors: [
-                                      _colorfromhex("#3A47AD"),
-                                      _colorfromhex("#5163F3"),
+                                      Colors.grey,
+                                      Colors.grey
+                                      // _colorfromhex("#3A47AD"),
+                                      // _colorfromhex("#5163F3"),
                                     ],
                                     begin: const FractionalOffset(0.0, 0.0),
                                     end: const FractionalOffset(1.0, 0.0),
@@ -1024,7 +1006,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 _handlePaymentSuccess2(context);
                                 // Navigator.pop(context);
                                 print("sucess value is trueeeeeeee");
-                                CourseProvider courseProvider = Provider.of(context, listen: false);
+                                CourseProvider courseProvider = Provider.of(_scaffoldKey.currentContext, listen: false);
                                 courseProvider.getCourse();
                                 Navigator.pop(_scaffoldKey.currentContext);
                                 // SchedulerBinding.instance.addPostFrameCallback((_) {
