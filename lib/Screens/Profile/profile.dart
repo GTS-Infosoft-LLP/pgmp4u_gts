@@ -1418,7 +1418,7 @@ class cancelSubsBottomSheet extends StatelessWidget {
             height: 20,
           ),
 
-          InkWell(
+     cp.cancelSubsList.length > 0?     InkWell(
             onTap: () {
               showCancelSubsPopup(context);
             },
@@ -1445,7 +1445,7 @@ class cancelSubsBottomSheet extends StatelessWidget {
                 ])),
               ),
             ),
-          ),
+          ):SizedBox(),
 
           SizedBox(
             height: 20,

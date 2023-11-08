@@ -59,9 +59,7 @@ const stripeVideoLib = _BASE_URL + "createOrderNew?planType=3&deviceType=A";
 const getCourseCategory = _BASE_URL + "getCourseCategory";
 const getCourseSubCategory = _BASE_URL + "getCourseSubCategory";
 const getSubCategoryDetails = _BASE_URL + "getSubCategoryDetails";
-
 const deviceToken = _BASE_URL + "updateDeviceToken";
-
 const chatUserListApi = _BASE_URL + "getChatUsers";
 const sendChatUserNotification = _BASE_URL + "sendChatUsersNotification";
 
