@@ -338,13 +338,11 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                               )));
                                 });
                               },
-                              child:
-                                
-                                  RichText(
-                                      // maxLines: 1000,
-                                      // overflow: TextOverflow.ellipsis,
-                                      // textAlign: TextAlign.left,
-                                      text: TextSpan(children: <TextSpan>[
+                              child: RichText(
+                                  // maxLines: 1000,
+                                  // overflow: TextOverflow.ellipsis,
+                                  // textAlign: TextAlign.left,
+                                  text: TextSpan(children: <TextSpan>[
                                 TextSpan(
                                   text: "Upgrade",
                                   style: TextStyle(
@@ -357,9 +355,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                     // letterSpacing: 0.3,
                                   ),
                                 ),
-                              ]))
-                              )
-                              ,
+                              ]))),
                         )
                       : SizedBox(),
                   SizedBox(
@@ -386,26 +382,15 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                           }
                         },
                         child:
-                            //  Text(
-                            // "Chat",
-                            // style: TextStyle(color: Colors.white, fontSize: 16),
-                            // )
-
-                            RichText(
-                                // maxLines: 1000,
-                                // overflow: TextOverflow.ellipsis,
-                                // textAlign: TextAlign.left,
+                                                    RichText(
+                    
                                 text: TextSpan(children: <TextSpan>[
                           TextSpan(
                             text: "Chat",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
-                              // fontFamily: "NunitoSans",
-
-                              // height: 1.7
-                              // fontWeight: FontWeight.w600,
-                              // letterSpacing: 0.3,
+                      
                             ),
                           ),
                         ]))),

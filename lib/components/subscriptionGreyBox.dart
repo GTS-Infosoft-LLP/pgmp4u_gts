@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Widget customGreyRedRow(IconData icn, String txt, BuildContext context, String planType, int index) {
@@ -66,7 +67,7 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context, String p
     icnn = FontAwesomeIcons.accusoft;
   }
   return Padding(
-    padding: const EdgeInsets.only(top: 15),
+    padding: const EdgeInsets.only(top: 10),
     child: Container(
       width: MediaQuery.of(context).size.width * .85,
       child: Row(
@@ -97,13 +98,28 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context, String p
           ),
           Container(
             width: MediaQuery.of(context).size.width * .53,
-            child: RichText(
-              text: TextSpan(children: <TextSpan>[
-                TextSpan(
-                  text: txt,
-                  style: TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w600),
+            child:
+                // RichText(
+                //   text: TextSpan(children: <TextSpan>[
+                //     TextSpan(
+                //       text: txt,
+                //       style: TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w600),
+                //     )
+                //   ]),
+                // ),
+
+                Html(
+              data: txt,
+              style: {
+                "body": Style(
+                  color: Colors.black,
+                  textAlign: TextAlign.left,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Roboto Medium',
+                  lineHeight: LineHeight.number(1),
+                  fontSize: FontSize(16),
                 )
-              ]),
+              },
             ),
           ),
         ],

@@ -11,6 +11,8 @@ import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
+import '../Process/process.dart';
+import '../Process/processDomainProvider.dart';
 import '../provider/profileProvider.dart';
 import '../utils/app_color.dart';
 import 'Domain/screens/domainList.dart';
@@ -221,6 +223,25 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                           builder: (context) => PPTCardItem(
                                                                               title: storedMaster[index].name)));
                                                                 });
+                                                              }
+                                                               if (page == "Process") {
+                                                                ProfileProvider pp =Provider.of(context, listen: false);
+                                                                ProcessDomainProvider pdp = Provider.of(context, listen: false);
+                                                                pp.updateLoader(true);
+                                                                await pdp.getProcessData(
+                                                                     cp.selectedCourseId,
+                                                                    storedMaster[index].id,
+                                                                 );
+                                                          
+                                                                pp.updateLoader(false);
+                                                             
+                                                               {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => ProcessList(
+                                                                             )));
+                                                                }
                                                               }
 
                                                               if (page == "Domain") {

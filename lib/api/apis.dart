@@ -8,8 +8,8 @@
 // const _BASE_URL ="https://pgmp4uapiconnect.vcareprojectmanagement.com/api/";
 // const _BASE_URL = "http://3.227.35.115:1011/api/";
 
-// const _BASE_URL = "https://apivcarestage.vcareprojectmanagement.com/api/v2/"; // staging
-const _BASE_URL = "https://pgmp4uapiconnect.vcareprojectmanagement.com/api/v2/"; // Production
+const _BASE_URL = "https://apivcarestage.vcareprojectmanagement.com/api/v2/"; // staging
+// const _BASE_URL = "https://pgmp4uapiconnect.vcareprojectmanagement.com/api/v2/"; // Production
 
 //production
 
@@ -130,6 +130,21 @@ const CANCEL_SUBSCRIPTION = _BASE_URL + "cancelSubscriptionPack";
 
 const FREE_SUBSCRIPTION = _BASE_URL + "createSubscriptionOrderFree";
 const RESTORE_SUBSCRIPTION = _BASE_URL + "restoreSubscriptionPack";
+
+
+/// process api
+
+const GET_PROCESS = _BASE_URL + "getProcess";
+const GET_SUB_PROCESS = _BASE_URL + "getSubProcess";
+const GET_TASKS_PROCESS = _BASE_URL + "getTasksProcess";
+const GET_TASKS_PROCESS_DETAIL = _BASE_URL + "getTasksProcessDetails";
+
+
+// const GET_DOMAIN = _BASE_URL + "getDomain";
+// const GET_TASK_DETAIL = _BASE_URL + "getTaskDetails";
+
+
+
 
 //cancelSubscriptionPack
 

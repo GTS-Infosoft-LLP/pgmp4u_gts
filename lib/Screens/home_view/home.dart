@@ -543,6 +543,7 @@ class _HomeViewState extends State<HomeView> {
                                                           padding: const EdgeInsets.only(bottom: 20),
                                                           child: InkWell(
                                                               onTap: () async {
+                                                                print("course id>>>${storedCourse[index].id}");
                                                                 print(
                                                                     "storedCourse[index]>>>is inapppurchseenable>>${storedCourse[index].inAppPurchaseEnabled}");
 

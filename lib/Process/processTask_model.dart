@@ -1,23 +1,23 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
-part 'taskModel.g.dart';
+part 'processTask_model.g.dart';
 
 @HiveType(typeId: 21)
-class AllTaskModel {
-  List<TaskDetails> allTaskList = [];
+class AllProcessTaskModel {
+  List<ProcessTskDetails> allProcessTaskList = [];
   @HiveField(0)
   String myList = "";
-  AllTaskModel();
-  AllTaskModel.fromjson(List data) {
-    allTaskList = data.map((e) => TaskDetails.fromjson(e)).toList();
+  AllProcessTaskModel();
+  AllProcessTaskModel.fromjson(List data) {
+    allProcessTaskList = data.map((e) => ProcessTskDetails.fromjson(e)).toList();
     myList = jsonEncode(data);
     print("************************************************************");
     print("list is $myList");
   }
 }
 
-class TaskDetails {
+class ProcessTskDetails {
   int id;
   String name;
   String description;
@@ -29,10 +29,10 @@ class TaskDetails {
   String lable;
   int status;
   int deleteStatus;
-  List<TaskPracQues> PracList;
-  TaskDetails();
+  List<ProcessTaskPracQues> ProcPracList;
+  ProcessTskDetails();
 
-  TaskDetails.fromjson(Map<String, dynamic> json) {
+  ProcessTskDetails.fromjson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'] ?? "";
     description = json['description'] ?? "";
@@ -45,17 +45,17 @@ class TaskDetails {
     status = json['status'];
     deleteStatus = json['deleteStatus'];
     if (json['practiceTest'] != null) {
-      PracList = new List<TaskPracQues>();
+      ProcPracList = new List<ProcessTaskPracQues>();
       if (json['Options'] != null) {
         json['Options'].forEach((v) {
-          PracList.add(new TaskPracQues.fromJson(v));
+          ProcPracList.add(new ProcessTaskPracQues.fromJson(v));
         });
       }
     }
   }
 }
 
-class TaskPracQues {
+class ProcessTaskPracQues {
   int id;
   int questionNo;
   int course;
@@ -71,9 +71,9 @@ class TaskPracQues {
   int status;
   int deleteStatus;
   String sendDateFormat;
-  List<TaskOptions> options;
+  List<ProcTaskOptions> options;
 
-  TaskPracQues.fromJson(Map<String, dynamic> json) {
+  ProcessTaskPracQues.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     questionNo = json['question_no'];
     course = json['course'];
@@ -90,15 +90,15 @@ class TaskPracQues {
     deleteStatus = json['deleteStatus'];
     sendDateFormat = json['sendDateFormat'];
     if (json['Options'] != null) {
-      options = new List<TaskOptions>();
+      options = new List<ProcTaskOptions>();
       json['Options'].forEach((v) {
-        options.add(new TaskOptions.fromJson(v));
+        options.add(new ProcTaskOptions.fromJson(v));
       });
     }
   }
 }
 
-class TaskOptions {
+class ProcTaskOptions {
   int id;
   int question;
   String questionOption;
@@ -106,7 +106,7 @@ class TaskOptions {
   int status;
   int deleteStatus;
 
-  TaskOptions({
+  ProcTaskOptions({
     this.id,
     this.question,
     this.questionOption,
@@ -115,7 +115,7 @@ class TaskOptions {
     this.deleteStatus,
   });
 
-  TaskOptions.fromJson(Map<String, dynamic> json) {
+  ProcTaskOptions.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     question = json['question'];
     questionOption = json['question_option'] ?? "";

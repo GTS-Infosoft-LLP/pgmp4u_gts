@@ -8,6 +8,9 @@ import '../../../Models/mockListmodel.dart';
 import '../../../Models/mockquestionanswermodel.dart';
 import '../../../Models/pptCateModel.dart';
 import '../../../Models/pptDetailsModel.dart';
+import '../../../Process/processTask_model.dart';
+import '../../../Process/process_model.dart';
+import '../../../Process/subprocess_model.dart';
 import '../../Domain/screens/Models/domainModel.dart';
 import '../../Domain/screens/Models/subDomainModel.dart';
 import '../../Domain/screens/Models/taskModel.dart';
@@ -60,6 +63,8 @@ class HiveHandler {
 
   static const String taskQuesBox = "taskQuesBox";
   static const String taskQuesKey = "taskQuesKey";
+    static const String processTaskQuesBox = "processTaskQuesBox";
+  static const String processTaskQuesKey = "processTaskQuesKey";
 
   static const String quesOfDayBox = "quesOfDayBox";
   static const String quesOfDayKey = "quesOfDayKey";
@@ -71,9 +76,6 @@ class HiveHandler {
   static const String DomainDetailKey = "domainKey";
   static const String SubDomainDetailBox = "subdomainBox";
   static const String SubDomainDetailKey = "subdomainKey";
-
-
-
 
   static const String FlashCateBox = "flashCateBox";
 
@@ -87,14 +89,17 @@ class HiveHandler {
   static const String MockQuestionBoxKey = "mockQuestionsBox";
   static const String TaskItemsBoxKey = "taskItemsBox";
 
-
-    static const String ProcessDetailBox = "processBox";
+  static const String ProcessDetailBox = "processBox";
   static const String ProcessDetailKey = "processKey";
   static const String SubProcessDetailBox = "subprocessBox";
   static const String SubProcessDetailKey = "subprocessKey";
 
-    static Box<String> processDetailListBox;
+  static const String ProcessTaskDetailBox = "processTaskBox";
+  static const String ProcessTasDetailKey = "processTaskKey";
+
+  static Box<String> processDetailListBox;
   static Box<String> subProcessDetailListBox;
+  static Box<String> processTaskListBox;
 
   static Box<String> mockNotSubmitBox;
   static Box<String> courseListBox;
@@ -102,6 +107,7 @@ class HiveHandler {
   static Box<String> flashListCateBox;
   static Box<String> domainDetailListBox;
   static Box<String> subDomainDetailListBox;
+
   static Box<String> pptCateDetailBox;
   static Box<String> pptDataDetailBox;
   static Box<List<CategoryListModel>> categoryListBox;
@@ -112,11 +118,14 @@ class HiveHandler {
   static Box<RestartModel> mockRestartBox;
   static Box<String> submitDataBox;
   static Box<String> taskPracTestBox;
+    static Box<String> processQuesBox;
+    static Box<String> PracTestBox;
 
   static Box<List<MockTestListApiModel>> MockListBox;
   static Box<List<QuestionAnswerModel>> MockTextBox;
   static Box<String> MockQuestionBox;
   static Box<String> TaskItemsBox;
+  static Box<String> ProcessTaskItemsBox;
   static Box<String> QuesOfDDayBox;
 
   // static Box<List<PracListModel>> PracTestBox;
@@ -132,6 +141,9 @@ class HiveHandler {
     Hive.registerAdapter(CategoryListModelAdapter());
     Hive.registerAdapter(FlashCardDetailsAdapter());
     Hive.registerAdapter(DomainDetailsAdapter());
+    Hive.registerAdapter(ProcessDetailsAdapter());
+    Hive.registerAdapter(SubProcessDetailsAdapter());
+    // Hive.registerAdapter(ProcessTaskDetailsAdapter());
     Hive.registerAdapter(SubDomainDetailsAdapter());
     Hive.registerAdapter(PPTCateDetailsAdapter());
     Hive.registerAdapter(PPTDataDetailsAdapter());
@@ -149,6 +161,8 @@ class HiveHandler {
 
     mockNotSubmitBox = await Hive.openBox<String>(notSubmitBox);
     domainDetailListBox = await Hive.openBox<String>(DomainDetailBox);
+    processDetailListBox = await Hive.openBox<String>(ProcessDetailBox);
+    subProcessDetailListBox = await Hive.openBox<String>(SubProcessDetailBox);
     pptCateDetailBox = await Hive.openBox<String>(pptCateBox);
     pptDataDetailBox = await Hive.openBox<String>(pptDataBox);
     subDomainDetailListBox = await Hive.openBox<String>(SubDomainDetailBox);
@@ -158,12 +172,15 @@ class HiveHandler {
     categoryListBox = await Hive.openBox<List<CategoryListModel>>(userDataBox);
     QuesOfDDayBox = await Hive.openBox<String>(quesOfDayBox);
     taskPracTestBox = await Hive.openBox<String>(taskQuesBox);
+        processQuesBox = await Hive.openBox<String>(processTaskQuesBox);
     masterListBox = await Hive.openBox<String>(MasterDataBox);
     submitDataBox = await Hive.openBox<String>(SubmitMockBoxKey);
 
     // MockListBox = await Hive.openBox<List<MockTestListApiModel>>(MockTestBox);
 
     TaskItemsBox = await Hive.openBox<String>(TaskItemsBoxKey);
+    ProcessTaskItemsBox = await Hive.openBox<String>(ProcessTasDetailKey);
+
     MockQuestionBox = await Hive.openBox<String>(MockQuestionBoxKey);
 
     TestPMListBox = await Hive.openBox<String>(TestDataBox);
@@ -278,8 +295,33 @@ class HiveHandler {
     }
   }
 
+  static setProcessTaskItemsData({String value, String key}) async {
+    List<ProcessTskDetails> storedProcessTaskData = [];
+    ProcessTaskItemsBox.put(key, value);
+
+    if (ProcessTaskItemsBox.containsKey(key)) {
+      print("===========added to box=========");
+      print("ProcessTaskItemsBox.get  Key: $key, Data:${ProcessTaskItemsBox.get(key)}");
+
+      String processTaskData = ProcessTaskItemsBox.get(key);
+      print(" >> processTaskData :  $processTaskData");
+
+      List processTaskList = jsonDecode(processTaskData);
+      print("processTaskList:::::::$processTaskList");
+
+      storedProcessTaskData = processTaskList.map((e) => ProcessTskDetails.fromjson(e)).toList();
+      debugPrint(" >> storedProcessTaskData : $storedProcessTaskData");
+    } else {
+      print("===========box is empty=========");
+    }
+  }
+
   static ValueListenable<Box<String>> getTaskItemsListener() {
     return Hive.box<String>(TaskItemsBoxKey).listenable() ?? '';
+  }
+
+  static ValueListenable<Box<String>> getProcessTaskItemsListener() {
+    return Hive.box<String>(ProcessTasDetailKey).listenable() ?? '';
   }
 
   static setTaskQuesData({String value, String key}) async {
@@ -302,7 +344,33 @@ class HiveHandler {
     }
   }
 
+
+  static setProcessTaskQuesData({String value, String key}) async {
+    List<TaskQues> storedProcessQuesData = [];
+    print("valueee of vallll>>>>>$value");
+    print("value of keyyyy>>>>$key");
+    processQuesBox.put(key, value);
+
+    if (processQuesBox.containsKey(key)) {
+      print("===========added to box   setTaskQuesData=========");
+      print("processQuesBox.get  Key: $key, Data:${processQuesBox.get(key)}");
+      String taskQuesData = processQuesBox.get(key);
+      print(" >> taskData :  $taskQuesData");
+      List TaskquestionsList = jsonDecode(taskQuesData);
+      storedProcessQuesData = TaskquestionsList.map((e) => TaskQues.fromJson(e)).toList();
+      debugPrint(" >> storedProcessQuesData : $storedProcessQuesData");
+    } else {
+      print("===========box is empty=========");
+    }
+  }
+
+
+
+
   static ValueListenable<Box<String>> getTaskQuesListener() {
+    return Hive.box<String>(taskQuesBox).listenable() ?? '';
+  }
+   static ValueListenable<Box<String>> getProcessTaskQuesListener() {
     return Hive.box<String>(taskQuesBox).listenable() ?? '';
   }
 
@@ -378,6 +446,14 @@ class HiveHandler {
     return Hive.box<String>(DomainDetailBox).listenable() ?? "";
   }
 
+  static ValueListenable<Box<String>> getProcessDetailListener() {
+    return Hive.box<String>(ProcessDetailBox).listenable() ?? "";
+  }
+
+  static ValueListenable<Box<String>> getSubProcessDetailListener() {
+    return Hive.box<String>(SubProcessDetailBox).listenable() ?? "";
+  }
+
   static addpptCateData(String pptCateResponse, String key) async {
     pptCateDetailBox.put(key, pptCateResponse);
     print("value of keyyy>>>> $key");
@@ -417,6 +493,32 @@ class HiveHandler {
       print("subdomain box keyy>>>>>>>.$key");
       print("===========added to box=========");
       print("subDomainDetailListBox.get ${subDomainDetailListBox.get(key)}");
+    } else {
+      print("===========box is empty=========");
+    }
+  }
+
+  static addProcessDetailData(String processDetailResponse, String key) async {
+    print("processDetailResponse>>>>$processDetailResponse");
+    print("process detail key>>>.$key");
+    processDetailListBox.put(key, processDetailResponse);
+
+    if (processDetailListBox.containsKey(key)) {
+      print("subdomain box keyy>>>>>>>.$key");
+      print("===========added to box=========");
+      print("processDetailListBox.get ${processDetailListBox.get(key)}");
+    } else {
+      print("===========box is empty=========");
+    }
+  }
+
+  static addsubProcessDetailData(String subProcessDetailResponse, String key) async {
+    subProcessDetailListBox.put(key, subProcessDetailResponse);
+
+    if (subProcessDetailListBox.containsKey(key)) {
+      print("subdomain box keyy>>>>>>>.$key");
+      print("===========added to box=========");
+      print("subProcessDetailListBox.get ${subProcessDetailListBox.get(key)}");
     } else {
       print("===========box is empty=========");
     }
@@ -720,9 +822,6 @@ class HiveHandler {
     }
   }
 
-
-
-
   // static addProcessDetailData(String ProcessDetailResponse, String key) async {
   //   processDetailListBox.put(key, ProcessDetailResponse);
 
@@ -754,8 +853,6 @@ class HiveHandler {
   //   return Hive.box<String>(SubProcessDetailBox).listenable() ?? "";
   // }
 
-
-
   // static setProcessTaskItemsData({String value, String key}) async {
   //   List<TaskDetails> storedProcesssTaskAllData = [];
   //   ProcessTaskItemsBox.put(key, value);
@@ -780,13 +877,6 @@ class HiveHandler {
   // static ValueListenable<Box<String>> getProcessTaskItemsListener() {
   //   return Hive.box<String>(ProcessTaskItemsBoxKey).listenable() ?? '';
   // }
-
-
-
-
-
-
-
 
   static setDeviceToken(String val) async {
     var _userBox = Hive.box(deviceTokenBox);

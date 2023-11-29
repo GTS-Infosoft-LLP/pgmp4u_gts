@@ -172,10 +172,29 @@ class _RandomPageState extends State<RandomPage> {
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                       child: Center(
-                          child: Text(
-                        "Subscribe Now",
-                        style: TextStyle(color: Colors.white, fontFamily: 'Roboto Bold', fontSize: 20),
-                      )),
+                          child: RichText(
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              // textAlign: TextAlign.center,
+                              text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                  text: "Subscribe Now",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'Roboto Bold',
+                                    // fontWeight: FontWeight.w400
+                                  ),
+                                ),
+                              ]))
+                          //     Text(
+                          //   "Subscribe Now",
+                          //   style: TextStyle(
+                          //     color: Colors.white,
+                          //     fontFamily: 'Roboto Bold',
+                          //     fontSize: 20),
+                          // )
+                          ),
                     ),
                   ),
                 ),
@@ -345,15 +364,31 @@ class _RandomPageState extends State<RandomPage> {
                                         Container(
                                           margin: EdgeInsets.only(top: 5),
                                           child: Center(
-                                              child: Text(
-                                            ' On \n \$${widget.price}',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontFamily: 'Roboto Bold',
-                                                fontSize: 24,
-                                                color: Colors.white,
-                                                letterSpacing: 0.3),
-                                          )),
+                                              child:
+                                                  //      Text(
+                                                  //   ' On \n \$${widget.price}',
+                                                  //   textAlign: TextAlign.center,
+                                                  //   style: TextStyle(
+                                                  //       fontFamily: 'Roboto Bold',
+                                                  //       fontSize: 24,
+                                                  //       color: Colors.white,
+                                                  //       letterSpacing: 0.3),
+                                                  // )
+                                                  RichText(
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 2,
+                                                      // textAlign: TextAlign.center,
+                                                      text: TextSpan(children: <TextSpan>[
+                                                        TextSpan(
+                                                          text: '   On \n \$${widget.price}',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 24,
+                                                            fontFamily: 'Roboto Bold',
+                                                            // fontWeight: FontWeight.w400
+                                                          ),
+                                                        ),
+                                                      ]))),
                                         ),
                                         Consumer2<PurchaseProvider, CourseProvider>(
                                           builder: (context, value, cp, child) {
@@ -399,14 +434,31 @@ class _RandomPageState extends State<RandomPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 18.0),
                           child: Center(
-                              child: Text(
-                            cp.isInAppPurchaseOn == 1 && Platform.isIOS ? "" : "OR",
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                              fontFamily: 'Roboto Bold',
-                            ),
-                          )),
+                              child:
+
+                                  //     Text(
+                                  //   cp.isInAppPurchaseOn == 1 && Platform.isIOS ? "" : "OR",
+                                  //   style: TextStyle(
+                                  //     fontSize: 18,
+                                  //     color: Colors.black,
+                                  //     fontFamily: 'Roboto Bold',
+                                  //   ),
+                                  // ),
+                                  RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      // textAlign: TextAlign.center,
+                                      text: TextSpan(children: <TextSpan>[
+                                        TextSpan(
+                                          text: cp.isInAppPurchaseOn == 1 && Platform.isIOS ? "" : "OR",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontFamily: 'Roboto Bold',
+                                            // fontWeight: FontWeight.w400
+                                          ),
+                                        ),
+                                      ]))),
                         ),
                       ),
                     )
@@ -436,10 +488,30 @@ class _RandomPageState extends State<RandomPage> {
                               child: Column(
                                 children: [
                                   Center(
-                                      child: Text(
-                                    "Select a Subscription Plan",
-                                    style: TextStyle(fontFamily: 'Roboto Bold', fontSize: 22, color: Color(0xff3643a3)),
-                                  )),
+                                      child:
+                                          //     Text(
+                                          //   "Select a Subscription Plan",
+                                          //   style: TextStyle(
+                                          //     fontFamily: 'Roboto Bold',
+                                          //     fontSize: 22,
+                                          //      color: Color(0xff3643a3)),
+                                          // )
+
+                                          RichText(
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              // textAlign: TextAlign.center,
+                                              text: TextSpan(children: <TextSpan>[
+                                                TextSpan(
+                                                  text: "Select a Subscription Plan",
+                                                  style: TextStyle(
+                                                    color: Color(0xff3643a3),
+                                                    fontSize: 22,
+                                                    fontFamily: 'Roboto Bold',
+                                                    // fontWeight: FontWeight.w400
+                                                  ),
+                                                ),
+                                              ]))),
                                   SizedBox(
                                     height: 6,
                                   ),
@@ -447,10 +519,27 @@ class _RandomPageState extends State<RandomPage> {
                                       ? Padding(
                                           padding: const EdgeInsets.only(top: 38.0),
                                           child: Center(
-                                              child: Text(
-                                            "No Plans Found....",
-                                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                                          )),
+                                              child:
+                                                  //     Text(
+                                                  //   "No Plans Found....",
+                                                  //   style: TextStyle(
+                                                  //     fontSize: 16,
+                                                  //      fontWeight: FontWeight.w500),
+                                                  // )
+                                                  RichText(
+                                                      // overflow: TextOverflow.ellipsis,
+                                                      // maxLines: 2,
+                                                      // textAlign: TextAlign.center,
+                                                      text: TextSpan(children: <TextSpan>[
+                                            TextSpan(
+                                              text: "No Plans Found....",
+                                              style: TextStyle(
+                                                  // color: Color(0xff3643a3),
+                                                  fontSize: 16,
+                                                  // fontFamily: 'Roboto Bold',
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ]))),
                                         )
                                       : Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -622,14 +711,29 @@ class _RandomPageState extends State<RandomPage> {
                                                                     borderRadius: BorderRadius.all(Radius.circular(15)),
                                                                   ),
                                                                   child: Center(
-                                                                    child: Text(
-                                                                      "20% OFF",
+                                                                      child:
+                                                                          // Text(
+                                                                          //   "20% OFF",
+                                                                          //   style: TextStyle(
+                                                                          //       color: Colors.white,
+                                                                          //       fontSize: 15,
+                                                                          //       fontWeight: FontWeight.w400),
+                                                                          // ),
+
+                                                                          RichText(
+                                                                              // overflow: TextOverflow.ellipsis,
+                                                                              // maxLines: 2,
+                                                                              // textAlign: TextAlign.center,
+                                                                              text: TextSpan(children: <TextSpan>[
+                                                                    TextSpan(
+                                                                      text: "20% OFF",
                                                                       style: TextStyle(
                                                                           color: Colors.white,
                                                                           fontSize: 15,
+                                                                          // fontFamily: 'Roboto Bold',
                                                                           fontWeight: FontWeight.w400),
                                                                     ),
-                                                                  ),
+                                                                  ]))),
                                                                 ),
                                                               )
                                                             : SizedBox()
@@ -1170,32 +1274,59 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
               color: Colors.white,
               borderRadius: BorderRadius.circular(10.0)),
           child: OutlinedButton(
-            onPressed: () async {
-              //  IOS payment By Inn App Purchase
-              print("platform::::$Platform");
-              if (Platform.isIOS) {
-                print("print that platform is apppleeeeee");
-              }
+              onPressed: () async {
+                //  IOS payment By Inn App Purchase
+                print("platform::::$Platform");
+                if (Platform.isIOS) {
+                  print("print that platform is apppleeeeee");
+                }
 
-              CourseProvider cp = Provider.of(context, listen: false);
+                CourseProvider cp = Provider.of(context, listen: false);
 
-              if (Platform.isIOS) {
-                if (cp.isInAppPurchaseOn == 1) {
-                  print("buttonClicked ${purchaseProvider.products[0].id}");
-                  print("price ${purchaseProvider.products[0].price}");
-                  purchaseProvider.products.forEach((e) {
-                    print("Product id => ${e.id}");
-                    print("product price>>>${e.price}");
-                    print("index1forFlash2forvideoLib>>>>>$index1forFlash2forvideoLib");
-                    index1forFlash2forvideoLib = 2;
-                    if (e.id == videoLibraryLearningPrograms && index1forFlash2forvideoLib == 2) {
-                      print("we are noew be calling buy function...");
-                      purchaseProvider.buy(e);
-                    } else if (e.id == flashCards && index1forFlash2forvideoLib == 1) {
-                      purchaseProvider.buy(e);
+                if (Platform.isIOS) {
+                  if (cp.isInAppPurchaseOn == 1) {
+                    print("buttonClicked ${purchaseProvider.products[0].id}");
+                    print("price ${purchaseProvider.products[0].price}");
+                    purchaseProvider.products.forEach((e) {
+                      print("Product id => ${e.id}");
+                      print("product price>>>${e.price}");
+                      print("index1forFlash2forvideoLib>>>>>$index1forFlash2forvideoLib");
+                      index1forFlash2forvideoLib = 2;
+                      if (e.id == videoLibraryLearningPrograms && index1forFlash2forvideoLib == 2) {
+                        print("we are noew be calling buy function...");
+                        purchaseProvider.buy(e);
+                      } else if (e.id == flashCards && index1forFlash2forvideoLib == 1) {
+                        purchaseProvider.buy(e);
+                      }
+                    });
+                  } else {
+                    var token = await getToken();
+
+                    ProfileProvider profProvi = Provider.of(context, listen: false);
+                    await profProvi.callCreateOrder(IdValue, type);
+                    type = type.replaceAll(" ", "");
+
+                    String urll = CREATE_ORDER + "/$IdValue/$type";
+
+                    /// Payment implement with stripe
+                    bool status = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PaymentAndroid(
+                              token: token, statusFlash1videoLibrary2: index1forFlash2forvideoLib, urlll: urll),
+                        ));
+                    print("statueeess====>>>$status");
+
+                    if (status) {
+                      Navigator.pop(context);
+                      _handlePaymentSuccess2(context);
+                    } else {
+                      _handlePaymentError2(context);
                     }
-                  });
+                  }
                 } else {
+                  print("platform is android so no issuesssss");
+                  ////////android payment with stripe
                   var token = await getToken();
 
                   ProfileProvider profProvi = Provider.of(context, listen: false);
@@ -1219,57 +1350,50 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
                   } else {
                     _handlePaymentError2(context);
                   }
+
+                  /// Old implement for razorpay
+                  // if (mapResponse == null) {
+                  //   openCheckout(data["razorpay_key"], data["mock_test_price"],
+                  //       data["Currency"]);
+                  // } else {
+                  //   openCheckout(
+                  //       data["razorpay_key"],
+                  //       (data["mock_test_price"] -
+                  //               ((mapResponse["discount"] / 100) *
+                  //                   data["mock_test_price"]))
+                  //           .toInt(),
+                  //       data["Currency"]);
+                  // }
                 }
-              } else {
-                print("platform is android so no issuesssss");
-                ////////android payment with stripe
-                var token = await getToken();
+              },
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0))),
+              ),
+              child:
+                  // Text(
+                  //   'Buy Now',
+                  //   style: TextStyle(
+                  //     fontFamily: 'Roboto Medium',
+                  //      fontSize: 20,
+                  //       color: Color(0xff3643a3),
+                  //       letterSpacing: 0.3),
+                  // ),
 
-                ProfileProvider profProvi = Provider.of(context, listen: false);
-                await profProvi.callCreateOrder(IdValue, type);
-                type = type.replaceAll(" ", "");
-
-                String urll = CREATE_ORDER + "/$IdValue/$type";
-
-                /// Payment implement with stripe
-                bool status = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentAndroid(
-                          token: token, statusFlash1videoLibrary2: index1forFlash2forvideoLib, urlll: urll),
-                    ));
-                print("statueeess====>>>$status");
-
-                if (status) {
-                  Navigator.pop(context);
-                  _handlePaymentSuccess2(context);
-                } else {
-                  _handlePaymentError2(context);
-                }
-
-                /// Old implement for razorpay
-                // if (mapResponse == null) {
-                //   openCheckout(data["razorpay_key"], data["mock_test_price"],
-                //       data["Currency"]);
-                // } else {
-                //   openCheckout(
-                //       data["razorpay_key"],
-                //       (data["mock_test_price"] -
-                //               ((mapResponse["discount"] / 100) *
-                //                   data["mock_test_price"]))
-                //           .toInt(),
-                //       data["Currency"]);
-                // }
-              }
-            },
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0))),
-            ),
-            child: Text(
-              'Buy Now',
-              style: TextStyle(fontFamily: 'Roboto Medium', fontSize: 20, color: Color(0xff3643a3), letterSpacing: 0.3),
-            ),
-          ),
+                  RichText(
+                      // overflow: TextOverflow.ellipsis,
+                      // maxLines: 2,
+                      // textAlign: TextAlign.center,
+                      text: TextSpan(children: <TextSpan>[
+                TextSpan(
+                  text: 'Buy Now',
+                  style: TextStyle(
+                    color: Color(0xff3643a3),
+                    fontSize: 20,
+                    fontFamily: 'Roboto Medium',
+                    // fontWeight: FontWeight.w400
+                  ),
+                ),
+              ]))),
         ),
       ),
 
@@ -1293,17 +1417,47 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Purchased previously? ",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    InkWell(
-                      child: Text(
-                        "Restore purchase",
-                        style: TextStyle(
-                            // color: Colors.blue
-                            color: Colors.lightBlueAccent),
+                    // Text(
+                    //   "Purchased previously? ",
+                    //   style: TextStyle(color: Colors.white),
+                    // ),
+
+                    RichText(
+                        // overflow: TextOverflow.ellipsis,
+                        // maxLines: 2,
+                        // textAlign: TextAlign.center,
+                        text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                        text: "Purchased previously? ",
+                        style: TextStyle(color: Colors.white
+                            // fontSize: 20,
+                            // fontFamily: 'Roboto Medium',
+                            // fontWeight: FontWeight.w400
+                            ),
                       ),
+                    ])),
+
+                    InkWell(
+                      child:
+                          // Text(
+                          //   "Restore purchase",
+                          //   style: TextStyle(
+                          //       color: Colors.lightBlueAccent),
+                          // ),
+                          RichText(
+                              // overflow: TextOverflow.ellipsis,
+                              // maxLines: 2,
+                              // textAlign: TextAlign.center,
+                              text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: "Restore purchase",
+                          style: TextStyle(color: Colors.lightBlueAccent
+                              // fontSize: 20,
+                              // fontFamily: 'Roboto Medium',
+                              // fontWeight: FontWeight.w400
+                              ),
+                        ),
+                      ])),
                       onTap: () {
                         // provider.restore();
                       },

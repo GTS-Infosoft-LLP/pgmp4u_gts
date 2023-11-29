@@ -306,7 +306,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                             // textAlign: TextAlign.center,
                                             text: TextSpan(children: <TextSpan>[
                                               TextSpan(
-                                                text: "Membership",
+                                                text: "Subscriptions",
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 20,
@@ -441,7 +441,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                               // fontFamily: AppFont.poppinsRegular,
                                               ),
                                         ),
-                                      ])))
+                                      ]))
+                                      )
                                     : SizedBox();
                               }),
                               SizedBox(
@@ -626,14 +627,30 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                                   borderRadius: BorderRadius.all(Radius.circular(15)),
                                                                 ),
                                                                 child: Center(
-                                                                  child: Text(
-                                                                    "20% OFF",
-                                                                    style: TextStyle(
-                                                                        color: Colors.white,
-                                                                        fontSize: 15,
-                                                                        fontWeight: FontWeight.w400),
-                                                                  ),
-                                                                ),
+                                                                    child: RichText(
+                                                                        overflow: TextOverflow.ellipsis,
+                                                                        maxLines: 2,
+                                                                        // textAlign: TextAlign.center,
+                                                                        text: TextSpan(children: <TextSpan>[
+                                                                          TextSpan(
+                                                                            text: "20% OFF",
+                                                                            style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontSize: 15,
+                                                                                // fontFamily: 'Roboto Bold',
+                                                                                fontWeight: FontWeight.w400),
+                                                                          ),
+                                                                        ]))
+
+                                                                    //  Text(
+                                                                    //   "20% OFF",
+                                                                    //   style: TextStyle(
+                                                                    //       color: Colors.white,
+                                                                    //       fontSize: 15,
+                                                                    //       fontWeight: FontWeight.w400),
+                                                                    // ),
+
+                                                                    ),
                                                               ),
                                                             )
                                                           : SizedBox()
@@ -807,8 +824,6 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                                   child: Html(
                                     data: sp.desc1 ?? "",
-                                    // data:context.read<SubscriptionProvider>().SubscritionPackList[sp.selectedIval].description.toString(),
-                                    //  data:sp.SubscritionPackList[sp.selectedIval].description.toString(),
                                     onAnchorTap: (url, ctx, attributes, element) async {
                                       print("anchor url : $url");
 
@@ -825,8 +840,6 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                     },
                                     style: {
                                       "body": Style(
-                                        // padding: EdgeInsets.only(top: 5),
-                                        // margin: EdgeInsets.zero,
                                         color: Colors.black87.withOpacity(0.8),
                                         textAlign: TextAlign.left,
                                         fontWeight: FontWeight.w500,
@@ -955,13 +968,28 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                     stops: [0.0, 1.0],
                                     tileMode: TileMode.clamp)),
                             child: Center(
-                              child: Text(
-                                "No",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
+                              child:
+                              
+                              //  Text(
+                              //   "No",
+                              //   style: TextStyle(
+                              //     color: Colors.white,
+                              //     fontWeight: FontWeight.w400,
+                              //   ),
+                              // ),
+RichText(
+              text: TextSpan(children: <TextSpan>[
+                TextSpan(
+                  text:"No",
+                  style: TextStyle(color:  Colors.white, fontWeight: FontWeight.w400),
+                )
+              ]),
+            ),
+
+
+
+
+
                             ))),
                     SizedBox(
                       width: 10,
@@ -1040,13 +1068,28 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 stops: [0.0, 1.0],
                                 tileMode: TileMode.clamp)),
                         child: Center(
-                          child: Text(
-                            "Yes",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
+                          child: 
+                          // Text(
+                          //   "Yes",
+                          //   style: TextStyle(
+                          //     color: Colors.white,
+                          //     fontWeight: FontWeight.w400,
+                          //   ),
+                          // ),
+                          RichText(
+              text: TextSpan(children: <TextSpan>[
+                TextSpan(
+                  text:"Yes",
+                  style: TextStyle(color:  Colors.white, fontWeight: FontWeight.w400),
+                )
+              ]),
+            ),
+
+
+
+
+
+
                         ),
                       ),
                     ),
