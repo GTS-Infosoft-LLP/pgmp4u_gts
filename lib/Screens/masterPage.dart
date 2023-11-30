@@ -114,7 +114,6 @@ class _MasterListPageState extends State<MasterListPage> {
                                       ),
                                 ),
                               ])),
-                        
                         ),
                       ]),
                     ),
@@ -178,6 +177,8 @@ class _MasterListPageState extends State<MasterListPage> {
                                                   icon1 = FontAwesomeIcons.bookOpenReader;
                                                 } else if (storedMaster[index].type == "Practice Test") {
                                                   icon1 = FontAwesomeIcons.book;
+                                                } else if (storedMaster[index].type == "Process") {
+                                                  icon1 = FontAwesomeIcons.deezer;
                                                 } else {
                                                   icon1 = (Icons.add_chart_rounded);
                                                 }
@@ -224,23 +225,24 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                               title: storedMaster[index].name)));
                                                                 });
                                                               }
-                                                               if (page == "Process") {
-                                                                ProfileProvider pp =Provider.of(context, listen: false);
-                                                                ProcessDomainProvider pdp = Provider.of(context, listen: false);
+                                                              if (page == "Process") {
+                                                                ProfileProvider pp =
+                                                                    Provider.of(context, listen: false);
+                                                                ProcessDomainProvider pdp =
+                                                                    Provider.of(context, listen: false);
                                                                 pp.updateLoader(true);
                                                                 await pdp.getProcessData(
-                                                                     cp.selectedCourseId,
-                                                                    storedMaster[index].id,
-                                                                 );
-                                                          
+                                                                  cp.selectedCourseId,
+                                                                  storedMaster[index].id,
+                                                                );
+
                                                                 pp.updateLoader(false);
-                                                             
-                                                               {
+
+                                                                {
                                                                   Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(
-                                                                          builder: (context) => ProcessList(
-                                                                             )));
+                                                                          builder: (context) => ProcessList()));
                                                                 }
                                                               }
 
@@ -381,8 +383,6 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                           ),
                                                                         ])),
                                                                   ),
-
-                                                              
                                                                   SizedBox(
                                                                     height: 3,
                                                                   ),
@@ -403,7 +403,6 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                             ),
                                                                           ),
                                                                         ])),
-                                                                
                                                                   ),
                                                                 ],
                                                               ),

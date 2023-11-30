@@ -133,6 +133,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     super.initState();
 
     _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+    print("current time in minutessssss>>>${_stopWatchTimer.minuteTime}");
   }
 
   beforeCallApi() async {
@@ -197,12 +198,17 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     http.Response response;
+    double secTimeee = _stopWatchTimer.secondTime.value / 60;
+    var totalTime = secTimeee.toStringAsFixed(2);
+    print("secTimeee=====$secTimeee");
+    print("time in minutes >>> final time $totalTime");
 
     var params = json.encode({
       "mock_test_id": selectedIdNew,
       "attempt_type": attemptNew + 1,
       "questons": submitData,
-      "start_date_time": stopTime
+      "start_date_time": stopTime,
+      "totalTime": totalTime
     });
 
     print("api body==========$params");
@@ -1262,6 +1268,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
   Widget putOnDiscussionButton(BuildContext context) {
     return InkWell(
       onTap: () async {
+        // print("current time in minutessssss>>>${_stopWatchTimer.minuteTime.value}");
+
+        double secTimeee = _stopWatchTimer.secondTime.value / 60;
+        print("secTimeee=====$secTimeee");
+        print("time in minutes >>> final time ${secTimeee.toStringAsFixed(2)}");
+
         bool result = await checkInternetConn();
         if (result) {
           ProfileProvider pp = Provider.of(context, listen: false);

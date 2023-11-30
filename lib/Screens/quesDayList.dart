@@ -26,6 +26,7 @@ class _QuesListCourseState extends State<QuesListCourse> {
   @override
   void initState() {
     super.initState();
+    context.read<CourseProvider>().setMasterListType("Question");
   }
 
   Widget build(BuildContext context) {

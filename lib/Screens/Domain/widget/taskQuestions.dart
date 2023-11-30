@@ -86,7 +86,8 @@ class _TaskQuestionState extends State<TaskQuestion> {
               storedTaskQues = [];
             }
             print("storedTaskQues:::::::$storedTaskQues");
-            return Consumer<DomainProvider>(builder: (context, dp, child) {
+            return Consumer<DomainProvider>(
+              builder: (context, dp, child) {
               return Stack(
                 children: [
                   Padding(

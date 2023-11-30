@@ -67,7 +67,7 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context, String p
     icnn = FontAwesomeIcons.accusoft;
   }
   return Padding(
-    padding: const EdgeInsets.only(top: 10),
+    padding: const EdgeInsets.only(top: 2),
     child: Container(
       width: MediaQuery.of(context).size.width * .85,
       child: Row(
