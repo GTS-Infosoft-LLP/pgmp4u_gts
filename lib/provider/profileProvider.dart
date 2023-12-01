@@ -132,9 +132,7 @@ class ProfileProvider extends ChangeNotifier {
       }
     } else {
       crsId = "";
-      // _pageIndex = 0;
-      // _totalRec = 0;
-      // NotificationData.clear();
+  
     }
     _pageIndex++;
 

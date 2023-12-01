@@ -414,7 +414,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                       SizedBox(
                         height: 10,
                       ),
-              
+
                       Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 15),
                           child: Column(
@@ -423,14 +423,11 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 return sp.SubscritionPackList.isNotEmpty
                                     ? Center(
                                         child: RichText(
-                                          
                                             text: TextSpan(children: <TextSpan>[
                                         TextSpan(
                                           text: "Select a Subscription Plan",
                                           style: TextStyle(
-                                              color: Color(0xff3643a3), fontSize: 22, fontFamily: 'Roboto Bold'
-                                           
-                                              ),
+                                              color: Color(0xff3643a3), fontSize: 22, fontFamily: 'Roboto Bold'),
                                         ),
                                       ])))
                                     : SizedBox();
@@ -444,16 +441,14 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                     ? Center(
                                         child: Container(
                                           height: MediaQuery.of(context).size.height * .6,
-                                          
                                           child: Center(
                                               child: RichText(
-                                               
                                                   text: TextSpan(children: <TextSpan>[
                                             TextSpan(
                                               text: "No Plans Available...",
                                               style: TextStyle(
-                                                color: Colors.black, fontSize: 18,
-                                           
+                                                color: Colors.black,
+                                                fontSize: 18,
                                               ),
                                             ),
                                           ]))),
@@ -615,21 +610,15 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                                     child: RichText(
                                                                         overflow: TextOverflow.ellipsis,
                                                                         maxLines: 2,
-                                                                      
                                                                         text: TextSpan(children: <TextSpan>[
                                                                           TextSpan(
                                                                             text: "20% OFF",
                                                                             style: TextStyle(
                                                                                 color: Colors.white,
                                                                                 fontSize: 15,
-                                                                               
                                                                                 fontWeight: FontWeight.w400),
                                                                           ),
-                                                                        ]))
-
-                                                                 
-
-                                                                    ),
+                                                                        ]))),
                                                               ),
                                                             )
                                                           : SizedBox()
@@ -647,11 +636,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 return Wrap(
                                   direction: Axis.horizontal,
                                   children: [
-                                    for (int i = 0;
-                                        i < sp.durationPackData.length;
-                                  
-
-                                        i++)
+                                    for (int i = 0; i < sp.durationPackData.length; i++)
                                       Padding(
                                         padding: const EdgeInsets.all(4.0),
                                         child: SizedBox(
@@ -688,9 +673,12 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                               textAlign: TextAlign.center,
                                               text: TextSpan(children: <TextSpan>[
                                                 TextSpan(
-                                                  text: sp.durationPackData[i].durationType == 1
-                                                      ? sp.durationPackData[i].durationQuantity.toString() + " Months"
-                                                      : sp.durationPackData[i].durationQuantity.toString() + " Year",
+                                                  text: (sp.durationPackData[i].durationQuantity * 30).toString() +
+                                                      "Days",
+                                                  // : i==1?(sp.durationPackData[i].durationQuantity*2).toString()+"Days": ,
+                                                  // sp.durationPackData[i].durationType == 1
+                                                  //     ? sp.durationPackData[i].durationQuantity.toString() + " Months"
+                                                  //     : sp.durationPackData[i].durationQuantity.toString() + " Year",
                                                   style: TextStyle(
                                                       color: i == sp.radioSelected ? Colors.white : Colors.black,
                                                       fontSize: 10.0,
@@ -1042,9 +1030,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 stops: [0.0, 1.0],
                                 tileMode: TileMode.clamp)),
                         child: Center(
-                          child:
-                          
-                              RichText(
+                          child: RichText(
                             text: TextSpan(children: <TextSpan>[
                               TextSpan(
                                 text: "Yes",
