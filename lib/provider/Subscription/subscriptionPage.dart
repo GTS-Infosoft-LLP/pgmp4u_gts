@@ -414,12 +414,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                       SizedBox(
                         height: 10,
                       ),
-                      // Consumer2<ProfileProvider, SubscriptionProvider>(
-                      // builder: (context, pp, sp, child) {
-                      // return
-                      // sp.getSubsPackApiCall
-                      //     ? Center(child: CircularProgressIndicator.adaptive())
-                      //     :
+              
                       Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 15),
                           child: Column(
@@ -428,21 +423,16 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 return sp.SubscritionPackList.isNotEmpty
                                     ? Center(
                                         child: RichText(
-                                            // overflow: TextOverflow.ellipsis,
-                                            // maxLines: 2,
-                                            // textAlign: TextAlign.center,
+                                          
                                             text: TextSpan(children: <TextSpan>[
                                         TextSpan(
                                           text: "Select a Subscription Plan",
                                           style: TextStyle(
                                               color: Color(0xff3643a3), fontSize: 22, fontFamily: 'Roboto Bold'
-                                              // fontWeight: FontWeight.bold
-
-                                              // fontFamily: AppFont.poppinsRegular,
+                                           
                                               ),
                                         ),
-                                      ]))
-                                      )
+                                      ])))
                                     : SizedBox();
                               }),
                               SizedBox(
@@ -454,21 +444,16 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                     ? Center(
                                         child: Container(
                                           height: MediaQuery.of(context).size.height * .6,
-                                          // color: Colors.amber,
+                                          
                                           child: Center(
                                               child: RichText(
-                                                  // overflow: TextOverflow.ellipsis,
-                                                  // maxLines: 2,
-                                                  // textAlign: TextAlign.center,
+                                               
                                                   text: TextSpan(children: <TextSpan>[
                                             TextSpan(
                                               text: "No Plans Available...",
                                               style: TextStyle(
                                                 color: Colors.black, fontSize: 18,
-                                                // fontFamily: 'Roboto Bold'
-                                                // fontWeight: FontWeight.bold
-
-                                                // fontFamily: AppFont.poppinsRegular,
+                                           
                                               ),
                                             ),
                                           ]))),
@@ -486,24 +471,24 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                             subsPack = "Platinum";
                                           }
                                           if (i == 0) {
-                                            mntVal = "1";
-                                            mnth = "Month";
+                                            mntVal = "30";
+                                            mnth = "Days";
 
                                             liGrdint = LinearGradient(
                                                 begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
                                                 colors: [Color(0xff099773), Color(0xff43B692)]);
                                           } else if (i == 1) {
-                                            mntVal = "3";
-                                            mnth = "Months";
+                                            mntVal = "60";
+                                            mnth = "Days";
 
                                             liGrdint = LinearGradient(
                                                 begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
                                                 colors: [Color(0xffEF709B), Color(0xffF68080)]);
                                           } else {
-                                            mntVal = "12";
-                                            mnth = "Months";
+                                            mntVal = "90";
+                                            mnth = "Days";
                                             liGrdint = LinearGradient(
                                                 begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
@@ -630,25 +615,19 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                                     child: RichText(
                                                                         overflow: TextOverflow.ellipsis,
                                                                         maxLines: 2,
-                                                                        // textAlign: TextAlign.center,
+                                                                      
                                                                         text: TextSpan(children: <TextSpan>[
                                                                           TextSpan(
                                                                             text: "20% OFF",
                                                                             style: TextStyle(
                                                                                 color: Colors.white,
                                                                                 fontSize: 15,
-                                                                                // fontFamily: 'Roboto Bold',
+                                                                               
                                                                                 fontWeight: FontWeight.w400),
                                                                           ),
                                                                         ]))
 
-                                                                    //  Text(
-                                                                    //   "20% OFF",
-                                                                    //   style: TextStyle(
-                                                                    //       color: Colors.white,
-                                                                    //       fontSize: 15,
-                                                                    //       fontWeight: FontWeight.w400),
-                                                                    // ),
+                                                                 
 
                                                                     ),
                                                               ),
@@ -670,7 +649,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                   children: [
                                     for (int i = 0;
                                         i < sp.durationPackData.length;
-                                        // permiumbutton.length;
+                                  
 
                                         i++)
                                       Padding(
@@ -969,27 +948,22 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                     tileMode: TileMode.clamp)),
                             child: Center(
                               child:
-                              
-                              //  Text(
-                              //   "No",
-                              //   style: TextStyle(
-                              //     color: Colors.white,
-                              //     fontWeight: FontWeight.w400,
-                              //   ),
-                              // ),
-RichText(
-              text: TextSpan(children: <TextSpan>[
-                TextSpan(
-                  text:"No",
-                  style: TextStyle(color:  Colors.white, fontWeight: FontWeight.w400),
-                )
-              ]),
-            ),
 
-
-
-
-
+                                  //  Text(
+                                  //   "No",
+                                  //   style: TextStyle(
+                                  //     color: Colors.white,
+                                  //     fontWeight: FontWeight.w400,
+                                  //   ),
+                                  // ),
+                                  RichText(
+                                text: TextSpan(children: <TextSpan>[
+                                  TextSpan(
+                                    text: "No",
+                                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
+                                  )
+                                ]),
+                              ),
                             ))),
                     SizedBox(
                       width: 10,
@@ -1068,28 +1042,16 @@ RichText(
                                 stops: [0.0, 1.0],
                                 tileMode: TileMode.clamp)),
                         child: Center(
-                          child: 
-                          // Text(
-                          //   "Yes",
-                          //   style: TextStyle(
-                          //     color: Colors.white,
-                          //     fontWeight: FontWeight.w400,
-                          //   ),
-                          // ),
-                          RichText(
-              text: TextSpan(children: <TextSpan>[
-                TextSpan(
-                  text:"Yes",
-                  style: TextStyle(color:  Colors.white, fontWeight: FontWeight.w400),
-                )
-              ]),
-            ),
-
-
-
-
-
-
+                          child:
+                          
+                              RichText(
+                            text: TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                text: "Yes",
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
+                              )
+                            ]),
+                          ),
                         ),
                       ),
                     ),

@@ -113,6 +113,7 @@ class _PracticeNewState extends State<PracticeNew> {
                     price: context.read<ProfileProvider>().subsPrice.toString(),
                     categoryType: context.read<CourseProvider>().selectedMasterType,
                     categoryId: 0,
+                    
                   )));
       return;
     }

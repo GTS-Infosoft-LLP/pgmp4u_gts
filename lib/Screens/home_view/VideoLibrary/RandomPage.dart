@@ -23,13 +23,15 @@ import '../../../subscriptionModel.dart';
 ///   4> chat
 ///   5> PPT
 ///   6> domain
+/// ///   7> process
 class RandomPage extends StatefulWidget {
   int index;
   String price;
   int categoryId;
   String categoryType;
+  String name;
 
-  RandomPage({this.index = 0, this.price = "\$199", this.categoryId, this.categoryType});
+  RandomPage({this.index = 0, this.price = "\$199", this.categoryId, this.categoryType, this.name = ""});
   @override
   _RandomPageState createState() => _RandomPageState();
 }
@@ -50,6 +52,7 @@ class _RandomPageState extends State<RandomPage> {
 
   @override
   void initState() {
+    print("name>>>>>>${widget.name}");
     ProfileProvider pp = Provider.of(context, listen: false);
     CourseProvider cp = Provider.of(context, listen: false);
     SubscriptionProvider sp = Provider.of(context, listen: false);
@@ -252,6 +255,30 @@ class _RandomPageState extends State<RandomPage> {
                                         //     ),
                                         //   ],
                                         // ),
+
+                                        widget.name.isEmpty
+                                            ? SizedBox()
+                                            : Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                                                child: Center(
+                                                  child: RichText(
+                                                      textAlign: TextAlign.center,
+                                                      maxLines: 2,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      text: TextSpan(children: <TextSpan>[
+                                                        TextSpan(
+                                                          text: widget.name,
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 25,
+                                                            fontFamily: 'Roboto Bold',
+                                                            // fontWeight: FontWeight.w600,
+                                                            letterSpacing: 0.3,
+                                                          ),
+                                                        ),
+                                                      ])),
+                                                ),
+                                              ),
                                         Container(
                                           margin: EdgeInsets.only(left: 20, right: 20, top: 8),
                                           child: Center(
@@ -260,12 +287,11 @@ class _RandomPageState extends State<RandomPage> {
                                                       textAlign: TextAlign.center,
                                                       text: TextSpan(children: <TextSpan>[
                                                         TextSpan(
-                                                          text: 'Get 1 year Access to Flash Card',
+                                                          text: 'Get 1 year Access to Flash Card \non',
                                                           style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: width * (30 / 420),
                                                             fontFamily: 'Roboto Bold',
-                                                            // fontWeight: FontWeight.w600,
                                                             letterSpacing: 0.3,
                                                           ),
                                                         ),
@@ -275,7 +301,7 @@ class _RandomPageState extends State<RandomPage> {
                                                           textAlign: TextAlign.center,
                                                           text: TextSpan(children: <TextSpan>[
                                                             TextSpan(
-                                                              text: 'Get 1 year Access to Video Library',
+                                                              text: 'Get 1 year Access to Video Library \non',
                                                               style: TextStyle(
                                                                 color: Colors.white,
                                                                 fontSize: width * (30 / 420),
@@ -290,7 +316,7 @@ class _RandomPageState extends State<RandomPage> {
                                                               textAlign: TextAlign.center,
                                                               text: TextSpan(children: <TextSpan>[
                                                                 TextSpan(
-                                                                  text: 'Get 1 year Access to Mock Tests',
+                                                                  text: 'Get 1 year Access to Mock Tests \non',
                                                                   style: TextStyle(
                                                                     color: Colors.white,
                                                                     fontSize: width * (30 / 420),
@@ -305,7 +331,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                   textAlign: TextAlign.center,
                                                                   text: TextSpan(children: <TextSpan>[
                                                                     TextSpan(
-                                                                      text: 'Get 1 year Access to Chats',
+                                                                      text: 'Get 1 year Access to Chats \non',
                                                                       style: TextStyle(
                                                                         color: Colors.white,
                                                                         fontSize: width * (30 / 420),
@@ -320,7 +346,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                       textAlign: TextAlign.center,
                                                                       text: TextSpan(children: <TextSpan>[
                                                                         TextSpan(
-                                                                          text: 'Get 1 year Access to PTT',
+                                                                          text: 'Get 1 year Access to PTT \non',
                                                                           style: TextStyle(
                                                                             color: Colors.white,
                                                                             fontSize: width * (30 / 420),
@@ -335,7 +361,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                           textAlign: TextAlign.center,
                                                                           text: TextSpan(children: <TextSpan>[
                                                                             TextSpan(
-                                                                              text: 'Get 1 year Access to Domains',
+                                                                              text: 'Get 1 year Access to Domains \non',
                                                                               style: TextStyle(
                                                                                 color: Colors.white,
                                                                                 fontSize: width * (30 / 420),
@@ -345,50 +371,56 @@ class _RandomPageState extends State<RandomPage> {
                                                                               ),
                                                                             ),
                                                                           ]))
-                                                                      : RichText(
-                                                                          textAlign: TextAlign.center,
-                                                                          text: TextSpan(children: <TextSpan>[
-                                                                            TextSpan(
-                                                                              text:
-                                                                                  'Get 1 year Access to Question of the day',
-                                                                              style: TextStyle(
-                                                                                color: Colors.white,
-                                                                                fontSize: width * (30 / 420),
-                                                                                fontFamily: 'Roboto Bold',
-                                                                                // fontWeight: FontWeight.w600,
-                                                                                letterSpacing: 0.3,
-                                                                              ),
-                                                                            ),
-                                                                          ]))),
+                                                                      : widget.index == 7
+                                                                          ? RichText(
+                                                                              textAlign: TextAlign.center,
+                                                                              text: TextSpan(children: <TextSpan>[
+                                                                                TextSpan(
+                                                                                  text:
+                                                                                      'Get 1 year Access to Process \non',
+                                                                                  style: TextStyle(
+                                                                                    color: Colors.white,
+                                                                                    fontSize: width * (30 / 420),
+                                                                                    fontFamily: 'Roboto Bold',
+                                                                                    // fontWeight: FontWeight.w600,
+                                                                                    letterSpacing: 0.3,
+                                                                                  ),
+                                                                                ),
+                                                                              ]))
+                                                                          : RichText(
+                                                                              textAlign: TextAlign.center,
+                                                                              text: TextSpan(children: <TextSpan>[
+                                                                                TextSpan(
+                                                                                  text:
+                                                                                      'Get 1 year Access to Question of the day \non',
+                                                                                  style: TextStyle(
+                                                                                    color: Colors.white,
+                                                                                    fontSize: width * (30 / 420),
+                                                                                    fontFamily: 'Roboto Bold',
+                                                                                    // fontWeight: FontWeight.w600,
+                                                                                    letterSpacing: 0.3,
+                                                                                  ),
+                                                                                ),
+                                                                              ]))),
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(top: 5),
                                           child: Center(
-                                              child:
-                                                  //      Text(
-                                                  //   ' On \n \$${widget.price}',
-                                                  //   textAlign: TextAlign.center,
-                                                  //   style: TextStyle(
-                                                  //       fontFamily: 'Roboto Bold',
-                                                  //       fontSize: 24,
-                                                  //       color: Colors.white,
-                                                  //       letterSpacing: 0.3),
-                                                  // )
-                                                  RichText(
-                                                      overflow: TextOverflow.ellipsis,
-                                                      maxLines: 2,
-                                                      // textAlign: TextAlign.center,
-                                                      text: TextSpan(children: <TextSpan>[
-                                                        TextSpan(
-                                                          text: '   On \n \$${widget.price}',
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 24,
-                                                            fontFamily: 'Roboto Bold',
-                                                            // fontWeight: FontWeight.w400
-                                                          ),
-                                                        ),
-                                                      ]))),
+                                              child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                  // textAlign: TextAlign.center,
+                                                  text: TextSpan(children: <TextSpan>[
+                                                    TextSpan(
+                                                      text: '\$${widget.price}',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 24,
+                                                        fontFamily: 'Roboto Bold',
+                                                        // fontWeight: FontWeight.w400
+                                                      ),
+                                                    ),
+                                                  ]))),
                                         ),
                                         Consumer2<PurchaseProvider, CourseProvider>(
                                           builder: (context, value, cp, child) {

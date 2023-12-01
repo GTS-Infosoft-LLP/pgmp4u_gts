@@ -88,7 +88,9 @@ class ProcessDomainProvider extends ChangeNotifier {
   String bodyyyy;
   CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
 
+  bool processStatus = true;
   Future<void> getProcessData(int crsId, int masterId) async {
+    processStatus = true;
     updateProcessApiCall(true);
     ProcessList = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -145,6 +147,12 @@ class ProcessDomainProvider extends ChangeNotifier {
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
+      print("satusss for process api====${resDDo["success"]}");
+
+      if (resDDo["success"] == false) {
+        processStatus = false;
+        return;
+      }
 
       if (response.statusCode == 400) {
         updateProcessApiCall(false);

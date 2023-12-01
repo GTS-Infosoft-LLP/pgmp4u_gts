@@ -16,13 +16,13 @@ Widget planDescBox(
   print("itmCnt===$itmCnt");
   print("plan type::::$planTyp");
   if (iVal == 1) {
-    planTyp = "Silver Plan";
+    planTyp = sp.SubscritionPackList[0].title;
   }
   if (iVal == 2) {
-    planTyp = "Gold Plan";
+    planTyp = sp.SubscritionPackList[1].title;
   }
   if (iVal == 3) {
-    planTyp = "Platinum Plan";
+    planTyp = sp.SubscritionPackList[2].title;
   }
 
   return Container(
@@ -31,36 +31,31 @@ Widget planDescBox(
       borderRadius: BorderRadius.all(Radius.circular(15)),
     ),
     width: MediaQuery.of(context).size.width * 0.80,
-    height: MediaQuery.of(context).size.height * 0.32,
+    height: MediaQuery.of(context).size.height * 0.33,
     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
         child: Padding(
-          padding: const EdgeInsets.only(top: 15.0, left: 22),
-          child: Center(
-              child: RichText(
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  // textAlign: TextAlign.center,
-                  text: TextSpan(children: <TextSpan>[
-                    TextSpan(
-                      text: planTyp,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 22,
-                        fontFamily: 'Roboto Bold',
-                        // fontWeight: FontWeight.w100
+          padding: const EdgeInsets.only(top: 15.0, left: 0),
+          child: Container(
+            width: MediaQuery.of(context).size.width * .7,
+            // color: Colors.amber,
+            child: Center(
+                child: RichText(
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                        text: planTyp,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 22,
+                          fontFamily: 'Roboto Bold',
+                          // fontWeight: FontWeight.w100
+                        ),
                       ),
-                    ),
-                  ]))
-
-              // Text(
-              //   planTyp,
-              //   style: TextStyle(
-              //     fontFamily: 'Roboto Bold',
-              //     fontSize: 22,
-              //   ),
-              // ),
-              ),
+                    ]))),
+          ),
         ),
       ),
       SizedBox(

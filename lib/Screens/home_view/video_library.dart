@@ -193,6 +193,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                                   index: 2,
                                                                   categoryId: courseProvider.videoCate[index].id,
                                                                   price: courseProvider.videoCate[index].price,
+                                                                  name: courseProvider.videoCate[index].name,
                                                                 )));
                                                   } else {
                                                     Future.delayed(const Duration(milliseconds: 4), () {

@@ -6,6 +6,7 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context, String p
   IconData icnn;
   // print("index====$index");
   if (index == 0) {
+    icnn = Icons.text_fields_sharp;
     if (planType == "Silver Plan") {
       icnn = Icons.text_fields_sharp;
     } else if (planType == "Gold Plan") {
@@ -15,6 +16,7 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context, String p
     }
     // icnn = FontAwesomeIcons.tableColumns;
   } else if (index == 1) {
+    icnn = Icons.numbers_outlined;
     // icnn = Icons.text_fields_sharp;
     if (planType == "Silver Plan") {
       icnn = Icons.numbers_outlined;
@@ -25,7 +27,7 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context, String p
     }
   } else if (index == 2) {
     // icnn = FontAwesomeIcons.question;
-
+    icnn = FontAwesomeIcons.book;
     if (planType == "Silver Plan") {
       icnn = FontAwesomeIcons.book;
     } else if (planType == "Gold Plan") {
@@ -43,7 +45,7 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context, String p
       icnn = Icons.lock_clock;
     }
   } else if (index == 4) {
-    // icnn = Icons.book;
+    icnn = FontAwesomeIcons.userGraduate;
     if (planType == "Silver Plan") {
       icnn = FontAwesomeIcons.userGraduate;
     } else if (planType == "Gold Plan") {
@@ -65,6 +67,8 @@ Widget customGreyRedRow(IconData icn, String txt, BuildContext context, String p
     icnn = FontAwesomeIcons.xing;
   } else if (index == 11) {
     icnn = FontAwesomeIcons.accusoft;
+  } else if (index == 12) {
+    icnn = FontAwesomeIcons.handBackFist;
   }
   return Padding(
     padding: const EdgeInsets.only(top: 2),

@@ -263,11 +263,10 @@ class _MockTestState extends State<MockTest> {
                                                     return InkWell(
                                                       onTap: () async {
                                                         print(
-                                                            "storedTestData[index].idoooooooooooooooooooo${storedTestData[index].id}");
+                                                            "storedTestData[index].id>>>>>>>${storedTestData[index].id}");
                                                         ProfileProvider pp = Provider.of(context, listen: false);
                                                         pp.updateLoader(true);
-                                                        courseProvider
-                                                            .setSelectedTestName(storedTestData[index].test_name);
+                                                        courseProvider.setSelectedTestName(storedTestData[index].test_name);
                                                         await courseProvider.getTestDetails(storedTestData[index].id);
                                                         PracticeTextProvider pracTestProvi =
                                                             Provider.of(context, listen: false);
@@ -308,6 +307,7 @@ class _MockTestState extends State<MockTest> {
                                                                 context,
                                                                 MaterialPageRoute(
                                                                     builder: (context) => RandomPage(
+                                                                      name:storedTestData[index].test_name ,
                                                                         index: 3,
                                                                         categoryId: storedTestData[index].id,
                                                                         price: storedTestData[index].price)));

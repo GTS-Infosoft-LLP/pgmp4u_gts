@@ -235,10 +235,21 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                   cp.selectedCourseId,
                                                                   storedMaster[index].id,
                                                                 );
+                                                                var checkStat = pdp.processStatus;
 
                                                                 pp.updateLoader(false);
-
-                                                                {
+                                                                if (checkStat == false) {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => RandomPage(
+                                                                                categoryType: "Process",
+                                                                                categoryId: storedMaster[index].id,
+                                                                                index: 7,
+                                                                                name: storedMaster[index].name,
+                                                                                price: storedMaster[index].price,
+                                                                              )));
+                                                                } else {
                                                                   Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(
@@ -265,6 +276,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                                 categoryType: "Domain",
                                                                                 categoryId: storedMaster[index].id,
                                                                                 index: 6,
+                                                                                name: storedMaster[index].name,
                                                                                 price: storedMaster[index].price,
                                                                               )));
                                                                 } else {

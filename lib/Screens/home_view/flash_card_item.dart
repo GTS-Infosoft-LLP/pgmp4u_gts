@@ -219,6 +219,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                                 categoryId: storedFlashCate[index].id,
                                                                 price: storedFlashCate[index].price,
                                                                 index: 1,
+                                                                name: storedFlashCate[index].name,
                                                               )));
                                                 } else {
                                                   Future.delayed(const Duration(milliseconds: 0), () async {
@@ -275,7 +276,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                                 children: [
                                                                   Container(
                                                                     // color: Colors.amber,
-                                                                    width: MediaQuery.of(context).size.width * .7,
+                                                                    width: MediaQuery.of(context).size.width * .55,
                                                                     child: Text(
                                                                       storedFlashCate[index].flashcards.toString() +
                                                                           " ${widget.title} available",
@@ -298,7 +299,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                                           maxLines: 2,
                                                                           overflow: TextOverflow.ellipsis,
                                                                         )
-                                                                      : Text(""),
+                                                                      : Icon(Icons.arrow_forward),
                                                                 ],
                                                               ),
                                                             ),

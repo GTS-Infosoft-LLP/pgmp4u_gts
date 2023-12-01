@@ -151,7 +151,9 @@ class _PPTCardItemState extends State<PPTCardItem> {
                                           bool result = await checkInternetConn();
                                           print("cp object:::: ${cp.oflinePptDtail}");
                                           if (result) {
-                                            cp.setOflinePptDetail(cp.pptDataList[0]);
+                                            if (cp.pptDataList.isNotEmpty) {
+                                              cp.setOflinePptDetail(cp.pptDataList[0]);
+                                            }
                                           }
 
                                           var pptPayStat = await cp.successValuePPT;
@@ -166,6 +168,7 @@ class _PPTCardItemState extends State<PPTCardItem> {
                                                           categoryId: storedpptCate[index].id,
                                                           price: storedpptCate[index].price,
                                                           index: 5,
+                                                          name: storedpptCate[index].name,
                                                         )));
                                           } else {
                                             if (lngth == 1 || lngth == 0) {
@@ -239,55 +242,38 @@ class _PPTCardItemState extends State<PPTCardItem> {
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Container(
-                                                      // color: Colors.amber,
-                                                      width: MediaQuery.of(context).size.width * .68,
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Container(
-                                                              // color: Colors.amber,
-                                                              width: MediaQuery.of(context).size.width * .67,
-                                                              child: RichText(
-                                                                  // maxLines: 1000,
-                                                                  // overflow: TextOverflow.ellipsis,
-                                                                  // textAlign: TextAlign.left,
-                                                                  text: TextSpan(children: <TextSpan>[
-                                                                TextSpan(
-                                                                  text: storedpptCate[index].label,
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey,
-                                                                    fontSize: 14,
-                                                                    // fontFamily: "NunitoSans",
-
-                                                                    // height: 1.7
-                                                                    // fontWeight: FontWeight.w600,
-                                                                    // letterSpacing: 0.3,
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                            // color: Colors.amber,
+                                                            width: MediaQuery.of(context).size.width * .57,
+                                                            child: RichText(
+                                                                maxLines: 2,
+                                                                overflow: TextOverflow.ellipsis,
+                                                                text: TextSpan(children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text: storedpptCate[index].label,
+                                                                    style: TextStyle(
+                                                                      color: Colors.grey,
+                                                                      fontSize: 14,
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                              ]))),
-                                                          RichText(
-                                                              // maxLines: 1000,
-                                                              // overflow: TextOverflow.ellipsis,
-                                                              // textAlign: TextAlign.left,
-                                                              text: TextSpan(children: <TextSpan>[
-                                                            TextSpan(
-                                                              text: storedpptCate[index].paymentStatus == 1
-                                                                  ? "Premium"
-                                                                  : "",
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                                fontSize: 14,
-                                                                // fontFamily: "NunitoSans",
-
-                                                                // height: 1.7
-                                                                // fontWeight: FontWeight.w600,
-                                                                // letterSpacing: 0.3,
-                                                              ),
+                                                                ]))),
+                                                        RichText(
+                                                            text: TextSpan(children: <TextSpan>[
+                                                          TextSpan(
+                                                            text: storedpptCate[index].paymentStatus == 1
+                                                                ? "Premium"
+                                                                : "",
+                                                            style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 14,
+                                                              // fontFamily: "NunitoSans",
                                                             ),
-                                                          ]))
-                                                        ],
-                                                      ),
+                                                          ),
+                                                        ]))
+                                                      ],
                                                     ),
                                                     SizedBox(
                                                       height: 0,

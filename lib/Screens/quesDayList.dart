@@ -141,6 +141,7 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                                 builder: (context) => RandomPage(
                                                       index: 7,
                                                       categoryId: 0,
+                                                      name:storedCourse[index].lable ,
                                                       price: pp.subsPrice.toString(),
                                                       categoryType: "Question",
                                                     )));
