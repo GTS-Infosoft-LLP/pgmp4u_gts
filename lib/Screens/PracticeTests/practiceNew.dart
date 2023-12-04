@@ -164,7 +164,6 @@ class _PracticeNewState extends State<PracticeNew> {
               List<Options> op = [];
               if (PTList.isNotEmpty) {
                 pracTestProv.practiceApiLoader = false;
-
                 op = PTList[_quetionNo].ques.options.where((element) => element.questionOption.isNotEmpty).toList();
               }
 

@@ -269,8 +269,17 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
-                                                                  Text("Uploaded on: "),
-                                                                  Text(timeStamp),
+                                                                  Text("Uploaded on: ",
+                                                                      style: TextStyle(
+                                                                          color: Colors.black,
+                                                                          fontSize: 16,
+                                                                          fontFamily: 'Roboto Medium',
+                                                                          fontWeight: FontWeight.w500)),
+                                                                  Text(timeStamp,
+                                                                      style: TextStyle(
+                                                                          fontSize: 15,
+                                                                          fontFamily: 'Roboto Regular',
+                                                                          fontWeight: FontWeight.w500)),
                                                                 ],
                                                               ),
                                                               new Spacer(),

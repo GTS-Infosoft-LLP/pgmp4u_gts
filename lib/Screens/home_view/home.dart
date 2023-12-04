@@ -549,7 +549,12 @@ class _HomeViewState extends State<HomeView> {
 
                                                                 if (storedCourse[index].isCancelSubscription == 1 &&
                                                                     storedCourse[index].isSubscribed == 1) {
-                                                                  showRestorePopup(index);
+                                                                  // showRestorePopup(index);
+
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => MasterListPage()));
                                                                 } else {
                                                                   courseProvider.setInAppPurchaseValue(
                                                                       storedCourse[index].inAppPurchaseEnabled);
@@ -749,7 +754,11 @@ class _HomeViewState extends State<HomeView> {
                                                                                                 .subscriptionType ==
                                                                                             2
                                                                                         ? "Gold"
-                                                                                        : "Platinum",
+                                                                                        : storedCourse[index]
+                                                                                                    .subscriptionType ==
+                                                                                                4
+                                                                                            ? "Free Trial"
+                                                                                            : "Platinum",
                                                                                 style: TextStyle(
                                                                                     color: Colors.black,
                                                                                     fontSize: 15,

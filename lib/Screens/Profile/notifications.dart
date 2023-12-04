@@ -79,7 +79,7 @@ class _NotificationsState extends State<Notifications> {
                           : ListView.builder(
                               controller: scrollcontrol,
                               itemCount: profileProvider.Announcements.length,
-                              physics: BouncingScrollPhysics(),
+                              physics: BouncingScrollPhysics(), 
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 return _announcmentsTile(profileProvider, index, context);
@@ -109,6 +109,8 @@ class _NotificationsState extends State<Notifications> {
             profileProvider.setNotifiId(profileProvider.Notifications[index].id);
 
             if (profileProvider.Notifications[index].type == 2) {
+
+              // context.read<CourseProvider>().setMasterListType("Question");
               Navigator.push(
                   context,
                   MaterialPageRoute(

@@ -145,40 +145,7 @@ class ProfileProvider extends ChangeNotifier {
     var request = {"page": _pageIndex, "courseId": crsId};
     print("Notification requesttttt======$request");
 
-    bool checkConn = await checkInternetConn();
-    if (checkConn) {
-      body = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
-      if (body == null) {
-        body = "";
-      }
-      if (body.isNotEmpty) {
-        Response response = await http.post(
-          Uri.parse(SUBMIT_MOCK_TEST),
-          headers: {"Content-Type": "application/json", 'Authorization': stringValue},
-          body: body,
-        ).whenComplete(() async {
-        HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
-          HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
-          await cp.getTestDetails(cp.allTestListIdOfline);
-          // await apiCall(attempListIdOffline);
-          Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
-              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
-          Map getit;
-          if (response.statusCode == 200) {
-            getit = convert.jsonDecode(response.body);
-            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
-            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.attempListIdOffline.toString());
-          } 
-        });
-        if (response.statusCode == 200) {
-          HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
-          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
-          cp.setnotSubmitedMockID("");
-          cp.setToBeSubmitIndex(1000);
-        }
-      }
-    }
-
+  
 
 
     try {
@@ -207,7 +174,6 @@ class ProfileProvider extends ChangeNotifier {
         print("NotificationData=======${NotificationData.length}");
 
         for (int i = 0; i < NotificationData.length; i++) {
-          // print("NotificationData[i].typeee====${NotificationData[i].type}");
           if (NotificationData[i].type == 1) {
             Announcements.add(NotificationData[i]);
           } else {
@@ -334,7 +300,6 @@ class ProfileProvider extends ChangeNotifier {
 
   updateLoader(bool status) async {
     loaderUpdate(status);
-
     loader = status;
     await Future.delayed(Duration(seconds: 0));
     notifyListeners();

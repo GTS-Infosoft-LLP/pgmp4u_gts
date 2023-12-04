@@ -106,7 +106,14 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                   onTap: () {
                     SubscriptionProvider sp = Provider.of(context, listen: false);
                     CourseProvider cp = Provider.of(context, listen: false);
-                    sp.freeSubscription(cp.selectedCourseId);
+                    sp.freeSubscription(cp.selectedCourseId).then((value) {
+                      print("inside then conditin ");
+                      try {
+                        Navigator.pop(context);
+                      } catch (e) {
+                        print("errror in pop statement===$e");
+                      }
+                    });
                     // freeSubscription
                   },
                   child: Container(
@@ -674,14 +681,14 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                               text: TextSpan(children: <TextSpan>[
                                                 TextSpan(
                                                   text: (sp.durationPackData[i].durationQuantity * 30).toString() +
-                                                      "Days",
+                                                      " Days",
                                                   // : i==1?(sp.durationPackData[i].durationQuantity*2).toString()+"Days": ,
                                                   // sp.durationPackData[i].durationType == 1
                                                   //     ? sp.durationPackData[i].durationQuantity.toString() + " Months"
                                                   //     : sp.durationPackData[i].durationQuantity.toString() + " Year",
                                                   style: TextStyle(
                                                       color: i == sp.radioSelected ? Colors.white : Colors.black,
-                                                      fontSize: 10.0,
+                                                      fontSize: 11.0,
                                                       fontWeight: FontWeight.w800),
                                                 ),
                                               ]),

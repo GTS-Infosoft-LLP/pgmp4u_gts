@@ -273,7 +273,7 @@ class _RandomPageState extends State<RandomPage> {
                                                             fontSize: 25,
                                                             fontFamily: 'Roboto Bold',
                                                             // fontWeight: FontWeight.w600,
-                                                            letterSpacing: 0.3,
+                                                            // letterSpacing: 0.3,
                                                           ),
                                                         ),
                                                       ])),
@@ -290,7 +290,7 @@ class _RandomPageState extends State<RandomPage> {
                                                           text: 'Get 1 year Access to Flash Card \non',
                                                           style: TextStyle(
                                                             color: Colors.white,
-                                                            fontSize: width * (30 / 420),
+                                                            fontSize: 25,
                                                             fontFamily: 'Roboto Bold',
                                                             letterSpacing: 0.3,
                                                           ),
@@ -298,13 +298,16 @@ class _RandomPageState extends State<RandomPage> {
                                                       ]))
                                                   : widget.index == 2
                                                       ? RichText(
+                                                          overflow: TextOverflow.ellipsis,
+                                                          maxLines: 2,
                                                           textAlign: TextAlign.center,
                                                           text: TextSpan(children: <TextSpan>[
                                                             TextSpan(
                                                               text: 'Get 1 year Access to Video Library \non',
                                                               style: TextStyle(
                                                                 color: Colors.white,
-                                                                fontSize: width * (30 / 420),
+                                                                // fontSize: width * (30 / 420),
+                                                                fontSize: 25,
                                                                 fontFamily: 'Roboto Bold',
                                                                 // fontWeight: FontWeight.w600,
                                                                 letterSpacing: 0.3,
@@ -319,7 +322,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                   text: 'Get 1 year Access to Mock Tests \non',
                                                                   style: TextStyle(
                                                                     color: Colors.white,
-                                                                    fontSize: width * (30 / 420),
+                                                                    fontSize: 25,
                                                                     fontFamily: 'Roboto Bold',
                                                                     // fontWeight: FontWeight.w600,
                                                                     letterSpacing: 0.3,
@@ -334,7 +337,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                       text: 'Get 1 year Access to Chats \non',
                                                                       style: TextStyle(
                                                                         color: Colors.white,
-                                                                        fontSize: width * (30 / 420),
+                                                                        fontSize: 25,
                                                                         fontFamily: 'Roboto Bold',
                                                                         // fontWeight: FontWeight.w600,
                                                                         letterSpacing: 0.3,
@@ -349,7 +352,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                           text: 'Get 1 year Access to PTT \non',
                                                                           style: TextStyle(
                                                                             color: Colors.white,
-                                                                            fontSize: width * (30 / 420),
+                                                                            fontSize: 25,
                                                                             fontFamily: 'Roboto Bold',
                                                                             // fontWeight: FontWeight.w600,
                                                                             letterSpacing: 0.3,
@@ -358,13 +361,15 @@ class _RandomPageState extends State<RandomPage> {
                                                                       ]))
                                                                   : widget.index == 6
                                                                       ? RichText(
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          maxLines: 2,
                                                                           textAlign: TextAlign.center,
                                                                           text: TextSpan(children: <TextSpan>[
                                                                             TextSpan(
                                                                               text: 'Get 1 year Access to Domains \non',
                                                                               style: TextStyle(
                                                                                 color: Colors.white,
-                                                                                fontSize: width * (30 / 420),
+                                                                                fontSize: 25,
                                                                                 fontFamily: 'Roboto Bold',
                                                                                 // fontWeight: FontWeight.w600,
                                                                                 letterSpacing: 0.3,
@@ -380,7 +385,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                                       'Get 1 year Access to Process \non',
                                                                                   style: TextStyle(
                                                                                     color: Colors.white,
-                                                                                    fontSize: width * (30 / 420),
+                                                                                    fontSize: 25,
                                                                                     fontFamily: 'Roboto Bold',
                                                                                     // fontWeight: FontWeight.w600,
                                                                                     letterSpacing: 0.3,
@@ -395,7 +400,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                                       'Get 1 year Access to Question of the day \non',
                                                                                   style: TextStyle(
                                                                                     color: Colors.white,
-                                                                                    fontSize: width * (30 / 420),
+                                                                                    fontSize: 25,
                                                                                     fontFamily: 'Roboto Bold',
                                                                                     // fontWeight: FontWeight.w600,
                                                                                     letterSpacing: 0.3,
@@ -485,7 +490,7 @@ class _RandomPageState extends State<RandomPage> {
                                           text: cp.isInAppPurchaseOn == 1 && Platform.isIOS ? "" : "OR",
                                           style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 18,
+                                            fontSize: 20,
                                             fontFamily: 'Roboto Bold',
                                             // fontWeight: FontWeight.w400
                                           ),
@@ -1421,7 +1426,7 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
                   style: TextStyle(
                     color: Color(0xff3643a3),
                     fontSize: 20,
-                    fontFamily: 'Roboto Medium',
+                    fontFamily: 'Roboto Bold',
                     // fontWeight: FontWeight.w400
                   ),
                 ),

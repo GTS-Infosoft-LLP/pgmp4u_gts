@@ -83,6 +83,8 @@ class _PaymentWithStripeState extends State<PaymentWithStripe> {
             },
             initialOptions: options,
           ),
+        
+        
         ));
   }
 

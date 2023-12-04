@@ -66,7 +66,7 @@ class PracticeTextProvider extends ChangeNotifier {
 
     updateLoader(true);
     Map body = {"id": id, "type": type};
-
+    print("body of pratice $body");
     print("body of pratice $id");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
@@ -79,12 +79,14 @@ class PracticeTextProvider extends ChangeNotifier {
         bodyyyy = "";
       }
       if (bodyyyy.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        ).whenComplete(() async {
-       HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+        )
+            .whenComplete(() async {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           await cp.getTestDetails(cp.allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -172,11 +174,13 @@ class PracticeTextProvider extends ChangeNotifier {
         bodyyyy = "";
       }
       if (bodyyyy.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        ).whenComplete(() async {
+        )
+            .whenComplete(() async {
           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           await cp.getTestDetails(cp.allTestListIdOfline);
@@ -267,12 +271,14 @@ class PracticeTextProvider extends ChangeNotifier {
         bodyyyy = "";
       }
       if (bodyyyy.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: bodyyyy,
-        ).whenComplete(() async {
-      HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+        )
+            .whenComplete(() async {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           await cp.getTestDetails(cp.allTestListIdOfline);
           // await apiCall(attempListIdOffline);
