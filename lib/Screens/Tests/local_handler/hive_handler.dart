@@ -786,11 +786,11 @@ class HiveHandler {
   }
 
   static String getNotSubmittedMock({String keyName}) {
-    print("this is getting callled");
-    print("keyName:: $keyName");
+    // print("this is getting callled");
+    // print("keyName:: $keyName");
     try {
       final String storedNotSubmittedMock = mockNotSubmitBox.get(keyName);
-      print("storedNotSubmittedMock  $storedNotSubmittedMock");
+      // print("storedNotSubmittedMock  $storedNotSubmittedMock");
       return storedNotSubmittedMock;
     } catch (e) {
       return "";

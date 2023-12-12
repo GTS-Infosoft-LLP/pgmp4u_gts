@@ -47,19 +47,19 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     pp.updateLoader(false);
     sp.updateLoader(false);
 
-    print("sp.radioSelected::::sp.radioSelected::::${sp.radioSelected}");
+    // print("sp.radioSelected::::sp.radioSelected::::${sp.radioSelected}");
     Future.delayed(Duration(milliseconds: 200), () {
-      print("is this workinggg");
+      // print("is this workinggg");
       if (sp.durationPackData.isNotEmpty && widget.showFreeTrial == 0) {
         sp.setSelectedRadioVal(0);
       }
       sp.selectedIval = 2;
       pp.setSelectedContainer(2);
     });
-    print("widget isShowDrpDown====${widget.showDrpDown}");
+    // print("widget isShowDrpDown====${widget.showDrpDown}");
     sp.setSelectedIval(2);
     if (permiumbutton.length > 2) {
-      print("permiumbutton[2].id${permiumbutton[2].id}");
+      // print("permiumbutton[2].id${permiumbutton[2].id}");
       sp.setSelectedSubsId(permiumbutton[2].id);
     }
 
@@ -67,15 +67,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     sp.selectedIval = 2;
     if (sp.durationPackData.isNotEmpty && widget.showFreeTrial != 1) {
       sp.setSelectedRadioVal(0);
-      print("selectedRadio val====${sp.radioSelected}");
+      // print("selectedRadio val====${sp.radioSelected}");
     }
-
-    print("sp.selectedIval====${sp.selectedIval}");
-    // print("sp.SubscritionPackList[2].description======${sp.SubscritionPackList[0].description}");
-
-    print("selevted sub type===${sp.selectedSubsType}");
-    // hw = MediaQuery.of(context).size;
-    print("permiumbutton.length::::: ${permiumbutton.length}");
     if (permiumbutton.length == 3) {
       print("this is true");
       pp.setSelectedContainer(2);
@@ -90,7 +83,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
       sp.selectedIval = 10;
     }
 
-    print("sp.selectedIval:::;${sp.selectedIval}");
+    // print("sp.selectedIval:::;${sp.selectedIval}");
 
     super.initState();
   }
@@ -107,9 +100,9 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                     SubscriptionProvider sp = Provider.of(context, listen: false);
                     CourseProvider cp = Provider.of(context, listen: false);
                     sp.freeSubscription(cp.selectedCourseId).then((value) {
-                      print("inside then conditin ");
+                      // print("inside then conditin ");
                       try {
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
                       } catch (e) {
                         print("errror in pop statement===$e");
                       }
@@ -272,7 +265,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                       child: Stack(
                         children: [
                           Container(
-                            height: MediaQuery.of(context).size.height * .40,
+                            height: MediaQuery.of(context).size.height * .30,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                   begin: Alignment.topLeft,
@@ -334,7 +327,6 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 0.0),
                                           child: Consumer<CourseProvider>(builder: (context, crs, child) {
-                                            print("cp.course::::::==== ::: ${crs.course}");
                                             return CustomDropDown<CourseDetails>(
                                               selectText: crs.selectedCourseLable ?? "Select",
                                               itemList: crs.course ?? [],
@@ -342,8 +334,6 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                               title: "",
                                               value: null,
                                               onChange: (val) {
-                                                print("val.course=========>${val.course}");
-                                                print("val.course=========>${val.lable}");
                                                 crs.setSelectedCourseLable(val.lable);
                                                 crs.setSelectedCourseId(val.id);
                                                 SubscriptionProvider sp = Provider.of(context, listen: false);
@@ -360,25 +350,16 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                         ),
                                       )
                                     : SizedBox(),
-                                Center(
-                                  child: Container(
-                                      height: MediaQuery.of(context).size.height * .18,
-                                      child: Icon(
-                                        Icons.diamond,
-                                        color: Colors.transparent,
-                                      )),
-                                ),
+                                // Container(
+                                //     height: MediaQuery.of(context).size.height * .18,
+                                //     child: Icon(
+                                //       Icons.diamond,
+                                //       color: Colors.transparent,
+                                //     )),
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 40.0),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * .37,
-                              // width: MediaQuery.of(context).size.width * .35,
-                              child: Center(child: Image.asset("assets/diamond.png")),
-                            ),
-                          )
+                          // Image.asset("assets/diamond.png")
                         ],
                       ),
                     ),
@@ -391,18 +372,19 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 165.0),
+                padding:
+                    widget.showDrpDown == 1 ? const EdgeInsets.only(top: 165.0) : const EdgeInsets.only(top: 105.0),
                 child: Center(
                   child: Column(
                     children: [
                       Consumer<SubscriptionProvider>(builder: (context, sp, child) {
                         if (sp.SubscritionPackList.isEmpty) {
-                          print("this condition is true");
+                          // print("this condition is true");
                           sp.selectedIval = 10;
                         } else {
                           sp.selectedIval = 2;
                         }
-                        print("sp.selectedIval:::::::::::::${sp.selectedIval}");
+                        // print("sp.selectedIval:::::::::::::${sp.selectedIval}");
                         if (sp.selectedIval == 0) {
                           return planDescBox(
                               context, "Silver Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
@@ -443,7 +425,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 height: 6,
                               ),
                               Consumer2<SubscriptionProvider, ProfileProvider>(builder: (context, sp, pp, child) {
-                                print("sp.SubscritionPackList ::: ${sp.SubscritionPackList}");
+                                // print("sp.SubscritionPackList ::: ${sp.SubscritionPackList}");
                                 return sp.SubscritionPackList.isEmpty
                                     ? Center(
                                         child: Container(
@@ -512,7 +494,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                   sp.setSelectedSubsId(permiumbutton[i].id);
                                                   sp.setSelectedSubsType(permiumbutton[i].type);
                                                   sp.setSelectedPlanType(permiumbutton[i].type);
-                                                  print("index val===$i");
+                                                  // print("index val===$i");
                                                   pp.setSelectedContainer(i);
                                                   pp.updateLoader(false);
                                                   sp.updateLoader(false);
@@ -639,7 +621,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                               }),
 
                               Consumer<SubscriptionProvider>(builder: (context, sp, child) {
-                                print("sp.durationPackData lenght===${sp.durationPackData}");
+                                // print("sp.durationPackData lenght===${sp.durationPackData}");
                                 return Wrap(
                                   direction: Axis.horizontal,
                                   children: [
@@ -658,14 +640,16 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                 backgroundColor: MaterialStateProperty.all<Color>(
                                                     i == sp.radioSelected ? Color(0xff3643a3) : Colors.white)),
                                             onPressed: () async {
+                                              await sp.setSelectedPlanType(1);
                                               if (widget.showFreeTrial == 1) {
                                                 ProfileProvider pp = Provider.of(context, listen: false);
                                                 pp.updateLoader(false);
                                               } else {
-                                                print("vaue of i::::   $i");
+                                                // print("vaue of i::::   $i");
                                                 sp.setSelectedRadioVal(i);
                                                 sp.setSelectedIval(0);
                                                 sp.setSelectedSubsType(permiumbutton[0].type);
+                                                sp.setSelectedSubsType(1);
                                                 print("");
                                                 ProfileProvider pp = Provider.of(context, listen: false);
                                                 pp.setSelectedContainer(0);
@@ -799,7 +783,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                   child: Html(
                                     data: sp.desc1 ?? "",
                                     onAnchorTap: (url, ctx, attributes, element) async {
-                                      print("anchor url : $url");
+                                      // print("anchor url : $url");
 
                                       Uri uri = Uri.parse(url);
                                       if (await canLaunchUrlString(url)) {
@@ -842,7 +826,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     // PurchaseProvider provider = Provider.of(context, listen: false);
     CourseProvider cp = Provider.of(context, listen: false);
     // provider.updateStatusNew(isnav: true);
-    print("insidee the payment success");
+    // print("insidee the payment success");
     cp.getCourse().whenComplete(() {
       Navigator.pop(context);
     });

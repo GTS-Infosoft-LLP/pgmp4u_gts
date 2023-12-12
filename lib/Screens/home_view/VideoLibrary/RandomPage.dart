@@ -804,6 +804,7 @@ class _RandomPageState extends State<RandomPage> {
                                                   backgroundColor: MaterialStateProperty.all<Color>(
                                                       i == sp.radioSelected ? Color(0xff3643a3) : Colors.white)),
                                               onPressed: () async {
+                                                       sp.setSelectedPlanType(1);
                                                 print("vaue of i::::   $i");
                                                 sp.setSelectedRadioVal(i);
                                                 sp.setSelectedIval(0);

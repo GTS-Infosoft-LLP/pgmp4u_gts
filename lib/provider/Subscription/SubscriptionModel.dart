@@ -1,3 +1,4 @@
+import 'dart:developer' as dev;
 class SubscriptionDetails {
   int id;
   String title;
@@ -26,10 +27,10 @@ class SubscriptionDetails {
     planId = json['planId'];
 
     if (json['description'] != null) {
-      print("description::::$description");
+ 
       description = json['description'];
-      // .toString().split(",");
-      print("descriptiondescription:::;$description");
+
+      // dev.log("descriptiondescription:::;$description");
     } else {
       description = "";
     }

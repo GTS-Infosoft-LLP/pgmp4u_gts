@@ -389,7 +389,6 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                             style: TextStyle(
                                                                               color: Colors.grey,
                                                                               fontSize: 14,
-
                                                                               // fontFamily: AppFont.poppinsRegular,
                                                                             ),
                                                                           ),

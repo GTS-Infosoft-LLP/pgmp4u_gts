@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -48,14 +49,14 @@ class SubscriptionProvider extends ChangeNotifier {
   setSelectedRadioVal(int val) {
     Future.delayed(Duration.zero, () async {
       radioSelected = val;
-      print(":::::radioSelected::::::$radioSelected");
+      print(":::::radioSelected::::::$val");
       notifyListeners();
     });
   }
 
   int selectedIval;
   setSelectedIval(int val) {
-    print("new value of I====$val");
+    // print("new value of I====$val");
 
     Future.delayed(Duration.zero, () async {
       selectedIval = val;
@@ -80,7 +81,8 @@ class SubscriptionProvider extends ChangeNotifier {
   int selectedDurationTyp;
   int selectedDurationQt;
   Future<void> setSelectedDurTimeQt(int type, int quntity, {int isFirtTime = 0}) {
-    print("durationQuantity===$quntity");
+    dev.log("in this conditionnn");
+    // print("durationQuantity===$quntity");
     Future.delayed(Duration.zero, () async {
       selectedDurationTyp = type;
       selectedDurationQt = quntity;
@@ -134,7 +136,6 @@ class SubscriptionProvider extends ChangeNotifier {
     var request = {
       "courseId": idCrs,
     };
-    print("requestt::::::$request");
     bool checkConn = await checkInternetConn();
     if (checkConn) {
       bodyyyy = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
@@ -180,7 +181,9 @@ class SubscriptionProvider extends ChangeNotifier {
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       )
-          .onError((error, stackTrace) {
+          .whenComplete(() {
+        Navigator.pop(GlobalVariable.navState.currentContext);
+      }).onError((error, stackTrace) {
         print("erroror::::$error");
         print("stackTrace::::$stackTrace");
         updateLoader(false);
@@ -237,66 +240,21 @@ class SubscriptionProvider extends ChangeNotifier {
   }
 
   Future<void> getSubscritionData(int idCrs) async {
-    // ftchList = [];
-    print(">>>>>>>>>>>>>>getSubscritionData>>>>>>>>>>>>>>");
-    // domainStatus = true;
+    // dev.log(">>>>>>>>>>>>>>getSubscritionData>>>>>>>>>>>>>>");
     updateSubsPackApiCall(true);
     updateLoader(true);
-    // SubscritionPackList = [];
-    print("idCrs=========>>>>>>>>>>>>>>>$idCrs");
+    // print("idCrs=========>>>>>>>>>>>>>>>$idCrs");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // print("issyue in this api....");
-
     String stringValue = prefs.getString('token');
 
-    print("token valued===$stringValue");
     var request = {
       "courseId": idCrs,
       "durationType": selectedDurationTyp,
       "durationQuantity": selectedDurationQt,
       "type": SelectedPlanType
     };
-    print("requestt::::::$request");
-
-    bool checkConn = await checkInternetConn();
-    if (checkConn) {
-      bodyyyy = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
-      if (bodyyyy == null) {
-        bodyyyy = "";
-      }
-      if (bodyyyy.isNotEmpty) {
-        Response response = await http
-            .post(
-          Uri.parse(SUBMIT_MOCK_TEST),
-          headers: {"Content-Type": "application/json", 'Authorization': stringValue},
-          body: bodyyyy,
-        )
-            .whenComplete(() async {
-          await courseProvider.getTestDetails(courseProvider.selectedMockId);
-          await courseProvider.apiCall(courseProvider.selectedTstPrcentId);
-          Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
-              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
-          Map getit;
-          if (response.statusCode == 200) {
-            getit = convert.jsonDecode(response.body);
-            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
-            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.setPendindIndex.toString());
-          }
-        }).onError((error, stackTrace) {
-          updateLoader(false);
-          print("erroror::::$error");
-          print("stackTrace::::$stackTrace");
-          updateLoader(false);
-        });
-        if (response.statusCode == 200) {
-          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
-          HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
-          cp.setnotSubmitedMockID("");
-          cp.setToBeSubmitIndex(1000);
-        }
-      }
-    }
+    print("selected plan types$SelectedPlanType");
+    dev.log("requestt::::::$request");
 
     try {
       var response = await http
@@ -306,23 +264,11 @@ class SubscriptionProvider extends ChangeNotifier {
         body: json.encode(request),
       )
           .onError((error, stackTrace) {
-        print("erroror::::$error");
-        print("stackTrace::::$stackTrace");
         updateLoader(false);
       });
 
-      print("response.statusCode===${response.body}");
-
-      print("response.statusCode===${response.statusCode}");
-
-      // domainStatus;
-
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
-      // (resDDo["data"]);
-      print("check data=====${resDDo["data"]}");
-
-      print("satusss====${resDDo["success"]}");
 
       if (resDDo["success"] == false) {
         updateSubsPackApiCall(false);
@@ -352,15 +298,11 @@ class SubscriptionProvider extends ChangeNotifier {
         SubscritionPackList = [];
         updateSubsPackApiCall(false);
         SubscritionPackList.clear();
-        print("");
+
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
-        print("mapResponsemapResponse=====$mapResponse");
-        print("mapResponse====${mapResponse['data']}");
-        // description = mapResponse['description'];
 
         if (mapResponse['status'] == 400) {
           SubscritionPackList = [];
-          print("SubscritionPackList=====$SubscritionPackList");
           return;
         }
         if (mapResponse["success"] == true) {
@@ -368,37 +310,27 @@ class SubscriptionProvider extends ChangeNotifier {
           List temp2 = mapResponse["data"]['duration'];
           ftchList = mapResponse["data"]['featureList'];
 
-          print("List of featuess====$ftchList");
-          print("temp list===$temp1");
           SubscritionPackList = temp1.map((e) => SubscriptionDetails.fromjson(e)).toList();
           durationPackData = temp2.map((e) => DurationDetail.fromjson(e)).toList();
-          print("durationPackDatadurationPackDatadurationPackData=========$durationPackData");
-          // description = mapResponse["data"]["description"];
-          print("SubscritionPackList=========$SubscritionPackList");
           permiumbutton.clear();
           if (SubscritionPackList.isNotEmpty) {
-            desc1 = SubscritionPackList[0].description;
+            // desc1 = SubscritionPackList[0].description;
           }
-
+          desc1 = "";
+          dev.log("SelectedPlanType - 1=====${SelectedPlanType - 1}");
+          desc1 = SubscritionPackList[SelectedPlanType - 1].description;
+          dev.log("desc1===$desc1");
+          // desc1 = "";
           for (int i = 0; i < SubscritionPackList.length; i++) {
-            // description.add(SubscritionPackList[i].description.toString());
-
             permiumbutton.add(newButton(
-                // amount: SubscritionPackList[i].amount.toString(),
                 amount: SubscritionPackList[i].price,
                 name: SubscritionPackList[i].title,
                 id: SubscritionPackList[i].id,
                 type: SubscritionPackList[i].type));
           }
-
-          print("permiumbutton=====$permiumbutton");
         }
-      } else if (response.statusCode == 400) {
-        print("status is 400");
-      }
-      print("respponse=== ${response.body}");
+      } else if (response.statusCode == 400) {}
     } catch (e) {
-      print("exception offline:::: $e");
       updateSubsPackApiCall(false);
     }
     notifyListeners();
@@ -413,7 +345,7 @@ class SubscriptionProvider extends ChangeNotifier {
 
     finUrl = "";
 
-    print("idCrs=========>>>>>>>>>>>>>>>$id");
+    // print("idCrs=========>>>>>>>>>>>>>>>$id");
     finUrl = CREATE_SUBSCRIPTION_ORDER + "/$id";
     // print("finUrl=========>>>>>>>>>>>>>>>$finUrl");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -503,21 +435,20 @@ class SubscriptionProvider extends ChangeNotifier {
         SubscritionPackList.clear();
         print("");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
-        print("mapResponsemapResponse=====$mapResponse");
-        print("mapResponse====${mapResponse['status']}");
+        // print("mapResponsemapResponse=====$mapResponse");
+        // print("mapResponse====${mapResponse['status']}");
         if (mapResponse['status'] == 400) {
           SubscritionPackList = [];
           return;
         }
         if (mapResponse["success"] == true) {
           List temp1 = mapResponse["data"];
-          print("temp list===$temp1");
+
           SubscritionPackList = temp1.map((e) => SubscriptionDetails.fromjson(e)).toList();
-          print("SubscritionPackList=========$SubscritionPackList");
+
           permiumbutton.clear();
         }
       }
-      print("respponse=== ${response.body}");
     } on Exception {
       // updateDomainApiCall(false);
     }
@@ -528,6 +459,7 @@ class SubscriptionProvider extends ChangeNotifier {
   void setSelectedSubsType(int id) {
     Future.delayed(Duration.zero, () async {
       selectedSubsType = id;
+      dev.log("selectedSubsType::::$selectedSubsType");
       notifyListeners();
     });
   }
@@ -536,7 +468,7 @@ class SubscriptionProvider extends ChangeNotifier {
   void setSelectedSubsId(int id) {
     Future.delayed(Duration.zero, () async {
       selectedSubsId = id;
-      print("selectedSubsId********$selectedSubsId");
+      // print("selectedSubsId********$selectedSubsId");
       notifyListeners();
     });
   }

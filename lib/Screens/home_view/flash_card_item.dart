@@ -270,13 +270,13 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                           children: [
                                                             Container(
                                                               width: MediaQuery.of(context).size.width * .7,
-                                                              // color: Colors.amber,
+                                                              // color: Colors.pinkAccent,
                                                               child: Row(
                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 children: [
                                                                   Container(
                                                                     // color: Colors.amber,
-                                                                    width: MediaQuery.of(context).size.width * .55,
+                                                                    width: MediaQuery.of(context).size.width * .50,
                                                                     child: Text(
                                                                       storedFlashCate[index].flashcards.toString() +
                                                                           " ${widget.title} available",
