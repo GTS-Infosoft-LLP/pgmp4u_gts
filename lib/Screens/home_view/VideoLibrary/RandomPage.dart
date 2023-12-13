@@ -822,9 +822,8 @@ class _RandomPageState extends State<RandomPage> {
                                                 textAlign: TextAlign.center,
                                                 text: TextSpan(children: <TextSpan>[
                                                   TextSpan(
-                                                    text: sp.durationPackData[i].durationType == 1
-                                                        ? sp.durationPackData[i].durationQuantity.toString() + " Months"
-                                                        : sp.durationPackData[i].durationQuantity.toString() + " Year",
+                                                    text: (sp.durationPackData[i].durationQuantity * 30).toString() +
+                                                      " Days",
                                                     style: TextStyle(
                                                         color: i == sp.radioSelected ? Colors.white : Colors.black,
                                                         fontSize: 10.0,

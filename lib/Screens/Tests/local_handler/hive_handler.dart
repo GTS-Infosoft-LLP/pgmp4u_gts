@@ -302,10 +302,8 @@ class HiveHandler {
     if (ProcessTaskItemsBox.containsKey(key)) {
       print("===========added to box=========");
       print("ProcessTaskItemsBox.get  Key: $key, Data:${ProcessTaskItemsBox.get(key)}");
-
       String processTaskData = ProcessTaskItemsBox.get(key);
       print(" >> processTaskData :  $processTaskData");
-
       List processTaskList = jsonDecode(processTaskData);
       print("processTaskList:::::::$processTaskList");
 
@@ -331,11 +329,10 @@ class HiveHandler {
     taskPracTestBox.put(key, value);
 
     if (taskPracTestBox.containsKey(key)) {
-      print("===========added to box   setTaskQuesData=========");
+      print("===========added to box setTaskQuesData=========");
       print("taskPracTestBox.get  Key: $key, Data:${taskPracTestBox.get(key)}");
       String taskQuesData = taskPracTestBox.get(key);
       print(" >> taskData :  $taskQuesData");
-
       List TaskquestionsList = jsonDecode(taskQuesData);
       storedTaskTestQuesData = TaskquestionsList.map((e) => TaskQues.fromJson(e)).toList();
       debugPrint(" >> storedTaskTestQuesData : $storedTaskTestQuesData");
@@ -365,13 +362,11 @@ class HiveHandler {
   }
 
 
-
-
   static ValueListenable<Box<String>> getTaskQuesListener() {
     return Hive.box<String>(taskQuesBox).listenable() ?? '';
   }
    static ValueListenable<Box<String>> getProcessTaskQuesListener() {
-    return Hive.box<String>(taskQuesBox).listenable() ?? '';
+    return Hive.box<String>(processTaskQuesBox).listenable() ?? '';
   }
 
   static setQuesOfDayData({String value, String key}) async {

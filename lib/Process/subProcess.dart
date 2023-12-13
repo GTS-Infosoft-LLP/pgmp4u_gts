@@ -54,7 +54,7 @@ class _SubProcessState extends State<SubProcess> {
               ),
               Consumer<CourseProvider>(builder: (context, cp, child) {
                 return Container(
-                  padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
+                  padding: EdgeInsets.fromLTRB(20, 50, 10, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -71,7 +71,7 @@ class _SubProcessState extends State<SubProcess> {
                                   onPressed: () {
                                     Navigator.pop(context);
                                   }))),
-                      SizedBox(width: 20),
+                      SizedBox(width: 10),
                       Center(
                           child: Container(
                         // color: Colors.amber,
@@ -97,7 +97,7 @@ class _SubProcessState extends State<SubProcess> {
             Padding(
               padding: const EdgeInsets.only(left: 18.0),
               child: Text(
-                "Process Name",
+                "Process",
                 // widget.dmnName,
                 maxLines: 2,
                 style: TextStyle(
@@ -221,7 +221,8 @@ class _SubProcessState extends State<SubProcess> {
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
                                                             Text(
-                                                              "sub-process task",
+                                                              storedSubProcessList[index].lable ?? "",
+                                                              // "sub-process task",
                                                               // storedSubProcessList[index].Tasks == 1 ||
                                                               //         storedSubProcessList[index].Tasks == 0
                                                               //     ? "${storedSubProcessList[index].Tasks} task "
@@ -240,8 +241,8 @@ class _SubProcessState extends State<SubProcess> {
                                                       Container(
                                                         width: MediaQuery.of(context).size.width * .55,
                                                         child: Text(
-                                                          "sub process name",
-                                                          // storedSubProcessList[index].name,
+                                                          // "sub process name",
+                                                          storedSubProcessList[index].name,
                                                           maxLines: 2,
                                                           style: TextStyle(
                                                             fontSize: 18,

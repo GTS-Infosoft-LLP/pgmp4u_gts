@@ -78,6 +78,7 @@ class _ProcessTaskQuestionsState extends State<ProcessTaskQuestions> {
               // print("storedTasks List  keywrod:::::: ${taskList[0]["Keywords"]}");
               // print("storedTasks List question:::::: ${taskList[0]["practiceTest"]}");
             } else {
+              print("key is absenttttt");
               storedProcessTaskQues = [];
             }
             if (storedProcessTaskQues == null) {
@@ -398,7 +399,7 @@ class _ProcessTaskQuestionsState extends State<ProcessTaskQuestions> {
                                                   ? Container(
                                                       decoration: BoxDecoration(
                                                           color:
-                                                              // Colors .amber,
+                                                          
                                                               _colorfromhex("#FAFAFA"),
                                                           borderRadius: BorderRadius.circular(6)),
                                                       margin: EdgeInsets.only(top: height * (38 / 800)),

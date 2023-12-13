@@ -136,7 +136,7 @@ class _ProcessTaskDetailsState extends State<ProcessTaskDetails> {
               ),
               Consumer<ProcessDomainProvider>(builder: (context, pdp, child) {
                 return Container(
-                  padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
+                  padding: EdgeInsets.fromLTRB(20, 50, 10, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -201,10 +201,10 @@ class _ProcessTaskDetailsState extends State<ProcessTaskDetails> {
                 valueListenable: HiveHandler.getTaskItemsListener(),
                 builder: (context, value, child) {
                   ProcessDomainProvider pdp = Provider.of(context, listen: false);
-                  if (value.containsKey(pdp.selectedProcessId.toString())) {
-                    print("containsssss keyyyyy");
-                    List taskList = jsonDecode(value.get(pdp.selectedProcessId.toString()));
-
+                  print("pdp.selectedProcessId.toString>>>>${pdp.selectedProcessTaskId.toString()}");
+                  if (value.containsKey(pdp.selectedProcessTaskId.toString())) {
+                    print("containsssss keyyyyy process task details");
+                    List taskList = jsonDecode(value.get(pdp.selectedProcessTaskId.toString()));
                     storedProcessTask = taskList.map((e) => TaskDetails.fromjson(e)).toList();
                     print("storedTasks storedTaskQues List:::::: $storedProcessTask");
                     // print("storedTasks List  keywrod:::::: ${taskList[0]["Keywords"]}");
@@ -435,7 +435,7 @@ class _ProcessTaskDetailsState extends State<ProcessTaskDetails> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ImageDispalyScreen(
-                              // quesImages: pdp.ProcessTaskDetailList[index].Image,
+                                quesImages: tdo.Image,
                               )));
                 } else {
                   EasyLoading.showInfo("Please check your Internet Connection");

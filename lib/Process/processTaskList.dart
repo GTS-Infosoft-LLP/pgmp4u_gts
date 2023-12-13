@@ -47,7 +47,7 @@ class _ProcessTaskListState extends State<ProcessTaskList> {
             ),
             Consumer<ProcessDomainProvider>(builder: (context, pdp, child) {
               return Container(
-                padding: EdgeInsets.fromLTRB(40, 50, 10, 0),
+                padding: EdgeInsets.fromLTRB(20, 50, 10, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -97,7 +97,7 @@ class _ProcessTaskListState extends State<ProcessTaskList> {
                         width: MediaQuery.of(context).size.width * .67,
                         child: Text(
                           // "sample nameee",
-                          widget.subProcessName,
+                          widget.subProcessName ,
                           // pdp.selectedSubProcessName == ""
                           //     ? pdp.selectedProcessName
                           //     : pdp.ProcessTaskList.isEmpty
