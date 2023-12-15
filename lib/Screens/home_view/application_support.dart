@@ -318,6 +318,8 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                               ),
                               onPressed: () async {
                                 ProfileProvider pp = Provider.of(context, listen: false);
+                                CourseProvider cp = Provider.of(context, listen: false);
+
                                 pp.updateLoader(false);
                                 pp.setSelectedContainer(2);
                                 SubscriptionProvider sp = Provider.of(context, listen: false);
@@ -327,35 +329,47 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                 if (sp.durationPackData.isNotEmpty) {
                                   sp.setSelectedRadioVal(0);
                                 }
-                                sp.selectedIval = 2;
-                                Future.delayed(Duration(milliseconds: 300), () {
+
+                                pp.getReminder(cp.selectedCourseId).then((value) {
+                                  print("thissss is callinggg");
+                                  pp.setSelectedContainer(pp.planDetail.type - 1);
+                                  print("this is calllllllllll");
+                                  if (pp.planDetail.durationQuantity == 1) {
+                                    print("000000");
+                                    sp.setSelectedRadioVal(0);
+                                  } else if (pp.planDetail.durationQuantity == 3) {
+                                    print("111111");
+                                    sp.setSelectedRadioVal(1);
+                                  } else if (pp.planDetail.durationQuantity == 6) {
+                                    print("2222222");
+                                    sp.setSelectedRadioVal(2);
+                                  }
+
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => Subscriptionpg(
                                                 showDrpDown: 0,
                                                 showFreeTrial: 0,
+                                                isFromUpgrdePlan: 1,
+                                                title:pp.planDetail.title ,
+                                                quntity: pp.planDetail.durationQuantity,
                                               )));
                                 });
                               },
                               child: RichText(
-                                  // maxLines: 1000,
-                                  // overflow: TextOverflow.ellipsis,
-                                  // textAlign: TextAlign.left,
+                           
                                   text: TextSpan(children: <TextSpan>[
                                 TextSpan(
                                   text: "Upgrade",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
-                                    // fontFamily: "NunitoSans",
-
-                                    // height: 1.7
-                                    // fontWeight: FontWeight.w600,
-                                    // letterSpacing: 0.3,
+                  
                                   ),
                                 ),
-                              ]))),
+                              ])
+                              )),
                         )
                       : SizedBox(),
                   SizedBox(
@@ -381,16 +395,13 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                             EasyLoading.showInfo("Please check your Internet Connection");
                           }
                         },
-                        child:
-                                                    RichText(
-                    
-                                text: TextSpan(children: <TextSpan>[
+                        child: RichText(
+                            text: TextSpan(children: <TextSpan>[
                           TextSpan(
                             text: "Chat",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
-                      
                             ),
                           ),
                         ]))),

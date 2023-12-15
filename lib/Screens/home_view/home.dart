@@ -272,6 +272,8 @@ class _HomeViewState extends State<HomeView> {
                                             crs.setSelectedCourseLable(storedCourse[0].lable);
                                           }
                                           Future.delayed(Duration(microseconds: 300), () {
+                                            sp.setSelectedRadioVal(0);
+
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -290,19 +292,14 @@ class _HomeViewState extends State<HomeView> {
                                           width: MediaQuery.of(context).size.width * .46,
                                           child: Center(
                                               child: RichText(
-                                                  // overflow: TextOverflow.ellipsis,
-                                                  // maxLines: 2,
-                                                  // textAlign: TextAlign.left,
+                                           
                                                   text: TextSpan(children: <TextSpan>[
                                             TextSpan(
                                               text: "See Plans",
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 17,
-                                                // fontFamily: 'Roboto Regular',
-                                                // fontWeight: FontWeight.bold
-
-                                                // fontFamily: AppFont.poppinsRegular,
+                                             
                                               ),
                                             ),
                                           ]))),
@@ -334,6 +331,7 @@ class _HomeViewState extends State<HomeView> {
                                       pp.updateLoader(true);
 
                                       Future.delayed(Duration(milliseconds: 300), () {
+                                        sp.setSelectedRadioVal(0);
                                         pp.updateLoader(false);
                                         Navigator.push(
                                             context,
@@ -371,9 +369,7 @@ class _HomeViewState extends State<HomeView> {
                                         Container(
                                             width: MediaQuery.of(context).size.width * .63,
                                             child: RichText(
-                                                // overflow: TextOverflow.ellipsis,
-                                                // maxLines: 2,
-                                                // textAlign: TextAlign.center,
+                                              
                                                 text: TextSpan(children: <TextSpan>[
                                               TextSpan(
                                                 text: "Start with free trial for 3 days",
@@ -381,9 +377,7 @@ class _HomeViewState extends State<HomeView> {
                                                   color: Colors.white,
                                                   fontSize: 17,
                                                   fontFamily: 'Roboto Medium',
-                                                  // fontWeight: FontWeight.bold
-
-                                                  // fontFamily: AppFont.poppinsRegular,
+                                             
                                                 ),
                                               ),
                                             ]))),
@@ -598,6 +592,8 @@ class _HomeViewState extends State<HomeView> {
                                                                       sp.selectedIval = 2;
                                                                       print("sp.selectedIval::${sp.selectedIval}");
                                                                       pp.updateLoader(false);
+                                                                      sp.setSelectedRadioVal(0);
+
                                                                       Navigator.push(
                                                                           context,
                                                                           MaterialPageRoute(

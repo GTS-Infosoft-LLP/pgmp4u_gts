@@ -241,143 +241,168 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                             setState(() {});
                                                           }
                                                         },
-                                                        child: Container(
-                                                          width: MediaQuery.of(context).size.width * .70,
-                                                          // height: height * 60 / 420,
-                                                          // height: 100,
-                                                          color: selAns.contains(Taskop[index].id) &&
-                                                                  ansRef.contains(Taskop[index].id) &&
-                                                                  selAns.length == ansRef.length &&
-                                                                  selAns.length > 0
-                                                              ? _colorfromhex("#E6F7E7")
-                                                              : selAns.contains(Taskop[index].id) &&
-                                                                      !ansRef.contains(Taskop[index].id) &&
-                                                                      selAns.length == ansRef.length &&
-                                                                      selAns.length > 0
-                                                                  ? _colorfromhex("#FFF6F6")
-                                                                  : ansRef.contains(Taskop[index].id) &&
-                                                                          selAns.length == ansRef.length &&
-                                                                          selAns.length > 0
-                                                                      ? _colorfromhex("#E6F7E7")
-                                                                      : selAns.contains(Taskop[index].id) &&
-                                                                              ansRef.contains(Taskop[index].id)
-                                                                          ? _colorfromhex("#E6F7E7")
-                                                                          : selAns.contains(Taskop[index].id) &&
-                                                                                  !ansRef.contains(Taskop[index].id)
-                                                                              ? _colorfromhex("#FFF6F6")
-                                                                              : Colors.white,
-                                                          child: Row(
-                                                            children: [
-                                                              CircleAvatar(
-                                                                backgroundColor: Colors.black,
-                                                                radius: 13,
-                                                                child: CircleAvatar(
-                                                                  radius: 12,
-                                                                  backgroundColor: selAns.contains(Taskop[index].id) &&
-                                                                          ansRef.contains(Taskop[index].id) &&
-                                                                          selAns.length == ansRef.length &&
-                                                                          selAns.length > 0
-                                                                      ? Colors.green
-                                                                      : selAns.contains(Taskop[index].id) &&
-                                                                              !ansRef.contains(Taskop[index].id) &&
-                                                                              selAns.length == ansRef.length &&
-                                                                              selAns.length > 0
-                                                                          ? Colors.red
-                                                                          : ansRef.contains(Taskop[index].id) &&
-                                                                                  selAns.length == ansRef.length &&
-                                                                                  selAns.length > 0
-                                                                              ? Colors.green
-                                                                              : selAns.contains(Taskop[index].id) &&
-                                                                                      ansRef.contains(Taskop[index].id)
-                                                                                  ? Colors.green
-                                                                                  : selAns.contains(Taskop[index].id) &&
-                                                                                          !ansRef.contains(
-                                                                                              Taskop[index].id)
-                                                                                      ? Colors.red
-                                                                                      : Colors.white,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(bottom: 8.0),
+                                                          child: Container(
+                                                            width: MediaQuery.of(context).size.width * .70,
+                                                            // height: height * 60 / 420,
+                                                            // height: 100,
+                                                            color: selAns.contains(Taskop[index].id) &&
+                                                                    ansRef.contains(Taskop[index].id) &&
+                                                                    selAns.length == ansRef.length &&
+                                                                    selAns.length > 0
+                                                                ? _colorfromhex("#E6F7E7")
+                                                                : selAns.contains(Taskop[index].id) &&
+                                                                        !ansRef.contains(Taskop[index].id) &&
+                                                                        selAns.length == ansRef.length &&
+                                                                        selAns.length > 0
+                                                                    ? _colorfromhex("#FFF6F6")
+                                                                    : ansRef.contains(Taskop[index].id) &&
+                                                                            selAns.length == ansRef.length &&
+                                                                            selAns.length > 0
+                                                                        ? _colorfromhex("#E6F7E7")
+                                                                        : selAns.contains(Taskop[index].id) &&
+                                                                                ansRef.contains(Taskop[index].id)
+                                                                            ? _colorfromhex("#E6F7E7")
+                                                                            : selAns.contains(Taskop[index].id) &&
+                                                                                    !ansRef.contains(Taskop[index].id)
+                                                                                ? _colorfromhex("#FFF6F6")
+                                                                                : Colors.white,
+                                                            child: Row(
+                                                              // mainAxisAlignment: MainAxisAlignment.center,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets.only(top: 5.0, bottom: 5),
                                                                   child: Center(
-                                                                    child: Text(
-                                                                      index == 0
-                                                                          ? 'A'
-                                                                          : index == 1
-                                                                              ? 'B'
-                                                                              : index == 2
-                                                                                  ? 'C'
-                                                                                  : index == 3
-                                                                                      ? 'D'
-                                                                                      : 'E',
-                                                                      style: TextStyle(
-                                                                          fontFamily: 'Roboto Regular',
-                                                                          fontSize: 14,
-                                                                          color: Colors.black),
+                                                                    child: CircleAvatar(
+                                                                      backgroundColor: Colors.black,
+                                                                      radius: 13,
+                                                                      child: CircleAvatar(
+                                                                        radius: 12,
+                                                                        backgroundColor: selAns
+                                                                                    .contains(Taskop[index].id) &&
+                                                                                ansRef.contains(Taskop[index].id) &&
+                                                                                selAns.length == ansRef.length &&
+                                                                                selAns.length > 0
+                                                                            ? Colors.green
+                                                                            : selAns.contains(Taskop[index].id) &&
+                                                                                    !ansRef
+                                                                                        .contains(Taskop[index].id) &&
+                                                                                    selAns.length == ansRef.length &&
+                                                                                    selAns.length > 0
+                                                                                ? Colors.red
+                                                                                : ansRef.contains(Taskop[index].id) &&
+                                                                                        selAns.length ==
+                                                                                            ansRef.length &&
+                                                                                        selAns.length > 0
+                                                                                    ? Colors.green
+                                                                                    : selAns.contains(
+                                                                                                Taskop[index].id) &&
+                                                                                            ansRef.contains(
+                                                                                                Taskop[index].id)
+                                                                                        ? Colors.green
+                                                                                        : selAns.contains(
+                                                                                                    Taskop[index].id) &&
+                                                                                                !ansRef.contains(
+                                                                                                    Taskop[index].id)
+                                                                                            ? Colors.red
+                                                                                            : Colors.white,
+                                                                        child: Center(
+                                                                          child: Text(
+                                                                            index == 0
+                                                                                ? 'A'
+                                                                                : index == 1
+                                                                                    ? 'B'
+                                                                                    : index == 2
+                                                                                        ? 'C'
+                                                                                        : index == 3
+                                                                                            ? 'D'
+                                                                                            : 'E',
+                                                                            style: TextStyle(
+                                                                                fontFamily: 'Roboto Regular',
+                                                                                fontSize: width * 14 / 420,
+                                                                                color: Colors.black),
+                                                                          ),
+                                                                        ),
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              SizedBox(
-                                                                width: 10,
-                                                              ),
-                                                              Container(
-                                                                // color: Colors.amber,
-                                                                child: Column(
-                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                                  children: [
-                                                                    SizedBox(
-                                                                        // height: 20,
-                                                                        ),
-                                                                    Padding(
-                                                                      padding: const EdgeInsets.only(bottom: 15.0),
-                                                                      child: Container(
-                                                                          // color: Colors.white,
-                                                                          width:
-                                                                              MediaQuery.of(context).size.width * .70,
-                                                                          child: Padding(
-                                                                            padding: const EdgeInsets.only(left: 8.0),
-                                                                            child: 
-                                                                            Text(
-                                                                              Taskop[index].questionOption,
-                                                                              
-                                                                            ),
-                                                                          )),
-                                                                    ),
-                                                                    (selAns.length == ansRef.length &&
-                                                                                selAns.length > 0 &&
-                                                                                selAns.contains(Taskop[index].id) &&
-                                                                                ansRef.contains(Taskop[index].id)) ||
-                                                                            (selAns.length == ansRef.length &&
-                                                                                selAns.length > 0 &&
-                                                                                ansRef.contains(Taskop[index].id))
-                                                                        ? Container(
-                                                                            width:
-                                                                                MediaQuery.of(context).size.width * .72,
-                                                                            child: Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.end,
-                                                                              children: [Text("Correct Answer")],
-                                                                            ),
-                                                                          )
-                                                                        : selAns.length == ansRef.length &&
-                                                                                selAns.length > 0 &&
-                                                                                selAns.contains(Taskop[index].id) &&
-                                                                                !ansRef.contains(Taskop[index].id)
-                                                                            ? Container(
-                                                                                width:
-                                                                                    MediaQuery.of(context).size.width *
-                                                                                        .72,
-                                                                                child: Row(
-                                                                                  mainAxisAlignment:
-                                                                                      MainAxisAlignment.end,
-                                                                                  children: [Text("Your Selection")],
-                                                                                ),
-                                                                              )
-                                                                            : Container(),
-                                                                    SizedBox(
-                                                                        // height: 10,
-                                                                        )
-                                                                  ],
+                                                                SizedBox(
+                                                                  width: 10,
                                                                 ),
-                                                              ),
-                                                            ],
+                                                                Container(
+                                                                  // color: Colors.amber,
+                                                                  child: Column(
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    children: [
+                                                                      SizedBox(
+                                                                          // height: 20,
+                                                                          ),
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.only(bottom: 0.0),
+                                                                        child: Container(
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width * .70,
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.only(left: 8.0),
+                                                                              child: Column(
+                                                                                mainAxisAlignment:
+                                                                                    MainAxisAlignment.center,
+                                                                                crossAxisAlignment:
+                                                                                    CrossAxisAlignment.start,
+                                                                                children: [
+                                                                                  Text(
+                                                                                    Taskop[index].questionOption,
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            )),
+                                                                      ),
+                                                                      SizedBox(
+                                                                          // height: 10,
+                                                                          ),
+                                                                      (selAns.length == ansRef.length &&
+                                                                                  selAns.length > 0 &&
+                                                                                  selAns.contains(Taskop[index].id) &&
+                                                                                  ansRef.contains(Taskop[index].id)) ||
+                                                                              (selAns.length == ansRef.length &&
+                                                                                  selAns.length > 0 &&
+                                                                                  ansRef.contains(Taskop[index].id))
+                                                                          ? Container(
+                                                                              width: MediaQuery.of(context).size.width *
+                                                                                  .72,
+                                                                              child: Row(
+                                                                                mainAxisAlignment:
+                                                                                    MainAxisAlignment.end,
+                                                                                children: [Text("Correct Answer")],
+                                                                              ),
+                                                                            )
+                                                                          : selAns.length == ansRef.length &&
+                                                                                  selAns.length > 0 &&
+                                                                                  selAns.contains(Taskop[index].id) &&
+                                                                                  !ansRef.contains(Taskop[index].id)
+                                                                              ? Container(
+                                                                                  width: MediaQuery.of(context)
+                                                                                          .size
+                                                                                          .width *
+                                                                                      .72,
+                                                                                  child: Row(
+                                                                                    mainAxisAlignment:
+                                                                                        MainAxisAlignment.end,
+                                                                                    children: [Text("Your Selection")],
+                                                                                  ),
+                                                                                )
+                                                                              : Container(),
+                                                                      SizedBox(
+                                                                          // height: 10,
+                                                                          )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                       ));

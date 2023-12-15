@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:developer' as dev;
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -12,6 +12,7 @@ import 'package:pgmp4u/api/apis.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/mockquestionanswermodel.dart';
+import '../Screens/MockTest/model/current_plan_model.dart';
 import '../Screens/MockTest/model/pracTestModel.dart';
 import '../Screens/MockTest/model/showNotifiModel.dart';
 import 'dart:convert' as convert;
@@ -22,7 +23,7 @@ import 'courseProvider.dart';
 class ProfileProvider extends ChangeNotifier {
   int _pageIndex = 0;
   int _totalRec = 0;
-
+  PlanDetail planDetail;
   int tabIndex = 0;
   setTabIndex(int val) {
     tabIndex = val;
@@ -39,6 +40,7 @@ class ProfileProvider extends ChangeNotifier {
   setSelectedContainer(int val) {
     Future.delayed(Duration.zero, () async {
       selectedSubsBox = val;
+      print("selectedSubsBox>>>>>>>.$selectedSubsBox");
       notifyListeners();
     });
   }
@@ -131,6 +133,9 @@ class ProfileProvider extends ChangeNotifier {
         return;
       }
     } else {
+      print("is first timee");
+      Notifications = [];
+      Announcements = [];
       crsId = "";
     }
     _pageIndex++;
@@ -377,6 +382,8 @@ class ProfileProvider extends ChangeNotifier {
         var remTime = resDDo['data']['studyReminder'];
         avgScore = resDDo['data']['daysDiff'].toString();
         dayDiff = resDDo['data']['averageScore'].toString();
+        planDetail = PlanDetail.fromJson(resDDo['data']['currentSubscription']);
+        print("_plandetailll>.${planDetail.title}");
         if (resDDo['data']['studyReminder'] == null) {
           remTime = "";
         }
@@ -632,7 +639,7 @@ class ProfileProvider extends ChangeNotifier {
 
     print("Url :=> ${Uri.parse("$createOrder$selectedId/$categoryType")}");
 
-    log("API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
+    dev.log("API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
     print("API Response ; $stringValue => ${response.request.url}; ${response.body}");
 
     if (response.statusCode == 200) {

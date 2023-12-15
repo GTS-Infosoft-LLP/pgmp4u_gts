@@ -22,7 +22,12 @@ import '../profileProvider.dart';
 class Subscriptionpg extends StatefulWidget {
   int showFreeTrial;
   int showDrpDown;
-  Subscriptionpg({Key key, this.showFreeTrial = 0, this.showDrpDown = 0}) : super(key: key);
+  int isFromUpgrdePlan;
+  String title;
+  int quntity;
+  Subscriptionpg(
+      {Key key, this.showFreeTrial = 0, this.showDrpDown = 0, this.isFromUpgrdePlan = 0, this.title = "", this.quntity})
+      : super(key: key);
 
   @override
   State<Subscriptionpg> createState() => _SubscriptionpgState();
@@ -47,31 +52,28 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     pp.updateLoader(false);
     sp.updateLoader(false);
 
-    // print("sp.radioSelected::::sp.radioSelected::::${sp.radioSelected}");
     Future.delayed(Duration(milliseconds: 200), () {
       // print("is this workinggg");
       if (sp.durationPackData.isNotEmpty && widget.showFreeTrial == 0) {
-        sp.setSelectedRadioVal(0);
+        // sp.setSelectedRadioVal(0);
       }
-      sp.selectedIval = 2;
-      pp.setSelectedContainer(2);
+      // sp.selectedIval = 2;
+      // pp.setSelectedContainer(2);
     });
     // print("widget isShowDrpDown====${widget.showDrpDown}");
-    sp.setSelectedIval(2);
+    // sp.setSelectedIval(2);
     if (permiumbutton.length > 2) {
       // print("permiumbutton[2].id${permiumbutton[2].id}");
       sp.setSelectedSubsId(permiumbutton[2].id);
     }
 
-    sp.radioSelected = -1;
     sp.selectedIval = 2;
     if (sp.durationPackData.isNotEmpty && widget.showFreeTrial != 1) {
-      sp.setSelectedRadioVal(0);
-      // print("selectedRadio val====${sp.radioSelected}");
+      // sp.setSelectedRadioVal(0);
     }
     if (permiumbutton.length == 3) {
       print("this is true");
-      pp.setSelectedContainer(2);
+      // pp.setSelectedContainer(2);
       sp.selectedSubsId = 3;
       sp.setSelectedSubsType(permiumbutton[2].type);
     } else {
@@ -315,12 +317,33 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                 ),
                                               ),
                                             ]))),
-                                    Text(
-                                      "      ",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
+                                    Text("         ")
                                   ],
                                 ),
+
+                                SizedBox(
+                                  height: 10,
+                                ),
+
+                                widget.isFromUpgrdePlan == 1
+                                    ? Container(
+                                        width: MediaQuery.of(context).size.width * .9,
+                                        child: RichText(
+                                            maxLines: 2,
+                                            textAlign: TextAlign.center,
+                                            text: TextSpan(children: <TextSpan>[
+                                              TextSpan(
+                                                text:
+                                                    "You are currently subscribed to ${widget.title}- ${widget.quntity * 30} days plan ",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ])),
+                                      )
+                                    : SizedBox(),
+
                                 widget.showDrpDown == 1
                                     ? Container(
                                         width: MediaQuery.of(context).size.width * .65,
@@ -372,8 +395,11 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                 ),
               ),
               Padding(
-                padding:
-                    widget.showDrpDown == 1 ? const EdgeInsets.only(top: 165.0) : const EdgeInsets.only(top: 105.0),
+                padding: widget.showDrpDown == 1
+                    ? const EdgeInsets.only(top: 165.0)
+                    : widget.isFromUpgrdePlan == 1
+                        ? const EdgeInsets.only(top: 145.0)
+                        : const EdgeInsets.only(top: 105.0),
                 child: Center(
                   child: Column(
                     children: [

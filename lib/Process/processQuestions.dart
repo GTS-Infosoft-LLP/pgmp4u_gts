@@ -208,7 +208,7 @@ class _ProcessTaskQuestionsState extends State<ProcessTaskQuestions> {
                                                   physics: NeverScrollableScrollPhysics(),
                                                   itemBuilder: (context, index) {
                                                     return Padding(
-                                                        padding: const EdgeInsets.only(bottom: 8.0),
+                                                        padding: const EdgeInsets.only(bottom: 20.0),
                                                         child: InkWell(
                                                           onTap: () {
                                                             if (enableTap == 0) {
@@ -321,23 +321,31 @@ class _ProcessTaskQuestionsState extends State<ProcessTaskQuestions> {
                                                                   // color: Colors.amber,
                                                                   child: Column(
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
                                                                     children: [
                                                                       SizedBox(
                                                                           // height: 20,
                                                                           ),
                                                                       Padding(
-                                                                        padding: const EdgeInsets.only(bottom: 15.0),
+                                                                        padding: const EdgeInsets.only(bottom: 0.0),
                                                                         child: Container(
                                                                             // color: Colors.white,
                                                                             width:
                                                                                 MediaQuery.of(context).size.width * .70,
                                                                             child: Padding(
                                                                               padding: const EdgeInsets.only(left: 8.0),
-                                                                              child: Text(
-                                                                                Taskop[index].questionOption,
-                                                                                style: TextStyle(fontSize: 15),
-                                                                                // maxLines: 3,
+                                                                              child: Column(
+                                                                                mainAxisAlignment:
+                                                                                    MainAxisAlignment.center,
+                                                                                crossAxisAlignment:
+                                                                                    CrossAxisAlignment.start,
+                                                                                children: [
+                                                                                  Text(
+                                                                                    Taskop[index].questionOption,
+                                                                                    style: TextStyle(fontSize: 15),
+                                                                                    // maxLines: 3,
+                                                                                  ),
+                                                                                ],
                                                                               ),
                                                                             )),
                                                                       ),
@@ -398,9 +406,7 @@ class _ProcessTaskQuestionsState extends State<ProcessTaskQuestions> {
                                               (selAns.length == ansRef.length) && (ansRef.length > 0)
                                                   ? Container(
                                                       decoration: BoxDecoration(
-                                                          color:
-                                                          
-                                                              _colorfromhex("#FAFAFA"),
+                                                          color: _colorfromhex("#FAFAFA"),
                                                           borderRadius: BorderRadius.circular(6)),
                                                       margin: EdgeInsets.only(top: height * (38 / 800)),
                                                       padding: EdgeInsets.only(

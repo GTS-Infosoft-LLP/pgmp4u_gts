@@ -169,27 +169,11 @@ class _ProfileState extends State<Profile> {
 
     if (response.statusCode == 200) {
       setState(() {});
-      // print(convert.jsonDecode(response.body));
+
     }
   }
 
-  // Future apiCall() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String stringValue = prefs.getString('token');
-  //   http.Response response;
-  //   response = await http.get(Uri.parse(USER_DETAILS), headers: {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': stringValue
-  //   });
 
-  //   if (response.statusCode == 200) {
-  //     setState(() {
-  //       mapResponse = convert.jsonDecode(response.body);
-  //       dataResponse = mapResponse["data"];
-  //     });
-  //     // print(convert.jsonDecode(response.body));
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
