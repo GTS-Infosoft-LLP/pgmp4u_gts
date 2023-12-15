@@ -98,7 +98,11 @@ class _HomeViewState extends State<HomeView> {
       if (courseProvider.crsDropList.length == 0) {
         courseProvider.setFloatButton(1);
       } else {
-        courseProvider.setFloatButton(0);
+        if (courseProvider.allCrsList.length != courseProvider.chatCrsDropList.length) {
+          courseProvider.setFloatButton(1);
+        } else if (courseProvider.allCrsList.length == courseProvider.chatCrsDropList.length) {
+          courseProvider.setFloatButton(0);
+        }
       }
     });
   }
@@ -170,11 +174,20 @@ class _HomeViewState extends State<HomeView> {
                                     child: Container(
                                       child: Row(
                                         children: [
-                                          CircularCachedNetworkImage(
-                                            imageUrl: user.image,
-                                            size: 50,
-                                            borderColor: Colors.white,
-                                            borderWidth: 0,
+                                          InkWell(
+                                            onTap: () {
+                                              CourseProvider courseProvider = Provider.of(context, listen: false);
+                                              print(
+                                                  "courseProvider.allCrsList>>>>>>${courseProvider.allCrsList.length}");
+                                              print(
+                                                  "courseProvider.chatCrsDropList.length>>>>>${courseProvider.chatCrsDropList.length}");
+                                            },
+                                            child: CircularCachedNetworkImage(
+                                              imageUrl: user.image,
+                                              size: 50,
+                                              borderColor: Colors.white,
+                                              borderWidth: 0,
+                                            ),
                                           ),
                                           SizedBox(
                                             width: 10,
@@ -411,20 +424,11 @@ class _HomeViewState extends State<HomeView> {
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       RichText(
-                                          // overflow: TextOverflow.ellipsis,
-                                          // maxLines: 2,
-                                          // textAlign: TextAlign.left,
                                           text: TextSpan(children: <TextSpan>[
                                         TextSpan(
                                           text: "Hey, " + "${user.name}",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 22,
-                                              // fontFamily: 'Roboto Regular',
-                                              fontWeight: FontWeight.bold
-
-                                              // fontFamily: AppFont.poppinsRegular,
-                                              ),
+                                          style:
+                                              TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
                                         ),
                                       ])),
                                       CircularCachedNetworkImage(
@@ -443,8 +447,6 @@ class _HomeViewState extends State<HomeView> {
                                     child: Column(
                                       children: [
                                         RichText(
-                                            // overflow: TextOverflow.ellipsis,
-                                            // maxLines: 2,
                                             textAlign: TextAlign.left,
                                             text: TextSpan(children: <TextSpan>[
                                               TextSpan(
@@ -454,16 +456,11 @@ class _HomeViewState extends State<HomeView> {
                                                   color: Colors.white,
                                                   fontSize: 18,
                                                   fontFamily: 'Roboto Bold',
-                                                  // fontWeight: FontWeight.bold
-
-                                                  // fontFamily: AppFont.poppinsRegular,
                                                 ),
                                               ),
                                             ])),
                                         cp.showFloatButton == 0
                                             ? RichText(
-                                                // overflow: TextOverflow.ellipsis,
-                                                // maxLines: 2,
                                                 textAlign: TextAlign.left,
                                                 text: TextSpan(children: <TextSpan>[
                                                   TextSpan(
@@ -472,9 +469,6 @@ class _HomeViewState extends State<HomeView> {
                                                       color: Colors.white,
                                                       fontSize: 17,
                                                       fontFamily: 'Roboto Regular',
-                                                      // fontWeight: FontWeight.bold
-
-                                                      // fontFamily: AppFont.poppinsRegular,
                                                     ),
                                                   ),
                                                 ]))
@@ -502,8 +496,6 @@ class _HomeViewState extends State<HomeView> {
                                 storedCourse = [];
                               }
 
-                              // print("storedMaster========================$storedCourse");
-
                               if (storedCourse == null) {
                                 storedCourse = [];
                               }
@@ -522,11 +514,7 @@ class _HomeViewState extends State<HomeView> {
                                           : Padding(
                                               padding: const EdgeInsets.only(bottom: 8.0),
                                               child: Container(
-                                                  // color: Colors.amber,
-                                                  // height: MediaQuery.of(context).size.height * .58,
                                                   child: ListView.builder(
-                                                      // physics: NeverScrollableScrollPhysics(),
-
                                                       physics: BouncingScrollPhysics(),
                                                       itemCount: storedCourse.length,
                                                       itemBuilder: (context, index) {
@@ -543,14 +531,14 @@ class _HomeViewState extends State<HomeView> {
                                                           padding: const EdgeInsets.only(bottom: 20),
                                                           child: InkWell(
                                                               onTap: () async {
+                                                                courseProvider
+                                                                    .setSelectedCourseLable(storedCourse[index].lable);
                                                                 print("course id>>>${storedCourse[index].id}");
                                                                 print(
                                                                     "storedCourse[index]>>>is inapppurchseenable>>${storedCourse[index].inAppPurchaseEnabled}");
 
                                                                 if (storedCourse[index].isCancelSubscription == 1 &&
                                                                     storedCourse[index].isSubscribed == 1) {
-                                                                  // showRestorePopup(index);
-
                                                                   Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(
@@ -563,7 +551,14 @@ class _HomeViewState extends State<HomeView> {
                                                                     if (courseProvider.crsDropList.length == 0) {
                                                                       courseProvider.setFloatButton(1);
                                                                     } else {
-                                                                      courseProvider.setFloatButton(0);
+                                                                      if (courseProvider.allCrsList.length !=
+                                                                          courseProvider.chatCrsDropList.length) {
+                                                                        courseProvider.setFloatButton(1);
+                                                                      } else if (courseProvider
+                                                                              .chatCrsDropList.length ==
+                                                                          courseProvider.allCrsList.length) {
+                                                                        courseProvider.setFloatButton(0);
+                                                                      }
                                                                     }
                                                                   });
                                                                   print(
@@ -612,6 +607,8 @@ class _HomeViewState extends State<HomeView> {
                                                                                   )));
                                                                     });
                                                                   } else {
+                                                                    courseProvider.setSelectedCourseLable(
+                                                                        storedCourse[index].lable);
                                                                     pp.updateLoader(false);
                                                                     courseProvider
                                                                         .getMasterData(storedCourse[index].id);
@@ -628,7 +625,13 @@ class _HomeViewState extends State<HomeView> {
                                                                     if (courseProvider.crsDropList.length == 0) {
                                                                       courseProvider.setFloatButton(1);
                                                                     } else {
-                                                                      courseProvider.setFloatButton(0);
+                                                                      if (courseProvider.allCrsList.length !=
+                                                                          courseProvider.chatCrsDropList.length) {
+                                                                        courseProvider.setFloatButton(1);
+                                                                      } else if (courseProvider.allCrsList.length ==
+                                                                          courseProvider.chatCrsDropList.length) {
+                                                                        courseProvider.setFloatButton(0);
+                                                                      }
                                                                     }
                                                                   });
                                                                 }
@@ -691,7 +694,7 @@ class _HomeViewState extends State<HomeView> {
                                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                                     children: [
                                                                       Container(
-                                                                        height: 30,
+                                                                        height: 28,
                                                                         child: storedCourse[index].isSubscribed == 1
                                                                             ? InkWell(
                                                                                 onTap: () {
@@ -703,20 +706,22 @@ class _HomeViewState extends State<HomeView> {
                                                                                 },
                                                                                 child: Chip(
                                                                                   label: RichText(
+                                                                                      textAlign: TextAlign.center,
                                                                                       text:
                                                                                           TextSpan(children: <TextSpan>[
-                                                                                    TextSpan(
-                                                                                      text: storedCourse[index]
-                                                                                                  .isCancelSubscription ==
-                                                                                              1
-                                                                                          ? "Restore"
-                                                                                          : "Enrolled",
-                                                                                      style: TextStyle(
-                                                                                          color: Colors.white,
-                                                                                          fontSize: 16,
-                                                                                          fontWeight: FontWeight.w600),
-                                                                                    ),
-                                                                                  ])),
+                                                                                        TextSpan(
+                                                                                          text: storedCourse[index]
+                                                                                                      .isCancelSubscription ==
+                                                                                                  1
+                                                                                              ? "Restore"
+                                                                                              : "Enrolled",
+                                                                                          style: TextStyle(
+                                                                                              color: Colors.white,
+                                                                                              fontSize: 15,
+                                                                                              fontWeight:
+                                                                                                  FontWeight.w600),
+                                                                                        ),
+                                                                                      ])),
                                                                                   //  Text("hello"),
                                                                                   backgroundColor: Color(0xff3F9FC9),
                                                                                 ),
@@ -728,7 +733,7 @@ class _HomeViewState extends State<HomeView> {
                                                                                     text: "Join",
                                                                                     style: TextStyle(
                                                                                         color: Colors.white,
-                                                                                        fontSize: 16,
+                                                                                        fontSize: 15,
                                                                                         fontWeight: FontWeight.w600),
                                                                                   ),
                                                                                 ])),
@@ -761,11 +766,34 @@ class _HomeViewState extends State<HomeView> {
                                                                                             : "Platinum",
                                                                                 style: TextStyle(
                                                                                     color: Colors.black,
-                                                                                    fontSize: 15,
+                                                                                    fontSize: 14,
                                                                                     fontWeight: FontWeight.w500),
                                                                               ),
                                                                             ]))
-                                                                          : SizedBox()
+                                                                          : SizedBox(),
+                                                                      storedCourse[index].isSubscribed == 1 &&
+                                                                              (storedCourse[index]
+                                                                                          .isCancelSubscription ==
+                                                                                      0 ||
+                                                                                  storedCourse[index]
+                                                                                          .isCancelSubscription ==
+                                                                                      2)
+                                                                          ? RichText(
+                                                                              text: TextSpan(children: <TextSpan>[
+                                                                              TextSpan(
+                                                                                text: storedCourse[index]
+                                                                                            .subscriptionDurationType ==
+                                                                                        1
+                                                                                    ? "${storedCourse[index].subscriptionDurationQuantity * 30}-Days"
+                                                                                    : "${storedCourse[index].subscriptionDurationQuantity * 365}-Days",
+                                                                                style: TextStyle(
+                                                                                  color: Colors.black,
+                                                                                  fontSize: 10,
+                                                                                  // fontWeight: FontWeight.w500
+                                                                                ),
+                                                                              )
+                                                                            ]))
+                                                                          : SizedBox(),
                                                                     ],
                                                                   )
                                                                   // storedCourse[index].isSubscribed == 0

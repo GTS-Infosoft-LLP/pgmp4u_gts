@@ -33,6 +33,8 @@ class CourseProvider extends ChangeNotifier {
   List<CourseDetails> course = [];
 
   List<CourseDetails> mockCrsDropList = [];
+
+    List<CourseDetails> allCrsList = [];
   List<CourseDetails> crsDropList = [];
   List<CourseDetails> cancelSubsList = [];
   List<CourseDetails> chatCrsDropList = [];
@@ -166,7 +168,7 @@ class CourseProvider extends ChangeNotifier {
   setSelectedCourseLable(String val) {
     Future.delayed(Duration.zero, () {
       selectedCourseLable = val;
-      // print("selectedCourseLable:::: $selectedCourseLable");
+      print("selectedCourseLable:::: $selectedCourseLable");
       notifyListeners();
     });
   }
@@ -978,6 +980,7 @@ class CourseProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         course.clear();
         crsDropList.clear();
+        allCrsList.clear();
         chatCrsDropList.clear();
         mockCrsDropList.clear();
         cancelSubsList.clear();
@@ -987,6 +990,7 @@ class CourseProvider extends ChangeNotifier {
         print("temp list course === $temp1");
         course = temp1.map((e) => CourseDetails.fromjson(e)).toList();
         for (int i = 0; i < course.length; i++) {
+          allCrsList.add(course[i]);
           print("::::length of mock list>>>>>..${course[i].Mocktests.length}");
           print("::::isSubscribed value>>>>>..${course[i].isSubscribed}");
           if (course[i].Mocktests.length > 0 || course[i].isSubscribed == 1) {

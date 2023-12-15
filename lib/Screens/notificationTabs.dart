@@ -23,8 +23,11 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
   @override
   void initState() {
     CourseProvider cp = Provider.of(context, listen: false);
-    cp.setSelectedNotiCrsLable(null);
-
+    if (cp.crsDropList.isNotEmpty) {
+      cp.setSelectedNotiCrsLable(cp.crsDropList[0].lable);
+    } else {
+      cp.setSelectedNotiCrsLable(null);
+    }
     // TODO: implement initState
     super.initState();
     _dshbrdProvider = Provider.of(context, listen: false);

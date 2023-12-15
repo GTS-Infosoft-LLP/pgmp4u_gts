@@ -344,6 +344,7 @@ class _ProfileState extends State<Profile> {
 
                           InkWell(
                             onTap: () {
+                              print("offffsettttt${DateTime.now().timeZoneOffset.inMilliseconds}");
                               // Navigator.push(context, MaterialPageRoute(builder: (context) => Subscriptionpg()));
                             },
                             child: ClipOval(
@@ -1193,7 +1194,8 @@ class _ProfileState extends State<Profile> {
                       textAlign: TextAlign.center,
                       text: TextSpan(children: <TextSpan>[
                         TextSpan(
-                          text: "Are you sure you want to delete this account?",
+                          text:
+                              "Are you sure you want to delete this account?\n Deleting the account will remove all the plans and your data will be lost",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 18,
@@ -1418,34 +1420,36 @@ class cancelSubsBottomSheet extends StatelessWidget {
             height: 20,
           ),
 
-     cp.cancelSubsList.length > 0?     InkWell(
-            onTap: () {
-              showCancelSubsPopup(context);
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18.0),
-              child: Container(
-                height: 60,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  gradient: AppColor.appGradient,
-                ),
-                alignment: Alignment.center,
-                child: RichText(
-                    // textAlign: TextAlign.left,
-                    text: TextSpan(children: <TextSpan>[
-                  TextSpan(
-                    text: 'CANCEL NOW',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontFamily: 'Roboto Medium',
+          cp.cancelSubsList.length > 0
+              ? InkWell(
+                  onTap: () {
+                    showCancelSubsPopup(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: AppColor.appGradient,
+                      ),
+                      alignment: Alignment.center,
+                      child: RichText(
+                          // textAlign: TextAlign.left,
+                          text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: 'CANCEL NOW',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontFamily: 'Roboto Medium',
+                          ),
+                        ),
+                      ])),
                     ),
                   ),
-                ])),
-              ),
-            ),
-          ):SizedBox(),
+                )
+              : SizedBox(),
 
           SizedBox(
             height: 20,

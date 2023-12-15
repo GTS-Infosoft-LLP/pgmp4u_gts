@@ -77,9 +77,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
     localDataUpdate();
 
-   
     fireNotification();
-     navigateToScreen();
+    navigateToScreen();
   }
 
   @override
@@ -87,20 +86,9 @@ class _SplashScreenState extends State<SplashScreen> {
     super.dispose();
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // Timer timer = new Timer(new Duration(seconds: 5), () {
-
-  //   //    Navigator.of(context).pushNamed('');
-  //   // });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: double.infinity,
-      // height: double.infinity,
       color: Colors.white,
       child: Center(
         child: Container(
@@ -112,9 +100,6 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  // check local user object if not found any user object move login screen.
-  /// if fount user object move to dashboard screeen.
-  /// if found that user not see on-boarding then move on-boarding sreeen.
   localDataUpdate() async {
     print("---------------: GETTING FIREBASE TOKEN :----------------");
     var messaging = FirebaseMessaging.instance;
@@ -123,8 +108,6 @@ class _SplashScreenState extends State<SplashScreen> {
       HiveHandler.setDeviceToken(value);
       String token = await HiveHandler.getDeviceToken();
       print("get device token after set $token");
-
-      // api.updateDeviceIdUser({"deviceId": value});
     });
   }
 
@@ -145,13 +128,13 @@ class _SplashScreenState extends State<SplashScreen> {
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       print("inside this getInitialMessage");
 
-      print("message=======>>>>$message");
+      print("message=======>>>>${message}");
       // print("message data=====${message.data}");
 
       if (message != null) {
         flagForNoti = 1;
         print("message data=====${message.data}");
-        // var json = jsonDecode(message.data);
+
         print("Notificationtype====getInitialMessage=====>>>>${message.data['notificationType']}");
         switch (message.data["notificationType"].toString()) {
           case "1":
@@ -186,9 +169,6 @@ class _SplashScreenState extends State<SplashScreen> {
                         )));
 
             break;
-          // default:
-          //   Navigator.push(
-          //       GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
         }
       }
     });
@@ -196,15 +176,13 @@ class _SplashScreenState extends State<SplashScreen> {
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage");
       print("notification====${event.data}");
-      // print("event notification sss====${event.notification}");
-      print("noti body ====${event.notification.body}");
-      print("noti body ====${event.notification.title}");
+      print("notification message====${event.data["message"]}");
 
       if (event.notification != null) {
         print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage 1");
         LocalNotifications().showNotification(
-          title: '${event.notification.body}',
-          body: '',
+          title: event.data["title"],
+          message: event.data["message"],
           payload: jsonEncode(event.data),
         );
       }
@@ -215,7 +193,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
       print("Notificationsssssss>>>>>>");
       print("NOTIFICATION json$message");
-
       print("NOTIFICATION======$json");
       // print("tpmdjsdvjsdv======${message["notificationType"]}");
       print("   ${['Notificationtype']}");
@@ -241,14 +218,6 @@ class _SplashScreenState extends State<SplashScreen> {
               GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
           break;
       }
-
-      // if (message.data["notificationType"] == "1") {
-      //   Navigator.of(GlobalVariable.navState.currentContext!).push(
-      //       MaterialPageRoute(builder: (context) => const Notifications()));
-      // } else if (message.data["notificationType"] == "2") {
-      //   Navigator.of(GlobalVariable.navState.currentContext!)
-      //       .push(MaterialPageRoute(builder: (context) => const Rewards()));
-      // } else {}
     });
   }
 }
@@ -274,11 +243,11 @@ class LocalNotifications {
   Future showNotification({
     int id = 0,
     String title = "",
-    String body = "",
+    String message = "",
     String payload = "",
   }) async {
-    print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage 2 $id, title $title body $body ");
-    _notification.show(id, title, body, await _notificationDetails(), payload: payload);
+    print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage 2 $id, title $title body $message ");
+    _notification.show(id, title, message, await _notificationDetails(), payload: payload);
   }
 
   void selectNotification(String pay) {
@@ -314,14 +283,6 @@ class LocalNotifications {
         Navigator.push(
             GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
     }
-    // if(){}
-    // if (pay == "one") {
-    //   Navigator.of(GlobalVariable.navState.currentContext!)
-    //       .push(MaterialPageRoute(builder: (context) => const Notifications()));
-    // } else if (pay == "two") {
-    //   Navigator.of(GlobalVariable.navState.currentContext!)
-    //       .push(MaterialPageRoute(builder: (context) => const Rewards()));
-    // } else {}
   }
 
   static Future _notificationDetails() async {

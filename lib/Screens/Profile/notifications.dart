@@ -79,7 +79,7 @@ class _NotificationsState extends State<Notifications> {
                           : ListView.builder(
                               controller: scrollcontrol,
                               itemCount: profileProvider.Announcements.length,
-                              physics: BouncingScrollPhysics(), 
+                              physics: BouncingScrollPhysics(),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 return _announcmentsTile(profileProvider, index, context);
@@ -109,7 +109,6 @@ class _NotificationsState extends State<Notifications> {
             profileProvider.setNotifiId(profileProvider.Notifications[index].id);
 
             if (profileProvider.Notifications[index].type == 2) {
-
               // context.read<CourseProvider>().setMasterListType("Question");
               Navigator.push(
                   context,
@@ -130,9 +129,7 @@ class _NotificationsState extends State<Notifications> {
           child: Container(
               width: MediaQuery.of(context).size.width * .65,
               decoration: BoxDecoration(
-                  // color: Colors.amber,
                   border: Border(
-                // top: BorderSide(width: 16.0, color: Colors.lightBlue.shade600),
                 bottom: BorderSide(color: Colors.grey[300]),
               )),
               child: Row(
@@ -161,7 +158,7 @@ class _NotificationsState extends State<Notifications> {
                           children: [
                             Container(
                               // color: Colors.amber,
-                              width: MediaQuery.of(context).size.width * .60,
+                              width: MediaQuery.of(context).size.width * .55,
                               child: Text(
                                 profileProvider.Notifications[index].title ?? '',
                                 maxLines: 5,
@@ -169,6 +166,7 @@ class _NotificationsState extends State<Notifications> {
                                 style: TextStyle(fontFamily: 'Roboto Medium', color: Colors.black, fontSize: 16),
                               ),
                             ),
+                            Spacer(),
                             profileProvider.Notifications[index].type == 1
                                 ? Icon(
                                     Icons.expand_more,
@@ -204,6 +202,17 @@ class _NotificationsState extends State<Notifications> {
                       SizedBox(
                         height: 10,
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            profileProvider.Notifications[index].createdAt ?? '',
+                            maxLines: 5,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontFamily: 'Roboto Medium', color: Colors.black54, fontSize: 13),
+                          ),
+                        ],
+                      )
                     ],
                   )
                 ],
@@ -322,6 +331,12 @@ class _NotificationsState extends State<Notifications> {
                       ),
                       SizedBox(
                         height: 10,
+                      ),
+                      Text(
+                        profileProvider.Announcements[index].createdAt ?? '',
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontFamily: 'Roboto Medium', color: Colors.black54, fontSize: 14),
                       ),
                     ],
                   )

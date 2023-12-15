@@ -86,8 +86,7 @@ class _TaskQuestionState extends State<TaskQuestion> {
               storedTaskQues = [];
             }
             print("storedTaskQues:::::::$storedTaskQues");
-            return Consumer<DomainProvider>(
-              builder: (context, dp, child) {
+            return Consumer<DomainProvider>(builder: (context, dp, child) {
               return Stack(
                 children: [
                   Padding(
@@ -296,20 +295,22 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                                                               Taskop[index].id)
                                                                                       ? Colors.red
                                                                                       : Colors.white,
-                                                                  child: Text(
-                                                                    index == 0
-                                                                        ? 'A'
-                                                                        : index == 1
-                                                                            ? 'B'
-                                                                            : index == 2
-                                                                                ? 'C'
-                                                                                : index == 3
-                                                                                    ? 'D'
-                                                                                    : 'E',
-                                                                    style: TextStyle(
-                                                                        fontFamily: 'Roboto Regular',
-                                                                        fontSize: 14,
-                                                                        color: Colors.black),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      index == 0
+                                                                          ? 'A'
+                                                                          : index == 1
+                                                                              ? 'B'
+                                                                              : index == 2
+                                                                                  ? 'C'
+                                                                                  : index == 3
+                                                                                      ? 'D'
+                                                                                      : 'E',
+                                                                      style: TextStyle(
+                                                                          fontFamily: 'Roboto Regular',
+                                                                          fontSize: 14,
+                                                                          color: Colors.black),
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
@@ -333,9 +334,10 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                                               MediaQuery.of(context).size.width * .70,
                                                                           child: Padding(
                                                                             padding: const EdgeInsets.only(left: 8.0),
-                                                                            child: Text(
+                                                                            child: 
+                                                                            Text(
                                                                               Taskop[index].questionOption,
-                                                                              // maxLines: 3,
+                                                                              
                                                                             ),
                                                                           )),
                                                                     ),
@@ -471,10 +473,8 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                                     "body": Style(
                                                                       padding: EdgeInsets.only(top: 5),
                                                                       fontFamily: 'Roboto Regular',
-
                                                                       margin: EdgeInsets.zero,
                                                                       color: Color(0xff000000),
-                                                                     
                                                                       maxLines: 7,
                                                                       textOverflow: TextOverflow.ellipsis,
                                                                       fontSize: FontSize(

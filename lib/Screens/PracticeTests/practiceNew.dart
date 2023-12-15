@@ -770,8 +770,10 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                 children: [
                                                                   InkWell(
                                                                     onTap: () {
+                                                                      print("this is taping");
                                                                       setState(() {
                                                                         _show = !_show;
+                                                                            print("this is taping>>>${_show}");
                                                                       });
                                                                     },
                                                                     child: Row(

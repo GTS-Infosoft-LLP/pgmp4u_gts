@@ -33,7 +33,7 @@ class ProfileProvider extends ChangeNotifier {
     _pageIndex = 0;
   }
 
-  CourseProvider cp=Provider.of(GlobalVariable.navState.currentContext,listen: false);
+  CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
 
   int selectedSubsBox = 3;
   setSelectedContainer(int val) {
@@ -132,10 +132,10 @@ class ProfileProvider extends ChangeNotifier {
       }
     } else {
       crsId = "";
-  
     }
     _pageIndex++;
-
+    CourseProvider crp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
+    // crsId = crp.selectedCourseId.toString();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -144,9 +144,6 @@ class ProfileProvider extends ChangeNotifier {
     // var request = {"page": _pageIndex};
     var request = {"page": _pageIndex, "courseId": crsId};
     print("Notification requesttttt======$request");
-
-  
-
 
     try {
       var res = await http.post(
@@ -206,19 +203,21 @@ class ProfileProvider extends ChangeNotifier {
 
     print("token valued===$stringValue");
     var request = {"question": ques, "type": typ, "answer": ans};
-  bool checkConn = await checkInternetConn();
+    bool checkConn = await checkInternetConn();
     if (checkConn) {
       body = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
       if (body == null) {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        ).whenComplete(() async {
-         HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+        )
+            .whenComplete(() async {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           await cp.getTestDetails(cp.allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -233,7 +232,7 @@ class ProfileProvider extends ChangeNotifier {
         });
         if (response.statusCode == 200) {
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
-           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
         }
@@ -324,20 +323,21 @@ class ProfileProvider extends ChangeNotifier {
       "courseId": couseId,
     };
 
-
-      bool checkConn = await checkInternetConn();
+    bool checkConn = await checkInternetConn();
     if (checkConn) {
       body = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
       if (body == null) {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        ).whenComplete(() async {
-     HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+        )
+            .whenComplete(() async {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           await cp.getTestDetails(cp.allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -351,7 +351,7 @@ class ProfileProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
@@ -412,20 +412,28 @@ class ProfileProvider extends ChangeNotifier {
     String stringValue = prefs.getString('token');
 
     print("token valued===$stringValue");
-    var request = {"courseId": couseId, "type": type, "studyReminder": studyReminder, "examDate": examDate};
-  bool checkConn = await checkInternetConn();
+    var request = {
+      "courseId": couseId,
+      "type": type,
+      "studyReminder": studyReminder,
+      "examDate": examDate,
+      "offset": DateTime.now().timeZoneOffset.inMilliseconds
+    };
+    bool checkConn = await checkInternetConn();
     if (checkConn) {
       body = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
       if (body == null) {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        ).whenComplete(() async {
-    HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+        )
+            .whenComplete(() async {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           await cp.getTestDetails(cp.allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -439,7 +447,7 @@ class ProfileProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
@@ -447,6 +455,7 @@ class ProfileProvider extends ChangeNotifier {
       }
     }
     try {
+      print("requesttt>>>>>>$request");
       var response = await http.post(
         Uri.parse(SET_REMINDER),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
@@ -479,19 +488,21 @@ class ProfileProvider extends ChangeNotifier {
     print("token valued===$stringValue");
     var request = {"type": type};
     print("request::::::$request");
-  bool checkConn = await checkInternetConn();
+    bool checkConn = await checkInternetConn();
     if (checkConn) {
       body = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
       if (body == null) {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        ).whenComplete(() async {
-      HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+        )
+            .whenComplete(() async {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           await cp.getTestDetails(cp.allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -505,7 +516,7 @@ class ProfileProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
@@ -579,19 +590,21 @@ class ProfileProvider extends ChangeNotifier {
     print("categoryType==============$categoryType");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
-      bool checkConn = await checkInternetConn();
+    bool checkConn = await checkInternetConn();
     if (checkConn) {
       body = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
       if (body == null) {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        ).whenComplete(() async {
-    HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+        )
+            .whenComplete(() async {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           await cp.getTestDetails(cp.allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -605,7 +618,7 @@ class ProfileProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
@@ -636,19 +649,21 @@ class ProfileProvider extends ChangeNotifier {
     String stringValue = prefs.getString('token');
     print("token valued===$stringValue");
 
-      bool checkConn = await checkInternetConn();
+    bool checkConn = await checkInternetConn();
     if (checkConn) {
       body = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
       if (body == null) {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        ).whenComplete(() async {
-      HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+        )
+            .whenComplete(() async {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           await cp.getTestDetails(cp.allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -663,7 +678,7 @@ class ProfileProvider extends ChangeNotifier {
         });
         if (response.statusCode == 200) {
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
-           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
 
           cp.setToBeSubmitIndex(1000);
@@ -695,19 +710,21 @@ class ProfileProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     print("token valued===$stringValue");
-      bool checkConn = await checkInternetConn();
+    bool checkConn = await checkInternetConn();
     if (checkConn) {
       body = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
       if (body == null) {
         body = "";
       }
       if (body.isNotEmpty) {
-        Response response = await http.post(
+        Response response = await http
+            .post(
           Uri.parse(SUBMIT_MOCK_TEST),
           headers: {"Content-Type": "application/json", 'Authorization': stringValue},
           body: body,
-        ).whenComplete(() async {
-      HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+        )
+            .whenComplete(() async {
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           await cp.getTestDetails(cp.allTestListIdOfline);
           // await apiCall(attempListIdOffline);
@@ -721,7 +738,7 @@ class ProfileProvider extends ChangeNotifier {
           }
         });
         if (response.statusCode == 200) {
-           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
           cp.setToBeSubmitIndex(1000);
@@ -751,28 +768,6 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   Future checkInternetConn() async {
     bool result = await InternetConnectionChecker().hasConnection;
     print("result while call fun $result");

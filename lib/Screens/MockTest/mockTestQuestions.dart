@@ -1072,10 +1072,12 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
                                                                           data: op[index].question_option,
                                                                           style: {
                                                                             "body": Style(
-                                                                              padding: EdgeInsets.only(top: 5),
+                                                                              padding:
+                                                                                  EdgeInsets.only(top: 5, bottom: 5),
                                                                               margin: EdgeInsets.zero,
                                                                               color: Color(0xff000000),
                                                                               textAlign: TextAlign.left,
+                                                                              fontFamily: 'Roboto Regular',
                                                                               fontSize: FontSize(18),
                                                                             )
                                                                           },
