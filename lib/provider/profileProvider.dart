@@ -105,10 +105,8 @@ class ProfileProvider extends ChangeNotifier {
 
   Future showNotification({bool isFirstTime = false, dynamic crsId}) async {
     crsId.toString();
-    print("crsId=====$crsId");
-    if (crsId == null) {
-      crsId = "";
-    }
+    print("crsId===1==$crsId");
+
     if (crsId != null && crsId.toString().isNotEmpty) {
       _totalRec = 1;
       NotificationData = [];
@@ -117,7 +115,7 @@ class ProfileProvider extends ChangeNotifier {
     if (isFirstTime) {
       updateNotificationLoader(true);
     }
-
+    print("crsId===2==$crsId");
     if (!isFirstTime) {
       // crsId = cp.selectedCourseId;
       print("Notifications.length + Announcements.length====${Notifications.length + Announcements.length}");
@@ -136,18 +134,21 @@ class ProfileProvider extends ChangeNotifier {
       print("is first timee");
       Notifications = [];
       Announcements = [];
-      crsId = "";
+      _pageIndex = 0;
+      // crsId = "";
     }
+    print("crsId===3==$crsId");
     _pageIndex++;
     CourseProvider crp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
-    // crsId = crp.selectedCourseId.toString();
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
     print("page index============$_pageIndex");
 
-    // var request = {"page": _pageIndex};
-    var request = {"page": _pageIndex, "courseId": crsId};
+    print("crsId===4==$crp.selectedCourseId");
+
+    var request = {"page": _pageIndex, "courseId": crp.selectedCourseId};
     print("Notification requesttttt======$request");
 
     try {
@@ -471,7 +472,6 @@ class ProfileProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         print("response.statusCode===${response.statusCode}");
-
         var resDDo = json.decode(response.body);
         updateLoader(false);
         var resStatus = (resDDo["status"]);

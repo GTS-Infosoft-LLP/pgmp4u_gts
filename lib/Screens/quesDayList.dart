@@ -26,6 +26,7 @@ class _QuesListCourseState extends State<QuesListCourse> {
   @override
   void initState() {
     super.initState();
+
     context.read<CourseProvider>().setMasterListType("Question");
   }
 
@@ -96,7 +97,6 @@ class _QuesListCourseState extends State<QuesListCourse> {
                         storedCourse = [];
                       }
 
-                      // print("storedMaster========================$storedCourse");
 
                       if (storedCourse == null) {
                         storedCourse = [];
@@ -120,12 +120,12 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                 }
 
                                 return Padding(
-                                  padding: const EdgeInsets.only(bottom: 12.0),
+                                  padding: const EdgeInsets.only(bottom: 15.0),
                                   child: InkWell(
                                     onTap: () async {
                                       print("cousres id========>>>${storedCourse[index].id}");
                                       ProfileProvider pp = Provider.of(context, listen: false);
-                                      //  CourseProvider cp = Provider.of(context, listen: false);
+                                      
                                       pp.updateLoader(true);
 
                                       int courseId = storedCourse[index].id;
@@ -135,16 +135,20 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                       pp.updateLoader(false);
                                       print("chkStat====$chkStat");
                                       if (chkStat == false) {
+                                       
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) => RandomPage(
-                                                      index: 7,
-                                                      categoryId: 0,
-                                                      name:storedCourse[index].lable ,
+                                                      index: 8,
+                                                      categoryId: courseProvider.selectedCourseId,
+                                                      name: storedCourse[index].lable,
                                                       price: pp.subsPrice.toString(),
                                                       categoryType: "Question",
-                                                    )));
+                                                    ))).then((value) {
+                                          CourseProvider cp = Provider.of(context, listen: false);
+                                          cp.getCourse();
+                                        });
                                       } else {
                                         Navigator.push(
                                             context,
@@ -161,9 +165,7 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(8),
                                             color: clr,
-                                            // index % 2 == 0
-                                            //     ? Color(0xff3F9FC9)
-                                            //     : Color(0xffDE682B),
+                                            
                                           ),
                                           child: Padding(
                                             padding: const EdgeInsets.all(12),
@@ -173,22 +175,73 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            storedCourse[index].lable,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                          Text(
-                                            storedCourse[index].course,
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.black,
-                                            ),
-                                          ),
+                                          RichText(
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              text: TextSpan(children: [
+                                                TextSpan(
+                                                  text: storedCourse[index].lable,
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 14,
+                                                 
+                                                  ),
+                                                )
+                                              ])),
+
+                                          RichText(
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              text: TextSpan(children: [
+                                                TextSpan(
+                                                  text: storedCourse[index].course,
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                   
+                                                  ),
+                                                )
+                                              ])),
+                                        
                                         ],
                                       ),
+                                      trailing: storedCourse[index].availableQuestionOfTheDay == 1
+                                          ? Container(
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    height: 40,
+                                                    child: Chip(
+                                                        backgroundColor: Color(0xff3F9FC9),
+                                                        label: RichText(
+                                                          textAlign: TextAlign.center,
+                                                          text: TextSpan(children: <TextSpan>[
+                                                            TextSpan(
+                                                              text: "Enrolled",
+                                                              style: TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontSize: 15,
+                                                                  fontWeight: FontWeight.w600),
+                                                            )
+                                                          ]),
+                                                        )),
+                                                  ),
+                                                  RichText(
+                                                      text: TextSpan(children: <TextSpan>[
+                                                    TextSpan(
+                                                      text: "365-Days",
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 10,
+                                                      ),
+                                                    )
+                                                  ]))
+                                                ],
+                                              ),
+                                            )
+                                          : SizedBox(),
+
                                     ),
                                   ),
                                 );

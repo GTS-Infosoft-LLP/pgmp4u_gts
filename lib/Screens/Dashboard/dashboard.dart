@@ -21,6 +21,8 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     updateDeviceToken();
+    callFreeTrialApi();
+
     super.initState();
   }
 
@@ -69,7 +71,6 @@ class _DashboardState extends State<Dashboard> {
     print(MediaQuery.of(context).padding.top);
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         selectedLabelStyle: TextStyle(
@@ -92,16 +93,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               label: 'Home'
 
-              // Text(
-              //   'Dashboard',
-              //   style: TextStyle(
-              //     fontFamily: 'Roboto Medium',
-              //     fontSize: width * (12 / 420),
-              //     color: _currentIndex == 0
-              //         ? _colorfromhex("#3846A9")
-              //         : _colorfromhex("#ABAFD1"),
-              //   ),
-              // ),
+       
               ),
           // BottomNavigationBarItem(
           //     icon: new Icon(
@@ -155,5 +147,10 @@ class _DashboardState extends State<Dashboard> {
     courseProvider.updateDeviceToken(token);
 
     //  deviceToken
+  }
+
+  Future<void> callFreeTrialApi() async {
+    CourseProvider cp = Provider.of(context, listen: false);
+    await cp.getFreeTrial();
   }
 }

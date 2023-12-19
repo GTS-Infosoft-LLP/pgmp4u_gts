@@ -33,6 +33,9 @@ class _NotificationsState extends State<Notifications> {
     }
 
     ProfileProvider _dshbrdProvider = Provider.of(context, listen: false);
+    _dshbrdProvider.Announcements=[];
+    _dshbrdProvider.Notifications=[];
+    _dshbrdProvider.NotificationData=[];
 
     scrollcontrol.addListener(() {
       print("controller is listeningggggg......");
@@ -99,9 +102,7 @@ class _NotificationsState extends State<Notifications> {
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: InkWell(
           onTap: () {
-            // setState(() {
-            //   _isShow = !_isShow;
-            // });
+      
             print("_isShow===========$_isShow");
 
             print("question id========${profileProvider.Notifications[index].questionId}");

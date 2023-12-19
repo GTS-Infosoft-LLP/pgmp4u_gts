@@ -69,12 +69,12 @@ class _ProfileState extends State<Profile> {
     checkNotificationStatus();
     print(">>>>>cp..MockcrsDropList>>>>>${cp.mockCrsDropList.length}");
     print("cp.crsDropList.=====${cp.crsDropList.length}");
-    if (cp.crsDropList.isNotEmpty) {
-      print("cp.course[0].id===========${cp.crsDropList[0].id}");
-      cp.setSelectedCourseId(cp.crsDropList[0].id);
-      cp.setSelectedCourseName(cp.crsDropList[0].course);
-      cp.setSelectedCourseLable(cp.crsDropList[0].lable);
-      print("cp.course[0].lable===========${cp.crsDropList[0].lable}");
+    if (cp.mockCrsDropList.isNotEmpty) {
+      print("cp.course[0].id===========${cp.mockCrsDropList[0].id}");
+      cp.setSelectedCourseId(cp.mockCrsDropList[0].id);
+      cp.setSelectedCourseName(cp.mockCrsDropList[0].course);
+      cp.setSelectedCourseLable(cp.mockCrsDropList[0].lable);
+      print("cp.course[0].lable===========${cp.mockCrsDropList[0].lable}");
     } else {
       cp.setSelectedCourseLable(null);
       print("seletced course lableee====${cp.selectedCourseLable}");
@@ -169,11 +169,8 @@ class _ProfileState extends State<Profile> {
 
     if (response.statusCode == 200) {
       setState(() {});
-
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -706,7 +703,6 @@ class _ProfileState extends State<Profile> {
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     RichText(
-                                                        // textAlign: TextAlign.center,
                                                         text: TextSpan(children: <TextSpan>[
                                                       TextSpan(
                                                         text: pp.isStudyRemAdded == 0
@@ -749,11 +745,16 @@ class _ProfileState extends State<Profile> {
                                   );
                                 }),
                                 GestureDetector(
-                                  onTap: () {
+                                  onTap: () async {
+                                    CourseProvider cp = Provider.of(context, listen: false);
+                                    cp.updateLoader(true);
+                                    await cp.getCourse().then((value) {
+                                      cp.updateLoader(false);
+                                      Navigator.push(
+                                          context, MaterialPageRoute(builder: (context) => QuesListCourse()));
+                                    });
                                     // ProfileProvider profileProvider = Provider.of(context, listen: false);
                                     // profileProvider.getQuesDay(1);  //QuesListCourse
-
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => QuesListCourse()));
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(bottom: 6),
@@ -794,6 +795,7 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
+                                    cp.setSelectedNotiCrsLable(cp.selectedCourseLable);
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -893,14 +895,10 @@ class _ProfileState extends State<Profile> {
                                         ),
                                       ),
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
-
-                                      // barrierColor: Colors.amber,
                                       builder: (context) {
                                         return cancelSubsBottomSheet();
                                       },
                                     );
-                                    // Navigator.push(
-                                    // context, MaterialPageRoute(builder: (context) => NotificationTabs()));
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(bottom: 6),

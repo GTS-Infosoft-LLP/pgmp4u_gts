@@ -44,6 +44,11 @@ class CourseDetails implements DropDownModel {
     @HiveField(16)
   int subscriptionDurationQuantity;
 
+  @HiveField(17)
+  int availableQuestionOfTheDay;
+  @HiveField(18)
+  int isFree;
+
   CourseDetails();
 
   CourseDetails.fromjson(Map<String, dynamic> json) {
@@ -53,17 +58,19 @@ class CourseDetails implements DropDownModel {
     lable = json["lable"] ?? "";
     exam_Time = json["exam_Time"];
     skip_content_progress = json["skip_content_progress"];
-    status = json["status"];
-    deleteStatus = json["deleteStatus"];
-    isSubscribed = json["isSubscribed"];
-    isChatSubscribed = json["isChatSubscribed"];
-    isJoinNotification = json["isJoinNotification"];
-    subscriptionType = json["subscriptionType"];
-    Mocktests = json["Mocktests"];
+         status = json["status"];
+          deleteStatus = json["deleteStatus"];
+          isSubscribed = json["isSubscribed"];
+         isChatSubscribed = json["isChatSubscribed"];
+         isJoinNotification = json["isJoinNotification"];
+        subscriptionType = json["subscriptionType"];
+         Mocktests = json["Mocktests"];
         isCancelSubscription = json["isCancelSubscription"];
         inAppPurchaseEnabled=json["inAppPurchaseEnabled"];
         subscriptionDurationQuantity=json["subscriptionDurationQuantity"];
         subscriptionDurationType=json["subscriptionDurationType"];
+        availableQuestionOfTheDay=json["availableQuestionOfTheDay"];
+        isFree=json["isFree"];
 
   }
 

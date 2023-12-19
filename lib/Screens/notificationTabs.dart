@@ -23,14 +23,18 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
   @override
   void initState() {
     CourseProvider cp = Provider.of(context, listen: false);
-    if (cp.crsDropList.isNotEmpty) {
-      cp.setSelectedNotiCrsLable(cp.crsDropList[0].lable);
+    if (cp.mockCrsDropList.isNotEmpty) {
+      print("cp.selectedCourseLable=====${cp.selectedCourseLable}");
+      cp.setSelectedNotiCrsLable(cp.selectedCourseLable);
     } else {
       cp.setSelectedNotiCrsLable(null);
     }
     // TODO: implement initState
     super.initState();
     _dshbrdProvider = Provider.of(context, listen: false);
+    _dshbrdProvider.Announcements = [];
+    _dshbrdProvider.Notifications = [];
+    _dshbrdProvider.NotificationData = [];
     _dshbrdProvider.showNotification(isFirstTime: true);
     _controller = TabController(length: 2, vsync: this);
   }
@@ -84,11 +88,9 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                                     print("widget.fromSplash:::${widget.fromSplash}");
                                     if (widget.fromSplash == 1) {
                                       Navigator.pop(context);
-                                      // Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (r) => false);
                                     } else {
                                       Navigator.pop(context);
                                     }
-                                    // Navigator.pop(context);
                                   }))),
                       SizedBox(width: 20),
                       Center(
@@ -106,16 +108,7 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                                         fontFamily: "Roboto"),
                                   )
                                 ]),
-                              )
-                              //  Text(
-                              //   _controller.index == 1 ? "Notifications" : "Announcements",
-                              //   maxLines: 2,
-                              //   overflow: TextOverflow.ellipsis,
-                              //   style: TextStyle(
-                              //       fontSize: 22, color: Colors.white, fontFamily: "Roboto", fontWeight: FontWeight.bold),
-                              // ),
-
-                              )),
+                              ))),
                     ],
                   ),
                 );
@@ -134,13 +127,17 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                     title: "",
                     value: null,
                     onChange: (val) {
-                      print("val.course=========>${val.course}");
+                      print("val.id=========>${val.id}");
                       print("val.course=========>${val.lable}");
                       cp.setSelectedNotiCrsLable(val.lable);
                       cp.setSelectedCourseLable(val.lable);
                       cp.setSelectedCourseId(val.id);
                       ProfileProvider pp = Provider.of(context, listen: false);
-                      pp.showNotification(crsId: cp.selectedCourseId);
+                      pp.Announcements = [];
+                      pp.NotificationData = [];
+                      pp.Notifications = [];
+
+                      pp.showNotification(crsId: val.id, isFirstTime: true);
                     },
                   ),
                 );
@@ -155,6 +152,12 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                   print("_controller====${_controller.index}");
                   print("TAB INDEX $vall");
                   context.read<ProfileProvider>().setTabIndex(vall);
+                  ProfileProvider pp = Provider.of(context, listen: false);
+                  pp.Announcements = [];
+                  pp.NotificationData = [];
+                  pp.Notifications = [];
+
+                  pp.showNotification(isFirstTime: true);
                 },
                 tabs: [
                   Tab(

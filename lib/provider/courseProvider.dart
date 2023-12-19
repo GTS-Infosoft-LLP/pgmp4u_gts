@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:convert' as convert;
+import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart';
@@ -15,6 +16,7 @@ import '../Models/restartModel.dart';
 import '../Screens/MockTest/model/courseModel.dart';
 import '../Screens/MockTest/model/flashCardModel.dart';
 import '../Screens/MockTest/model/flashCateModel.dart';
+import '../Screens/MockTest/model/freetrial_model.dart';
 import '../Screens/MockTest/model/masterdataModel.dart';
 import '../Screens/MockTest/model/testDataModel.dart';
 import '../Screens/MockTest/model/testDetails.dart';
@@ -29,12 +31,15 @@ class CourseProvider extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
   }
 
+  List<FreeTrialData> freeDataList = [];
+
   List<MasterDetails> masterList = [];
   List<CourseDetails> course = [];
+  List<CourseDetails> courseNoti = [];
 
   List<CourseDetails> mockCrsDropList = [];
 
-    List<CourseDetails> allCrsList = [];
+  List<CourseDetails> allCrsList = [];
   List<CourseDetails> crsDropList = [];
   List<CourseDetails> cancelSubsList = [];
   List<CourseDetails> chatCrsDropList = [];
@@ -168,7 +173,7 @@ class CourseProvider extends ChangeNotifier {
   setSelectedCourseLable(String val) {
     Future.delayed(Duration.zero, () {
       selectedCourseLable = val;
-      print("selectedCourseLable:::: $selectedCourseLable");
+      dev.log("selectedCourseLable:::: $selectedCourseLable");
       notifyListeners();
     });
   }
@@ -584,9 +589,7 @@ class CourseProvider extends ChangeNotifier {
           Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
-          print("responseeee");
-          print("responseeee>>>>><<<<<<<%%%%%%%%%%>>>>>>>>>>>>>>${response.statusCode}");
-          print("responseeee BODY>>>>><<<<<<<%%%%%%%%%%>>>>>>>>>>>>>>${response.body}");
+
           if (response.statusCode == 200) {
             getit = convert.jsonDecode(response.body);
             print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
@@ -937,7 +940,7 @@ class CourseProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
-    print("token valued===$stringValue");
+    // print("token valued===$stringValue");
     bool checkConn = await checkInternetConn();
     if (checkConn) {
       body = HiveHandler.getNotSubmittedMock(keyName: notSubmitedMockID);
@@ -961,7 +964,7 @@ class CourseProvider extends ChangeNotifier {
           Map getit;
           if (response.statusCode == 200) {
             getit = convert.jsonDecode(response.body);
-            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+
             await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
           }
         });
@@ -984,60 +987,52 @@ class CourseProvider extends ChangeNotifier {
         chatCrsDropList.clear();
         mockCrsDropList.clear();
         cancelSubsList.clear();
+        courseNoti.clear();
 
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         List temp1 = mapResponse["data"];
-        print("temp list course === $temp1");
+        // print("temp list course === $temp1");
         course = temp1.map((e) => CourseDetails.fromjson(e)).toList();
+        courseNoti = course;
         for (int i = 0; i < course.length; i++) {
           allCrsList.add(course[i]);
-          print("::::length of mock list>>>>>..${course[i].Mocktests.length}");
-          print("::::isSubscribed value>>>>>..${course[i].isSubscribed}");
+
           if (course[i].Mocktests.length > 0 || course[i].isSubscribed == 1) {
-            print("either if the provided condition is true");
             mockCrsDropList.add(course[i]);
           }
           if (course[i].isSubscribed == 1) {
             crsDropList.add(course[i]);
           }
-          if (course[i].isCancelSubscription == 0) {
+          if (course[i].isCancelSubscription == 0 && course[i].isFree != 1) {
             cancelSubsList.add(course[i]);
           }
 
           if (course[i].isChatSubscribed == 1 || course[i].isSubscribed == 1) {
             chatCrsDropList.add(course[i]);
           }
-          print("crsDropList=======$crsDropList");
         }
-        print("course=========$course");
 
         try {
           HiveHandler.addCourseData(jsonEncode(mapResponse["data"]));
 
           Future.delayed(Duration(microseconds: 10), () {
-            // tempListCourse
             List<CourseDetails> res = HiveHandler.getCourseDataList();
-
             notifyListeners();
           });
         } catch (e) {
           print("errorr===========>>>>>>$e");
         }
         updateGetCourseApiCalling(false);
-
-        print("course lkengrtht=====${course.length}");
       } else {
-        print("status codeee====>>>>${response.statusCode}");
         course = [];
         crsDropList = [];
         chatCrsDropList = [];
+        courseNoti = [];
 
         HiveHandler.addCourseData(jsonEncode(course));
         updateGetCourseApiCalling(false);
       }
-      print("787878 ${response.body}");
     } on Exception {
-      // TODO
       updateGetCourseApiCalling(false);
     }
   }
@@ -1046,11 +1041,13 @@ class CourseProvider extends ChangeNotifier {
 
   Future<void> restoreCourse(int id) async {
     Map restoreBody = {"courseId": id};
+    print("restoreBody======$restoreBody");
     updateLoader(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
     print("token valueddfdfdf===$stringValue");
     bool checkConn = await checkInternetConn();
+    print("checkConn=========$checkConn");
     if (checkConn) {
       body = HiveHandler.getNotSubmittedMock(keyName: notSubmitedMockID);
       if (body == null) {
@@ -1085,6 +1082,7 @@ class CourseProvider extends ChangeNotifier {
         }
       }
     }
+    print("noewww here about to call restore api");
     try {
       var response = await http.post(Uri.parse(RESTORE_SUBSCRIPTION),
           headers: {
@@ -1134,7 +1132,7 @@ class CourseProvider extends ChangeNotifier {
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           HiveHandler.removeFromRestartBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
-          // await apiCall(attempListIdOffline);
+
           Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
@@ -1414,17 +1412,10 @@ class CourseProvider extends ChangeNotifier {
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );
-      print("respponse=== 54545454${response.body}");
-      print("testData>>>>>>$testData");
 
       if (response.statusCode == 200) {
         testData.clear();
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
-        print("mapResponse===========$mapResponse");
-        print('mapResponse["data"]>>>>>>>>>${mapResponse["data"]}');
-        if (mapResponse["data"] == {}) {
-          print("this is data and it is empthyyyyyyyyy");
-        }
 
         if (mapResponse["status"] == 200) {
           List temp1 = mapResponse["data"];
@@ -1555,19 +1546,8 @@ class CourseProvider extends ChangeNotifier {
           HiveHandler.removeFromRestartBox(notSubmitedMockID);
           HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           await getTestDetails(allTestListIdOfline);
-
-          // Response response = await http.get(Uri.parse(MOCK_TEST + '/$attempListIdOffline'),
-          //     headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
-          // Map getit;
-          // if (response.statusCode == 200) {
-          //   getit = convert.jsonDecode(response.body);
-          //   print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
-          //   await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), attempListIdOffline.toString());
-          // }
         });
         if (response.statusCode == 200) {
-          // HiveHandler.removeFromRestartBox(notSubmitedMockID);
-          // HiveHandler.removeFromSubmitMockBox(notSubmitedMockID);
           setnotSubmitedMockID("");
           setToBeSubmitIndex(1000);
         }
@@ -1576,10 +1556,6 @@ class CourseProvider extends ChangeNotifier {
     try {
       response = await http.get(Uri.parse(MOCK_TEST + '/$selectedIdNew'),
           headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
-      // print("Url :=> ${Uri.parse(MOCK_TEST + "/$selectedIdNew")}");
-      // print("header :=> ${{'Content-Type': 'application/json', 'Authorization': stringValue}}");
-      // print("API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
-      // print("API Response ; $stringValue => ${response.request.url}; ${response.body}");
 
       Map getit;
       if (response.statusCode == 200) {
@@ -1587,7 +1563,6 @@ class CourseProvider extends ChangeNotifier {
 
         getit = convert.jsonDecode(response.body);
         print("mock data==================>>>>>>>>>>${getit["data"]}");
-
         mockData = MockData.fromjd(getit["data"]);
       }
     } on Exception {
@@ -1689,9 +1664,7 @@ class CourseProvider extends ChangeNotifier {
     bool result = await InternetConnectionChecker().hasConnection;
     print("result while call fun $result");
     if (result == false) {
-      Future.delayed(Duration(seconds: 1), () async {
-        //  await EasyLoading.showToast("Internet Not Connected",toastPosition: EasyLoadingToastPosition.bottom);
-      });
+      Future.delayed(Duration(seconds: 1), () async {});
       return result;
     } else {}
     return result;
@@ -1713,5 +1686,80 @@ class CourseProvider extends ChangeNotifier {
       print("dismiss loader");
       EasyLoading.dismiss();
     }
+  }
+
+  int currentIndex = 0;
+  int currentDaysVal;
+  String currentLableVal;
+  void chngIndex() {
+    Future.delayed(Duration.zero, () {
+      currentIndex = (currentIndex + 1) % intDays.length;
+      currentLableVal = freeLable[currentIndex];
+      currentDaysVal = intDays[currentIndex];
+      if (currentLableVal == null) {
+        getFreeTrial();
+      }
+      dev.log("current index value===${freeLable[currentIndex]}");
+      notifyListeners();
+    });
+  }
+
+  List<int> intDays = [];
+  List<String> freeLable = [];
+
+  Future<void> getFreeTrial() async {
+    dev.log("callinggg free trial api");
+    freeLable = [];
+    intDays = [];
+    String stringValue = prefs.getString('token');
+
+    print("token valued===$stringValue");
+
+    try {
+      var response = await http.get(
+        Uri.parse(GET_FREE_TRIAL),
+        headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+        // body: json.encode(request),
+      );
+
+      var resDDo = json.decode(response.body);
+      var resStatus = (resDDo["status"]);
+      if (response.statusCode == 400) {
+        freeDataList = [];
+        notifyListeners();
+        return;
+      }
+      if (response.statusCode == 200) {
+        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+        dev.log("map resposnse===$mapResponse");
+
+        if (mapResponse['status'] == 400) {
+          freeDataList = [];
+          return;
+        }
+        if (mapResponse["success"] == true) {
+          List temp1 = mapResponse["data"]["list"];
+
+          freeDataList = temp1.map((e) => FreeTrialData.fromJson(e)).toList();
+
+          if (freeDataList.length > 0) {
+            for (int i = 0; i < freeDataList.length; i++) {
+              print("freeDataList[i].days.toString===${freeDataList[i].days}");
+              intDays.add(freeDataList[i].days);
+              freeLable.add(freeDataList[i].lable);
+            }
+          }
+          chngIndex();
+          notifyListeners();
+          dev.log("days=====$intDays");
+        } else {
+          freeDataList = [];
+        }
+      }
+    } on Exception {
+      intDays = [];
+      updatePPTDataListApiCall(false);
+    }
+    notifyListeners();
   }
 }

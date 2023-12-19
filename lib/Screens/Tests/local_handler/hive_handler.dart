@@ -63,7 +63,7 @@ class HiveHandler {
 
   static const String taskQuesBox = "taskQuesBox";
   static const String taskQuesKey = "taskQuesKey";
-    static const String processTaskQuesBox = "processTaskQuesBox";
+  static const String processTaskQuesBox = "processTaskQuesBox";
   static const String processTaskQuesKey = "processTaskQuesKey";
 
   static const String quesOfDayBox = "quesOfDayBox";
@@ -118,8 +118,8 @@ class HiveHandler {
   static Box<RestartModel> mockRestartBox;
   static Box<String> submitDataBox;
   static Box<String> taskPracTestBox;
-    static Box<String> processQuesBox;
-    static Box<String> PracTestBox;
+  static Box<String> processQuesBox;
+  static Box<String> PracTestBox;
 
   static Box<List<MockTestListApiModel>> MockListBox;
   static Box<List<QuestionAnswerModel>> MockTextBox;
@@ -172,7 +172,7 @@ class HiveHandler {
     categoryListBox = await Hive.openBox<List<CategoryListModel>>(userDataBox);
     QuesOfDDayBox = await Hive.openBox<String>(quesOfDayBox);
     taskPracTestBox = await Hive.openBox<String>(taskQuesBox);
-        processQuesBox = await Hive.openBox<String>(processTaskQuesBox);
+    processQuesBox = await Hive.openBox<String>(processTaskQuesBox);
     masterListBox = await Hive.openBox<String>(MasterDataBox);
     submitDataBox = await Hive.openBox<String>(SubmitMockBoxKey);
 
@@ -241,7 +241,7 @@ class HiveHandler {
 
     mockAttempList.put(key, mockAttempts);
     if (mockAttempList.containsKey(key)) {
-      print("===========added to box=========");
+      // print("===========added to box=========");
       print("mockAttempList.get  key: $key, Data: ${mockAttempList.get(key)}");
     } else {
       print("===========box is empty=========");
@@ -263,7 +263,7 @@ class HiveHandler {
   static setMockData({String value, String key}) async {
     MockQuestionBox.put(key, value);
     if (MockQuestionBox.containsKey(key)) {
-      print("===========added to box=========");
+      // print("===========added to box=========");
       print("MockQuestionBox.get  Key: $key, Data:${MockQuestionBox.get(key)}");
     } else {
       print("===========box is empty=========");
@@ -279,7 +279,7 @@ class HiveHandler {
     TaskItemsBox.put(key, value);
 
     if (TaskItemsBox.containsKey(key)) {
-      print("===========added to box=========");
+      // print("===========added to box=========");
       print("TaskItemsBox.get  Key: $key, Data:${TaskItemsBox.get(key)}");
 
       String taskData = TaskItemsBox.get(key);
@@ -341,7 +341,6 @@ class HiveHandler {
     }
   }
 
-
   static setProcessTaskQuesData({String value, String key}) async {
     List<TaskQues> storedProcessQuesData = [];
     print("valueee of vallll>>>>>$value");
@@ -361,11 +360,11 @@ class HiveHandler {
     }
   }
 
-
   static ValueListenable<Box<String>> getTaskQuesListener() {
     return Hive.box<String>(taskQuesBox).listenable() ?? '';
   }
-   static ValueListenable<Box<String>> getProcessTaskQuesListener() {
+
+  static ValueListenable<Box<String>> getProcessTaskQuesListener() {
     return Hive.box<String>(processTaskQuesBox).listenable() ?? '';
   }
 
@@ -529,7 +528,7 @@ class HiveHandler {
     courseListBox.put(CourseKey, courseListResponse);
 
     if (courseListBox.isNotEmpty) {
-      print("===========added to box=========");
+      // print("===========added to box=========");
       print("courseListBox.get ${courseListBox.get(CourseKey)}");
     } else {
       print("===========box is empty=========");
@@ -545,11 +544,11 @@ class HiveHandler {
 
     try {
       String courseData = courseListBox.get(CourseKey);
-      print(" >> courseData :  $courseData");
+      // print(" >> courseData :  $courseData");
       List courselist = jsonDecode(courseData);
 
       storedCourseData = courselist.map((e) => CourseDetails.fromjson(e)).toList();
-      print(" >> couserList : $storedCourseData");
+      // print(" >> couserList : $storedCourseData");
 
       // storedCourseData =
       print("storedCourseData list length ${storedCourseData.length}");
@@ -666,7 +665,7 @@ class HiveHandler {
 
     try {
       String masterData = masterListBox.get(key);
-      print(" >> courseData :  $masterData");
+      // print(" >> courseData :  $masterData");
       List masterList = jsonDecode(masterData);
 
       storedMasterData = masterList.map((e) => MasterDetails.fromjson(e)).toList();

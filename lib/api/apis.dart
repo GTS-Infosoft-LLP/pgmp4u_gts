@@ -138,7 +138,7 @@ const GET_PROCESS = _BASE_URL + "getProcess";
 const GET_SUB_PROCESS = _BASE_URL + "getSubProcess";
 const GET_TASKS_PROCESS = _BASE_URL + "getTasksProcess";
 const GET_TASKS_PROCESS_DETAIL = _BASE_URL + "getTasksProcessDetails";
-
+const GET_FREE_TRIAL = _BASE_URL + "getFreeTrials";
 
 // const GET_DOMAIN = _BASE_URL + "getDomain";
 // const GET_TASK_DETAIL = _BASE_URL + "getTaskDetails";

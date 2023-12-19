@@ -1344,6 +1344,7 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
                     type = type.replaceAll(" ", "");
 
                     String urll = CREATE_ORDER + "/$IdValue/$type";
+                    // log("");
 
                     /// Payment implement with stripe
                     bool status = await Navigator.push(

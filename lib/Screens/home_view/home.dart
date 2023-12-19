@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert' as convert;
+import 'dart:developer' as dev;
 import 'dart:convert';
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -13,6 +14,7 @@ import 'package:pgmp4u/api/apis.dart';
 import 'package:pgmp4u/provider/profileProvider.dart';
 import 'package:pgmp4u/provider/purchase_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:text_scroll/text_scroll.dart';
 import '../../Models/hideshowmodal.dart';
 import '../../provider/Subscription/subscriptionPage.dart';
 import '../../provider/Subscription/subscriptionProvider.dart';
@@ -25,7 +27,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Tests/local_handler/hive_handler.dart';
 import '../masterPage.dart';
 
-//import 'home_view/flashcardbuttn.dart';
 class HomeView extends StatefulWidget {
   const HomeView({Key key}) : super(key: key);
 
@@ -40,6 +41,9 @@ class _HomeViewState extends State<HomeView> {
   @override
   Color clr;
   String body;
+  List<String> texts = [];
+  int currentIndex = 0;
+  Timer _timer;
 
   List<CourseDetails> tempList = [];
   List<CourseDetails> storedCourse = [];
@@ -48,11 +52,13 @@ class _HomeViewState extends State<HomeView> {
     print("0======call init");
     PurchaseProvider purchaseProvider = Provider.of(context, listen: false);
     CourseProvider courseProvider = Provider.of(context, listen: false);
+    courseProvider.setFloatButton(0);
+    dev.log("texts====$texts");
     purchaseProvider.updateStatusNew();
-    // courseProvider.getCourse();
-
+    _timer = Timer.periodic(Duration(seconds: 30), (timer) {
+      courseProvider.chngIndex();
+    });
     callApi();
-
     super.initState();
   }
 
@@ -67,7 +73,7 @@ class _HomeViewState extends State<HomeView> {
     CourseProvider courseProvider = Provider.of(context, listen: false);
 
     body = HiveHandler.getNotSubmittedMock(keyName: courseProvider.notSubmitedMockID);
-    print("object......${ConnectivityResult.values}");
+    // print("object......${ConnectivityResult.values}");
     if (body == null) {
       body = "";
     }
@@ -93,14 +99,17 @@ class _HomeViewState extends State<HomeView> {
     // print(" Map mp Map mp $mp");
 
     courseProvider.getCourse();
-    Future<void>.delayed(Duration(seconds: 3), () {
+    await courseProvider.getFreeTrial();
+    courseProvider.setFloatButton(0);
+    Future<void>.delayed(Duration(seconds: 5), () {
       print("courseProvider.crsDropList.length:::${courseProvider.crsDropList.length}");
       if (courseProvider.crsDropList.length == 0) {
         courseProvider.setFloatButton(1);
       } else {
         if (courseProvider.allCrsList.length != courseProvider.chatCrsDropList.length) {
           courseProvider.setFloatButton(1);
-        } else if (courseProvider.allCrsList.length == courseProvider.chatCrsDropList.length) {
+        } else if (courseProvider.allCrsList.length == courseProvider.chatCrsDropList.length &&
+            courseProvider.chatCrsDropList.length > 0) {
           courseProvider.setFloatButton(0);
         }
       }
@@ -195,9 +204,6 @@ class _HomeViewState extends State<HomeView> {
                                           Container(
                                               width: MediaQuery.of(context).size.width * .75,
                                               child: RichText(
-                                                  // overflow: TextOverflow.ellipsis,
-                                                  // maxLines: 2,
-                                                  // textAlign: TextAlign.center,
                                                   text: TextSpan(children: <TextSpan>[
                                                 TextSpan(
                                                   text:
@@ -206,9 +212,6 @@ class _HomeViewState extends State<HomeView> {
                                                     color: Colors.black,
                                                     fontSize: 17,
                                                     fontFamily: 'Roboto Medium',
-                                                    // fontWeight: FontWeight.bold
-
-                                                    // fontFamily: AppFont.poppinsRegular,
                                                   ),
                                                 ),
                                               ]))),
@@ -234,15 +237,8 @@ class _HomeViewState extends State<HomeView> {
                                           height: 45.2,
                                           width: MediaQuery.of(context).size.width * .46,
                                           child: Center(
-                                              child:
-
-                                                  //     Text(
-                                                  //   "Close",
-                                                  //   style: TextStyle(fontSize: 17),
-                                                  // )
-
-                                                  RichText(
-                                                      text: TextSpan(children: <TextSpan>[
+                                              child: RichText(
+                                                  text: TextSpan(children: <TextSpan>[
                                             TextSpan(
                                               text: "Close",
                                               style: TextStyle(
@@ -256,6 +252,8 @@ class _HomeViewState extends State<HomeView> {
                                       InkWell(
                                         onTap: () async {
                                           CourseProvider crs = Provider.of(context, listen: false);
+                                          crs.setSelectedCourseId(crs.course[0].id);
+                                          crs.setSelectedCourseLable(storedCourse[0].lable);
 
                                           ProfileProvider pp = Provider.of(context, listen: false);
                                           pp.setSelectedContainer(2);
@@ -272,6 +270,8 @@ class _HomeViewState extends State<HomeView> {
                                             crs.setSelectedCourseLable(storedCourse[0].lable);
                                           }
                                           Future.delayed(Duration(microseconds: 300), () {
+                                            crs.setSelectedCourseId(crs.course[0].id);
+                                            crs.setSelectedCourseLable(storedCourse[0].lable);
                                             sp.setSelectedRadioVal(0);
 
                                             Navigator.push(
@@ -279,7 +279,7 @@ class _HomeViewState extends State<HomeView> {
                                                 MaterialPageRoute(
                                                     builder: (context) => Subscriptionpg(
                                                           showDrpDown: 1,
-                                                          showFreeTrial: 0,
+                                                          showFreeTrial: 1,
                                                         )));
                                           });
                                         },
@@ -292,14 +292,12 @@ class _HomeViewState extends State<HomeView> {
                                           width: MediaQuery.of(context).size.width * .46,
                                           child: Center(
                                               child: RichText(
-                                           
                                                   text: TextSpan(children: <TextSpan>[
                                             TextSpan(
                                               text: "See Plans",
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 17,
-                                             
                                               ),
                                             ),
                                           ]))),
@@ -368,19 +366,18 @@ class _HomeViewState extends State<HomeView> {
                                         ),
                                         Container(
                                             width: MediaQuery.of(context).size.width * .63,
-                                            child: RichText(
-                                              
-                                                text: TextSpan(children: <TextSpan>[
-                                              TextSpan(
-                                                text: "Start with free trial for 3 days",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 17,
-                                                  fontFamily: 'Roboto Medium',
-                                             
-                                                ),
-                                              ),
-                                            ]))),
+                                            child: TextScroll(
+                                              "Start with free trial for ${cp.currentDaysVal} days for ${cp.currentLableVal} course.  ",
+                                              mode: TextScrollMode.endless,
+                                              velocity: Velocity(pixelsPerSecond: Offset(50, 0)),
+                                              delayBefore: Duration(seconds: 1),
+                                              // numberOfReps: 2,
+                                              pauseBetween: Duration(seconds: 1),
+                                              style: TextStyle(
+                                                  color: Colors.white, fontFamily: 'Roboto Medium', fontSize: 16),
+                                              textAlign: TextAlign.right,
+                                              selectable: true,
+                                            )),
                                         new Spacer(),
                                         Padding(
                                           padding: const EdgeInsets.only(right: 15.0),
@@ -400,7 +397,6 @@ class _HomeViewState extends State<HomeView> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(40.0),
-                                  // bottomLeft: Radius.circular(40.0)
                                 ),
                                 gradient: LinearGradient(
                                     colors: [_colorfromhex('#3846A9'), _colorfromhex('#5265F8')],
@@ -425,11 +421,19 @@ class _HomeViewState extends State<HomeView> {
                                               TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
                                         ),
                                       ])),
-                                      CircularCachedNetworkImage(
-                                        imageUrl: user.image,
-                                        size: (topHeight / 4) * 2,
-                                        borderColor: Colors.white,
-                                        borderWidth: 0,
+                                      InkWell(
+                                        onTap: () {
+                                          CourseProvider courseProvider = Provider.of(context, listen: false);
+                                          print("courseProvider.allCrsList>>>>>>${courseProvider.allCrsList.length}");
+                                          print(
+                                              "courseProvider.chatCrsDropList.length>>>>>${courseProvider.chatCrsDropList.length}");
+                                        },
+                                        child: CircularCachedNetworkImage(
+                                          imageUrl: user.image,
+                                          size: (topHeight / 4) * 2,
+                                          borderColor: Colors.white,
+                                          borderWidth: 0,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -549,8 +553,9 @@ class _HomeViewState extends State<HomeView> {
                                                                           courseProvider.chatCrsDropList.length) {
                                                                         courseProvider.setFloatButton(1);
                                                                       } else if (courseProvider
-                                                                              .chatCrsDropList.length ==
-                                                                          courseProvider.allCrsList.length) {
+                                                                                  .chatCrsDropList.length ==
+                                                                              courseProvider.allCrsList.length &&
+                                                                          courseProvider.allCrsList.length > 0) {
                                                                         courseProvider.setFloatButton(0);
                                                                       }
                                                                     }
@@ -625,7 +630,8 @@ class _HomeViewState extends State<HomeView> {
                                                                           courseProvider.chatCrsDropList.length) {
                                                                         courseProvider.setFloatButton(1);
                                                                       } else if (courseProvider.allCrsList.length ==
-                                                                          courseProvider.chatCrsDropList.length) {
+                                                                              courseProvider.chatCrsDropList.length &&
+                                                                          courseProvider.allCrsList.length > 0) {
                                                                         courseProvider.setFloatButton(0);
                                                                       }
                                                                     }
@@ -660,27 +666,16 @@ class _HomeViewState extends State<HomeView> {
                                                                           style: TextStyle(
                                                                             color: Colors.grey,
                                                                             fontSize: 14,
-                                                                            // fontFamily: 'Roboto Medium',
-                                                                            // fontWeight: FontWeight.bold
-
-                                                                            // fontFamily: AppFont.poppinsRegular,
                                                                           ),
                                                                         ),
                                                                       ])),
                                                                       RichText(
-                                                                          // overflow: TextOverflow.ellipsis,
-                                                                          // maxLines: 2,
-                                                                          // textAlign: TextAlign.center,
                                                                           text: TextSpan(children: <TextSpan>[
                                                                         TextSpan(
                                                                           text: storedCourse[index].course,
                                                                           style: TextStyle(
                                                                             color: Colors.black,
                                                                             fontSize: 18,
-                                                                            // fontFamily: 'Roboto Medium',
-                                                                            // fontWeight: FontWeight.bold
-
-                                                                            // fontFamily: AppFont.poppinsRegular,
                                                                           ),
                                                                         ),
                                                                       ])),
@@ -724,15 +719,17 @@ class _HomeViewState extends State<HomeView> {
                                                                               )
                                                                             : Chip(
                                                                                 label: RichText(
+                                                                                    textAlign: TextAlign.center,
                                                                                     text: TextSpan(children: <TextSpan>[
-                                                                                  TextSpan(
-                                                                                    text: "Join",
-                                                                                    style: TextStyle(
-                                                                                        color: Colors.white,
-                                                                                        fontSize: 15,
-                                                                                        fontWeight: FontWeight.w600),
-                                                                                  ),
-                                                                                ])),
+                                                                                      TextSpan(
+                                                                                        text: "Join",
+                                                                                        style: TextStyle(
+                                                                                            color: Colors.white,
+                                                                                            fontSize: 15,
+                                                                                            fontWeight:
+                                                                                                FontWeight.w600),
+                                                                                      ),
+                                                                                    ])),
                                                                                 //  Text("hello"),
                                                                                 backgroundColor: Color(0xff3F9FC9),
                                                                               ),
@@ -780,7 +777,9 @@ class _HomeViewState extends State<HomeView> {
                                                                                 text: storedCourse[index]
                                                                                             .subscriptionDurationType ==
                                                                                         1
-                                                                                    ? "${storedCourse[index].subscriptionDurationQuantity * 30}-Days"
+                                                                                    ? storedCourse[index].isFree == 1
+                                                                                        ? "${storedCourse[index].subscriptionDurationQuantity}-Days"
+                                                                                        : "${storedCourse[index].subscriptionDurationQuantity * 30}-Days"
                                                                                     : "${storedCourse[index].subscriptionDurationQuantity * 365}-Days",
                                                                                 style: TextStyle(
                                                                                   color: Colors.black,
@@ -791,250 +790,7 @@ class _HomeViewState extends State<HomeView> {
                                                                             ]))
                                                                           : SizedBox(),
                                                                     ],
-                                                                  )
-                                                                  // storedCourse[index].isSubscribed == 0
-                                                                  //     ? InkWell(
-                                                                  //         onTap: () {
-                                                                  //           // Navigator.push(context, MaterialPageRoute(builder: (context) => Subscriptionpg()));
-                                                                  //         },
-                                                                  //         child: Container(
-                                                                  //           height: 80,
-                                                                  // color: Colors.amber,
-                                                                  // child:
-                                                                  // Column(
-                                                                  //   mainAxisAlignment: MainAxisAlignment.center,
-                                                                  //   children: [
-                                                                  //     InkWell(
-                                                                  //       onTap: () async {
-                                                                  //         // CourseProvider courseProvider =
-                                                                  //         //     Provider.of(context,
-                                                                  //         //         listen: false);
-                                                                  //         // Future.delayed(
-                                                                  //         //     const Duration(seconds: 5), () {
-                                                                  //         //   if (courseProvider
-                                                                  //         //           .crsDropList.length ==
-                                                                  //         //       0) {
-                                                                  //         //     courseProvider.setFloatButton(1);
-                                                                  //         //   } else {
-                                                                  //         //     courseProvider.setFloatButton(0);
-                                                                  //         //   }
-                                                                  //         // });
-                                                                  //         // print(
-                                                                  //         //     "isSubscribedd::: ${storedCourse[index].isSubscribed}");
-                                                                  //         // courseProvider.setSelectedPlanType(
-                                                                  //         //     storedCourse[index]
-                                                                  //         //         .subscriptionType);
-                                                                  //         // ProfileProvider pp = Provider.of(
-                                                                  //         //     context,
-                                                                  //         //     listen: false);
-                                                                  //         // pp.updateLoader(true);
-                                                                  //         // courseProvider.setSelectedCourseId(
-                                                                  //         //     storedCourse[index].id);
-                                                                  //         // courseProvider.setSelectedCourseName(
-                                                                  //         //     storedCourse[index].course);
-                                                                  //         // courseProvider.setSelectedCourseLable(
-                                                                  //         //     storedCourse[index].lable);
-
-                                                                  //         // if (storedCourse[index]
-                                                                  //         //         .isSubscribed ==
-                                                                  //         //     0) {
-                                                                  //         //   pp.updateLoader(false);
-                                                                  //         //   pp.setSelectedContainer(2);
-                                                                  //         //   SubscriptionProvider sp =
-                                                                  //         //       Provider.of(context,
-                                                                  //         //           listen: false);
-                                                                  //         //   sp.SelectedPlanType = 3;
-                                                                  //         //   await sp.setSelectedDurTimeQt(0, 0,
-                                                                  //         //       isFirtTime: 1);
-                                                                  //         //   sp.setSelectedIval(2);
-                                                                  //         //   if (sp
-                                                                  //         //       .durationPackData.isNotEmpty) {
-                                                                  //         //     sp.setSelectedRadioVal(0);
-                                                                  //         //   }
-                                                                  //         //   sp.selectedIval = 2;
-                                                                  //         //   // await sp.getSubscritionData(storedCourse[index].id);
-
-                                                                  //         //   Future.delayed(
-                                                                  //         //       const Duration(milliseconds: 4),
-                                                                  //         //       () {
-                                                                  //         //     sp.setSelectedIval(2);
-                                                                  //         //     pp.setSelectedContainer(2);
-                                                                  //         //     if (sp.durationPackData
-                                                                  //         //         .isNotEmpty) {
-                                                                  //         //       sp.setSelectedRadioVal(0);
-                                                                  //         //     }
-                                                                  //         //     sp.selectedIval = 2;
-                                                                  //         //     print(
-                                                                  //         //         "sp.selectedIval::${sp.selectedIval}");
-                                                                  //         //     Navigator.push(
-                                                                  //         //         context,
-                                                                  //         //         MaterialPageRoute(
-                                                                  //         //             builder: (context) =>
-                                                                  //         //                 Subscriptionpg(
-                                                                  //         //                   showDrpDown: 0,
-                                                                  //         //                   showFreeTrial: 0,
-                                                                  //         //                 )));
-                                                                  //         //   });
-                                                                  //         // } else {
-                                                                  //         //   pp.updateLoader(false);
-                                                                  //         //   courseProvider.getMasterData(
-                                                                  //         //       storedCourse[index].id);
-                                                                  //         //   Future.delayed(
-                                                                  //         //       const Duration(
-                                                                  //         //           milliseconds: 100), () {
-                                                                  //         //     Navigator.push(
-                                                                  //         //         context,
-                                                                  //         //         MaterialPageRoute(
-                                                                  //         //             builder: (context) =>
-                                                                  //         //                 MasterListPage()));
-                                                                  //         //   });
-                                                                  //         // }
-                                                                  //         // pp.updateLoader(false);
-                                                                  //         // Future.delayed(
-                                                                  //         //     const Duration(seconds: 5), () {
-                                                                  //         //   if (courseProvider
-                                                                  //         //           .crsDropList.length ==
-                                                                  //         //       0) {
-                                                                  //         //     courseProvider.setFloatButton(1);
-                                                                  //         //   } else {
-                                                                  //         //     courseProvider.setFloatButton(0);
-                                                                  //         //   }
-                                                                  //         // });
-                                                                  //       },
-                                                                  //       child: Container(
-                                                                  //         height: 30,
-                                                                  //         child: Chip(
-                                                                  //             label: RichText(
-                                                                  //               text: TextSpan(children: <
-                                                                  //                   TextSpan>[
-                                                                  //                 TextSpan(
-                                                                  //                   text: storedCourse[index]
-                                                                  //                               .isCancelSubscription ==
-                                                                  //                           1
-                                                                  //                       ? "Cancelled"
-                                                                  //                       : "Join",
-                                                                  //                   style: TextStyle(
-                                                                  //                       color: Colors.white,
-                                                                  //                       fontSize: 16,
-                                                                  //                       fontWeight:
-                                                                  //                           FontWeight.w600),
-                                                                  //                 ),
-                                                                  //               ]),
-                                                                  //             ),
-                                                                  //             backgroundColor:
-                                                                  //                 Color(0xff3F9FC9)),
-                                                                  //       ),
-                                                                  //     ),
-                                                                  //     SizedBox(
-                                                                  //       height: 4,
-                                                                  //     ),
-                                                                  //     // Text("Platinum")
-                                                                  //   ],
-                                                                  // ),
-                                                                  //   ),
-                                                                  // )
-                                                                  // : Container(
-                                                                  //     height: 80,
-                                                                  //     child: Column(
-                                                                  //       mainAxisAlignment: MainAxisAlignment.start,
-                                                                  //       children: [
-                                                                  //         Container(
-                                                                  //           height: 35,
-                                                                  //           child: Chip(
-                                                                  //               label: RichText(
-                                                                  //                 text: TextSpan(children: <TextSpan>[
-                                                                  //                   TextSpan(
-                                                                  //                     text: storedCourse[index]
-                                                                  //                                 .isSubscribed ==
-                                                                  //                             1
-                                                                  //                         ? "Enrolled"
-                                                                  //                         : "Cancelled",
-                                                                  //                     style: TextStyle(
-                                                                  //                         color: Colors.white,
-                                                                  //                         fontSize: 16,
-                                                                  //                         fontWeight:
-                                                                  //                             FontWeight.w600),
-                                                                  //                   ),
-                                                                  //                 ]),
-                                                                  //               ),
-                                                                  //               backgroundColor: Color(0xff3F9FC9)),
-                                                                  //         ),
-                                                                  //         SizedBox(
-                                                                  //           height: 4,
-                                                                  //         ),
-                                                                  //      ( ( storedCourse[index].isCancelSubscription==0 ||storedCourse[index].isCancelSubscription==2) &&storedCourse[index].subscriptionType == 1)
-                                                                  //             ? RichText(
-                                                                  //                 text: TextSpan(children: <TextSpan>[
-                                                                  //                   TextSpan(
-                                                                  //                     text: "Silver",
-                                                                  //                     style: TextStyle(
-                                                                  //                         color: Colors.black,
-                                                                  //                         fontSize: 14,
-                                                                  //                         fontWeight:
-                                                                  //                             FontWeight.w600),
-                                                                  //                   ),
-                                                                  //                 ]),
-                                                                  //               )
-                                                                  //             : storedCourse[index]
-                                                                  //                         .subscriptionType ==
-                                                                  //                     2
-                                                                  //                 ? RichText(
-                                                                  //                     text: TextSpan(
-                                                                  //                         children: <TextSpan>[
-                                                                  //                           TextSpan(
-                                                                  //                             text: "Gold",
-                                                                  //                             style: TextStyle(
-                                                                  //                                 color: Colors.black,
-                                                                  //                                 fontSize: 14,
-                                                                  //                                 fontWeight:
-                                                                  //                                     FontWeight
-                                                                  //                                         .w600),
-                                                                  //                           ),
-                                                                  //                         ]),
-                                                                  //                   )
-                                                                  //                 : storedCourse[index]
-                                                                  //                             .subscriptionType ==
-                                                                  //                         3
-                                                                  //                     ? RichText(
-                                                                  //                         text: TextSpan(
-                                                                  //                             children: <TextSpan>[
-                                                                  //                               TextSpan(
-                                                                  //                                 text: "Plantinum",
-                                                                  //                                 style: TextStyle(
-                                                                  //                                     color: Colors
-                                                                  //                                         .black,
-                                                                  //                                     fontSize: 14,
-                                                                  //                                     fontWeight:
-                                                                  //                                         FontWeight
-                                                                  //                                             .w600),
-                                                                  //                               ),
-                                                                  //                             ]),
-                                                                  //                       )
-                                                                  //                     : storedCourse[index]
-                                                                  //                                 .subscriptionType ==
-                                                                  //                             4
-                                                                  //                         ? RichText(
-                                                                  //                             text:
-                                                                  //                                 TextSpan(children: <
-                                                                  //                                     TextSpan>[
-                                                                  //                               TextSpan(
-                                                                  //                                 text:
-                                                                  //                                     "3 Days Trial",
-                                                                  //                                 style: TextStyle(
-                                                                  //                                     color: Colors
-                                                                  //                                         .black,
-                                                                  //                                     fontSize: 14,
-                                                                  //                                     fontWeight:
-                                                                  //                                         FontWeight
-                                                                  //                                             .w600),
-                                                                  //                               ),
-                                                                  //                             ]),
-                                                                  //                           )
-                                                                  //                         : Text("")
-                                                                  //       ],
-                                                                  //     ),
-                                                                  //   ),
-                                                                  )),
+                                                                  ))),
                                                         );
                                                       })),
                                             );
@@ -1065,7 +821,7 @@ class _HomeViewState extends State<HomeView> {
       hideShowRes = HideShowResponse.fromjson(convert.jsonDecode(action));
       print("hideShowRes====$hideShowRes");
 
-      setState(() {});
+      // setState(() {});
     } catch (e) {}
   }
 
@@ -1148,6 +904,7 @@ class _HomeViewState extends State<HomeView> {
                       onTap: () {
                         Navigator.pop(context);
                         CourseProvider cp = Provider.of(context, listen: false);
+                        print("calling restore api");
                         cp.restoreCourse(storedCourse[index].id);
                       },
                       child: Container(

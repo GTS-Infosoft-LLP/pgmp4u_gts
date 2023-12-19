@@ -231,6 +231,7 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
         await http.get(Uri.parse(MOCK_TEST + '/${widget.selectedId}'),
             headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
       });
+      print("respose statuesss submit==${response.statusCode}");
 
       if (response.statusCode == 200) {
         CourseProvider courseProvider = Provider.of(context, listen: false);
@@ -239,6 +240,23 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
           courseProvider.setnotSubmitedMockID("");
           courseProvider.setToBeSubmitIndex(1000);
         }
+      } else if (response.statusCode == 400) {
+        EasyLoading.showToast("You have already submitted the Test!");
+        print("whole response====${response.body}");
+        Navigator.pop(context);
+        Navigator.pop(context);
+
+        //  Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) => MockTestResult(
+        //             resultsData: responseData["data"],
+        //             mocktestId: selectedIdNew,
+        //             attemptData: attemptNew,
+        //             activeTime: stopTime,
+        //             atmptCount: cp.selectedMokAtmptCnt,
+        //           )),
+        // );
       }
     } catch (error, stackTrace) {
       print("ONERRROR: $error");
@@ -321,11 +339,11 @@ class _MockTestQuestionsState extends State<MockTestQuestions> {
           loader = false;
         });
         print(response.body);
-        GFToast.showToast(
-          "Something went wrong,please submit again",
-          context,
-          toastPosition: GFToastPosition.BOTTOM,
-        );
+        // GFToast.showToast(
+        //   "Something went wrong,please submit again",
+        //   context,
+        //   toastPosition: GFToastPosition.BOTTOM,
+        // );
       }
     }
   }

@@ -95,7 +95,7 @@ class _MasterListPageState extends State<MasterListPage> {
                         ),
                         InkWell(
                           onTap: () {
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => FlashCardBtn()));
+                           
                           },
                           child: RichText(
                               overflow: TextOverflow.ellipsis,
@@ -110,7 +110,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                       fontFamily: "Raleway",
                                       fontWeight: FontWeight.bold
 
-                                      // fontFamily: AppFont.poppinsRegular,
+                                      
                                       ),
                                 ),
                               ])),
@@ -151,8 +151,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                     ? Padding(
                                         padding: const EdgeInsets.only(bottom: 0.0),
                                         child: Container(
-                                          // color: Colors.amber,
-                                          // height: MediaQuery.of(context).size.height * .75,
+                                         
                                           child: ListView.builder(
                                               shrinkWrap: true,
                                               itemCount: storedMaster.length,
@@ -378,18 +377,18 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 children: [
                                                                   Container(
                                                                     width: MediaQuery.of(context).size.width * .65,
-                                                                    // color: Colors.amber,
+                                                               
                                                                     child: RichText(
                                                                         overflow: TextOverflow.ellipsis,
                                                                         maxLines: 2,
-                                                                        // textAlign: TextAlign.center,
+                                                                      
                                                                         text: TextSpan(children: <TextSpan>[
                                                                           TextSpan(
                                                                             text: storedMaster[index].label,
                                                                             style: TextStyle(
                                                                               color: Colors.grey,
                                                                               fontSize: 14,
-                                                                              // fontFamily: AppFont.poppinsRegular,
+                                                                            
                                                                             ),
                                                                           ),
                                                                         ])),
@@ -402,7 +401,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                     child: RichText(
                                                                         overflow: TextOverflow.ellipsis,
                                                                         maxLines: 2,
-                                                                        // textAlign: TextAlign.center,
+                                                                        
                                                                         text: TextSpan(children: <TextSpan>[
                                                                           TextSpan(
                                                                             text: storedMaster[index].name,
@@ -410,7 +409,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                               color: Colors.black,
                                                                               fontSize: 18,
 
-                                                                              // fontFamily: AppFont.poppinsRegular,
+                                                                             
                                                                             ),
                                                                           ),
                                                                         ])),

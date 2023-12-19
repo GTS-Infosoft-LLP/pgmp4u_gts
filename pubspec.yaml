@@ -42,6 +42,7 @@ dependencies:
   # Online Database For Data
   cloud_firestore:
   video_player: ^2.7.2
+  text_scroll: ^0.2.0
   fijkplayer: ^0.10.0
   # Add Authentication such as Google SignIn, Facebook SignIn, Apple SignIn, Phone Auth etc.
   firebase_auth: ^1.1.0

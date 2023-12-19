@@ -33,13 +33,15 @@ class CourseDetailsAdapter extends TypeAdapter<CourseDetails> {
       ..isCancelSubscription = fields[13] as int
       ..inAppPurchaseEnabled = fields[14] as int
       ..subscriptionDurationType = fields[15] as int
-      ..subscriptionDurationQuantity = fields[16] as int;
+      ..subscriptionDurationQuantity = fields[16] as int
+      ..availableQuestionOfTheDay = fields[17] as int
+      ..isFree = fields[18] as int;
   }
 
   @override
   void write(BinaryWriter writer, CourseDetails obj) {
     writer
-      ..writeByte(17)
+      ..writeByte(19)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -73,7 +75,11 @@ class CourseDetailsAdapter extends TypeAdapter<CourseDetails> {
       ..writeByte(15)
       ..write(obj.subscriptionDurationType)
       ..writeByte(16)
-      ..write(obj.subscriptionDurationQuantity);
+      ..write(obj.subscriptionDurationQuantity)
+      ..writeByte(17)
+      ..write(obj.availableQuestionOfTheDay)
+      ..writeByte(18)
+      ..write(obj.isFree);
   }
 
   @override

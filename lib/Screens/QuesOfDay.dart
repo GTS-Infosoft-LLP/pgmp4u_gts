@@ -57,8 +57,8 @@ class _QuesOfDayState extends State<QuesOfDay> {
     ansRef = [];
     currentIndex = 0;
     QuesDay();
-    context.read<CourseProvider>().setMasterListType("Chat");
-    context.read<ProfileProvider>().subscriptionStatus("Chat");
+    context.read<CourseProvider>().setMasterListType("Question");
+    context.read<ProfileProvider>().subscriptionStatus("Question");
     // TODO: implement initState
     super.initState();
   }
@@ -77,15 +77,16 @@ class _QuesOfDayState extends State<QuesOfDay> {
   onTapOfPutOnDisscussion(String question, List<OptionsDay> li, String img, String crsNameLable) async {
     if (!context.read<ProfileProvider>().isChatSubscribed) {
       setState(() => questionLoader = false);
+      CourseProvider cp = Provider.of(context, listen: false);
 
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => RandomPage(
-                    index: 4,
+                    index: 8,
                     price: context.read<ProfileProvider>().subsPrice.toString(),
-                    categoryType: context.read<CourseProvider>().selectedMasterType,
-                    categoryId: 0,
+                    categoryType: cp.selectedCourseId.toString(),
+                    categoryId: cp.selectedCourseId,
                   )));
       return;
     }
@@ -138,9 +139,9 @@ class _QuesOfDayState extends State<QuesOfDay> {
                 // print("value:>> ${value.get(selectedIdNew.toString())} ");
                 String data = value.get(cp.selectedCourseId.toString());
                 List resList = jsonDecode(data);
-                print("quesdayList:::::::$resList");
+                // print("quesdayList:::::::$resList");
                 quesdayList = resList.map((e) => QuesDayModel.fromJson(e)).toList();
-                print("quesdayList:::::::::: $quesdayList");
+                // print("quesdayList:::::::::: $quesdayList");
               } else {
                 print("errror  v1111==========");
               }
@@ -740,21 +741,22 @@ class _QuesOfDayState extends State<QuesOfDay> {
                                                                           margin:
                                                                               EdgeInsets.only(top: height * (9 / 800)),
                                                                           child: Text(
-                                                                            quesdayList[_quetionNo].rightAnswer ==
-                                                                                    options[0].id.toString()
-                                                                                ? 'Answer A is the correct one'
-                                                                                : quesdayList[_quetionNo].rightAnswer ==
-                                                                                        options[1].id.toString()
-                                                                                    ? 'Answer B is the correct one'
-                                                                                    : quesdayList[_quetionNo]
-                                                                                                .rightAnswer ==
-                                                                                            options[2].id.toString()
-                                                                                        ? 'Answer c is the correct one'
-                                                                                        : quesdayList[_quetionNo]
-                                                                                                    .rightAnswer ==
-                                                                                                options[3].id.toString()
-                                                                                            ? 'Answer D is the correct one'
-                                                                                            : 'Answer E is the correct one',
+                                                                            getTstAns(options, rightAns),
+                                                                            // quesdayList[_quetionNo].rightAnswer ==
+                                                                            //         options[0].id.toString()
+                                                                            //     ? 'Answer A is the correct one'
+                                                                            //     : quesdayList[_quetionNo].rightAnswer ==
+                                                                            //             options[1].id.toString()
+                                                                            //         ? 'Answer B is the correct one'
+                                                                            //         : quesdayList[_quetionNo]
+                                                                            //                     .rightAnswer ==
+                                                                            //                 options[2].id.toString()
+                                                                            //             ? 'Answer c is the correct one'
+                                                                            //             : quesdayList[_quetionNo]
+                                                                            //                         .rightAnswer ==
+                                                                            //                     options[3].id.toString()
+                                                                            //                 ? 'Answer D is the correct one'
+                                                                            //                 : 'Answer E is the correct one',
                                                                             style: TextStyle(
                                                                               fontFamily: 'Roboto Regular',
                                                                               fontSize: width * (15 / 420),
@@ -1544,5 +1546,131 @@ class _QuesOfDayState extends State<QuesOfDay> {
       isAnsCorrect = 2;
       print("  list are not same are both the lkstssss   answer incorrect");
     }
+  }
+
+  String getTstAns(List<OptionsDay> op, List<String> rightAns) {
+    String correct = "";
+    for (int i = 0; i < op.length; i++) {
+      print("optionssssssssss====>>>${op[i].id}");
+    }
+    print("options in func====>>>$op");
+    print("rightAnsssss======$rightAns");
+
+    if (rightAns.contains(op[1].id.toString()) && rightAns.contains(op[3].id.toString())) {
+      // correct = "Answer B and D are the correct one";\
+      print("this is trueee");
+    }
+
+    if (rightAns.length == 1) {
+      if (rightAns.contains(op[0].id.toString())) {
+        print("this is correct");
+        correct = 'Answer A is the correct one';
+      } else if (rightAns.contains(op[1].id.toString())) {
+        correct = 'Answer B is the correct one';
+      } else if (rightAns.contains(op[2].id.toString())) {
+        correct = 'Answer C is the correct one';
+        print("this is correct ans c");
+      } else if (rightAns.contains(op[3].id.toString())) {
+        correct = 'Answer D is the correct one';
+      } else {
+        correct = 'Answer E is the correct one';
+      }
+    } else if (rightAns.length == 2) {
+      print("lenght is equal to 2");
+      if (op.length > 4) {
+        print("E option is present ");
+
+        if (rightAns.contains(op[0].id.toString()) && rightAns.contains(op[4].id.toString())) {
+          correct = "Answer A and E are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) && rightAns.contains(op[1].id.toString())) {
+          correct = "Answer A and B are the correct one";
+        } else if (rightAns.contains(op[1].id.toString()) && rightAns.contains(op[2].id.toString())) {
+          correct = "Answer A and C are the correct one";
+        } else if (rightAns.contains(op[1].id.toString()) && rightAns.contains(op[3].id.toString())) {
+          correct = "Answer B and D are the correct one";
+        } else if (rightAns.contains(op[1].id.toString()) && rightAns.contains(op[4].id.toString())) {
+          correct = "Answer B and E are the correct one";
+        } else if (rightAns.contains(op[1].id.toString()) && rightAns.contains(op[2].id.toString())) {
+          correct = "Answer B and C are the correct one";
+        } else if (rightAns.contains(op[1].id.toString()) && rightAns.contains(op[3].id.toString())) {
+          correct = "Answer B and D are the correct one";
+        } else if (rightAns.contains(op[2].id.toString()) && rightAns.contains(op[4].id.toString())) {
+          correct = "Answer C and E are the correct one";
+        } else if (rightAns.contains(op[2].id.toString()) && rightAns.contains(op[3].id.toString())) {
+          correct = "Answer C and D are the correct one";
+        } else if (rightAns.contains(op[3].id.toString()) && rightAns.contains(op[4].id.toString())) {
+          correct = "Answer D and E are the correct one";
+        }
+      } else {
+        print("E option is not present and means its absent ");
+        if (rightAns.contains(op[0].id.toString()) && rightAns.contains(op[1].id.toString())) {
+          correct = "Answer A and B are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) && rightAns.contains(op[2].id.toString())) {
+          correct = "Answer A and C are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) && rightAns.contains(op[3].id.toString())) {
+          correct = "Answer A and D are the correct one";
+        } else if (rightAns.contains(op[1].id.toString()) && rightAns.contains(op[2].id.toString())) {
+          correct = "Answer B and C are the correct one";
+        } else if (rightAns.contains(op[1].id.toString()) && rightAns.contains(op[3].id.toString())) {
+          correct = "Answer B and D are the correct one";
+        } else if (rightAns.contains(op[2].id.toString()) && rightAns.contains(op[3].id.toString())) {
+          correct = "Answer C and D are the correct one";
+        }
+      }
+    } else if (rightAns.length == 3) {
+      print("checking for length 3");
+
+      if (op.length > 4) {
+        print("E option is present");
+        if (rightAns.contains(op[0].id.toString()) &&
+            rightAns.contains(op[1].id.toString()) &&
+            rightAns.contains(op[4].id.toString())) {
+          correct = "Answer A, B and E are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) &&
+            rightAns.contains(op[2].id.toString()) &&
+            rightAns.contains(op[4].id.toString())) {
+          correct = "Answer A, C and E are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) &&
+            rightAns.contains(op[3].id.toString()) &&
+            rightAns.contains(op[4].id.toString())) {
+          correct = "Answer A, D and E are the correct one";
+        }
+        if (rightAns.contains(op[1].id.toString()) &&
+            rightAns.contains(op[2].id.toString()) &&
+            rightAns.contains(op[4].id.toString())) {
+          correct = "Answer B, C and E are the correct one";
+        } else if (rightAns.contains(op[1].id.toString()) &&
+            rightAns.contains(op[3].id.toString()) &&
+            rightAns.contains(op[4].id.toString())) {
+          correct = "Answer B, D and E are the correct one";
+        } else if (rightAns.contains(op[2].id.toString()) &&
+            rightAns.contains(op[3].id.toString()) &&
+            rightAns.contains(op[4].id.toString())) {
+          correct = "Answer C, D and E are the correct one";
+        }
+      } else {
+        print("E option is not present and means its absent ");
+        if (rightAns.contains(op[0].id.toString()) &&
+            rightAns.contains(op[1].id.toString()) &&
+            rightAns.contains(op[2].id.toString())) {
+          correct = "Answer A, B and C are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) &&
+            rightAns.contains(op[1].id.toString()) &&
+            rightAns.contains(op[3].id.toString())) {
+          correct = "Answer A, B and D are the correct one";
+        } else if (rightAns.contains(op[0].id.toString()) &&
+            rightAns.contains(op[2].id.toString()) &&
+            rightAns.contains(op[3].id.toString())) {
+          correct = "Answer A, C and D are the correct one";
+        } else if (rightAns.contains(op[2].id.toString()) &&
+            rightAns.contains(op[3].id.toString()) &&
+            rightAns.contains(op[1].id.toString())) {
+          correct = "Answer B, C and D are the correct one";
+        }
+      }
+    }
+
+    print("correct======$correct");
+    return correct;
   }
 }

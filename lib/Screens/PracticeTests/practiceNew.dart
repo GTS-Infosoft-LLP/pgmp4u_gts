@@ -113,7 +113,6 @@ class _PracticeNewState extends State<PracticeNew> {
                     price: context.read<ProfileProvider>().subsPrice.toString(),
                     categoryType: context.read<CourseProvider>().selectedMasterType,
                     categoryId: 0,
-                    
                   )));
       return;
     }
@@ -773,7 +772,7 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                       print("this is taping");
                                                                       setState(() {
                                                                         _show = !_show;
-                                                                            print("this is taping>>>${_show}");
+                                                                        print("this is taping>>>$_show");
                                                                       });
                                                                     },
                                                                     child: Row(
@@ -827,12 +826,9 @@ class _PracticeNewState extends State<PracticeNew> {
                                                                               "body": Style(
                                                                                 padding: EdgeInsets.only(top: 5),
                                                                                 fontFamily: 'Roboto Regular',
-
                                                                                 margin: EdgeInsets.zero,
                                                                                 color: Color(0xff000000),
                                                                                 textAlign: TextAlign.left,
-                                                                                // maxLines: 7,
-                                                                                // textOverflow: TextOverflow.ellipsis,
                                                                                 fontSize: FontSize(18),
                                                                               )
                                                                             },
@@ -1023,13 +1019,7 @@ class _PracticeNewState extends State<PracticeNew> {
     for (int i = 0; i < op.length; i++) {
       print("op>>>>>>>>>${op[i].id}");
     }
-    // print("finalSelectedAns for correct option>>>>$finalSelectedAns");
-    // print("correctanslength===${correctAns.length}");
-    // if (correctAns.isEmpty) {
-    //   rightAns = finalSelectedAns;
-    // } else {
-    //   rightAns = correctAns;
-    // }
+
     rightAns = checkFrmList;
     print("rightAns rightAns rightAns>>>>$rightAns");
 
@@ -1109,63 +1099,6 @@ class _PracticeNewState extends State<PracticeNew> {
       }
     }
 
-    // if (correctAns.length == 1) {
-    //   if (correctAns.contains(op[0].id)) {
-    //     correct = 'Answer A is the correct one';
-    //   } else if (correctAns.contains(op[1].id)) {
-    //     correct = 'Answer B is the correct one';
-    //   } else if (correctAns.contains(op[2].id)) {
-    //     correct = 'Answer C is the correct one';
-    //   } else if (correctAns.contains(op[3].id)) {
-    //     correct = 'Answer D is the correct one';
-    //   } else {
-    //     correct = 'Answer E is the correct one';
-    //   }
-    // } else if (correctAns.length == 2) {
-    //   if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id)) {
-    //     correct = "Answer A and B are the correct one";
-    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[2].id)) {
-    //     correct = "Answer A and C are the correct one";
-    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[3].id)) {
-    //     correct = "Answer A and D are the correct one";
-    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[4].id)) {
-    //     correct = "Answer A and E are the correct one";
-    //   } else if (correctAns.contains(op[1].id) && correctAns.contains(op[2].id)) {
-    //     correct = "Answer B and C are the correct one";
-    //   } else if (correctAns.contains(op[1].id) && correctAns.contains(op[3].id)) {
-    //     correct = "Answer B and D are the correct one";
-    //   } else if (correctAns.contains(op[1].id) && correctAns.contains(op[4].id)) {
-    //     correct = "Answer B and E are the correct one";
-    //   } else if (correctAns.contains(op[2].id) && correctAns.contains(op[3].id)) {
-    //     correct = "Answer C and D are the correct one";
-    //   } else if (correctAns.contains(op[2].id) && correctAns.contains(op[4].id)) {
-    //     correct = "Answer C and E are the correct one";
-    //   } else if (correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
-    //     correct = "Answer D and E are the correct one";
-    //   }
-    // } else if (correctAns.length == 3) {
-    //   if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id) && correctAns.contains(op[2].id)) {
-    //     correct = "Answer A, B and C are the correct one";
-    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id) && correctAns.contains(op[3].id)) {
-    //     correct = "Answer A, B and D are the correct one";
-    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[1].id) && correctAns.contains(op[4].id)) {
-    //     correct = "Answer A, B and E are the correct one";
-    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[2].id) && correctAns.contains(op[3].id)) {
-    //     correct = "Answer A, C and D are the correct one";
-    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[2].id) && correctAns.contains(op[4].id)) {
-    //     correct = "Answer A, C and E are the correct one";
-    //   } else if (correctAns.contains(op[0].id) && correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
-    //     correct = "Answer A, D and E are the correct one";
-    //   } else if (correctAns.contains(op[1].id) && correctAns.contains(op[2].id) && correctAns.contains(op[3].id)) {
-    //     correct = "Answer B, C and D are the correct one";
-    //   } else if (correctAns.contains(op[1].id) && correctAns.contains(op[2].id) && correctAns.contains(op[4].id)) {
-    //     correct = "Answer B, C and E are the correct one";
-    //   } else if (correctAns.contains(op[1].id) && correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
-    //     correct = "Answer B, D and E are the correct one";
-    //   } else if (correctAns.contains(op[2].id) && correctAns.contains(op[3].id) && correctAns.contains(op[4].id)) {
-    //     correct = "Answer C, D and E are the correct one";
-    //   }
-    // }
     print("correct======$correct");
     return correct;
   }

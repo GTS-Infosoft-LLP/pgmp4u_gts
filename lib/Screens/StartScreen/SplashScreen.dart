@@ -33,6 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await initializeSharedPref(context);
     //Return String
     String stringValue = prefs.getString('token');
+
     return stringValue;
   }
 
@@ -61,6 +62,8 @@ class _SplashScreenState extends State<SplashScreen> {
           String email = prefs.getString('email');
           var _user = UserModel(image: photo, name: name, token: token, email: email);
           UserObject.setUser(_user);
+          // CourseProvider courseProvider = Provider.of(context, listen: false);
+          // await courseProvider.getFreeTrial();
           Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (r) => false);
         } else {
           print("is this true....");
@@ -128,7 +131,7 @@ class _SplashScreenState extends State<SplashScreen> {
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       print("inside this getInitialMessage");
 
-      print("message=======>>>>${message}");
+      print("message=======>>>>$message");
       // print("message data=====${message.data}");
 
       if (message != null) {

@@ -294,20 +294,20 @@ class PurchaseProvider extends ChangeNotifier {
       print("status code===${response.statusCode}");
 
       if (response.statusCode == 200) {
-        print("Calling successfull");
-        print("response===$response");
+        // print("Calling successfull");
+        // print("response===$response");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
 
-        print("map resposense====$mapResponse");
+        // print("map resposense====$mapResponse");
         print(convert.jsonDecode(response.body));
         // setState(() {
 
         PurchaseProvider purchaseProvider = Provider.of(GlobalVariable.navState.currentContext, listen: false);
-        print("datadatdtdatdatdasdtasdasdt>>>>>>>>>>$mapResponse");
+        // print("datadatdtdatdatdasdtasdasdt>>>>>>>>>>$mapResponse");
         purchaseProvider.setStatus(ModelStatus.fromjson(mapResponse["data"]));
         latestStatus = purchaseProvider.getLatestStatus();
-        print("real valuee of flash card status  ${latestStatus.flashCardStatus}");
-        print("real valuee of video library status  ${latestStatus.videoLibStatus}");
+        // print("real valuee of flash card status  ${latestStatus.flashCardStatus}");
+        // print("real valuee of video library status  ${latestStatus.videoLibStatus}");
         notifyListeners();
         if (Platform.isIOS && noNavigate) {
           Navigator.pop(GlobalVariable.navState.currentContext);

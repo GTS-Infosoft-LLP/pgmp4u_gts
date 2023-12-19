@@ -405,9 +405,9 @@ class _MockTestState extends State<MockTest> {
                                                             new Spacer(),
                                                             Column(
                                                               children: [
-                                                                // storedTestData[index].premium == 1
-                                                                //     ? Text("Premium")
-                                                                //     : Text(""),
+                                                                storedTestData[index].premium == 1
+                                                                    ? Text("Premium")
+                                                                    : Text(""),
                                                                 Container(
                                                                   child: Icon(
                                                                     Icons.east,

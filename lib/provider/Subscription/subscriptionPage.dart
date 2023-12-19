@@ -53,7 +53,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     sp.updateLoader(false);
 
     Future.delayed(Duration(milliseconds: 200), () {
-      // print("is this workinggg");
+
       if (sp.durationPackData.isNotEmpty && widget.showFreeTrial == 0) {
         // sp.setSelectedRadioVal(0);
       }
@@ -102,14 +102,14 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                     SubscriptionProvider sp = Provider.of(context, listen: false);
                     CourseProvider cp = Provider.of(context, listen: false);
                     sp.freeSubscription(cp.selectedCourseId).then((value) {
-                      // print("inside then conditin ");
+                     
                       try {
-                        // Navigator.pop(context);
+                      
                       } catch (e) {
                         print("errror in pop statement===$e");
                       }
                     });
-                    // freeSubscription
+                
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * .9,
@@ -141,36 +141,6 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                         child: InkWell(
                           onTap: () async {
                             ShowSubsConfrm(context);
-                            // SubscriptionProvider sp = Provider.of(context, listen: false);
-
-                            // sp.createSubscritionOrder(sp.selectedSubsId);
-                            // var token = await getTokenn();
-                            // ProfileProvider pp = Provider.of(context, listen: false);
-
-                            // print(" selectedSubsType ====${sp.selectedSubsType}");
-                            // print("permiumbutton.length===${permiumbutton.length}");
-                            // if (sp.selectedSubsType > permiumbutton.length) {
-                            //   GFToast.showToast(
-                            //     'Please select Plan',
-                            //     context,
-                            //     toastPosition: GFToastPosition.CENTER,
-                            //   );
-                            // } else {
-                            //   bool status = await Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) =>
-                            //             PaymentAndroid(token: token, statusFlash1videoLibrary2: 1, urlll: sp.finUrl),
-                            //       ));
-                            //   print("statueeess====>>>$status");
-
-                            //   if (status) {
-                            //     Navigator.pop(context);
-                            //     _handlePaymentSuccess2(context);
-                            //   } else {
-                            //     _handlePaymentError2(context);
-                            //   }
-                            // }
                           },
                           child: Consumer<SubscriptionProvider>(builder: (context, sp, child) {
                             return sp.SubscritionPackList.isNotEmpty
@@ -191,7 +161,6 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                         child: RichText(
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
-                                            // textAlign: TextAlign.center,
                                             text: TextSpan(children: <TextSpan>[
                                               TextSpan(
                                                 text: "Subscribe Now",
@@ -199,16 +168,9 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                   color: Colors.white,
                                                   fontSize: 20,
                                                   fontFamily: 'Roboto Bold',
-                                                  // fontWeight: FontWeight.w100
                                                 ),
                                               ),
-                                            ]))
-                                        //     Text(
-                                        //   "Subscribe Now",
-                                        //   style: TextStyle(color: Colors.white, fontFamily: 'Roboto Bold', fontSize: 20),
-                                        // )
-
-                                        ),
+                                            ]))),
                                   )
                                 : SizedBox();
                           }),
@@ -223,7 +185,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                           child: RichText(
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              // textAlign: TextAlign.center,
+                        
                               text: TextSpan(children: <TextSpan>[
                                 TextSpan(
                                   text: "OR Skip to Freemium",
@@ -235,14 +197,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 ),
                               ]))
 
-                          // Text(
-                          //   "OR Skip to Freemium",
-                          //   style: TextStyle(
-                          //       color: Colors.black,
-                          //       fontSize: 20,
-                          //       fontFamily: 'Roboto Medium',
-                          //       fontWeight: FontWeight.w100),
-                          // ),
+                  
                           ),
                       SizedBox(
                         height: 1.5,
@@ -252,9 +207,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                 ),
               ),
         body:
-            // Consumer<SubscriptionProvider>(
-            //   builder: (context, sp, child) {
-            //   return
+        
             SingleChildScrollView(
           child: Stack(
             children: [
@@ -305,7 +258,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                         child: RichText(
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
-                                            // textAlign: TextAlign.center,
+                                           
                                             text: TextSpan(children: <TextSpan>[
                                               TextSpan(
                                                 text: "Subscriptions",
@@ -313,7 +266,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                   color: Colors.white,
                                                   fontSize: 20,
                                                   fontFamily: 'Roboto Bold',
-                                                  // fontWeight: FontWeight.w100
+                                              
                                                 ),
                                               ),
                                             ]))),
@@ -333,8 +286,9 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                             textAlign: TextAlign.center,
                                             text: TextSpan(children: <TextSpan>[
                                               TextSpan(
-                                                text:
-                                                    "You are currently subscribed to ${widget.title}- ${widget.quntity * 30} days plan ",
+                                                text: widget.quntity == null
+                                                    ? "You are not subscribed to any plan"
+                                                    : "You are currently subscribed to ${widget.title}- ${widget.quntity * 30} days plan ",
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 16,
@@ -365,24 +319,18 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                 sp.getSubscritionData(val.id);
                                                 pp.updateLoader(false);
 
-                                                // ProfileProvider pp = Provider.of(context, listen: false);
-                                                // pp.getReminder(val.id);
+                                             
                                               },
                                             );
                                           }),
                                         ),
                                       )
                                     : SizedBox(),
-                                // Container(
-                                //     height: MediaQuery.of(context).size.height * .18,
-                                //     child: Icon(
-                                //       Icons.diamond,
-                                //       color: Colors.transparent,
-                                //     )),
+                          
                               ],
                             ),
                           ),
-                          // Image.asset("assets/diamond.png")
+                         
                         ],
                       ),
                     ),
@@ -396,7 +344,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
               ),
               Padding(
                 padding: widget.showDrpDown == 1
-                    ? const EdgeInsets.only(top: 165.0)
+                    ? const EdgeInsets.only(top: 195.0)
                     : widget.isFromUpgrdePlan == 1
                         ? const EdgeInsets.only(top: 145.0)
                         : const EdgeInsets.only(top: 105.0),
@@ -405,12 +353,12 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                     children: [
                       Consumer<SubscriptionProvider>(builder: (context, sp, child) {
                         if (sp.SubscritionPackList.isEmpty) {
-                          // print("this condition is true");
+                     
                           sp.selectedIval = 10;
                         } else {
                           sp.selectedIval = 2;
                         }
-                        // print("sp.selectedIval:::::::::::::${sp.selectedIval}");
+                      
                         if (sp.selectedIval == 0) {
                           return planDescBox(
                               context, "Silver Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
@@ -422,10 +370,10 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                               context, "Platinum Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
                         } else {
                           return SizedBox();
-                          //  planDescBox(context, "", sp.ftchList, sp.ftchList.length);
+                        
                         }
                       }),
-                      // SizedBox(height: sp.selectedIval == 0 ? 15 : 0),
+                     
                       SizedBox(
                         height: 10,
                       ),
@@ -451,7 +399,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 height: 6,
                               ),
                               Consumer2<SubscriptionProvider, ProfileProvider>(builder: (context, sp, pp, child) {
-                                // print("sp.SubscritionPackList ::: ${sp.SubscritionPackList}");
+                                
                                 return sp.SubscritionPackList.isEmpty
                                     ? Center(
                                         child: Container(
@@ -671,7 +619,6 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                 ProfileProvider pp = Provider.of(context, listen: false);
                                                 pp.updateLoader(false);
                                               } else {
-                                                // print("vaue of i::::   $i");
                                                 sp.setSelectedRadioVal(i);
                                                 sp.setSelectedIval(0);
                                                 sp.setSelectedSubsType(permiumbutton[0].type);
@@ -692,10 +639,6 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                 TextSpan(
                                                   text: (sp.durationPackData[i].durationQuantity * 30).toString() +
                                                       " Days",
-                                                  // : i==1?(sp.durationPackData[i].durationQuantity*2).toString()+"Days": ,
-                                                  // sp.durationPackData[i].durationType == 1
-                                                  //     ? sp.durationPackData[i].durationQuantity.toString() + " Months"
-                                                  //     : sp.durationPackData[i].durationQuantity.toString() + " Year",
                                                   style: TextStyle(
                                                       color: i == sp.radioSelected ? Colors.white : Colors.black,
                                                       fontSize: 11.0,
@@ -711,93 +654,6 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 );
                               }),
 
-                              ///**************************************
-                              // SingleChildScrollView(
-                              //   scrollDirection: Axis.horizontal,
-                              //   physics: BouncingScrollPhysics(),
-                              //   child: Padding(
-                              //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              //     child: Row(
-                              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //         mainAxisSize: MainAxisSize.min,
-                              //         children: List.generate(permiumbutton.length, (i) {
-                              //           String nameVal;
-                              //           if (i == 0) {
-                              //             subsTime = "1 Month";
-                              //           } else if (i == 1) {
-                              //             subsTime = "3 Months";
-                              //           } else if (i == 2) {
-                              //             subsTime = "6 Months";
-                              //           }
-                              //           return Row(
-                              //             children: [
-                              //               Text(
-                              //                 subsTime,
-                              //                 style: TextStyle(
-                              //                     fontSize: 14,
-                              //                     fontWeight: FontWeight.w600,
-                              //                     color: sp.radioSelected == i ? Color(0xff3643a3) : Colors.black),
-                              //               ),
-                              //               Radio(
-                              //                   value: i,
-                              //                   groupValue: _value,
-                              //                   activeColor: Color(0xff3643a3),
-                              //                   onChanged: (val) {
-                              //                     print("val====$val");
-                              //                     setState(() {
-                              //                       _value = val;
-                              //                       sp.setSelectedRadioVal(val);
-                              //                     });
-                              //                   }),
-                              //             ],
-                              //           );
-                              //         })),
-                              //   ),
-                              // ),
-
-                              ///**************************************
-
-                              /// dropdown month select
-
-                              // Consumer<CourseProvider>(builder: (context, cp, child) {
-                              //   return Container(
-                              //     height: 40,
-                              //     // width: MediaQuery.of(context).size.width * .25,
-                              //     decoration: BoxDecoration(
-                              //         border: Border.all(color: Colors.black, width: 2),
-                              //         boxShadow: const [BoxShadow(color: Colors.black26, offset: Offset(0, 0))],
-                              //         color: Colors.lightBlue[100],
-                              //         borderRadius: BorderRadius.circular(28)),
-                              //     child: DropdownButton(
-                              //       value: cp.selectedTimeSubs,
-                              //       items: cp.subsTime.map((String items) {
-                              //         return DropdownMenuItem(
-                              //           value: items,
-                              //           child: Container(
-                              //               margin: EdgeInsets.only(top: 8.0),
-                              //               // width: double.maxFinite,
-                              //               child: Padding(
-                              //                 padding: const EdgeInsets.only(bottom: 9.0, left: 8, right: 8),
-                              //                 child: Text(
-                              //                   items,
-                              //                   textAlign: TextAlign.left,
-                              //                   style: TextStyle(
-                              //                       // color: Colors.orange,
-                              //                       fontSize: 15,
-                              //                       fontWeight: FontWeight.bold),
-                              //                 ),
-                              //               )),
-                              //         );
-                              //       }).toList(),
-                              //       underline: const SizedBox(),
-                              //       onChanged: (val) {
-                              //         print("val==-=-=-=-=-  $val");
-                              //         cp.setSelectedSubsTime(val);
-                              //       },
-                              //       dropdownColor: Colors.white,
-                              //     ),
-                              //   );
-                              // }),
 
                               SizedBox(
                                 height: 10,
@@ -809,7 +665,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                   child: Html(
                                     data: sp.desc1 ?? "",
                                     onAnchorTap: (url, ctx, attributes, element) async {
-                                      // print("anchor url : $url");
+                                  
 
                                       Uri uri = Uri.parse(url);
                                       if (await canLaunchUrlString(url)) {
@@ -889,7 +745,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
 // return Container(child: ,);
   }
 
-  // ignore: non_constant_identifier_names
+
   void ShowSubsConfrm(BuildContext context) {
     showDialog(
         context: _scaffoldKey.currentContext,
@@ -901,18 +757,10 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
               ),
               title: Column(
                 children: [
-                  // Text("Are you sure you want to purchase subscription for this course?",
-                  //     textAlign: TextAlign.center,
-                  //     style: TextStyle(
-                  //       fontSize: 18,
-                  //       fontFamily: 'Roboto Medium',
-                  //       fontWeight: FontWeight.w200,
-                  //       color: Colors.black,
-                  //     )),
+                
 
                   RichText(
-                      // overflow: TextOverflow.ellipsis,
-                      // maxLines: 2,
+                    
                       textAlign: TextAlign.center,
                       text: TextSpan(children: <TextSpan>[
                         TextSpan(
@@ -937,15 +785,14 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                         child: Container(
                             height: 35,
                             width: MediaQuery.of(context).size.width * .15,
-                            // constraints: BoxConstraints(minWidth: 100),
+                         
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.all(Radius.circular(20)),
                                 gradient: LinearGradient(
                                     colors: [
                                       Colors.grey,
                                       Colors.grey
-                                      // _colorfromhex("#3A47AD"),
-                                      // _colorfromhex("#5163F3"),
+                                 
                                     ],
                                     begin: const FractionalOffset(0.0, 0.0),
                                     end: const FractionalOffset(1.0, 0.0),
@@ -954,13 +801,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                             child: Center(
                               child:
 
-                                  //  Text(
-                                  //   "No",
-                                  //   style: TextStyle(
-                                  //     color: Colors.white,
-                                  //     fontWeight: FontWeight.w400,
-                                  //   ),
-                                  // ),
+                            
                                   RichText(
                                 text: TextSpan(children: <TextSpan>[
                                   TextSpan(
@@ -975,7 +816,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                     ),
                     InkWell(
                       onTap: () async {
-                        // Navigator.pop(context);
+                      
 
                         bool result = await checkInternetConn();
                         print("result internet  $result");
@@ -983,8 +824,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                           SubscriptionProvider sp = Provider.of(context, listen: false);
 
                           var token = await getTokenn();
-                          // ProfileProvider pp = Provider.of(context, listen: false);
-
+                        
                           print(" selectedSubsType ====${sp.selectedSubsType}");
                           print("permiumbutton.length===${permiumbutton.length}");
                           if (sp.selectedSubsType > permiumbutton.length) {
@@ -1011,17 +851,12 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
 
                               if (status) {
                                 _handlePaymentSuccess2(context);
-                                // Navigator.pop(context);
+                          
                                 print("sucess value is trueeeeeeee");
                                 CourseProvider courseProvider = Provider.of(_scaffoldKey.currentContext, listen: false);
                                 courseProvider.getCourse();
                                 Navigator.pop(_scaffoldKey.currentContext);
-                                // SchedulerBinding.instance.addPostFrameCallback((_) {
-                                //   CourseProvider cp = Provider.of(context, listen: false);
-
-                                //   cp.getMasterData(cp.selectedCourseId);
-                                //   Navigator.push(context, MaterialPageRoute(builder: (context) => MasterListPage()));
-                                // });
+                
                               } else {
                                 _handlePaymentError2(context);
                               }
@@ -1034,7 +869,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                       child: Container(
                         height: 35,
                         width: MediaQuery.of(context).size.width * .15,
-                        // constraints: BoxConstraints(minWidth: 100),
+                      
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             gradient: LinearGradient(
@@ -1072,7 +907,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     print("result while call fun $result");
     if (result == false) {
       Future.delayed(Duration(seconds: 1), () async {
-        //  await EasyLoading.showToast("Internet Not Connected",toastPosition: EasyLoadingToastPosition.bottom);
+      
       });
       return result;
     } else {}

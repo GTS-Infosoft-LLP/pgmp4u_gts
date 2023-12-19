@@ -97,8 +97,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                           child: Container(
                         width: MediaQuery.of(context).size.width * .75,
                         child: RichText(
-                            // maxLines: 2,
-                            // textAlign: TextAlign.left,
+                     
                             text: TextSpan(children: <TextSpan>[
                           TextSpan(
                             text: "Application Support\n" + appbarTxt,
@@ -107,9 +106,9 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                               fontSize: 22,
                               fontFamily: "Raleway",
 
-                              // height: 1.7
+                            
                               fontWeight: FontWeight.bold,
-                              // letterSpacing: 0.3,
+                            
                             ),
                           ),
                         ])),
@@ -121,9 +120,9 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
             ),
             SizedBox(height: 10),
             Container(
-              // color: Colors.amber,s
+             
               height: MediaQuery.of(context).size.height * .8,
-              // width: 330,
+             
               child: Stack(
                 children: [
                   Padding(
@@ -154,41 +153,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                 );
                         }),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
-                  //   child: Container(
-                  //     margin: const EdgeInsets.only(left: 10.0),
-                  //     height: 12,
-                  //     child: ListView.builder(
-                  //         // itemCount: 15,
-                  //         controller: scrollController,
-                  //         scrollDirection: Axis.horizontal,
-                  //         itemBuilder: (context, index) {
-                  //           return Padding(
-                  //             padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                  //             child: Container(
-                  //               decoration: BoxDecoration(
-                  //                   borderRadius: BorderRadius.all(Radius.circular(20)),
-                  //                   gradient: index <= colorIndex
-                  //                       ? LinearGradient(
-                  //                           colors: [Color(0xff3A47AD), Color(0xff5163F3)],
-                  //                           begin: const FractionalOffset(0.0, 0.0),
-                  //                           end: const FractionalOffset(1.0, 0.0),
-                  //                           stops: [0.0, 1.0],
-                  //                           tileMode: TileMode.clamp)
-                  //                       : LinearGradient(
-                  //                           colors: [
-                  //                             Colors.grey,
-                  //                             Colors.grey,
-                  //                           ],
-                  //                         )),
-                  //               height: 10,
-                  //               width: MediaQuery.of(context).size.width * .08,
-                  //             ),
-                  //           );
-                  //         }),
-                  //   ),
-                  // )
+               
                 ],
               ),
             ),
@@ -218,8 +183,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 22.0),
                   child: Center(
                     child: RichText(
-                        // maxLines: 2,
-                        // textAlign: TextAlign.left,
+                     
                         text: TextSpan(children: <TextSpan>[
                       TextSpan(
                         text: "Currently, Application Support is part of only Gold and Platinum Plans",
@@ -228,9 +192,9 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                           fontSize: 15,
                           fontFamily: "NunitoSans",
 
-                          // height: 1.7
+                        
                           fontWeight: FontWeight.w600,
-                          // letterSpacing: 0.3,
+                      
                         ),
                       ),
                     ])),
@@ -245,7 +209,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                 child: RichText(
                     maxLines: 1000,
                     overflow: TextOverflow.ellipsis,
-                    // textAlign: TextAlign.left,
+                 
                     text: TextSpan(children: <TextSpan>[
                       TextSpan(
                         text: text1,
@@ -253,10 +217,6 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                           color: _lightText,
                           fontSize: 15,
                           fontFamily: "NunitoSans",
-
-                          // height: 1.7
-                          // fontWeight: FontWeight.w600,
-                          // letterSpacing: 0.3,
                         ),
                       ),
                     ])),
@@ -277,20 +237,16 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
               ),
               cp.selectedPlanType == 2
                   ? RichText(
-                      // maxLines: 1000,
-                      // overflow: TextOverflow.ellipsis,
-                      // textAlign: TextAlign.left,
+                     
                       text: TextSpan(children: <TextSpan>[
                       TextSpan(
                         text: "Upgrade to Platinum for Session with Mentor",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                          // fontFamily: "NunitoSans",
-
-                          // height: 1.7
+                       
                           fontWeight: FontWeight.w600,
-                          // letterSpacing: 0.3,
+                         
                         ),
                       ),
                     ]))
@@ -331,19 +287,23 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                 }
 
                                 pp.getReminder(cp.selectedCourseId).then((value) {
-                                  print("thissss is callinggg");
-                                  pp.setSelectedContainer(pp.planDetail.type - 1);
-                                  print("this is calllllllllll");
-                                  if (pp.planDetail.durationQuantity == 1) {
-                                    print("000000");
-                                    sp.setSelectedRadioVal(0);
-                                  } else if (pp.planDetail.durationQuantity == 3) {
-                                    print("111111");
-                                    sp.setSelectedRadioVal(1);
-                                  } else if (pp.planDetail.durationQuantity == 6) {
-                                    print("2222222");
-                                    sp.setSelectedRadioVal(2);
+                                  if (pp.planDetail.durationQuantity != null) {
+                                    print("this is calllllllllll");
+                                    if (pp.planDetail.durationQuantity == 1) {
+                                      print("000000");
+                                      sp.setSelectedRadioVal(0);
+                                    } else if (pp.planDetail.durationQuantity == 3) {
+                                      print("111111");
+                                      sp.setSelectedRadioVal(1);
+                                    } else if (pp.planDetail.durationQuantity == 6) {
+                                      print("2222222");
+                                      sp.setSelectedRadioVal(2);
+                                    }
+                                    if (pp.planDetail.type != null) {
+                                      pp.setSelectedContainer(pp.planDetail.type - 1);
+                                    }
                                   }
+                                  print("thissss is callinggg");
 
                                   Navigator.push(
                                       context,
@@ -352,24 +312,21 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                                 showDrpDown: 0,
                                                 showFreeTrial: 0,
                                                 isFromUpgrdePlan: 1,
-                                                title:pp.planDetail.title ,
+                                                title: pp.planDetail.title,
                                                 quntity: pp.planDetail.durationQuantity,
                                               )));
                                 });
                               },
                               child: RichText(
-                           
                                   text: TextSpan(children: <TextSpan>[
                                 TextSpan(
                                   text: "Upgrade",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
-                  
                                   ),
                                 ),
-                              ])
-                              )),
+                              ]))),
                         )
                       : SizedBox(),
                   SizedBox(
