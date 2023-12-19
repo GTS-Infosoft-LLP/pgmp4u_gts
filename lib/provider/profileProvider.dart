@@ -486,14 +486,14 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> subscriptionStatus(String type) async {
+  Future<void> subscriptionStatus(String type,{int id}) async {
     successValue = true;
     updateSubApi(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
     print("token valued===$stringValue");
-    var request = {"type": type};
+    var request = {"type": type,"courseId":id};
     print("request::::::$request");
     bool checkConn = await checkInternetConn();
     if (checkConn) {

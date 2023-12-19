@@ -66,7 +66,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
+  var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     print(MediaQuery.of(context).padding.top);
     return Scaffold(

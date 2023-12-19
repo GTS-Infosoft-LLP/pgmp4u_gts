@@ -129,7 +129,7 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                       pp.updateLoader(true);
 
                                       int courseId = storedCourse[index].id;
-                                      await pp.subscriptionStatus("Question");
+                                      await pp.subscriptionStatus("Question",id: courseId);
                                       courseProvider.setSelectedCourseId(courseId);
                                       var chkStat = await pp.successValue;
                                       pp.updateLoader(false);

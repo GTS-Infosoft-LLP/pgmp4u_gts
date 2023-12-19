@@ -51,14 +51,15 @@ class _QuesOfDayState extends State<QuesOfDay> {
     String dt = DateTime.now().toString();
 
     PracticeTextProvider pr = Provider.of(context, listen: false);
-
+    CourseProvider cp = Provider.of(context, listen: false);
     selAns = [];
     rightAns = [];
     ansRef = [];
     currentIndex = 0;
     QuesDay();
     context.read<CourseProvider>().setMasterListType("Question");
-    context.read<ProfileProvider>().subscriptionStatus("Question");
+
+    context.read<ProfileProvider>().subscriptionStatus("Question", id: cp.selectedCourseId);
     // TODO: implement initState
     super.initState();
   }
