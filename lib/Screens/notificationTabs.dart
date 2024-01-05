@@ -25,17 +25,18 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
     CourseProvider cp = Provider.of(context, listen: false);
     if (cp.mockCrsDropList.isNotEmpty) {
       print("cp.selectedCourseLable=====${cp.selectedCourseLable}");
-      cp.setSelectedNotiCrsLable(cp.selectedCourseLable);
+      cp.setSelectedNotiCrsLable("");
     } else {
-      cp.setSelectedNotiCrsLable(null);
+      cp.setSelectedNotiCrsLable("");
     }
     // TODO: implement initState
     super.initState();
     _dshbrdProvider = Provider.of(context, listen: false);
+    print("is this calling");
     _dshbrdProvider.Announcements = [];
     _dshbrdProvider.Notifications = [];
     _dshbrdProvider.NotificationData = [];
-    _dshbrdProvider.showNotification(isFirstTime: true);
+    _dshbrdProvider.showNotification(isFirstTime: true, crsId: "", isFromAnn: 1);
     _controller = TabController(length: 2, vsync: this);
   }
 
@@ -126,18 +127,28 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                     isEnable: true,
                     title: "",
                     value: null,
-                    onChange: (val) {
+                    onChange: (val) async {
                       print("val.id=========>${val.id}");
                       print("val.course=========>${val.lable}");
                       cp.setSelectedNotiCrsLable(val.lable);
                       cp.setSelectedCourseLable(val.lable);
-                      cp.setSelectedCourseId(val.id);
-                      ProfileProvider pp = Provider.of(context, listen: false);
-                      pp.Announcements = [];
-                      pp.NotificationData = [];
-                      pp.Notifications = [];
+                      await cp.setSelectedCourseId(val.id);
 
-                      pp.showNotification(crsId: val.id, isFirstTime: true);
+                      Future.delayed(Duration(milliseconds: 50), () {
+                        ProfileProvider pp = Provider.of(context, listen: false);
+
+                        pp.NotificationData = [];
+                        pp.Notifications = [];
+                        pp.showNotification(crsId: cp.selectedCourseId, isFirstTime: true);
+                      });
+
+                      // if (_controller.index == 1) {
+                      //   cp.setSelectedCourseLable(cp.mockCrsDropList[0].lable);
+                      //   setState(() {});
+
+                      // } else {
+                      //   pp.showNotification(crsId: "", isFirstTime: true, isFromAnn: 1);
+                      // }
                     },
                   ),
                 );
@@ -148,16 +159,16 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: TabBar(
                 controller: _controller,
-                onTap: (vall) {
-                  print("_controller====${_controller.index}");
-                  print("TAB INDEX $vall");
+                physics: NeverScrollableScrollPhysics(),
+                onTap: (vall) async {
+                  print("_controller-----====${_controller.index}");
+                  CourseProvider crp = Provider.of(context, listen: false);
+                  crp.setSelectedNotiCrsLable("");
                   context.read<ProfileProvider>().setTabIndex(vall);
                   ProfileProvider pp = Provider.of(context, listen: false);
-                  pp.Announcements = [];
+
                   pp.NotificationData = [];
                   pp.Notifications = [];
-
-                  pp.showNotification(isFirstTime: true);
                 },
                 tabs: [
                   Tab(

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer' as dev;
+import 'dart:developer';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -21,8 +22,14 @@ import '../Screens/Tests/local_handler/hive_handler.dart';
 import 'courseProvider.dart';
 
 class ProfileProvider extends ChangeNotifier {
+  SharedPreferences prefs;
+  initSharePreferecne() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
   int _pageIndex = 0;
   int _totalRec = 0;
+  int totalRecords;
   PlanDetail planDetail;
   int tabIndex = 0;
   setTabIndex(int val) {
@@ -44,34 +51,6 @@ class ProfileProvider extends ChangeNotifier {
       notifyListeners();
     });
   }
-
-  // int selectedIval;
-  // setSelectedIval(int val) {
-  //   print("new value of I====$val");
-
-  //   Future.delayed(Duration.zero, () async {
-  //     selectedIval = val;
-  //     notifyListeners();
-  //   });
-  // }
-
-  // var selectedSubsId;
-  // void setSelectedSubsId(int id) {
-  //   print("vallllll$id");
-  //   Future.delayed(Duration.zero, () async {
-  //     selectedSubsId = id;
-  //     print("selectedSubsId********$selectedSubsId");
-  //     notifyListeners();
-  //   });
-  // }
-
-  // var selectedSubsType;
-  // void setSelectedSubsType(int id) {
-  //   Future.delayed(Duration.zero, () async {
-  //     selectedSubsType = id;
-  //     notifyListeners();
-  //   });
-  // }
 
   List<NotifiModel> NotificationData = [];
   List<NotifiModel> Announcements = [];
@@ -103,24 +82,25 @@ class ProfileProvider extends ChangeNotifier {
     });
   }
 
-  Future showNotification({bool isFirstTime = false, dynamic crsId}) async {
+  Future showNotification({bool isFirstTime = false, dynamic crsId, int isFromAnn = 0}) async {
+    log("isFromAnn====$isFromAnn");
     crsId.toString();
     print("crsId===1==$crsId");
 
-    if (crsId != null && crsId.toString().isNotEmpty) {
-      _totalRec = 1;
-      NotificationData = [];
-    }
+    // if (crsId != null && crsId.toString().isNotEmpty) {
+    //   _totalRec = 1;
+    //   // NotificationData = [];
+    // }
     CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
     if (isFirstTime) {
       updateNotificationLoader(true);
     }
     print("crsId===2==$crsId");
     if (!isFirstTime) {
-      // crsId = cp.selectedCourseId;
       print("Notifications.length + Announcements.length====${Notifications.length + Announcements.length}");
       print("_totalRec=======$_totalRec");
       print("NotificationData.length ======${NotificationData.length}");
+      print("Announcements.length ======${Announcements.length}");
       if (_totalRec == (Notifications.length + Announcements.length)) {
         print(" -- all notification get1 --");
         return;
@@ -131,12 +111,13 @@ class ProfileProvider extends ChangeNotifier {
         return;
       }
     } else {
-      print("is first timee");
+      log("is first timee");
       Notifications = [];
-      Announcements = [];
+
+      NotificationData = [];
       _pageIndex = 0;
-      // crsId = "";
     }
+
     print("crsId===3==$crsId");
     _pageIndex++;
     CourseProvider crp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
@@ -148,7 +129,7 @@ class ProfileProvider extends ChangeNotifier {
 
     print("crsId===4==$crp.selectedCourseId");
 
-    var request = {"page": _pageIndex, "courseId": crp.selectedCourseId};
+    var request = {"page": _pageIndex, "courseId": crsId};
     print("Notification requesttttt======$request");
 
     try {
@@ -158,45 +139,58 @@ class ProfileProvider extends ChangeNotifier {
         body: json.encode(request),
       );
       print("response===$res");
-      print("res.body====${res.body}");
-      print("${res.statusCode}");
+      // print("res.body====${res.body}");
+      print("status ciode ===${res.statusCode}");
 
       if (res.statusCode == 200) {
-        // Notifications = [];
-        // Announcements = [];
         Map<String, dynamic> mapResponse = convert.jsonDecode(res.body);
         List temp1 = mapResponse["data"];
-
         _totalRec = mapResponse["count"];
+        totalRecords = _totalRec;
+        print("total totalRecords=======$totalRecords");
 
         print("total rs=======$_totalRec");
-        print("temp 1 list before set to main list===$temp1");
 
         var respList = temp1.map((e) => NotifiModel.fromjson(e)).toList();
         NotificationData = NotificationData + respList;
         print("NotificationData=======${NotificationData.length}");
 
-        for (int i = 0; i < NotificationData.length; i++) {
-          if (NotificationData[i].type == 1) {
-            Announcements.add(NotificationData[i]);
+        if (_totalRec == NotificationData.length) {
+          updateLoader(false);
+          EasyLoading.showToast("No more data available");
+        }
+        if (mapResponse["count"] == 0) {
+          updateNotificationLoader(false);
+          updateLoader(false);
+          EasyLoading.showToast(mapResponse["message"], toastPosition: EasyLoadingToastPosition.bottom);
+          return;
+        }
+
+        for (int i = 0; i < respList.length; i++) {
+          if (respList[i].type == 1) {
+            Announcements.add(respList[i]);
           } else {
-            Notifications.add(NotificationData[i]);
+            Notifications.add(respList[i]);
           }
           notifyListeners();
         }
         print("Notifications======= ${Notifications.length}");
         print("Announcements======= ${Announcements.length}");
 
-        if ((Notifications.length < 10) || (Announcements.length < 10)) {
+        if (((Notifications.length < 10) || (Announcements.length < 10)) ||
+            (Notifications.length == 10 && Announcements.length == 10)) {
           print('----- call again ----');
-          showNotification();
+          if (isFromAnn == 1) {
+            showNotification(crsId: "", isFromAnn: 1, isFirstTime: false);
+          } else {
+            showNotification(crsId: cp.selectedCourseId, isFirstTime: false);
+          }
         }
       } else {
         Notifications = [];
         Announcements = [];
       }
     } on Exception {
-      // TODO
       updateNotificationLoader(false);
     }
 
@@ -324,47 +318,47 @@ class ProfileProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
-    print("token valued  get reminderrrr===$stringValue");
+    // print("token valued  get reminderrrr===$stringValue");
     var request = {
       "courseId": couseId,
     };
 
     bool checkConn = await checkInternetConn();
-    if (checkConn) {
-      body = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
-      if (body == null) {
-        body = "";
-      }
-      if (body.isNotEmpty) {
-        Response response = await http
-            .post(
-          Uri.parse(SUBMIT_MOCK_TEST),
-          headers: {"Content-Type": "application/json", 'Authorization': stringValue},
-          body: body,
-        )
-            .whenComplete(() async {
-          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
-          HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
-          await cp.getTestDetails(cp.allTestListIdOfline);
-          // await apiCall(attempListIdOffline);
-          Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
-              headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
-          Map getit;
-          if (response.statusCode == 200) {
-            getit = convert.jsonDecode(response.body);
-            print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
-            await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.attempListIdOffline.toString());
-          }
-        });
-        if (response.statusCode == 200) {
-          HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
-          HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
-          cp.setnotSubmitedMockID("");
-          cp.setToBeSubmitIndex(1000);
-        }
-      }
-    }
-
+    // if (checkConn) {
+    //   body = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);
+    //   if (body == null) {
+    //     body = "";
+    //   }
+    //   if (body.isNotEmpty) {
+    //     Response response = await http
+    //         .post(
+    //       Uri.parse(SUBMIT_MOCK_TEST),
+    //       headers: {"Content-Type": "application/json", 'Authorization': stringValue},
+    //       body: body,
+    //     )
+    //         .whenComplete(() async {
+    //       HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+    //       HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
+    //       await cp.getTestDetails(cp.allTestListIdOfline);
+    //       // await apiCall(attempListIdOffline);
+    //       Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
+    //           headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
+    //       Map getit;
+    //       if (response.statusCode == 200) {
+    //         getit = convert.jsonDecode(response.body);
+    //         print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
+    //         await HiveHandler.addMockAttempt(jsonEncode(getit["data"]), cp.attempListIdOffline.toString());
+    //       }
+    //     });
+    //     if (response.statusCode == 200) {
+    //       HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
+    //       HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
+    //       cp.setnotSubmitedMockID("");
+    //       cp.setToBeSubmitIndex(1000);
+    //     }
+    //   }
+    // }
+    print("start get reminder api--------$request");
     try {
       var response = await http.post(
         Uri.parse(GET_REMINDER),
@@ -373,14 +367,15 @@ class ProfileProvider extends ChangeNotifier {
       );
       avgScore = "";
       dayDiff = "";
+      dev.log("response.statusCode getreminder-----${response.statusCode}");
       if (response.statusCode == 200) {
         studyTime = "";
         isStudyRemAdded = 0;
-        print("response.statusCode===${response.statusCode}");
+        print("response.statusCode getreminder===${response.statusCode}");
         var resDDo = json.decode(response.body);
-        print("resDDo====$resDDo");
+        print("resDDo getreminder====$resDDo");
         updateLoader(false);
-        var remTime = resDDo['data']['studyReminder'];
+        var remTime = resDDo['data']['studyReminder'];          
         avgScore = resDDo['data']['daysDiff'].toString();
         dayDiff = resDDo['data']['averageScore'].toString();
         planDetail = PlanDetail.fromJson(resDDo['data']['currentSubscription']);
@@ -486,14 +481,14 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> subscriptionStatus(String type,{int id}) async {
+  Future<void> subscriptionStatus(String type, {int id}) async {
     successValue = true;
     updateSubApi(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
     print("token valued===$stringValue");
-    var request = {"type": type,"courseId":id};
+    var request = {"type": type, "courseId": id};
     print("request::::::$request");
     bool checkConn = await checkInternetConn();
     if (checkConn) {
@@ -548,6 +543,7 @@ class ProfileProvider extends ChangeNotifier {
       var resStatus = (resDDo["status"]);
 
       print("respponse===*/*/*/*/ ${response.body}");
+      print("respponse  statusCode===*/*/*/*/ ${response.statusCode}");
       if (response.statusCode == 200) {
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse==========$mapResponse");
@@ -697,9 +693,9 @@ class ProfileProvider extends ChangeNotifier {
         Uri.parse(UPDATE_NOTIFICATION),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       );
-
+      print("api url==$UPDATE_NOTIFICATION");
       if (response.statusCode == 200) {
-        print("response===>>${response.body}");
+        print("response==UPDATE_NOTIFICATION=>>${response.body}");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
 
         updateLoader(false);
@@ -763,6 +759,7 @@ class ProfileProvider extends ChangeNotifier {
         updateLoader(false);
         //  HiveHandler.clearUser();
         await prefs.clear();
+
         Navigator.of(GlobalVariable.navState.currentContext)
             .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
       } else {

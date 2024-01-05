@@ -74,28 +74,19 @@ class _TextPreDetailState extends State<TextPreDetail> {
                           SizedBox(
                             width: 5,
                           ),
-                       
-
-
- RichText(
-  // maxLines: 2,
-                      // textAlign: TextAlign.left,
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                          text:   cp.selectedCourseLable,
-                          style: TextStyle(
-                           color:Colors.white,
-                              fontSize:width * (20 / 420),
-                              fontFamily:'Roboto Medium',
-                              // height: 1.7
-                              // fontWeight: FontWeight.w600,
-                              letterSpacing: 0.3,
+                          RichText(
+                            
+                              text: TextSpan(children: <TextSpan>[
+                            TextSpan(
+                              text: cp.selectedCourseLable,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: width * (20 / 420),
+                                fontFamily: 'Roboto Medium',
+                                letterSpacing: 0.3,
                               ),
-                        ),
-                      ]))
-
-
-
+                            ),
+                          ]))
                         ],
                       );
                     }),
@@ -112,46 +103,35 @@ class _TextPreDetailState extends State<TextPreDetail> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(bottom: height * (22 / 800)),
-                        child: 
-                   
-
- RichText(
-  // maxLines: 2,
-                      // textAlign: TextAlign.left,
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                          text:   'Mock Test',
-                          style: TextStyle(
-                           color:Colors.black,
-                              fontSize:width * (18 / 420),
-                              fontFamily:'Roboto Bold',
-                              // height: 1.7
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 0.3,
+                          margin: EdgeInsets.only(bottom: height * (22 / 800)),
+                          child: RichText(
+                        
+                              text: TextSpan(children: <TextSpan>[
+                            TextSpan(
+                              text: 'Mock Test',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: width * (18 / 420),
+                                fontFamily: 'Roboto Bold',
+                           
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 0.3,
                               ),
-                        ),
-                      ]))
-
-
-
-
-
-
-                      ),
+                            ),
+                          ]))),
                       ValueListenableBuilder(
                           valueListenable: HiveHandler.getMockPercentListener(),
                           builder: (context, value, child) {
                             CourseProvider courseProv = Provider.of(context, listen: false);
                             var v1 = value.get(courseProv.selectedMockPercentId.toString());
-                            // print("value of v1111======>>>>>>>>>$v1");
+                          
 
                             if (v1 != null) {
                               List temp = jsonDecode(v1);
 
                               testPercent = temp.map((e) => TestDetails.fromjson(e)).toList();
                               print("testPercent===========$testPercent");
-                              // print("testPercent${testPercent[1].numAttemptes}");
+                          
                             } else {
                               testPercent = [];
                             }
@@ -169,8 +149,8 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                         itemBuilder: (context, index) {
                                           return InkWell(
                                             onTap: () async {
-                                              print("testPercent[index].idooooooooooooooooo${testPercent[index].id}"); 
-                                           
+                                              print("testPercent[index].idooooooooooooooooo${testPercent[index].id}");
+
                                               CourseProvider courseProvider = Provider.of(context, listen: false);
                                               courseProvider.setSelectedMokAtemptCnt(testPercent[index].noOfattempts);
                                               courseProvider
@@ -184,7 +164,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                 startval = 1;
                                               }
 
-                                              // print("selectedIdNew======>> $selectedIdNew");
+                                          
                                               await Hive.openBox("MockAttemptsBox");
                                               courseProvider.setSelectedTestPercetId(testPercent[index].id);
 
@@ -218,11 +198,11 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                 padding: EdgeInsets.only(
                                                   top: 12,
                                                   bottom: 12,
-                                                  // left: width * (14 / 320),
+                                                
                                                   right: width * (14 / 320),
                                                 ),
                                                 decoration: const BoxDecoration(
-                                                    // color: Colors.amber,
+                                            
                                                     border: Border(
                                                         bottom: BorderSide(
                                                             width: 1, color: Color.fromARGB(255, 219, 211, 211)))),
@@ -258,29 +238,21 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                               mainAxisAlignment: MainAxisAlignment.start,
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
-                                                              
-
- RichText(
-  // maxLines: 2,
-                      // textAlign: TextAlign.left,
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                          text:  testPercent[index].testName,
-                          style: TextStyle(
-                           color: _colorfromhex("171726"),
-                              fontSize:width * (17 / 420),
-                              fontFamily:'Roboto Medium',
-                              // height: 1.7
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.3,
-                              ),
-                        ),
-                      ])),
-
-
-
-
-
+                                                                RichText(
+                                                                 
+                                                                    text: TextSpan(children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text: testPercent[index].testName,
+                                                                    style: TextStyle(
+                                                                      color: _colorfromhex("171726"),
+                                                                      fontSize: width * (17 / 420),
+                                                                      fontFamily: 'Roboto Medium',
+                                                                    
+                                                                      fontWeight: FontWeight.w600,
+                                                                      letterSpacing: 0.3,
+                                                                    ),
+                                                                  ),
+                                                                ])),
                                                                 SizedBox(
                                                                   height: 10,
                                                                 ),
@@ -297,7 +269,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                                           height: 25,
                                                                           margin: EdgeInsets.only(right: 6),
                                                                           decoration: BoxDecoration(
-                                                                            color: testPercent[index] //testPercent
+                                                                            color: testPercent[index] 
                                                                                         .attempts[inx]
                                                                                         .perc ==
                                                                                     ''
@@ -350,11 +322,11 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                                                           : (((double.parse(testPercent[index].attempts[inx].perc))
                                                                                                           .toInt()) >=
                                                                                                       51 &&
-                                                                                                  ((double.parse(testPercent[index].attempts[inx].perc))
+                                                                                                  ((double.parse(testPercent[index].attempts[inx].perc))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                                                                                                           .toInt()) <=
                                                                                                       75)
                                                                                               ? _colorfromhex("#FE9E45")
-                                                                                              : _colorfromhex("#04AE0B"),
+                                                                                              : _colorfromhex("#04AE0B"),                                                                        
                                                                             ),
                                                                             borderRadius: BorderRadius.circular(3.0),
                                                                           ),
@@ -417,88 +389,7 @@ class _TextPreDetailState extends State<TextPreDetail> {
                                                             ),
                                                           )
                                                         ]),
-                                                    // Container(
-                                                    //   height: 25,
-                                                    //   child: ListView.builder(
-                                                    //       shrinkWrap: true,
-                                                    //       itemCount: courseprovider
-                                                    //           .testDetails[index].attempts.length,
-                                                    //       scrollDirection: Axis.horizontal,
-                                                    //       itemBuilder: (context, inx) {
-                                                    //         return Container(
-                                                    //           width: 25,
-                                                    //           height: 25,
-                                                    //           margin: EdgeInsets.only(right: 6),
-                                                    //           decoration: BoxDecoration(
-                                                    //             color: courseprovider
-                                                    //                         .testDetails[index]
-                                                    //                         .attempts[inx]
-                                                    //                         .perc ==
-                                                    //                     ''
-                                                    //                 ? Colors.white
-                                                    //                 : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                                    //                                 .toInt()) >=
-                                                    //                             0 &&
-                                                    //                         ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                                    //                                 .toInt()) <=
-                                                    //                             25)
-                                                    //                     ? _colorfromhex("#FFECEC")
-                                                    //                     : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                                    //                                     .toInt()) >=
-                                                    //                                 26 &&
-                                                    //                             ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                                    //                                     .toInt()) <=
-                                                    //                                 50)
-                                                    //                         ? _colorfromhex(
-                                                    //                             "#FFFAEB")
-                                                    //                         : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc)).toInt()) >=
-                                                    //                                     51 &&
-                                                    //                                 ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                                    //                                         .toInt()) <=
-                                                    //                                     75)
-                                                    //                             ? _colorfromhex("#FFEFDC")
-                                                    //                             : _colorfromhex("#E4FFE6"),
-                                                    //             border: Border.all(
-                                                    //               color: courseprovider
-                                                    //                           .testDetails[index]
-                                                    //                           .attempts[inx]
-                                                    //                           .perc ==
-                                                    //                       ''
-                                                    //                   ? Colors.grey
-                                                    //                   : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                                    //                                   .toInt()) >=
-                                                    //                               0 &&
-                                                    //                           ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                                    //                                   .toInt()) <=
-                                                    //                               25)
-                                                    //                       ? _colorfromhex(
-                                                    //                           "#FF0000")
-                                                    //                       : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                                    //                                       .toInt()) >=
-                                                    //                                   26 &&
-                                                    //                               ((double.parse(courseprovider.testDetails[index].attempts[inx].perc))
-                                                    //                                       .toInt()) <=
-                                                    //                                   50)
-                                                    //                           ? _colorfromhex(
-                                                    //                               "#FFD236")
-                                                    //                           : (((double.parse(courseprovider.testDetails[index].attempts[inx].perc)).toInt()) >=
-                                                    //                                       51 &&
-                                                    //                                   ((double.parse(courseprovider.testDetails[index].attempts[inx].perc)).toInt()) <=
-                                                    //                                       75)
-                                                    //                               ? _colorfromhex("#FE9E45")
-                                                    //                               : _colorfromhex("#04AE0B"),
-                                                    //             ),
-                                                    //             borderRadius:
-                                                    //                 BorderRadius.circular(3.0),
-                                                    //           ),
-                                                    //           child: Center(
-                                                    //               child: Text(courseprovider
-                                                    //                   .testDetails[index]
-                                                    //                   .attempts[inx]
-                                                    //                   .perc)),
-                                                    //         );
-                                                    //       }),
-                                                    // )
+                                               
                                                   ],
                                                 ),
                                               ),

@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         Map responseData = json.decode(response.body);
 
-        print("email >>>>> ${responseData['email']}");
+        print("email GMAIL_LOGIN api>>>>> ${responseData['data'][0]['email']}");
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var _user = UserModel(
             image: fromProvider == "google" ? user.photoUrl : '',

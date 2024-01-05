@@ -97,7 +97,6 @@ class _QuesListCourseState extends State<QuesListCourse> {
                         storedCourse = [];
                       }
 
-
                       if (storedCourse == null) {
                         storedCourse = [];
                       }
@@ -125,17 +124,17 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                     onTap: () async {
                                       print("cousres id========>>>${storedCourse[index].id}");
                                       ProfileProvider pp = Provider.of(context, listen: false);
-                                      
+
                                       pp.updateLoader(true);
 
                                       int courseId = storedCourse[index].id;
-                                      await pp.subscriptionStatus("Question",id: courseId);
+                                      await pp.subscriptionStatus("Question", id: courseId);
                                       courseProvider.setSelectedCourseId(courseId);
                                       var chkStat = await pp.successValue;
                                       pp.updateLoader(false);
                                       print("chkStat====$chkStat");
                                       if (chkStat == false) {
-                                       
+                                        context.read<CourseProvider>().setMasterListType("Question");
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -165,7 +164,6 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(8),
                                             color: clr,
-                                            
                                           ),
                                           child: Padding(
                                             padding: const EdgeInsets.all(12),
@@ -184,11 +182,9 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                                   style: TextStyle(
                                                     color: Colors.grey,
                                                     fontSize: 14,
-                                                 
                                                   ),
                                                 )
                                               ])),
-
                                           RichText(
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
@@ -198,11 +194,9 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 18,
-                                                   
                                                   ),
                                                 )
                                               ])),
-                                        
                                         ],
                                       ),
                                       trailing: storedCourse[index].availableQuestionOfTheDay == 1
@@ -227,21 +221,20 @@ class _QuesListCourseState extends State<QuesListCourse> {
                                                           ]),
                                                         )),
                                                   ),
-                                                  RichText(
-                                                      text: TextSpan(children: <TextSpan>[
-                                                    TextSpan(
-                                                      text: "365-Days",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 10,
-                                                      ),
-                                                    )
-                                                  ]))
+                                                  // RichText(
+                                                  //     text: TextSpan(children: <TextSpan>[
+                                                  //   TextSpan(
+                                                  //     text: "365-Days",
+                                                  //     style: TextStyle(
+                                                  //       color: Colors.black,
+                                                  //       fontSize: 10,
+                                                  //     ),
+                                                  //   )
+                                                  // ]))
                                                 ],
                                               ),
                                             )
                                           : SizedBox(),
-
                                     ),
                                   ),
                                 );

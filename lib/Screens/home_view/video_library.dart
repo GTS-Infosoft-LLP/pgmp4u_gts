@@ -246,13 +246,10 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                       children: [
                                                         Container(
                                                           width: MediaQuery.of(context).size.width * .7,
-                                                          // color: Colors.amber,
                                                           child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: [
                                                               RichText(
-                                                                  //textAlign: TextAlign.center,
-                                                                  // maxLines: 2,
                                                                   overflow: TextOverflow.ellipsis,
                                                                   text: TextSpan(children: <TextSpan>[
                                                                     TextSpan(
@@ -271,31 +268,22 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                                       style: TextStyle(
                                                                         color: Colors.grey,
                                                                         fontSize: 14,
-                                                                        // fontFamily:  "Raleway",
-                                                                        // fontWeight: FontWeight.bold
                                                                       ),
                                                                     ),
                                                                   ])),
                                                               courseProvider.videoCate[index].payment_status == 1
-                                                                  ? 
-
-
-                                                                   RichText(
-                                                                  //textAlign: TextAlign.center,
-                                                                  // maxLines: 2,
-                                                                  // overflow: TextOverflow.ellipsis,
-                                                                  text: TextSpan(children: <TextSpan>[
-                                                                    TextSpan(
-                                                                      text: "Premium",
-                                                                      style: TextStyle(
-                                                                        color: Colors.black,
-                                                                        fontSize: 14,
-                                                                        // fontFamily:  "Raleway",
-                                                                        // fontWeight: FontWeight.bold
+                                                                  ? RichText(
+                                                                      text: TextSpan(children: <TextSpan>[
+                                                                      TextSpan(
+                                                                        text: "Premium",
+                                                                        style: TextStyle(
+                                                                          color: Colors.black,
+                                                                          fontSize: 14,
+                                                                          // fontFamily:  "Raleway",
+                                                                          // fontWeight: FontWeight.bold
+                                                                        ),
                                                                       ),
-                                                                    ),
-                                                                  ]))
-                                                                 
+                                                                    ]))
                                                                   : Text(""),
                                                             ],
                                                           ),
@@ -304,34 +292,22 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                           height: 2,
                                                         ),
                                                         Container(
-                                                          width: MediaQuery.of(context).size.width * .7,
-                                                          child: 
-                                                          
-                                                          
-
-
-                                                             RichText(
-                                                                  //textAlign: TextAlign.center,
-                                                                  maxLines: 2,
-                                                                  // overflow: TextOverflow.ellipsis,
-                                                                  text: TextSpan(children: <TextSpan>[
-                                                                    TextSpan(
-                                                                      text: courseProvider.videoCate[index].name,
-                                                                      style: TextStyle(
-                                                                        color: Colors.black,
-                                                                        fontSize: 18,
-                                                                        // fontFamily:  "Raleway",
-                                                                        // fontWeight: FontWeight.bold
-                                                                      ),
+                                                            width: MediaQuery.of(context).size.width * .7,
+                                                            child: RichText(
+                                                                //textAlign: TextAlign.center,
+                                                                maxLines: 2,
+                                                                // overflow: TextOverflow.ellipsis,
+                                                                text: TextSpan(children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text: courseProvider.videoCate[index].name,
+                                                                    style: TextStyle(
+                                                                      color: Colors.black,
+                                                                      fontSize: 18,
+                                                                      // fontFamily:  "Raleway",
+                                                                      // fontWeight: FontWeight.bold
                                                                     ),
-                                                                  ]))
-
-
-
-
-
-
-                                                        ),
+                                                                  ),
+                                                                ]))),
                                                       ],
                                                     )
                                                   ]),
@@ -376,10 +352,6 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                   ],
                                 );
                         })
-
-             
-            
-                  
                       ],
                     ),
                   ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer' as dev;
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -45,7 +46,7 @@ class SubscriptionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int radioSelected;
+  int radioSelected=0;
   setSelectedRadioVal(int val) {
     Future.delayed(Duration.zero, () async {
       radioSelected = val;
@@ -128,7 +129,7 @@ class SubscriptionProvider extends ChangeNotifier {
     updateLoader(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // print("issyue in this api....");
+   
 
     String stringValue = prefs.getString('token');
 
@@ -217,7 +218,7 @@ class SubscriptionProvider extends ChangeNotifier {
 
         if (mapResponse['status'] == 400) {
           print("here");
-          EasyLoading.showInfo("You have already used Free Pack for this Course");
+          EasyLoading.showInfo(mapResponse['message']);
           return;
         } else if (mapResponse['status'] == 200) {
           print("now here");
@@ -225,11 +226,7 @@ class SubscriptionProvider extends ChangeNotifier {
           CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
           cp.getCourse().whenComplete(() {
             EasyLoading.showSuccess("Free Pack Activated Successfully");
-            // try {
-            //   // Navigator.pop(GlobalVariable.navState.currentContext);
-            // } catch (e) {
-            //   print("some unkonwn error in pop statement==$e");
-            // }
+            
           });
         }
       }
@@ -240,10 +237,10 @@ class SubscriptionProvider extends ChangeNotifier {
   }
 
   Future<void> getSubscritionData(int idCrs) async {
-    // dev.log(">>>>>>>>>>>>>>getSubscritionData>>>>>>>>>>>>>>");
+  
     updateSubsPackApiCall(true);
     updateLoader(true);
-    // print("idCrs=========>>>>>>>>>>>>>>>$idCrs");
+   
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -317,11 +314,12 @@ class SubscriptionProvider extends ChangeNotifier {
             // desc1 = SubscritionPackList[0].description;
           }
           desc1 = "";
-          dev.log("SelectedPlanType - 1=====${SelectedPlanType - 1}");
+          // dev.log("SelectedPlanType - 1=====${SelectedPlanType - 1}");
           desc1 = SubscritionPackList[SelectedPlanType - 1].description;
-          dev.log("desc1===$desc1");
+          // dev.log("desc1===$desc1");
           // desc1 = "";
           for (int i = 0; i < SubscritionPackList.length; i++) {
+            log("adding data to prem button----${SubscritionPackList[i].price}");
             permiumbutton.add(newButton(
                 amount: SubscritionPackList[i].price,
                 name: SubscritionPackList[i].title,

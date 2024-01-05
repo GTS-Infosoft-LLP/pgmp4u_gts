@@ -494,62 +494,14 @@ class _VideoPlayState extends State<VideoPlay> {
         "https://pgmp4ubucket.s3.amazonaws.com/uploads/document/3PgMPVBCChapter3Introduction202004212hrs1min.mp4";
 
     player.setDataSource(widget.url, autoPlay: true);
-    // player.pause();
-    // player.p
 
-    // _controller = VideoPlayerController.networkUrl(
-    //   Uri.parse(_url),
-    // )..initialize().then((_) {
-    // setState(() {
-    //   try {
-    //     print("means it works fine.....");
-    //     _controller.play();
-    //   } catch (e) {
-    //     print("catching errors::::$e");
-    //   }
-    // });
-    // // setState(() {});
-    // // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-    // // Future.delayed(Duration(seconds: 2)).then((value) {
-    // //   setState(() {});
-    // // });
-
-    //   playVideo();
-    //   count();
-    // }).onError((error, stackTrace) {
-    //   print("errore:::::::$error");
-    //   print("stackTrace:::::::$stackTrace");
-    // });
-
-    // playerProvider = Provider.of(context, listen: false);
-    // isPauseVisible = true;
-    // if (_controller.value.isPlaying) {
-    //   isIconVisible = false;
-    // }
 
     setState(() {});
 
-    // VideoProgressIndicator(_controller, allowScrubbing: true);
-
-    // _controller.initialize();
-    // _controller.setLooping(true);
-    // codeForVideo();
     super.initState();
   }
 
-  // codeForVideo() {
-  //   print("call function");
-  //   final arguments = [
-  //     '-i', widget.url, // Input WebM file
-  //     '-c:v', 'libx264', // Video codec for MP4
-  //     '-c:a', 'aac', // Audio codec for MP4
-  //     "${DateTime.now()}.mp4", // Output MP4 file
-  //   ];
-  //   FFmpegKit.executeWithArguments(arguments).then((value) async {
-  //     print("value is >> ${await value.getOutput()}");
-  //   });
-  // }
-
+ 
   Timer _timer;
 
   count() {
@@ -575,17 +527,7 @@ class _VideoPlayState extends State<VideoPlay> {
       onWillPop: onwill,
       child: Scaffold(
           backgroundColor: Colors.black,
-          // appBar: AppBar(leading:
-          //BackButton(onPressed: () async {
-          //   await SystemChrome.setPreferredOrientations(
-          // [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-          //   Navigator.pop(context);
-          // },),
-          //   backgroundColor: Colors.transparent,
-          // ),
-          // floatingActionButton: playVideo(_controller),
-          // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
+        
           body: Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

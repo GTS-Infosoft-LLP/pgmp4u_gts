@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
 import 'package:getwidget/position/gf_toast_position.dart';
@@ -33,15 +36,28 @@ class _NotificationsState extends State<Notifications> {
     }
 
     ProfileProvider _dshbrdProvider = Provider.of(context, listen: false);
-    _dshbrdProvider.Announcements=[];
-    _dshbrdProvider.Notifications=[];
-    _dshbrdProvider.NotificationData=[];
+    // _dshbrdProvider.Announcements = [];
+    // _dshbrdProvider.Notifications = [];
+    // _dshbrdProvider.NotificationData = [];
 
     scrollcontrol.addListener(() {
       print("controller is listeningggggg......");
+      // _dshbrdProvider.updateLoader(true);
       if (scrollcontrol.position.pixels == scrollcontrol.position.maxScrollExtent) {
+        if (_dshbrdProvider.totalRecords > _dshbrdProvider.NotificationData.length) {
+          log("this is true has more data");
+          EasyLoading.showToast("Scroll to load previous notifications");
+        }
         print("call again api");
-        _dshbrdProvider.showNotification();
+        CourseProvider cp = Provider.of(context, listen: false);
+        _dshbrdProvider.showNotification(crsId: cp.selectedCourseId, isFirstTime: false).whenComplete(() {
+          _dshbrdProvider.updateLoader(false);
+        });
+        // if (widget.type == 1) {
+        //   _dshbrdProvider.showNotification(isFromAnn: 1);
+        // } else {
+        //   _dshbrdProvider.showNotification(crsId: cp.selectedCourseId);
+        // }
       }
     });
     super.initState();
@@ -102,7 +118,6 @@ class _NotificationsState extends State<Notifications> {
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: InkWell(
           onTap: () {
-      
             print("_isShow===========$_isShow");
 
             print("question id========${profileProvider.Notifications[index].questionId}");

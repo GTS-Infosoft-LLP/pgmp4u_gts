@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -445,7 +446,7 @@ class _RandomPageState extends State<RandomPage> {
                                                 Navigator.pop(context, true);
                                               });
                                             }
-                                            return BuyButton2(context, value, widget.index, cp.selectedMasterType,
+                                            return BuyButton2(context, value, widget.index, widget.categoryType,
                                                 widget.categoryId, widget.index);
                                           },
                                         ),
@@ -804,7 +805,7 @@ class _RandomPageState extends State<RandomPage> {
                                                   backgroundColor: MaterialStateProperty.all<Color>(
                                                       i == sp.radioSelected ? Color(0xff3643a3) : Colors.white)),
                                               onPressed: () async {
-                                                       sp.setSelectedPlanType(1);
+                                                sp.setSelectedPlanType(1);
                                                 print("vaue of i::::   $i");
                                                 sp.setSelectedRadioVal(i);
                                                 sp.setSelectedIval(0);
@@ -823,7 +824,7 @@ class _RandomPageState extends State<RandomPage> {
                                                 text: TextSpan(children: <TextSpan>[
                                                   TextSpan(
                                                     text: (sp.durationPackData[i].durationQuantity * 30).toString() +
-                                                      " Days",
+                                                        " Days",
                                                     style: TextStyle(
                                                         color: i == sp.radioSelected ? Colors.white : Colors.black,
                                                         fontSize: 10.0,
@@ -1344,6 +1345,7 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
                     type = type.replaceAll(" ", "");
 
                     String urll = CREATE_ORDER + "/$IdValue/$type";
+                    log("create order api=====$urll");
                     // log("");
 
                     /// Payment implement with stripe

@@ -1043,9 +1043,26 @@ class _PracticeNewState extends State<PracticeNew> {
 
         if (rightAns.contains(op[0].id) && rightAns.contains(op[4].id)) {
           correct = "Answer A and E are the correct one";
-        } else if (rightAns.contains(op[1].id) && rightAns.contains(op[4].id)) {
+        }
+
+        else if (rightAns.contains(op[0].id) && rightAns.contains(op[1].id)) {
+          correct = "Answer A and B are the correct one";
+        }    else if (rightAns.contains(op[0].id) && rightAns.contains(op[2].id)) {
+          correct = "Answer A and C are the correct one";
+        }
+         else if (rightAns.contains(op[0].id) && rightAns.contains(op[3].id)) {
+          correct = "Answer A and D are the correct one";
+        }
+        
+         else if (rightAns.contains(op[1].id) && rightAns.contains(op[4].id)) {
           correct = "Answer B and E are the correct one";
-        } else if (rightAns.contains(op[2].id) && rightAns.contains(op[4].id)) {
+        }
+         else if (rightAns.contains(op[1].id) && rightAns.contains(op[2].id)) {
+          correct = "Answer B and C are the correct one";
+        }
+        
+        
+         else if (rightAns.contains(op[2].id) && rightAns.contains(op[4].id)) {
           correct = "Answer C and E are the correct one";
         } else if (rightAns.contains(op[3].id) && rightAns.contains(op[4].id)) {
           correct = "Answer D and E are the correct one";

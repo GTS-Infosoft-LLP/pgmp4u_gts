@@ -388,7 +388,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                             style: TextStyle(
                                                                               color: Colors.grey,
                                                                               fontSize: 14,
-                                                                            
+         
                                                                             ),
                                                                           ),
                                                                         ])),
@@ -401,15 +401,12 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                     child: RichText(
                                                                         overflow: TextOverflow.ellipsis,
                                                                         maxLines: 2,
-                                                                        
                                                                         text: TextSpan(children: <TextSpan>[
                                                                           TextSpan(
                                                                             text: storedMaster[index].name,
                                                                             style: TextStyle(
                                                                               color: Colors.black,
                                                                               fontSize: 18,
-
-                                                                             
                                                                             ),
                                                                           ),
                                                                         ])),

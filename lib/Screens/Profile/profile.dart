@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -88,6 +89,7 @@ class _ProfileState extends State<Profile> {
     getValue();
 
     context.read<CourseProvider>().setMasterListType("Chat");
+    print("subscriptionApiCalling----${context.read<ProfileProvider>().subscriptionApiCalling}");
     context.read<ProfileProvider>().subscriptionApiCalling
         ? null
         : context.read<ProfileProvider>().subscriptionStatus("Chat");
@@ -124,9 +126,9 @@ class _ProfileState extends State<Profile> {
   checkNotificationStatus() async {
     ProfileProvider pp = Provider.of(context, listen: false);
     CourseProvider cp = Provider.of(context, listen: false);
-    if (cp.crsDropList.isNotEmpty) {
-      print("cp.crsDropList[0].id==:::${cp.crsDropList[0].id}");
-      await pp.getReminder(cp.crsDropList[0].id);
+    if (cp.mockCrsDropList.isNotEmpty) {
+      print("cp.crsDropList[0].id==:::${cp.mockCrsDropList[0].id}");
+      await pp.getReminder(cp.mockCrsDropList[0].id);
       if (pp.notiValue == 0) {
         isSwitched = false;
       } else {
@@ -178,7 +180,7 @@ class _ProfileState extends State<Profile> {
     var height = MediaQuery.of(context).size.height;
     final _user = UserObject().getUser;
 
-    print("user name is : ${_user.name}");
+    // print("user name is : ${_user.name}");
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: Padding(
@@ -249,7 +251,7 @@ class _ProfileState extends State<Profile> {
           color: _colorfromhex("#FCFCFF"),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start, 
             children: [
               Container(
                 height: SizerUtil.deviceType == DeviceType.mobile ? 180 : 330,
@@ -286,9 +288,6 @@ class _ProfileState extends State<Profile> {
                               Container(
                                 margin: EdgeInsets.only(bottom: 6),
                                 child: RichText(
-                                    // overflow: TextOverflow.ellipsis,
-                                    // maxLines: 2,
-                                    // textAlign: TextAlign.center,
                                     text: TextSpan(children: <TextSpan>[
                                   TextSpan(
                                     text: "${_user.name}",
@@ -296,17 +295,11 @@ class _ProfileState extends State<Profile> {
                                       color: Colors.white,
                                       fontSize: width * (18 / 420),
                                       fontFamily: 'Roboto Medium',
-                                      // fontWeight: FontWeight.bold
-
-                                      // fontFamily: AppFont.poppinsRegular,
                                     ),
                                   ),
                                 ])),
                               ),
                               RichText(
-                                  // overflow: TextOverflow.ellipsis,
-                                  // maxLines: 2,
-                                  // textAlign: TextAlign.center,
                                   text: TextSpan(children: <TextSpan>[
                                 TextSpan(
                                   text: "${_user.email ?? ""}",
@@ -314,9 +307,6 @@ class _ProfileState extends State<Profile> {
                                     color: Colors.white,
                                     fontSize: width * (12 / 420),
                                     fontFamily: 'Roboto Medium',
-                                    // fontWeight: FontWeight.bold
-
-                                    // fontFamily: AppFont.poppinsRegular,
                                   ),
                                 ),
                               ])),
@@ -325,7 +315,7 @@ class _ProfileState extends State<Profile> {
 
                           InkWell(
                             onTap: () {
-                              print("offffsettttt${DateTime.now().timeZoneOffset.inMilliseconds}");
+                              print("offff----${_user.email}");
                               // Navigator.push(context, MaterialPageRoute(builder: (context) => Subscriptionpg()));
                             },
                             child: ClipOval(
@@ -334,8 +324,8 @@ class _ProfileState extends State<Profile> {
                                 fit: BoxFit.cover,
                                 width: width * (80 / 420),
                                 height: width * (80 / 420),
-                                placeholder: (context, url) => CircularProgressIndicator(),
-                                errorWidget: (context, url, error) => Icon(Icons.error),
+                                placeholder: (context, url) => Image.asset('assets/user_placeholder.png'),
+                                errorWidget: (context, url, error) => Image.asset('assets/user_placeholder.png'),
                               ),
                             ),
                           ),
@@ -443,7 +433,6 @@ class _ProfileState extends State<Profile> {
                                                 height: MediaQuery.of(context).size.height * .15,
                                                 width: MediaQuery.of(context).size.width * .35,
                                                 decoration: BoxDecoration(
-                                                  // color: AppColor.green,
                                                   gradient: AppColor.greenGradient,
                                                   borderRadius: BorderRadius.all(Radius.circular(20)),
                                                 ),
@@ -469,9 +458,6 @@ class _ProfileState extends State<Profile> {
                                                           color: Colors.white,
                                                           fontSize: 28,
                                                           fontFamily: 'Roboto Medium',
-                                                          // fontWeight: FontWeight.bold
-
-                                                          // fontFamily: AppFont.poppinsRegular,
                                                         ),
                                                       ),
                                                     ])),
@@ -483,9 +469,6 @@ class _ProfileState extends State<Profile> {
                                                           color: Colors.white,
                                                           fontSize: 18,
                                                           fontFamily: 'Roboto Medium',
-                                                          // fontWeight: FontWeight.bold
-
-                                                          // fontFamily: AppFont.poppinsRegular,
                                                         ),
                                                       ),
                                                     ])),
@@ -941,6 +924,9 @@ class _ProfileState extends State<Profile> {
                                   onTap: () async {
                                     SharedPreferences prefs = await SharedPreferences.getInstance();
                                     await prefs.clear();
+                                    String stringValue = prefs.getString('token');
+                                    log("string value token===$stringValue");
+
                                     Navigator.of(context)
                                         .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
                                   },
@@ -1052,15 +1038,10 @@ class _ProfileState extends State<Profile> {
                                           tileMode: TileMode.clamp)),
                                   child: Center(
                                     child: RichText(
-                                        // textAlign: TextAlign.center,
                                         text: TextSpan(children: <TextSpan>[
                                       TextSpan(
                                         text: "No",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            // fontSize: 18,
-                                            // fontFamily: 'Roboto Medium',
-                                            fontWeight: FontWeight.w400),
+                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
                                       ),
                                     ])),
                                   ))),
@@ -1134,15 +1115,10 @@ class _ProfileState extends State<Profile> {
                                     tileMode: TileMode.clamp)),
                             child: Center(
                               child: RichText(
-                                  // textAlign: TextAlign.center,
                                   text: TextSpan(children: <TextSpan>[
                                 TextSpan(
                                   text: "Dismiss",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      // fontSize: 18,
-                                      // fontFamily: 'Roboto Medium',
-                                      fontWeight: FontWeight.w400),
+                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
                                 ),
                               ])),
                             ),
@@ -1164,14 +1140,6 @@ class _ProfileState extends State<Profile> {
               ),
               title: Column(
                 children: [
-                  // Text("Are you sure you want to delete this account?",
-                  //     textAlign: TextAlign.center,
-                  //     style: TextStyle(
-                  //       fontSize: 18,
-                  //       fontFamily: 'Roboto Medium',
-                  //       fontWeight: FontWeight.w200,
-                  //       color: Colors.black,
-                  //     )),
                   RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(children: <TextSpan>[
@@ -1216,11 +1184,7 @@ class _ProfileState extends State<Profile> {
                                   text: TextSpan(children: <TextSpan>[
                                 TextSpan(
                                   text: "No",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      // fontSize: 18,
-                                      // fontFamily: 'Roboto Medium',
-                                      fontWeight: FontWeight.w400),
+                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
                                 ),
                               ])),
                             ))),
@@ -1228,10 +1192,11 @@ class _ProfileState extends State<Profile> {
                       width: 10,
                     ),
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
                         ProfileProvider pp = Provider.of(context, listen: false);
-
+                        SharedPreferences prefs;
                         pp.deleteAccount();
+
                         Navigator.pop(context);
                       },
                       child: Container(
@@ -1251,15 +1216,10 @@ class _ProfileState extends State<Profile> {
                                 tileMode: TileMode.clamp)),
                         child: Center(
                           child: RichText(
-                              // textAlign: TextAlign.center,
                               text: TextSpan(children: <TextSpan>[
                             TextSpan(
                               text: "Yes",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  // fontSize: 18,
-                                  // fontFamily: 'Roboto Medium',
-                                  fontWeight: FontWeight.w400),
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
                             ),
                           ])),
                         ),
@@ -1363,7 +1323,6 @@ class cancelSubsBottomSheet extends StatelessWidget {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 18,
-                                // fontFamily: 'Roboto Medium',
                               ),
                             ),
                           ])),
@@ -1417,7 +1376,6 @@ class cancelSubsBottomSheet extends StatelessWidget {
                       ),
                       alignment: Alignment.center,
                       child: RichText(
-                          // textAlign: TextAlign.left,
                           text: TextSpan(children: <TextSpan>[
                         TextSpan(
                           text: 'CANCEL NOW',
@@ -1493,15 +1451,10 @@ class cancelSubsBottomSheet extends StatelessWidget {
                                     tileMode: TileMode.clamp)),
                             child: Center(
                               child: RichText(
-                                  // textAlign: TextAlign.center,
                                   text: TextSpan(children: <TextSpan>[
                                 TextSpan(
                                   text: "No",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      // fontSize: 18,
-                                      // fontFamily: 'Roboto Medium',
-                                      fontWeight: FontWeight.w400),
+                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
                                 ),
                               ])),
                             ))),
@@ -1543,15 +1496,10 @@ class cancelSubsBottomSheet extends StatelessWidget {
                                 tileMode: TileMode.clamp)),
                         child: Center(
                           child: RichText(
-                              // textAlign: TextAlign.center,
                               text: TextSpan(children: <TextSpan>[
                             TextSpan(
                               text: "Yes",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  // fontSize: 18,
-                                  // fontFamily: 'Roboto Medium',
-                                  fontWeight: FontWeight.w400),
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
                             ),
                           ])),
                         ),

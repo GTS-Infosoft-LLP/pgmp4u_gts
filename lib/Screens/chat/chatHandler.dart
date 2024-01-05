@@ -14,8 +14,7 @@ class FirebaseChatHandler {
   static CollectionReference groupsCollectionRef =
       FirebaseFirestore.instance.collection(FirebaseConstant.groupsCollection);
 
-  static CollectionReference discussionCollectionRef =
-      FirebaseFirestore.instance.collection(FirebaseConstant.discussionsCollection);
+  static CollectionReference discussionCollectionRef = FirebaseFirestore.instance.collection(FirebaseConstant.discussionsCollection);
 
   ///// single chat work   ////
 

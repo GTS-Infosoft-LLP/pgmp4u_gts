@@ -75,7 +75,7 @@ class ChatModel {
   List<ReactionModel> reactions;
 
   ChatModel({
-    @required this.messageId,
+    @required this.messageId,   
     @required this.messageType,
     @required this.sentAt,
     @required this.image,
@@ -85,7 +85,7 @@ class ChatModel {
     @required this.text,
     @required this.options,
     @required this.question,
-    @required this.reactions,
+    @required this.reactions,                     
   });
 
   ChatModel.fromJson(Map<String, dynamic> json) {

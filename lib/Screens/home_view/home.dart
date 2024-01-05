@@ -48,6 +48,8 @@ class _HomeViewState extends State<HomeView> {
   List<CourseDetails> tempList = [];
   List<CourseDetails> storedCourse = [];
 
+  // get width => null;
+
   initState() {
     print("0======call init");
     PurchaseProvider purchaseProvider = Provider.of(context, listen: false);
@@ -184,20 +186,34 @@ class _HomeViewState extends State<HomeView> {
                                       child: Row(
                                         children: [
                                           InkWell(
-                                            onTap: () {
-                                              CourseProvider courseProvider = Provider.of(context, listen: false);
-                                              print(
-                                                  "courseProvider.allCrsList>>>>>>${courseProvider.allCrsList.length}");
-                                              print(
-                                                  "courseProvider.chatCrsDropList.length>>>>>${courseProvider.chatCrsDropList.length}");
-                                            },
-                                            child: CircularCachedNetworkImage(
-                                              imageUrl: user.image,
-                                              size: 50,
-                                              borderColor: Colors.white,
-                                              borderWidth: 0,
-                                            ),
-                                          ),
+                                              onTap: () {
+                                                CourseProvider courseProvider = Provider.of(context, listen: false);
+                                                print(
+                                                    "courseProvider.allCrsList>>>>>>${courseProvider.allCrsList.length}");
+                                                print(
+                                                    "courseProvider.chatCrsDropList.length>>>>>${courseProvider.chatCrsDropList.length}");
+                                              },
+                                              child: ClipOval(
+                                                child: CachedNetworkImage(
+                                                  imageUrl: user.image,
+                                                  width: 50,
+                                                  height: 50,
+                                                  //                   width: width * (80 / 420),
+                                                  // height: width * (80 / 420),
+                                                  placeholder: (context, url) =>
+                                                      Image.asset('assets/user_placeholder.png'),
+                                                  errorWidget: (context, url, error) =>
+                                                      Image.asset('assets/user_placeholder.png'),
+                                                ),
+                                              )
+                                              //  CircularCachedNetworkImage(
+                                              //   imageUrl: user.image,
+                                              //   size: 50,
+                                              //   borderColor: Colors.white,
+                                              //   borderWidth: 0,
+
+                                              // ),
+                                              ),
                                           SizedBox(
                                             width: 10,
                                           ),
@@ -369,7 +385,7 @@ class _HomeViewState extends State<HomeView> {
                                             child: TextScroll(
                                               "Start with free trial for ${cp.currentDaysVal} days for ${cp.currentLableVal} course.  ",
                                               mode: TextScrollMode.endless,
-                                              velocity: Velocity(pixelsPerSecond: Offset(50, 0)),
+                                              velocity: Velocity(pixelsPerSecond: Offset(50, 20)),
                                               delayBefore: Duration(seconds: 1),
                                               // numberOfReps: 2,
                                               pauseBetween: Duration(seconds: 1),
@@ -422,19 +438,32 @@ class _HomeViewState extends State<HomeView> {
                                         ),
                                       ])),
                                       InkWell(
-                                        onTap: () {
-                                          CourseProvider courseProvider = Provider.of(context, listen: false);
-                                          print("courseProvider.allCrsList>>>>>>${courseProvider.allCrsList.length}");
-                                          print(
-                                              "courseProvider.chatCrsDropList.length>>>>>${courseProvider.chatCrsDropList.length}");
-                                        },
-                                        child: CircularCachedNetworkImage(
-                                          imageUrl: user.image,
-                                          size: (topHeight / 4) * 2,
-                                          borderColor: Colors.white,
-                                          borderWidth: 0,
-                                        ),
-                                      ),
+                                          onTap: () {
+                                            CourseProvider courseProvider = Provider.of(context, listen: false);
+                                            print("courseProvider.allCrsList>>>>>>${courseProvider.allCrsList.length}");
+                                            print(
+                                                "courseProvider.chatCrsDropList.length>>>>>${courseProvider.chatCrsDropList.length}");
+                                          },
+                                          child: SizedBox(
+                                            child: ClipOval(
+                                              child: CachedNetworkImage(
+                                                imageUrl: user.image,
+                                                width: 50,
+                                                height: 50,
+                                                placeholder: (context, url) =>
+                                                    Image.asset('assets/user_placeholder.png'),
+                                                errorWidget: (context, url, error) =>
+                                                    Image.asset('assets/user_placeholder.png'),
+                                              ),
+                                            ),
+                                          )
+                                          // CircularCachedNetworkImage(
+                                          //   imageUrl: user.image,
+                                          //   size: (topHeight / 4) * 1.5,
+                                          //   borderColor: Colors.white,
+                                          //   borderWidth: 0,
+                                          // ),
+                                          ),
                                     ],
                                   ),
                                   SizedBox(
@@ -985,7 +1014,7 @@ class CircularCachedNetworkImage extends StatelessWidget {
           width: size - (2 * borderWidth),
           height: size - (2 * borderWidth),
           placeholder: (context, url) => CircularProgressIndicator(),
-          errorWidget: (context, url, error) => Icon(Icons.error),
+          errorWidget: (context, url, error) => Image.asset('assets/user_placeholder.png'),
         ),
       ),
     );

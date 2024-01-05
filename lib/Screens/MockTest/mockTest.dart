@@ -140,15 +140,9 @@ class _MockTestState extends State<MockTest> {
                         Container(
                           width: MediaQuery.of(context).size.width * .75,
                           child:
-                              //  Text(
-                              //   // "Video Library",
-                              //   cp.selectedCourseLable,
-                              //   style: TextStyle(
-                              //       fontSize: 22, color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold),
-                              // ),
-
+                             
                               RichText(
-                                  // textAlign: TextAlign.center,
+                                 
                                   text: TextSpan(children: <TextSpan>[
                             TextSpan(
                               text: cp.selectedCourseLable,
@@ -169,7 +163,7 @@ class _MockTestState extends State<MockTest> {
 
             Consumer<CourseProvider>(builder: (context, cp, child) {
               return Container(
-                // color: Colors.amber,
+            
 
                 child: cp.isMockTestLoading
                     ? Expanded(
@@ -188,19 +182,10 @@ class _MockTestState extends State<MockTest> {
                               Container(
                                 margin: EdgeInsets.only(bottom: height * (22 / 800)),
                                 child:
-                                    //  Text(
-                                    //   '${widget.testName}',
-                                    //   style: TextStyle(
-                                    //     fontFamily: 'Roboto Bold',
-                                    //     fontSize: width * (18 / 420),
-                                    //     color: Colors.black,
-                                    //     fontWeight: FontWeight.w800,
-                                    //     letterSpacing: 0.3,
-                                    //   ),
-                                    // ),
+                                  
 
                                     RichText(
-                                        // textAlign: TextAlign.center,
+                                 
                                         text: TextSpan(children: <TextSpan>[
                                   TextSpan(
                                     text: '${widget.testName}',
@@ -222,13 +207,12 @@ class _MockTestState extends State<MockTest> {
                                     List<TestDataDetails> storedTestData = [];
                                     if (value.containsKey(selectedMasterId)) {
                                       List testDataList = jsonDecode(value.get(selectedMasterId));
-                                      // print(">>> testDataList :  $testDataList");
+                                      
                                       storedTestData = testDataList.map((e) => TestDataDetails.fromjson(e)).toList();
                                     } else {
                                       storedTestData = [];
                                     }
 
-                                    // print("storedMaster========================$storedTestData");
 
                                     if (storedTestData == null) {
                                       storedTestData = [];
@@ -244,7 +228,7 @@ class _MockTestState extends State<MockTest> {
                                                 style: TextStyle(fontSize: 18),
                                               )))
                                           : Container(
-                                              // color: Colors.amber,
+                                             
                                               height: MediaQuery.of(context).size.height * .68,
                                               child: ListView.builder(
                                                   shrinkWrap: true,
@@ -344,11 +328,11 @@ class _MockTestState extends State<MockTest> {
                                                               height: 60,
                                                               padding: EdgeInsets.all(17),
                                                               decoration: BoxDecoration(
-                                                                  //  index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                                                                 
                                                                   color: index % 2 == 0
                                                                       ? AppColor.purpule
                                                                       : AppColor.green,
-                                                                  //  _colorfromhex("#72A258"),
+                                                                
                                                                   borderRadius: BorderRadius.circular(10)),
                                                               child: Container(
                                                                 decoration: BoxDecoration(
@@ -357,19 +341,14 @@ class _MockTestState extends State<MockTest> {
                                                                 ),
                                                                 child: Center(
                                                                   child:
-                                                                      // Text('${index + 1}'),
-
-                                                                      RichText(
-                                                                          // textAlign: TextAlign.center,
-                                                                          text: TextSpan(children: <TextSpan>[
+                                                                    
+                                                                      RichText(   
+                                                                       text: TextSpan(children: <TextSpan>[
                                                                     TextSpan(
                                                                       text: '${index + 1}',
                                                                       style: TextStyle(
                                                                         color: Colors.black,
-                                                                        // fontSize:width * (18 / 420),
-                                                                        // fontFamily:'Roboto Bold',
-                                                                        // fontWeight: FontWeight.w800,
-                                                                        // letterSpacing: 0.3,
+                                                                      
                                                                       ),
                                                                     ),
                                                                   ])),
@@ -385,7 +364,7 @@ class _MockTestState extends State<MockTest> {
                                                                   Container(
                                                                     width: MediaQuery.of(context).size.width * .45,
                                                                     child: RichText(
-                                                                        // textAlign: TextAlign.center,
+                                                                        
                                                                         text: TextSpan(children: <TextSpan>[
                                                                       TextSpan(
                                                                         text: storedTestData[index].test_name,
@@ -403,7 +382,7 @@ class _MockTestState extends State<MockTest> {
                                                               ),
                                                             ),
                                                             new Spacer(),
-                                                            Column(
+                                                          widget.testType == "Practice Test"?SizedBox():  Column(
                                                               children: [
                                                                 storedTestData[index].premium == 1
                                                                     ? Text("Premium")

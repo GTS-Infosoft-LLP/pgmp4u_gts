@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:convert' as convert;
 import 'dart:developer' as dev;
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart';
@@ -1282,6 +1283,7 @@ class CourseProvider extends ChangeNotifier {
 
     print("token valued===$stringValue");
     var request = {"id": id};
+    log("request===$request");
     bool checkConn = await checkInternetConn();
     if (checkConn) {
       body = HiveHandler.getNotSubmittedMock(keyName: notSubmitedMockID);
@@ -1699,7 +1701,7 @@ class CourseProvider extends ChangeNotifier {
       if (currentLableVal == null) {
         getFreeTrial();
       }
-      dev.log("current index value===${freeLable[currentIndex]}");
+      // dev.log("current index value===${freeLable[currentIndex]}");
       notifyListeners();
     });
   }

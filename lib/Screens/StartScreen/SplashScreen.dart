@@ -77,7 +77,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     print(double.infinity);
-
+    callCourseApi();
     localDataUpdate();
 
     fireNotification();
@@ -119,8 +119,8 @@ class _SplashScreenState extends State<SplashScreen> {
       alert: true,
       announcement: false,
       badge: true,
-      carPlay: false,
-      criticalAlert: false,
+      // carPlay: false,
+      // criticalAlert: false,
       provisional: false,
       sound: true,
     );
@@ -130,7 +130,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       print("inside this getInitialMessage");
-
       print("message=======>>>>$message");
       // print("message data=====${message.data}");
 
@@ -177,30 +176,33 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage");
+      print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage--$event");
+      print(">>>>>>>>??????<<<<< firebase notification onMessage--${event.notification}");
+      print(">>>>????? firebase notification title--${event.notification.title}");
+      print(">>>>?? firebase notificon body--${event.notification.body}");
       print("notification====${event.data}");
       print("notification message====${event.data["message"]}");
 
       if (event.notification != null) {
         print(">>>>>>>>>>>?????????????<<<<<<<<<<<<<<< firebase onMessage 1");
         LocalNotifications().showNotification(
-          title: event.data["title"],
-          message: event.data["message"],
+          title: event.notification.title,
+          message: event.notification.body,
           payload: jsonEncode(event.data),
         );
       }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print("Listen onMessageOpenedApp  message $message");
       print("Listen onMessageOpenedApp   ${message.data}");
 
       print("Notificationsssssss>>>>>>");
-      print("NOTIFICATION json$message");
-      print("NOTIFICATION======$json");
+      print("NOTIFICATION onMessageOpenedApp json$message");
+      print("NOTIFICATION==onMessageOpenedApp====$json");
       // print("tpmdjsdvjsdv======${message["notificationType"]}");
       print("   ${['Notificationtype']}");
 
-      print("NOTIFICATION======$json");
       print("   ${['Notificationtype']}");
 
       switch (['Notificationtype'].toString()) {
@@ -222,6 +224,22 @@ class _SplashScreenState extends State<SplashScreen> {
           break;
       }
     });
+  }
+
+  Future<void> callCourseApi() async {
+    CourseProvider cp = Provider.of(context, listen: false);
+    await cp.getCourse();
+
+    if (cp.mockCrsDropList.isNotEmpty) {
+      print("cp.course[0].id===========${cp.mockCrsDropList[0].id}");
+      cp.setSelectedCourseId(cp.mockCrsDropList[0].id);
+      cp.setSelectedCourseName(cp.mockCrsDropList[0].course);
+      cp.setSelectedCourseLable(cp.mockCrsDropList[0].lable);
+      print("cp.course[0].lable===========${cp.mockCrsDropList[0].lable}");
+    } else {
+      cp.setSelectedCourseLable(null);
+      print("seletced course lableee====${cp.selectedCourseLable}");
+    }
   }
 }
 
