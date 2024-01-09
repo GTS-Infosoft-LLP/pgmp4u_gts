@@ -219,6 +219,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
                                                                 categoryId: storedFlashCate[index].id,
                                                                 price: storedFlashCate[index].price,
                                                                 index: 1,
+                                                                categoryType: "FlashCards",
                                                                 name: storedFlashCate[index].name,
                                                               )));
                                                 } else {

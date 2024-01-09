@@ -284,6 +284,7 @@ class _MockTestState extends State<MockTest> {
                                                                     builder: (context) => RandomPage(
                                                                         name: storedTestData[index].test_name,
                                                                         index: 3,
+                                                                        categoryType: "MockTest",
                                                                         categoryId: storedTestData[index].id,
                                                                         price: storedTestData[index].price)));
                                                           } else {

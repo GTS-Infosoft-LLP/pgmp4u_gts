@@ -134,7 +134,7 @@ class _ProcessTaskQuestionsState extends State<ProcessTaskQuestions> {
                                           child: Column(
                                             children: [
                                               SizedBox(
-                                                height: 10,
+                                                height: 30,
                                               ),
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,7 +157,8 @@ class _ProcessTaskQuestionsState extends State<ProcessTaskQuestions> {
                                                     'QUESTION ${indexxx + 1}',
                                                     style: TextStyle(
                                                       fontFamily: 'Roboto Regular',
-                                                      fontSize: 14,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w400,
                                                       color: Colors.black,
                                                     ),
                                                   ),
@@ -183,7 +184,12 @@ class _ProcessTaskQuestionsState extends State<ProcessTaskQuestions> {
                                               ),
                                               Text(
                                                 storedProcessTaskQues[indexxx].question,
-                                                style: TextStyle(color: Colors.black, fontSize: 17),
+                                                style: TextStyle(
+                                                    height: 1.3,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontFamily: 'Roboto Regular',
+                                                    color: Colors.black,
+                                                    fontSize: 17),
                                               ),
                                               SizedBox(
                                                 height: 15,
@@ -327,7 +333,8 @@ class _ProcessTaskQuestionsState extends State<ProcessTaskQuestions> {
                                                                           // height: 20,
                                                                           ),
                                                                       Padding(
-                                                                        padding: const EdgeInsets.only(bottom: 0.0),
+                                                                        padding:
+                                                                            const EdgeInsets.symmetric(vertical: 6.0),
                                                                         child: Container(
                                                                             // color: Colors.white,
                                                                             width:
@@ -342,7 +349,11 @@ class _ProcessTaskQuestionsState extends State<ProcessTaskQuestions> {
                                                                                 children: [
                                                                                   Text(
                                                                                     Taskop[index].questionOption,
-                                                                                    style: TextStyle(fontSize: 15),
+                                                                                    style: TextStyle(
+                                                                                      fontSize: 16,
+                                                                                      fontWeight: FontWeight.w400,
+                                                                                      fontFamily: 'Roboto Regular',
+                                                                                    ),
                                                                                     // maxLines: 3,
                                                                                   ),
                                                                                 ],

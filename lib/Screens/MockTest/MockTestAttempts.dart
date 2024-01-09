@@ -471,6 +471,7 @@ class _MockTestAttemptsState extends State<MockTestAttempts> {
                                                                                   MaterialPageRoute(
                                                                                       builder: (context) => RandomPage(
                                                                                             index: 3,
+                                                                                            categoryType: "MockTest",
                                                                                             price: detailsofMockAttempt
                                                                                                 .price
                                                                                                 .toString(),

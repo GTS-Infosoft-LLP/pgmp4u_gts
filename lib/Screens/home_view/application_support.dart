@@ -326,7 +326,8 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                     fontSize: 16,
                                   ),
                                 ),
-                              ]))),
+                              ]))
+                              ),
                         )
                       : SizedBox(),
                   SizedBox(

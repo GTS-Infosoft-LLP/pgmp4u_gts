@@ -288,8 +288,8 @@ class _HomeViewState extends State<HomeView> {
                                           Future.delayed(Duration(microseconds: 300), () {
                                             crs.setSelectedCourseId(crs.course[0].id);
                                             crs.setSelectedCourseLable(storedCourse[0].lable);
-                                            sp.setSelectedRadioVal(0);
-
+                                            sp.setSelectedRadioVal(100);
+                                            pp.setSelectedContainer(100);
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -345,8 +345,9 @@ class _HomeViewState extends State<HomeView> {
                                       pp.updateLoader(true);
 
                                       Future.delayed(Duration(milliseconds: 300), () {
-                                        sp.setSelectedRadioVal(0);
+                                        sp.setSelectedRadioVal(-1);
                                         pp.updateLoader(false);
+                                        pp.setSelectedContainer(100);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -566,10 +567,18 @@ class _HomeViewState extends State<HomeView> {
 
                                                                 if (storedCourse[index].isCancelSubscription == 1 &&
                                                                     storedCourse[index].isSubscribed == 1) {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => MasterListPage()));
+                                                                  CourseProvider cp =
+                                                                      Provider.of(context, listen: false);
+                                                                  ProfileProvider pp =
+                                                                      Provider.of(context, listen: false);
+                                                                  await pp
+                                                                      .getReminder(cp.selectedCourseId)
+                                                                      .then((value) {
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) => MasterListPage()));
+                                                                  });
                                                                 } else {
                                                                   courseProvider.setInAppPurchaseValue(
                                                                       storedCourse[index].inAppPurchaseEnabled);
@@ -643,11 +652,20 @@ class _HomeViewState extends State<HomeView> {
                                                                     courseProvider
                                                                         .getMasterData(storedCourse[index].id);
                                                                     Future.delayed(const Duration(milliseconds: 100),
-                                                                        () {
-                                                                      Navigator.push(
-                                                                          context,
-                                                                          MaterialPageRoute(
-                                                                              builder: (context) => MasterListPage()));
+                                                                        () async {
+                                                                      CourseProvider cp =
+                                                                          Provider.of(context, listen: false);
+                                                                      ProfileProvider pp =
+                                                                          Provider.of(context, listen: false);
+                                                                      await pp
+                                                                          .getReminder(cp.selectedCourseId)
+                                                                          .then((value) {
+                                                                        Navigator.push(
+                                                                            context,
+                                                                            MaterialPageRoute(
+                                                                                builder: (context) =>
+                                                                                    MasterListPage()));
+                                                                      });
                                                                     });
                                                                   }
                                                                   pp.updateLoader(false);
@@ -808,7 +826,7 @@ class _HomeViewState extends State<HomeView> {
                                                                                         1
                                                                                     ? storedCourse[index].isFree == 1
                                                                                         ? "${storedCourse[index].subscriptionDurationQuantity}-Days"
-                                                                                        : "${storedCourse[index].subscriptionDurationQuantity * 30}-Days"
+                                                                                        : "${storedCourse[index].subscriptionDurationQuantity}-Month"
                                                                                     : "${storedCourse[index].subscriptionDurationQuantity * 365}-Days",
                                                                                 style: TextStyle(
                                                                                   color: Colors.black,

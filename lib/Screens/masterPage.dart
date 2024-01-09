@@ -13,6 +13,8 @@ import 'package:provider/provider.dart';
 
 import '../Process/process.dart';
 import '../Process/processDomainProvider.dart';
+import '../provider/Subscription/subscriptionPage.dart';
+import '../provider/Subscription/subscriptionProvider.dart';
 import '../provider/profileProvider.dart';
 import '../utils/app_color.dart';
 import 'Domain/screens/domainList.dart';
@@ -39,8 +41,14 @@ class _MasterListPageState extends State<MasterListPage> {
   void initState() {
     print("init cakllinggggg.....");
     CourseProvider courseProvider = Provider.of(context, listen: false);
+    ProfileProvider pp = Provider.of(context, listen: false);
+    callRemainderApi();
     print("master list===${courseProvider.masterList}");
     courseProvider.changeonTap(0);
+    if (pp?.planDetail?.durationQuantity == null) {
+      pp?.planDetail?.durationQuantity = 0;
+    }
+    print("pp.planDetail.durationQuantity- init ---${pp?.planDetail?.durationQuantity}");
 
     if (courseProvider.masterList.isEmpty) {
       print("list is empty");
@@ -94,9 +102,7 @@ class _MasterListPageState extends State<MasterListPage> {
                           width: 20,
                         ),
                         InkWell(
-                          onTap: () {
-                           
-                          },
+                          onTap: () {},
                           child: RichText(
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -108,10 +114,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                       color: Colors.white,
                                       fontSize: 28,
                                       fontFamily: "Raleway",
-                                      fontWeight: FontWeight.bold
-
-                                      
-                                      ),
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ])),
                         ),
@@ -122,8 +125,92 @@ class _MasterListPageState extends State<MasterListPage> {
               ],
             ),
             SizedBox(
-              height: 15,
+              height: 5,
             ),
+            Consumer<ProfileProvider>(builder: (context, pp, child) {
+              // if()
+              print("pp.planDetail.durationQuantity----${pp.planDetail.durationQuantity}");
+              return pp.getRemiinderApiCall == true
+                  ? SizedBox()
+                  : pp.planDetail.durationQuantity == null
+                      ? SizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.only(right: 12.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                  style: ButtonStyle(
+                                    elevation: MaterialStateProperty.all<double>(4.0),
+                                    side:
+                                        MaterialStateProperty.all(BorderSide(width: 2, color: Colors.indigo.shade500)),
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(27))),
+                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.indigo.shade500),
+                                  ),
+                                  onPressed: () async {
+                                    ProfileProvider pp = Provider.of(context, listen: false);
+                                    CourseProvider cp = Provider.of(context, listen: false);
+
+                                    pp.updateLoader(false);
+                                    pp.setSelectedContainer(2);
+                                    SubscriptionProvider sp = Provider.of(context, listen: false);
+                                    sp.SelectedPlanType = 3;
+                                    await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
+                                    sp.setSelectedIval(2);
+                                    if (sp.durationPackData.isNotEmpty) {
+                                      sp.setSelectedRadioVal(0);
+                                    }
+
+                                    pp.getReminder(cp.selectedCourseId).then((value) {
+                                      print("pp.planDetail.durationQuantity-----${pp.planDetail.durationQuantity}");
+                                      if (pp.planDetail.durationQuantity != null) {
+                                        print("this is calllllllllll");
+                                        if (pp.planDetail.durationQuantity == 1) {
+                                          print("000000");
+                                          sp.setSelectedRadioVal(0);
+                                        } else if (pp.planDetail.durationQuantity == 3) {
+                                          print("111111");
+                                          sp.setSelectedRadioVal(1);
+                                        } else if (pp.planDetail.durationQuantity == 6) {
+                                          print("2222222");
+                                          sp.setSelectedRadioVal(2);
+                                        } else if (pp.planDetail.durationQuantity == 12) {
+                                          print("2222222");
+                                          sp.setSelectedRadioVal(2);
+                                        }
+                                        if (pp.planDetail.type != null) {
+                                          pp.setSelectedContainer(pp.planDetail.type - 1);
+                                        }
+                                      }
+                                      print("thissss is callinggg");
+
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Subscriptionpg(
+                                                    showDrpDown: 0,
+                                                    showFreeTrial: 0,
+                                                    isFromUpgrdePlan: 1,
+                                                    title: pp.planDetail.title,
+                                                    quntity: pp.planDetail.durationQuantity,
+                                                  )));
+                                    });
+                                  },
+                                  child: RichText(
+                                      text: TextSpan(children: <TextSpan>[
+                                    TextSpan(
+                                      text: "Upgrade Plan",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ])))
+                            ],
+                          ),
+                        );
+            }),
             Consumer<CourseProvider>(builder: (context, cp, child) {
               return cp.masterDataApiCall
                   ? Center(
@@ -136,7 +223,6 @@ class _MasterListPageState extends State<MasterListPage> {
                             valueListenable: HiveHandler.getMasterListener(),
                             builder: (context, value, child) {
                               String courseId = context.read<CourseProvider>().selectedCourseId.toString();
-
                               if (value.containsKey(courseId)) {
                                 List masterDataList = jsonDecode(value.get(courseId));
                                 storedMaster = masterDataList.map((e) => MasterDetails.fromjson(e)).toList();
@@ -151,8 +237,8 @@ class _MasterListPageState extends State<MasterListPage> {
                                     ? Padding(
                                         padding: const EdgeInsets.only(bottom: 0.0),
                                         child: Container(
-                                         
                                           child: ListView.builder(
+                                              physics: BouncingScrollPhysics(),
                                               shrinkWrap: true,
                                               itemCount: storedMaster.length,
                                               itemBuilder: (context, index) {
@@ -377,18 +463,15 @@ class _MasterListPageState extends State<MasterListPage> {
                                                                 children: [
                                                                   Container(
                                                                     width: MediaQuery.of(context).size.width * .65,
-                                                               
                                                                     child: RichText(
                                                                         overflow: TextOverflow.ellipsis,
                                                                         maxLines: 2,
-                                                                      
                                                                         text: TextSpan(children: <TextSpan>[
                                                                           TextSpan(
                                                                             text: storedMaster[index].label,
                                                                             style: TextStyle(
                                                                               color: Colors.grey,
                                                                               fontSize: 14,
-         
                                                                             ),
                                                                           ),
                                                                         ])),
@@ -436,5 +519,11 @@ class _MasterListPageState extends State<MasterListPage> {
         ),
       ),
     );
+  }
+
+  Future<void> callRemainderApi() async {
+    CourseProvider cp = Provider.of(context, listen: false);
+    ProfileProvider pp = Provider.of(context, listen: false);
+    await pp.getReminder(cp.selectedCourseId);
   }
 }

@@ -168,6 +168,7 @@ class _PPTCardItemState extends State<PPTCardItem> {
                                                           categoryId: storedpptCate[index].id,
                                                           price: storedpptCate[index].price,
                                                           index: 5,
+                                                          categoryType: "PPT",
                                                           name: storedpptCate[index].name,
                                                         )));
                                           } else {

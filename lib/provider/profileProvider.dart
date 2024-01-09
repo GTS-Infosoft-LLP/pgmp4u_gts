@@ -162,6 +162,7 @@ class ProfileProvider extends ChangeNotifier {
         if (mapResponse["count"] == 0) {
           updateNotificationLoader(false);
           updateLoader(false);
+
           EasyLoading.showToast(mapResponse["message"], toastPosition: EasyLoadingToastPosition.bottom);
           return;
         }
@@ -258,16 +259,11 @@ class ProfileProvider extends ChangeNotifier {
       return;
     }
 
-    // print("val of vid present===$videoPresent");
-
     if (response.statusCode == 200) {
-      // masterList.clear();
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
 
       List temp1 = mapResponse["data"];
       print("temp list===$temp1");
-      // masterList = temp1.map((e) => MasterDetails.fromjson(e)).toList();
-
       notifyListeners();
     }
     print("respponse=== *********${response.body}");
@@ -304,12 +300,22 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool getRemiinderApiCall = false;
+
+  updateReminderApiCall(bool val) {
+    Future.delayed(Duration.zero, () async {
+      getRemiinderApiCall = val;
+      notifyListeners();
+    });
+  }
+
   var avgScore = "";
   var dayDiff = "";
   var isStudyRemAdded;
   var studyTime = "";
 
   Future<void> getReminder(int couseId) async {
+    updateReminderApiCall(true);
     updateLoader(true);
     print("*--**********getReminder ********************");
 
@@ -369,13 +375,14 @@ class ProfileProvider extends ChangeNotifier {
       dayDiff = "";
       dev.log("response.statusCode getreminder-----${response.statusCode}");
       if (response.statusCode == 200) {
+        updateReminderApiCall(false);
         studyTime = "";
         isStudyRemAdded = 0;
         print("response.statusCode getreminder===${response.statusCode}");
         var resDDo = json.decode(response.body);
         print("resDDo getreminder====$resDDo");
         updateLoader(false);
-        var remTime = resDDo['data']['studyReminder'];          
+        var remTime = resDDo['data']['studyReminder'];
         avgScore = resDDo['data']['daysDiff'].toString();
         dayDiff = resDDo['data']['averageScore'].toString();
         planDetail = PlanDetail.fromJson(resDDo['data']['currentSubscription']);
@@ -395,9 +402,11 @@ class ProfileProvider extends ChangeNotifier {
         isStudyRemAdded = resDDo['data']['isStudyReminderAdded'];
         notifyListeners();
       } else {
+        updateReminderApiCall(false);
         updateLoader(false);
       }
     } catch (e) {
+      updateReminderApiCall(false);
       updateLoader(false);
       // TODO
       print("---- EXCEPTION OCCURED WHILE getReminder----");

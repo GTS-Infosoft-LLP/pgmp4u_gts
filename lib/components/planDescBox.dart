@@ -68,6 +68,7 @@ Widget planDescBox(
             child: ListView.builder(
                 padding: EdgeInsets.all(0),
                 itemCount: itmCnt,
+                physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return customGreyRedRow(
                       FontAwesomeIcons.tableColumns,

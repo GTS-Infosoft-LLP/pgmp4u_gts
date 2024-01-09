@@ -64,6 +64,7 @@ class _ProcessTaskDetailsState extends State<ProcessTaskDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: currentIndex == 4
           ? SizedBox()

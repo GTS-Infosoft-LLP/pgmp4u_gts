@@ -134,7 +134,7 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                         child: Column(
                                           children: [
                                             SizedBox(
-                                              height: 10,
+                                              height: 30,
                                             ),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,7 +157,8 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                   'QUESTION ${indexxx + 1}',
                                                   style: TextStyle(
                                                     fontFamily: 'Roboto Regular',
-                                                    fontSize: 14,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400,
                                                     color: Colors.black,
                                                   ),
                                                 ),
@@ -184,8 +185,12 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                             Text(
                                               storedTaskQues[indexxx].question,
                                               style: TextStyle(
-                                                color: Colors.black,
-                                              ),
+                                                  color: Colors.black,
+                                                  height: 1.3,
+                                                  fontWeight: FontWeight.w500,
+                                              
+                                                  fontFamily: 'Roboto Regular',
+                                                  fontSize: 17),
                                             ),
                                             SizedBox(
                                               height: 15,
@@ -198,7 +203,7 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontFamily: 'Roboto Regular',
-                                                    fontSize: 18,
+                                                    fontSize: 16,
                                                     color: Colors.black,
                                                   ),
                                                 ),
@@ -341,7 +346,8 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                                           // height: 20,
                                                                           ),
                                                                       Padding(
-                                                                        padding: const EdgeInsets.only(bottom: 0.0),
+                                                                        padding:
+                                                                            const EdgeInsets.symmetric(vertical: 6.0),
                                                                         child: Container(
                                                                             width:
                                                                                 MediaQuery.of(context).size.width * .70,
@@ -355,6 +361,9 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                                                 children: [
                                                                                   Text(
                                                                                     Taskop[index].questionOption,
+                                                                                    style: TextStyle(
+                                                                                        fontFamily: 'Roboto Regular',
+                                                                                        fontSize: 16),
                                                                                   ),
                                                                                 ],
                                                                               ),

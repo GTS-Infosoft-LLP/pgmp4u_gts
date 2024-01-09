@@ -227,6 +227,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> callCourseApi() async {
+    print("course api is being called in splash");
     CourseProvider cp = Provider.of(context, listen: false);
     await cp.getCourse();
 
@@ -273,6 +274,7 @@ class LocalNotifications {
 
   void selectNotification(String pay) {
     print("Notificationsssssss>>>>>>");
+    callCourseApi();
     print("NOTIFICATION json $pay");
     var json = jsonDecode(pay);
 
@@ -310,5 +312,22 @@ class LocalNotifications {
     return const NotificationDetails(
         android: AndroidNotificationDetails('channelId', 'channelName', importance: Importance.max),
         iOS: IOSNotificationDetails(presentBadge: true, presentSound: true, presentAlert: true));
+  }
+
+  Future<void> callCourseApi() async {
+    print("course api is being called in splash");
+    CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
+    await cp.getCourse();
+
+    if (cp.mockCrsDropList.isNotEmpty) {
+      print("cp.course[0].id===========${cp.mockCrsDropList[0].id}");
+      cp.setSelectedCourseId(cp.mockCrsDropList[0].id);
+      cp.setSelectedCourseName(cp.mockCrsDropList[0].course);
+      cp.setSelectedCourseLable(cp.mockCrsDropList[0].lable);
+      print("cp.course[0].lable===========${cp.mockCrsDropList[0].lable}");
+    } else {
+      cp.setSelectedCourseLable(null);
+      print("seletced course lableee====${cp.selectedCourseLable}");
+    }
   }
 }

@@ -52,6 +52,10 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     pp.updateLoader(false);
     sp.updateLoader(false);
 
+    if (widget.showFreeTrial == 1) {
+      pp.setSelectedContainer(200);
+    }
+    print("widget quantity---${widget.quntity}");
     Future.delayed(Duration(milliseconds: 200), () {
       if (sp.durationPackData.isNotEmpty && widget.showFreeTrial == 0) {
         // sp.setSelectedRadioVal(0);
@@ -95,7 +99,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
         key: _scaffoldKey,
         bottomNavigationBar: widget.showFreeTrial == 1
             ? Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
                 child: InkWell(
                   onTap: () {
                     SubscriptionProvider sp = Provider.of(context, listen: false);
@@ -172,10 +176,13 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                         ),
                       ),
                       InkWell(
-                          onTap: () {
+                          onTap: () async {
                             CourseProvider cp = Provider.of(context, listen: false);
                             cp.getMasterData(cp.selectedCourseId);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => MasterListPage()));
+                            ProfileProvider pp = Provider.of(context, listen: false);
+                            await pp.getReminder(cp.selectedCourseId).then((value) {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => MasterListPage()));
+                            });
                           },
                           child: RichText(
                               overflow: TextOverflow.ellipsis,
@@ -273,7 +280,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                               TextSpan(
                                                 text: widget.quntity == null
                                                     ? "You are not subscribed to any plan"
-                                                    : "You are currently subscribed to ${widget.title}- ${widget.quntity * 30} days plan ",
+                                                    : "You are currently subscribed to ${widget.title}- ${widget.quntity} months plan",
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 16,
@@ -377,24 +384,26 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 height: 6,
                               ),
                               Consumer2<SubscriptionProvider, ProfileProvider>(builder: (context, sp, pp, child) {
-                                return sp.getSubsPackApiCall
-                                    ? Center(
-                                        child: Container(
-                                          height: MediaQuery.of(context).size.height * .6,
-                                          child: Center(
-                                              child: RichText(
-                                                  text: TextSpan(children: <TextSpan>[
-                                            TextSpan(
-                                              text: "Loading..",
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                          ]))),
-                                        ),
-                                      )
-                                    : sp.SubscritionPackList.isEmpty
+                                return
+                                    // sp.getSubsPackApiCall
+                                    //     ? Center(
+                                    //         child: Container(
+                                    //           height: MediaQuery.of(context).size.height * .6,
+                                    //           child: Center(
+                                    //               child: RichText(
+                                    //                   text: TextSpan(children: <TextSpan>[
+                                    //             TextSpan(
+                                    //               text: "Loading..",
+                                    //               style: TextStyle(
+                                    //                 color: Colors.black,
+                                    //                 fontSize: 18,
+                                    //               ),
+                                    //             ),
+                                    //           ]))),
+                                    //         ),
+                                    //       )
+                                    //     :
+                                    sp.SubscritionPackList.isEmpty
                                         ? Center(
                                             child: Container(
                                               height: MediaQuery.of(context).size.height * .6,
@@ -599,7 +608,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                         padding: const EdgeInsets.all(4.0),
                                         child: SizedBox(
                                           height: 36,
-                                          width: 81,
+                                          width: 87,
                                           child: ElevatedButton(
                                             style: ButtonStyle(
                                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -634,8 +643,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                               textAlign: TextAlign.center,
                                               text: TextSpan(children: <TextSpan>[
                                                 TextSpan(
-                                                  text: (sp.durationPackData[i].durationQuantity * 30).toString() +
-                                                      " Days",
+                                                  text:
+                                                      (sp.durationPackData[i].durationQuantity).toString() + " Months",
                                                   style: TextStyle(
                                                       color: i == sp.radioSelected ? Colors.white : Colors.black,
                                                       fontSize: 11.0,

@@ -66,7 +66,7 @@ class _RandomPageState extends State<RandomPage> {
 
     print("perice value is===>> ${widget.price}");
     print("category idddd======${widget.categoryId}");
-    print("categoryyy typeee======${widget.categoryType}");
+    print("categoryyy widget typeee======${widget.categoryType}");
 
     // CourseProvider cp = Provider.of(context, listen: false);
     print("cp.selectedMasterType==============${cp.selectedMasterType}");
@@ -1304,6 +1304,7 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
         child: Container(
           margin: EdgeInsets.only(top: 20),
           padding: EdgeInsets.only(left: 0, right: 0),
+
           height: 40,
           // alignment: Alignment.center,
           decoration: BoxDecoration(
