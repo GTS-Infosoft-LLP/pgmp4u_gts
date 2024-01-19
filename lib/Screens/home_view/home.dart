@@ -272,11 +272,12 @@ class _HomeViewState extends State<HomeView> {
                                           crs.setSelectedCourseLable(storedCourse[0].lable);
 
                                           ProfileProvider pp = Provider.of(context, listen: false);
-                                          pp.setSelectedContainer(2);
+                                          pp.setSelectedContainer(0);
                                           SubscriptionProvider sp = Provider.of(context, listen: false);
-                                          sp.SelectedPlanType = 3;
+                                          await sp.setisTimeOneVal(true);
+                                          sp.SelectedPlanType = 1;
                                           await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
-                                          sp.setSelectedIval(2);
+                                          sp.setSelectedIval(0);
                                           if (sp.durationPackData.isNotEmpty) {
                                             sp.setSelectedRadioVal(0);
                                           }
@@ -285,11 +286,13 @@ class _HomeViewState extends State<HomeView> {
                                             crs.setSelectedCourseId(crs.course[0].id);
                                             crs.setSelectedCourseLable(storedCourse[0].lable);
                                           }
-                                          Future.delayed(Duration(microseconds: 300), () {
+                                          Future.delayed(Duration(microseconds: 300), () async {
                                             crs.setSelectedCourseId(crs.course[0].id);
                                             crs.setSelectedCourseLable(storedCourse[0].lable);
                                             sp.setSelectedRadioVal(100);
+                                            sp.setSelectedDescType(0);
                                             pp.setSelectedContainer(100);
+                                            await sp.setisTimeOneVal(true);
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -329,11 +332,12 @@ class _HomeViewState extends State<HomeView> {
                                       ProfileProvider pp = Provider.of(context, listen: false);
 
                                       CourseProvider crs = Provider.of(context, listen: false);
-                                      pp.setSelectedContainer(2);
+                                      pp.setSelectedContainer(0);
                                       SubscriptionProvider sp = Provider.of(context, listen: false);
-                                      sp.SelectedPlanType = 3;
+                                      sp.setisTimeOneVal(true);
+                                      sp.SelectedPlanType = 1;
                                       await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
-                                      sp.setSelectedIval(2);
+                                      sp.setSelectedIval(0);
                                       if (sp.durationPackData.isNotEmpty) {
                                         // sp.setSelectedRadioVal(0);
                                       }
@@ -344,10 +348,12 @@ class _HomeViewState extends State<HomeView> {
                                       }
                                       pp.updateLoader(true);
 
-                                      Future.delayed(Duration(milliseconds: 300), () {
+                                      Future.delayed(Duration(milliseconds: 300), () async {
                                         sp.setSelectedRadioVal(-1);
                                         pp.updateLoader(false);
                                         pp.setSelectedContainer(100);
+                                        sp.setSelectedDescType(0);
+                                        await sp.setisTimeOneVal(true);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -614,21 +620,23 @@ class _HomeViewState extends State<HomeView> {
 
                                                                   if (storedCourse[index].isSubscribed == 0) {
                                                                     pp.updateLoader(false);
-                                                                    pp.setSelectedContainer(2);
+                                                                    pp.setSelectedContainer(0);
                                                                     SubscriptionProvider sp =
                                                                         Provider.of(context, listen: false);
-                                                                    sp.SelectedPlanType = 3;
+                                                                    await sp.setisTimeOneVal(true);
+                                                                    sp.SelectedPlanType = 1;
                                                                     await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
-                                                                    sp.setSelectedIval(2);
+                                                                    sp.setSelectedIval(0);
                                                                     if (sp.durationPackData.isNotEmpty) {
                                                                       sp.setSelectedRadioVal(0);
                                                                     }
                                                                     sp.selectedIval = 2;
                                                                     // await sp.getSubscritionData(storedCourse[index].id);
 
-                                                                    Future.delayed(const Duration(milliseconds: 4), () {
-                                                                      sp.setSelectedIval(2);
-                                                                      pp.setSelectedContainer(2);
+                                                                    Future.delayed(const Duration(milliseconds: 4),
+                                                                        () async {
+                                                                      sp.setSelectedIval(0);
+                                                                      pp.setSelectedContainer(0);
                                                                       if (sp.durationPackData.isNotEmpty) {
                                                                         sp.setSelectedRadioVal(0);
                                                                       }
@@ -636,7 +644,8 @@ class _HomeViewState extends State<HomeView> {
                                                                       print("sp.selectedIval::${sp.selectedIval}");
                                                                       pp.updateLoader(false);
                                                                       sp.setSelectedRadioVal(0);
-
+                                                                      sp.setSelectedDescType(0);
+                                                                      await sp.setisTimeOneVal(true);
                                                                       Navigator.push(
                                                                           context,
                                                                           MaterialPageRoute(

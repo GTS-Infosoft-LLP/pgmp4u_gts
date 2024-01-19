@@ -153,11 +153,11 @@ class _MasterListPageState extends State<MasterListPage> {
                                     CourseProvider cp = Provider.of(context, listen: false);
 
                                     pp.updateLoader(false);
-                                    pp.setSelectedContainer(2);
+                                    pp.setSelectedContainer(0);
                                     SubscriptionProvider sp = Provider.of(context, listen: false);
                                     sp.SelectedPlanType = 3;
                                     await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
-                                    sp.setSelectedIval(2);
+                                    sp.setSelectedIval(0);
                                     if (sp.durationPackData.isNotEmpty) {
                                       sp.setSelectedRadioVal(0);
                                     }
@@ -193,6 +193,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                     showFreeTrial: 0,
                                                     isFromUpgrdePlan: 1,
                                                     title: pp.planDetail.title,
+                                                    type: pp.planDetail.type,
                                                     quntity: pp.planDetail.durationQuantity,
                                                   )));
                                     });

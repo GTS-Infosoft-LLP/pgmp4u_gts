@@ -204,44 +204,44 @@ class _PaymentStatusState2 extends State<PaymentStatus2> {
                 color: _colorfromhex("#ABAFD1"),
               ),
             ),
-            Center(
-              child: Container(
-                margin: EdgeInsets.only(top: 30),
-                padding: EdgeInsets.only(left: 0, right: 0),
-                height: 50,
-                // alignment: Alignment.center,
-                decoration: BoxDecoration(color: _colorfromhex("#3A47AD"), borderRadius: BorderRadius.circular(30.0)),
-                child: OutlinedButton(
-                  onPressed: () => {
-                    if (statusNew == "success")
-                      {
-                        Navigator.pop(context),
-                        // Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //         builder: (BuildContext context) =>
-                        //         typ==1?
-                        //          new PlaylistPage(
-                        //           videoType: 1,
-                        //           title: "PgMP Prep",
-                        //         ):FlashCardItem()
-                        //       ),
-                        //     )
-                      }
-                    else
-                      {Navigator.pop(context)}
-                  },
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
-                  ),
-                  child: Text(
-                    statusNew == "success" ? 'Allow Access' : "Try Again",
-                    style:
-                        TextStyle(fontFamily: 'Roboto Medium', fontSize: 20, color: Colors.white, letterSpacing: 0.3),
-                  ),
-                ),
-              ),
-            ),
+            // Center(
+            //   child: Container(
+            //     margin: EdgeInsets.only(top: 30),
+            //     padding: EdgeInsets.only(left: 0, right: 0),
+            //     height: 50,
+            //     // alignment: Alignment.center,
+            //     decoration: BoxDecoration(color: _colorfromhex("#3A47AD"), borderRadius: BorderRadius.circular(30.0)),
+            //     child: OutlinedButton(
+            //       onPressed: () => {
+            //         if (statusNew == "success")
+            //           {
+            //             Navigator.pop(context),
+            //             // Navigator.push(
+            //             //       context,
+            //             //       MaterialPageRoute(
+            //             //         builder: (BuildContext context) =>
+            //             //         typ==1?
+            //             //          new PlaylistPage(
+            //             //           videoType: 1,
+            //             //           title: "PgMP Prep",
+            //             //         ):FlashCardItem()
+            //             //       ),
+            //             //     )
+            //           }
+            //         else
+            //           {Navigator.pop(context)}
+            //       },
+            //       style: ButtonStyle(
+            //         shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+            //       ),
+            //       child: Text(
+            //         statusNew == "success" ? 'Allow Access' : "Try Again",
+            //         style:
+            //             TextStyle(fontFamily: 'Roboto Medium', fontSize: 20, color: Colors.white, letterSpacing: 0.3),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         )),
       ),

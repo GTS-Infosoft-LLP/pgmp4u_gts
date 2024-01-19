@@ -486,6 +486,7 @@ Widget blurChat(BuildContext context, DisscussionGropModel group) {
             padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
             child: InkWell(
               onTap: () {
+                Navigator.pop(context);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -494,7 +495,9 @@ Widget blurChat(BuildContext context, DisscussionGropModel group) {
                               price: context.read<ProfileProvider>().subsPrice.toString(),
                               categoryType: context.read<CourseProvider>().selectedMasterType,
                               categoryId: 0,
-                            )));
+                            ))).then((value) {
+                  Navigator.pop(context);
+                });
               },
               child: Container(
                 height: 50,

@@ -223,23 +223,18 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                             ansRef = [];
 
                                                             rightAns = storedTaskQues[indexxx].rightAnswer.split(',');
-                                                            // print("rightAns========>>>$rightAns");
+                                                          
 
                                                             for (int i = 0; i < rightAns.length; i++) {
                                                               ansRef.add(int.parse(rightAns[i]));
                                                             }
-                                                            print("ansRef=========>>>>>>$ansRef");
+                                                            
 
                                                             selAns.add(Taskop[index].id);
-                                                            print("selAns=============$selAns");
-
-                                                            print("selAns.length=====${selAns.length}");
-                                                            print(" ansRef.length====${ansRef.length}");
+                                 
 
                                                             if (selAns.length == ansRef.length && ansRef.length > 0) {
-                                                              print("***********$selAns");
-                                                              print("***********$ansRef");
-                                                              print("so is inside this alsoooo");
+                                                           
                                                               checkAllAns(selAns, ansRef);
                                                               enableTap = 1;
                                                             }
@@ -476,19 +471,7 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                                 margin: EdgeInsets.only(top: height * (9 / 800)),
                                                                 child: Text(
                                                                   "${getTstAns(Taskop)}",
-                                                                  // storedTaskQues[indexxx].rightAnswer ==
-                                                                  //         Taskop[0].id.toString()
-                                                                  //     ? 'Answer A is the correct one'
-                                                                  //     : storedTaskQues[indexxx].rightAnswer ==
-                                                                  //             Taskop[1].id.toString()
-                                                                  //         ? 'Answer B is the correct one'
-                                                                  //         : storedTaskQues[indexxx].rightAnswer ==
-                                                                  //                 Taskop[2].id.toString()
-                                                                  //             ? 'Answer c is the correct one'
-                                                                  //             : storedTaskQues[indexxx].rightAnswer ==
-                                                                  //                     Taskop[3].id.toString()
-                                                                  //                 ? 'Answer D is the correct one'
-                                                                  //                 : 'Answer E is the correct one',
+                                                           
                                                                   style: TextStyle(
                                                                     fontFamily: 'Roboto Regular',
                                                                     fontSize: 16,
@@ -517,15 +500,7 @@ class _TaskQuestionState extends State<TaskQuestion> {
                                                                     )
                                                                   },
                                                                 ),
-                                                                //     Text(
-                                                                //   storedTaskQues[indexxx].explanation,
-                                                                //   style: TextStyle(
-                                                                //     fontFamily: 'Roboto Regular',
-                                                                //     fontSize: width * (15 / 420),
-                                                                //     color: Colors.black,
-                                                                //     height: 1.6,
-                                                                //   ),
-                                                                // ),
+                                                        
                                                               )
                                                             : Container()
                                                       ],
@@ -543,7 +518,7 @@ class _TaskQuestionState extends State<TaskQuestion> {
                   isAnsCorrect == 1
                       ? Positioned(
                           top: 1,
-                          // top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 100,
+                         
                           left: width / 2.3,
                           child: Container(
                             width: 60,

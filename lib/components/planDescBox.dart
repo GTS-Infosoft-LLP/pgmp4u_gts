@@ -15,14 +15,30 @@ Widget planDescBox(
   // print("i values is:::: $iVal");
   // print("itmCnt===$itmCnt");
   // print("plan type::::$planTyp");
-  if (iVal == 1) {
-    planTyp = sp.SubscritionPackList[0].title;
+  if (sp.SubscritionPackList.length == 1) {
+    if (iVal == 1) {
+      planTyp = sp.SubscritionPackList[0].title;
+    }
   }
-  if (iVal == 2) {
-    planTyp = sp.SubscritionPackList[1].title;
+  if (sp.SubscritionPackList.length == 2) {
+    if (iVal == 1) {
+      planTyp = sp.SubscritionPackList[0].title;
+    }
+    if (iVal == 2) {
+      planTyp = sp.SubscritionPackList[1].title;
+    }
   }
-  if (iVal == 3) {
-    planTyp = sp.SubscritionPackList[2].title;
+
+  if (sp.SubscritionPackList.length == 3) {
+    if (iVal == 1) {
+      planTyp = sp.SubscritionPackList[0].title;
+    }
+    if (iVal == 2) {
+      planTyp = sp.SubscritionPackList[1].title;
+    }
+    if (iVal == 3) {
+      planTyp = sp.SubscritionPackList[2].title;
+    }
   }
 
   return Container(

@@ -58,7 +58,7 @@ class _RandomPageState extends State<RandomPage> {
     CourseProvider cp = Provider.of(context, listen: false);
     SubscriptionProvider sp = Provider.of(context, listen: false);
     sp.SelectedPlanType = 3;
-    pp.setSelectedContainer(2);
+    pp.setSelectedContainer(0);
     sp.setSelectedIval(2);
     calllApi();
 
@@ -628,7 +628,7 @@ class _RandomPageState extends State<RandomPage> {
                                                   sp.setSelectedSubsId(permiumbutton[i].id);
                                                   sp.setSelectedSubsType(permiumbutton[i].type);
                                                   sp.setSelectedPlanType(permiumbutton[i].type);
-
+                                                  sp.setSelectedDescType(i);
                                                   print("index val===$i");
                                                   pp.setSelectedContainer(i);
                                                 },
@@ -805,12 +805,11 @@ class _RandomPageState extends State<RandomPage> {
                                                   backgroundColor: MaterialStateProperty.all<Color>(
                                                       i == sp.radioSelected ? Color(0xff3643a3) : Colors.white)),
                                               onPressed: () async {
-                                                sp.setSelectedPlanType(1);
+                                                // sp.setSelectedPlanType(1);
                                                 print("vaue of i::::   $i");
                                                 sp.setSelectedRadioVal(i);
                                                 sp.setSelectedIval(0);
                                                 sp.setSelectedSubsType(permiumbutton[0].type);
-                                                print("");
 
                                                 ProfileProvider pp = Provider.of(context, listen: false);
                                                 pp.setSelectedContainer(0);

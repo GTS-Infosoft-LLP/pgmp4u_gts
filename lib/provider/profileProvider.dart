@@ -43,7 +43,7 @@ class ProfileProvider extends ChangeNotifier {
 
   CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
 
-  int selectedSubsBox = 3;
+  int selectedSubsBox = 0;
   setSelectedContainer(int val) {
     Future.delayed(Duration.zero, () async {
       selectedSubsBox = val;

@@ -211,7 +211,7 @@ class _GroupListTileState extends State<GroupListTile> {
                           child: Container(
                             height: 35,
                             width: MediaQuery.of(context).size.width * .15,
-                            // constraints: BoxConstraints(minWidth: 100),
+                         
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.all(Radius.circular(20)),
                                 gradient: LinearGradient(

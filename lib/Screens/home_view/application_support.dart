@@ -97,7 +97,6 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                           child: Container(
                         width: MediaQuery.of(context).size.width * .75,
                         child: RichText(
-                     
                             text: TextSpan(children: <TextSpan>[
                           TextSpan(
                             text: "Application Support\n" + appbarTxt,
@@ -105,10 +104,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                               color: Colors.white,
                               fontSize: 22,
                               fontFamily: "Raleway",
-
-                            
                               fontWeight: FontWeight.bold,
-                            
                             ),
                           ),
                         ])),
@@ -120,9 +116,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
             ),
             SizedBox(height: 10),
             Container(
-             
               height: MediaQuery.of(context).size.height * .8,
-             
               child: Stack(
                 children: [
                   Padding(
@@ -153,7 +147,6 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                 );
                         }),
                   ),
-               
                 ],
               ),
             ),
@@ -183,7 +176,6 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 22.0),
                   child: Center(
                     child: RichText(
-                     
                         text: TextSpan(children: <TextSpan>[
                       TextSpan(
                         text: "Currently, Application Support is part of only Gold and Platinum Plans",
@@ -191,10 +183,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                           color: _lightText,
                           fontSize: 15,
                           fontFamily: "NunitoSans",
-
-                        
                           fontWeight: FontWeight.w600,
-                      
                         ),
                       ),
                     ])),
@@ -209,7 +198,6 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                 child: RichText(
                     maxLines: 1000,
                     overflow: TextOverflow.ellipsis,
-                 
                     text: TextSpan(children: <TextSpan>[
                       TextSpan(
                         text: text1,
@@ -237,16 +225,13 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
               ),
               cp.selectedPlanType == 2
                   ? RichText(
-                     
                       text: TextSpan(children: <TextSpan>[
                       TextSpan(
                         text: "Upgrade to Platinum for Session with Mentor",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                       
                           fontWeight: FontWeight.w600,
-                         
                         ),
                       ),
                     ]))
@@ -277,7 +262,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                 CourseProvider cp = Provider.of(context, listen: false);
 
                                 pp.updateLoader(false);
-                                pp.setSelectedContainer(2);
+                                pp.setSelectedContainer(0);
                                 SubscriptionProvider sp = Provider.of(context, listen: false);
                                 sp.SelectedPlanType = 3;
                                 await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
@@ -305,6 +290,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                   }
                                   print("thissss is callinggg");
 
+                                  sp.setisTimeOneVal(false);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -313,6 +299,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                                 showFreeTrial: 0,
                                                 isFromUpgrdePlan: 1,
                                                 title: pp.planDetail.title,
+                                                type: pp.planDetail.type,
                                                 quntity: pp.planDetail.durationQuantity,
                                               )));
                                 });
@@ -326,8 +313,7 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                     fontSize: 16,
                                   ),
                                 ),
-                              ]))
-                              ),
+                              ]))),
                         )
                       : SizedBox(),
                   SizedBox(

@@ -46,11 +46,21 @@ class SubscriptionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int radioSelected=0;
+  int radioSelected = 0;
   setSelectedRadioVal(int val) {
     Future.delayed(Duration.zero, () async {
       radioSelected = val;
       dev.log(":::::radioSelected::::::$val");
+      notifyListeners();
+    });
+  }
+
+  // int isTime = ;
+  bool isTimeOne;
+  setisTimeOneVal(bool val) {
+    Future.delayed(Duration.zero, () async {
+      isTimeOne = val;
+      dev.log(":::::setisTimeOneVal::::::$isTimeOne");
       notifyListeners();
     });
   }
@@ -88,13 +98,13 @@ class SubscriptionProvider extends ChangeNotifier {
       selectedDurationTyp = type;
       selectedDurationQt = quntity;
       notifyListeners();
-    }).then((value) {
+    }).then((value) async {
       CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
-      getSubscritionData(cp.selectedCourseId).then((value) {
+      await getSubscritionData(cp.selectedCourseId).then((value) async {
         ProfileProvider pp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
         if (isFirtTime == 1) {
           if (permiumbutton.length > 2) {
-            setSelectedSubsId(permiumbutton[2].id);
+            setSelectedSubsId(permiumbutton[0].id);
           }
         } else {
           setSelectedSubsId(permiumbutton[0].id);
@@ -113,6 +123,14 @@ class SubscriptionProvider extends ChangeNotifier {
   String desc2;
   String desc3;
 
+  int SelectedPlanDesc;
+  setSelectedDescType(int val) {
+    Future.delayed(Duration.zero, () async {
+      SelectedPlanDesc = val;
+      notifyListeners();
+    });
+  }
+
   int SelectedPlanType;
   setSelectedPlanType(int val) {
     Future.delayed(Duration.zero, () async {
@@ -128,8 +146,6 @@ class SubscriptionProvider extends ChangeNotifier {
   Future<void> freeSubscription(int idCrs) async {
     updateLoader(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-   
 
     String stringValue = prefs.getString('token');
 
@@ -226,7 +242,6 @@ class SubscriptionProvider extends ChangeNotifier {
           CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
           cp.getCourse().whenComplete(() {
             EasyLoading.showSuccess("Free Pack Activated Successfully");
-            
           });
         }
       }
@@ -237,10 +252,9 @@ class SubscriptionProvider extends ChangeNotifier {
   }
 
   Future<void> getSubscritionData(int idCrs) async {
-  
     updateSubsPackApiCall(true);
     updateLoader(true);
-   
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
 
@@ -266,10 +280,12 @@ class SubscriptionProvider extends ChangeNotifier {
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
+      print("resDDo[success]----${resDDo["success"]}");
 
       if (resDDo["success"] == false) {
         updateSubsPackApiCall(false);
         updateLoader(false);
+        setisTimeOneVal(false);
         SubscritionPackList = [];
         permiumbutton = [];
         desc1 = "";
@@ -278,10 +294,11 @@ class SubscriptionProvider extends ChangeNotifier {
         updateLoader(false);
         return;
       }
-
+      dev.log("response.statusCode::::::${response.statusCode}");
       if (response.statusCode == 400) {
         updateSubsPackApiCall(false);
         print("statussssssss");
+        setisTimeOneVal(false);
         SubscritionPackList = [];
         ftchList = [];
         durationPackData = [];
@@ -290,46 +307,54 @@ class SubscriptionProvider extends ChangeNotifier {
         return;
       }
       if (response.statusCode == 200) {
-        updateLoader(false);
-        ftchList = [];
-        SubscritionPackList = [];
-        updateSubsPackApiCall(false);
-        SubscritionPackList.clear();
-
-        Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
-
-        if (mapResponse['status'] == 400) {
+        try {
+          updateLoader(false);
+          ftchList = [];
           SubscritionPackList = [];
-          return;
-        }
-        if (mapResponse["success"] == true) {
-          List temp1 = mapResponse["data"]['list'];
-          List temp2 = mapResponse["data"]['duration'];
-          ftchList = mapResponse["data"]['featureList'];
+          updateSubsPackApiCall(false);
+          SubscritionPackList.clear();
 
-          SubscritionPackList = temp1.map((e) => SubscriptionDetails.fromjson(e)).toList();
-          durationPackData = temp2.map((e) => DurationDetail.fromjson(e)).toList();
-          permiumbutton.clear();
-          if (SubscritionPackList.isNotEmpty) {
-            // desc1 = SubscritionPackList[0].description;
+          Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+
+          if (mapResponse['status'] == 400) {
+            SubscritionPackList = [];
+            return;
           }
-          desc1 = "";
-          // dev.log("SelectedPlanType - 1=====${SelectedPlanType - 1}");
-          desc1 = SubscritionPackList[SelectedPlanType - 1].description;
-          // dev.log("desc1===$desc1");
-          // desc1 = "";
-          for (int i = 0; i < SubscritionPackList.length; i++) {
-            log("adding data to prem button----${SubscritionPackList[i].price}");
-            permiumbutton.add(newButton(
-                amount: SubscritionPackList[i].price,
-                name: SubscritionPackList[i].title,
-                id: SubscritionPackList[i].id,
-                type: SubscritionPackList[i].type));
+          if (mapResponse["success"] == true) {
+            List temp1 = mapResponse["data"]['list'];
+            List temp2 = mapResponse["data"]['duration'];
+            ftchList = mapResponse["data"]['featureList'];
+            setisTimeOneVal(false);
+            SubscritionPackList = temp1.map((e) => SubscriptionDetails.fromjson(e)).toList();
+            durationPackData = temp2.map((e) => DurationDetail.fromjson(e)).toList();
+            permiumbutton.clear();
+            if (SubscritionPackList.isNotEmpty) {
+              // desc1 = SubscritionPackList[0].description;
+            }
+
+            desc1 = "";
+            dev.log("SelectedPlanType =====$SelectedPlanType}");
+            // desc1 = SubscritionPackList[SelectedPlanType - 1].description;
+            desc1 = SubscritionPackList[SelectedPlanDesc].description;
+            for (int i = 0; i < SubscritionPackList.length; i++) {
+              log("adding data to prem button----${SubscritionPackList[i].price}");
+              permiumbutton.add(newButton(
+                  amount: SubscritionPackList[i].price,
+                  name: SubscritionPackList[i].title,
+                  id: SubscritionPackList[i].id,
+                  type: SubscritionPackList[i].type));
+            }
+
+            dev.log('SubscritionPackList["data" length]-----${SubscritionPackList.length}');
+            dev.log('permiumbutton length-----${permiumbutton.length}');
           }
+        } catch (error, stackTrace) {
+          print("errror--- $error  stck---$stackTrace");
         }
       } else if (response.statusCode == 400) {}
     } catch (e) {
       updateSubsPackApiCall(false);
+      setisTimeOneVal(false);
     }
     notifyListeners();
   }
@@ -345,7 +370,7 @@ class SubscriptionProvider extends ChangeNotifier {
 
     // print("idCrs=========>>>>>>>>>>>>>>>$id");
     finUrl = CREATE_SUBSCRIPTION_ORDER + "/$id";
-    // print("finUrl=========>>>>>>>>>>>>>>>$finUrl");
+    print("finUrlCREATE_SUBSCRIPTION_ORDER =========>>>>>>>>>>>>>>>$finUrl");
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String stringValue = prefs.getString('token');
@@ -389,6 +414,7 @@ class SubscriptionProvider extends ChangeNotifier {
       }
     }
     try {
+      print("inside this try ");
       var response = await http.get(
         Uri.parse(CREATE_SUBSCRIPTION_ORDER + "/$id"),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
@@ -441,9 +467,7 @@ class SubscriptionProvider extends ChangeNotifier {
         }
         if (mapResponse["success"] == true) {
           List temp1 = mapResponse["data"];
-
           SubscritionPackList = temp1.map((e) => SubscriptionDetails.fromjson(e)).toList();
-
           permiumbutton.clear();
         }
       }

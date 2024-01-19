@@ -24,10 +24,10 @@ class _UsersListState extends State<UsersList> {
   void initState() {
     super.initState();
     _chatProvider = Provider.of<ChatProvider>(context, listen: false);
-
+ context.read<ChatProvider>().getUserList(isFirstTime: true);
     if (_chatProvider.userListResponse != null && _chatProvider.userListResponse.data.length > 0) {
     } else {
-      context.read<ChatProvider>().getUserList(isFirstTime: true);
+      // context.read<ChatProvider>().getUserList(isFirstTime: true);
     }
 
     scrollController.addListener(_scrollListener);

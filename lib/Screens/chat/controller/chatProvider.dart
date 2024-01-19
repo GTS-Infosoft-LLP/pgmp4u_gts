@@ -433,6 +433,7 @@ class ChatProvider extends ChangeNotifier {
 
   getUserList({@required bool isFirstTime}) async {
     if (isFirstTime) {
+      resetPagination();
       updateGetUserListApiCalling(true);
     } else {
       if (isPagging) {
