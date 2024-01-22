@@ -193,6 +193,16 @@ class SubscriptionProvider extends ChangeNotifier {
       print("response.statusCode===${response.body}");
 
       print("response.statusCode===${response.statusCode}");
+
+          if (response.statusCode == 403) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
       // (resDDo["data"]);
@@ -263,7 +273,15 @@ class SubscriptionProvider extends ChangeNotifier {
           .onError((error, stackTrace) {
         updateLoader(false);
       });
+    if (response.statusCode == 403) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
 

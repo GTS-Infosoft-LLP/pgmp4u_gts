@@ -374,6 +374,16 @@ class ProfileProvider extends ChangeNotifier {
       avgScore = "";
       dayDiff = "";
       dev.log("response.statusCode getreminder-----${response.statusCode}");
+
+      if (response.statusCode == 403) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 200) {
         updateReminderApiCall(false);
         studyTime = "";
@@ -473,7 +483,15 @@ class ProfileProvider extends ChangeNotifier {
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );
+    if (response.statusCode == 403) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 200) {
         print("response.statusCode===${response.statusCode}");
         var resDDo = json.decode(response.body);
@@ -553,6 +571,15 @@ class ProfileProvider extends ChangeNotifier {
 
       print("respponse===*/*/*/*/ ${response.body}");
       print("respponse  statusCode===*/*/*/*/ ${response.statusCode}");
+          if (response.statusCode == 403) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 200) {
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
         print("mapResponse==========$mapResponse");
@@ -646,7 +673,15 @@ class ProfileProvider extends ChangeNotifier {
 
     dev.log("API Response MOCK_TEST ; $stringValue => ${response.request.url}; ${response.body}");
     print("API Response ; $stringValue => ${response.request.url}; ${response.body}");
+    if (response.statusCode == 403) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
     if (response.statusCode == 200) {
       // print(convert.jsonDecode(response.body));
 
@@ -703,6 +738,16 @@ class ProfileProvider extends ChangeNotifier {
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       );
       print("api url==$UPDATE_NOTIFICATION");
+          if (response.statusCode == 403) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
+      
       if (response.statusCode == 200) {
         print("response==UPDATE_NOTIFICATION=>>${response.body}");
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
