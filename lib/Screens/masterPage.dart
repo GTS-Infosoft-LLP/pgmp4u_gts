@@ -155,8 +155,8 @@ class _MasterListPageState extends State<MasterListPage> {
                                     pp.updateLoader(false);
                                     pp.setSelectedContainer(0);
                                     SubscriptionProvider sp = Provider.of(context, listen: false);
-                                    sp.SelectedPlanType = 3;
-                                    await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
+                                    sp.SelectedPlanType = 1;
+                                    await sp.setSelectedDurTimeQt( pp.planDetail.durationType, pp.planDetail.durationQuantity, isFirtTime: 1);
                                     sp.setSelectedIval(0);
                                     if (sp.durationPackData.isNotEmpty) {
                                       sp.setSelectedRadioVal(0);
@@ -192,8 +192,10 @@ class _MasterListPageState extends State<MasterListPage> {
                                                     showDrpDown: 0,
                                                     showFreeTrial: 0,
                                                     isFromUpgrdePlan: 1,
+                                                    planId: pp.planDetail.id,
                                                     title: pp.planDetail.title,
                                                     type: pp.planDetail.type,
+                                                    days: pp.planDetail.days,
                                                     quntity: pp.planDetail.durationQuantity,
                                                   )));
                                     });

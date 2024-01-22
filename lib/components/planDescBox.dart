@@ -12,7 +12,7 @@ Widget planDescBox(
   int iVal,
 ) {
   SubscriptionProvider sp = Provider.of(context, listen: false);
-  // print("i values is:::: $iVal");
+  print("i values is:::: $iVal");
   // print("itmCnt===$itmCnt");
   // print("plan type::::$planTyp");
   if (sp.SubscritionPackList.length == 1) {

@@ -23,7 +23,9 @@ class Subscriptionpg extends StatefulWidget {
   int showFreeTrial;
   int showDrpDown;
   int isFromUpgrdePlan;
+  int days;
   int type;
+  int planId;
   String title;
   int quntity;
   Subscriptionpg(
@@ -31,6 +33,8 @@ class Subscriptionpg extends StatefulWidget {
       this.showFreeTrial = 0,
       this.showDrpDown = 0,
       this.isFromUpgrdePlan = 0,
+      this.days = 0,
+      this.planId = 0,
       this.title = "",
       this.quntity,
       this.type})
@@ -88,10 +92,23 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     }
 
     if (widget.isFromUpgrdePlan == 1) {
+      if (sp.durationPackData.isNotEmpty && widget.days == 0) {
+        print(":::::widget.type:::::${widget.quntity}");
+        for (int i = 0; i < sp.durationPackData.length; i++) {
+          if (sp.durationPackData[i].durationQuantity == widget.quntity) {
+            sp.setSelectedRadioVal(i);
+          }
+          print("sp dur quty===${sp.durationPackData[i].durationQuantity}");
+        }
+      }
+
       if (widget.type != null) {
+        print(":::::widget.type:::::${widget.type}");
         int val = widget.type - 1;
         pp.setSelectedContainer(val);
-            //  sp.setSelectedSubsId(widget.);
+        sp.setSelectedIval(val);
+        sp.setSelectedSubsType(widget.type);
+        //  sp.setSelectedSubsId(widget.);
       } else {
         pp.setSelectedContainer(100);
       }
@@ -103,9 +120,10 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
         dev.log("SelectedPlanType ==45454===${permiumbutton[0].id}");
         sp.setSelectedSubsId(permiumbutton[0].id);
       }
+    } else if (widget.isFromUpgrdePlan == 1) {
+      sp.selectedSubsType = widget.type;
+      sp.setSelectedSubsId(widget.planId);
     }
-
-    // print("sp.selectedIval:::;${sp.selectedIval}");
 
     super.initState();
   }
@@ -299,7 +317,9 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                               TextSpan(
                                                 text: widget.quntity == null
                                                     ? "You are not subscribed to any plan"
-                                                    : "You are currently subscribed to ${widget.title}- ${widget.quntity} months plan",
+                                                    : widget.days == 0
+                                                        ? "You are currently subscribed to ${widget.title}- ${widget.quntity} months plan"
+                                                        : "You are currently subscribed to free plan (${widget.days} days)",
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 16,
@@ -359,26 +379,37 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                     children: [
                       Consumer<SubscriptionProvider>(builder: (context, sp, child) {
                         {
-                          if (sp.SubscritionPackList.isEmpty) {
-                            sp.selectedIval = 10;
-                          } else {
-                            sp.selectedIval = 2;
-                          }
-
+                          // if (sp.SubscritionPackList.isEmpty) {
+                          //   sp.selectedIval = 10;
+                          // } else {
+                          //   sp.selectedIval = 2;
+                          // }
+                          // if (widget.isFromUpgrdePlan == 1) {
+                          //   if (widget.type != null) {
+                          //     sp.selectedIval = widget.type - 1;
+                          //   }
+                          // }
+                          print("------*****---${sp.selectedIval}");
+                          print("sp.isTimeOne---${sp.selectedSubsType}");
                           if (sp.selectedIval == 0) {
-                            return (sp.isTimeOne)
-                                ? SizedBox()
-                                : planDescBox(
+                            return
+                                // (sp.isTimeOne)
+                                //     ? SizedBox()
+                                //     :
+                                planDescBox(
                                     context, "Silver Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
                           } else if (sp.selectedIval == 1) {
-                            return (sp.isTimeOne)
-                                ? SizedBox()
-                                : planDescBox(
-                                    context, "Gold Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
+                            return
+                                // (sp.isTimeOne)
+                                //     ? SizedBox()
+                                //     :
+                                planDescBox(context, "Gold Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
                           } else if (sp.selectedIval == 2) {
-                            return (sp.isTimeOne)
-                                ? SizedBox()
-                                : planDescBox(
+                            return
+                                //  (sp.isTimeOne)
+                                //     ? SizedBox()
+                                //     :
+                                planDescBox(
                                     context, "Platinum Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
                           } else {
                             return SizedBox();

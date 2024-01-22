@@ -264,8 +264,10 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                 pp.updateLoader(false);
                                 pp.setSelectedContainer(0);
                                 SubscriptionProvider sp = Provider.of(context, listen: false);
-                                sp.SelectedPlanType = 3;
-                                await sp.setSelectedDurTimeQt(0, 0, isFirtTime: 1);
+                                sp.SelectedPlanType = pp.planDetail.type;
+                                await sp.setSelectedDurTimeQt(
+                                    pp.planDetail.durationType, pp.planDetail.durationQuantity,
+                                    isFirtTime: 1);
                                 sp.setSelectedIval(2);
                                 if (sp.durationPackData.isNotEmpty) {
                                   sp.setSelectedRadioVal(0);
@@ -298,6 +300,8 @@ class _ApplicationSupportPageState extends State<ApplicationSupportPage> {
                                                 showDrpDown: 0,
                                                 showFreeTrial: 0,
                                                 isFromUpgrdePlan: 1,
+                                                days: pp.planDetail.days,
+                                                planId: pp.planDetail.id,
                                                 title: pp.planDetail.title,
                                                 type: pp.planDetail.type,
                                                 quntity: pp.planDetail.durationQuantity,

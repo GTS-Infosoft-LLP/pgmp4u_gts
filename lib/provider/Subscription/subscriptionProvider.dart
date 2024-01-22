@@ -56,7 +56,7 @@ class SubscriptionProvider extends ChangeNotifier {
   }
 
   // int isTime = ;
-  bool isTimeOne;
+  bool isTimeOne = false;
   setisTimeOneVal(bool val) {
     Future.delayed(Duration.zero, () async {
       isTimeOne = val;
@@ -333,7 +333,10 @@ class SubscriptionProvider extends ChangeNotifier {
             }
 
             desc1 = "";
-            dev.log("SelectedPlanType =====$SelectedPlanType}");
+            dev.log("SelectedPlanDesc =====$SelectedPlanDesc}");
+            if (SelectedPlanDesc == null) {
+              SelectedPlanDesc = 0;
+            }
             // desc1 = SubscritionPackList[SelectedPlanType - 1].description;
             desc1 = SubscritionPackList[SelectedPlanDesc].description;
             for (int i = 0; i < SubscritionPackList.length; i++) {
