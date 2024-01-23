@@ -55,22 +55,26 @@ Widget planDescBox(
           child: Container(
             width: MediaQuery.of(context).size.width * .7,
             // color: Colors.amber,
-            child: Center(
-                child: RichText(
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    text: TextSpan(children: <TextSpan>[
-                      TextSpan(
-                        text: planTyp,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 22,
-                          fontFamily: 'Roboto Bold',
-                          // fontWeight: FontWeight.w100
-                        ),
-                      ),
-                    ]))),
+            child: Consumer<SubscriptionProvider>(builder: (context, sp, child) {
+              return sp.SubscritionPackList.isEmpty
+                  ? SizedBox()
+                  : Center(
+                      child: RichText(
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          text: TextSpan(children: <TextSpan>[
+                            TextSpan(
+                              text: planTyp,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 22,
+                                fontFamily: 'Roboto Bold',
+                                // fontWeight: FontWeight.w100
+                              ),
+                            ),
+                          ])));
+            }),
           ),
         ),
       ),
@@ -88,7 +92,6 @@ Widget planDescBox(
                 itemBuilder: (context, index) {
                   return customGreyRedRow(
                       FontAwesomeIcons.tableColumns,
-                      // sp.SubscritionPackList[sp.selectedIval].description[index] ?? "",
                       showList[index],
                       context,
                       planTyp,

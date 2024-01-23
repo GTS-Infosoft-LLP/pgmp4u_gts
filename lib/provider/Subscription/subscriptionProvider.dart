@@ -103,19 +103,16 @@ class SubscriptionProvider extends ChangeNotifier {
       await getSubscritionData(cp.selectedCourseId).then((value) async {
         ProfileProvider pp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
         if (isFirtTime == 1) {
+          print("setitng valuesssssssssssssss");
           if (permiumbutton.length > 2) {
+            setSelectedSubsId(permiumbutton[0].id);
+          } else {
             setSelectedSubsId(permiumbutton[0].id);
           }
         } else {
           setSelectedSubsId(permiumbutton[0].id);
         }
-
-        // isFirtTime == 1 ? setSelectedSubsId(permiumbutton[2].id) : setSelectedSubsId(permiumbutton[0].id);
-      }
-
-          //  isFirtTime == 1 ? setSelectedSubsId(permiumbutton[2].id) : setSelectedSubsId(permiumbutton[0].id)
-
-          );
+      });
     });
   }
 
@@ -216,7 +213,18 @@ class SubscriptionProvider extends ChangeNotifier {
 
       print("satusss====${resDDo["success"]}");
       if (resDDo["success"] == false) {
+               updateLoader(false);
         return;
+      }
+            if (response.statusCode == 403) {
+               updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
       }
       if (response.statusCode == 400) {
         print("statussssssss");
@@ -295,6 +303,17 @@ class SubscriptionProvider extends ChangeNotifier {
         return;
       }
       dev.log("response.statusCode::::::${response.statusCode}");
+             if (response.statusCode == 403) {
+               updateLoader(false);
+                updateSubsPackApiCall(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 400) {
         updateSubsPackApiCall(false);
         print("statussssssss");
@@ -339,13 +358,18 @@ class SubscriptionProvider extends ChangeNotifier {
             }
             // desc1 = SubscritionPackList[SelectedPlanType - 1].description;
             desc1 = SubscritionPackList[SelectedPlanDesc].description;
-            for (int i = 0; i < SubscritionPackList.length; i++) {
-              log("adding data to prem button----${SubscritionPackList[i].price}");
-              permiumbutton.add(newButton(
-                  amount: SubscritionPackList[i].price,
-                  name: SubscritionPackList[i].title,
-                  id: SubscritionPackList[i].id,
-                  type: SubscritionPackList[i].type));
+
+            if (SubscritionPackList.isNotEmpty) {
+              for (int i = 0; i < SubscritionPackList.length; i++) {
+                log("adding data to prem button----${SubscritionPackList[i].price}");
+                permiumbutton.add(newButton(
+                    amount: SubscritionPackList[i].price,
+                    name: SubscritionPackList[i].title,
+                    id: SubscritionPackList[i].id,
+                    type: SubscritionPackList[i].type));
+                dev.log("------------------------${permiumbutton[0].id}");
+                // setSelectedSubsId(permiumbutton[0].id);
+              }
             }
 
             dev.log('SubscritionPackList["data" length]-----${SubscritionPackList.length}');
@@ -431,7 +455,16 @@ class SubscriptionProvider extends ChangeNotifier {
       print("response.statusCode===${response.statusCode}");
 
       // domainStatus;
+       if (response.statusCode == 403) {
+        updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
       if (resStatus == 400) {
@@ -493,7 +526,7 @@ class SubscriptionProvider extends ChangeNotifier {
   void setSelectedSubsId(int id) {
     Future.delayed(Duration.zero, () async {
       selectedSubsId = id;
-      // print("selectedSubsId********$selectedSubsId");
+      log("selectedSubsId********$selectedSubsId");
       notifyListeners();
     });
   }
@@ -563,7 +596,16 @@ class SubscriptionProvider extends ChangeNotifier {
 
       print("response.statusCode===${response.body}");
       print("response.statusCode===${response.statusCode}");
+       if (response.statusCode == 403) {
+        updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
 

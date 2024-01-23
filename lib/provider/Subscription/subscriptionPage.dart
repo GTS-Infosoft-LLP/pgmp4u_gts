@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -9,7 +11,6 @@ import 'package:pgmp4u/provider/Subscription/subscriptionProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'dart:developer' as dev;
 import '../../Screens/MockTest/model/courseModel.dart';
 import '../../Screens/Profile/PaymentStatus.dart';
 import '../../Screens/Profile/paymentstripe2.dart';
@@ -79,7 +80,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     if (permiumbutton.length == 3) {
       print("this is true");
       pp.setSelectedContainer(0);
-      sp.selectedSubsId = 3;
+      // sp.selectedSubsId = 3;
       sp.setSelectedSubsType(permiumbutton[2].type);
     } else {
       pp.setSelectedContainer(5);
@@ -88,7 +89,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     }
 
     if (sp.SubscritionPackList.isEmpty) {
-      sp.selectedIval = 10;
+      // sp.selectedIval = 10;
     }
 
     if (widget.isFromUpgrdePlan == 1) {
@@ -117,8 +118,8 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
     if (widget.isFromUpgrdePlan != 1) {
       if (permiumbutton.isNotEmpty) {
         sp.setSelectedSubsType(permiumbutton[0].type);
-        dev.log("SelectedPlanType ==45454===${permiumbutton[0].id}");
-        sp.setSelectedSubsId(permiumbutton[0].id);
+        log("SelectedPlanType ==45454===${sp.selectedSubsId}");
+        // sp.setSelectedSubsId(permiumbutton[0].id);
       }
     } else if (widget.isFromUpgrdePlan == 1) {
       sp.selectedSubsType = widget.type;
@@ -392,27 +393,17 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                           print("------*****---${sp.selectedIval}");
                           print("sp.isTimeOne---${sp.selectedSubsType}");
                           if (sp.selectedIval == 0) {
-                            return
-                                // (sp.isTimeOne)
-                                //     ? SizedBox()
-                                //     :
-                                planDescBox(
-                                    context, "Silver Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
+                            return planDescBox(
+                                context, "Silver Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
                           } else if (sp.selectedIval == 1) {
-                            return
-                                // (sp.isTimeOne)
-                                //     ? SizedBox()
-                                //     :
-                                planDescBox(context, "Gold Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
+                            return planDescBox(
+                                context, "Gold Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
                           } else if (sp.selectedIval == 2) {
-                            return
-                                //  (sp.isTimeOne)
-                                //     ? SizedBox()
-                                //     :
-                                planDescBox(
-                                    context, "Platinum Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
+                            return planDescBox(
+                                context, "Platinum Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
                           } else {
-                            return SizedBox();
+                            return planDescBox(
+                                context, "Silver Plan", sp.ftchList, sp.ftchList.length, sp.selectedSubsType);
                           }
                         }
                       }),
@@ -426,19 +417,17 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                           child: Column(
                             children: [
                               Consumer<SubscriptionProvider>(builder: (context, sp, child) {
-                                return (sp.isTimeOne)
-                                    ? SizedBox()
-                                    : sp.SubscritionPackList.isNotEmpty
-                                        ? Center(
-                                            child: RichText(
-                                                text: TextSpan(children: <TextSpan>[
-                                            TextSpan(
-                                              text: "Select a Subscription Plan",
-                                              style: TextStyle(
-                                                  color: Color(0xff3643a3), fontSize: 22, fontFamily: 'Roboto Bold'),
-                                            ),
-                                          ])))
-                                        : SizedBox();
+                                return sp.SubscritionPackList.isNotEmpty
+                                    ? Center(
+                                        child: RichText(
+                                            text: TextSpan(children: <TextSpan>[
+                                        TextSpan(
+                                          text: "Select a Subscription Plan",
+                                          style: TextStyle(
+                                              color: Color(0xff3643a3), fontSize: 22, fontFamily: 'Roboto Bold'),
+                                        ),
+                                      ])))
+                                    : SizedBox();
                               }),
                               SizedBox(
                                 height: 6,
@@ -546,10 +535,11 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                         } else {
                                                           print("setSelectedIval----$i");
                                                           sp.setSelectedIval(i);
-                                                          sp.setSelectedSubsId(permiumbutton[i].id);
+
                                                           sp.setSelectedSubsType(permiumbutton[i].type);
                                                           sp.setSelectedPlanType(permiumbutton[i].type);
                                                           sp.setSelectedDescType(i);
+                                                          sp.setSelectedSubsId(permiumbutton[i].id);
                                                           // print("index val===$i");
                                                           pp.setSelectedContainer(i);
                                                           pp.updateLoader(false);
@@ -716,6 +706,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                       pp.setSelectedContainer(0);
                                                       await sp.setSelectedDurTimeQt(sp.durationPackData[i].durationType,
                                                           sp.durationPackData[i].durationQuantity);
+                                                      sp.setSelectedSubsId(permiumbutton[i].id);
                                                       CourseProvider cp = Provider.of(context, listen: false);
                                                       pp.updateLoader(false);
                                                       sp.updateLoader(false);

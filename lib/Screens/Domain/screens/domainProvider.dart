@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -12,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../api/apis.dart';
 import '../../../provider/courseProvider.dart';
+import '../../../provider/profileProvider.dart';
 import '../../Tests/local_handler/hive_handler.dart';
 import 'Models/domainModel.dart';
 import 'Models/subDomainModel.dart';
@@ -41,7 +43,7 @@ class DomainProvider extends ChangeNotifier {
     selectedDomainName = val;
     notifyListeners();
   }
-
+ProfileProvider pp=Provider.of(GlobalVariable.navState.currentContext,listen: false);
   int selectedDomainId;
   int selectedSubDomainId;
 
@@ -158,7 +160,17 @@ class DomainProvider extends ChangeNotifier {
 
       print("response.statusCode===${response.body}");
       print("response.statusCode===${response.statusCode}");
+       if (response.statusCode == 403) {
+        pp.updateLoader(false);
+           updateSubDomainApiCall(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+  
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
 
@@ -263,7 +275,17 @@ class DomainProvider extends ChangeNotifier {
       print("response.statusCode===${response.statusCode}");
 
       // domainStatus;
+  if (response.statusCode == 403) {
+        pp.updateLoader(false);
+             updateDomainApiCall(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+  
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
 
@@ -389,7 +411,17 @@ class DomainProvider extends ChangeNotifier {
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
+if (response.statusCode == 403) {
+        pp.updateLoader(false);
+              updateTaskApiCall(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+  
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 400) {
         updateTaskApiCall(false);
         print("statussssssss");

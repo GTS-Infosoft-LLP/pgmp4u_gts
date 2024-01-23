@@ -281,7 +281,7 @@ class _HomeViewState extends State<HomeView> {
                                           if (sp.durationPackData.isNotEmpty) {
                                             sp.setSelectedRadioVal(0);
                                           }
-                                          sp.selectedIval = 2;
+                                          sp.selectedIval = 0;
                                           if (crs.course.isNotEmpty) {
                                             crs.setSelectedCourseId(crs.course[0].id);
                                             crs.setSelectedCourseLable(storedCourse[0].lable);
@@ -299,6 +299,7 @@ class _HomeViewState extends State<HomeView> {
                                                     builder: (context) => Subscriptionpg(
                                                           showDrpDown: 1,
                                                           showFreeTrial: 1,
+                                                          isFromUpgrdePlan: 0,
                                                         )));
                                           });
                                         },
@@ -341,7 +342,7 @@ class _HomeViewState extends State<HomeView> {
                                       if (sp.durationPackData.isNotEmpty) {
                                         // sp.setSelectedRadioVal(0);
                                       }
-                                      sp.selectedIval = 2;
+                                      sp.selectedIval = 0;
                                       if (crs.course.isNotEmpty) {
                                         crs.setSelectedCourseId(crs.course[0].id);
                                         crs.setSelectedCourseLable(storedCourse[0].lable);
@@ -360,6 +361,7 @@ class _HomeViewState extends State<HomeView> {
                                                 builder: (context) => Subscriptionpg(
                                                       showDrpDown: 1,
                                                       showFreeTrial: 1,
+                                                      isFromUpgrdePlan: 0,
                                                     )));
                                       });
                                     },
@@ -630,17 +632,17 @@ class _HomeViewState extends State<HomeView> {
                                                                     if (sp.durationPackData.isNotEmpty) {
                                                                       sp.setSelectedRadioVal(0);
                                                                     }
-                                                                    sp.selectedIval = 2;
+                                                                    sp.selectedIval = 0;
                                                                     // await sp.getSubscritionData(storedCourse[index].id);
 
-                                                                    Future.delayed(const Duration(milliseconds: 4),
+                                                                    Future.delayed(const Duration(milliseconds: 400),
                                                                         () async {
                                                                       sp.setSelectedIval(0);
                                                                       pp.setSelectedContainer(0);
                                                                       if (sp.durationPackData.isNotEmpty) {
                                                                         sp.setSelectedRadioVal(0);
                                                                       }
-                                                                      sp.selectedIval = 2;
+                                                                      sp.selectedIval = 0;
                                                                       print("sp.selectedIval::${sp.selectedIval}");
                                                                       pp.updateLoader(false);
                                                                       sp.setSelectedRadioVal(0);
@@ -652,6 +654,7 @@ class _HomeViewState extends State<HomeView> {
                                                                               builder: (context) => Subscriptionpg(
                                                                                     showDrpDown: 0,
                                                                                     showFreeTrial: 0,
+                                                                                    isFromUpgrdePlan: 0,
                                                                                   )));
                                                                     });
                                                                   } else {

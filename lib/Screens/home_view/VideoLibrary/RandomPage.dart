@@ -625,12 +625,12 @@ class _RandomPageState extends State<RandomPage> {
                                                 onTap: () {
                                                   sp.setSelectedIval(i);
 
-                                                  sp.setSelectedSubsId(permiumbutton[i].id);
                                                   sp.setSelectedSubsType(permiumbutton[i].type);
                                                   sp.setSelectedPlanType(permiumbutton[i].type);
                                                   sp.setSelectedDescType(i);
                                                   print("index val===$i");
                                                   pp.setSelectedContainer(i);
+                                                  sp.setSelectedSubsId(permiumbutton[i].id);
                                                 },
                                                 child: Container(
                                                   height: 160,
@@ -822,8 +822,8 @@ class _RandomPageState extends State<RandomPage> {
                                                 textAlign: TextAlign.center,
                                                 text: TextSpan(children: <TextSpan>[
                                                   TextSpan(
-                                                    text: (sp.durationPackData[i].durationQuantity * 30).toString() +
-                                                        " Days",
+                                                    text: (sp.durationPackData[i].durationQuantity).toString() +
+                                                        " Months",
                                                     style: TextStyle(
                                                         color: i == sp.radioSelected ? Colors.white : Colors.black,
                                                         fontSize: 10.0,

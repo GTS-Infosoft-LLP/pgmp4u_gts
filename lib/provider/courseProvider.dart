@@ -23,6 +23,7 @@ import '../Screens/MockTest/model/testDataModel.dart';
 import '../Screens/MockTest/model/testDetails.dart';
 import '../Screens/MockTest/model/videoCateModel.dart';
 import '../Screens/MockTest/model/videoModel.dart';
+import '../Services/globalcontext.dart';
 import '../api/apis.dart';
 
 class CourseProvider extends ChangeNotifier {
@@ -405,6 +406,18 @@ class CourseProvider extends ChangeNotifier {
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
+
+            if (response.statusCode == 403) {
+              updateLoader(false);
+                  updatePPTDataListApiCall(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 400) {
         updatePPTDataListApiCall(false);
         print("statussssssss");
@@ -528,6 +541,17 @@ class CourseProvider extends ChangeNotifier {
 
         return;
       }
+            if (response.statusCode == 403) {
+                 updateIsPPLoading(false);
+                 updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 200) {
         pptCategoryList.clear();
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
@@ -616,7 +640,17 @@ class CourseProvider extends ChangeNotifier {
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
       print("response status code>>>>>> ${response.statusCode}");
+      if (response.statusCode == 403) {
+          updateMasterDataApiCall(false);
+          updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 400) {
         updateMasterDataApiCall(false);
         print("statussssssss");
@@ -715,7 +749,16 @@ class CourseProvider extends ChangeNotifier {
 
       print("response.statusCode===${response.body}");
       print("response.statusCode===${response.statusCode}");
+      if (response.statusCode == 403) {
+        updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 400) {
         print("statussssssss");
         mockDomainList = [];
@@ -797,7 +840,17 @@ class CourseProvider extends ChangeNotifier {
 
       print("response.statusCode===${response.statusCode}");
       print("response.statusCode===${response.body}");
+      if (response.statusCode == 403) {
+            updateFlashCateDataApiCall(false);
+            updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 200) {
         updateFlashCateDataApiCall(false);
         flashCate.clear();
@@ -905,6 +958,17 @@ class CourseProvider extends ChangeNotifier {
       print("videoPresent=======$videoPresent");
 
       print("response.statusCode===${response.statusCode}");
+            if (response.statusCode == 403) {
+               updatevideoListApiCall(false);
+               updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 200) {
         videoCate.clear();
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
@@ -980,7 +1044,16 @@ class CourseProvider extends ChangeNotifier {
         Uri.parse(GET_COURSES),
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
       );
+      if (response.statusCode == 403) {
+        updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 200) {
         course.clear();
         crsDropList.clear();
@@ -1092,7 +1165,16 @@ class CourseProvider extends ChangeNotifier {
           },
           body: json.encode(restoreBody));
       print("restoreBody>>>> $restoreBody");
+      if (response.statusCode == 403) {
+         updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 200) {
         getCourse().then((value) {
           updateLoader(false);
@@ -1159,7 +1241,16 @@ class CourseProvider extends ChangeNotifier {
 
     print("response.statusCode===${response.statusCode}");
     print("response.body===${response.body}");
+      if (response.statusCode == 403) {
+        updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
     var resDDo = json.decode(response.body);
     var resStatus = (resDDo["status"]);
     videoPresent = 1;
@@ -1244,7 +1335,16 @@ class CourseProvider extends ChangeNotifier {
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );
+      if (response.statusCode == 403) {
+        updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 200) {
         FlashCards.clear();
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
@@ -1324,7 +1424,16 @@ class CourseProvider extends ChangeNotifier {
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );
+      if (response.statusCode == 403) {
+        updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       // print("response.statusCode===${response.statusCode}");
       if (response.statusCode == 200) {
         testDetails.clear();
@@ -1414,7 +1523,16 @@ class CourseProvider extends ChangeNotifier {
         headers: {"Content-Type": "application/json", 'Authorization': stringValue},
         body: json.encode(request),
       );
+      if (response.statusCode == 403) {
+        updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 200) {
         testData.clear();
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
@@ -1503,7 +1621,16 @@ class CourseProvider extends ChangeNotifier {
 
       print("response.statusCode===${response.body}");
       print("response.statusCode===${response.statusCode}");
+      if (response.statusCode == 403) {
+        updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
 
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
       videoPresent = 1;
@@ -1560,6 +1687,16 @@ class CourseProvider extends ChangeNotifier {
           headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
 
       Map getit;
+            if (response.statusCode == 403) {
+              updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 200) {
         print(convert.jsonDecode(response.body));
 
@@ -1726,6 +1863,16 @@ class CourseProvider extends ChangeNotifier {
 
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
+            if (response.statusCode == 403) {
+              updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
       if (response.statusCode == 400) {
         freeDataList = [];
         notifyListeners();
