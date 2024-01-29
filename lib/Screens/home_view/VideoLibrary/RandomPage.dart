@@ -57,9 +57,9 @@ class _RandomPageState extends State<RandomPage> {
     ProfileProvider pp = Provider.of(context, listen: false);
     CourseProvider cp = Provider.of(context, listen: false);
     SubscriptionProvider sp = Provider.of(context, listen: false);
-    sp.SelectedPlanType = 3;
+    sp.SelectedPlanType = 1;
     pp.setSelectedContainer(0);
-    sp.setSelectedIval(2);
+    sp.setSelectedIval(0);
     calllApi();
 
     print("widget category typeee====${widget.categoryType}");
@@ -288,7 +288,7 @@ class _RandomPageState extends State<RandomPage> {
                                                       textAlign: TextAlign.center,
                                                       text: TextSpan(children: <TextSpan>[
                                                         TextSpan(
-                                                          text: 'Get 1 year Access to Flash Card \non',
+                                                          text: 'Get 1 year Access to ${widget.name} \nfor',
                                                           style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 25,
@@ -304,7 +304,7 @@ class _RandomPageState extends State<RandomPage> {
                                                           textAlign: TextAlign.center,
                                                           text: TextSpan(children: <TextSpan>[
                                                             TextSpan(
-                                                              text: 'Get 1 year Access to Video Library \non',
+                                                              text: 'Get 1 year Access to Video Library \nfor',
                                                               style: TextStyle(
                                                                 color: Colors.white,
                                                                 // fontSize: width * (30 / 420),
@@ -320,7 +320,7 @@ class _RandomPageState extends State<RandomPage> {
                                                               textAlign: TextAlign.center,
                                                               text: TextSpan(children: <TextSpan>[
                                                                 TextSpan(
-                                                                  text: 'Get 1 year Access to Mock Tests \non',
+                                                                  text: 'Get 1 year Access to Mock Test \nfor',
                                                                   style: TextStyle(
                                                                     color: Colors.white,
                                                                     fontSize: 25,
@@ -335,7 +335,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                   textAlign: TextAlign.center,
                                                                   text: TextSpan(children: <TextSpan>[
                                                                     TextSpan(
-                                                                      text: 'Get 1 year Access to Chats \non',
+                                                                      text: 'Get 1 year Access to Chats \nfor',
                                                                       style: TextStyle(
                                                                         color: Colors.white,
                                                                         fontSize: 25,
@@ -350,7 +350,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                       textAlign: TextAlign.center,
                                                                       text: TextSpan(children: <TextSpan>[
                                                                         TextSpan(
-                                                                          text: 'Get 1 year Access to PTT \non',
+                                                                          text: 'Get 1 year Access to PTT \nfor',
                                                                           style: TextStyle(
                                                                             color: Colors.white,
                                                                             fontSize: 25,
@@ -367,7 +367,8 @@ class _RandomPageState extends State<RandomPage> {
                                                                           textAlign: TextAlign.center,
                                                                           text: TextSpan(children: <TextSpan>[
                                                                             TextSpan(
-                                                                              text: 'Get 1 year Access to Domains \non',
+                                                                              text:
+                                                                                  'Get 1 year Access to Domains \nfor',
                                                                               style: TextStyle(
                                                                                 color: Colors.white,
                                                                                 fontSize: 25,
@@ -383,7 +384,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                               text: TextSpan(children: <TextSpan>[
                                                                                 TextSpan(
                                                                                   text:
-                                                                                      'Get 1 year Access to Process \non',
+                                                                                      'Get 1 year Access to Process \nfor',
                                                                                   style: TextStyle(
                                                                                     color: Colors.white,
                                                                                     fontSize: 25,
@@ -398,7 +399,7 @@ class _RandomPageState extends State<RandomPage> {
                                                                               text: TextSpan(children: <TextSpan>[
                                                                                 TextSpan(
                                                                                   text:
-                                                                                      'Get 1 year Access to Question of the day \non',
+                                                                                      'Get 1 year Access to Question of the day \nfor',
                                                                                   style: TextStyle(
                                                                                     color: Colors.white,
                                                                                     fontSize: 25,
@@ -822,8 +823,8 @@ class _RandomPageState extends State<RandomPage> {
                                                 textAlign: TextAlign.center,
                                                 text: TextSpan(children: <TextSpan>[
                                                   TextSpan(
-                                                    text: (sp.durationPackData[i].durationQuantity).toString() +
-                                                        " Months",
+                                                    text:
+                                                        (sp.durationPackData[i].durationQuantity).toString() + " Month",
                                                     style: TextStyle(
                                                         color: i == sp.radioSelected ? Colors.white : Colors.black,
                                                         fontSize: 10.0,
@@ -1370,10 +1371,13 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
                   var token = await getToken();
 
                   ProfileProvider profProvi = Provider.of(context, listen: false);
+                  print("IdValue----$IdValue    type----$type");
                   await profProvi.callCreateOrder(IdValue, type);
+
                   type = type.replaceAll(" ", "");
 
                   String urll = CREATE_ORDER + "/$IdValue/$type";
+                  print("urll--------$urll");
 
                   /// Payment implement with stripe
                   bool status = await Navigator.push(

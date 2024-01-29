@@ -122,6 +122,12 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
         // sp.setSelectedSubsId(permiumbutton[0].id);
       }
     } else if (widget.isFromUpgrdePlan == 1) {
+      if (widget.days != 0) {
+        log("widget.days-----${widget.days}");
+        sp.setSelectedSubsType(1000);
+        sp.setSelectedRadioVal(1000);
+        sp.selectedSubsType = 1000;
+      }
       sp.selectedSubsType = widget.type;
       sp.setSelectedSubsId(widget.planId);
     }
@@ -433,6 +439,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                 height: 6,
                               ),
                               Consumer2<SubscriptionProvider, ProfileProvider>(builder: (context, sp, pp, child) {
+                                // bool irVal= sp.checkInternetConn() as bool ;
                                 return
                                     // sp.getSubsPackApiCall
                                     //     ? Center(
@@ -717,7 +724,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                     text: TextSpan(children: <TextSpan>[
                                                       TextSpan(
                                                         text: (sp.durationPackData[i].durationQuantity).toString() +
-                                                            " Months",
+                                                            " Month",
                                                         style: TextStyle(
                                                             color: i == sp.radioSelected ? Colors.white : Colors.black,
                                                             fontSize: 11.0,

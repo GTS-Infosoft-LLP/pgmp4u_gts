@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pgmp4u/Models/restartModel.dart';
 
+import '../../../Models/get_reminder_model.dart';
 import '../../../Models/mockListmodel.dart';
 import '../../../Models/mockquestionanswermodel.dart';
 import '../../../Models/pptCateModel.dart';
@@ -27,6 +28,10 @@ import '../model/categorymodel.dart';
 import '../model/mock_test.dart';
 
 class HiveHandler {
+
+    static const String getReminderBox = "getReminderData";
+  static const String getReminderBoxKey = "getReminderKey";
+
   static const String notSubmitBox = "notSubmitData";
   static const String notSubmitBoxKey = "notSubmitKey";
 
@@ -97,6 +102,8 @@ class HiveHandler {
   static const String ProcessTaskDetailBox = "processTaskBox";
   static const String ProcessTasDetailKey = "processTaskKey";
 
+
+
   static Box<String> processDetailListBox;
   static Box<String> subProcessDetailListBox;
   static Box<String> processTaskListBox;
@@ -116,6 +123,7 @@ class HiveHandler {
   static Box<String> masterListBox;
   static Box<String> pptCateListBox;
   static Box<RestartModel> mockRestartBox;
+  static Box<CurrentSubscription> getReminderMapBox;
   static Box<String> submitDataBox;
   static Box<String> taskPracTestBox;
   static Box<String> processQuesBox;
@@ -138,6 +146,7 @@ class HiveHandler {
 //MockPercentModel
   static Future hiveRegisterAdapter() async {
     await Hive.initFlutter();
+   
     Hive.registerAdapter(CategoryListModelAdapter());
     Hive.registerAdapter(FlashCardDetailsAdapter());
     Hive.registerAdapter(DomainDetailsAdapter());
@@ -157,7 +166,9 @@ class HiveHandler {
     Hive.registerAdapter(TestDataDetailsAdapter());
     Hive.registerAdapter(MockDataDetailsAdapter());
     Hive.registerAdapter(RestartModelAdapter());
+         Hive.registerAdapter(CurrentSubscriptionAdapter());
     Hive.registerAdapter(TaskQuesAdapter());
+
 
     mockNotSubmitBox = await Hive.openBox<String>(notSubmitBox);
     domainDetailListBox = await Hive.openBox<String>(DomainDetailBox);
@@ -188,7 +199,7 @@ class HiveHandler {
     mockAttempList = await Hive.openBox<String>(MockAttemptsBox);
 
     mockRestartBox = await Hive.openBox<RestartModel>(MockRestartBoxKey);
-
+    getReminderMapBox=await Hive.openBox<CurrentSubscription>(getReminderBox);
     await Hive.openBox("deviceTokenBox");
 
     await Hive.openBox("testPercentBox");
@@ -603,6 +614,22 @@ class HiveHandler {
       print("===========box is empty=========");
     }
   }
+
+
+  // static addToRestartBox(String mockId, RestartModel restartModel) {
+  //   print("restart model answersMapp>>>${restartModel.answersMapp}");
+  //   print("restart model quesNum>>>${restartModel.quesNum}");
+
+  //   mockRestartBox.put(mockId, restartModel);
+
+  //   if (mockRestartBox.isNotEmpty) {
+     
+  //     print("mockRestartBox.get for key: $mockId = ${mockRestartBox.get(mockId)}");
+  //   } else {
+  //     print("===========box is empty=========");
+  //   }
+  // }
+
 
   static removeFromRestartBox(String mockId) {
     print("removing FromRestartBox");

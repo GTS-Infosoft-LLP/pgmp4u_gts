@@ -169,6 +169,17 @@ class SubscriptionProvider extends ChangeNotifier {
           Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
+          print("api url==$UPDATE_NOTIFICATION");
+          if (response.statusCode == 403) {
+            updateLoader(false);
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.clear();
+            String stringValue = prefs.getString('token');
+            log("string value token===$stringValue");
+
+            Navigator.of(GlobalVariable.navState.currentContext)
+                .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+          }
           if (response.statusCode == 200) {
             getit = convert.jsonDecode(response.body);
             print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
@@ -213,11 +224,11 @@ class SubscriptionProvider extends ChangeNotifier {
 
       print("satusss====${resDDo["success"]}");
       if (resDDo["success"] == false) {
-               updateLoader(false);
+        updateLoader(false);
         return;
       }
-            if (response.statusCode == 403) {
-               updateLoader(false);
+      if (response.statusCode == 403) {
+        updateLoader(false);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.clear();
         String stringValue = prefs.getString('token');
@@ -228,7 +239,6 @@ class SubscriptionProvider extends ChangeNotifier {
       }
       if (response.statusCode == 400) {
         print("statussssssss");
-
         updateLoader(false);
         notifyListeners();
         return;
@@ -303,9 +313,9 @@ class SubscriptionProvider extends ChangeNotifier {
         return;
       }
       dev.log("response.statusCode::::::${response.statusCode}");
-             if (response.statusCode == 403) {
-               updateLoader(false);
-                updateSubsPackApiCall(false);
+      if (response.statusCode == 403) {
+        updateLoader(false);
+        updateSubsPackApiCall(false);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.clear();
         String stringValue = prefs.getString('token');
@@ -356,6 +366,7 @@ class SubscriptionProvider extends ChangeNotifier {
             if (SelectedPlanDesc == null) {
               SelectedPlanDesc = 0;
             }
+               dev.log("SelectedPlanDesc =====$SelectedPlanDesc");
             // desc1 = SubscritionPackList[SelectedPlanType - 1].description;
             desc1 = SubscritionPackList[SelectedPlanDesc].description;
 
@@ -422,6 +433,17 @@ class SubscriptionProvider extends ChangeNotifier {
           Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
+          print("api url==$UPDATE_NOTIFICATION");
+          if (response.statusCode == 403) {
+            updateLoader(false);
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.clear();
+            String stringValue = prefs.getString('token');
+            log("string value token===$stringValue");
+
+            Navigator.of(GlobalVariable.navState.currentContext)
+                .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+          }
           if (response.statusCode == 200) {
             getit = convert.jsonDecode(response.body);
             print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
@@ -455,7 +477,7 @@ class SubscriptionProvider extends ChangeNotifier {
       print("response.statusCode===${response.statusCode}");
 
       // domainStatus;
-       if (response.statusCode == 403) {
+      if (response.statusCode == 403) {
         updateLoader(false);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.clear();
@@ -562,6 +584,17 @@ class SubscriptionProvider extends ChangeNotifier {
           Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.selectedTstPrcentId}'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
+          print("api url==$UPDATE_NOTIFICATION");
+          if (response.statusCode == 403) {
+            updateLoader(false);
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.clear();
+            String stringValue = prefs.getString('token');
+            log("string value token===$stringValue");
+
+            Navigator.of(GlobalVariable.navState.currentContext)
+                .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+          }
           if (response.statusCode == 200) {
             getit = convert.jsonDecode(response.body);
             print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
@@ -596,7 +629,7 @@ class SubscriptionProvider extends ChangeNotifier {
 
       print("response.statusCode===${response.body}");
       print("response.statusCode===${response.statusCode}");
-       if (response.statusCode == 403) {
+      if (response.statusCode == 403) {
         updateLoader(false);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.clear();

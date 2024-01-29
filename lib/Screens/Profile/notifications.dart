@@ -34,6 +34,12 @@ class _NotificationsState extends State<Notifications> {
     if (cp.crsDropList.isNotEmpty) {
       cp.setSelectedCourseId(cp.crsDropList[0].id);
     }
+    if (widget.type == 1) {
+      CourseProvider cp = Provider.of(context, listen: false);
+      // cp.setSelectedCourseId(null);
+      ProfileProvider _dshbrdProvider = Provider.of(context, listen: false);
+      _dshbrdProvider.showNotification(crsId: "", isFirstTime: false);
+    }
 
     ProfileProvider _dshbrdProvider = Provider.of(context, listen: false);
     // _dshbrdProvider.Announcements = [];
@@ -87,22 +93,40 @@ class _NotificationsState extends State<Notifications> {
                     flex: 8,
                     child: Consumer<ProfileProvider>(builder: (context, profileProvider, child) {
                       return widget.type == 0
-                          ? ListView.builder(
-                              controller: scrollcontrol,
-                              itemCount: profileProvider.Notifications.length,
-                              physics: BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return _notificationTile(profileProvider, index, context);
-                              })
-                          : ListView.builder(
-                              controller: scrollcontrol,
-                              itemCount: profileProvider.Announcements.length,
-                              physics: BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return _announcmentsTile(profileProvider, index, context);
-                              });
+                          ? profileProvider.totalRecords == 0
+                              ? Center(
+                                  child: Text(
+                                    "No Data Available",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                )
+                              : ListView.builder(
+                                  controller: scrollcontrol,
+                                  itemCount: profileProvider.Notifications.length,
+                                  physics: BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return _notificationTile(profileProvider, index, context);
+                                  })
+                          : profileProvider.totalRecords == 0
+                              ? Center(
+                                  child: Text(
+                                    "No Data Available",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                )
+                              : ListView.builder(
+                                  controller: scrollcontrol,
+                                  itemCount: profileProvider.Announcements.length,
+                                  physics: BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return _announcmentsTile(profileProvider, index, context);
+                                  });
                     }),
                   )
           ],

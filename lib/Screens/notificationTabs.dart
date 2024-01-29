@@ -162,6 +162,10 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                 physics: NeverScrollableScrollPhysics(),
                 onTap: (vall) async {
                   print("_controller-----====${_controller.index}");
+                  if(_controller.index==0){
+                              ProfileProvider pp = Provider.of(context, listen: false);
+                              
+                  }
                   CourseProvider crp = Provider.of(context, listen: false);
                   crp.setSelectedNotiCrsLable("");
                   context.read<ProfileProvider>().setTabIndex(vall);

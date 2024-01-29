@@ -233,6 +233,17 @@ class ProfileProvider extends ChangeNotifier {
           Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
+            print("api url==$UPDATE_NOTIFICATION");
+            if (response.statusCode == 403) {
+               updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
           if (response.statusCode == 200) {
             getit = convert.jsonDecode(response.body);
             print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
@@ -390,6 +401,8 @@ class ProfileProvider extends ChangeNotifier {
       );
       avgScore = "";
       dayDiff = "";
+
+      print("resposse data---${response.body}");
       dev.log("response.statusCode getreminder-----${response.statusCode}");
             if (response.statusCode == 403) {
               updateLoader(false);
@@ -408,6 +421,8 @@ class ProfileProvider extends ChangeNotifier {
         isStudyRemAdded = 0;
         print("response.statusCode getreminder===${response.statusCode}");
         var resDDo = json.decode(response.body);
+        print("resDDo body----${resDDo['data']}");
+         print("");
         print("resDDo getreminder====$resDDo");
         updateLoader(false);
         var remTime = resDDo['data']['studyReminder'];
@@ -480,6 +495,17 @@ class ProfileProvider extends ChangeNotifier {
           Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
+            print("api url==$UPDATE_NOTIFICATION");
+            if (response.statusCode == 403) {
+               updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
           if (response.statusCode == 200) {
             getit = convert.jsonDecode(response.body);
             print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
@@ -557,6 +583,17 @@ class ProfileProvider extends ChangeNotifier {
           Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
+            print("api url==$UPDATE_NOTIFICATION");
+            if (response.statusCode == 403) {
+               updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
           if (response.statusCode == 200) {
             getit = convert.jsonDecode(response.body);
             print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
@@ -672,6 +709,17 @@ class ProfileProvider extends ChangeNotifier {
           Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
+            print("api url==$UPDATE_NOTIFICATION");
+            if (response.statusCode == 403) {
+               updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
           if (response.statusCode == 200) {
             getit = convert.jsonDecode(response.body);
             print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
@@ -740,6 +788,18 @@ class ProfileProvider extends ChangeNotifier {
           Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
           Map getit;
+
+            print("api url==$UPDATE_NOTIFICATION");
+            if (response.statusCode == 403) {
+               updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
           if (response.statusCode == 200) {
             getit = convert.jsonDecode(response.body);
             print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");
@@ -810,7 +870,17 @@ class ProfileProvider extends ChangeNotifier {
           // await apiCall(attempListIdOffline);
           Response response = await http.get(Uri.parse(MOCK_TEST + '/${cp.attempListIdOffline}'),
               headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
-          Map getit;
+          Map getit;  print("api url==$UPDATE_NOTIFICATION");
+            if (response.statusCode == 403) {
+               updateLoader(false);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        String stringValue = prefs.getString('token');
+        log("string value token===$stringValue");
+
+        Navigator.of(GlobalVariable.navState.currentContext)
+            .pushNamedAndRemoveUntil('/start-screen', (Route<dynamic> route) => false);
+      }
           if (response.statusCode == 200) {
             getit = convert.jsonDecode(response.body);
             print("mock data==================>>>>>>>>>>1 ${jsonEncode(getit["data"])}");

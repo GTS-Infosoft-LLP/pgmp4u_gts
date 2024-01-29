@@ -251,7 +251,7 @@ class _ProfileState extends State<Profile> {
           color: _colorfromhex("#FCFCFF"),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start, 
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 height: SizerUtil.deviceType == DeviceType.mobile ? 180 : 330,
@@ -518,18 +518,19 @@ class _ProfileState extends State<Profile> {
                                                           padding: const EdgeInsets.all(8.0),
                                                           child: Center(
                                                             child: RichText(
+                                                                textAlign: TextAlign.center,
                                                                 text: TextSpan(children: <TextSpan>[
-                                                              TextSpan(
-                                                                text: pp.avgScore == '0'
-                                                                    ? "Tap to select exam date"
-                                                                    : "Exam Date",
-                                                                style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontSize: 18,
-                                                                  fontFamily: 'Roboto Medium',
-                                                                ),
-                                                              ),
-                                                            ])),
+                                                                  TextSpan(
+                                                                    text: pp.avgScore == '0'
+                                                                        ? "Tap to select exam date"
+                                                                        : "Exam Date",
+                                                                    style: TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontSize: 18,
+                                                                      fontFamily: 'Roboto Medium',
+                                                                    ),
+                                                                  ),
+                                                                ])),
                                                           ),
                                                         )
                                                       : Column(
