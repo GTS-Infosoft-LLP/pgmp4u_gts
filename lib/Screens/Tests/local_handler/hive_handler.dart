@@ -28,8 +28,7 @@ import '../model/categorymodel.dart';
 import '../model/mock_test.dart';
 
 class HiveHandler {
-
-    static const String getReminderBox = "getReminderData";
+  static const String getReminderBox = "getReminderData";
   static const String getReminderBoxKey = "getReminderKey";
 
   static const String notSubmitBox = "notSubmitData";
@@ -102,8 +101,6 @@ class HiveHandler {
   static const String ProcessTaskDetailBox = "processTaskBox";
   static const String ProcessTasDetailKey = "processTaskKey";
 
-
-
   static Box<String> processDetailListBox;
   static Box<String> subProcessDetailListBox;
   static Box<String> processTaskListBox;
@@ -146,7 +143,7 @@ class HiveHandler {
 //MockPercentModel
   static Future hiveRegisterAdapter() async {
     await Hive.initFlutter();
-   
+
     Hive.registerAdapter(CategoryListModelAdapter());
     Hive.registerAdapter(FlashCardDetailsAdapter());
     Hive.registerAdapter(DomainDetailsAdapter());
@@ -166,9 +163,8 @@ class HiveHandler {
     Hive.registerAdapter(TestDataDetailsAdapter());
     Hive.registerAdapter(MockDataDetailsAdapter());
     Hive.registerAdapter(RestartModelAdapter());
-         Hive.registerAdapter(CurrentSubscriptionAdapter());
+    Hive.registerAdapter(CurrentSubscriptionAdapter());
     Hive.registerAdapter(TaskQuesAdapter());
-
 
     mockNotSubmitBox = await Hive.openBox<String>(notSubmitBox);
     domainDetailListBox = await Hive.openBox<String>(DomainDetailBox);
@@ -199,7 +195,7 @@ class HiveHandler {
     mockAttempList = await Hive.openBox<String>(MockAttemptsBox);
 
     mockRestartBox = await Hive.openBox<RestartModel>(MockRestartBoxKey);
-    getReminderMapBox=await Hive.openBox<CurrentSubscription>(getReminderBox);
+    getReminderMapBox = await Hive.openBox<CurrentSubscription>(getReminderBox);
     await Hive.openBox("deviceTokenBox");
 
     await Hive.openBox("testPercentBox");
@@ -252,7 +248,6 @@ class HiveHandler {
 
     mockAttempList.put(key, mockAttempts);
     if (mockAttempList.containsKey(key)) {
-     
       print("mockAttempList.get  key: $key, Data: ${mockAttempList.get(key)}");
     } else {
       print("===========box is empty=========");
@@ -290,7 +285,6 @@ class HiveHandler {
     TaskItemsBox.put(key, value);
 
     if (TaskItemsBox.containsKey(key)) {
-     
       print("TaskItemsBox.get  Key: $key, Data:${TaskItemsBox.get(key)}");
 
       String taskData = TaskItemsBox.get(key);
@@ -311,7 +305,6 @@ class HiveHandler {
     ProcessTaskItemsBox.put(key, value);
 
     if (ProcessTaskItemsBox.containsKey(key)) {
-   
       print("ProcessTaskItemsBox.get  Key: $key, Data:${ProcessTaskItemsBox.get(key)}");
       String processTaskData = ProcessTaskItemsBox.get(key);
       print(" >> processTaskData :  $processTaskData");
@@ -340,7 +333,6 @@ class HiveHandler {
     taskPracTestBox.put(key, value);
 
     if (taskPracTestBox.containsKey(key)) {
-
       print("taskPracTestBox.get  Key: $key, Data:${taskPracTestBox.get(key)}");
       String taskQuesData = taskPracTestBox.get(key);
       print(" >> taskData :  $taskQuesData");
@@ -359,7 +351,6 @@ class HiveHandler {
     processQuesBox.put(key, value);
 
     if (processQuesBox.containsKey(key)) {
-
       print("processQuesBox.get  Key: $key, Data:${processQuesBox.get(key)}");
       String taskQuesData = processQuesBox.get(key);
       print(" >> taskData :  $taskQuesData");
@@ -382,7 +373,6 @@ class HiveHandler {
   static setQuesOfDayData({String value, String key}) async {
     QuesOfDDayBox.put(key, value);
     if (QuesOfDDayBox.containsKey(key)) {
-    
       print("QuesOfDDayBox.get  Key: $key, Data:${QuesOfDDayBox.get(key)}");
     } else {
       print("===========box is empty=========");
@@ -425,7 +415,6 @@ class HiveHandler {
     displayFlashBox.put(key, flashListResponse);
 
     if (displayFlashBox.containsKey(key)) {
-    
       print("displayFlashBox.get ${displayFlashBox.get(key)}");
     } else {
       print("===========box is empty=========");
@@ -440,7 +429,6 @@ class HiveHandler {
     domainDetailListBox.put(key, domainDetailResponse);
 
     if (domainDetailListBox.containsKey(key)) {
-
       print("domainDetailListBox.get ${domainDetailListBox.get(key)}");
     } else {
       print("===========box is empty=========");
@@ -464,7 +452,6 @@ class HiveHandler {
     print("value of keyyy>>>> $key");
 
     if (pptCateDetailBox.containsKey(key)) {
-
       print("pptCateDetailBox.get ${pptCateDetailBox.get(key)}");
     } else {
       print("===========box is empty=========");
@@ -480,7 +467,6 @@ class HiveHandler {
     print("value of keyyy>>>> $key");
 
     if (pptDataDetailBox.containsKey(key)) {
-
       print("pptDataDetailBox.get ${pptDataDetailBox.get(key)}");
     } else {
       print("===========box is empty=========");
@@ -510,7 +496,7 @@ class HiveHandler {
 
     if (processDetailListBox.containsKey(key)) {
       print("subdomain box keyy>>>>>>>.$key");
-     
+
       print("processDetailListBox.get ${processDetailListBox.get(key)}");
     } else {
       print("===========box is empty=========");
@@ -522,7 +508,7 @@ class HiveHandler {
 
     if (subProcessDetailListBox.containsKey(key)) {
       print("subdomain box keyy>>>>>>>.$key");
- 
+
       print("subProcessDetailListBox.get ${subProcessDetailListBox.get(key)}");
     } else {
       print("===========box is empty=========");
@@ -539,7 +525,6 @@ class HiveHandler {
     courseListBox.put(CourseKey, courseListResponse);
 
     if (courseListBox.isNotEmpty) {
-   
       print("courseListBox.get ${courseListBox.get(CourseKey)}");
     } else {
       print("===========box is empty=========");
@@ -581,7 +566,6 @@ class HiveHandler {
     submitDataBox.put(mockId, data);
     print("datata====>$data");
     if (submitDataBox.isNotEmpty) {
-   
       print("submitDataBox.get for key: $mockId = ${submitDataBox.get(mockId)}");
     } else {
       print("===========box is empty=========");
@@ -608,13 +592,35 @@ class HiveHandler {
     mockRestartBox.put(mockId, restartModel);
 
     if (mockRestartBox.isNotEmpty) {
-     
       print("mockRestartBox.get for key: $mockId = ${mockRestartBox.get(mockId)}");
     } else {
       print("===========box is empty=========");
     }
   }
 
+  static addTogetReminderBox(String CrsId, CurrentSubscription getReminderResponse) {
+    print("getReminderResponse>>>$getReminderResponse");
+
+    getReminderMapBox.put(CrsId, getReminderResponse);
+
+    if (getReminderMapBox.isNotEmpty) {
+      print("getReminderResponse.get for key: $CrsId = ${getReminderMapBox.get(CrsId)}");
+
+      CurrentSubscription crrntSubs = getReminderMapBox.get(CrsId);
+      print("crrntSubs.durationQuantity--------${crrntSubs.durationQuantity}");
+    } else {
+      print("===========box is empty=========");
+    }
+  }
+
+  static CurrentSubscription getFromReminderBox(String CrsId) {
+    CurrentSubscription crrntSubs = getReminderMapBox.get(CrsId);
+    return crrntSubs;
+  }
+
+  static ValueListenable<Box<CurrentSubscription>> getCurrentSubscriptionListener() {
+    return Hive.box<CurrentSubscription>(getReminderBoxKey).listenable();
+  }
 
   // static addToRestartBox(String mockId, RestartModel restartModel) {
   //   print("restart model answersMapp>>>${restartModel.answersMapp}");
@@ -623,13 +629,12 @@ class HiveHandler {
   //   mockRestartBox.put(mockId, restartModel);
 
   //   if (mockRestartBox.isNotEmpty) {
-     
+
   //     print("mockRestartBox.get for key: $mockId = ${mockRestartBox.get(mockId)}");
   //   } else {
   //     print("===========box is empty=========");
   //   }
   // }
-
 
   static removeFromRestartBox(String mockId) {
     print("removing FromRestartBox");
@@ -663,7 +668,6 @@ class HiveHandler {
   static ValueListenable<Box<RestartModel>> getMockRestartListener() {
     return Hive.box<RestartModel>(MockRestartBoxKey).listenable();
   }
-
 
   static addMasterData(String masterListResponse, {String keyName}) async {
     masterListBox.put(keyName, masterListResponse);
@@ -699,7 +703,6 @@ class HiveHandler {
     }
   }
 
-
   static setFlashCateData({dynamic value, String Key}) async {
     await Hive.openBox(FlashCateBox);
     final box = Hive.box(FlashCateBox);
@@ -718,7 +721,6 @@ class HiveHandler {
   static addTestMpData(String mockTestsList, String keyName) async {
     TestPMListBox.put(keyName, mockTestsList);
     if (TestPMListBox.isNotEmpty) {
-
       print("testDataListBox.get Key: $keyName , Data: ${TestPMListBox.get(keyName)}");
     } else {
       print("===========box is empty=========");
@@ -756,7 +758,6 @@ class HiveHandler {
     flashListCateBox.put(keyName, flashCardData);
 
     if (flashListCateBox.containsKey(keyName)) {
-     
       print("flashCateListBox.get Key: $keyName  ,Data: ${flashListCateBox.get(keyName)}");
     } else {
       print("===========box is empty=========");
@@ -781,7 +782,6 @@ class HiveHandler {
     final Box<String> notSubmittedDataBox = await Hive.openBox<String>(notSubmitBox);
     notSubmittedDataBox.put(KeyName, body);
     if (notSubmittedDataBox.isNotEmpty) {
-  
       print("notSubmittedDataBox.get${notSubmittedDataBox.get(KeyName)}");
     } else {
       print("===========box is empty=========");
@@ -789,10 +789,9 @@ class HiveHandler {
   }
 
   static String getNotSubmittedMock({String keyName}) {
- 
     try {
       final String storedNotSubmittedMock = mockNotSubmitBox.get(keyName);
-   
+
       return storedNotSubmittedMock;
     } catch (e) {
       return "";
@@ -803,7 +802,6 @@ class HiveHandler {
     final Box<List<FlashCardDetails>> flashListBox = await Hive.openBox<List<FlashCardDetails>>(FlashCardBox);
     flashListBox.put(KeyName, list);
     if (flashListBox.isNotEmpty) {
-    
       print("flashListBox.get${flashListBox.get(KeyName)}");
     } else {
       print("===========box is empty=========");
@@ -823,8 +821,6 @@ class HiveHandler {
       return [];
     }
   }
-
-  
 
   static setDeviceToken(String val) async {
     var _userBox = Hive.box(deviceTokenBox);

@@ -11,6 +11,7 @@ import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
+import '../Models/get_reminder_model.dart';
 import '../Process/process.dart';
 import '../Process/processDomainProvider.dart';
 import '../provider/Subscription/subscriptionPage.dart';
@@ -128,7 +129,9 @@ class _MasterListPageState extends State<MasterListPage> {
               height: 5,
             ),
             Consumer<ProfileProvider>(builder: (context, pp, child) {
-              // if()
+              CourseProvider cp = Provider.of(context, listen: false);
+              CurrentSubscription currntSubs = HiveHandler.getFromReminderBox(cp.selectedCourseId.toString());
+              // print("currntSubs----${currntSubs.durationQuantity}");
               print("pp.planDetail.durationQuantity----${pp.planDetail.durationQuantity}");
               return pp.getRemiinderApiCall == true
                   ? SizedBox()
@@ -156,7 +159,9 @@ class _MasterListPageState extends State<MasterListPage> {
                                     pp.setSelectedContainer(0);
                                     SubscriptionProvider sp = Provider.of(context, listen: false);
                                     sp.SelectedPlanType = 1;
-                                    await sp.setSelectedDurTimeQt( pp.planDetail.durationType, pp.planDetail.durationQuantity, isFirtTime: 1);
+                                    await sp.setSelectedDurTimeQt(
+                                        pp.planDetail.durationType, pp.planDetail.durationQuantity,
+                                        isFirtTime: 1);
                                     sp.setSelectedIval(0);
                                     if (sp.durationPackData.isNotEmpty) {
                                       sp.setSelectedRadioVal(0);

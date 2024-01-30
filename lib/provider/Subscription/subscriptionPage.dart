@@ -329,6 +329,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                         : "You are currently subscribed to free plan (${widget.days} days)",
                                                 style: TextStyle(
                                                   color: Colors.white,
+                                                  fontWeight: FontWeight.w400,
                                                   fontSize: 16,
                                                 ),
                                               ),
@@ -459,221 +460,246 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                     //         ),
                                     //       )
                                     //     :
-                                    (sp.isTimeOne)
+
+                                    sp.internetStatus == false
                                         ? Center(
                                             child: Container(
-                                              height: MediaQuery.of(context).size.height * .6,
+                                              height: MediaQuery.of(context).size.height * .4,
                                               child: Center(
                                                   child: RichText(
                                                       text: TextSpan(children: <TextSpan>[
                                                 TextSpan(
-                                                  text: "Loading...",
+                                                  text: "No Internet Connection",
                                                   style: TextStyle(
                                                     color: Colors.black,
+                                                    fontFamily: 'Roboto Medium',
                                                     fontSize: 18,
                                                   ),
                                                 ),
                                               ]))),
                                             ),
                                           )
-                                        : sp.SubscritionPackList.isEmpty
+                                        : (sp.isTimeOne)
                                             ? Center(
                                                 child: Container(
-                                                  height: MediaQuery.of(context).size.height * .6,
+                                                  height: MediaQuery.of(context).size.height * .4,
                                                   child: Center(
                                                       child: RichText(
                                                           text: TextSpan(children: <TextSpan>[
                                                     TextSpan(
-                                                      text: "No Plans Available...",
+                                                      text: "Loading...",
                                                       style: TextStyle(
                                                         color: Colors.black,
+                                                        fontFamily: 'Roboto Medium',
                                                         fontSize: 18,
                                                       ),
                                                     ),
                                                   ]))),
                                                 ),
                                               )
-                                            : Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: List.generate(permiumbutton.length, (i) {
-                                                  if (permiumbutton[i].type == 1) {
-                                                    subsPack = "Silver";
-                                                  } else if (permiumbutton[i].type == 2) {
-                                                    subsPack = "Gold";
-                                                  } else if (permiumbutton[i].type == 3) {
-                                                    subsPack = "Platinum";
-                                                  }
-                                                  if (i == 0) {
-                                                    mntVal = "30";
-                                                    mnth = "Days";
+                                            : sp.SubscritionPackList.isEmpty
+                                                ? Center(
+                                                    child: Container(
+                                                      height: MediaQuery.of(context).size.height * .4,
+                                                      child: Center(
+                                                          child: RichText(
+                                                              text: TextSpan(children: <TextSpan>[
+                                                        TextSpan(
+                                                          text: "No Plans Available...",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontFamily: 'Roboto Medium',
+                                                            fontSize: 18,
+                                                          ),
+                                                        ),
+                                                      ]))),
+                                                    ),
+                                                  )
+                                                : Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: List.generate(permiumbutton.length, (i) {
+                                                      if (permiumbutton[i].type == 1) {
+                                                        subsPack = "Silver";
+                                                      } else if (permiumbutton[i].type == 2) {
+                                                        subsPack = "Gold";
+                                                      } else if (permiumbutton[i].type == 3) {
+                                                        subsPack = "Platinum";
+                                                      }
+                                                      if (i == 0) {
+                                                        mntVal = "30";
+                                                        mnth = "Days";
 
-                                                    liGrdint = LinearGradient(
-                                                        begin: Alignment.topLeft,
-                                                        end: Alignment.bottomRight,
-                                                        colors: [Color(0xff099773), Color(0xff43B692)]);
-                                                  } else if (i == 1) {
-                                                    mntVal = "60";
-                                                    mnth = "Days";
+                                                        liGrdint = LinearGradient(
+                                                            begin: Alignment.topLeft,
+                                                            end: Alignment.bottomRight,
+                                                            colors: [Color(0xff099773), Color(0xff43B692)]);
+                                                      } else if (i == 1) {
+                                                        mntVal = "60";
+                                                        mnth = "Days";
 
-                                                    liGrdint = LinearGradient(
-                                                        begin: Alignment.topLeft,
-                                                        end: Alignment.bottomRight,
-                                                        colors: [Color(0xffEF709B), Color(0xffF68080)]);
-                                                  } else {
-                                                    mntVal = "90";
-                                                    mnth = "Days";
-                                                    liGrdint = LinearGradient(
-                                                        begin: Alignment.topLeft,
-                                                        end: Alignment.bottomRight,
-                                                        colors: [Color(0xffF28E54), Color(0xffDFB668)]);
-                                                  }
+                                                        liGrdint = LinearGradient(
+                                                            begin: Alignment.topLeft,
+                                                            end: Alignment.bottomRight,
+                                                            colors: [Color(0xffEF709B), Color(0xffF68080)]);
+                                                      } else {
+                                                        mntVal = "90";
+                                                        mnth = "Days";
+                                                        liGrdint = LinearGradient(
+                                                            begin: Alignment.topLeft,
+                                                            end: Alignment.bottomRight,
+                                                            colors: [Color(0xffF28E54), Color(0xffDFB668)]);
+                                                      }
 
-                                                  return Expanded(
-                                                      child: Padding(
-                                                    padding: permiumbutton.length == 1
-                                                        ? EdgeInsets.symmetric(horizontal: 114)
-                                                        : EdgeInsets.symmetric(horizontal: 4),
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        if (widget.showFreeTrial == 1) {
-                                                          pp.updateLoader(false);
-                                                          sp.updateLoader(false);
-                                                        } else {
-                                                          print("setSelectedIval----$i");
-                                                          sp.setSelectedIval(i);
+                                                      return Expanded(
+                                                          child: Padding(
+                                                        padding: permiumbutton.length == 1
+                                                            ? EdgeInsets.symmetric(horizontal: 114)
+                                                            : EdgeInsets.symmetric(horizontal: 4),
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            if (widget.showFreeTrial == 1) {
+                                                              pp.updateLoader(false);
+                                                              sp.updateLoader(false);
+                                                            } else {
+                                                              print("setSelectedIval----$i");
+                                                              sp.setSelectedIval(i);
 
-                                                          sp.setSelectedSubsType(permiumbutton[i].type);
-                                                          sp.setSelectedPlanType(permiumbutton[i].type);
-                                                          sp.setSelectedDescType(i);
-                                                          sp.setSelectedSubsId(permiumbutton[i].id);
-                                                          // print("index val===$i");
-                                                          pp.setSelectedContainer(i);
-                                                          pp.updateLoader(false);
-                                                          sp.updateLoader(false);
-                                                        }
-                                                      },
-                                                      child: Container(
-                                                        height: 160,
-                                                        child: Center(
-                                                          child: Stack(
-                                                            children: [
-                                                              Container(
-                                                                margin: EdgeInsets.only(top: 15, bottom: 10),
-                                                                height: pp.selectedSubsBox == i ? 148 : 138,
-                                                                decoration: BoxDecoration(
-                                                                  border: Border.all(
-                                                                    color: pp.selectedSubsBox == i
-                                                                        ? Colors.black
-                                                                        : Color(0xff3643a3),
-                                                                    width: pp.selectedSubsBox == i ? 2.5 : 0,
-                                                                  ),
-                                                                  gradient: liGrdint,
-                                                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                                                ),
-                                                                child: Stack(
-                                                                  children: [
-                                                                    Container(
-                                                                      child: Center(
-                                                                          child: Image.asset("assets/diamond.png")),
+                                                              sp.setSelectedSubsType(permiumbutton[i].type);
+                                                              sp.setSelectedPlanType(permiumbutton[i].type);
+                                                              sp.setSelectedDescType(i);
+                                                              sp.setSelectedSubsId(permiumbutton[i].id);
+                                                              // print("index val===$i");
+                                                              pp.setSelectedContainer(i);
+                                                              pp.updateLoader(false);
+                                                              sp.updateLoader(false);
+                                                            }
+                                                          },
+                                                          child: Container(
+                                                            height: 160,
+                                                            child: Center(
+                                                              child: Stack(
+                                                                children: [
+                                                                  Container(
+                                                                    margin: EdgeInsets.only(top: 15, bottom: 10),
+                                                                    height: pp.selectedSubsBox == i ? 148 : 138,
+                                                                    decoration: BoxDecoration(
+                                                                      border: Border.all(
+                                                                        color: pp.selectedSubsBox == i
+                                                                            ? Colors.black
+                                                                            : Color(0xff3643a3),
+                                                                        width: pp.selectedSubsBox == i ? 2.5 : 0,
+                                                                      ),
+                                                                      gradient: liGrdint,
+                                                                      borderRadius:
+                                                                          BorderRadius.all(Radius.circular(10)),
                                                                     ),
-                                                                    Column(
-                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                    child: Stack(
                                                                       children: [
-                                                                        SizedBox(
-                                                                          height: 35,
-                                                                        ),
-                                                                        Center(
-                                                                          child: RichText(
-                                                                            text: TextSpan(children: <TextSpan>[
-                                                                              TextSpan(
-                                                                                // text: mntVal + " " + mnth,
-                                                                                text: subsPack,
-                                                                                style: TextStyle(
-                                                                                    color: Colors.white,
-                                                                                    fontSize: 20.0,
-                                                                                    fontWeight: FontWeight.w600),
-                                                                              )
-                                                                            ]),
-                                                                          ),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height: 5,
-                                                                        ),
-                                                                        new Spacer(),
                                                                         Container(
-                                                                          decoration: BoxDecoration(
-                                                                            border:
-                                                                                Border.all(color: Colors.transparent),
-                                                                            borderRadius: BorderRadius.only(
-                                                                              bottomRight: Radius.circular(9.5),
-                                                                              bottomLeft: Radius.circular(9.5),
-                                                                            ),
-                                                                            color: Colors.white,
-                                                                          ),
-                                                                          height: 40,
                                                                           child: Center(
-                                                                            child: RichText(
-                                                                              text: TextSpan(children: <TextSpan>[
-                                                                                TextSpan(
-                                                                                  text: "\$" + permiumbutton[i].amount,
-                                                                                  style: TextStyle(
-                                                                                      color: Color(0xff3643a3),
-                                                                                      fontSize: 18.0,
-                                                                                      fontWeight: FontWeight.w600),
-                                                                                )
-                                                                              ]),
+                                                                              child: Image.asset("assets/diamond.png")),
+                                                                        ),
+                                                                        Column(
+                                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                                          children: [
+                                                                            SizedBox(
+                                                                              height: 35,
                                                                             ),
-                                                                          ),
+                                                                            Center(
+                                                                              child: RichText(
+                                                                                text: TextSpan(children: <TextSpan>[
+                                                                                  TextSpan(
+                                                                                    // text: mntVal + " " + mnth,
+                                                                                    text: subsPack,
+                                                                                    style: TextStyle(
+                                                                                        color: Colors.white,
+                                                                                        fontSize: 20.0,
+                                                                                        fontWeight: FontWeight.w600),
+                                                                                  )
+                                                                                ]),
+                                                                              ),
+                                                                            ),
+                                                                            SizedBox(
+                                                                              height: 5,
+                                                                            ),
+                                                                            new Spacer(),
+                                                                            Container(
+                                                                              decoration: BoxDecoration(
+                                                                                border: Border.all(
+                                                                                    color: Colors.transparent),
+                                                                                borderRadius: BorderRadius.only(
+                                                                                  bottomRight: Radius.circular(9.5),
+                                                                                  bottomLeft: Radius.circular(9.5),
+                                                                                ),
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                              height: 40,
+                                                                              child: Center(
+                                                                                child: RichText(
+                                                                                  text: TextSpan(children: <TextSpan>[
+                                                                                    TextSpan(
+                                                                                      text: "\$" +
+                                                                                          permiumbutton[i].amount,
+                                                                                      style: TextStyle(
+                                                                                          color: Color(0xff3643a3),
+                                                                                          fontSize: 18.0,
+                                                                                          fontWeight: FontWeight.w600),
+                                                                                    )
+                                                                                  ]),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
                                                                         ),
                                                                       ],
                                                                     ),
-                                                                  ],
-                                                                ),
+                                                                  ),
+                                                                  i == 2
+                                                                      ? Positioned(
+                                                                          top: 0,
+                                                                          right: 10,
+                                                                          left: 10,
+                                                                          child: Container(
+                                                                            height: 28,
+                                                                            decoration: BoxDecoration(
+                                                                              gradient: LinearGradient(
+                                                                                  colors: [
+                                                                                    _colorfromhex('#3846A9'),
+                                                                                    _colorfromhex('#5265F8')
+                                                                                  ],
+                                                                                  begin:
+                                                                                      const FractionalOffset(0.0, 0.0),
+                                                                                  end: const FractionalOffset(1.0, 0.0),
+                                                                                  stops: [0.0, 1.0],
+                                                                                  tileMode: TileMode.clamp),
+                                                                              borderRadius:
+                                                                                  BorderRadius.all(Radius.circular(15)),
+                                                                            ),
+                                                                            child: Center(
+                                                                                child: RichText(
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    maxLines: 2,
+                                                                                    text: TextSpan(children: <TextSpan>[
+                                                                                      TextSpan(
+                                                                                        text: "20% OFF",
+                                                                                        style: TextStyle(
+                                                                                            color: Colors.white,
+                                                                                            fontSize: 15,
+                                                                                            fontWeight:
+                                                                                                FontWeight.w400),
+                                                                                      ),
+                                                                                    ]))),
+                                                                          ),
+                                                                        )
+                                                                      : SizedBox()
+                                                                ],
                                                               ),
-                                                              i == 2
-                                                                  ? Positioned(
-                                                                      top: 0,
-                                                                      right: 10,
-                                                                      left: 10,
-                                                                      child: Container(
-                                                                        height: 28,
-                                                                        decoration: BoxDecoration(
-                                                                          gradient: LinearGradient(
-                                                                              colors: [
-                                                                                _colorfromhex('#3846A9'),
-                                                                                _colorfromhex('#5265F8')
-                                                                              ],
-                                                                              begin: const FractionalOffset(0.0, 0.0),
-                                                                              end: const FractionalOffset(1.0, 0.0),
-                                                                              stops: [0.0, 1.0],
-                                                                              tileMode: TileMode.clamp),
-                                                                          borderRadius:
-                                                                              BorderRadius.all(Radius.circular(15)),
-                                                                        ),
-                                                                        child: Center(
-                                                                            child: RichText(
-                                                                                overflow: TextOverflow.ellipsis,
-                                                                                maxLines: 2,
-                                                                                text: TextSpan(children: <TextSpan>[
-                                                                                  TextSpan(
-                                                                                    text: "20% OFF",
-                                                                                    style: TextStyle(
-                                                                                        color: Colors.white,
-                                                                                        fontSize: 15,
-                                                                                        fontWeight: FontWeight.w400),
-                                                                                  ),
-                                                                                ]))),
-                                                                      ),
-                                                                    )
-                                                                  : SizedBox()
-                                                            ],
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ));
-                                                }));
+                                                      ));
+                                                    }));
                               }),
                               Consumer<SubscriptionProvider>(builder: (context, sp, child) {
                                 // print("sp.durationPackData lenght===${sp.durationPackData}");

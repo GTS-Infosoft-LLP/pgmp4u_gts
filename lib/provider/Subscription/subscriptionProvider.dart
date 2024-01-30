@@ -269,6 +269,7 @@ class SubscriptionProvider extends ChangeNotifier {
     }
   }
 
+  bool internetStatus;
   Future<void> getSubscritionData(int idCrs) async {
     updateSubsPackApiCall(true);
     updateLoader(true);
@@ -284,7 +285,13 @@ class SubscriptionProvider extends ChangeNotifier {
     };
     print("selected plan types$SelectedPlanType");
     dev.log("requestt::::::$request");
-
+    bool checkConn = await checkInternetConn();
+    internetStatus = checkConn;
+    log("internetStatus-------------$internetStatus");
+    if (internetStatus == false) {
+      EasyLoading.showInfo("No Internet Connection");
+      return;
+    }
     try {
       var response = await http
           .post(
@@ -366,7 +373,7 @@ class SubscriptionProvider extends ChangeNotifier {
             if (SelectedPlanDesc == null) {
               SelectedPlanDesc = 0;
             }
-               dev.log("SelectedPlanDesc =====$SelectedPlanDesc");
+            dev.log("SelectedPlanDesc =====$SelectedPlanDesc");
             // desc1 = SubscritionPackList[SelectedPlanType - 1].description;
             desc1 = SubscritionPackList[SelectedPlanDesc].description;
 

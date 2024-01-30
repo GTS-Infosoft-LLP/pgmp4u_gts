@@ -33,25 +33,26 @@ class _PaymentStatusState extends State<PaymentStatus> {
           children: [
             Container(
                 margin: EdgeInsets.only(bottom: 25),
-                child: statusNew == "success"
-                    ? Image.asset('assets/succs.png')
-                    : Icon(
-                        Icons.cancel_outlined,
-                        size: 80,
-                        color: Colors.red,
-                      )),
+                child: statusNew == "success" ? Image.asset('assets/succs.png') : SizedBox()),
             // Image.asset('assets/succ.png')),
-            Text(
-              statusNew == "success" ? 'Payment Successful' : 'Payment Fail',
-              style: TextStyle(
-                  fontFamily: 'Roboto Bold',
-                  fontSize: width * (32 / 420),
-                  color: statusNew == "success" ? Color(0xff04AE0B) : Colors.red
-                  // Color(0xff04AE0B),
-                  ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * .9,
+              child: Text(
+                statusNew == "success"
+                    ? 'Payment Successful'
+                    : "We noticed you didn't complete your purchase. If you have any questions or concerns, please feel free to reach out to our support team",
+                maxLines: 8,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: 'Roboto Bold',
+                    fontSize: 18,
+                    color: statusNew == "success" ? Color(0xff04AE0B) : Colors.black
+                    // Color(0xff04AE0B),
+                    ),
+              ),
             ),
             Container(
-              height: 2,
+              height: 20,
             ),
             widget.index == 1
                 ? Text(

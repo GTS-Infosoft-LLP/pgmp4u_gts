@@ -139,11 +139,8 @@ class _MockTestState extends State<MockTest> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * .75,
-                          child:
-                             
-                              RichText(
-                                 
-                                  text: TextSpan(children: <TextSpan>[
+                          child: RichText(
+                              text: TextSpan(children: <TextSpan>[
                             TextSpan(
                               text: cp.selectedCourseLable,
                               style: TextStyle(
@@ -160,256 +157,240 @@ class _MockTestState extends State<MockTest> {
                 ],
               );
             }),
-
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0, left: 15),
+              child: Container(
+                margin: EdgeInsets.only(bottom: height * (22 / 800)),
+                child: RichText(
+                    text: TextSpan(children: <TextSpan>[
+                  TextSpan(
+                    text: '${widget.testName}',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: width * (18 / 420),
+                      fontFamily: 'Roboto Bold',
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                ])),
+              ),
+            ),
             Consumer<CourseProvider>(builder: (context, cp, child) {
               return Container(
-            
-
                 child: cp.isMockTestLoading
                     ? Expanded(
                         child: Center(child: CircularProgressIndicator.adaptive()),
                       )
-                    : SingleChildScrollView(
+                    : Expanded(
                         child: Container(
                           margin: EdgeInsets.only(left: width * (18 / 420), right: width * (18 / 420)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(bottom: height * (22 / 800)),
-                                child:
-                                  
+                          child: ValueListenableBuilder<Box<String>>(
+                              valueListenable: HiveHandler.getTestDataListener(),
+                              builder: (context, value, child) {
+                                String selectedMasterId = context.watch<CourseProvider>().selectedMasterId.toString();
+                                List<TestDataDetails> storedTestData = [];
+                                if (value.containsKey(selectedMasterId)) {
+                                  List testDataList = jsonDecode(value.get(selectedMasterId));
 
-                                    RichText(
-                                 
-                                        text: TextSpan(children: <TextSpan>[
-                                  TextSpan(
-                                    text: '${widget.testName}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: width * (18 / 420),
-                                      fontFamily: 'Roboto Bold',
-                                      fontWeight: FontWeight.w800,
-                                      letterSpacing: 0.3,
-                                    ),
-                                  ),
-                                ])),
-                              ),
-                              ValueListenableBuilder<Box<String>>(
-                                  valueListenable: HiveHandler.getTestDataListener(),
-                                  builder: (context, value, child) {
-                                    String selectedMasterId =
-                                        context.watch<CourseProvider>().selectedMasterId.toString();
-                                    List<TestDataDetails> storedTestData = [];
-                                    if (value.containsKey(selectedMasterId)) {
-                                      List testDataList = jsonDecode(value.get(selectedMasterId));
-                                      
-                                      storedTestData = testDataList.map((e) => TestDataDetails.fromjson(e)).toList();
-                                    } else {
-                                      storedTestData = [];
-                                    }
+                                  storedTestData = testDataList.map((e) => TestDataDetails.fromjson(e)).toList();
+                                } else {
+                                  storedTestData = [];
+                                }
 
+                                if (storedTestData == null) {
+                                  storedTestData = [];
+                                }
 
-                                    if (storedTestData == null) {
-                                      storedTestData = [];
-                                    }
+                                return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
+                                  return storedTestData.isEmpty
+                                      ? Container(
+                                          height: 200,
+                                          child: Center(
+                                              child: Text(
+                                            "No Data Found..",
+                                            style: TextStyle(fontSize: 18),
+                                          )))
+                                      : Padding(
+                                          padding: const EdgeInsets.only(bottom: 18.0),
+                                          child: Container(
+                                            // color: Colors.amber,
+                                            // height: MediaQuery.of(context).size.height * .68,
+                                            child: ListView.builder(
+                                                shrinkWrap: true,
+                                                physics: BouncingScrollPhysics(),
+                                                itemCount: storedTestData.length,
+                                                itemBuilder: (context, index) {
+                                                  return InkWell(
+                                                    onTap: () async {
+                                                      print(
+                                                          "storedTestData[index].id>>>>>>>${storedTestData[index].id}");
+                                                      ProfileProvider pp = Provider.of(context, listen: false);
+                                                      pp.updateLoader(true);
+                                                      courseProvider
+                                                          .setSelectedTestName(storedTestData[index].test_name);
+                                                      await courseProvider.getTestDetails(storedTestData[index].id);
+                                                      PracticeTextProvider pracTestProvi =
+                                                          Provider.of(context, listen: false);
 
-                                    return Consumer<CourseProvider>(builder: (context, courseProvider, child) {
-                                      return storedTestData.isEmpty
-                                          ? Container(
-                                              height: 200,
-                                              child: Center(
-                                                  child: Text(
-                                                "No Data Found..",
-                                                style: TextStyle(fontSize: 18),
-                                              )))
-                                          : Container(
-                                             
-                                              height: MediaQuery.of(context).size.height * .68,
-                                              child: ListView.builder(
-                                                  shrinkWrap: true,
-                                                  itemCount: storedTestData.length,
-                                                  itemBuilder: (context, index) {
-                                                    return InkWell(
-                                                      onTap: () async {
-                                                        print(
-                                                            "storedTestData[index].id>>>>>>>${storedTestData[index].id}");
-                                                        ProfileProvider pp = Provider.of(context, listen: false);
-                                                        pp.updateLoader(true);
-                                                        courseProvider
-                                                            .setSelectedTestName(storedTestData[index].test_name);
-                                                        await courseProvider.getTestDetails(storedTestData[index].id);
+                                                      pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
+                                                      if (widget.testType == "Practice Test") {
                                                         PracticeTextProvider pracTestProvi =
                                                             Provider.of(context, listen: false);
 
-                                                        pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
-                                                        if (widget.testType == "Practice Test") {
-                                                          PracticeTextProvider pracTestProvi =
-                                                              Provider.of(context, listen: false);
+                                                        // pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
 
-                                                          // pracTestProvi.setSelectedPracTestId(storedTestData[index].id);
+                                                        Future.delayed(const Duration(milliseconds: 0), () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => PracticeNew(
+                                                                        pracTestName: storedTestData[index].test_name,
+                                                                        selectedId: storedTestData[index].id,
+                                                                      )));
 
-                                                          Future.delayed(const Duration(milliseconds: 0), () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => PracticeNew(
-                                                                          pracTestName: storedTestData[index].test_name,
-                                                                          selectedId: storedTestData[index].id,
-                                                                        )));
-
-                                                            //PracticeNew
-                                                          });
+                                                          //PracticeNew
+                                                        });
+                                                      } else {
+                                                        CourseProvider cp = Provider.of(context, listen: false);
+                                                        print(
+                                                            "selected test iddddd::::>>>>>>>>>> ${storedTestData[index].id}");
+                                                        cp.setSelectedMockId(storedTestData[index].id);
+                                                        ProfileProvider pp = Provider.of(context, listen: false);
+                                                        SubscriptionProvider sp = Provider.of(context, listen: false);
+                                                        pp.updateLoader(true);
+                                                        sp.updateLoader(true);
+                                                        sucval = await cp.valOfSuccess;
+                                                        print("sucvalsakdka=======$sucval");
+                                                        pp.updateLoader(false);
+                                                        sp.updateLoader(false);
+                                                        if (sucval == false) {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => RandomPage(
+                                                                      name: storedTestData[index].test_name,
+                                                                      index: 3,
+                                                                      categoryType: "MockTest",
+                                                                      categoryId: storedTestData[index].id,
+                                                                      price: storedTestData[index].price)));
                                                         } else {
-                                                          CourseProvider cp = Provider.of(context, listen: false);
                                                           print(
-                                                              "selected test iddddd::::>>>>>>>>>> ${storedTestData[index].id}");
-                                                          cp.setSelectedMockId(storedTestData[index].id);
-                                                          ProfileProvider pp = Provider.of(context, listen: false);
-                                                          SubscriptionProvider sp = Provider.of(context, listen: false);
-                                                          pp.updateLoader(true);
-                                                          sp.updateLoader(true);
-                                                          sucval = await cp.valOfSuccess;
-                                                          print("sucvalsakdka=======$sucval");
-                                                          pp.updateLoader(false);
-                                                          sp.updateLoader(false);
-                                                          if (sucval == false) {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => RandomPage(
-                                                                        name: storedTestData[index].test_name,
-                                                                        index: 3,
-                                                                        categoryType: "MockTest",
-                                                                        categoryId: storedTestData[index].id,
-                                                                        price: storedTestData[index].price)));
-                                                          } else {
-                                                            print(
-                                                                "testData[index].id===========${storedTestData[index].id}");
-                                                            if (widget.testType == "Mock Test") {
-                                                              courseProvider
-                                                                  .setMockTestPercentId(storedTestData[index].id);
+                                                              "testData[index].id===========${storedTestData[index].id}");
+                                                          if (widget.testType == "Mock Test") {
+                                                            courseProvider
+                                                                .setMockTestPercentId(storedTestData[index].id);
 
-                                                              // courseProvider.getTestDetails(storedTestData[index].id);
+                                                            // courseProvider.getTestDetails(storedTestData[index].id);
 
-                                                              Future.delayed(Duration.zero, () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) => TextPreDetail()));
-                                                              });
-                                                            }
+                                                            Future.delayed(Duration.zero, () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) => TextPreDetail()));
+                                                            });
                                                           }
                                                         }
-                                                        pp.updateLoader(false);
-                                                      },
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                                        child: Container(
-                                                          padding: EdgeInsets.only(
-                                                            top: 12,
-                                                            bottom: 6,
-                                                            // left: width * (14 / 320),
-                                                            right: width * (14 / 320),
-                                                          ),
-                                                          decoration: const BoxDecoration(
-                                                              border: Border(
-                                                                  bottom: BorderSide(
-                                                                      width: 1,
-                                                                      color: Color.fromARGB(255, 219, 211, 211)))),
-                                                          // color: Colors.green,
+                                                      }
+                                                      pp.updateLoader(false);
+                                                    },
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                                      child: Container(
+                                                        padding: EdgeInsets.only(
+                                                          top: 12,
+                                                          bottom: 6,
+                                                          // left: width * (14 / 320),
+                                                          right: width * (14 / 320),
+                                                        ),
+                                                        decoration: const BoxDecoration(
+                                                            border: Border(
+                                                                bottom: BorderSide(
+                                                                    width: 1,
+                                                                    color: Color.fromARGB(255, 219, 211, 211)))),
+                                                        // color: Colors.green,
 
-                                                          child: Row(children: [
-                                                            Container(
-                                                              width: 60,
-                                                              height: 60,
-                                                              padding: EdgeInsets.all(17),
+                                                        child: Row(children: [
+                                                          Container(
+                                                            width: 60,
+                                                            height: 60,
+                                                            padding: EdgeInsets.all(17),
+                                                            decoration: BoxDecoration(
+                                                                color:
+                                                                    index % 2 == 0 ? AppColor.purpule : AppColor.green,
+                                                                borderRadius: BorderRadius.circular(10)),
+                                                            child: Container(
                                                               decoration: BoxDecoration(
-                                                                 
-                                                                  color: index % 2 == 0
-                                                                      ? AppColor.purpule
-                                                                      : AppColor.green,
-                                                                
-                                                                  borderRadius: BorderRadius.circular(10)),
-                                                              child: Container(
-                                                                decoration: BoxDecoration(
-                                                                  color: Colors.white,
-                                                                  borderRadius: BorderRadius.circular(100),
-                                                                ),
-                                                                child: Center(
-                                                                  child:
-                                                                    
-                                                                      RichText(   
-                                                                       text: TextSpan(children: <TextSpan>[
+                                                                color: Colors.white,
+                                                                borderRadius: BorderRadius.circular(100),
+                                                              ),
+                                                              child: Center(
+                                                                child: RichText(
+                                                                    text: TextSpan(children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text: '${index + 1}',
+                                                                    style: TextStyle(
+                                                                      color: Colors.black,
+                                                                    ),
+                                                                  ),
+                                                                ])),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            margin: EdgeInsets.only(left: width * (17 / 420)),
+                                                            child: Column(
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Container(
+                                                                  width: MediaQuery.of(context).size.width * .45,
+                                                                  child: RichText(
+                                                                      text: TextSpan(children: <TextSpan>[
                                                                     TextSpan(
-                                                                      text: '${index + 1}',
+                                                                      text: storedTestData[index].test_name,
                                                                       style: TextStyle(
                                                                         color: Colors.black,
-                                                                      
+                                                                        fontSize: width * (17 / 420),
+                                                                        fontFamily: 'Roboto Medium',
+                                                                        fontWeight: FontWeight.w600,
+                                                                        letterSpacing: 0.3,
                                                                       ),
                                                                     ),
                                                                   ])),
                                                                 ),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              margin: EdgeInsets.only(left: width * (17 / 420)),
-                                                              child: Column(
-                                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                children: [
-                                                                  Container(
-                                                                    width: MediaQuery.of(context).size.width * .45,
-                                                                    child: RichText(
-                                                                        
-                                                                        text: TextSpan(children: <TextSpan>[
-                                                                      TextSpan(
-                                                                        text: storedTestData[index].test_name,
-                                                                        style: TextStyle(
-                                                                          color: Colors.black,
-                                                                          fontSize: width * (17 / 420),
-                                                                          fontFamily: 'Roboto Medium',
-                                                                          fontWeight: FontWeight.w600,
-                                                                          letterSpacing: 0.3,
-                                                                        ),
-                                                                      ),
-                                                                    ])),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            new Spacer(),
-                                                          widget.testType == "Practice Test"?SizedBox():  Column(
-                                                              children: [
-                                                                storedTestData[index].premium == 1
-                                                                    ? Text("Premium")
-                                                                    : Text(""),
-                                                                Container(
-                                                                  child: Icon(
-                                                                    Icons.east,
-                                                                    size: 30,
-                                                                    color: _colorfromhex("#ABAFD1"),
-                                                                  ),
-                                                                ),
                                                               ],
-                                                            )
-                                                          ]),
-                                                        ),
+                                                            ),
+                                                          ),
+                                                          new Spacer(),
+                                                          widget.testType == "Practice Test"
+                                                              ? SizedBox()
+                                                              : Column(
+                                                                  children: [
+                                                                    storedTestData[index].premium == 1
+                                                                        ? Text("Premium")
+                                                                        : Text(""),
+                                                                    Container(
+                                                                      child: Icon(
+                                                                        Icons.east,
+                                                                        size: 30,
+                                                                        color: _colorfromhex("#ABAFD1"),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                        ]),
                                                       ),
-                                                    );
-                                                  }),
-                                            );
-                                    });
-                                  }),
-                              SizedBox(
-                                height: 15,
-                              )
-                            ],
-                          ),
+                                                    ),
+                                                  );
+                                                }),
+                                          ),
+                                        );
+                                });
+                              }),
                         ),
                       ),
               );
