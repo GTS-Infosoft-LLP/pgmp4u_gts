@@ -179,7 +179,6 @@ class _RandomPageState extends State<RandomPage> {
                           child: RichText(
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              // textAlign: TextAlign.center,
                               text: TextSpan(children: <TextSpan>[
                                 TextSpan(
                                   text: "Subscribe Now",
@@ -187,18 +186,9 @@ class _RandomPageState extends State<RandomPage> {
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontFamily: 'Roboto Bold',
-                                    // fontWeight: FontWeight.w400
                                   ),
                                 ),
-                              ]))
-                          //     Text(
-                          //   "Subscribe Now",
-                          //   style: TextStyle(
-                          //     color: Colors.white,
-                          //     fontFamily: 'Roboto Bold',
-                          //     fontSize: 20),
-                          // )
-                          ),
+                              ]))),
                     ),
                   ),
                 ),
@@ -220,7 +210,6 @@ class _RandomPageState extends State<RandomPage> {
                           bottomLeft: Radius.circular(25.0),
                         ),
                       ),
-                      // color: Colors.white,
                       child: Column(
                         children: [
                           SizedBox(
@@ -229,9 +218,7 @@ class _RandomPageState extends State<RandomPage> {
                           Expanded(
                             child: SingleChildScrollView(
                               child: Container(
-                                  // color: Colors.white,
                                   width: width,
-                                  // height: height,
                                   child: Column(
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,8 +260,6 @@ class _RandomPageState extends State<RandomPage> {
                                                             color: Colors.white,
                                                             fontSize: 25,
                                                             fontFamily: 'Roboto Bold',
-                                                            // fontWeight: FontWeight.w600,
-                                                            // letterSpacing: 0.3,
                                                           ),
                                                         ),
                                                       ])),
@@ -307,10 +292,8 @@ class _RandomPageState extends State<RandomPage> {
                                                               text: 'Get 1 year Access to Video Library \nfor',
                                                               style: TextStyle(
                                                                 color: Colors.white,
-                                                                // fontSize: width * (30 / 420),
                                                                 fontSize: 25,
                                                                 fontFamily: 'Roboto Bold',
-                                                                // fontWeight: FontWeight.w600,
                                                                 letterSpacing: 0.3,
                                                               ),
                                                             ),
@@ -325,7 +308,6 @@ class _RandomPageState extends State<RandomPage> {
                                                                     color: Colors.white,
                                                                     fontSize: 25,
                                                                     fontFamily: 'Roboto Bold',
-                                                                    // fontWeight: FontWeight.w600,
                                                                     letterSpacing: 0.3,
                                                                   ),
                                                                 ),
@@ -340,7 +322,6 @@ class _RandomPageState extends State<RandomPage> {
                                                                         color: Colors.white,
                                                                         fontSize: 25,
                                                                         fontFamily: 'Roboto Bold',
-                                                                        // fontWeight: FontWeight.w600,
                                                                         letterSpacing: 0.3,
                                                                       ),
                                                                     ),
@@ -355,7 +336,6 @@ class _RandomPageState extends State<RandomPage> {
                                                                             color: Colors.white,
                                                                             fontSize: 25,
                                                                             fontFamily: 'Roboto Bold',
-                                                                            // fontWeight: FontWeight.w600,
                                                                             letterSpacing: 0.3,
                                                                           ),
                                                                         ),
@@ -373,7 +353,6 @@ class _RandomPageState extends State<RandomPage> {
                                                                                 color: Colors.white,
                                                                                 fontSize: 25,
                                                                                 fontFamily: 'Roboto Bold',
-                                                                                // fontWeight: FontWeight.w600,
                                                                                 letterSpacing: 0.3,
                                                                               ),
                                                                             ),
@@ -389,7 +368,6 @@ class _RandomPageState extends State<RandomPage> {
                                                                                     color: Colors.white,
                                                                                     fontSize: 25,
                                                                                     fontFamily: 'Roboto Bold',
-                                                                                    // fontWeight: FontWeight.w600,
                                                                                     letterSpacing: 0.3,
                                                                                   ),
                                                                                 ),
@@ -404,7 +382,6 @@ class _RandomPageState extends State<RandomPage> {
                                                                                     color: Colors.white,
                                                                                     fontSize: 25,
                                                                                     fontFamily: 'Roboto Bold',
-                                                                                    // fontWeight: FontWeight.w600,
                                                                                     letterSpacing: 0.3,
                                                                                   ),
                                                                                 ),
@@ -416,7 +393,6 @@ class _RandomPageState extends State<RandomPage> {
                                               child: RichText(
                                                   overflow: TextOverflow.ellipsis,
                                                   maxLines: 2,
-                                                  // textAlign: TextAlign.center,
                                                   text: TextSpan(children: <TextSpan>[
                                                     TextSpan(
                                                       text: '\$${widget.price}',
@@ -424,7 +400,6 @@ class _RandomPageState extends State<RandomPage> {
                                                         color: Colors.white,
                                                         fontSize: 24,
                                                         fontFamily: 'Roboto Bold',
-                                                        // fontWeight: FontWeight.w400
                                                       ),
                                                     ),
                                                   ]))),
@@ -460,9 +435,6 @@ class _RandomPageState extends State<RandomPage> {
                     Positioned(
                       bottom: -30,
                       left: MediaQuery.of(context).size.width * .4,
-                      // top: MediaQuery.of(context).size.height * .35,
-                      // top: 300,
-
                       child: Container(
                         height: 70,
                         width: 70,
@@ -473,31 +445,19 @@ class _RandomPageState extends State<RandomPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 18.0),
                           child: Center(
-                              child:
-
-                                  //     Text(
-                                  //   cp.isInAppPurchaseOn == 1 && Platform.isIOS ? "" : "OR",
-                                  //   style: TextStyle(
-                                  //     fontSize: 18,
-                                  //     color: Colors.black,
-                                  //     fontFamily: 'Roboto Bold',
-                                  //   ),
-                                  // ),
-                                  RichText(
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      // textAlign: TextAlign.center,
-                                      text: TextSpan(children: <TextSpan>[
-                                        TextSpan(
-                                          text: cp.isInAppPurchaseOn == 1 && Platform.isIOS ? "" : "OR",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontFamily: 'Roboto Bold',
-                                            // fontWeight: FontWeight.w400
-                                          ),
-                                        ),
-                                      ]))),
+                              child: RichText(
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  text: TextSpan(children: <TextSpan>[
+                                    TextSpan(
+                                      text: cp.isInAppPurchaseOn == 1 && Platform.isIOS ? "" : "OR",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontFamily: 'Roboto Bold',
+                                      ),
+                                    ),
+                                  ]))),
                         ),
                       ),
                     )
@@ -506,17 +466,6 @@ class _RandomPageState extends State<RandomPage> {
                 SizedBox(
                   height: 25,
                 ),
-                // Center(
-                //     child: Text(
-                //   "Select a plan",
-                //   style: TextStyle(
-                //     fontFamily: 'Roboto Bold',
-                //     fontSize: 22,
-                //   ),
-                // )),
-                // SizedBox(
-                //   height: 25,
-                // ),
 
                 Consumer3<ProfileProvider, SubscriptionProvider, CourseProvider>(builder: (context, pp, sp, cp, child) {
                   return (cp.isInAppPurchaseOn == 1 && Platform.isIOS)
@@ -527,30 +476,19 @@ class _RandomPageState extends State<RandomPage> {
                               child: Column(
                                 children: [
                                   Center(
-                                      child:
-                                          //     Text(
-                                          //   "Select a Subscription Plan",
-                                          //   style: TextStyle(
-                                          //     fontFamily: 'Roboto Bold',
-                                          //     fontSize: 22,
-                                          //      color: Color(0xff3643a3)),
-                                          // )
-
-                                          RichText(
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              // textAlign: TextAlign.center,
-                                              text: TextSpan(children: <TextSpan>[
-                                                TextSpan(
-                                                  text: "Select a Subscription Plan",
-                                                  style: TextStyle(
-                                                    color: Color(0xff3643a3),
-                                                    fontSize: 22,
-                                                    fontFamily: 'Roboto Bold',
-                                                    // fontWeight: FontWeight.w400
-                                                  ),
-                                                ),
-                                              ]))),
+                                      child: RichText(
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                          text: TextSpan(children: <TextSpan>[
+                                            TextSpan(
+                                              text: "Select a Subscription Plan",
+                                              style: TextStyle(
+                                                color: Color(0xff3643a3),
+                                                fontSize: 22,
+                                                fontFamily: 'Roboto Bold',
+                                              ),
+                                            ),
+                                          ]))),
                                   SizedBox(
                                     height: 6,
                                   ),
@@ -558,25 +496,11 @@ class _RandomPageState extends State<RandomPage> {
                                       ? Padding(
                                           padding: const EdgeInsets.only(top: 38.0),
                                           child: Center(
-                                              child:
-                                                  //     Text(
-                                                  //   "No Plans Found....",
-                                                  //   style: TextStyle(
-                                                  //     fontSize: 16,
-                                                  //      fontWeight: FontWeight.w500),
-                                                  // )
-                                                  RichText(
-                                                      // overflow: TextOverflow.ellipsis,
-                                                      // maxLines: 2,
-                                                      // textAlign: TextAlign.center,
-                                                      text: TextSpan(children: <TextSpan>[
+                                              child: RichText(
+                                                  text: TextSpan(children: <TextSpan>[
                                             TextSpan(
                                               text: "No Plans Found....",
-                                              style: TextStyle(
-                                                  // color: Color(0xff3643a3),
-                                                  fontSize: 16,
-                                                  // fontFamily: 'Roboto Bold',
-                                                  fontWeight: FontWeight.w500),
+                                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                                             ),
                                           ]))),
                                         )
@@ -760,16 +684,12 @@ class _RandomPageState extends State<RandomPage> {
                                                                           // ),
 
                                                                           RichText(
-                                                                              // overflow: TextOverflow.ellipsis,
-                                                                              // maxLines: 2,
-                                                                              // textAlign: TextAlign.center,
                                                                               text: TextSpan(children: <TextSpan>[
                                                                     TextSpan(
                                                                       text: "20% OFF",
                                                                       style: TextStyle(
                                                                           color: Colors.white,
                                                                           fontSize: 15,
-                                                                          // fontFamily: 'Roboto Bold',
                                                                           fontWeight: FontWeight.w400),
                                                                     ),
                                                                   ]))),
@@ -1302,16 +1222,10 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
     children: [
       Center(
         child: Container(
-          margin: EdgeInsets.only(top: 20),
+          margin: EdgeInsets.only(top: 10),
           padding: EdgeInsets.only(left: 0, right: 0),
-
           height: 40,
-          // alignment: Alignment.center,
-          decoration: BoxDecoration(
-              // color: Colors.purple,
-              // color: Colors.indigo.shade600,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0)),
+          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
           child: OutlinedButton(
               onPressed: () async {
                 //  IOS payment By Inn App Purchase
@@ -1413,21 +1327,8 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
               style: ButtonStyle(
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0))),
               ),
-              child:
-                  // Text(
-                  //   'Buy Now',
-                  //   style: TextStyle(
-                  //     fontFamily: 'Roboto Medium',
-                  //      fontSize: 20,
-                  //       color: Color(0xff3643a3),
-                  //       letterSpacing: 0.3),
-                  // ),
-
-                  RichText(
-                      // overflow: TextOverflow.ellipsis,
-                      // maxLines: 2,
-                      // textAlign: TextAlign.center,
-                      text: TextSpan(children: <TextSpan>[
+              child: RichText(
+                  text: TextSpan(children: <TextSpan>[
                 TextSpan(
                   text: 'Buy Now',
                   style: TextStyle(
@@ -1450,56 +1351,28 @@ Widget BuyButton2(BuildContext context, PurchaseProvider purchaseProvider, int i
       //                                               letterSpacing: 0.3),
       //                                         ),
 
-      SizedBox(
-        height: 10,
-      ),
+      SizedBox(height: 5),
       context.watch<PurchaseProvider>().loaderStatus ? CircularProgressIndicator() : SizedBox(),
       Platform.isIOS
           ? Padding(
-              padding: const EdgeInsets.only(bottom: 15.0),
+              padding: const EdgeInsets.only(bottom: 20.0),
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Text(
-                    //   "Purchased previously? ",
-                    //   style: TextStyle(color: Colors.white),
-                    // ),
-
                     RichText(
-                        // overflow: TextOverflow.ellipsis,
-                        // maxLines: 2,
-                        // textAlign: TextAlign.center,
                         text: TextSpan(children: <TextSpan>[
                       TextSpan(
                         text: "Purchased previously? ",
-                        style: TextStyle(color: Colors.white
-                            // fontSize: 20,
-                            // fontFamily: 'Roboto Medium',
-                            // fontWeight: FontWeight.w400
-                            ),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ])),
-
                     InkWell(
-                      child:
-                          // Text(
-                          //   "Restore purchase",
-                          //   style: TextStyle(
-                          //       color: Colors.lightBlueAccent),
-                          // ),
-                          RichText(
-                              // overflow: TextOverflow.ellipsis,
-                              // maxLines: 2,
-                              // textAlign: TextAlign.center,
-                              text: TextSpan(children: <TextSpan>[
+                      child: RichText(
+                          text: TextSpan(children: <TextSpan>[
                         TextSpan(
                           text: "Restore purchase",
-                          style: TextStyle(color: Colors.lightBlueAccent
-                              // fontSize: 20,
-                              // fontFamily: 'Roboto Medium',
-                              // fontWeight: FontWeight.w400
-                              ),
+                          style: TextStyle(color: Colors.lightBlueAccent),
                         ),
                       ])),
                       onTap: () {

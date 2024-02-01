@@ -38,7 +38,8 @@ class _NotificationsState extends State<Notifications> {
       CourseProvider cp = Provider.of(context, listen: false);
       // cp.setSelectedCourseId(null);
       ProfileProvider _dshbrdProvider = Provider.of(context, listen: false);
-      _dshbrdProvider.showNotification(crsId: "", isFirstTime: false);
+
+      // _dshbrdProvider.showNotification(crsId: "", isFirstTime: false);
     }
 
     ProfileProvider _dshbrdProvider = Provider.of(context, listen: false);
@@ -54,7 +55,7 @@ class _NotificationsState extends State<Notifications> {
           log("this is true has more data");
           EasyLoading.showToast("Scroll to load previous notifications");
         }
-        print("call again api");
+        print("call again api from pagination noti");
         CourseProvider cp = Provider.of(context, listen: false);
         _dshbrdProvider.showNotification(crsId: cp.selectedCourseId, isFirstTime: false).whenComplete(() {
           _dshbrdProvider.updateLoader(false);
@@ -91,7 +92,8 @@ class _NotificationsState extends State<Notifications> {
                   )
                 : Expanded(
                     flex: 8,
-                    child: Consumer<ProfileProvider>(builder: (context, profileProvider, child) {
+                    child: Consumer2<ProfileProvider, CourseProvider>(builder: (context, profileProvider, cp, child) {
+                      print("cp.notiSelectCrsLable----${cp.notiSelectCrsLable}");
                       return widget.type == 0
                           ? profileProvider.totalRecords == 0
                               ? Center(
@@ -99,23 +101,35 @@ class _NotificationsState extends State<Notifications> {
                                     "No Data Available",
                                     style: TextStyle(
                                       fontSize: 16,
+                                      fontFamily: 'Roboto Medium',
                                     ),
                                   ),
                                 )
-                              : ListView.builder(
-                                  controller: scrollcontrol,
-                                  itemCount: profileProvider.Notifications.length,
-                                  physics: BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return _notificationTile(profileProvider, index, context);
-                                  })
+                              : cp.notiSelectCrsLable == ""
+                                  ? Center(
+                                      child: Text(
+                                        "Select a Course",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: 'Roboto Medium',
+                                        ),
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      controller: scrollcontrol,
+                                      itemCount: profileProvider.Notifications.length,
+                                      physics: BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return _notificationTile(profileProvider, index, context);
+                                      })
                           : profileProvider.totalRecords == 0
                               ? Center(
                                   child: Text(
                                     "No Data Available",
                                     style: TextStyle(
                                       fontSize: 16,
+                                      fontFamily: 'Roboto Medium',
                                     ),
                                   ),
                                 )

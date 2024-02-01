@@ -23,6 +23,9 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
   @override
   void initState() {
     CourseProvider cp = Provider.of(context, listen: false);
+    ProfileProvider pp = Provider.of(context, listen: false);
+    pp.resetPageIndex();
+
     if (cp.mockCrsDropList.isNotEmpty) {
       print("cp.selectedCourseLable=====${cp.selectedCourseLable}");
       cp.setSelectedNotiCrsLable("");
@@ -32,7 +35,7 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
     // TODO: implement initState
     super.initState();
     _dshbrdProvider = Provider.of(context, listen: false);
-    print("is this calling");
+    print("is this calling from notitab init");
     _dshbrdProvider.Announcements = [];
     _dshbrdProvider.Notifications = [];
     _dshbrdProvider.NotificationData = [];
@@ -136,9 +139,9 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
 
                       Future.delayed(Duration(milliseconds: 50), () {
                         ProfileProvider pp = Provider.of(context, listen: false);
-
                         pp.NotificationData = [];
                         pp.Notifications = [];
+                        print("calling when course changes");
                         pp.showNotification(crsId: cp.selectedCourseId, isFirstTime: true);
                       });
 
@@ -162,9 +165,11 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                 physics: NeverScrollableScrollPhysics(),
                 onTap: (vall) async {
                   print("_controller-----====${_controller.index}");
-                  if(_controller.index==0){
-                              ProfileProvider pp = Provider.of(context, listen: false);
-                              
+                  if (_controller.index == 0) {
+                    ProfileProvider pp = Provider.of(context, listen: false);
+                    print("is this callinggggg");
+                    await pp.resetPageIndex();
+                    pp.showNotification(crsId: "", isFirstTime: true, isFromAnn: 1);
                   }
                   CourseProvider crp = Provider.of(context, listen: false);
                   crp.setSelectedNotiCrsLable("");

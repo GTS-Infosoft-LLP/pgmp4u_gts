@@ -39,7 +39,15 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   resetPageIndex() {
-    _pageIndex = 0;
+    log("this is being called");
+    Future.delayed(Duration.zero, () {
+      _pageIndex = 0;
+      NotificationData = [];
+      Notifications = [];
+      Announcements = [];
+
+      notifyListeners();
+    });
   }
 
   CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
@@ -114,7 +122,7 @@ class ProfileProvider extends ChangeNotifier {
     } else {
       log("is first timee");
       Notifications = [];
-
+      Announcements = [];
       NotificationData = [];
       _pageIndex = 0;
     }
@@ -166,7 +174,7 @@ class ProfileProvider extends ChangeNotifier {
 
         if (_totalRec == NotificationData.length) {
           updateLoader(false);
-          EasyLoading.showToast("No more data available");
+          // EasyLoading.showToast("No more data available");
         }
         if (mapResponse["count"] == 0) {
           updateNotificationLoader(false);
@@ -338,7 +346,6 @@ class ProfileProvider extends ChangeNotifier {
     });
   }
 
-
   CurrentSubscription currentSubsObj;
 
   var avgScore = "";
@@ -427,7 +434,7 @@ class ProfileProvider extends ChangeNotifier {
         var resDDo = json.decode(response.body);
         print("resDDo body----${resDDo['data']}");
         dev.log("resDDo['data']['currentSubscription']--${resDDo['data']['currentSubscription']}");
-        currentSubsObj=CurrentSubscription.fromJson(resDDo['data']['currentSubscription']);
+        currentSubsObj = CurrentSubscription.fromJson(resDDo['data']['currentSubscription']);
         HiveHandler.addTogetReminderBox(couseId.toString(), currentSubsObj);
         print("");
         print("resDDo getreminder====$resDDo");
@@ -817,7 +824,6 @@ class ProfileProvider extends ChangeNotifier {
           HiveHandler.removeFromSubmitMockBox(cp.notSubmitedMockID);
           HiveHandler.removeFromRestartBox(cp.notSubmitedMockID);
           cp.setnotSubmitedMockID("");
-
           cp.setToBeSubmitIndex(1000);
         }
       }

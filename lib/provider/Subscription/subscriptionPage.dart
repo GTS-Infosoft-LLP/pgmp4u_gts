@@ -249,6 +249,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                 ),
               ),
         body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Stack(
             children: [
               Container(
