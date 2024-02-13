@@ -127,7 +127,7 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                   child: CustomDropDown<CourseDetails>(
                     selectText: cp.notiSelectCrsLable ?? "Select",
                     itemList: cp.course ?? [],
-                    isEnable: true,
+                    isEnable: _controller.index == 0 ? false : true,
                     title: "",
                     value: null,
                     onChange: (val) async {
@@ -144,6 +144,7 @@ class _NotificationTabsState extends State<NotificationTabs> with TickerProvider
                         print("calling when course changes");
                         pp.showNotification(crsId: cp.selectedCourseId, isFirstTime: true);
                       });
+                      print("_controller.index----${_controller.index}");
 
                       // if (_controller.index == 1) {
                       //   cp.setSelectedCourseLable(cp.mockCrsDropList[0].lable);

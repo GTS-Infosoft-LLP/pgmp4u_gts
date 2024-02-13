@@ -285,6 +285,7 @@ class SubscriptionProvider extends ChangeNotifier {
     };
     print("selected plan types$SelectedPlanType");
     dev.log("requestt::::::$request");
+    dev.log("stringValue::::::$stringValue");
     bool checkConn = await checkInternetConn();
     internetStatus = checkConn;
     log("internetStatus-------------$internetStatus");
@@ -300,9 +301,10 @@ class SubscriptionProvider extends ChangeNotifier {
         body: json.encode(request),
       )
           .onError((error, stackTrace) {
+        print("error----$error");
         updateLoader(false);
       });
-
+      log("response-------------$response");
       var resDDo = json.decode(response.body);
       var resStatus = (resDDo["status"]);
       print("resDDo[success]----${resDDo["success"]}");
@@ -351,6 +353,7 @@ class SubscriptionProvider extends ChangeNotifier {
           SubscritionPackList.clear();
 
           Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
+          print("mapResponse-------$mapResponse");
 
           if (mapResponse['status'] == 400) {
             SubscritionPackList = [];

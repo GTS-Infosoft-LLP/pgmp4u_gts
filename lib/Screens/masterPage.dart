@@ -11,7 +11,6 @@ import 'package:pgmp4u/provider/courseProvider.dart';
 import 'package:pgmp4u/tool/ShapeClipper.dart';
 import 'package:provider/provider.dart';
 
-import '../Models/get_reminder_model.dart';
 import '../Process/process.dart';
 import '../Process/processDomainProvider.dart';
 import '../provider/Subscription/subscriptionPage.dart';
@@ -130,9 +129,13 @@ class _MasterListPageState extends State<MasterListPage> {
             ),
             Consumer<ProfileProvider>(builder: (context, pp, child) {
               CourseProvider cp = Provider.of(context, listen: false);
-              CurrentSubscription currntSubs = HiveHandler.getFromReminderBox(cp.selectedCourseId.toString());
-              // print("currntSubs----${currntSubs.durationQuantity}");
+              // CurrentSubscription currntSubs = HiveHandler.getFromReminderBox(cp.selectedCourseId.toString());
+              print("pp.getRemiinderApiCall----${pp.getRemiinderApiCall}");
+              if (pp.planDetail.durationQuantity == null) {
+                pp.planDetail.durationQuantity = 0;
+              }
               print("pp.planDetail.durationQuantity----${pp.planDetail.durationQuantity}");
+
               return pp.getRemiinderApiCall == true
                   ? SizedBox()
                   : pp.planDetail.durationQuantity == null

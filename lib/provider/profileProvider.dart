@@ -179,7 +179,6 @@ class ProfileProvider extends ChangeNotifier {
         if (mapResponse["count"] == 0) {
           updateNotificationLoader(false);
           updateLoader(false);
-
           EasyLoading.showToast(mapResponse["message"], toastPosition: EasyLoadingToastPosition.bottom);
           return;
         }
@@ -298,7 +297,6 @@ class ProfileProvider extends ChangeNotifier {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
-
       List temp1 = mapResponse["data"];
       print("temp list===$temp1");
       notifyListeners();

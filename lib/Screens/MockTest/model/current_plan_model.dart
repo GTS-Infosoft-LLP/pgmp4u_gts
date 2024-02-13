@@ -31,7 +31,7 @@ class PlanDetail {
         this.status,
         this.deleteStatus,
     });
-
+ 
     factory PlanDetail.fromJson(Map<String, dynamic> json) => PlanDetail(
         id: json["id"],
         title: json["title"],
@@ -42,7 +42,8 @@ class PlanDetail {
         priceId: json["priceId"],
         type: json["type"],
         durationType: json["durationType"],
-        durationQuantity: json["durationQuantity"],
+      
+        durationQuantity:json["durationQuantity"]==null?0: json["durationQuantity"],
         days: json["days"],
         features: json["features"],
         status: json["status"],

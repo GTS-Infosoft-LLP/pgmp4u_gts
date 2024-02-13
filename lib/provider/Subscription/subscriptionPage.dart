@@ -323,7 +323,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                             textAlign: TextAlign.center,
                                             text: TextSpan(children: <TextSpan>[
                                               TextSpan(
-                                                text: widget.quntity == null
+                                                text: widget.quntity == 0
                                                     ? "You are not subscribed to any plan"
                                                     : widget.days == 0
                                                         ? "You are currently subscribed to ${widget.title}- ${widget.quntity} months plan"
