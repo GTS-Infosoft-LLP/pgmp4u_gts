@@ -570,7 +570,7 @@ class _SubscriptionpgState extends State<Subscriptionpg> {
                                                               sp.setSelectedPlanType(permiumbutton[i].type);
                                                               sp.setSelectedDescType(i);
                                                               sp.setSelectedSubsId(permiumbutton[i].id);
-                                                              // print("index val===$i");
+                                                      
                                                               pp.setSelectedContainer(i);
                                                               pp.updateLoader(false);
                                                               sp.updateLoader(false);

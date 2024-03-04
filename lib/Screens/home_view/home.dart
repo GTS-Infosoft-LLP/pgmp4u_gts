@@ -839,7 +839,7 @@ class _HomeViewState extends State<HomeView> {
                                                                                     ? storedCourse[index].isFree == 1
                                                                                         ? "${storedCourse[index].subscriptionDurationQuantity}-Days"
                                                                                         : "${storedCourse[index].subscriptionDurationQuantity}-Month"
-                                                                                    : "${storedCourse[index].subscriptionDurationQuantity * 365}-Days",
+                                                                                    : "${storedCourse[index].subscriptionDurationQuantity ?? 0 * 365}-Days",
                                                                                 style: TextStyle(
                                                                                   color: Colors.black,
                                                                                   fontSize: 10,

@@ -182,7 +182,9 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                     print("error::::$stackTrace}");
                                                     pp.updateLoader(false);
                                                   });
-                                                  var vdoSucVal = await courseProvider.vedioStatusValue;
+                                                  var vdoSucVal = courseProvider.videoCate[index].payment_status == 1
+                                                      ? false
+                                                      : true;
                                                   print("vdoSucVal==============$vdoSucVal");
                                                   pp.updateLoader(false);
                                                   if (vdoSucVal == false) {
@@ -193,7 +195,7 @@ class _VideoLibraryPageState extends State<VideoLibraryPage> {
                                                                   index: 2,
                                                                   categoryId: courseProvider.videoCate[index].id,
                                                                   price: courseProvider.videoCate[index].price,
-                                                                   categoryType: "Videos",
+                                                                  categoryType: "Videos",
                                                                   name: courseProvider.videoCate[index].name,
                                                                 )));
                                                   } else {

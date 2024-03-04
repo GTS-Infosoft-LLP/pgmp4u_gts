@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PaymentStatus extends StatefulWidget {
   final status;
@@ -40,13 +44,29 @@ class _PaymentStatusState extends State<PaymentStatus> {
               child: Text(
                 statusNew == "success"
                     ? 'Payment Successful'
-                    : "We noticed you didn't complete your purchase. If you have any questions or concerns, please feel free to reach out to our support team",
+                    : "We noticed you didn't complete your purchase. If you have any questions or concerns, please feel free to reach out to our support team: \n",
                 maxLines: 8,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: 'Roboto Bold',
                     fontSize: 18,
                     color: statusNew == "success" ? Color(0xff04AE0B) : Colors.black
+                    // Color(0xff04AE0B),
+                    ),
+              ),
+            ),
+            Container(
+              height: 5,
+            ),
+
+            InkWell(
+              onTap: (){
+                   Platform.isIOS ? sendIosMail() : sendEmail("", "support@vcareprojectmanagement.com");
+              },
+              child: Text(
+                "support@vcareprojectmanagement.com",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontFamily: 'Roboto Bold', fontSize: 18, color: Colors.black
                     // Color(0xff04AE0B),
                     ),
               ),
@@ -148,6 +168,41 @@ class _PaymentStatusState extends State<PaymentStatus> {
       ),
     );
   }
+  
+  Future sendEmail(String sendrMail, String recMail) async {
+    final Email email = Email(
+      recipients: [recMail],
+    );
+
+    String platformResponse;
+
+    try {
+      await FlutterEmailSender.send(email);
+      platformResponse = 'success';
+      print("platformResponse======${platformResponse}");
+    } catch (error) {
+      platformResponse = error.toString();
+
+      print("platformResponse======${platformResponse}");
+    }
+
+    if (!mounted) return;
+  }
+  
+  sendIosMail() async {
+    print("printing ios email test");
+    String Recp = "support@vcareprojectmanagement.com";
+    final Uri iosemail = Uri(
+      scheme: 'mailto',
+      path: Recp,
+    );
+    if (await canLaunchUrl(iosemail)) {
+      await launchUrl(iosemail);
+    } else {
+      print("errorr");
+    }
+  }
+
 }
 
 class PaymentStatus2 extends StatefulWidget {

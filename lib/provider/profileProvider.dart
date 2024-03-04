@@ -620,6 +620,8 @@ class ProfileProvider extends ChangeNotifier {
         }
       }
     }
+
+    print("GET_SUBSCRIPTION_STATUS----$GET_SUBSCRIPTION_STATUS");
     try {
       var response = await http
           .post(
@@ -662,7 +664,7 @@ class ProfileProvider extends ChangeNotifier {
         Map<String, dynamic> temp1 = mapResponse["data"];
 
         subsPrice = mapResponse["data"]["price"];
-        print("priveeeee=====$subsPrice");
+        print("priveeeee=====${subsPrice.runtimeType}");
         print("temp list===$temp1");
         // masterList = temp1.map((e) => MasterDetails.fromjson(e)).toList();
 

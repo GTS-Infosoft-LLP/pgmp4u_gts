@@ -5,7 +5,11 @@ import 'package:pgmp4u/Screens/chat/model/chatModel.dart';
 import 'package:pgmp4u/Screens/chat/model/singleGroupModel.dart';
 import 'package:pgmp4u/utils/user_object.dart';
 
+import '../../api/app_enviroment.dart';
+
 class FirebaseChatHandler {
+AppUrls appUrl=new AppUrls();
+
   static FirebaseFirestore fireStore = FirebaseFirestore.instance;
   static CollectionReference userChatCollectionRef =
       FirebaseFirestore.instance.collection(FirebaseConstant.userChatCollection);
@@ -14,7 +18,23 @@ class FirebaseChatHandler {
   static CollectionReference groupsCollectionRef =
       FirebaseFirestore.instance.collection(FirebaseConstant.groupsCollection);
 
-  static CollectionReference discussionCollectionRef = FirebaseFirestore.instance.collection(FirebaseConstant.discussionsCollection);
+  static CollectionReference discussionCollectionRef = 
+  FirebaseFirestore.instance.collection(FirebaseConstant.discussionsCollection);
+
+
+
+
+
+  // static CollectionReference userChatCollectionRef =
+  //     FirebaseFirestore.instance.collection(AppUrls.getUserChatRef());
+  // static CollectionReference userCollectionRef =
+  //     FirebaseFirestore.instance.collection(AppUrls.getUserRef());
+  // static CollectionReference groupsCollectionRef =
+  //     FirebaseFirestore.instance.collection(AppUrls.getGroupRef());
+  // static CollectionReference discussionCollectionRef = 
+  // FirebaseFirestore.instance.collection(AppUrls.getDisscussionRef());
+
+
 
   ///// single chat work   ////
 

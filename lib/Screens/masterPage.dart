@@ -280,7 +280,7 @@ class _MasterListPageState extends State<MasterListPage> {
                                                 }
                                                 return Padding(
                                                   padding: const EdgeInsets.symmetric(
-                                                    horizontal: 22.0,
+                                                    horizontal: 15.0,
                                                   ),
                                                   child: Padding(
                                                     padding: const EdgeInsets.only(top: 8.0),
@@ -442,72 +442,93 @@ class _MasterListPageState extends State<MasterListPage> {
                                                               }
                                                             }
                                                           },
-                                                          child: Row(
-                                                            children: [
-                                                              SizedBox(
-                                                                width: 0,
-                                                              ),
-                                                              Padding(
-                                                                padding: const EdgeInsets.only(bottom: 4.0),
-                                                                child: Container(
-                                                                    height: 60,
-                                                                    width: 60,
-                                                                    decoration: BoxDecoration(
-                                                                      borderRadius: BorderRadius.circular(8),
-                                                                      color: index % 2 == 0
-                                                                          ? AppColor.purpule
-                                                                          : AppColor.green,
-                                                                    ),
-                                                                    child: Center(
-                                                                      child: Icon(
-                                                                        icon1,
-                                                                        color: Colors.white,
+                                                          child: Container(
+                                                            width: double.infinity,
+                                                            child: Row(
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 0,
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets.only(bottom: 4.0),
+                                                                  child: Container(
+                                                                      height: 60,
+                                                                      width: 60,
+                                                                      decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(8),
+                                                                        color: index % 2 == 0
+                                                                            ? AppColor.purpule
+                                                                            : AppColor.green,
                                                                       ),
-                                                                    )),
-                                                              ),
-                                                              SizedBox(
-                                                                width: 15,
-                                                              ),
-                                                              Column(
-                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                children: [
-                                                                  Container(
-                                                                    width: MediaQuery.of(context).size.width * .65,
-                                                                    child: RichText(
+                                                                      child: Center(
+                                                                        child: Icon(
+                                                                          icon1,
+                                                                          color: Colors.white,
+                                                                        ),
+                                                                      )),
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 15,
+                                                                ),
+                                                                Column(
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  children: [
+                                                                    Container(
+                                                                      // color: Colors.amber,
+                                                                      // padding: EdgeInsets.symmetric(horizontal: ),
+                                                                      width: MediaQuery.of(context).size.width * .50,
+                                                                      child: RichText(
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          maxLines: 2,
+                                                                          text: TextSpan(children: <TextSpan>[
+                                                                            TextSpan(
+                                                                              text: storedMaster[index].label,
+                                                                              style: TextStyle(
+                                                                                color: Colors.grey,
+                                                                                fontSize: 14,
+                                                                              ),
+                                                                            ),
+                                                                          ])),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 3,
+                                                                    ),
+                                                                    Container(
+                                                                      // color: Colors.amber,
+                                                                      width: MediaQuery.of(context).size.width * .50,
+                                                                      child: RichText(
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          maxLines: 2,
+                                                                          text: TextSpan(children: <TextSpan>[
+                                                                            TextSpan(
+                                                                              text: storedMaster[index].name,
+                                                                              style: TextStyle(
+                                                                                color: Colors.black,
+                                                                                fontSize: 18,
+                                                                              ),
+                                                                            ),
+                                                                          ])),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Spacer(),
+                                                                storedMaster[index].payment_status == 1
+                                                                    ? RichText(
                                                                         overflow: TextOverflow.ellipsis,
-                                                                        maxLines: 2,
+                                                                        maxLines: 1,
                                                                         text: TextSpan(children: <TextSpan>[
                                                                           TextSpan(
-                                                                            text: storedMaster[index].label,
+                                                                            text: "Premium",
                                                                             style: TextStyle(
-                                                                              color: Colors.grey,
+                                                                              color: Colors.black,
                                                                               fontSize: 14,
                                                                             ),
                                                                           ),
-                                                                        ])),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 3,
-                                                                  ),
-                                                                  Container(
-                                                                    width: MediaQuery.of(context).size.width * .65,
-                                                                    child: RichText(
-                                                                        overflow: TextOverflow.ellipsis,
-                                                                        maxLines: 2,
-                                                                        text: TextSpan(children: <TextSpan>[
-                                                                          TextSpan(
-                                                                            text: storedMaster[index].name,
-                                                                            style: TextStyle(
-                                                                              color: Colors.black,
-                                                                              fontSize: 18,
-                                                                            ),
-                                                                          ),
-                                                                        ])),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
+                                                                        ]))
+                                                                    : SizedBox(),
+                                                              ],
+                                                            ),
                                                           ),
                                                         )),
                                                   ),

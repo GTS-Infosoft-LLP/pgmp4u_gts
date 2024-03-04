@@ -950,6 +950,8 @@ class CourseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  var isVideoPaid;
+
   Future<void> getVideoCate(int id) async {
     updatevideoListApiCall(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1040,7 +1042,11 @@ class CourseProvider extends ChangeNotifier {
         Map<String, dynamic> mapResponse = convert.jsonDecode(response.body);
 
         List temp1 = mapResponse["data"];
+        print("mapResponse[data]-----  ${mapResponse["data"]}");
 
+        // isVideoPaid = mapResponse["data"]["payment_status"];
+        //      print(" mapResponse[data][payment_status]--- ${mapResponse["data"]["payment_status"]}");
+        // print(" mapResponse[data][payment_status]--- ${mapResponse["data"]["payment_status"]}");
         videoCate = temp1.map((e) => VideoCateDetails.fromjson(e)).toList();
 
         updatevideoListApiCall(false);
@@ -1116,6 +1122,7 @@ class CourseProvider extends ChangeNotifier {
         }
       }
     }
+    print("GET_COURSES>>>>>> $GET_COURSES");
     try {
       var response = await http.get(
         Uri.parse(GET_COURSES),
@@ -1278,6 +1285,7 @@ class CourseProvider extends ChangeNotifier {
     }
   }
 
+  int isVideoPremium;
   Future<void> getVideos(int id) async {
     vedioStatusValue = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1371,6 +1379,8 @@ class CourseProvider extends ChangeNotifier {
         return;
       }
       List temp1 = mapResponse["data"];
+      // print("mapresponse price----${mapResponse["data"]}");
+      // print("mapresponse price----${mapResponse["data"]["price"]}");
       print("temp list===$temp1");
       Videos = temp1.map((e) => VideoDetails.fromjson(e)).toList();
 
@@ -1538,7 +1548,8 @@ class CourseProvider extends ChangeNotifier {
         }
       }
     }
-
+    print("api url----$GET_TEST_DETAILS");
+    print("request----$request");
     try {
       var response = await http.post(
         Uri.parse(GET_TEST_DETAILS),
@@ -1797,9 +1808,9 @@ class CourseProvider extends ChangeNotifier {
   MockData mockData;
 
   Future apiCall(int selectedIdNew) async {
-    print("selectedIdNew==========$selectedIdNew");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('token');
+    print("selectedIdNew apiCall==========$stringValue");
     http.Response response;
     bool checkConn = await checkInternetConn();
     if (checkConn) {
@@ -1836,6 +1847,7 @@ class CourseProvider extends ChangeNotifier {
         }
       }
     }
+    print("url of api--->>>${MOCK_TEST + '/$selectedIdNew'}");
     try {
       response = await http.get(Uri.parse(MOCK_TEST + '/$selectedIdNew'),
           headers: {'Content-Type': 'application/json', 'Authorization': stringValue});
