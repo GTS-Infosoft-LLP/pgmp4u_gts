@@ -89,7 +89,7 @@ class _VideosScreenState extends State<VideosScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: SizerUtil.deviceType == DeviceType.mobile ? 180 : 330,
+            height:  180 ,
             width: width,
             decoration: BoxDecoration(
               borderRadius:

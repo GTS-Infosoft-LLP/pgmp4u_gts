@@ -116,7 +116,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                   child: Column(
                     children: [
                       Container(
-                        height: SizerUtil.deviceType == DeviceType.mobile ? 195 : 250,
+                        height:  195 ,
                         width: width,
                         decoration: BoxDecoration(
                           image: DecorationImage(
@@ -529,7 +529,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                 Text("data"),
                 realAnswer == selectedAnswer && selectedAnswer != null
                     ? Positioned(
-                        top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
+                        top:  80 ,
                         left: width / 2.9,
                         child: Container(
                           width: 110,
@@ -539,7 +539,7 @@ class _PracticeTestCopyState extends State<PracticeTestCopy> {
                     : Text(''),
                 realAnswer != selectedAnswer && selectedAnswer != null
                     ? Positioned(
-                        top: SizerUtil.deviceType == DeviceType.mobile ? 100 : 165,
+                        top:  100,
                         left: width / 2.5,
                         child: selectedAnswer == null
                             ? Text('')

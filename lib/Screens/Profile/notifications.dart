@@ -161,7 +161,7 @@ class _NotificationsState extends State<Notifications> {
             print("question id========${profileProvider.Notifications[index].questionId}");
             var quesId = profileProvider.Notifications[index].questionId;
             profileProvider.setNotifiId(profileProvider.Notifications[index].id);
-
+            print("this is one ");
             if (profileProvider.Notifications[index].type == 2) {
               // context.read<CourseProvider>().setMasterListType("Question");
               Navigator.push(
@@ -291,7 +291,7 @@ class _NotificationsState extends State<Notifications> {
             print("question id========${profileProvider.Announcements[index].questionId}");
             var quesId = profileProvider.Announcements[index].questionId;
             profileProvider.setNotifiId(profileProvider.Announcements[index].id);
-
+            print("this is two ");
             if (profileProvider.Announcements[index].type == 2) {
               Navigator.push(
                   context,
@@ -423,7 +423,7 @@ class _NotificationsState extends State<Notifications> {
                   print("question id========${profileProvider.Announcements[index].questionId}");
                   var quesId = profileProvider.Announcements[index].questionId;
                   profileProvider.setNotifiId(profileProvider.Announcements[index].id);
-
+                  print("this is three ");
                   if (profileProvider.Announcements[index].type == 2) {
                     Navigator.push(
                         context,
@@ -553,7 +553,7 @@ class _NotificationsState extends State<Notifications> {
                   print("question id========${profileProvider.Notifications[index].questionId}");
                   var quesId = profileProvider.Notifications[index].questionId;
                   profileProvider.setNotifiId(profileProvider.Notifications[index].id);
-
+                  print("this is four ");
                   if (profileProvider.Notifications[index].type == 2) {
                     Navigator.push(
                         context,

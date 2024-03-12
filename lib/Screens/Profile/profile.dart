@@ -182,70 +182,70 @@ class _ProfileState extends State<Profile> {
 
     // print("user name is : ${_user.name}");
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 18.0),
-        child: InkWell(
-          onTap: context.watch<ProfileProvider>().subscriptionApiCalling
-              ? null
-              : () async {
-                  CourseProvider cp = Provider.of(context, listen: false);
-                  print("cp.course>>>>>>>${cp.course.length}");
-                  bool result = await checkInternetConn();
-                  print("result internet  $result");
-                  if (result) {
-                    bool isSub = context.read<ProfileProvider>().isChatSubscribed;
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.only(bottom: 18.0),
+      //   child: InkWell(
+      //     onTap: context.watch<ProfileProvider>().subscriptionApiCalling
+      //         ? null
+      //         : () async {
+      //             CourseProvider cp = Provider.of(context, listen: false);
+      //             print("cp.course>>>>>>>${cp.course.length}");
+      //             bool result = await checkInternetConn();
+      //             print("result internet  $result");
+      //             if (result) {
+      //               bool isSub = context.read<ProfileProvider>().isChatSubscribed;
 
-                    print("isChatSubscribed in profile ======= $isSub");
+      //               print("isChatSubscribed in profile ======= $isSub");
 
-                    if (isSub == null) {
-                      GFToast.showToast(
-                        "Something went wrong,please try again",
-                        context,
-                        toastPosition: GFToastPosition.BOTTOM,
-                      );
-                    }
+      //               if (isSub == null) {
+      //                 GFToast.showToast(
+      //                   "Something went wrong,please try again",
+      //                   context,
+      //                   toastPosition: GFToastPosition.BOTTOM,
+      //                 );
+      //               }
 
-                    if (cp.course.isEmpty) {
-                      GFToast.showToast(
-                        'No Course Available',
-                        context,
-                        toastPosition: GFToastPosition.CENTER,
-                      );
-                    } else {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => GroupListPage()));
-                    }
-                  } else {
-                    EasyLoading.showInfo("Please check your Internet Connection");
-                  }
-                },
-          child: Container(
-              height: 55,
-              width: 55,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: context.watch<ProfileProvider>().subscriptionApiCalling
-                      ? LinearGradient(
-                          colors: [Color.fromARGB(255, 171, 172, 182), Color.fromARGB(255, 133, 134, 141)],
-                          begin: const FractionalOffset(0.0, 0.0),
-                          end: const FractionalOffset(1.0, 0.0),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp)
-                      : LinearGradient(
-                          colors: [
-                            _colorfromhex("#3A47AD"),
-                            _colorfromhex("#5163F3"),
-                          ],
-                          begin: const FractionalOffset(0.0, 0.0),
-                          end: const FractionalOffset(1.0, 0.0),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp)),
-              child: Icon(
-                Icons.chat,
-                color: Colors.white,
-              )),
-        ),
-      ),
+      //               if (cp.course.isEmpty) {
+      //                 GFToast.showToast(
+      //                   'No Course Available',
+      //                   context,
+      //                   toastPosition: GFToastPosition.CENTER,
+      //                 );
+      //               } else {
+      //                 Navigator.push(context, MaterialPageRoute(builder: (context) => GroupListPage()));
+      //               }
+      //             } else {
+      //               EasyLoading.showInfo("Please check your Internet Connection");
+      //             }
+      //           },
+      //     child: Container(
+      //         height: 55,
+      //         width: 55,
+      //         decoration: BoxDecoration(
+      //             shape: BoxShape.circle,
+      //             gradient: context.watch<ProfileProvider>().subscriptionApiCalling
+      //                 ? LinearGradient(
+      //                     colors: [Color.fromARGB(255, 171, 172, 182), Color.fromARGB(255, 133, 134, 141)],
+      //                     begin: const FractionalOffset(0.0, 0.0),
+      //                     end: const FractionalOffset(1.0, 0.0),
+      //                     stops: [0.0, 1.0],
+      //                     tileMode: TileMode.clamp)
+      //                 : LinearGradient(
+      //                     colors: [
+      //                       _colorfromhex("#3A47AD"),
+      //                       _colorfromhex("#5163F3"),
+      //                     ],
+      //                     begin: const FractionalOffset(0.0, 0.0),
+      //                     end: const FractionalOffset(1.0, 0.0),
+      //                     stops: [0.0, 1.0],
+      //                     tileMode: TileMode.clamp)),
+      //         child: Icon(
+      //           Icons.chat,
+      //           color: Colors.white,
+      //         )),
+      //   ),
+      // ),
       body: Sizer(builder: (context, orientation, deviceType) {
         return Container(
           color: _colorfromhex("#FCFCFF"),
@@ -254,7 +254,7 @@ class _ProfileState extends State<Profile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: SizerUtil.deviceType == DeviceType.mobile ? 180 : 330,
+                height:  180 ,
                 width: width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(bottomRight: Radius.circular(40.0)),
@@ -371,6 +371,79 @@ class _ProfileState extends State<Profile> {
                             // margin: EdgeInsets.only(top: width * (50 / 800)),
                             child: Column(
                               children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 12.0, right: 18),
+                                      child: InkWell(
+                                        onTap: context.watch<ProfileProvider>().subscriptionApiCalling
+                                            ? null
+                                            : () async {
+                                                CourseProvider cp = Provider.of(context, listen: false);
+                                                print("cp.course>>>>>>>${cp.course.length}");
+                                                bool result = await checkInternetConn();
+                                                print("result internet  $result");
+                                                if (result) {
+                                                  bool isSub = context.read<ProfileProvider>().isChatSubscribed;
+
+                                                  print("isChatSubscribed in profile ======= $isSub");
+
+                                                  if (isSub == null) {
+                                                    GFToast.showToast(
+                                                      "Something went wrong,please try again",
+                                                      context,
+                                                      toastPosition: GFToastPosition.BOTTOM,
+                                                    );
+                                                  }
+
+                                                  if (cp.course.isEmpty) {
+                                                    GFToast.showToast(
+                                                      'No Course Available',
+                                                      context,
+                                                      toastPosition: GFToastPosition.CENTER,
+                                                    );
+                                                  } else {
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(builder: (context) => GroupListPage()));
+                                                  }
+                                                } else {
+                                                  EasyLoading.showInfo("Please check your Internet Connection");
+                                                }
+                                              },
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(25),
+                                              gradient: context.watch<ProfileProvider>().subscriptionApiCalling
+                                                  ? LinearGradient(
+                                                      colors: [
+                                                        Color.fromARGB(255, 171, 172, 182),
+                                                        Color.fromARGB(255, 133, 134, 141)
+                                                      ],
+                                                      begin: const FractionalOffset(0.0, 0.0),
+                                                      end: const FractionalOffset(1.0, 0.0),
+                                                      stops: [0.0, 1.0],
+                                                      tileMode: TileMode.clamp)
+                                                  : LinearGradient(
+                                                      colors: [
+                                                        _colorfromhex("#3A47AD"),
+                                                        _colorfromhex("#5163F3"),
+                                                      ],
+                                                      begin: const FractionalOffset(0.0, 0.0),
+                                                      end: const FractionalOffset(1.0, 0.0),
+                                                      stops: [0.0, 1.0],
+                                                      tileMode: TileMode.clamp)),
+                                          child: Icon(
+                                            Icons.chat,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                                 InkWell(
                                   onTap: () {
                                     if (cp.mockCrsDropList.isEmpty) {

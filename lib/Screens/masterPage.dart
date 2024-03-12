@@ -280,258 +280,319 @@ class _MasterListPageState extends State<MasterListPage> {
                                                 }
                                                 return Padding(
                                                   padding: const EdgeInsets.symmetric(
-                                                    horizontal: 15.0,
+                                                    horizontal: 2.0,
                                                   ),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.only(top: 8.0),
-                                                    child: Container(
-                                                        height: 70,
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.transparent,
-                                                            border: Border(
-                                                              bottom: BorderSide(
-                                                                  width: 1.5,
-                                                                  color: Color.fromARGB(255, 219, 211, 211)),
-                                                            )),
-                                                        child: InkWell(
-                                                          onTap: () async {
-                                                            courseProvider.changeonTap(0);
-                                                            if (courseProvider.tapOnce == 0) {
-                                                              courseProvider.changeonTap(1);
-                                                              courseProvider
-                                                                  .setSelectedMasterId(storedMaster[index].id);
+                                                  child: Container(
+                                                      height: 80,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.transparent,
+                                                        // border: Border(
+                                                        //   bottom: BorderSide(
+                                                        //       width: 1.5,
+                                                        //       color: Color.fromARGB(255, 219, 211, 211)),
+                                                        // )
+                                                      ),
+                                                      child: InkWell(
+                                                        onTap: () async {
+                                                          courseProvider.changeonTap(0);
+                                                          if (courseProvider.tapOnce == 0) {
+                                                            courseProvider.changeonTap(1);
+                                                            courseProvider.setSelectedMasterId(storedMaster[index].id);
 
-                                                              print(
-                                                                  "id of the master list===${storedMaster[index].id}");
-                                                              String page = storedMaster[index].type;
+                                                            print("id of the master list===${storedMaster[index].id}");
+                                                            String page = storedMaster[index].type;
 
-                                                              courseProvider
-                                                                  .setMasterListType(storedMaster[index].type);
+                                                            courseProvider.setMasterListType(storedMaster[index].type);
 
-                                                              print("page=====$page");
+                                                            print("page=====$page");
 
-                                                              if (page == "PPT") {
-                                                                courseProvider.getPptCategory(storedMaster[index].id);
+                                                            if (page == "PPT") {
+                                                              courseProvider.getPptCategory(storedMaster[index].id);
 
-                                                                Future.delayed(Duration(milliseconds: 0), () {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => PPTCardItem(
-                                                                              title: storedMaster[index].name)));
-                                                                });
-                                                              }
-                                                              if (page == "Process") {
-                                                                ProfileProvider pp =
-                                                                    Provider.of(context, listen: false);
-                                                                ProcessDomainProvider pdp =
-                                                                    Provider.of(context, listen: false);
-                                                                pp.updateLoader(true);
-                                                                await pdp.getProcessData(
-                                                                  cp.selectedCourseId,
-                                                                  storedMaster[index].id,
-                                                                );
-                                                                var checkStat = pdp.processStatus;
-
-                                                                pp.updateLoader(false);
-                                                                if (checkStat == false) {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => RandomPage(
-                                                                                categoryType: "Process",
-                                                                                categoryId: storedMaster[index].id,
-                                                                                index: 7,
-                                                                                name: storedMaster[index].name,
-                                                                                price: storedMaster[index].price,
-                                                                              )));
-                                                                } else {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => ProcessList()));
-                                                                }
-                                                              }
-
-                                                              if (page == "Domain") {
-                                                                ProfileProvider pp =
-                                                                    Provider.of(context, listen: false);
-                                                                DomainProvider dp = Provider.of(context, listen: false);
-                                                                pp.updateLoader(true);
-                                                                await dp.getDomainData(
-                                                                    storedMaster[index].id, cp.selectedCourseId);
-                                                                var checkStat = dp.domainStatus;
-                                                                pp.updateLoader(false);
-                                                                print("====checkStat====$checkStat");
-                                                                if (checkStat == false) {
-                                                                  // print("")
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => RandomPage(
-                                                                                categoryType: "Domain",
-                                                                                categoryId: storedMaster[index].id,
-                                                                                index: 6,
-                                                                                name: storedMaster[index].name,
-                                                                                price: storedMaster[index].price,
-                                                                              )));
-                                                                } else {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => DomainList(
-                                                                              domainName: storedMaster[index].name)));
-                                                                }
-                                                              }
-                                                              if (page == "Videos") {
-                                                                print("this tab is being tapppppedddd");
-                                                                courseProvider.getVideoCate(storedMaster[index].id);
-                                                                Future.delayed(Duration(milliseconds: 0), () {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => VideoLibraryPage(
-                                                                              title: storedMaster[index].name)));
-                                                                });
-                                                              }
-                                                              if (page == "Support") {
+                                                              Future.delayed(Duration(milliseconds: 0), () {
                                                                 Navigator.push(
                                                                     context,
                                                                     MaterialPageRoute(
-                                                                        builder: (context) =>
-                                                                            ApplicationSupportPage()));
-                                                              }
-                                                              if (page == "Flash Cards") {
-                                                                courseProvider.getFlashCate(storedMaster[index].id);
-                                                                Future.delayed(Duration(milliseconds: 0), () {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => FlashCardItem(
-                                                                                title: storedMaster[index].name,
-                                                                              )));
-                                                                });
-                                                              }
-                                                              if (page == "Mock Test") {
-                                                                print(
-                                                                    "storedMaster[index].idooooooooooooooooooooooooooo${storedMaster[index].id}");
-                                                                courseProvider.getTest(
-                                                                    storedMaster[index].id, "Mock Test");
-                                                                Future.delayed(Duration.zero, () {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => MockTest(
-                                                                                testName: storedMaster[index].name,
-                                                                                testType: storedMaster[index].type,
-                                                                              )));
-                                                                });
-                                                              }
-                                                              if (page == "Practice Test") {
-                                                                courseProvider.getTest(
-                                                                    storedMaster[index].id, "Practice Test");
-                                                                Future.delayed(Duration.zero, () async {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => MockTest(
-                                                                                testName: storedMaster[index].name,
-                                                                                testType: storedMaster[index].type,
-                                                                              )));
-                                                                });
+                                                                        builder: (context) => PPTCardItem(
+                                                                            title: storedMaster[index].name)));
+                                                              });
+                                                            }
+                                                            if (page == "Process") {
+                                                              ProfileProvider pp = Provider.of(context, listen: false);
+                                                              ProcessDomainProvider pdp =
+                                                                  Provider.of(context, listen: false);
+                                                              pp.updateLoader(true);
+                                                              await pdp.getProcessData(
+                                                                cp.selectedCourseId,
+                                                                storedMaster[index].id,
+                                                              );
+                                                              var checkStat = pdp.processStatus;
+
+                                                              pp.updateLoader(false);
+                                                              if (checkStat == false) {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) => RandomPage(
+                                                                              categoryType: "Process",
+                                                                              categoryId: storedMaster[index].id,
+                                                                              index: 7,
+                                                                              name: storedMaster[index].name,
+                                                                              price: storedMaster[index].price,
+                                                                            )));
+                                                              } else {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) => ProcessList()));
                                                               }
                                                             }
-                                                          },
-                                                          child: Container(
-                                                            width: double.infinity,
-                                                            child: Row(
-                                                              children: [
-                                                                SizedBox(
-                                                                  width: 0,
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets.only(bottom: 4.0),
-                                                                  child: Container(
-                                                                      height: 60,
-                                                                      width: 60,
-                                                                      decoration: BoxDecoration(
-                                                                        borderRadius: BorderRadius.circular(8),
-                                                                        color: index % 2 == 0
-                                                                            ? AppColor.purpule
-                                                                            : AppColor.green,
-                                                                      ),
-                                                                      child: Center(
-                                                                        child: Icon(
-                                                                          icon1,
-                                                                          color: Colors.white,
-                                                                        ),
-                                                                      )),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 15,
-                                                                ),
-                                                                Column(
-                                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                  children: [
-                                                                    Container(
-                                                                      // color: Colors.amber,
-                                                                      // padding: EdgeInsets.symmetric(horizontal: ),
-                                                                      width: MediaQuery.of(context).size.width * .50,
-                                                                      child: RichText(
-                                                                          overflow: TextOverflow.ellipsis,
-                                                                          maxLines: 2,
-                                                                          text: TextSpan(children: <TextSpan>[
-                                                                            TextSpan(
-                                                                              text: storedMaster[index].label,
-                                                                              style: TextStyle(
-                                                                                color: Colors.grey,
-                                                                                fontSize: 14,
-                                                                              ),
-                                                                            ),
-                                                                          ])),
+
+                                                            if (page == "Domain") {
+                                                              ProfileProvider pp = Provider.of(context, listen: false);
+                                                              DomainProvider dp = Provider.of(context, listen: false);
+                                                              pp.updateLoader(true);
+                                                              await dp.getDomainData(
+                                                                  storedMaster[index].id, cp.selectedCourseId);
+                                                              var checkStat = dp.domainStatus;
+                                                              pp.updateLoader(false);
+                                                              print("====checkStat====$checkStat");
+                                                              if (checkStat == false) {
+                                                                // print("")
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) => RandomPage(
+                                                                              categoryType: "Domain",
+                                                                              categoryId: storedMaster[index].id,
+                                                                              index: 6,
+                                                                              name: storedMaster[index].name,
+                                                                              price: storedMaster[index].price,
+                                                                            )));
+                                                              } else {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) => DomainList(
+                                                                            domainName: storedMaster[index].name)));
+                                                              }
+                                                            }
+                                                            if (page == "Videos") {
+                                                              print("this tab is being tapppppedddd");
+                                                              courseProvider.getVideoCate(storedMaster[index].id);
+                                                              Future.delayed(Duration(milliseconds: 0), () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) => VideoLibraryPage(
+                                                                            title: storedMaster[index].name)));
+                                                              });
+                                                            }
+                                                            if (page == "Support") {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) => ApplicationSupportPage()));
+                                                            }
+                                                            if (page == "Flash Cards") {
+                                                              courseProvider.getFlashCate(storedMaster[index].id);
+                                                              Future.delayed(Duration(milliseconds: 0), () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) => FlashCardItem(
+                                                                              title: storedMaster[index].name,
+                                                                            )));
+                                                              });
+                                                            }
+                                                            if (page == "Mock Test") {
+                                                              print(
+                                                                  "storedMaster[index].idooooooooooooooooooooooooooo${storedMaster[index].id}");
+                                                              courseProvider.getTest(
+                                                                  storedMaster[index].id, "Mock Test");
+                                                              Future.delayed(Duration.zero, () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) => MockTest(
+                                                                              testName: storedMaster[index].name,
+                                                                              testType: storedMaster[index].type,
+                                                                            )));
+                                                              });
+                                                            }
+                                                            if (page == "Practice Test") {
+                                                              courseProvider.getTest(
+                                                                  storedMaster[index].id, "Practice Test");
+                                                              Future.delayed(Duration.zero, () async {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) => MockTest(
+                                                                              testName: storedMaster[index].name,
+                                                                              testType: storedMaster[index].type,
+                                                                            )));
+                                                              });
+                                                            }
+                                                          }
+                                                        },
+                                                        child: Column(
+                                                          children: [
+                                                            ListTile(
+                                                              leading: Container(
+                                                                  height: 60,
+                                                                  width: 60,
+                                                                  decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(8),
+                                                                    color: index % 2 == 0
+                                                                        ? AppColor.purpule
+                                                                        : AppColor.green,
+                                                                  ),
+                                                                  child: Center(
+                                                                      child: Icon(
+                                                                    icon1,
+                                                                    color: Colors.white,
+                                                                  ))),
+                                                              title: RichText(
+                                                                overflow: TextOverflow.ellipsis,
+                                                                maxLines: 2,
+                                                                text: TextSpan(children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text: storedMaster[index].label,
+                                                                    style: TextStyle(
+                                                                      color: Colors.grey,
+                                                                      fontSize: 14,
                                                                     ),
-                                                                    SizedBox(
-                                                                      height: 3,
+                                                                  )
+                                                                ]),
+                                                              ),
+                                                              subtitle: RichText(
+                                                                overflow: TextOverflow.ellipsis,
+                                                                maxLines: 2,
+                                                                text: TextSpan(children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text: storedMaster[index].name,
+                                                                    style: TextStyle(
+                                                                      color: Colors.black,
+                                                                      fontSize: 18,
                                                                     ),
-                                                                    Container(
-                                                                      // color: Colors.amber,
-                                                                      width: MediaQuery.of(context).size.width * .50,
-                                                                      child: RichText(
-                                                                          overflow: TextOverflow.ellipsis,
-                                                                          maxLines: 2,
-                                                                          text: TextSpan(children: <TextSpan>[
-                                                                            TextSpan(
-                                                                              text: storedMaster[index].name,
-                                                                              style: TextStyle(
-                                                                                color: Colors.black,
-                                                                                fontSize: 18,
-                                                                              ),
-                                                                            ),
-                                                                          ])),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Spacer(),
-                                                                storedMaster[index].payment_status == 1
-                                                                    ? RichText(
-                                                                        overflow: TextOverflow.ellipsis,
-                                                                        maxLines: 1,
-                                                                        text: TextSpan(children: <TextSpan>[
-                                                                          TextSpan(
-                                                                            text: "Premium",
-                                                                            style: TextStyle(
-                                                                              color: Colors.black,
-                                                                              fontSize: 14,
-                                                                            ),
+                                                                  )
+                                                                ]),
+                                                              ),
+                                                              trailing: storedMaster[index].payment_status == 1
+                                                                  ? RichText(
+                                                                      overflow: TextOverflow.ellipsis,
+                                                                      maxLines: 1,
+                                                                      text: TextSpan(children: <TextSpan>[
+                                                                        TextSpan(
+                                                                          text: "Premium",
+                                                                          style: TextStyle(
+                                                                            color: Colors.black,
+                                                                            fontSize: 14,
                                                                           ),
-                                                                        ]))
-                                                                    : SizedBox(),
-                                                              ],
+                                                                        ),
+                                                                      ]))
+                                                                  : SizedBox(),
                                                             ),
-                                                          ),
-                                                        )),
-                                                  ),
+                                                            // Divider()
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left: 8.0, right: 8),
+                                                              child: Container(
+                                                                color: Color.fromARGB(255, 219, 211, 211),
+                                                                height: 1.2,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+
+                                                        //  Container(
+                                                        //   width: double.infinity,
+                                                        //   child: Row(
+                                                        //     children: [
+                                                        //       SizedBox(
+                                                        //         width: 0,
+                                                        //       ),
+                                                        //       Padding(
+                                                        //         padding: const EdgeInsets.only(bottom: 4.0),
+                                                        //         child: Container(
+                                                        //             height: 60,
+                                                        //             width: 60,
+                                                        //             decoration: BoxDecoration(
+                                                        //               borderRadius: BorderRadius.circular(8),
+                                                        //               color: index % 2 == 0
+                                                        //                   ? AppColor.purpule
+                                                        //                   : AppColor.green,
+                                                        //             ),
+                                                        //             child: Center(
+                                                        //               child: Icon(
+                                                        //                 icon1,
+                                                        //                 color: Colors.white,
+                                                        //               ),
+                                                        //             )),
+                                                        //       ),
+                                                        //       SizedBox(
+                                                        //         width: 15,
+                                                        //       ),
+                                                        //       Column(
+                                                        //         mainAxisAlignment: MainAxisAlignment.center,
+                                                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                                                        //         children: [
+                                                        //           Container(
+                                                        //             // color: Colors.amber,
+                                                        //             // padding: EdgeInsets.symmetric(horizontal: ),
+                                                        //             width: MediaQuery.of(context).size.width * .50,
+                                                        //             child: RichText(
+                                                        //                 overflow: TextOverflow.ellipsis,
+                                                        //                 maxLines: 2,
+                                                        //                 text: TextSpan(children: <TextSpan>[
+                                                        //                   TextSpan(
+                                                        //                     text: storedMaster[index].label,
+                                                        //                     style: TextStyle(
+                                                        //                       color: Colors.grey,
+                                                        //                       fontSize: 14,
+                                                        //                     ),
+                                                        //                   ),
+                                                        //                 ])),
+                                                        //           ),
+                                                        //           SizedBox(
+                                                        //             height: 3,
+                                                        //           ),
+                                                        //           Container(
+                                                        //             // color: Colors.amber,
+                                                        //             width: MediaQuery.of(context).size.width * .50,
+                                                        //             child: RichText(
+                                                        //                 overflow: TextOverflow.ellipsis,
+                                                        //                 maxLines: 2,
+                                                        //                 text: TextSpan(children: <TextSpan>[
+                                                        //                   TextSpan(
+                                                        //                     text: storedMaster[index].name,
+                                                        //                     style: TextStyle(
+                                                        //                       color: Colors.black,
+                                                        //                       fontSize: 18,
+                                                        //                     ),
+                                                        //                   ),
+                                                        //                 ])),
+                                                        //           ),
+                                                        //         ],
+                                                        //       ),
+                                                        //       Spacer(),
+                                                        //       storedMaster[index].payment_status == 1
+                                                        //           ? RichText(
+                                                        //               overflow: TextOverflow.ellipsis,
+                                                        //               maxLines: 1,
+                                                        //               text: TextSpan(children: <TextSpan>[
+                                                        //                 TextSpan(
+                                                        //                   text: "Premium",
+                                                        //                   style: TextStyle(
+                                                        //                     color: Colors.black,
+                                                        //                     fontSize: 14,
+                                                        //                   ),
+                                                        //                 ),
+                                                        //               ]))
+                                                        //           : SizedBox(),
+                                                        //     ],
+                                                        //   ),
+                                                        // ),
+                                                      )),
                                                 );
                                               }),
                                         ),

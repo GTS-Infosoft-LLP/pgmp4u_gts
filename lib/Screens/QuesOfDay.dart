@@ -11,7 +11,6 @@ import 'package:pgmp4u/Screens/chat/screen/discussionGoupList.dart';
 import 'package:pgmp4u/Screens/home_view/VideoLibrary/RandomPage.dart';
 import 'package:pgmp4u/utils/extensions.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 
 import '../provider/courseProvider.dart';
 import '../provider/profileProvider.dart';
@@ -159,7 +158,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                       child: Column(
                         children: [
                           Container(
-                            height: SizerUtil.deviceType == DeviceType.mobile ? 195 : 250,
+                            height: 195,
                             width: width,
                             decoration: BoxDecoration(
                               image: DecorationImage(
@@ -803,7 +802,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                     Text(""),
                     isAnsCorrect == 1
                         ? Positioned(
-                            top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
+                            top: 80,
                             left: width / 2.9,
                             child: Container(
                               width: 110,
@@ -812,7 +811,7 @@ class _QuesOfDayState extends State<QuesOfDay> {
                             ))
                         : isAnsCorrect == 2
                             ? Positioned(
-                                top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
+                                top: 80,
                                 left: width / 2.9,
                                 child: Container(
                                   width: 110,

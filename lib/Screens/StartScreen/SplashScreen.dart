@@ -45,26 +45,26 @@ class _SplashScreenState extends State<SplashScreen> {
 
   navigateToScreen() async {
     String value = await getValue();
+    print("value----$value");  
     setState(() {
       tokenData = value;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    Timer timer = new Timer(new Duration(seconds: 2), () async {
+    Timer timer = new Timer(new Duration(microseconds: 2), () async {
       print("::::flagForNoti::::$flagForNoti");
-      if (flagForNoti == 1) {
-      } else {
+
+      {
         print("condition somehow got true and its executing");
         if (value != null) {
-          String token = prefs.getString('token');
-          String photo = prefs.getString('photo');
-          String name = prefs.getString('name');
-          String email = prefs.getString('email');
-          var _user = UserModel(image: photo, name: name, token: token, email: email);
+          String token = prefs.getString('token'); 
+          String photo = prefs.getString('photo');  
+          String name = prefs.getString('name');   
+          String email = prefs.getString('email');   
+          var _user = UserModel(image: photo, name: name, token: token, email: email);   
           UserObject.setUser(_user);
-          // CourseProvider courseProvider = Provider.of(context, listen: false);
-          // await courseProvider.getFreeTrial();
-          Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (r) => false);
+
+          Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (r) => false);  
         } else {
           print("is this true....");
           Navigator.of(context).pushNamedAndRemoveUntil('/start-screen', (r) => false);
@@ -76,12 +76,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    print(double.infinity);
-    callCourseApi();
-    localDataUpdate();
 
-    fireNotification();
+    // callCourseApi();
+    localDataUpdate();
     navigateToScreen();
+    fireNotification();
   }
 
   @override
@@ -131,15 +130,20 @@ class _SplashScreenState extends State<SplashScreen> {
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       print("inside this getInitialMessage");
       print("message=======>>>>$message");
-      // print("message data=====${message.data}");
+      print("message data=====${message.data}");
 
       if (message != null) {
         flagForNoti = 1;
         print("message data=====${message.data}");
-
         print("Notificationtype====getInitialMessage=====>>>>${message.data['notificationType']}");
         switch (message.data["notificationType"].toString()) {
           case "1":
+            // Navigator.pushReplacement(
+            //     GlobalVariable.navState.currentContext,
+            //     MaterialPageRoute(
+            //         builder: (context) => NotificationTabs(
+            //               fromSplash: 1,
+            //             )));
             Navigator.push(
                 GlobalVariable.navState.currentContext,
                 MaterialPageRoute(
@@ -149,6 +153,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
             break;
           case "2":
+        
             Navigator.push(
                 GlobalVariable.navState.currentContext,
                 MaterialPageRoute(
@@ -163,6 +168,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
             break;
           case "4":
+            Navigator.push(
+                GlobalVariable.navState.currentContext,
+                MaterialPageRoute(
+                    builder: (context) => NotificationTabs(
+                          fromSplash: 1,
+                        )));
             Navigator.push(
                 GlobalVariable.navState.currentContext,
                 MaterialPageRoute(
@@ -190,29 +201,44 @@ class _SplashScreenState extends State<SplashScreen> {
           message: event.notification.body,
           payload: jsonEncode(event.data),
         );
+      }else{
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>NotificationTabs()));
       }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print("Listen onMessageOpenedApp  message $message");
+      // print("Listen onMessageOpenedApp  message $message");
       print("Listen onMessageOpenedApp   ${message.data}");
 
       print("Notificationsssssss>>>>>>");
       print("NOTIFICATION onMessageOpenedApp json$message");
       print("NOTIFICATION==onMessageOpenedApp====$json");
-      // print("tpmdjsdvjsdv======${message["notificationType"]}");
-      print("   ${['Notificationtype']}");
+      
+      print(" =+=+  ${message.data['notificationType']}");
 
-      print("   ${['Notificationtype']}");
+      print(" ====  ${message.data['notificationType'].toString()}");
 
-      switch (['Notificationtype'].toString()) {
+      switch (message.data['notificationType'].toString()) {
         case "1":
           Navigator.push(
-              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
+              GlobalVariable.navState.currentContext,
+              MaterialPageRoute(
+                  builder: (context) => NotificationTabs(
+                        fromSplash: 1,
+                      )));
+          // Navigator.push(
+          //     GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
           break;
         case "2":
           Navigator.push(
-              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
+              GlobalVariable.navState.currentContext,
+              MaterialPageRoute(
+                  builder: (context) => NotificationTabs(
+                        fromSplash: 1,
+                      )));
+
+          // Navigator.pop(GlobalVariable.navState.currentContext);
+
           break;
         case "3":
           Navigator.push(
@@ -220,28 +246,41 @@ class _SplashScreenState extends State<SplashScreen> {
           break;
         case "4":
           Navigator.push(
-              GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
+              GlobalVariable.navState.currentContext,
+              MaterialPageRoute(
+                  builder: (context) => NotificationTabs(
+                        fromSplash: 1,
+                      )));
+
           break;
+
+        default:
+          Navigator.push(
+              GlobalVariable.navState.currentContext,
+              MaterialPageRoute(
+                  builder: (context) => NotificationTabs(
+                        fromSplash: 1,
+                      )));
       }
     });
   }
 
-  Future<void> callCourseApi() async {
-    print("course api is being called in splash");
-    CourseProvider cp = Provider.of(context, listen: false);
-    await cp.getCourse();
+  // Future<void> callCourseApi() async {
+  //   print("course api is being called in splash");
+  //   CourseProvider cp = Provider.of(context, listen: false);
+  //   await cp.getCourse();
 
-    if (cp.mockCrsDropList.isNotEmpty) {
-      print("cp.course[0].id===========${cp.mockCrsDropList[0].id}");
-      cp.setSelectedCourseId(cp.mockCrsDropList[0].id);
-      cp.setSelectedCourseName(cp.mockCrsDropList[0].course);
-      cp.setSelectedCourseLable(cp.mockCrsDropList[0].lable);
-      print("cp.course[0].lable===========${cp.mockCrsDropList[0].lable}");
-    } else {
-      cp.setSelectedCourseLable(null);
-      print("seletced course lableee====${cp.selectedCourseLable}");
-    }
-  }
+  //   if (cp.mockCrsDropList.isNotEmpty) {
+  //     print("cp.course[0].id===========${cp.mockCrsDropList[0].id}");
+  //     cp.setSelectedCourseId(cp.mockCrsDropList[0].id);
+  //     cp.setSelectedCourseName(cp.mockCrsDropList[0].course);
+  //     cp.setSelectedCourseLable(cp.mockCrsDropList[0].lable);
+  //     print("cp.course[0].lable===========${cp.mockCrsDropList[0].lable}");
+  //   } else {
+  //     cp.setSelectedCourseLable(null);
+  //     print("seletced course lableee====${cp.selectedCourseLable}");
+  //   }
+  // }
 }
 
 //  // // for local Notification.........
@@ -274,7 +313,7 @@ class LocalNotifications {
 
   void selectNotification(String pay) {
     print("Notificationsssssss>>>>>>");
-    callCourseApi();
+    // callCourseApi();
     print("NOTIFICATION json $pay");
     var json = jsonDecode(pay);
 
@@ -286,25 +325,48 @@ class LocalNotifications {
     switch (json["notificationType"].toString()) {
       case "1":
         Navigator.push(
-            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
+            GlobalVariable.navState.currentContext,
+            MaterialPageRoute(
+                builder: (context) => NotificationTabs(
+                      fromSplash: 1,
+                    )));
+
         break;
       case "2":
         Navigator.push(
-            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
+            GlobalVariable.navState.currentContext,
+            MaterialPageRoute(
+                builder: (context) => NotificationTabs(
+                      fromSplash: 1,
+                    )));
+        Navigator.pop(GlobalVariable.navState.currentContext);
+
         break;
       case "3":
-        //  Navigator.push(GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context)=>Notifications()));
-        //   break;
         Navigator.push(
             GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => GroupListPage()));
         break;
       case "4":
         Navigator.push(
-            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
+            GlobalVariable.navState.currentContext,
+            MaterialPageRoute(
+                builder: (context) => NotificationTabs(
+                      fromSplash: 1, 
+                    )));
+        // Navigator.push(
+        //     GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
         break;
       default:
         Navigator.push(
-            GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
+            GlobalVariable.navState.currentContext,
+            MaterialPageRoute(
+                builder: (context) => NotificationTabs(
+                      fromSplash: 1,
+                    )));
+
+        Navigator.pop(GlobalVariable.navState.currentContext);
+      // Navigator.push(
+      //     GlobalVariable.navState.currentContext, MaterialPageRoute(builder: (context) => NotificationTabs()));
     }
   }
 
@@ -314,20 +376,20 @@ class LocalNotifications {
         iOS: IOSNotificationDetails(presentBadge: true, presentSound: true, presentAlert: true));
   }
 
-  Future<void> callCourseApi() async {
-    print("course api is being called in splash");
-    CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
-    await cp.getCourse();
+  // Future<void> callCourseApi() async {
+  //   print("course api is being called in splash");
+  //   CourseProvider cp = Provider.of(GlobalVariable.navState.currentContext, listen: false);
+  //   await cp.getCourse();
 
-    if (cp.mockCrsDropList.isNotEmpty) {
-      print("cp.course[0].id===========${cp.mockCrsDropList[0].id}");
-      cp.setSelectedCourseId(cp.mockCrsDropList[0].id);
-      cp.setSelectedCourseName(cp.mockCrsDropList[0].course);
-      cp.setSelectedCourseLable(cp.mockCrsDropList[0].lable);
-      print("cp.course[0].lable===========${cp.mockCrsDropList[0].lable}");
-    } else {
-      cp.setSelectedCourseLable(null);
-      print("seletced course lableee====${cp.selectedCourseLable}");
-    }
-  }
+  //   if (cp.mockCrsDropList.isNotEmpty) {
+  //     print("cp.course[0].id===========${cp.mockCrsDropList[0].id}");
+  //     cp.setSelectedCourseId(cp.mockCrsDropList[0].id);
+  //     cp.setSelectedCourseName(cp.mockCrsDropList[0].course);
+  //     cp.setSelectedCourseLable(cp.mockCrsDropList[0].lable);
+  //     print("cp.course[0].lable===========${cp.mockCrsDropList[0].lable}");
+  //   } else {
+  //     cp.setSelectedCourseLable(null);
+  //     print("seletced course lableee====${cp.selectedCourseLable}");
+  //   }
+  // }
 }

@@ -500,7 +500,8 @@ class _HomeViewState extends State<HomeView> {
                                                 textAlign: TextAlign.left,
                                                 text: TextSpan(children: <TextSpan>[
                                                   TextSpan(
-                                                    text: "Be one of them ! Get Started NOW to boost your Knowledge!",
+                                                    text:
+                                                        "Your PMI Certification Journey Starts Here: Lead, Learn, Succeed",
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 17,

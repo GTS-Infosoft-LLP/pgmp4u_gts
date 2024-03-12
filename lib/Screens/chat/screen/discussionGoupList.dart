@@ -68,8 +68,11 @@ class _GroupListPageState extends State<GroupListPage> {
                 gradient: AppColor.appGradient,
               ),
             ),
-            onPressed: () {
+            onPressed: () async {
+              
               ProfileProvider pp = Provider.of(context, listen: false);
+                 await pp.subscriptionStatus("Chat");
+              //pp.subscriptionStatus
               bool a = pp.isChatSubscribed;
               if (a) {
                 addDiscussion(context);

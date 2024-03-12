@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:getwidget/components/toast/gf_toast.dart';
@@ -130,7 +131,6 @@ class _FlashDisplayState extends State<FlashDisplay> {
                           }
 
                           print("storedFlashCate========================$storedFlash");
-                     
 
                           if (storedFlash == null) {
                             storedFlash = [];
@@ -233,30 +233,54 @@ class _FlashDisplayState extends State<FlashDisplay> {
                                                             physics: BouncingScrollPhysics(),
                                                             child: Container(
                                                               height: MediaQuery.of(context).size.height * .6,
-                                                              // color: Colors.blue,
                                                               child: Padding(
                                                                 padding: const EdgeInsets.only(
                                                                     left: 12.0, right: 12.0, bottom: 10),
                                                                 child: SingleChildScrollView(
                                                                   physics: BouncingScrollPhysics(),
-                                                                  child: Html(
-                                                                    data: storedFlash[index].description,
-                                                                    onAnchorTap: (url, ctx, attributes, element) async {
-                                                                      print("anchor url : $url");
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Html(
+                                                                        data: storedFlash[index].description,
+                                                                        onAnchorTap:
+                                                                            (url, ctx, attributes, element) async {
+                                                                          print("anchor url : $url");
 
-                                                                      Uri uri = Uri.parse(url);
-                                                                      if (await canLaunchUrlString(url)) {
-                                                                        await launchUrlString(url,
-                                                                            mode: LaunchMode.externalApplication);
-                                                                      } else {
-                                                                        GFToast.showToast(
-                                                                          "Can not launch this url",
-                                                                          context,
-                                                                          toastPosition: GFToastPosition.BOTTOM,
-                                                                        );
-                                                                      }
-                                                                    },
-                                                                    style: {},
+                                                                          Uri uri = Uri.parse(url);
+                                                                          if (await canLaunchUrlString(url)) {
+                                                                            await launchUrlString(url,
+                                                                                mode: LaunchMode.externalApplication);
+                                                                          } else {
+                                                                            GFToast.showToast(
+                                                                              "Can not launch this url",
+                                                                              context,
+                                                                              toastPosition: GFToastPosition.BOTTOM,
+                                                                            );
+                                                                          }
+                                                                        },
+                                                                        style: {},
+                                                                      ),
+                                                                      storedFlash[index].thumbnail.isEmpty
+                                                                          ? SizedBox
+                                                                          : CachedNetworkImage(
+                                                                              imageUrl: storedFlash[index].thumbnail,
+                                                                              fit: BoxFit.cover,
+                                                                              placeholder: (context, url) => Padding(
+                                                                                padding: const EdgeInsets.all(3.0),
+                                                                                child: Image.asset(
+                                                                                    'assets/user_placeholder.png',
+                                                                                    fit: BoxFit.cover),
+                                                                              ),
+                                                                              errorWidget: (context, url, error) =>
+                                                                                  Padding(
+                                                                                padding: const EdgeInsets.all(3.0),
+                                                                                child: Image.asset(
+                                                                                  'assets/user_placeholder.png',
+                                                                                  fit: BoxFit.cover,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                    ],
                                                                   ),
                                                                 ),
                                                               ),

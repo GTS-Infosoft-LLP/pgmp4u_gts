@@ -573,7 +573,7 @@ class ProfileProvider extends ChangeNotifier {
 
     print("token valued===$stringValue");
     var request = {"type": type, "courseId": id};
-    print("request::::::$request");
+    print("subscriptionStatus request::::::$request");
     bool checkConn = await checkInternetConn();
     if (checkConn) {
       body = HiveHandler.getNotSubmittedMock(keyName: cp.notSubmitedMockID);

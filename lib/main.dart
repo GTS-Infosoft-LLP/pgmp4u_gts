@@ -32,6 +32,7 @@ import 'Process/processDomainProvider.dart';
 import 'Screens/Domain/screens/domainProvider.dart';
 import 'Screens/PracticeTests/practiceTest copy.dart';
 import 'Screens/Tests/local_handler/hive_handler.dart';
+import 'Screens/notificationTabs.dart';
 import 'Services/globalcontext.dart';
 
 void main() async {
@@ -158,6 +159,7 @@ class MyApp extends StatelessWidget {
           '/payment': (ctx) => PaymentScreen(),
           '/payment-status': (ctx) => PaymentStatus(),
           '/attempt-mock': (ctx) => MockTestAttempts(),
+          '/notification':(ctx)=>NotificationTabs()
         },
       ),
     );

@@ -55,7 +55,7 @@ class FirebaseConstant {
   static String live_groupsCollection = 'live_groups';
   static String live_usersCollection = 'live_users';
   static String live_discussionsCollection = 'live_discussions';
-    static String live_messages = 'live_messages';
+  static String live_messages = 'live_messages';
 
 
 

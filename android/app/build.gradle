@@ -34,7 +34,9 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
   android {
               
     compileSdkVersion 33
-
+    packagingOptions {
+        exclude 'META-INF/core_release.kotlin_module'
+    }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }

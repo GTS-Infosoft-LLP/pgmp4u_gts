@@ -11,28 +11,28 @@ class FirebaseChatHandler {
 AppUrls appUrl=new AppUrls();
 
   static FirebaseFirestore fireStore = FirebaseFirestore.instance;
-  static CollectionReference userChatCollectionRef =
-      FirebaseFirestore.instance.collection(FirebaseConstant.userChatCollection);
-  static CollectionReference userCollectionRef =
-      FirebaseFirestore.instance.collection(FirebaseConstant.usersCollection);
-  static CollectionReference groupsCollectionRef =
-      FirebaseFirestore.instance.collection(FirebaseConstant.groupsCollection);
-
-  static CollectionReference discussionCollectionRef = 
-  FirebaseFirestore.instance.collection(FirebaseConstant.discussionsCollection);
-
-
-
-
-
   // static CollectionReference userChatCollectionRef =
-  //     FirebaseFirestore.instance.collection(AppUrls.getUserChatRef());
+  //     FirebaseFirestore.instance.collection(FirebaseConstant.userChatCollection);
   // static CollectionReference userCollectionRef =
-  //     FirebaseFirestore.instance.collection(AppUrls.getUserRef());
+  //     FirebaseFirestore.instance.collection(FirebaseConstant.usersCollection);
   // static CollectionReference groupsCollectionRef =
-  //     FirebaseFirestore.instance.collection(AppUrls.getGroupRef());
+  //     FirebaseFirestore.instance.collection(FirebaseConstant.groupsCollection);
+
   // static CollectionReference discussionCollectionRef = 
-  // FirebaseFirestore.instance.collection(AppUrls.getDisscussionRef());
+  // FirebaseFirestore.instance.collection(FirebaseConstant.discussionsCollection);
+
+
+
+
+
+  static CollectionReference userChatCollectionRef =
+      FirebaseFirestore.instance.collection(AppUrls.getUserChatRef());
+  static CollectionReference userCollectionRef =
+      FirebaseFirestore.instance.collection(AppUrls.getUserRef());
+  static CollectionReference groupsCollectionRef =
+      FirebaseFirestore.instance.collection(AppUrls.getGroupRef());
+  static CollectionReference discussionCollectionRef = 
+  FirebaseFirestore.instance.collection(AppUrls.getDisscussionRef());
 
 
 

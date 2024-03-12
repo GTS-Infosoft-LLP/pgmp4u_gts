@@ -175,7 +175,7 @@ class _PracticeNewState extends State<PracticeNew> {
                         child: Column(
                           children: [
                             Container(
-                              height: SizerUtil.deviceType == DeviceType.mobile ? 195 : 250,
+                              height:  195 ,
                               width: width,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
@@ -860,7 +860,7 @@ class _PracticeNewState extends State<PracticeNew> {
                       Text(""),
                       isAnsCorrect == 1
                           ? Positioned(
-                              top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
+                              top:  80 ,
                               left: width / 2.9,
                               child: Container(
                                 width: 110,
@@ -869,7 +869,7 @@ class _PracticeNewState extends State<PracticeNew> {
                               ))
                           : isAnsCorrect == 2
                               ? Positioned(
-                                  top: SizerUtil.deviceType == DeviceType.mobile ? 80 : 140,
+                                  top:  80,
                                   left: width / 2.9,
                                   child: Container(
                                     width: 110,
